@@ -1,0 +1,58 @@
+﻿<Window x:Class="MarketAnalysisTool.ItemWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d"
+        Title="ItemWindow" Height="335" Width="1180" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid>
+        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Grid HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75">
+            <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Hidden" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+        </Grid>
+        <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="80" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown">
+            <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
+            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
+            <Image x:Name="ImgItemImage" HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75"/>
+            <Label x:Name="LblItemName" Content="ITEM__NAME" Margin="90,5,200,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Label x:Name="LblItemId" Content="ITEM__ID" Margin="90,43,713,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <CheckBox x:Name="ChbShowVillages" Content="Dörfer Preise anzeigen" Margin="470,43,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="150" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="ShowVillagesPrices_Click" />
+            <CheckBox x:Name="ChbAutoUpdateData" Content="Auto Daten Update" IsChecked="True" Margin="625,43,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="150" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Label x:Name="LblLastUpdate" Content="LAST__UPDATE" Margin="0,43,10,0" VerticalAlignment="Top" ToolTip="Letzte Aktualisierung" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="230"/>
+        </Grid>
+        <Grid Margin="0,85,0,0" Height="35" VerticalAlignment="Top">
+            <Label x:Name="LblCityTitel" Content="Stadt" Style="{StaticResource Price.List.Column.Style}" Margin="10,5,0,0" Width="150"/>
+            <Label x:Name="LblSellPriceMin" Content="Min Verkaufspreis" Style="{StaticResource Price.List.Column.Style}" Margin="168,5,0,0" Width="120"/>
+            <Label x:Name="LblSellPriceMinDate" Content="Min Vkp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="293,5,0,0" Width="120"/>
+            <Label x:Name="LblSellPriceMax" Content="Max Verkaufspreis" Style="{StaticResource Price.List.Column.Style}" Margin="418,5,0,0" Width="120"/>
+            <Label x:Name="LblSellPriceMaxDate" Content="Max Vkp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="543,5,0,0" Width="120"/>
+            <Label x:Name="LblBuyPriceMin" Content="Min Kaufpreis" Style="{StaticResource Price.List.Column.Style}" Margin="668,5,0,0" Width="120"/>
+            <Label x:Name="LblBuyPriceMinDate" Content="Min Kp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="793,5,0,0" Width="120"/>
+            <Label x:Name="LblBuyPriceMax" Content="Max Kaufpreis" Style="{StaticResource Price.List.Column.Style}" Margin="918,5,0,0" Width="120"/>
+            <Label x:Name="LblBuyPriceMaxDate" Content="Max Kp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="1043,5,0,0" Width="120"/>
+        </Grid>
+
+        <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="{StaticResource Background.First}" Offset="0"/>
+                    <GradientStop Color="{StaticResource Background.Second}" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Label x:Name="LblDifCalcName" Content="Differenz Berechnung:" HorizontalAlignment="Left" Margin="10,0,0,4" VerticalAlignment="Bottom" Width="130" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Background="{x:Null}"/>
+            <Label x:Name="LblDifCalcText" Content="" Margin="145,0,0,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="723"/>
+            <TextBlock Margin="873,0,10,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="21" VerticalAlignment="Bottom">
+                Prices are provided by the
+                <Hyperlink NavigateUri="https://www.albion-online-data.com/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" BaselineAlignment="Center" RequestNavigate="Hyperlink_RequestNavigate">Albion Online Data Project</Hyperlink>
+            </TextBlock>
+        </Grid>
+
+        <Separator Height="16" Margin="10,109,10,0" VerticalAlignment="Top"/>
+        <StackPanel x:Name="SpStats" Margin="0,120,0,0"/>
+    </Grid>
+
+</Window>

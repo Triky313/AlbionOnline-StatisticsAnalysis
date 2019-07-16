@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<translations>
+  <translation name="LANGUAGE">Language</translation>
+  <translation name="REFRESH_RATE">Refrash rate</translation>
+  <translation name="SETTINGS">Settings</translation>
+  <translation name="SAVE">Save</translation>
+  <translation name="CITY">City</translation>
+  <translation name="SELL_PRICE_MIN">Sell price MIN</translation>
+  <translation name="SELL_PRICE_MIN_DATE">Sell price MIN Dt</translation>
+  <translation name="SELL_PRICE_MAX">Sell price MAX</translation>
+  <translation name="SELL_PRICE_MAX_DATE">Sell price MAX Dt</translation>
+  <translation name="BUY_PRICE_MIN">Buy price MIN</translation>
+  <translation name="BUY_PRICE_MIN_DATE">Buy price MIN Dt</translation>
+  <translation name="BUY_PRICE_MAX">Buy price MAX</translation>
+  <translation name="BUY_PRICE_MAX_DATE">Buy price MAX Dt</translation>
+  <translation name="LAST_UPDATE">Last update</translation>
+  <translation name="SHOW_VILLAGES">Show villages</translation>
+  <translation name="AUTO_UPDATE_DATA">Auto update data</translation>
+  <translation name="DIFFERENT_CALCULATION">Different calculation</translation>
+  <translation name="ERROR_PRICES_CAN_NOT_BE_LOADED">ERROR: Price can not be loaded</translation>
+  <translation name="BOUGHT_FOR">Bought for</translation>
+  <translation name="SELL_FOR">Sell for</translation>
+  <translation name="PROFIT">Profit</translation>
+</translations>

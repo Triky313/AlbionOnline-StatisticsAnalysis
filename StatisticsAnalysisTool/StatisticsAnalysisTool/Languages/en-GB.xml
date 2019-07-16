@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<translations>
+  <translation name="LANGUAGE"></translation>
+  <translation name="REFRESH_RATE"></translation>
+  <translation name="SETTINGS"></translation>
+  <translation name="SAVE"></translation>
+  <translation name="CITY"></translation>
+  <translation name="SELL_PRICE_MIN"></translation>
+  <translation name="SELL_PRICE_MIN_DATE"></translation>
+  <translation name="SELL_PRICE_MAX"></translation>
+  <translation name="SELL_PRICE_MAX_DATE"></translation>
+  <translation name="BUY_PRICE_MIN"></translation>
+  <translation name="BUY_PRICE_MIN_DATE"></translation>
+  <translation name="BUY_PRICE_MAX"></translation>
+  <translation name="BUY_PRICE_MAX_DATE"></translation>
+  <translation name="LAST_UPDATE"></translation>
+  <translation name="SHOW_VILLAGES"></translation>
+  <translation name="AUTO_UPDATE_DATA"></translation>
+  <translation name="DIFFERENT_CALCULATION"></translation>
+  <translation name="ERROR_PRICES_CAN_NOT_BE_LOADED"></translation>
+  <translation name="BOUGHT_FOR"></translation>
+  <translation name="SELL_FOR"></translation>
+  <translation name="PROFIT"></translation>
+</translations>

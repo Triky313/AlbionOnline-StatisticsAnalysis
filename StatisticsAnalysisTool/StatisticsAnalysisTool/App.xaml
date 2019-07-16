@@ -1,0 +1,281 @@
+﻿<Application x:Class="MarketAnalysisTool.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!-- Base font size -->
+        <system:Double x:Key="BaseFontSize">12</system:Double>
+
+        <!--Global colors -->
+        <Color x:Key="Background.First">#FF3C3C41</Color>
+        <Color x:Key="Background.Second">#FF2D2D32</Color>
+        <Color x:Key="Background.Third">#FF222226</Color>
+
+        <!-- Item level colors -->
+        <Color x:Key="Item.Level.Color.0">#FFb1b0ae</Color>
+        <Color x:Key="Item.Level.Color.1">#FF6bff91</Color>
+        <Color x:Key="Item.Level.Color.2">#FF4ff0fd</Color>
+        <Color x:Key="Item.Level.Color.3">#FFb866fe</Color>
+
+        <!-- City colors -->
+        <Color x:Key="Color.City.Caerleon">#FF262A2E</Color>
+        <Color x:Key="Color.City.Thetford">#FF3BAFDA</Color>
+        <Color x:Key="Color.City.Bridgewatch">#FFF76397</Color>
+        <Color x:Key="Color.City.Martlock">#FF7266BA</Color>
+        <Color x:Key="Color.City.Lymhurst">#FFFFAA00</Color>
+        <Color x:Key="Color.City.FortSterling">#FF00B19D</Color>
+
+        <SolidColorBrush x:Key="SolidColorBrush.Foreground.First" Color="Gainsboro"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Foreground.Second" Color="#B4B4B4"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Background.First" Color="{StaticResource Background.First}" />
+        <SolidColorBrush x:Key="SolidColorBrush.Background.Second" Color="{StaticResource Background.Second}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Background.Third" Color="{StaticResource Background.Third}"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="Goldenrod"/>
+        <SolidColorBrush x:Key="Item.IsSelected.Background" Color="DarkGoldenrod"/>
+        <SolidColorBrush x:Key="WindowButtonForeground" Color="#FF3C3C41"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Hyperlink.First" Color="#FF3F81B8"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Progressbar" Color="#FF3BAFDA"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
+
+        <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Thetford" Color="{StaticResource Color.City.Thetford}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Bridgewatch" Color="{StaticResource Color.City.Bridgewatch}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Martlock" Color="{StaticResource Color.City.Martlock}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst" Color="{StaticResource Color.City.Lymhurst}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling" Color="{StaticResource Color.City.FortSterling}"/>
+
+        <!-- ######################################################################################### -->
+
+        <!-- Best Price Label -->
+        <Style TargetType="Label" x:Key="BestPriceLabel" >
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint = "1,0" MappingMode = "RelativeToBoundingBox" StartPoint = "0,0" Opacity = "0.5">
+                        <GradientStop Color = "#FF1DC160" />
+                        <GradientStop Color = "#FF3C3C41" Offset = "1" />
+                        <GradientStop Color = "#FF384A44" Offset = "0.45" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- City Styles -->
+        <Style TargetType="Label" x:Key="CaerleonStyle" >
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.Caerleon}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style TargetType="Label" x:Key="ThetfordStyle" >
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.Thetford}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style TargetType="Label" x:Key="BridgewatchStyle" >
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.Bridgewatch}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style TargetType="Label" x:Key="MartlockStyle" >
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.Martlock}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style TargetType="Label" x:Key="LymhurstStyle" >
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.Lymhurst}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Label" x:Key="FortSterlingStyle" >
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.FortSterling}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Label" x:Key="DefaultCityStyle" >
+        </Style>
+
+        <!-- Image price silver -->
+        <Style TargetType="Image" x:Key="Image.Price.Silver" >
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Width" Value="26"/>
+            <Setter Property="Source" Value="Resources/silver.png"/>
+        </Style>
+
+        <!-- Primary Window -->
+        <Style x:Key="PrimaryWindow" TargetType="Window">
+            <Setter Property="BorderThickness" Value="1,1,1,1" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.First}"/>
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
+        </Style>
+
+        <!-- Hotbar Grid -->
+        <Style x:Key="HotbarGrid" TargetType="Grid">
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+
+        <!-- Window Button Style -->
+        <Style TargetType="{x:Type Button}" x:Key="WindowButtonStyle">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontFamily" Value="Webdings"/>
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Margin" Value="0,2,3,0"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ButtonBase}">
+                        <Border
+                            x:Name="Chrome"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Margin="0"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Content="{TemplateBinding Content}"
+                                ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#B4B4B4" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Price list column style -->
+        <Style TargetType="Label" x:Key="Price.List.Column.Style" >
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Top"></Setter>
+        </Style>
+
+        <!-- Progressbar style -->
+        <Style x:Key="{x:Type ProgressBar}" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Progressbar}"/>
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid Name="TemplateRoot" SnapsToDevicePixels="true">
+                            <Rectangle Fill="{TemplateBinding Background}"/>
+                            <Rectangle Name="PART_Track" Margin="0"/>
+                            <Decorator x:Name="PART_Indicator" HorizontalAlignment="Left" Margin="0">
+                                <Grid Name="Foreground">
+                                    <Rectangle Fill="{TemplateBinding Foreground}" Name="Indicator" />
+                                    <Grid Name="Animation" ClipToBounds="True">
+                                        <Border Name="PART_GlowRect"  Margin="0,0,0,0" HorizontalAlignment="Left" Background="{TemplateBinding Foreground}"/>
+                                    </Grid>
+                                    <Grid Name="Overlay">
+                                    </Grid>
+                                </Grid>
+                            </Decorator>
+
+                            <Border BorderThickness="{TemplateBinding BorderThickness}"
+                        BorderBrush="{TemplateBinding BorderBrush}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsIndeterminate" Value="true">
+                                <Setter TargetName="Indicator" Property="Fill" Value="Transparent" />
+                                <Setter TargetName="PART_GlowRect" Property="Width" Value="100" />
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation 
+                                        Storyboard.TargetName="PART_GlowRect"
+                                        Storyboard.TargetProperty="Margin"
+                                        From="-50,0,0,0"  To="400,0,0,0" Duration="0:0:2"
+                                        AutoReverse="True" RepeatBehavior="Forever" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ContextMenu style -->
+        <Style TargetType="{x:Type ContextMenu}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Grid.IsSharedSizeScope" Value="true" />
+            <Setter Property="HasDropShadow" Value="True" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContextMenu}">
+                        <Border x:Name="Border" Background="{StaticResource SolidColorBrush.Background.First}" BorderThickness="1">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{StaticResource Background.Second}" />
+                            </Border.BorderBrush>
+                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasDropShadow" Value="true">
+                                <Setter TargetName="Border" Property="Padding" Value="0,3,0,3" />
+                                <Setter TargetName="Border" Property="CornerRadius" Value="4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Application.Resources>
+</Application>
+

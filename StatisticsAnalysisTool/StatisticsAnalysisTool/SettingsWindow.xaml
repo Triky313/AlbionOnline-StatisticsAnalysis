@@ -1,0 +1,28 @@
+﻿<Window x:Class="MarketAnalysisTool.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MarketAnalysisTool"
+        mc:Ignorable="d"
+        Height="403" Width="600" Style="{StaticResource PrimaryWindow}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid>
+        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Grid ZIndex="-1" Height="75" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.Second}" MouseDown="Hotbar_MouseDown">
+            <Label x:Name="LblSettingsWindowTitle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Height="75" Margin="10,0,0,0" VerticalAlignment="Top" Width="532" FontSize="20" FontWeight="Bold"/>
+            <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
+            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
+        </Grid>
+        <Label x:Name="LblLanguage" Content="LANGUAGE" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="186"/>
+        <ComboBox x:Name="CbLanguage" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" HorizontalAlignment="Left" Margin="201,80,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
+        <Label x:Name="LblRefrashRate" Content="REFRESH__RATE" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top" Width="186"/>
+        <ComboBox x:Name="CbRefreshRate" DisplayMemberPath="Name" SelectedValuePath="Seconds" HorizontalAlignment="Left" Margin="201,111,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
+        <Label x:Name="LblUpdateItemListByDays" Content="UPDATE__ITEM__LIST__BY__DAYS" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,142,0,0" VerticalAlignment="Top" Width="186"/>
+        <ComboBox x:Name="CbUpdateItemListByDays" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" Margin="201,142,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
+
+        <Button x:Name="BtnSave" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click"/>
+    </Grid>
+</Window>

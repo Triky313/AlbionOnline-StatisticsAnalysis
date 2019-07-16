@@ -1,0 +1,84 @@
+﻿<Window x:Class="MarketAnalysisTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d"
+        Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1080" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="799">
+    <Grid>
+        <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
+            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
+            <Label x:Name="LblToolName" Content="AlbionOnline - STATISTICS ANALYSIS TOOL | VERSION" Margin="52,0,61,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Height="40" FontSize="20" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
+            <Image HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="37" Source="logo.ico" Margin="10,0,0,0"/>
+        </Grid>
+        <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" Margin="0,40,0,0">
+            <ComboBox x:Name="CbMode" DisplayMemberPath="Name" SelectedValuePath="Mode" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="170" Height="23" SelectionChanged="CbMode_SelectionChanged"/>
+            <Grid x:Name="BtnSettings" Margin="0,10,10,0" HorizontalAlignment="Right" Width="24" Height="24" VerticalAlignment="Top">
+                <fa:ImageAwesome Icon="Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="24" Margin="185,7,0,0" VerticalAlignment="Top" Width="24">
+                <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Hidden" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+            </Grid>
+        </Grid>
+        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
+            <TextBox x:Name="TxtSearch" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="299" KeyUp="TxtSearch_KeyUp"/>
+            <Label x:Name="LblItemCounter" Content="0/0" Height="23" Margin="0,10,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="110" />
+
+            <ListView x:Name="LvItems" Background="{StaticResource SolidColorBrush.Background.First}" Margin="10,38,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Item.MouseOver.Background}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Item.IsSelected.Background}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn x:Name="GvcNmlIcon" Header="ICON" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Background="#FF3C3C41">
+                                        <Image Source="{Binding Icon}" Width="75" Height="75" Stretch="Fill"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <!-- 
+                        <GridViewColumn Header="Summe" Width="100" DisplayMemberBinding="{Binding Path=Amount, StringFormat='{}{0:c}'}" />
+                        <GridViewColumn Header="Type" Width="150" DisplayMemberBinding="{Binding Type}" />
+                        -->
+                        <GridViewColumn x:Name="GvcNmlName" Header="NAME" Width="500" DisplayMemberBinding="{Binding LocalizedNameAndEnglish}" />
+                        <!--<GridViewColumn x:Name="GvcNmlPriceAvgCaerleon" Header="PRICE__AVG__CAERLOEN" Width="80" DisplayMemberBinding="{Binding PriceAvgCaerleon, Mode=TwoWay, IsAsync=True}" />
+                        <GridViewColumn x:Name="GvcNmlPriceAvgBridgewatch" Header="PRICE__AVG__BRIDGEWATCH" Width="80" DisplayMemberBinding="{Binding PriceAvgBridgewatch, Mode=TwoWay, IsAsync=True}" />
+                        <GridViewColumn x:Name="GvcNmlPriceAvgFortSterling" Header="PRICE__AVG__FORT__STERLING" Width="80" DisplayMemberBinding="{Binding PriceAvgFortSterling, Mode=TwoWay, IsAsync=True}" />
+                        <GridViewColumn x:Name="GvcNmlPriceAvgLymhurst" Header="PRICE__AVG__LYMHURST" Width="80" DisplayMemberBinding="{Binding PriceAvgLymhurst, Mode=TwoWay, IsAsync=True}" />
+                        <GridViewColumn x:Name="GvcNmlPriceAvgMartlock" Header="PRICE__AVG__MARTLOCK" Width="80" DisplayMemberBinding="{Binding PriceAvgMartlock, Mode=TwoWay, IsAsync=True}" />
+                        <GridViewColumn x:Name="GvcNmlPriceAvgThetford" Header="PRICE__AVG__THETFORT" Width="80" DisplayMemberBinding="{Binding PriceAvgThetford, Mode=TwoWay, IsAsync=True}" />-->
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom">
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="{StaticResource Background.First}" Offset="0"/>
+                        <GradientStop Color="{StaticResource Background.Second}" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="35" Width="110"/>
+                <TextBlock Margin="0,8,40,2" Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center" FontSize="14" HorizontalAlignment="Right" Width="73">
+                    <Hyperlink Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" BaselineAlignment="Center" RequestNavigate="Hyperlink_RequestNavigate">Donate
+                        <Hyperlink.NavigateUri>https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=YXWNJ6DCTJBZE&amp;source=url</Hyperlink.NavigateUri>
+                    </Hyperlink>
+                </TextBlock>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
