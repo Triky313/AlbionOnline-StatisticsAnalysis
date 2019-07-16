@@ -99,7 +99,7 @@ namespace MarketAnalysisTool
         {
             // Title
             LblToolName.Content =
-                $"AlbionOnline - MARKET ANALYSIS TOOL | v{Assembly.GetExecutingAssembly().GetName().Version}";
+                $"AlbionOnline - STATISTICS ANALYSIS TOOL | v{Assembly.GetExecutingAssembly().GetName().Version}";
 
             CbMode.Items.Clear();
             if (IsModeActive(MarketMode.Normal))
