@@ -3,6 +3,7 @@
 <translations>
   <translation name="LANGUAGE">Language</translation>
   <translation name="REFRESH_RATE">Refrash rate</translation>
+  <translation name="UPDATE_ITEM_LIST_BY_DAYS">Update item list by days: </translation>
   <translation name="SETTINGS">Settings</translation>
   <translation name="SAVE">Save</translation>
   <translation name="CITY">City</translation>
@@ -21,5 +22,35 @@
   <translation name="ERROR_PRICES_CAN_NOT_BE_LOADED">ERROR: Price can not be loaded</translation>
   <translation name="BOUGHT_FOR">Bought for</translation>
   <translation name="SELL_FOR">Sell for</translation>
+  <translation name="UNKNOWN_ITEM_NAME">Unknown item name</translation>
+  <translation name="NORMAL">Normal</translation>
+  <translation name="GOOD">Good</translation>
+  <translation name="OUTSTANDING">Outstanding</translation>
+  <translation name="EXCELLENT">Excellent</translation>
+  <translation name="MASTERPIECE">Masterpiece</translation>
+  <translation name="MIN_PROFIT">Min Profit</translation>
+  <translation name="ALL">All</translation>
+  <translation name="ICON">Icon</translation>
+  <translation name="NAME">Name</translation>
+  <translation name="TIER">Tier</translation>
+  <translation name="LEVEL">Level</translation>
+  <translation name="QUALITY">Quality</translation>
+  <translation name="COSTS">Costs</translation>
+  <translation name="REVENUE">Revenue</translation>
+  <translation name="REVENUE_WITHOUT_FEE">Revenue without fee</translation>
   <translation name="PROFIT">Profit</translation>
+  <translation name="PURCHASE_CITY">Purchase city</translation>
+  <translation name="DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE">Double value exists in the language file</translation>
+  <translation name="EVERY_DAY">Every day</translation>
+  <translation name="EVERY_3_DAYS">Every 3 days</translation>
+  <translation name="EVERY_7_DAYS">Every 7 days</translation>
+  <translation name="EVERY_14_DAYS">Every 14 days</translation>
+  <translation name="EVERY_28_DAYS">Every 28 days</translation>
+  <translation name="5_SECONDS">5 Seconds</translation>
+  <translation name="10_SECONDS">10 Seconds</translation>
+  <translation name="30_SECONDS">30 Seconds</translation>
+  <translation name="60_SECONDS">60 Seconds</translation>
+  <translation name="5_MINUTES">5 Minutes</translation>
+  <translation name="MIN_PROFIT_TOOLTIP">Specifies the minimum profit an item should generate.</translation>
+  <translation name="REMOVE">Remove</translation>
 </translations>

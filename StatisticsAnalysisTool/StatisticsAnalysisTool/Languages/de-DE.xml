@@ -29,12 +29,7 @@
   <translation name="EXCELLENT">Hervorragend</translation>
   <translation name="MASTERPIECE">Meisterstück</translation>
   <translation name="MIN_PROFIT">Min Profit</translation>
-  <translation name="MAX_OUTDATED_HOURS">Max veraltete Stunden</translation>
-  <translation name="SPECIFIES_HOW_OLD_THE_DATA_CAN_BE_IN_HOURS">Gibt an, wie alt die Daten in Stunden sein dürfen.</translation>
-  <translation name="PLEASE_SET_A_VALUE_TO_MAX_OUTDATED_HOURS_FIELD">Bitte einen Wert in das Feld "Max veraltete Stunden" eingeben.</translation>
-  <translation name="PLEASE_SET_A_VALUE_TO_MIN_PROFIT_FIELD">Bitte einen Wert in das Feld Min Profit eintragen.</translation>
   <translation name="ALL">Alle</translation>
-  <translation name="START_CALCULATION">Starte Berechnung</translation>
   <translation name="ICON">Icon</translation>
   <translation name="NAME">Name</translation>
   <translation name="TIER">Tier</translation>
@@ -57,7 +52,6 @@
   <translation name="60_SECONDS">60 Sekunden</translation>
   <translation name="5_MINUTES">5 Minuten</translation>
   <translation name="MIN_PROFIT_TOOLTIP">Gibt den minimalen Profit an, den ein Item generieren soll.</translation>
-  <translation name="PROFIT_WITH_FEE">Gewinn abzl. Gebühr</translation>
   <translation name="REMOVE">Entfernen</translation>
   <translation name="PRICE_AVG_CAERLOEN">Preis i. D. Caerleon</translation>
   <translation name="PRICE_AVG_BRIDGEWATCH">Preis i. D. Bridgewatch</translation>
