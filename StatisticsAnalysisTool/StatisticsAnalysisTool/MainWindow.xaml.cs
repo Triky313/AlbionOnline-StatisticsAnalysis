@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +20,7 @@ namespace MarketAnalysisTool
     /// <summary>
     ///     Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow: INotifyPropertyChanged
     {
         public enum MarketMode
         {
@@ -33,6 +35,7 @@ namespace MarketAnalysisTool
 
         public MainWindow()
         {
+            DataContext = this;
             InitializeComponent();
             Utility.AutoUpdate();
             InitMarketAnalysis();
@@ -259,6 +262,14 @@ namespace MarketAnalysisTool
         {
             Process.Start(e.Uri.AbsoluteUri);
         }
+        
+        public string DonateUrl => Settings.Default.DonateUrl;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

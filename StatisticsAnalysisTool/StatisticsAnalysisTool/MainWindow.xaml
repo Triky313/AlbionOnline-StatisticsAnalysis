@@ -73,10 +73,9 @@
                     </LinearGradientBrush>
                 </Grid.Background>
                 <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="35" Width="110"/>
-                <TextBlock Margin="0,8,40,2" Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center" FontSize="14" HorizontalAlignment="Right" Width="73">
-                    <Hyperlink Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" BaselineAlignment="Center" RequestNavigate="Hyperlink_RequestNavigate">Donate
-                        <Hyperlink.NavigateUri>https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=YXWNJ6DCTJBZE&amp;source=url</Hyperlink.NavigateUri>
-                    </Hyperlink>
+                <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center" 
+                           FontSize="14" HorizontalAlignment="Right" Width="80" Margin="0,7,0,0" FontWeight="Bold">
+                    <Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Text="Donate" /></Hyperlink>
                 </TextBlock>
             </Grid>
         </Grid>
