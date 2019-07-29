@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace MarketAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Utilities
 {
     public class IniFile
     {

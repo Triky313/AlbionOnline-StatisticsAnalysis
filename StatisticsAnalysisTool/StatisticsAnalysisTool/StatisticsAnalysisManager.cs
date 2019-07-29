@@ -6,12 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using MarketAnalysisTool.Models;
-using MarketAnalysisTool.Properties;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace MarketAnalysisTool
+namespace StatisticsAnalysisTool
 {
     public class StatisticsAnalysisManager
     {

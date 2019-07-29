@@ -1,9 +1,9 @@
 ﻿using System.Text;
 using System.Windows.Media.Imaging;
-using MarketAnalysisTool.Utilities;
+using StatisticsAnalysisTool.Utilities;
 using Newtonsoft.Json;
 
-namespace MarketAnalysisTool.Models
+namespace StatisticsAnalysisTool.Models
 {
     public class Item
     {

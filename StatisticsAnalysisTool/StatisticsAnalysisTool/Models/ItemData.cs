@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using MarketAnalysisTool.Utilities;
+using StatisticsAnalysisTool.Utilities;
 using Newtonsoft.Json.Linq;
 
-namespace MarketAnalysisTool.Models
+namespace StatisticsAnalysisTool.Models
 {
     public class ItemData
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MarketAnalysisTool.Models
+namespace StatisticsAnalysisTool.Models
 {
     public static class Locations
     {

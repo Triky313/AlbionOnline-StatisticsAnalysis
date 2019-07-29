@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace MarketAnalysisTool.Models
+namespace StatisticsAnalysisTool.Models
 {
     //public class MarketOrder
     //{

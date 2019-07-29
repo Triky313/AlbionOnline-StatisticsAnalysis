@@ -7,7 +7,7 @@ using System.Threading;
 using System.Windows;
 using AutoUpdaterDotNET;
 
-namespace MarketAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Utilities
 {
     public static class Utility
     {

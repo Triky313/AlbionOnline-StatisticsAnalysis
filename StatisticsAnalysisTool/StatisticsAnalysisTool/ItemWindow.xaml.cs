@@ -7,10 +7,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using MarketAnalysisTool.Models;
-using MarketAnalysisTool.Utilities;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Utilities;
 
-namespace MarketAnalysisTool
+namespace StatisticsAnalysisTool
 {
     /// <summary>
     ///     Interaktionslogik für ItemWindow.xaml

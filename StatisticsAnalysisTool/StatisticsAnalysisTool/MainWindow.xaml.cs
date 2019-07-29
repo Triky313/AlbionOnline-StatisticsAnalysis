@@ -11,11 +11,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using FontAwesome.WPF;
-using MarketAnalysisTool.Models;
-using MarketAnalysisTool.Properties;
-using MarketAnalysisTool.Utilities;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Utilities;
 
-namespace MarketAnalysisTool
+namespace StatisticsAnalysisTool
 {
     /// <summary>
     ///     Interaktionslogik für MainWindow.xaml

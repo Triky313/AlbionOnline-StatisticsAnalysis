@@ -1,5 +1,5 @@
 ﻿
-namespace MarketAnalysisTool.Models
+namespace StatisticsAnalysisTool.Models
 {
     class ComboBoxCity
     {

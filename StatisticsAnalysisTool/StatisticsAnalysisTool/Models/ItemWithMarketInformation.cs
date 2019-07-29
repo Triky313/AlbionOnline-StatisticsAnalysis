@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 
-namespace MarketAnalysisTool.Models
+namespace StatisticsAnalysisTool.Models
 {
     public class ItemWithMarketInformation
     {

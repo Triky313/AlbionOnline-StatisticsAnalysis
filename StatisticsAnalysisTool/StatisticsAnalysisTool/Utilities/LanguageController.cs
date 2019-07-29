@@ -6,9 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Xml;
-using MarketAnalysisTool.Properties;
+using StatisticsAnalysisTool.Properties;
 
-namespace MarketAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Utilities
 {
     public static class LanguageController
     {

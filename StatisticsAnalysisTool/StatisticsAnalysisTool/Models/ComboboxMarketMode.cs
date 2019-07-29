@@ -1,4 +1,4 @@
-﻿namespace MarketAnalysisTool.Models
+﻿namespace StatisticsAnalysisTool.Models
 {
     class ComboboxMarketMode
     {

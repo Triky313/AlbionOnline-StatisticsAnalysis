@@ -2,10 +2,10 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using MarketAnalysisTool.Properties;
-using MarketAnalysisTool.Utilities;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Utilities;
 
-namespace MarketAnalysisTool
+namespace StatisticsAnalysisTool
 {
     /// <summary>
     /// Interaktionslogik für SettingsWindow.xaml

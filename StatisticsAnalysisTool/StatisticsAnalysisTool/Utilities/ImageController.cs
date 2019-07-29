@@ -4,9 +4,9 @@ using System.IO;
 using System.Net;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using MarketAnalysisTool.Properties;
+using StatisticsAnalysisTool.Properties;
 
-namespace MarketAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Utilities
 {
     class ImageController
     {
