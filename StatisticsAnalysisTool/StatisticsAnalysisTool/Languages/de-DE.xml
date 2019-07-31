@@ -53,10 +53,9 @@
   <translation name="5_MINUTES">5 Minuten</translation>
   <translation name="MIN_PROFIT_TOOLTIP">Gibt den minimalen Profit an, den ein Item generieren soll.</translation>
   <translation name="REMOVE">Entfernen</translation>
-  <translation name="PRICE_AVG_CAERLOEN">Preis i. D. Caerleon</translation>
-  <translation name="PRICE_AVG_BRIDGEWATCH">Preis i. D. Bridgewatch</translation>
-  <translation name="PRICE_AVG_FORT_STERLING">Preis i. D. Fort Sterling</translation>
-  <translation name="PRICE_AVG_LYMHURST">Preis i. D. Lymhurst</translation>
-  <translation name="PRICE_AVG_MARTLOCK">Preis i. D. Martlock</translation>
-  <translation name="PRICE_AVG_THETFORT">Preis i. D. Thetfort</translation>
+  <translation name="ITEM_LIST_SOURCE_URL">Itemliste Ressourcen Url</translation>
+  <translation name="ITEM_LIST_CAN_NOT_BE_LOADED">Itemliste kann nicht geladen werden.</translation>
+  <translation name="ERROR">Fehler</translation>
+  <translation name="NOTE">Hinweis</translation>
+  <translation name="DEFAULT_ITEMLIST_HAS_BEEN_LOADED">Standard ItemList wurde geladen.</translation>
 </translations>

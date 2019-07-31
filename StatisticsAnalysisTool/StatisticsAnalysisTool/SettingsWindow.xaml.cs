@@ -25,6 +25,7 @@ namespace StatisticsAnalysisTool
             LblLanguage.Content = $"{LanguageController.Translation("LANGUAGE")}:";
             LblRefrashRate.Content = $"{LanguageController.Translation("REFRESH_RATE")}:";
             LblUpdateItemListByDays.Content = $"{LanguageController.Translation("UPDATE_ITEM_LIST_BY_DAYS")}";
+            LblItemListSourceUrl.Content = $"{LanguageController.Translation("ITEM_LIST_SOURCE_URL")}";
             BtnSave.Content = $"{LanguageController.Translation("SAVE")}";
         }
 
@@ -40,9 +41,7 @@ namespace StatisticsAnalysisTool
 
             // Language
             foreach (var langInfos in LanguageController.FileInfos)
-            {
                 CbLanguage.Items.Add(new LanguageController.FileInfo() { FileName = langInfos.FileName });
-            }
 
             CbLanguage.SelectedValue = LanguageController.CurrentLanguage;
 
@@ -54,6 +53,8 @@ namespace StatisticsAnalysisTool
             CbUpdateItemListByDays.Items.Add(new UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
             CbUpdateItemListByDays.SelectedValue = StatisticsAnalysisManager.UpdateItemListByDays;
 
+            // ItemList source url
+            TxtboxItemListSourceUrl.Text = StatisticsAnalysisManager.ItemListSourceUrl;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
@@ -74,7 +75,11 @@ namespace StatisticsAnalysisTool
             var ini = new IniFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SettingsFileName));
 
             ini.WriteValue("Settings", "RefreshRate", refreshRateItem.Seconds.ToString());
+            StatisticsAnalysisManager.RefreshRate = refreshRateItem.Seconds;
             ini.WriteValue("Settings", "UpdateItemListByDays", updateItemListByDays.Value.ToString());
+            StatisticsAnalysisManager.UpdateItemListByDays = updateItemListByDays.Value;
+            ini.WriteValue("Settings", "ItemListSourceUrl", TxtboxItemListSourceUrl.Text);
+            StatisticsAnalysisManager.ItemListSourceUrl = TxtboxItemListSourceUrl.Text;
 
             if (CbLanguage.SelectedItem is LanguageController.FileInfo langItem)
             {

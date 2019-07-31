@@ -108,6 +108,9 @@
     <Compile Include="Utilities\IniFile.cs" />
     <Compile Include="Utilities\LanguageController.cs" />
     <Compile Include="Utilities\Utility.cs" />
+    <Compile Include="Utilities\WebDownload.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Page Include="ItemWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -6,10 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using StatisticsAnalysisTool.Utilities;
 
 namespace StatisticsAnalysisTool
 {
@@ -18,8 +20,6 @@ namespace StatisticsAnalysisTool
         // Info Link -> https://github.com/broderickhyman/ao-bin-dumps
         // Models: https://github.com/broderickhyman/albiondata-models-dotNet
 
-        private const string ItemsJsonUrl =
-            "https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json";
         private enum GameLanguage { UnitedStates, Germany, Russia, Poland, Brazil, France, Spain }
         public enum ItemTier { T1 = 0, T2 = 1, T3 = 2, T4 = 3, T5 = 4, T6 = 5, T7 = 6, T8 = 7 }
         public enum ItemLevel { Level0 = 0, Level1 = 1, Level2 = 2, Level3 = 3 }
@@ -64,9 +64,23 @@ namespace StatisticsAnalysisTool
         public static List<Item> Items;
         public static int RefreshRate = Settings.Default.RefreshRate;
         public static int UpdateItemListByDays = Settings.Default.UpdateItemListByDays;
+        public static string ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
         
         public static async Task<bool> GetItemsFromJsonAsync()
         {
+            var url = ItemListSourceUrl;
+
+            if (string.IsNullOrEmpty(ItemListSourceUrl))
+            {
+                url = Settings.Default.DefaultItemListSourceUrl;
+                if (string.IsNullOrEmpty(url))
+                    return false;
+
+                var ini = new IniFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SettingsFileName));
+                ini.WriteValue("Settings", "ItemListSourceUrl", url);
+                MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
+            }
+
             if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}"))
             {
                 var fileDateTime = File.GetLastWriteTime($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
@@ -75,7 +89,7 @@ namespace StatisticsAnalysisTool
                 {
                     using (var wc = new WebClient())
                     {
-                        var itemString = await wc.DownloadStringTaskAsync(ItemsJsonUrl);
+                        var itemString = await wc.DownloadStringTaskAsync(url);
                         File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemString, Encoding.UTF8);
                         
                         try
@@ -92,10 +106,9 @@ namespace StatisticsAnalysisTool
                     }
                 }
 
-                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
-
                 try
                 {
+                    var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
                     Items = JsonConvert.DeserializeObject<List<Item>>(localItemString);
                 }
                 catch (Exception ex)
@@ -108,12 +121,29 @@ namespace StatisticsAnalysisTool
                 return true;
             }
 
-            using (var wc = new WebClient())
+            using (var wd = new WebDownload(30000))
             {
-                var itemsString = await wc.DownloadStringTaskAsync(ItemsJsonUrl);
-                File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
-                Items = JsonConvert.DeserializeObject<List<Item>>(itemsString);
-                return true;
+                try
+                {
+                    var itemsString = await wd.DownloadStringTaskAsync(url);
+                    File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
+                    Items = JsonConvert.DeserializeObject<List<Item>>(itemsString);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    try
+                    {
+                        var itemsString = await wd.DownloadStringTaskAsync(Settings.Default.DefaultItemListSourceUrl);
+                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
+                        Items = JsonConvert.DeserializeObject<List<Item>>(itemsString);
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+                }
             }
         }
 

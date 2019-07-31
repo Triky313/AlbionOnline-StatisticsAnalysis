@@ -53,7 +53,17 @@ namespace StatisticsAnalysisTool
                     InitUi();
                 });
 
-                await StatisticsAnalysisManager.GetItemsFromJsonAsync();
+                #region Load ItemList source url
+
+                if (_iniFile.SectionKeyExists("Settings", "ItemListSourceUrl"))
+                    StatisticsAnalysisManager.ItemListSourceUrl = _iniFile.ReadValue("Settings", "ItemListSourceUrl");
+
+                #endregion
+
+                var isItemListLoaded = await StatisticsAnalysisManager.GetItemsFromJsonAsync();
+                if (!isItemListLoaded)
+                    MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), 
+                        LanguageController.Translation("ERROR"));
 
                 #region Refrash rate
 
@@ -73,8 +83,11 @@ namespace StatisticsAnalysisTool
 
                 Dispatcher.Invoke(() =>
                 {
-                    FaLoadIcon.Visibility = Visibility.Hidden;
-                    TxtSearch.IsEnabled = true;
+                    if(isItemListLoaded)
+                    {
+                        FaLoadIcon.Visibility = Visibility.Hidden;
+                        TxtSearch.IsEnabled = true;
+                    }
                 });
             });
         }

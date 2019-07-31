@@ -113,5 +113,15 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((string)(this["DonateUrl"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/it" +
+            "ems.json")]
+        public string DefaultItemListSourceUrl {
+            get {
+                return ((string)(this["DefaultItemListSourceUrl"]));
+            }
+        }
     }
 }

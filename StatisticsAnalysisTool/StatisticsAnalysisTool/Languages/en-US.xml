@@ -53,4 +53,9 @@
   <translation name="5_MINUTES">5 Minutes</translation>
   <translation name="MIN_PROFIT_TOOLTIP">Specifies the minimum profit an item should generate.</translation>
   <translation name="REMOVE">Remove</translation>
+  <translation name="ITEM_LIST_SOURCE_URL">Item list source url</translation>
+  <translation name="ITEM_LIST_CAN_NOT_BE_LOADED">Itemlist can not be loaded.</translation>
+  <translation name="ERROR">Error</translation>
+  <translation name="NOTE">Note</translation>
+  <translation name="DEFAULT_ITEMLIST_HAS_BEEN_LOADED">Default ItemList has been loaded.</translation>
 </translations>
