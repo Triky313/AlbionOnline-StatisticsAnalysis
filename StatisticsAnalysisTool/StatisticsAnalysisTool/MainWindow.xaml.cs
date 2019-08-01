@@ -130,7 +130,7 @@ namespace StatisticsAnalysisTool
             if (string.IsNullOrEmpty(searchText))
                 return;
 
-            Dispatcher.InvokeAsync(async () =>
+            Dispatcher?.InvokeAsync(async () =>
             {
                 var items = await StatisticsAnalysisManager.FindItemsAsync(searchText);
                 LvItems.ItemsSource = items;
