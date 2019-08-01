@@ -26,14 +26,22 @@
         <Color x:Key="Color.City.Lymhurst">#FFFFAA00</Color>
         <Color x:Key="Color.City.FortSterling">#FF00B19D</Color>
 
+        <!-- City colors -->
+        <Color x:Key="Color.Button.First">#ff6fccf6</Color>
+        <Color x:Key="Color.Button.Second">#ff57b6e0</Color>
+        <Color x:Key="Color.Button.Third">#ff3da2ca</Color>
+
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.First" Color="Gainsboro"/>
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.Second" Color="#B4B4B4"/>
         <SolidColorBrush x:Key="SolidColorBrush.Background.First" Color="{StaticResource Background.First}" />
         <SolidColorBrush x:Key="SolidColorBrush.Background.Second" Color="{StaticResource Background.Second}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Background.Third" Color="{StaticResource Background.Third}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.First" Color="{StaticResource Color.Button.First}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Second" Color="{StaticResource Color.Button.Second}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Third" Color="{StaticResource Color.Button.Third}"/>
         <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#FF00799f"/>
         <SolidColorBrush x:Key="Item.IsSelected.Background" Color="#FF0e89b1"/>
-        <SolidColorBrush x:Key="GridView.Column.Header.Font" Color="#FF329bc3"/>
+        <SolidColorBrush x:Key="GridView.Column.Header.Font" Color="{StaticResource Color.Button.Second}"/>
         <SolidColorBrush x:Key="WindowButtonForeground" Color="#FF3C3C41"/>
         <SolidColorBrush x:Key="SolidColorBrush.Hyperlink.First" Color="#FF329bc3"/>
         <SolidColorBrush x:Key="SolidColorBrush.Progressbar" Color="#FF3BAFDA"/>
@@ -192,6 +200,39 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Foreground" Value="#B4B4B4" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Normal Button Style -->
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="BorderBrush">
+                <Setter.Value>
+                    <SolidColorBrush Color="{StaticResource Color.Button.Third}"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="0">
+                            <Border.Effect>
+                                <DropShadowEffect Color="{StaticResource Color.Button.Third}" ShadowDepth="0"/>
+                            </Border.Effect>
+                            <TextBlock Foreground="{TemplateBinding BorderBrush}" Text="{TemplateBinding Content}" 
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Color.Button.First}" />
+                    <Setter Property="Background" Value="{StaticResource SolidColorBrush.Color.Button.First}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Color.Button.First}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SolidColorBrush.Color.Button.Second}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Color.Button.Second}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -367,11 +408,9 @@
             </Trigger>
         </ControlTemplate.Triggers>
         </ControlTemplate>
-
         <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
             <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
         </ControlTemplate>
-
         <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
             <Setter Property="SnapsToDevicePixels" Value="true"/>
             <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -485,6 +524,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
 
 
 

@@ -25,6 +25,6 @@
         <Label x:Name="LblItemListSourceUrl" Content="ITEM__LIST_SOURCE__URL" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="186"/>
         <TextBox x:Name="TxtboxItemListSourceUrl" Height="40" Margin="201,173,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
-        <Button x:Name="BtnSave" Content="SAVE" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click"/>
+        <Button x:Name="BtnSave" Style="{StaticResource ButtonStyle}" Content="SAVE" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click"/>
     </Grid>
 </Window>
