@@ -26,7 +26,7 @@
         </Grid>
 
         <Button Content="Button" HorizontalAlignment="Left" Height="28" Margin="765,10,0,0" VerticalAlignment="Top" Width="91" Click="Button_Click_1"/>
-        <ListView x:Name="ListViewPrices" HorizontalAlignment="Left" Height="207" Margin="1,85,1,0" VerticalAlignment="Top" Width="1177" BorderThickness="0" SelectionMode="Single">
+        <ListView x:Name="ListViewPrices" Margin="1,80,1,41" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn x:Name="GvcCityTitel" Header="CITY" Width="160">
@@ -36,14 +36,99 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn x:Name="GvcSellPriceMin" Header="SELL_PRICE_MIN" Width="120" DisplayMemberBinding="{Binding SellPriceMin}" />
-                    <GridViewColumn x:Name="GvcSellPriceMinDate" Header="SELL_PRICE_MIN_DATE" Width="120" DisplayMemberBinding="{Binding SellPriceMinDate}" />
-                    <GridViewColumn x:Name="GvcSellPriceMax" Header="SELL_PRICE_MAX" Width="120" DisplayMemberBinding="{Binding SellPriceMax}" />
-                    <GridViewColumn x:Name="GvcSellPriceMaxDate" Header="SELL_PRICE_MAX_DATE" Width="120" DisplayMemberBinding="{Binding SellPriceMaxDate}" />
-                    <GridViewColumn x:Name="GvcBuyPriceMin" Header="BUY_PRICE_MIN" Width="120" DisplayMemberBinding="{Binding BuyPriceMin}" />
-                    <GridViewColumn x:Name="GvcBuyPriceMinDate" Header="BUY_PRICE_MIN_DATE" Width="120" DisplayMemberBinding="{Binding BuyPriceMinDate}" />
-                    <GridViewColumn x:Name="GvcBuyPriceMax" Header="BUY_PRICE_MAX" Width="120" DisplayMemberBinding="{Binding BuyPriceMax}" />
-                    <GridViewColumn x:Name="GvcBuyPriceMaxDate" Header="BUY_PRICE_MMAX_DATE" Width="120" DisplayMemberBinding="{Binding BuyPriceMaxDate}" />
+                    <GridViewColumn x:Name="GvcSellPriceMin" Header="SELL_PRICE_MIN" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMin}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                        <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcSellPriceMinDate" Header="SELL_PRICE_MIN_DATE" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding SellPriceMinDate}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcSellPriceMax" Header="SELL_PRICE_MAX" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMax}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                        <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcSellPriceMaxDate" Header="SELL_PRICE_MAX_DATE" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding SellPriceMaxDate}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcBuyPriceMin" Header="BUY_PRICE_MIN" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding BuyPriceMin}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                        <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcBuyPriceMinDate" Header="BUY_PRICE_MIN_DATE" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding BuyPriceMinDate}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="GvcBuyPriceMax" Header="BUY_PRICE_MAX" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding BuyPriceMax}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                        <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcBuyPriceMaxDate" Header="BUY_PRICE_MMAX_DATE" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding BuyPriceMaxDate}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

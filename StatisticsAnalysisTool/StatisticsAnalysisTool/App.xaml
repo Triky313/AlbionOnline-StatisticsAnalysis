@@ -86,8 +86,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style TargetType="Label" x:Key="ThetfordStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -97,8 +100,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <Style TargetType="Label" x:Key="BridgewatchStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -108,8 +114,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <Style TargetType="Label" x:Key="MartlockStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -119,8 +128,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <Style TargetType="Label" x:Key="LymhurstStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -130,8 +142,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style TargetType="Label" x:Key="FortSterlingStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -141,18 +156,68 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style TargetType="Label" x:Key="DefaultCityStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
         </Style>
 
-        <!-- Image price silver -->
-        <Style TargetType="Image" x:Key="Image.Price.Silver" >
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Height" Value="26"/>
-            <Setter Property="Width" Value="26"/>
+        <!-- Grid stackPanel item price -->
+        <Style x:Key="ListView.Grid.Item.Price" TargetType="Grid">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Width" Value="110"/>
+        </Style>
+
+        <!-- Grid stackPanel item date -->
+        <Style x:Key="ListView.Grid.Item.Date" TargetType="Grid">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Width" Value="120"/>
+        </Style>
+
+        <!-- ListView grid stackPanel item price -->
+        <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Price">
+            <Setter Property="Width" Value="92"></Setter>
+            <Setter Property="Orientation" Value="Horizontal"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+
+        <!-- ListView grid stackPanel image price silver -->
+        <Style TargetType="Image" x:Key="ListView.Grid.StackPanel.Image.Price.Silver" >
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="20"/>
             <Setter Property="Source" Value="Resources/silver.png"/>
         </Style>
+
+        <!-- ListView grid stackPanel item icon -->
+        <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Icon">
+            <Setter Property="Orientation" Value="Horizontal"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+
+        <!-- ListView grid label date -->
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date">
+            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+
+        <!-- ListView grid stackPanel label price -->
+        <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.Price">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+
 
         <!-- Primary Window -->
         <Style x:Key="PrimaryWindow" TargetType="Window">

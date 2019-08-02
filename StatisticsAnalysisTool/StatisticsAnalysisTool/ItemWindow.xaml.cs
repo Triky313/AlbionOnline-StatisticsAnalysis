@@ -171,11 +171,13 @@ namespace StatisticsAnalysisTool
 
                     FindBestPrice(ref _statsPricesTotalList);
 
-                    SpStats.Children.Clear();
-                    foreach (var spt in _statsPricesTotalList)
-                    {
-                        CreateGridElement(spt);
-                    }
+
+
+                    //SpStats.Children.Clear();
+                    //foreach (var spt in _statsPricesTotalList)
+                    //{
+                    //    CreateGridElement(spt);
+                    //}
 
                     SetDifferenceCalculationText(_statsPricesTotalList);
 
@@ -234,10 +236,22 @@ namespace StatisticsAnalysisTool
         {
 
 
+            for (var i = 1; i < 5; i++)
+            {
+                var oneItem = new ListViewItem();
+                oneItem.Content = new PriceItem()
+                {
+                    Name = "John",
+                    Alter = 32,
+                    CityStyle = FindResource("CaerleonStyle") as Style
+                };
+                _items.Add(oneItem);
+                ListViewPrices.ItemsSource = _items;
+            }
+            ListViewPrices.Items.Refresh();
 
 
-
-             // ----------------------
+            // ----------------------
 
 
             var textColor = new SolidColorBrush(Colors.Gainsboro);
@@ -302,7 +316,7 @@ namespace StatisticsAnalysisTool
             silverImages.Add(new Image
             {
                 Margin = new Thickness(168, 0, 0, 0),
-                Style = FindResource("Image.Price.Silver") as Style
+                Style = FindResource("ListView.Grid.StackPanel.Image.Price.Silver") as Style
             });
 
             var lblSellPriceMax = new Label
@@ -319,7 +333,7 @@ namespace StatisticsAnalysisTool
             silverImages.Add(new Image
             {
                 Margin = new Thickness(418, 0, 0, 0),
-                Style = FindResource("Image.Price.Silver") as Style
+                Style = FindResource("ListView.Grid.StackPanel.Image.Price.Silver") as Style
             });
 
             var lblBuyPriceMin = new Label
@@ -336,7 +350,7 @@ namespace StatisticsAnalysisTool
             silverImages.Add(new Image
             {
                 Margin = new Thickness(668, 0, 0, 0),
-                Style = FindResource("Image.Price.Silver") as Style
+                Style = FindResource("ListView.Grid.StackPanel.Image.Price.Silver") as Style
             });
 
             var lblBuyPriceMax = new Label
@@ -354,7 +368,7 @@ namespace StatisticsAnalysisTool
             silverImages.Add(new Image
             {
                 Margin = new Thickness(918, 0, 0, 0),
-                Style = FindResource("Image.Price.Silver") as Style
+                Style = FindResource("ListView.Grid.StackPanel.Image.Price.Silver") as Style
             });
 
             var lblSellPriceMinDate = new Label
