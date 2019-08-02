@@ -36,7 +36,7 @@
             <Label x:Name="LblBuyPriceMaxDate" Content="Max Kp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="1043,5,0,0" Width="120"/>
         </Grid>
 
-        <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom">
+        <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="{StaticResource Background.First}" Offset="0"/>
