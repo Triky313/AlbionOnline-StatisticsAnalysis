@@ -171,6 +171,16 @@ namespace StatisticsAnalysisTool
 
                     FindBestPrice(ref _statsPricesTotalList);
 
+                    // --- NEW ---
+
+                    
+
+                    ListViewPrices.ItemsSource = null;
+
+                    // --- --- ---
+
+
+
 
 
                     //SpStats.Children.Clear();
