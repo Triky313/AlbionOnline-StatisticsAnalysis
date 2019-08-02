@@ -24,17 +24,31 @@
             <CheckBox x:Name="ChbAutoUpdateData" Content="Auto Daten Update" IsChecked="True" Margin="625,43,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="150" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             <Label x:Name="LblLastUpdate" Content="LAST__UPDATE" Margin="0,43,10,0" VerticalAlignment="Top" ToolTip="Letzte Aktualisierung" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="230"/>
         </Grid>
-        <Grid Margin="0,85,0,0" Height="35" VerticalAlignment="Top">
-            <Label x:Name="LblCityTitel" Content="Stadt" Style="{StaticResource Price.List.Column.Style}" Margin="10,5,0,0" Width="150"/>
-            <Label x:Name="LblSellPriceMin" Content="Min Verkaufspreis" Style="{StaticResource Price.List.Column.Style}" Margin="168,5,0,0" Width="120"/>
-            <Label x:Name="LblSellPriceMinDate" Content="Min Vkp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="293,5,0,0" Width="120"/>
-            <Label x:Name="LblSellPriceMax" Content="Max Verkaufspreis" Style="{StaticResource Price.List.Column.Style}" Margin="418,5,0,0" Width="120"/>
-            <Label x:Name="LblSellPriceMaxDate" Content="Max Vkp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="543,5,0,0" Width="120"/>
-            <Label x:Name="LblBuyPriceMin" Content="Min Kaufpreis" Style="{StaticResource Price.List.Column.Style}" Margin="668,5,0,0" Width="120"/>
-            <Label x:Name="LblBuyPriceMinDate" Content="Min Kp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="793,5,0,0" Width="120"/>
-            <Label x:Name="LblBuyPriceMax" Content="Max Kaufpreis" Style="{StaticResource Price.List.Column.Style}" Margin="918,5,0,0" Width="120"/>
-            <Label x:Name="LblBuyPriceMaxDate" Content="Max Kp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="1043,5,0,0" Width="120"/>
-        </Grid>
+
+        <Button Content="Button" HorizontalAlignment="Left" Height="28" Margin="765,10,0,0" VerticalAlignment="Top" Width="91" Click="Button_Click_1"/>
+        <ListView x:Name="ListViewPrices" HorizontalAlignment="Left" Height="207" Margin="1,85,1,0" VerticalAlignment="Top" Width="1177" BorderThickness="0" SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn x:Name="GvcCityTitel" Header="CITY" Width="160">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Height="28" Width="150" Margin="0" Content="{Binding Name}" Style="{Binding CityStyle}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcSellPriceMin" Header="SELL_PRICE_MIN" Width="120" DisplayMemberBinding="{Binding SellPriceMin}" />
+                    <GridViewColumn x:Name="GvcSellPriceMinDate" Header="SELL_PRICE_MIN_DATE" Width="120" DisplayMemberBinding="{Binding SellPriceMinDate}" />
+                    <GridViewColumn x:Name="GvcSellPriceMax" Header="SELL_PRICE_MAX" Width="120" DisplayMemberBinding="{Binding SellPriceMax}" />
+                    <GridViewColumn x:Name="GvcSellPriceMaxDate" Header="SELL_PRICE_MAX_DATE" Width="120" DisplayMemberBinding="{Binding SellPriceMaxDate}" />
+                    <GridViewColumn x:Name="GvcBuyPriceMin" Header="BUY_PRICE_MIN" Width="120" DisplayMemberBinding="{Binding BuyPriceMin}" />
+                    <GridViewColumn x:Name="GvcBuyPriceMinDate" Header="BUY_PRICE_MIN_DATE" Width="120" DisplayMemberBinding="{Binding BuyPriceMinDate}" />
+                    <GridViewColumn x:Name="GvcBuyPriceMax" Header="BUY_PRICE_MAX" Width="120" DisplayMemberBinding="{Binding BuyPriceMax}" />
+                    <GridViewColumn x:Name="GvcBuyPriceMaxDate" Header="BUY_PRICE_MMAX_DATE" Width="120" DisplayMemberBinding="{Binding BuyPriceMaxDate}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <StackPanel Visibility="Hidden" x:Name="SpStats" Margin="0,120,0,0"/>
 
         <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">
             <Grid.Background>
@@ -50,9 +64,6 @@
                 <Hyperlink NavigateUri="https://www.albion-online-data.com/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" BaselineAlignment="Center" RequestNavigate="Hyperlink_RequestNavigate">Albion Online Data Project</Hyperlink>
             </TextBlock>
         </Grid>
-
-        <Separator Height="16" Margin="10,109,10,0" VerticalAlignment="Top"/>
-        <StackPanel x:Name="SpStats" Margin="0,120,0,0"/>
     </Grid>
 
 </Window>

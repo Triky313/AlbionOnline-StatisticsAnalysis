@@ -9,6 +9,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Utilities;
+using Color = System.Windows.Media.Color;
+using ColorConverter = System.Windows.Media.ColorConverter;
+using Image = System.Windows.Controls.Image;
 
 namespace StatisticsAnalysisTool
 {
@@ -40,15 +43,15 @@ namespace StatisticsAnalysisTool
             ChbShowVillages.Content = LanguageController.Translation("SHOW_VILLAGES");
             ChbAutoUpdateData.Content = LanguageController.Translation("AUTO_UPDATE_DATA");
             LblLastUpdate.ToolTip = LanguageController.Translation("LAST_UPDATE");
-            LblCityTitel.Content = LanguageController.Translation("CITY");
-            LblSellPriceMin.Content = LanguageController.Translation("SELL_PRICE_MIN");
-            LblSellPriceMinDate.Content = LanguageController.Translation("SELL_PRICE_MIN_DATE");
-            LblSellPriceMax.Content = LanguageController.Translation("SELL_PRICE_MAX");
-            LblSellPriceMaxDate.Content = LanguageController.Translation("SELL_PRICE_MAX_DATE");
-            LblBuyPriceMin.Content = LanguageController.Translation("BUY_PRICE_MIN");
-            LblBuyPriceMinDate.Content = LanguageController.Translation("BUY_PRICE_MIN_DATE");
-            LblBuyPriceMax.Content = LanguageController.Translation("BUY_PRICE_MAX");
-            LblBuyPriceMaxDate.Content = LanguageController.Translation("BUY_PRICE_MAX_DATE");
+            GvcCityTitel.Header = LanguageController.Translation("CITY");
+            GvcSellPriceMin.Header = LanguageController.Translation("SELL_PRICE_MIN");
+            GvcSellPriceMinDate.Header = LanguageController.Translation("SELL_PRICE_MIN_DATE");
+            GvcSellPriceMax.Header = LanguageController.Translation("SELL_PRICE_MAX");
+            GvcSellPriceMaxDate.Header = LanguageController.Translation("SELL_PRICE_MAX_DATE");
+            GvcBuyPriceMin.Header = LanguageController.Translation("BUY_PRICE_MIN");
+            GvcBuyPriceMinDate.Header = LanguageController.Translation("BUY_PRICE_MIN_DATE");
+            GvcBuyPriceMax.Header = LanguageController.Translation("BUY_PRICE_MAX");
+            GvcBuyPriceMaxDate.Header = LanguageController.Translation("BUY_PRICE_MAX_DATE");
             LblDifCalcName.Content = $"{LanguageController.Translation("DIFFERENT_CALCULATION")}:";
         }
 
@@ -59,38 +62,41 @@ namespace StatisticsAnalysisTool
 
             _uniqueName = item.UniqueName;
 
-            await Dispatcher.InvokeAsync(() =>
-            {
-                FaLoadIcon.Visibility = Visibility.Visible;
+            if (Dispatcher == null)
+                return;
 
-                Icon = item.Icon;
-            });
+            await Dispatcher.InvokeAsync(() =>
+                {
+                    FaLoadIcon.Visibility = Visibility.Visible;
+                    Icon = item.Icon;
+                });
 
             StartAutoUpdater();
 
             var itemDataTaskResult = await StatisticsAnalysisManager.GetItemDataFromJsonAsync(item);
-            
+
             if (itemDataTaskResult == null)
             {
                 LblItemName.Content = LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED");
-                Dispatcher.Invoke(() =>
-                {
-                    FaLoadIcon.Visibility = Visibility.Hidden;
-                });
+                Dispatcher?.Invoke(() => { FaLoadIcon.Visibility = Visibility.Hidden; });
                 return;
             }
 
             _itemData = itemDataTaskResult;
-            
-            await Dispatcher.InvokeAsync(() =>
-            {
-                Title = $"{_itemData.LocalizedName} (T{_itemData.Tier})";
-                LblItemName.Content = $"{_itemData.LocalizedName} (T{_itemData.Tier})";
-                LblItemId.Content = _itemData.UniqueName;
-                ImgItemImage.Source = item.Icon;
 
-                FaLoadIcon.Visibility = Visibility.Hidden;
-            });
+            if (Dispatcher == null)
+                return;
+
+            await Dispatcher.InvokeAsync(() =>
+                {
+                    Title = $"{_itemData.LocalizedName} (T{_itemData.Tier})";
+                    LblItemName.Content = $"{_itemData.LocalizedName} (T{_itemData.Tier})";
+                    LblItemId.Content = _itemData.UniqueName;
+                    ImgItemImage.Source = item.Icon;
+
+                    FaLoadIcon.Visibility = Visibility.Hidden;
+                });
+        
         }
 
         private void StartAutoUpdater()
@@ -103,9 +109,9 @@ namespace StatisticsAnalysisTool
                 while (_runUpdate)
                 {
                     await Task.Delay(500);
-                    if (Dispatcher.Invoke(() => !ChbAutoUpdateData.IsChecked ?? false))
+                    if (Dispatcher != null && Dispatcher.Invoke(() => !ChbAutoUpdateData.IsChecked ?? false))
                         continue;
-                    GetPriceStats(_uniqueName, Dispatcher.Invoke(() => ChbShowVillages.IsChecked ?? false));
+                    GetPriceStats(_uniqueName, Dispatcher != null && Dispatcher.Invoke(() => ChbShowVillages.IsChecked ?? false));
                     await Task.Delay(StatisticsAnalysisManager.RefreshRate - 500);
                 }
                 _isAutoUpdateActive = false;
@@ -125,7 +131,7 @@ namespace StatisticsAnalysisTool
                 if (statPricesList == null)
                     return;
 
-                Dispatcher.Invoke(() =>
+                Dispatcher?.Invoke(() =>
                 {
                     foreach (var stats in statPricesList)
                     {
@@ -175,7 +181,6 @@ namespace StatisticsAnalysisTool
 
                     LblLastUpdate.Content = Utility.DateFormat(DateTime.Now, 0);
                 });
-
             });
         }
 
@@ -227,6 +232,14 @@ namespace StatisticsAnalysisTool
 
         private void CreateGridElement(MarketResponseTotal stats)
         {
+
+
+
+
+
+             // ----------------------
+
+
             var textColor = new SolidColorBrush(Colors.Gainsboro);
             
             var bestPriceLabelStyle = FindResource("BestPriceLabel") as Style;
@@ -488,6 +501,36 @@ namespace StatisticsAnalysisTool
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
             Process.Start(e.Uri.AbsoluteUri);
+        }
+
+
+        // TEST ------------------------
+
+        private List<ListViewItem> _items = new List<ListViewItem>();
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            for (var i = 1; i < 5; i++)
+            {
+                var oneItem = new ListViewItem();
+                oneItem.Content = new PriceItem()
+                {
+                    Name = "John",
+                    Alter = 32,
+                    CityStyle = FindResource("CaerleonStyle") as Style
+                };
+                _items.Add(oneItem);
+                ListViewPrices.ItemsSource = _items;
+            }
+            ListViewPrices.Items.Refresh();
+        }
+        public class PriceItem
+        {
+            public string Name { get; set; }
+            public int Alter { get; set; }
+
+            public Style CityStyle { get; set; }
+
+        public SolidColorBrush Color => new SolidColorBrush(Colors.Gold);
         }
 
     }

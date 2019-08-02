@@ -73,6 +73,10 @@
         
         <!-- City Styles -->
         <Style TargetType="Label" x:Key="CaerleonStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -82,7 +86,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="Label" x:Key="ThetfordStyle" >
             <Setter Property="Background">
                 <Setter.Value>
@@ -324,6 +328,9 @@
         </Style>
         <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="{StaticResource Item.MouseOver.Background}" />
