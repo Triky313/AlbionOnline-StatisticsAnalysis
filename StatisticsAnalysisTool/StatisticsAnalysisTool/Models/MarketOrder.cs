@@ -104,6 +104,26 @@ namespace StatisticsAnalysisTool.Models
 
     public class MarketCurrentPricesItem
     {
+
+        public MarketCurrentPricesItem(MarketResponseTotal marketResponseTotal)
+        {
+            ItemTypeId = marketResponseTotal.ItemTypeId;
+            City = marketResponseTotal.City;
+            QualityLevel = marketResponseTotal.QualityLevel;
+            SellPriceMin = marketResponseTotal.SellPriceMin;
+            SellPriceMinDate = marketResponseTotal.SellPriceMinDate;
+            SellPriceMax = marketResponseTotal.SellPriceMax;
+            SellPriceMaxDate = marketResponseTotal.SellPriceMaxDate;
+            BuyPriceMin = marketResponseTotal.BuyPriceMin;
+            BuyPriceMinDate = marketResponseTotal.BuyPriceMinDate;
+            BuyPriceMax = marketResponseTotal.BuyPriceMax;
+            BuyPriceMaxDate = marketResponseTotal.BuyPriceMaxDate;
+            BestSellMinPrice = marketResponseTotal.BestSellMinPrice;
+            BestSellMaxPrice = marketResponseTotal.BestSellMaxPrice;
+            BestBuyMinPrice = marketResponseTotal.BestBuyMinPrice;
+            BestBuyMaxPrice = marketResponseTotal.BestBuyMaxPrice;
+        }
+
         public string ItemTypeId { get; set; }
         public Location City { get; set; }
         public byte QualityLevel { get; set; }
@@ -121,36 +141,27 @@ namespace StatisticsAnalysisTool.Models
         public bool BestBuyMinPrice { get; set; }
         public bool BestBuyMaxPrice { get; set; }
 
-        public Style CityStyle
-        {
-            get
-            {
+        public Style CityStyle {
+            get {
                 switch (City)
                 {
                     case Location.Caerleon:
-                        Style style aa;
-                        style = FindResource("CaerleonStyle") as Style;
-                        break;
+                        return Application.Current.FindResource("CaerleonStyle") as Style;
                     case Location.Thetford:
-                        lblCity.Style = FindResource("ThetfordStyle") as Style;
-                        break;
+                        return Application.Current.FindResource("ThetfordStyle") as Style;
                     case Location.Bridgewatch:
-                        lblCity.Style = FindResource("BridgewatchStyle") as Style;
-                        break;
+                        return Application.Current.FindResource("BridgewatchStyle") as Style;
                     case Location.Martlock:
-                        lblCity.Style = FindResource("MartlockStyle") as Style;
-                        break;
+                        return Application.Current.FindResource("MartlockStyle") as Style;
                     case Location.Lymhurst:
-                        lblCity.Style = FindResource("LymhurstStyle") as Style;
-                        break;
+                        return Application.Current.FindResource("LymhurstStyle") as Style;
                     case Location.FortSterling:
-                        lblCity.Style = FindResource("FortSterlingStyle") as Style;
-                        break;
+                        return Application.Current.FindResource("FortSterlingStyle") as Style;
                     default:
-                        lblCity.Style = FindResource("DefaultCityStyle") as Style;
-                        break;
+                        return Application.Current.FindResource("DefaultCityStyle") as Style;
                 }
             }
         }
+
     }
 }

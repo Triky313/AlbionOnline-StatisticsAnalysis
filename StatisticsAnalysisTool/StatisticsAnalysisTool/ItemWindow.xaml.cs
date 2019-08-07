@@ -66,10 +66,10 @@ namespace StatisticsAnalysisTool
                 return;
 
             await Dispatcher.InvokeAsync(() =>
-                {
-                    FaLoadIcon.Visibility = Visibility.Visible;
-                    Icon = item.Icon;
-                });
+            {
+                FaLoadIcon.Visibility = Visibility.Visible;
+                Icon = item.Icon;
+            });
 
             StartAutoUpdater();
 
@@ -99,9 +99,9 @@ namespace StatisticsAnalysisTool
         
         }
 
-        private void StartAutoUpdater()
+        private async void StartAutoUpdater()
         {
-            Task.Run(async () => {
+            await Task.Run(async () => {
                 if (_isAutoUpdateActive)
                     return;
 
@@ -125,75 +125,69 @@ namespace StatisticsAnalysisTool
 
             await Task.Run(async () =>
             {
-                _statsPricesTotalList.Clear();
                 var statPricesList = await StatisticsAnalysisManager.GetItemPricesFromJsonAsync(uniqueName, showVillages);
 
                 if (statPricesList == null)
                     return;
 
+                var statsPricesTotalList = PriceUpdate(statPricesList);
+
+                FindBestPrice(ref statsPricesTotalList);
+
+                var marketCurrentPricesItemList = new List<MarketCurrentPricesItem>();
+                foreach (var item in statsPricesTotalList)
+                    marketCurrentPricesItemList.Add(new MarketCurrentPricesItem(item));
+
                 Dispatcher?.Invoke(() =>
                 {
-                    foreach (var stats in statPricesList)
-                    {
-                        if (_statsPricesTotalList.Exists(s => Locations.GetName(s.City) == stats.City))
-                        {
-                            var spt = _statsPricesTotalList.Find(s => Locations.GetName(s.City) == stats.City);
-                            if (stats.SellPriceMin < spt.SellPriceMin)
-                                spt.SellPriceMin = stats.SellPriceMin;
-
-                            if (stats.SellPriceMax > spt.SellPriceMax)
-                                spt.SellPriceMax = stats.SellPriceMax;
-
-                            if (stats.BuyPriceMin < spt.BuyPriceMin)
-                                spt.BuyPriceMin = stats.BuyPriceMin;
-
-                            if (stats.BuyPriceMax > spt.BuyPriceMax)
-                                spt.BuyPriceMax = stats.BuyPriceMax;
-                        }
-                        else
-                        {
-                            var newSpt = new MarketResponseTotal()
-                            {
-                                City = Locations.GetName(stats.City),
-                                SellPriceMin = stats.SellPriceMin,
-                                SellPriceMax = stats.SellPriceMax,
-                                BuyPriceMin = stats.BuyPriceMin,
-                                BuyPriceMax = stats.BuyPriceMax,
-                                SellPriceMinDate = stats.SellPriceMinDate,
-                                SellPriceMaxDate = stats.SellPriceMaxDate,
-                                BuyPriceMinDate = stats.BuyPriceMinDate,
-                                BuyPriceMaxDate = stats.BuyPriceMaxDate,
-                            };
-
-                            _statsPricesTotalList.Add(newSpt);
-                        }
-                    }
-
-                    FindBestPrice(ref _statsPricesTotalList);
-
-                    // --- NEW ---
-
-                    
-
-                    ListViewPrices.ItemsSource = null;
-
-                    // --- --- ---
-
-
-
-
-
-                    //SpStats.Children.Clear();
-                    //foreach (var spt in _statsPricesTotalList)
-                    //{
-                    //    CreateGridElement(spt);
-                    //}
-
-                    SetDifferenceCalculationText(_statsPricesTotalList);
-
+                    ListViewPrices.ItemsSource = marketCurrentPricesItemList;
+                    SetDifferenceCalculationText(statsPricesTotalList);
                     LblLastUpdate.Content = Utility.DateFormat(DateTime.Now, 0);
                 });
             });
+        }
+
+        private List<MarketResponseTotal> PriceUpdate(List<MarketResponse> statPricesList)
+        {
+            var statsPricesTotalList = new List<MarketResponseTotal>();
+
+            foreach (var stats in statPricesList)
+            {
+                if (statsPricesTotalList.Exists(s => Locations.GetName(s.City) == stats.City))
+                {
+                    var spt = statsPricesTotalList.Find(s => Locations.GetName(s.City) == stats.City);
+                    if (stats.SellPriceMin < spt.SellPriceMin)
+                        spt.SellPriceMin = stats.SellPriceMin;
+
+                    if (stats.SellPriceMax > spt.SellPriceMax)
+                        spt.SellPriceMax = stats.SellPriceMax;
+
+                    if (stats.BuyPriceMin < spt.BuyPriceMin)
+                        spt.BuyPriceMin = stats.BuyPriceMin;
+
+                    if (stats.BuyPriceMax > spt.BuyPriceMax)
+                        spt.BuyPriceMax = stats.BuyPriceMax;
+                }
+                else
+                {
+                    var newSpt = new MarketResponseTotal()
+                    {
+                        City = Locations.GetName(stats.City),
+                        SellPriceMin = stats.SellPriceMin,
+                        SellPriceMax = stats.SellPriceMax,
+                        BuyPriceMin = stats.BuyPriceMin,
+                        BuyPriceMax = stats.BuyPriceMax,
+                        SellPriceMinDate = stats.SellPriceMinDate,
+                        SellPriceMaxDate = stats.SellPriceMaxDate,
+                        BuyPriceMinDate = stats.BuyPriceMinDate,
+                        BuyPriceMaxDate = stats.BuyPriceMaxDate,
+                    };
+
+                    statsPricesTotalList.Add(newSpt);
+                }
+            }
+
+            return statsPricesTotalList;
         }
 
         private void FindBestPrice(ref List<MarketResponseTotal> list)
@@ -239,204 +233,6 @@ namespace StatisticsAnalysisTool
             {
                 Debug.Print(ex.ToString());
             }
-
-        }
-
-        private void CreateGridElement(MarketResponseTotal stats)
-        {
-
-
-            for (var i = 1; i < 5; i++)
-            {
-                var oneItem = new ListViewItem();
-                oneItem.Content = new PriceItem()
-                {
-                    Name = "John",
-                    Alter = 32,
-                    CityStyle = FindResource("CaerleonStyle") as Style
-                };
-                _items.Add(oneItem);
-                ListViewPrices.ItemsSource = _items;
-            }
-            ListViewPrices.Items.Refresh();
-
-
-            // ----------------------
-
-
-            var textColor = new SolidColorBrush(Colors.Gainsboro);
-            
-            var bestPriceLabelStyle = FindResource("BestPriceLabel") as Style;
-
-            var grid = new Grid
-            {
-                VerticalAlignment = VerticalAlignment.Top, Height = 30, Margin = new Thickness(0, 0, 0, 0)
-            };
-
-            var lblCity = new Label
-            {
-                Content = stats.City,
-                Foreground = textColor,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                Width = 150,
-                Height = 28,
-                Margin = new Thickness(10, 0, 0, 0)
-            };
-
-            switch(stats.City)
-            {
-                case Location.Caerleon:
-                    lblCity.Style = FindResource("CaerleonStyle") as Style;
-                    break;
-                case Location.Thetford:
-                    lblCity.Style = FindResource("ThetfordStyle") as Style;
-                    break;
-                case Location.Bridgewatch:
-                    lblCity.Style = FindResource("BridgewatchStyle") as Style;
-                    break;
-                case Location.Martlock:
-                    lblCity.Style = FindResource("MartlockStyle") as Style;
-                    break;
-                case Location.Lymhurst:
-                    lblCity.Style = FindResource("LymhurstStyle") as Style;
-                    break;
-                case Location.FortSterling:
-                    lblCity.Style = FindResource("FortSterlingStyle") as Style;
-                    break;
-                default:
-                    lblCity.Style = FindResource("DefaultCityStyle") as Style;
-                    break;
-            }
-
-            List<Image> silverImages = new List<Image>();
-
-            var lblSellPriceMin = new Label
-            {
-                Content = string.Format(LanguageController.DefaultCultureInfo, "{0:n0}", stats.SellPriceMin),
-                Foreground = DateTimeToOld(stats.SellPriceMinDate),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalContentAlignment = HorizontalAlignment.Left,
-                Width = 85,
-                Height = 28,
-                Margin = new Thickness(194, 0, 0, 0)
-            };
-            lblSellPriceMin.Style = (stats.BestSellMinPrice && stats.SellPriceMin != 0) ? bestPriceLabelStyle : lblSellPriceMin.Style;
-            silverImages.Add(new Image
-            {
-                Margin = new Thickness(168, 0, 0, 0),
-                Style = FindResource("ListView.Grid.StackPanel.Image.Price.Silver") as Style
-            });
-
-            var lblSellPriceMax = new Label
-            {
-                Content = string.Format(LanguageController.DefaultCultureInfo, "{0:n0}", stats.SellPriceMax),
-                Foreground = DateTimeToOld(stats.SellPriceMaxDate),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalContentAlignment = HorizontalAlignment.Left,
-                Width = 85,
-                Height = 28,
-                Margin = new Thickness(444, 0, 0, 0)
-            };
-            silverImages.Add(new Image
-            {
-                Margin = new Thickness(418, 0, 0, 0),
-                Style = FindResource("ListView.Grid.StackPanel.Image.Price.Silver") as Style
-            });
-
-            var lblBuyPriceMin = new Label
-            {
-                Content = string.Format(LanguageController.DefaultCultureInfo, "{0:n0}", stats.BuyPriceMin),
-                Foreground = DateTimeToOld(stats.BuyPriceMinDate),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalContentAlignment = HorizontalAlignment.Left,
-                Width = 85,
-                Height = 28,
-                Margin = new Thickness(694, 0, 0, 0)
-            };
-            silverImages.Add(new Image
-            {
-                Margin = new Thickness(668, 0, 0, 0),
-                Style = FindResource("ListView.Grid.StackPanel.Image.Price.Silver") as Style
-            });
-
-            var lblBuyPriceMax = new Label
-            {
-                Content = string.Format(LanguageController.DefaultCultureInfo, "{0:n0}", stats.BuyPriceMax),
-                Foreground = DateTimeToOld(stats.BuyPriceMaxDate),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalContentAlignment = HorizontalAlignment.Left,
-                Width = 85,
-                Height = 28,
-                Margin = new Thickness(944, 0, 0, 0)
-            };
-            lblBuyPriceMax.Style = (stats.BestBuyMaxPrice && stats.BuyPriceMax != 0) ? bestPriceLabelStyle : lblBuyPriceMax.Style;
-            silverImages.Add(new Image
-            {
-                Margin = new Thickness(918, 0, 0, 0),
-                Style = FindResource("ListView.Grid.StackPanel.Image.Price.Silver") as Style
-            });
-
-            var lblSellPriceMinDate = new Label
-            {
-                Content = Utility.DateFormat(stats.SellPriceMinDate, 2),
-                Foreground = DateTimeToOld(stats.SellPriceMinDate),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                Width = 120,
-                Height = 28,
-                Margin = new Thickness(293, 0, 0, 0)
-            };
-
-            var lblSellPriceMaxDate = new Label
-            {
-                Content = Utility.DateFormat(stats.SellPriceMaxDate, 2),
-                Foreground = DateTimeToOld(stats.SellPriceMaxDate),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                Width = 120,
-                Height = 28,
-                Margin = new Thickness(543, 0, 0, 0)
-            };
-
-            var lblBuyPriceMinDate = new Label
-            {
-                Content = Utility.DateFormat(stats.BuyPriceMinDate, 2),
-                Foreground = DateTimeToOld(stats.BuyPriceMinDate),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                Width = 120,
-                Height = 28,
-                Margin = new Thickness(793, 0, 0, 0)
-            };
-
-            var lblBuyPriceMaxDate = new Label
-            {
-                Content = Utility.DateFormat(stats.BuyPriceMaxDate, 2),
-                Foreground = DateTimeToOld(stats.BuyPriceMaxDate),
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Top,
-                Width = 120,
-                Height = 28,
-                Margin = new Thickness(1043, 0, 0, 0)
-            };
-
-            SpStats.Children.Add(grid);
-            grid.Children.Add(lblCity);
-            grid.Children.Add(lblSellPriceMin);
-            grid.Children.Add(lblSellPriceMax);
-            grid.Children.Add(lblBuyPriceMin);
-            grid.Children.Add(lblBuyPriceMax);
-            grid.Children.Add(lblSellPriceMinDate);
-            grid.Children.Add(lblSellPriceMaxDate);
-            grid.Children.Add(lblBuyPriceMinDate);
-            grid.Children.Add(lblBuyPriceMaxDate);
-            foreach (var image in silverImages)
-                grid.Children.Add(image);
 
         }
 
@@ -526,36 +322,6 @@ namespace StatisticsAnalysisTool
         {
             Process.Start(e.Uri.AbsoluteUri);
         }
-
-
-        // TEST ------------------------
-
-        private List<ListViewItem> _items = new List<ListViewItem>();
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            for (var i = 1; i < 5; i++)
-            {
-                var oneItem = new ListViewItem();
-                oneItem.Content = new PriceItem()
-                {
-                    Name = "John",
-                    Alter = 32,
-                    CityStyle = FindResource("CaerleonStyle") as Style
-                };
-                _items.Add(oneItem);
-                ListViewPrices.ItemsSource = _items;
-            }
-            ListViewPrices.Items.Refresh();
-        }
-        public class PriceItem
-        {
-            public string Name { get; set; }
-            public int Alter { get; set; }
-
-            public Style CityStyle { get; set; }
-
-        public SolidColorBrush Color => new SolidColorBrush(Colors.Gold);
-        }
-
+        
     }
 }

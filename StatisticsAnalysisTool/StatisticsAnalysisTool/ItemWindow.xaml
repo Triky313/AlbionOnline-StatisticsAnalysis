@@ -24,15 +24,13 @@
             <CheckBox x:Name="ChbAutoUpdateData" Content="Auto Daten Update" IsChecked="True" Margin="625,43,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="150" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             <Label x:Name="LblLastUpdate" Content="LAST__UPDATE" Margin="0,43,10,0" VerticalAlignment="Top" ToolTip="Letzte Aktualisierung" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="230"/>
         </Grid>
-
-        <Button Content="Button" HorizontalAlignment="Left" Height="28" Margin="765,10,0,0" VerticalAlignment="Top" Width="91" Click="Button_Click_1"/>
         <ListView x:Name="ListViewPrices" Margin="1,80,1,41" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn x:Name="GvcCityTitel" Header="CITY" Width="160">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Label Height="28" Width="150" Margin="0" Content="{Binding Name}" Style="{Binding CityStyle}"/>
+                                <Label Height="28" Width="150" Margin="0" Content="{Binding City}" Style="{Binding CityStyle}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -132,8 +130,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
-        <StackPanel Visibility="Hidden" x:Name="SpStats" Margin="0,120,0,0"/>
 
         <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">
             <Grid.Background>
