@@ -188,11 +188,11 @@
 
         <!-- ListView grid stackPanel item price -->
         <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Price">
-            <Setter Property="Width" Value="92"></Setter>
-            <Setter Property="Orientation" Value="Horizontal"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="0"></Setter>
+            <Setter Property="Width" Value="92"/>
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0"/>
         </Style>
 
         <!-- ListView grid stackPanel image price silver -->
@@ -221,8 +221,9 @@
 
         <!-- ListView grid stackPanel label price -->
         <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.Price">
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
-            <Setter Property="Margin" Value="0"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
         </Style>
 
 
