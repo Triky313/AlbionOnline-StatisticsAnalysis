@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using Newtonsoft.Json;
 
 namespace StatisticsAnalysisTool.Models
@@ -99,5 +100,68 @@ namespace StatisticsAnalysisTool.Models
         public bool BestSellMaxPrice { get; set; }
         public bool BestBuyMinPrice { get; set; }
         public bool BestBuyMaxPrice { get; set; }
+    }
+
+    public class MarketCurrentPricesItem
+    {
+
+        public MarketCurrentPricesItem(MarketResponseTotal marketResponseTotal)
+        {
+            ItemTypeId = marketResponseTotal.ItemTypeId;
+            City = marketResponseTotal.City;
+            QualityLevel = marketResponseTotal.QualityLevel;
+            SellPriceMin = marketResponseTotal.SellPriceMin;
+            SellPriceMinDate = marketResponseTotal.SellPriceMinDate;
+            SellPriceMax = marketResponseTotal.SellPriceMax;
+            SellPriceMaxDate = marketResponseTotal.SellPriceMaxDate;
+            BuyPriceMin = marketResponseTotal.BuyPriceMin;
+            BuyPriceMinDate = marketResponseTotal.BuyPriceMinDate;
+            BuyPriceMax = marketResponseTotal.BuyPriceMax;
+            BuyPriceMaxDate = marketResponseTotal.BuyPriceMaxDate;
+            BestSellMinPrice = marketResponseTotal.BestSellMinPrice;
+            BestSellMaxPrice = marketResponseTotal.BestSellMaxPrice;
+            BestBuyMinPrice = marketResponseTotal.BestBuyMinPrice;
+            BestBuyMaxPrice = marketResponseTotal.BestBuyMaxPrice;
+        }
+
+        public string ItemTypeId { get; set; }
+        public Location City { get; set; }
+        public byte QualityLevel { get; set; }
+        public ulong SellPriceMin { get; set; }
+        public DateTime SellPriceMinDate { get; set; }
+        public ulong SellPriceMax { get; set; }
+        public DateTime SellPriceMaxDate { get; set; }
+        public ulong BuyPriceMin { get; set; }
+        public DateTime BuyPriceMinDate { get; set; }
+        public ulong BuyPriceMax { get; set; }
+        public DateTime BuyPriceMaxDate { get; set; }
+
+        public bool BestSellMinPrice { get; set; }
+        public bool BestSellMaxPrice { get; set; }
+        public bool BestBuyMinPrice { get; set; }
+        public bool BestBuyMaxPrice { get; set; }
+
+        public Style CityStyle {
+            get {
+                switch (City)
+                {
+                    case Location.Caerleon:
+                        return Application.Current.FindResource("CaerleonStyle") as Style;
+                    case Location.Thetford:
+                        return Application.Current.FindResource("ThetfordStyle") as Style;
+                    case Location.Bridgewatch:
+                        return Application.Current.FindResource("BridgewatchStyle") as Style;
+                    case Location.Martlock:
+                        return Application.Current.FindResource("MartlockStyle") as Style;
+                    case Location.Lymhurst:
+                        return Application.Current.FindResource("LymhurstStyle") as Style;
+                    case Location.FortSterling:
+                        return Application.Current.FindResource("FortSterlingStyle") as Style;
+                    default:
+                        return Application.Current.FindResource("DefaultCityStyle") as Style;
+                }
+            }
+        }
+
     }
 }

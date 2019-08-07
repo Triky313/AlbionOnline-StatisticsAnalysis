@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="ItemWindow" Height="335" Width="1180" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="ItemWindow" MinHeight="335" Height="335" MinWidth="900" Width="1180" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
     <Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
@@ -19,22 +19,117 @@
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
             <Image x:Name="ImgItemImage" HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75"/>
             <Label x:Name="LblItemName" Content="ITEM__NAME" Margin="90,5,200,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}"/>
-            <Label x:Name="LblItemId" Content="ITEM__ID" Margin="90,43,713,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Label x:Name="LblItemId" Content="ITEM__ID" Margin="90,43,0,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Width="375"/>
             <CheckBox x:Name="ChbShowVillages" Content="Dörfer Preise anzeigen" Margin="470,43,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="150" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="ShowVillagesPrices_Click" />
             <CheckBox x:Name="ChbAutoUpdateData" Content="Auto Daten Update" IsChecked="True" Margin="625,43,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="150" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             <Label x:Name="LblLastUpdate" Content="LAST__UPDATE" Margin="0,43,10,0" VerticalAlignment="Top" ToolTip="Letzte Aktualisierung" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="230"/>
         </Grid>
-        <Grid Margin="0,85,0,0" Height="35" VerticalAlignment="Top">
-            <Label x:Name="LblCityTitel" Content="Stadt" Style="{StaticResource Price.List.Column.Style}" Margin="10,5,0,0" Width="150"/>
-            <Label x:Name="LblSellPriceMin" Content="Min Verkaufspreis" Style="{StaticResource Price.List.Column.Style}" Margin="168,5,0,0" Width="120"/>
-            <Label x:Name="LblSellPriceMinDate" Content="Min Vkp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="293,5,0,0" Width="120"/>
-            <Label x:Name="LblSellPriceMax" Content="Max Verkaufspreis" Style="{StaticResource Price.List.Column.Style}" Margin="418,5,0,0" Width="120"/>
-            <Label x:Name="LblSellPriceMaxDate" Content="Max Vkp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="543,5,0,0" Width="120"/>
-            <Label x:Name="LblBuyPriceMin" Content="Min Kaufpreis" Style="{StaticResource Price.List.Column.Style}" Margin="668,5,0,0" Width="120"/>
-            <Label x:Name="LblBuyPriceMinDate" Content="Min Kp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="793,5,0,0" Width="120"/>
-            <Label x:Name="LblBuyPriceMax" Content="Max Kaufpreis" Style="{StaticResource Price.List.Column.Style}" Margin="918,5,0,0" Width="120"/>
-            <Label x:Name="LblBuyPriceMaxDate" Content="Max Kp Datum" Style="{StaticResource Price.List.Column.Style}" Margin="1043,5,0,0" Width="120"/>
-        </Grid>
+        <ListView x:Name="ListViewPrices" Margin="1,80,1,41" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn x:Name="GvcCityTitel" Header="CITY" Width="160">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Height="28" Width="150" Margin="0" Content="{Binding City}" Style="{Binding CityStyle}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcSellPriceMin" Header="SELL_PRICE_MIN" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMin}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                        <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcSellPriceMinDate" Header="SELL_PRICE_MIN_DATE" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding SellPriceMinDate}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcSellPriceMax" Header="SELL_PRICE_MAX" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMax}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                        <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcSellPriceMaxDate" Header="SELL_PRICE_MAX_DATE" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding SellPriceMaxDate}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcBuyPriceMin" Header="BUY_PRICE_MIN" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding BuyPriceMin}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                        <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcBuyPriceMinDate" Header="BUY_PRICE_MIN_DATE" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding BuyPriceMinDate}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn x:Name="GvcBuyPriceMax" Header="BUY_PRICE_MAX" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding BuyPriceMax}"/>
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                        <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="GvcBuyPriceMaxDate" Header="BUY_PRICE_MMAX_DATE" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding BuyPriceMaxDate}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
         <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">
             <Grid.Background>
@@ -50,9 +145,6 @@
                 <Hyperlink NavigateUri="https://www.albion-online-data.com/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" BaselineAlignment="Center" RequestNavigate="Hyperlink_RequestNavigate">Albion Online Data Project</Hyperlink>
             </TextBlock>
         </Grid>
-
-        <Separator Height="16" Margin="10,109,10,0" VerticalAlignment="Top"/>
-        <StackPanel x:Name="SpStats" Margin="0,120,0,0"/>
     </Grid>
 
 </Window>

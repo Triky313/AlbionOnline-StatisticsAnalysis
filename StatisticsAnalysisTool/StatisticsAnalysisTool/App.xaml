@@ -73,6 +73,11 @@
         
         <!-- City Styles -->
         <Style TargetType="Label" x:Key="CaerleonStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -82,8 +87,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <Style TargetType="Label" x:Key="ThetfordStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -93,8 +102,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <Style TargetType="Label" x:Key="BridgewatchStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -104,8 +117,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <Style TargetType="Label" x:Key="MartlockStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -115,8 +132,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <Style TargetType="Label" x:Key="LymhurstStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -126,8 +147,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style TargetType="Label" x:Key="FortSterlingStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -137,18 +162,70 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style TargetType="Label" x:Key="DefaultCityStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
         </Style>
 
-        <!-- Image price silver -->
-        <Style TargetType="Image" x:Key="Image.Price.Silver" >
+        <!-- Grid stackPanel item price -->
+        <Style x:Key="ListView.Grid.Item.Price" TargetType="Grid">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Width" Value="110"/>
+        </Style>
+
+        <!-- Grid stackPanel item date -->
+        <Style x:Key="ListView.Grid.Item.Date" TargetType="Grid">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Width" Value="120"/>
+        </Style>
+
+        <!-- ListView grid stackPanel item price -->
+        <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Price">
+            <Setter Property="Width" Value="92"/>
+            <Setter Property="Orientation" Value="Horizontal"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Height" Value="26"/>
-            <Setter Property="Width" Value="26"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+
+        <!-- ListView grid stackPanel image price silver -->
+        <Style TargetType="Image" x:Key="ListView.Grid.StackPanel.Image.Price.Silver" >
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="20"/>
             <Setter Property="Source" Value="Resources/silver.png"/>
         </Style>
+
+        <!-- ListView grid stackPanel item icon -->
+        <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Icon">
+            <Setter Property="Orientation" Value="Horizontal"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+
+        <!-- ListView grid label date -->
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date">
+            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+
+        <!-- ListView grid stackPanel label price -->
+        <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.Price">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
+
 
         <!-- Primary Window -->
         <Style x:Key="PrimaryWindow" TargetType="Window">
@@ -324,6 +401,9 @@
         </Style>
         <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="{StaticResource Item.MouseOver.Background}" />
@@ -337,30 +417,32 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
-                        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource GridView.Column.Header.Font}" Background="Transparent">
-                            <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Padding="5,5,5,0" Width="{TemplateBinding Width}" 
-                                       TextAlignment="Left" />
-                        </Border>
+                        <Grid Margin="{TemplateBinding Padding}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Border BorderThickness="1,0,1,1" BorderBrush="{StaticResource GridView.Column.Header.Font}" Background="Transparent">
+                                <TextBlock Text="{TemplateBinding Content}" Padding="5,5,5,0" Width="{TemplateBinding Width}" TextAlignment="Left" />
+                            </Border>
+                            <Thumb x:Name="PART_HeaderGripper" 
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   Width="1" 
+                                   BorderThickness="0"
+                                   BorderBrush="{Binding VerticalGridLinesBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                   Cursor="SizeWE">
+                                <Thumb.Background>
+                                    <StaticResource ResourceKey="Item.MouseOver.Background" />
+                                </Thumb.Background>
+                            </Thumb>
+                        </Grid>
                     </ControlTemplate>
                 </Setter.Value>
-
             </Setter>
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Foreground" Value="{StaticResource GridView.Column.Header.Font}" />
-        </Style>
-        <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
-            <Setter Property="Stylus.IsFlicksEnabled" Value="True" />
-            <Style.Triggers>
-                <Trigger Property="Orientation" Value="Horizontal">
-                    <Setter Property="Height" Value="40" />
-                    <Setter Property="MinHeight" Value="40" />
-                </Trigger>
-                <Trigger Property="Orientation" Value="Vertical">
-                    <Setter Property="Width" Value="20" />
-                    <Setter Property="MinWidth" Value="20" />
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
         <!-- ComboBox style -->
@@ -495,8 +577,8 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-            </Style.Triggers>
+            <!--<Style.Triggers>
+            </Style.Triggers>-->
         </Style>
 
         <!-- SimpleStyles: ComboBoxItem -->
@@ -518,6 +600,87 @@
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.Second}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--Scrollbar Thumbs-->
+        <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Grid x:Name="Grid">
+                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Fill="Transparent" />
+                            <Border x:Name="Rectangle1" CornerRadius="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"  Background="{TemplateBinding Background}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Tag" Value="Horizontal">
+                                <Setter TargetName="Rectangle1" Property="Width" Value="Auto" />
+                                <Setter TargetName="Rectangle1" Property="Height" Value="20" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--ScrollBars-->
+        <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+            <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+            <Setter Property="Foreground" Value="{StaticResource Item.MouseOver.Background}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
+            <Setter Property="Width" Value="25" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid x:Name="GridRoot" Width="15" Background="{TemplateBinding Background}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.00001*" />
+                            </Grid.RowDefinitions>
+
+                            <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="false">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}" Style="{DynamicResource ScrollThumbs}" />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="false" />
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="false" />
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
+                                <Setter Value="{StaticResource Item.IsSelected.Background}" TargetName="Thumb" Property="Background" />
+                            </Trigger>
+                            <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
+                                <Setter Value="{StaticResource Item.IsSelected.Background}" TargetName="Thumb" Property="Background" />
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="Orientation" Value="Horizontal">
+                                <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Width" Value="Auto" />
+                                <Setter Property="Height" Value="12" />
+                                <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
+                                <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                                <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
