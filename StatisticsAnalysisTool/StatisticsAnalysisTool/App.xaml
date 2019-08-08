@@ -59,7 +59,11 @@
         <!-- ######################################################################################### -->
 
         <!-- Best Price Label -->
-        <Style TargetType="Label" x:Key="BestPriceLabel" >
+        <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.BestPrice" >
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="MinWidth" Value="100"/>
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint = "1,0" MappingMode = "RelativeToBoundingBox" StartPoint = "0,0" Opacity = "0.5">
@@ -224,6 +228,7 @@
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
             <Setter Property="Margin" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="MinWidth" Value="100"/>
         </Style>
 
 

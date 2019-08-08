@@ -163,5 +163,38 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
+        public Style SellPriceMinStyle
+        {
+            get
+            {
+                switch (BestSellMinPrice)
+                {
+                    case true:
+                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.BestPrice") as Style;
+                    case false:
+                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
+                    default:
+                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
+                }
+
+            }
+        }
+
+        public Style BuyPriceMaxStyle {
+            get 
+            {
+                switch (BestBuyMaxPrice)
+                {
+                    case true:
+                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.BestPrice") as Style;
+                    case false:
+                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
+                    default:
+                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
+                }
+
+            }
+        }
+
     }
 }
