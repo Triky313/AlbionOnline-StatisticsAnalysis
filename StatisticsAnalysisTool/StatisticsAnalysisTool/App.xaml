@@ -31,6 +31,13 @@
         <Color x:Key="Color.Button.Second">#ff57b6e0</Color>
         <Color x:Key="Color.Button.Third">#ff3da2ca</Color>
 
+        <!-- Text colors -->
+        <Color x:Key="Color.Text.Normal">#FFDCDCDC</Color>
+        <Color x:Key="Color.Text.ToOldFirst">#FF9898A5</Color>
+        <Color x:Key="Color.Text.ToOldSecond">#FF81818C</Color>
+        <Color x:Key="Color.Text.ToOldThird">#FF696972</Color>
+        <Color x:Key="Color.Text.NoValue">#FF525259</Color>
+
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.First" Color="Gainsboro"/>
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.Second" Color="#B4B4B4"/>
         <SolidColorBrush x:Key="SolidColorBrush.Background.First" Color="{StaticResource Background.First}" />
@@ -48,6 +55,11 @@
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.Normal" Color="{StaticResource Color.Text.Normal}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.ToOldFirst" Color="{StaticResource Color.Text.ToOldFirst}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.ToOldSecond" Color="{StaticResource Color.Text.ToOldSecond}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
 
         <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.Thetford" Color="{StaticResource Color.City.Thetford}"/>
@@ -192,9 +204,9 @@
 
         <!-- ListView grid stackPanel item price -->
         <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Price">
-            <Setter Property="Width" Value="92"/>
+            <Setter Property="Width" Value="90"/>
             <Setter Property="Orientation" Value="Horizontal"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0"/>
         </Style>
@@ -209,19 +221,48 @@
         <!-- ListView grid stackPanel item icon -->
         <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Icon">
             <Setter Property="Orientation" Value="Horizontal"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="0"></Setter>
+            <Setter Property="Margin" Value="0,2,0,0"></Setter>
         </Style>
 
-        <!-- ListView grid label date -->
-        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date">
+        <!-- ListView grid stackPanel label date -->
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.Normal">
             <Setter Property="Width" Value="120"></Setter>
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="Margin" Value="0"></Setter>
         </Style>
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldFirst">
+            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldFirst}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldSecond">
+            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldSecond}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldThird">
+            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldThird}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.NoValue">
+            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.NoValue}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+
 
         <!-- ListView grid stackPanel label price -->
         <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.Price">
@@ -230,7 +271,6 @@
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="MinWidth" Value="100"/>
         </Style>
-
 
         <!-- Primary Window -->
         <Style x:Key="PrimaryWindow" TargetType="Window">

@@ -255,40 +255,6 @@ namespace StatisticsAnalysisTool
                                      $"{LanguageController.Translation("PROFIT")} {string.Format(LanguageController.DefaultCultureInfo, "{0:n0}", diffPrice)}";
         }
         
-        private SolidColorBrush DateTimeToOld(DateTime dateTime)
-        {
-            // ReSharper disable once PossibleNullReferenceException
-            var textColorNormal = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDCDCDC"));
-            // ReSharper disable once PossibleNullReferenceException
-            var textColorToOldFirst = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF9898A5"));
-            // ReSharper disable once PossibleNullReferenceException
-            var textColorToOldSecond = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF81818C"));
-            // ReSharper disable once PossibleNullReferenceException
-            var textColorToOldThird = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF696972"));
-            // ReSharper disable once PossibleNullReferenceException
-            var textColorNoValue = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF525259"));
-
-            if (dateTime.Date == DateTime.MinValue.Date)
-                return textColorNoValue;
-
-            var currentDateTime = DateTime.Now.ToUniversalTime();
-
-            if (dateTime.AddHours(6) < currentDateTime.AddHours(-1))
-            {
-                return textColorToOldThird;
-            } else if (dateTime.AddHours(4) < currentDateTime.AddHours(-1))
-            {
-                return textColorToOldSecond;
-            } else if (dateTime.AddHours(2) < currentDateTime.AddHours(-1))
-            {
-                return textColorToOldFirst;
-            }
-            else
-            {
-                return textColorNormal;
-            }
-        }
-
         private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)

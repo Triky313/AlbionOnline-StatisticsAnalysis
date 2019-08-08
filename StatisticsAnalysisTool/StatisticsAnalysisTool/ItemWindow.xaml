@@ -52,7 +52,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding SellPriceMinDate}"/>
+                                    <Label Style="{Binding SellPriceMinDateStyle}" Content="{Binding SellPriceMinDate}"/>
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -75,7 +75,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding SellPriceMaxDate}"/>
+                                    <Label Style="{Binding SellPriceMaxDateStyle}" Content="{Binding SellPriceMaxDate}"/>
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -98,7 +98,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding BuyPriceMinDate}"/>
+                                    <Label Style="{Binding BuyPriceMinDateStyle}" Content="{Binding BuyPriceMinDate}"/>
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -122,7 +122,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                    <Label Style="{StaticResource ListView.Grid.Label.Date}" Content="{Binding BuyPriceMaxDate}"/>
+                                    <Label Style="{Binding BuyPriceMaxDateStyle}" Content="{Binding BuyPriceMaxDate}"/>
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>

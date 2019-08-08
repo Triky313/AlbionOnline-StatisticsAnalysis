@@ -196,5 +196,30 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
+        private Style GetStyleByTimestamp(DateTime value)
+        {
+            if (value.Date == DateTime.MinValue.Date)
+                return Application.Current.FindResource("ListView.Grid.Label.Date.NoValue") as Style;
+
+            if (value.AddHours(8) < DateTime.Now.ToUniversalTime().AddHours(-1))
+                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldFirst") as Style;
+
+            if (value.AddHours(4) < DateTime.Now.ToUniversalTime().AddHours(-1))
+                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldSecond") as Style;
+
+            if (value.AddHours(2) < DateTime.Now.ToUniversalTime().AddHours(-1))
+                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldThird") as Style;
+
+            return Application.Current.FindResource("ListView.Grid.Label.Date.Normal") as Style;
+        }
+
+        public Style SellPriceMinDateStyle => GetStyleByTimestamp(SellPriceMinDate);
+
+        public Style SellPriceMaxDateStyle => GetStyleByTimestamp(SellPriceMaxDate);
+
+        public Style BuyPriceMinDateStyle => GetStyleByTimestamp(BuyPriceMinDate);
+
+        public Style BuyPriceMaxDateStyle => GetStyleByTimestamp(BuyPriceMaxDate);
+
     }
 }
