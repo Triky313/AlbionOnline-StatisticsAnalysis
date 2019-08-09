@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:fa="http://schemas.fontawesome.io/icons/" 
         mc:Ignorable="d"
         Title="ItemWindow" MinHeight="335" Height="335" MinWidth="900" Width="1180" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
     <Grid>
@@ -52,7 +52,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                    <Label Style="{Binding SellPriceMinDateStyle}" Content="{Binding SellPriceMinDate}"/>
+                                    <Label Style="{Binding SellPriceMinDateStyle}" Content="{Binding SellPriceMinDateString}"/>
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -75,7 +75,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                    <Label Style="{Binding SellPriceMaxDateStyle}" Content="{Binding SellPriceMaxDate}"/>
+                                    <Label Style="{Binding SellPriceMaxDateStyle}" Content="{Binding SellPriceMaxDateString}"/>
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -98,12 +98,11 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                    <Label Style="{Binding BuyPriceMinDateStyle}" Content="{Binding BuyPriceMinDate}"/>
+                                    <Label Style="{Binding BuyPriceMinDateStyle}" Content="{Binding BuyPriceMinDateString}"/>
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-
                     <GridViewColumn x:Name="GvcBuyPriceMax" Header="BUY_PRICE_MAX" Width="120">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -122,7 +121,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                    <Label Style="{Binding BuyPriceMaxDateStyle}" Content="{Binding BuyPriceMaxDate}"/>
+                                    <Label Style="{Binding BuyPriceMaxDateStyle}" Content="{Binding BuyPriceMaxDateString}"/>
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>

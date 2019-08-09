@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows;
 using Newtonsoft.Json;
+using StatisticsAnalysisTool.Utilities;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -129,13 +131,16 @@ namespace StatisticsAnalysisTool.Models
         public byte QualityLevel { get; set; }
         public ulong SellPriceMin { get; set; }
         public DateTime SellPriceMinDate { get; set; }
+        public string SellPriceMinDateString => SellPriceMinDate.ToString("G", new CultureInfo(LanguageController.CurrentLanguage));
         public ulong SellPriceMax { get; set; }
         public DateTime SellPriceMaxDate { get; set; }
+        public string SellPriceMaxDateString => SellPriceMinDate.ToString("G", new CultureInfo(LanguageController.CurrentLanguage));
         public ulong BuyPriceMin { get; set; }
         public DateTime BuyPriceMinDate { get; set; }
+        public string BuyPriceMinDateString => SellPriceMinDate.ToString("G", new CultureInfo(LanguageController.CurrentLanguage));
         public ulong BuyPriceMax { get; set; }
         public DateTime BuyPriceMaxDate { get; set; }
-
+        public string BuyPriceMaxDateString => SellPriceMinDate.ToString("G", new CultureInfo(LanguageController.CurrentLanguage));
         public bool BestSellMinPrice { get; set; }
         public bool BestSellMaxPrice { get; set; }
         public bool BestBuyMinPrice { get; set; }

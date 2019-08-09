@@ -69,23 +69,6 @@
         <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling" Color="{StaticResource Color.City.FortSterling}"/>
 
         <!-- ######################################################################################### -->
-
-        <!-- Best Price Label -->
-        <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.BestPrice" >
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="MinWidth" Value="100"/>
-            <Setter Property="Background">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint = "1,0" MappingMode = "RelativeToBoundingBox" StartPoint = "0,0" Opacity = "0.5">
-                        <GradientStop Color = "#FF1DC160" />
-                        <GradientStop Color = "#FF3C3C41" Offset = "1" />
-                        <GradientStop Color = "#FF384A44" Offset = "0.45" />
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-        </Style>
         
         <!-- City Styles -->
         <Style TargetType="Label" x:Key="CaerleonStyle" >
@@ -191,24 +174,24 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Height" Value="24"/>
-            <Setter Property="Width" Value="110"/>
+            <Setter Property="Width" Value="Auto"/>
         </Style>
 
         <!-- Grid stackPanel item date -->
         <Style x:Key="ListView.Grid.Item.Date" TargetType="Grid">
+            <Setter Property="Width" Value="Auto"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Height" Value="24"/>
-            <Setter Property="Width" Value="120"/>
         </Style>
 
         <!-- ListView grid stackPanel item price -->
         <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Price">
-            <Setter Property="Width" Value="90"/>
+            <Setter Property="Width" Value="Auto"/>
             <Setter Property="Orientation" Value="Horizontal"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Margin" Value="22,0,0,0"/>
         </Style>
 
         <!-- ListView grid stackPanel image price silver -->
@@ -223,53 +206,69 @@
             <Setter Property="Orientation" Value="Horizontal"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="0,2,0,0"></Setter>
         </Style>
 
         <!-- ListView grid stackPanel label date -->
         <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.Normal">
-            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Width" Value="Auto"></Setter>
             <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="Margin" Value="0"></Setter>
         </Style>
         <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldFirst">
-            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Width" Value="Auto"></Setter>
             <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldFirst}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="Margin" Value="0"></Setter>
         </Style>
         <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldSecond">
-            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Width" Value="Auto"></Setter>
             <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldSecond}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="Margin" Value="0"></Setter>
         </Style>
         <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldThird">
-            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Width" Value="Auto"></Setter>
             <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldThird}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="Margin" Value="0"></Setter>
         </Style>
         <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.NoValue">
-            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Width" Value="Auto"></Setter>
             <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.NoValue}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="Margin" Value="0"></Setter>
         </Style>
 
+        <!-- Best Price Label -->
+        <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.BestPrice" >
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="MinWidth" Value="80"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint = "1,0" MappingMode = "RelativeToBoundingBox" StartPoint = "0,0" Opacity = "0.5">
+                        <GradientStop Color = "#FF1DC160" />
+                        <GradientStop Color = "#FF3C3C41" Offset = "1" />
+                        <GradientStop Color = "#FF384A44" Offset = "0.45" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <!-- ListView grid stackPanel label price -->
         <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.Price">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
             <Setter Property="Margin" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="MinWidth" Value="80"/>
         </Style>
 
         <!-- Primary Window -->

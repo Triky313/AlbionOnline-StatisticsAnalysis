@@ -5,14 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Utilities;
-using Color = System.Windows.Media.Color;
-using ColorConverter = System.Windows.Media.ColorConverter;
-using Image = System.Windows.Controls.Image;
 
 namespace StatisticsAnalysisTool
 {
@@ -23,7 +18,6 @@ namespace StatisticsAnalysisTool
     {
         private ItemData _itemData =  new ItemData();
         private string _uniqueName;
-        private List<MarketResponseTotal> _statsPricesTotalList = new List<MarketResponseTotal>();
         private bool _runUpdate = true;
         private bool _isAutoUpdateActive;
 
@@ -37,6 +31,8 @@ namespace StatisticsAnalysisTool
 
             Translation();
             InitializeItemData(item);
+
+            ListViewPrices.Language = System.Windows.Markup.XmlLanguage.GetLanguage(LanguageController.DefaultCultureInfo.ToString());
         }
         
         private void Translation()
