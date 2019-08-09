@@ -39,7 +39,7 @@
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                     <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                        <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMin}"/>
+                                        <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}"/>
                                     </StackPanel>
                                     <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                         <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
@@ -62,7 +62,7 @@
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                     <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMax}"/>
+                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMaxString}"/>
                                     </StackPanel>
                                     <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                         <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
@@ -85,7 +85,7 @@
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                     <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding BuyPriceMin}"/>
+                                        <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding BuyPriceMinString}"/>
                                     </StackPanel>
                                     <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                         <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
@@ -108,7 +108,7 @@
                             <DataTemplate>
                                 <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                     <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                        <Label Style="{Binding BuyPriceMaxStyle}" Content="{Binding BuyPriceMax}"/>
+                                        <Label Style="{Binding BuyPriceMaxStyle}" Content="{Binding BuyPriceMaxString}"/>
                                     </StackPanel>
                                     <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                         <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
