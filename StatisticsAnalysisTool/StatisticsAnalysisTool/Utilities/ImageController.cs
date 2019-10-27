@@ -106,5 +106,23 @@ namespace StatisticsAnalysisTool.Utilities
             return bmp;
         }
 
+        public static int LocalImagesCounter()
+        {
+            try
+            {
+                if (Directory.Exists(ImageDir))
+                {
+                    return Directory.GetFiles(ImageDir, "*", SearchOption.TopDirectoryOnly).Length;
+                } else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
     }
 }

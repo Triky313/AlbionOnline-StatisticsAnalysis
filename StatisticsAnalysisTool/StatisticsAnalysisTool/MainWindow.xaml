@@ -24,7 +24,15 @@
         </Grid>
         <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
             <TextBox x:Name="TxtSearch" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="299" KeyUp="TxtSearch_KeyUp"/>
-            <Label x:Name="LblItemCounter" Content="0/0" Height="23" Margin="0,10,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="110" />
+            <Label x:Name="LblItemCounter" Content="0/0" Height="26" Margin="0,6,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="110" />
+
+            <StackPanel Orientation="Horizontal" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,7,120,0" Width="10">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" HorizontalContentAlignment="Center" />
+            </StackPanel>
+            <Label x:Name="LblLocalImageCounter" Content="0" Height="26" Margin="0,7,135,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Left" HorizontalAlignment="Right" Width="55" />
+            <Grid Margin="0,6,195,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <fa:ImageAwesome Icon="FileImageOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+            </Grid>
 
             <ListView x:Name="LvItems" Style="{StaticResource {x:Type ListView}}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,38,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
                 <ListView.View>
@@ -59,11 +67,10 @@
                         <GradientStop Color="{StaticResource Background.Second}" Offset="1"/>
                     </LinearGradientBrush>
                 </Grid.Background>
-                <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="35" Width="110"/>
+                <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="35" Width="106"/>
                 <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center" 
-                           FontSize="14" HorizontalAlignment="Right" Width="80" Margin="0,7,0,0" FontWeight="Bold">
-                    <Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="Donate" /></Hyperlink>
-                </TextBlock>
+                           FontSize="14" HorizontalAlignment="Right" Width="66" Margin="0,7,896,0" FontWeight="Bold">
+                    (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="Donate" /></Hyperlink>)</TextBlock>
             </Grid>
         </Grid>
     </Grid>

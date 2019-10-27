@@ -135,6 +135,7 @@ namespace StatisticsAnalysisTool
                 var items = await StatisticsAnalysisManager.FindItemsAsync(searchText);
                 LvItems.ItemsSource = items;
                 LblItemCounter.Content = $"{items.Count}/{StatisticsAnalysisManager.Items.Count}";
+                LblLocalImageCounter.Content = ImageController.LocalImagesCounter();
             });
         }
         
