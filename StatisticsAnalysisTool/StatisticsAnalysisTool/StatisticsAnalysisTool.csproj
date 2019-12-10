@@ -103,6 +103,7 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\DirectoryController.cs" />
     <Compile Include="Utilities\ImageController.cs" />
     <Compile Include="Utilities\IniFile.cs" />
     <Compile Include="Utilities\LanguageController.cs" />
