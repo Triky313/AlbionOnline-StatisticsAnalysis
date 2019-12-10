@@ -40,16 +40,8 @@ namespace StatisticsAnalysisTool.Utilities
 
         public static void SaveImageLocal(BitmapImage image, string localFilePath)
         {
-            try
-            {
-                if (!Directory.Exists(ImageDir))
-                    Directory.CreateDirectory(ImageDir);
-            }
-            catch (Exception ex)
-            {
-                Debug.Print(ex.ToString());
+            if(!DirectoryController.CreateDirectoryWhenNotExists(ImageDir) && !Directory.Exists(ImageDir))
                 return;
-            }
 
             image.DownloadCompleted += (sender, args) =>
             {
