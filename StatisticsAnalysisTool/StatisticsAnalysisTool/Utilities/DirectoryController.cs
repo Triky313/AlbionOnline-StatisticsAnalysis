@@ -3,7 +3,7 @@ using System.IO;
 
 namespace StatisticsAnalysisTool.Utilities
 {
-    class DirectoryController
+    static class DirectoryController
     {
 
         public static bool CreateDirectoryWhenNotExists(string directoryPath)
@@ -19,6 +19,19 @@ namespace StatisticsAnalysisTool.Utilities
                 return false;
             }
         }
+
+        public static string[] GetFiles(string path, string searchPattern)
+        {
+            try
+            {
+                return Directory.GetFiles(path, searchPattern);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
 
     }
 }

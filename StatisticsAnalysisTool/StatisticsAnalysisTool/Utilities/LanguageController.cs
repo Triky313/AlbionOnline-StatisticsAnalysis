@@ -18,11 +18,6 @@ namespace StatisticsAnalysisTool.Utilities
         
         private static Dictionary<string, string> _translations;
 
-        /// <summary>
-        /// Replaces placeholder in a text of the selected language.
-        /// </summary>
-        /// <param name="key">Placeholder</param>
-        /// <returns></returns>
         public static string Translation(string key)
         {
             try
@@ -44,50 +39,55 @@ namespace StatisticsAnalysisTool.Utilities
             if (fileInfo == null)
                 return false;
 
-            ReadLanguageFile(fileInfo.FilePath);
+            ReadAndAddLanguageFile(fileInfo.FilePath);
             CurrentLanguage = fileInfo.FileName;
             return true;
         }
 
-        private static void ReadLanguageFile(string filePath)
+        private static void ReadAndAddLanguageFile(string filePath)
         {
             _translations = null;
             _translations = new Dictionary<string, string>();
             var xmlReader = XmlReader.Create(filePath);
             while (xmlReader.Read())
             {
-                if (xmlReader.Name == "translation")
+                if (xmlReader.Name == "translation" && xmlReader.HasAttributes)
                 {
-                    if (xmlReader.HasAttributes)
-                    {
-                        while (xmlReader.MoveToNextAttribute())
-                        {
-                            if (_translations.ContainsKey(xmlReader.Value))
-                            {
-                                MessageBox.Show($"{Translation("DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE")}: {xmlReader.Value}");
-                                continue;
-                            }
-
-                            if (xmlReader.Name == "name")
-                            {
-                                _translations.Add(xmlReader.Value, xmlReader.ReadString());
-                            }
-                        }
-                    }
+                    AddTranslationsToDictionary(xmlReader);
                 }
             }
         }
 
+        private static void AddTranslationsToDictionary(XmlReader xmlReader)
+        {
+            while (xmlReader.MoveToNextAttribute())
+            {
+                if (_translations.ContainsKey(xmlReader.Value))
+                {
+                    MessageBox.Show($"{Translation("DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE")}: {xmlReader.Value}");
+                } 
+                else if (xmlReader.Name == "name")
+                {
+                    _translations.Add(xmlReader.Value, xmlReader.ReadString());
+                }
+            }
+        }
+        
         public static void InitializeLanguageFiles()
         {
-            if (Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.LanguageDirectoryName)))
+            var languageFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.LanguageDirectoryName);
+
+            if (Directory.Exists(languageFilePath))
             {
-                string[] files = Directory.GetFiles(Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory, Settings.Default.LanguageDirectoryName), "*.xml");
+                var files = DirectoryController.GetFiles(languageFilePath, "*.xml");
+
+                if (files == null)
+                    return;
+
                 foreach (var file in files)
                 {
-                    var fi = new FileInfo(Path.GetFileNameWithoutExtension(file), file);
-                    FileInfos.Add(fi);
+                    var fileNameWithoutExtension = new FileInfo(Path.GetFileNameWithoutExtension(file), file);
+                    FileInfos.Add(fileNameWithoutExtension);
                 }
             }
         }

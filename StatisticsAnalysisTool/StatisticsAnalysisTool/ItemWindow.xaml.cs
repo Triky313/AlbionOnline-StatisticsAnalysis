@@ -195,11 +195,11 @@ namespace StatisticsAnalysisTool
             var max = ulong.MinValue;
             foreach (var type in list)
             {
-                if (type.BuyPriceMax == 0) continue;
+                if (type.BuyPriceMax == 0) 
+                    continue;
+
                 if (type.BuyPriceMax > max)
-                {
                     max = type.BuyPriceMax;
-                }
             }
 
             try
@@ -215,11 +215,11 @@ namespace StatisticsAnalysisTool
             var min = ulong.MaxValue;
             foreach (var type in list)
             {
-                if (type.SellPriceMin == 0) continue;
+                if (type.SellPriceMin == 0) 
+                    continue;
+
                 if (type.SellPriceMin < min)
-                {
                     min = type.SellPriceMin;
-                }
             }
 
             try

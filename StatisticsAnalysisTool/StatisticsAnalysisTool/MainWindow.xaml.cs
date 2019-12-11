@@ -30,9 +30,6 @@ namespace StatisticsAnalysisTool
         private readonly IniFile _iniFile =
             new IniFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SettingsFileName));
 
-        //private ListSortDirection _lastDirection = ListSortDirection.Ascending;
-        //private GridViewColumnHeader _lastHeaderClicked;
-
         public MainWindow()
         {
             DataContext = this;
@@ -94,26 +91,20 @@ namespace StatisticsAnalysisTool
 
         private void InitLanguage()
         {
-            // TODO: Überarbeiten und mit in LanguageController einbinden
             LanguageController.InitializeLanguageFiles();
 
-            if (_iniFile.SectionKeyExists("Settings", "Language") &&
-                LanguageController.SetLanguage(_iniFile.ReadValue("Settings", "Language")))
+            if (_iniFile.SectionKeyExists("Settings", "Language") && LanguageController.SetLanguage(_iniFile.ReadValue("Settings", "Language")))
+                return;
+
+            if (!LanguageController.SetLanguage(LanguageController.FileInfos.FirstOrDefault()?.FileName))
             {
-            }
-            else
-            {
-                if (!LanguageController.SetLanguage(LanguageController.FileInfos.FirstOrDefault()?.FileName))
-                {
-                    MessageBox.Show("ERROR: No language file found!");
-                    Close();
-                }
+                MessageBox.Show("ERROR: No language file found!");
+                Close();
             }
         }
 
         private void InitUi()
         {
-            // Title
             LblToolName.Content =
                 $"AlbionOnline - STATISTICS ANALYSIS TOOL | v{Assembly.GetExecutingAssembly().GetName().Version}";
 
@@ -220,57 +211,6 @@ namespace StatisticsAnalysisTool
                     return;
             }
         }
-
-        //private void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
-        //{
-        //    if (e.OriginalSource is GridViewColumnHeader headerClicked)
-        //        if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
-        //        {
-        //            ListSortDirection direction;
-        //            if (headerClicked != _lastHeaderClicked)
-        //                direction = ListSortDirection.Ascending;
-        //            else
-        //                direction = _lastDirection == ListSortDirection.Ascending
-        //                    ? ListSortDirection.Descending : ListSortDirection.Ascending;
-
-        //            var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
-        //            var sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
-
-        //            Sort(sortBy, direction);
-
-        //            if (direction == ListSortDirection.Ascending)
-        //                headerClicked.Column.HeaderTemplate = Resources["HeaderTemplateArrowUp"] as DataTemplate;
-        //            else
-        //                headerClicked.Column.HeaderTemplate = Resources["HeaderTemplateArrowDown"] as DataTemplate;
-
-        //            // Remove arrow from previously sorted header
-        //            if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
-        //                _lastHeaderClicked.Column.HeaderTemplate = null;
-
-        //            _lastHeaderClicked = headerClicked;
-        //            _lastDirection = direction;
-        //        }
-        //}
-
-        //private void Sort(string sortBy, ListSortDirection direction)
-        //{
-        //    var dataView = CollectionViewSource.GetDefaultView(LvItems.ItemsSource);
-
-        //    if (dataView == null)
-        //        return;
-
-        //    try
-        //    {
-        //        dataView.SortDescriptions.Clear();
-        //        var sd = new SortDescription(sortBy, direction);
-        //        dataView.SortDescriptions.Add(sd);
-        //        dataView.Refresh();
-        //    }
-        //    catch (InvalidOperationException ex)
-        //    {
-        //        Debug.Print(ex.Message);
-        //    }
-        //}
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
