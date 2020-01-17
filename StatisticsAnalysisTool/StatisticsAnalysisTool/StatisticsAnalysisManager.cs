@@ -174,14 +174,29 @@ namespace StatisticsAnalysisTool
             {
                 var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/prices/" +
                                             uniqueName + 
-                                            "?locations=Caerleon,Bridgewatch,Thetford,FortSterling,Lymhurst,Martlock,";
+                                            $"?locations={Locations.GetName(Location.Caerleon)}," +
+                                            $"{Locations.GetName(Location.Bridgewatch)}," +
+                                            $"{Locations.GetName(Location.Thetford)}," +
+                                            $"{Locations.GetName(Location.FortSterling)}," +
+                                            $"{Locations.GetName(Location.Lymhurst)}," +
+                                            $"{Locations.GetName(Location.Martlock)},";
 
                 if (showVillages)
                 {
                     statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/prices/" +
                                             uniqueName +
-                                            "?locations=Caerleon,Bridgewatch,Thetford,FortSterling,Lymhurst,Martlock," +
-                                            "ForestCross,SteppeCross,HighlandCross,MountainCross,SwampCross,BlackMarket";
+                                            $"?locations={Locations.GetName(Location.Caerleon)}," +
+                                            $"{Locations.GetName(Location.Bridgewatch)}," +
+                                            $"{Locations.GetName(Location.Thetford)}," +
+                                            $"{Locations.GetName(Location.FortSterling)}," +
+                                            $"{Locations.GetName(Location.Lymhurst)}," +
+                                            $"{Locations.GetName(Location.Martlock)}," +
+                                            $"{Locations.GetName(Location.ForestCross)}," +
+                                            $"{Locations.GetName(Location.SteppeCross)}," +
+                                            $"{Locations.GetName(Location.HighlandCross)}," +
+                                            $"{Locations.GetName(Location.MountainCross)}," +
+                                            $"{Locations.GetName(Location.SwampCross)}," +
+                                            $"{Locations.GetName(Location.BlackMarket)}";
                 }
 
                 var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);

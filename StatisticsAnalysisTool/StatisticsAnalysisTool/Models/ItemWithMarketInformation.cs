@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models
 {

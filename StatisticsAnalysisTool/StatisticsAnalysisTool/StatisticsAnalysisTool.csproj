@@ -127,7 +127,7 @@
     <Compile Include="ItemWindow.xaml.cs">
       <DependentUpon>ItemWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Locations.cs" />
+    <Compile Include="Common\Locations.cs" />
     <Compile Include="StatisticsAnalysisManager.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

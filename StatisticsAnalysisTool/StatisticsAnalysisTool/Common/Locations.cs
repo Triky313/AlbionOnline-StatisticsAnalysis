@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace StatisticsAnalysisTool.Models
+namespace StatisticsAnalysisTool.Common
 {
     public static class Locations
     {
-        private static readonly Dictionary<Location, string> Names = new Dictionary<Location, string>
+        public static readonly Dictionary<Location, string> Names = new Dictionary<Location, string>
         {
           {Location.Thetford, "Thetford" },
           {Location.SwampCross, "Swamp Cross" },

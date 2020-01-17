@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -11,7 +12,7 @@ namespace StatisticsAnalysisTool.Common
         public enum ItemLevel { Level0 = 0, Level1 = 1, Level2 = 2, Level3 = 3 }
         
         public enum ItemQuality { Normal = 0, Good = 1, Outstanding = 2, Excellent = 3, Masterpiece = 4 }
-
+        
         public static readonly Dictionary<ItemTier, string> ItemTiers = new Dictionary<ItemTier, string>
         {
             {ItemTier.T1, "T1" },
