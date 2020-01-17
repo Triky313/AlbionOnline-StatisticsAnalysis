@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace StatisticsAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Common
 {
     static class DirectoryController
     {

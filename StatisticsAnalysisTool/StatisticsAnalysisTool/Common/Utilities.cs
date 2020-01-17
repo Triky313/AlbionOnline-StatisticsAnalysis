@@ -1,15 +1,15 @@
-﻿using System;
+﻿using AutoUpdaterDotNET;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
-using AutoUpdaterDotNET;
 
-namespace StatisticsAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Common
 {
-    public static class Utility
+    public static class Utilities
     {
         public static string DateFormat(string format, double hourModify)
         {

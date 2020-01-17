@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,11 +12,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using StatisticsAnalysisTool.Utilities;
 
 namespace StatisticsAnalysisTool
 {

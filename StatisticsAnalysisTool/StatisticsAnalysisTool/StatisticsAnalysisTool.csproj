@@ -103,12 +103,12 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\DirectoryController.cs" />
-    <Compile Include="Utilities\ImageController.cs" />
-    <Compile Include="Utilities\IniFile.cs" />
-    <Compile Include="Utilities\LanguageController.cs" />
-    <Compile Include="Utilities\Utility.cs" />
-    <Compile Include="Utilities\WebDownload.cs">
+    <Compile Include="Common\DirectoryController.cs" />
+    <Compile Include="Common\ImageController.cs" />
+    <Compile Include="Common\IniFile.cs" />
+    <Compile Include="Common\LanguageController.cs" />
+    <Compile Include="Common\Utilities.cs" />
+    <Compile Include="Common\WebDownload.cs">
       <SubType>Component</SubType>
     </Compile>
     <Page Include="ItemWindow.xaml">
@@ -236,5 +236,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

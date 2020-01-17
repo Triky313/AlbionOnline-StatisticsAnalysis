@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool
         {
             DataContext = this;
             InitializeComponent();
-            Utility.AutoUpdate();
+            Utilities.Utilities.AutoUpdate();
             InitMarketAnalysis();
         }
 

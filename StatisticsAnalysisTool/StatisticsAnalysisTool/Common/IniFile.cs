@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace StatisticsAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Common
 {
     public class IniFile
     {

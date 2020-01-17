@@ -139,7 +139,7 @@ namespace StatisticsAnalysisTool
                 {
                     ListViewPrices.ItemsSource = marketCurrentPricesItemList;
                     SetDifferenceCalculationText(statsPricesTotalList);
-                    LblLastUpdate.Content = Utility.DateFormat(DateTime.Now, 0);
+                    LblLastUpdate.Content = Utilities.Utilities.DateFormat(DateTime.Now, 0);
                 });
             });
         }

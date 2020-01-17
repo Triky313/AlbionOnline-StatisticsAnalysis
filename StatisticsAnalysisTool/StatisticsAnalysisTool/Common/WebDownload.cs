@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace StatisticsAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Common
 {
     public class WebDownload : WebClient
     {
