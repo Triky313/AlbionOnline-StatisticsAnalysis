@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using Newtonsoft.Json;
-using StatisticsAnalysisTool.Utilities;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models
 {

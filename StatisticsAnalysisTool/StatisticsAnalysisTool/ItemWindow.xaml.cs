@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Utilities;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool
 {
@@ -139,7 +139,7 @@ namespace StatisticsAnalysisTool
                 {
                     ListViewPrices.ItemsSource = marketCurrentPricesItemList;
                     SetDifferenceCalculationText(statsPricesTotalList);
-                    LblLastUpdate.Content = Utilities.Utilities.DateFormat(DateTime.Now, 0);
+                    LblLastUpdate.Content = Utilities.DateFormat(DateTime.Now, 0);
                 });
             });
         }

@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using FontAwesome.WPF;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Utilities;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool
 {
@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool
         {
             DataContext = this;
             InitializeComponent();
-            Utilities.Utilities.AutoUpdate();
+            Utilities.AutoUpdate();
             InitMarketAnalysis();
         }
 

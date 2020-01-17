@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Utilities;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool
 {
