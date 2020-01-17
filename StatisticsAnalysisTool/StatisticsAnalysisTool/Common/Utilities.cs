@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -60,7 +61,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static void AutoUpdate()
         {
-            AutoUpdater.Start("https://aaronschultz.de/software/ao-mat-update.xml");
+            AutoUpdater.Start(Settings.Default.AutoUpdateConfigUrl);
             AutoUpdater.DownloadPath = Environment.CurrentDirectory;
             AutoUpdater.RunUpdateAsAdmin = false;
             AutoUpdater.ApplicationExitEvent += AutoUpdater_ApplicationExitEvent;

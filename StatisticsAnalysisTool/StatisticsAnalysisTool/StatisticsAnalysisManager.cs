@@ -20,47 +20,6 @@ namespace StatisticsAnalysisTool
         // Info Link -> https://github.com/broderickhyman/ao-bin-dumps
         // Models: https://github.com/broderickhyman/albiondata-models-dotNet
 
-        private enum GameLanguage { UnitedStates, Germany, Russia, Poland, Brazil, France, Spain }
-        public enum ItemTier { T1 = 0, T2 = 1, T3 = 2, T4 = 3, T5 = 4, T6 = 5, T7 = 6, T8 = 7 }
-        public enum ItemLevel { Level0 = 0, Level1 = 1, Level2 = 2, Level3 = 3 }
-        public enum ItemQuality { Normal = 0, Good = 1, Outstanding = 2, Excellent = 3, Masterpiece = 4 }
-
-        private static readonly Dictionary<ItemTier, string> ItemTiers = new Dictionary<ItemTier, string>
-        {
-            {ItemTier.T1, "T1" },
-            {ItemTier.T2, "T2" },
-            {ItemTier.T3, "T3" },
-            {ItemTier.T4, "T4" },
-            {ItemTier.T5, "T5" },
-            {ItemTier.T6, "T6" },
-            {ItemTier.T7, "T7" },
-            {ItemTier.T8, "T8" }
-        };
-        private static readonly Dictionary<ItemLevel, int> ItemLevels = new Dictionary<ItemLevel, int>
-        {
-            {ItemLevel.Level0, 0 },
-            {ItemLevel.Level1, 1 },
-            {ItemLevel.Level2, 2 },
-            {ItemLevel.Level3, 3 }
-        };
-        private static readonly Dictionary<ItemQuality, int> ItemQualities = new Dictionary<ItemQuality, int>
-        {
-            {ItemQuality.Normal, 1 },
-            {ItemQuality.Good, 2 },
-            {ItemQuality.Outstanding, 3 },
-            {ItemQuality.Excellent, 4 },
-            {ItemQuality.Masterpiece, 5 }
-        };
-        private static readonly Dictionary<GameLanguage, string> GameLanguages = new Dictionary<GameLanguage, string>()
-        {
-            {GameLanguage.UnitedStates, "EN-US" },
-            {GameLanguage.Germany, "DE-DE" },
-            {GameLanguage.Russia, "RU-RU" },
-            {GameLanguage.Poland, "PL-PL" },
-            {GameLanguage.Brazil, "PT-BR" },
-            {GameLanguage.France, "FR-FR" },
-            {GameLanguage.Spain, "ES-ES" }
-        };
         public static List<Item> Items;
         public static int RefreshRate = Settings.Default.RefreshRate;
         public static int UpdateItemListByDays = Settings.Default.UpdateItemListByDays;
@@ -175,13 +134,13 @@ namespace StatisticsAnalysisTool
                         //Equipable = (bool)parsedObject["equipable"],
                     };
 
-                    AddLocalizedName(ref itemData, GameLanguage.UnitedStates, parsedObject);
-                    AddLocalizedName(ref itemData, GameLanguage.Germany, parsedObject);
-                    AddLocalizedName(ref itemData, GameLanguage.Russia, parsedObject);
-                    AddLocalizedName(ref itemData, GameLanguage.Poland, parsedObject);
-                    AddLocalizedName(ref itemData, GameLanguage.Brazil, parsedObject);
-                    AddLocalizedName(ref itemData, GameLanguage.France, parsedObject);
-                    AddLocalizedName(ref itemData, GameLanguage.Spain, parsedObject);
+                    AddLocalizedName(ref itemData, FrequentlyValues.GameLanguage.UnitedStates, parsedObject);
+                    AddLocalizedName(ref itemData, FrequentlyValues.GameLanguage.Germany, parsedObject);
+                    AddLocalizedName(ref itemData, FrequentlyValues.GameLanguage.Russia, parsedObject);
+                    AddLocalizedName(ref itemData, FrequentlyValues.GameLanguage.Poland, parsedObject);
+                    AddLocalizedName(ref itemData, FrequentlyValues.GameLanguage.Brazil, parsedObject);
+                    AddLocalizedName(ref itemData, FrequentlyValues.GameLanguage.France, parsedObject);
+                    AddLocalizedName(ref itemData, FrequentlyValues.GameLanguage.Spain, parsedObject);
 
                     return itemData;
                 }
@@ -214,35 +173,37 @@ namespace StatisticsAnalysisTool
             using (var wc = new WebClient())
             {
                 var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/prices/" +
-                                            uniqueName +
+                                            uniqueName + 
                                             "?locations=Caerleon,Bridgewatch,Thetford,FortSterling,Lymhurst,Martlock,";
 
                 if (showVillages)
+                {
                     statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/prices/" +
                                             uniqueName +
                                             "?locations=Caerleon,Bridgewatch,Thetford,FortSterling,Lymhurst,Martlock," +
                                             "ForestCross,SteppeCross,HighlandCross,MountainCross,SwampCross,BlackMarket";
+                }
 
                 var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
                 return JsonConvert.DeserializeObject<List<MarketResponse>>(itemString);
             }
         }
         
-        public static ItemTier GetItemTier(string uniqueName) => ItemTiers.FirstOrDefault(x => x.Value == uniqueName.Split('_')[0]).Key;
+        public static FrequentlyValues.ItemTier GetItemTier(string uniqueName) => FrequentlyValues.ItemTiers.FirstOrDefault(x => x.Value == uniqueName.Split('_')[0]).Key;
 
-        public static ItemLevel GetItemLevel(string uniqueName)
+        public static FrequentlyValues.ItemLevel GetItemLevel(string uniqueName)
         {
             if (!uniqueName.Contains("@"))
-                return ItemLevel.Level0;
+                return FrequentlyValues.ItemLevel.Level0;
 
             if(int.TryParse(uniqueName.Split('@')[1], out int number))
-                return ItemLevels.First(x => x.Value == number).Key;
-            return ItemLevel.Level0;
+                return FrequentlyValues.ItemLevels.First(x => x.Value == number).Key;
+            return FrequentlyValues.ItemLevel.Level0;
         }
 
-        public static int GetQuality(ItemQuality value) => ItemQualities.FirstOrDefault(x => x.Key == value).Value;
+        public static int GetQuality(FrequentlyValues.ItemQuality value) => FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Key == value).Value;
 
-        public static ItemQuality GetQuality(int value) => ItemQualities.FirstOrDefault(x => x.Value == value).Key;
+        public static FrequentlyValues.ItemQuality GetQuality(int value) => FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Value == value).Key;
 
         public static async Task<decimal> GetMarketStatAvgPriceAsync(string uniqueName, Location location)
         {
@@ -267,16 +228,13 @@ namespace StatisticsAnalysisTool
             }
         }
 
-        #region Support methods
-
-        private static void AddLocalizedName(ref ItemData itemData, GameLanguage gameLanguage, JObject parsedObject)
+        private static void AddLocalizedName(ref ItemData itemData, FrequentlyValues.GameLanguage gameLanguage, JObject parsedObject)
         {
-            var cultureCode = GameLanguages.FirstOrDefault(x => x.Key == gameLanguage).Value;
+            var cultureCode = FrequentlyValues.GameLanguages.FirstOrDefault(x => x.Key == gameLanguage).Value;
 
             if (parsedObject["localizedNames"][cultureCode] != null)
                 itemData.LocalizedNames.Add(new ItemData.KeyValueStruct() { Key = cultureCode, Value = parsedObject["localizedNames"][cultureCode].ToString() });
         }
 
-        #endregion
     }
 }

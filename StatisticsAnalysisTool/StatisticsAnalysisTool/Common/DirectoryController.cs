@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Common
                     Directory.CreateDirectory(directoryPath);
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

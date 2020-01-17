@@ -91,6 +91,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\FrequentlyValues.cs" />
     <Compile Include="Models\ComboboxMarketMode.cs" />
     <Compile Include="Models\ItemWithMarketInformation.cs" />
     <Compile Include="Models\MarketOrder.cs" />
