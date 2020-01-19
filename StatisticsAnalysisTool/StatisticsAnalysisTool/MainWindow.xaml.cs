@@ -42,7 +42,7 @@ namespace StatisticsAnalysisTool
         {
             Task.Run(async () =>
             {
-                Dispatcher.Invoke(() =>
+                Dispatcher?.Invoke(() =>
                 {
                     InitLanguage();
                     TxtSearch.IsEnabled = false;
@@ -57,7 +57,7 @@ namespace StatisticsAnalysisTool
 
                 #endregion
 
-                var isItemListLoaded = await StatisticsAnalysisManager.GetItemsFromJsonAsync();
+                var isItemListLoaded = await StatisticsAnalysisManager.GetItemListFromJsonAsync();
                 if (!isItemListLoaded)
                     MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), 
                         LanguageController.Translation("ERROR"));
@@ -78,7 +78,7 @@ namespace StatisticsAnalysisTool
 
                 #endregion
 
-                Dispatcher.Invoke(() =>
+                Dispatcher?.Invoke(() =>
                 {
                     if(isItemListLoaded)
                     {

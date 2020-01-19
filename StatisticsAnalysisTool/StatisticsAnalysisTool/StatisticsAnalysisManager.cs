@@ -24,11 +24,9 @@ namespace StatisticsAnalysisTool
         public static int RefreshRate = Settings.Default.RefreshRate;
         public static int UpdateItemListByDays = Settings.Default.UpdateItemListByDays;
         public static string ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
-        
-        public static async Task<bool> GetItemsFromJsonAsync()
-        {
-            var url = ItemListSourceUrl;
 
+        private static bool GetItemListSourceUrlIfExist(ref string url)
+        {
             if (string.IsNullOrEmpty(ItemListSourceUrl))
             {
                 url = Settings.Default.DefaultItemListSourceUrl;
@@ -39,55 +37,18 @@ namespace StatisticsAnalysisTool
                 ini.WriteValue("Settings", "ItemListSourceUrl", url);
                 MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
             }
+            return true;
+        }
 
-            if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}"))
-            {
-                var fileDateTime = File.GetLastWriteTime($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
-
-                if (fileDateTime.AddDays(7) < DateTime.Now)
-                {
-                    using (var wc = new WebClient())
-                    {
-                        var itemString = await wc.DownloadStringTaskAsync(url);
-                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemString, Encoding.UTF8);
-                        
-                        try
-                        {
-                            Items = JsonConvert.DeserializeObject<List<Item>>(itemString);
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.Print(ex.Message);
-                            Items = null;
-                            return false;
-                        }
-                        return true;
-                    }
-                }
-
-                try
-                {
-                    var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
-                    Items = JsonConvert.DeserializeObject<List<Item>>(localItemString);
-                }
-                catch (Exception ex)
-                {
-                    Debug.Print(ex.Message);
-                    Items = null;
-                    return false;
-                }
-
-                return true;
-            }
-
+        private static async Task<List<Item>> TryToGetItemListFromWeb(string url)
+        {
             using (var wd = new WebDownload(30000))
             {
                 try
                 {
                     var itemsString = await wd.DownloadStringTaskAsync(url);
                     File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
-                    Items = JsonConvert.DeserializeObject<List<Item>>(itemsString);
-                    return true;
+                    return JsonConvert.DeserializeObject<List<Item>>(itemsString);
                 }
                 catch (Exception)
                 {
@@ -95,15 +56,52 @@ namespace StatisticsAnalysisTool
                     {
                         var itemsString = await wd.DownloadStringTaskAsync(Settings.Default.DefaultItemListSourceUrl);
                         File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
-                        Items = JsonConvert.DeserializeObject<List<Item>>(itemsString);
-                        return true;
+                        return JsonConvert.DeserializeObject<List<Item>>(itemsString);
                     }
-                    catch (Exception)
+                    catch
                     {
-                        return false;
+                        return null;
                     }
                 }
             }
+        }
+
+        private static List<Item> GetItemListFromLocal()
+        {
+            try
+            {
+                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
+                return JsonConvert.DeserializeObject<List<Item>>(localItemString);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static async Task<bool> GetItemListFromJsonAsync()
+        {
+            var url = ItemListSourceUrl;
+
+            if (!GetItemListSourceUrlIfExist(ref url))
+                return false;
+            
+            if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}"))
+            {
+                var fileDateTime = File.GetLastWriteTime($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
+
+                if (fileDateTime.AddDays(7) < DateTime.Now)
+                {
+                    Items = await TryToGetItemListFromWeb(url);
+                    return (Items != null);
+                }
+
+                Items = GetItemListFromLocal();
+                return (Items != null);
+            }
+
+            Items = await TryToGetItemListFromWeb(url);
+            return (Items != null);
         }
 
         public static async Task<ItemData> GetItemDataFromJsonAsync(Item item)
