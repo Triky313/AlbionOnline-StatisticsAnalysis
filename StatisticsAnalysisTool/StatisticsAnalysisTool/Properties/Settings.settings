@@ -30,7 +30,7 @@
       <Value Profile="(Default)">https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json</Value>
     </Setting>
     <Setting Name="AutoUpdateConfigUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://aaronschultz.de/software/ao-mat-update.xml</Value>
+      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master/StatisticsAnalysisTool/StatisticsAnalysisTool/ao-update-check.xml</Value>
     </Setting>
   </Settings>
 </SettingsFile>
