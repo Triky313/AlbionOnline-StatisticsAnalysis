@@ -1,4 +1,6 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,8 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool
 {
@@ -167,40 +167,19 @@ namespace StatisticsAnalysisTool
                 }
                 else
                 {
-                    var newSpt = new MarketResponseTotal()
-                    {
-                        City = Locations.GetName(stats.City),
-                        SellPriceMin = stats.SellPriceMin,
-                        SellPriceMax = stats.SellPriceMax,
-                        BuyPriceMin = stats.BuyPriceMin,
-                        BuyPriceMax = stats.BuyPriceMax,
-                        SellPriceMinDate = stats.SellPriceMinDate,
-                        SellPriceMaxDate = stats.SellPriceMaxDate,
-                        BuyPriceMinDate = stats.BuyPriceMinDate,
-                        BuyPriceMaxDate = stats.BuyPriceMaxDate,
-                    };
-
-                    statsPricesTotalList.Add(newSpt);
+                    statsPricesTotalList.Add(new MarketResponseTotal(stats));
                 }
             }
 
             return statsPricesTotalList;
         }
-
+        
         private void FindBestPrice(ref List<MarketResponseTotal> list)
         {
             if (list.Count == 0)
                 return;
 
-            var max = ulong.MinValue;
-            foreach (var type in list)
-            {
-                if (type.BuyPriceMax == 0) 
-                    continue;
-
-                if (type.BuyPriceMax > max)
-                    max = type.BuyPriceMax;
-            }
+            var max = GetMaxPrice(list);
 
             try
             {
@@ -210,17 +189,8 @@ namespace StatisticsAnalysisTool
             {
                 Debug.Print(ex.ToString());
             }
-            
 
-            var min = ulong.MaxValue;
-            foreach (var type in list)
-            {
-                if (type.SellPriceMin == 0) 
-                    continue;
-
-                if (type.SellPriceMin < min)
-                    min = type.SellPriceMin;
-            }
+            var min = GetMinPrice(list);
 
             try
             {
@@ -231,6 +201,36 @@ namespace StatisticsAnalysisTool
                 Debug.Print(ex.ToString());
             }
 
+        }
+
+        private static ulong GetMaxPrice(List<MarketResponseTotal> list)
+        {
+            var max = ulong.MinValue;
+            foreach (var type in list)
+            {
+                if (type.BuyPriceMax == 0)
+                    continue;
+
+                if (type.BuyPriceMax > max)
+                    max = type.BuyPriceMax;
+            }
+
+            return max;
+        }
+
+        private static ulong GetMinPrice(List<MarketResponseTotal> list)
+        {
+            var min = ulong.MaxValue;
+            foreach (var type in list)
+            {
+                if (type.SellPriceMin == 0)
+                    continue;
+
+                if (type.SellPriceMin < min)
+                    min = type.SellPriceMin;
+            }
+
+            return min;
         }
 
         private void SetDifferenceCalculationText(List<MarketResponseTotal> statsPricesTotalList)

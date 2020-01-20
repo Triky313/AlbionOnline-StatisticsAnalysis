@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
+using System;
 using System.Globalization;
 using System.Windows;
-using Newtonsoft.Json;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -65,6 +65,21 @@ namespace StatisticsAnalysisTool.Models
 
     public class MarketResponseTotal
     {
+        public MarketResponseTotal(MarketResponse item)
+        {
+            ItemTypeId = item.ItemTypeId;
+            City = Locations.GetName(item.City);
+            QualityLevel = (byte)item.QualityLevel;
+            SellPriceMin = item.SellPriceMin;
+            SellPriceMax = item.SellPriceMax;
+            BuyPriceMin = item.BuyPriceMin;
+            BuyPriceMax = item.BuyPriceMax;
+            SellPriceMinDate = item.SellPriceMinDate;
+            SellPriceMaxDate = item.SellPriceMaxDate;
+            BuyPriceMinDate = item.BuyPriceMinDate;
+            BuyPriceMaxDate = item.BuyPriceMaxDate;
+        }
+
         [JsonProperty(PropertyName = "item_id")]
         public string ItemTypeId { get; set; }
 
