@@ -94,6 +94,7 @@
     <Compile Include="Common\FrequentlyValues.cs" />
     <Compile Include="Common\ApiController.cs" />
     <Compile Include="Models\ComboboxMarketMode.cs" />
+    <Compile Include="Models\Players.cs" />
     <Compile Include="Models\SearchInfos.cs" />
     <Compile Include="Models\ItemWithMarketInformation.cs" />
     <Compile Include="Models\MarketOrder.cs" />
