@@ -37,6 +37,10 @@ namespace StatisticsAnalysisTool
             InitializeComponent();
             Utilities.AutoUpdate();
             InitMarketAnalysis();
+
+            // TEST
+            //var a = ApiController.GetSearchInfoFromJsonAsync("Triky313");
+            //Debug.Print(a.Result.Players.FirstOrDefault()?.Id);
         }
 
         private void InitMarketAnalysis()

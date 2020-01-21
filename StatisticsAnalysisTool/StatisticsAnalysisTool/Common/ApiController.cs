@@ -109,5 +109,16 @@
             }
         }
 
+        public static async Task<SearchInfo> GetSearchInfoFromJsonAsync(string username)
+        {
+            using (var wc = new WebClient())
+            {
+                var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/search?q={username}";
+                var itemString = wc.DownloadString(apiString);
+                
+                return JsonConvert.DeserializeObject<SearchInfo>(itemString);
+            }
+        }
+
     }
 }
