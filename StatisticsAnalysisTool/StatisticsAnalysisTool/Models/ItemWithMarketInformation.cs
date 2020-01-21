@@ -1,5 +1,5 @@
-﻿using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
+using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -21,12 +21,12 @@ namespace StatisticsAnalysisTool.Models
         public string LocalizedNameAndEnglish => _item.LocalizedNameAndEnglish;
         public BitmapImage Icon => _item.Icon;
 
-        public decimal PriceAvgCaerleon => StatisticsAnalysisManager.GetMarketStatAvgPriceAsync(_item.UniqueName, Location.Caerleon).Result;
-        public decimal PriceAvgBridgewatch => StatisticsAnalysisManager.GetMarketStatAvgPriceAsync(_item.UniqueName, Location.Bridgewatch).Result;
-        public decimal PriceAvgFortSterling => StatisticsAnalysisManager.GetMarketStatAvgPriceAsync(_item.UniqueName, Location.FortSterling).Result;
-        public decimal PriceAvgLymhurst => StatisticsAnalysisManager.GetMarketStatAvgPriceAsync(_item.UniqueName, Location.Lymhurst).Result;
-        public decimal PriceAvgMartlock => StatisticsAnalysisManager.GetMarketStatAvgPriceAsync(_item.UniqueName, Location.Martlock).Result;
-        public decimal PriceAvgThetford => StatisticsAnalysisManager.GetMarketStatAvgPriceAsync(_item.UniqueName, Location.Thetford).Result;
+        public decimal PriceAvgCaerleon => ApiController.GetMarketStatAvgPriceFromJsonAsync(_item.UniqueName, Location.Caerleon).Result;
+        public decimal PriceAvgBridgewatch => ApiController.GetMarketStatAvgPriceFromJsonAsync(_item.UniqueName, Location.Bridgewatch).Result;
+        public decimal PriceAvgFortSterling => ApiController.GetMarketStatAvgPriceFromJsonAsync(_item.UniqueName, Location.FortSterling).Result;
+        public decimal PriceAvgLymhurst => ApiController.GetMarketStatAvgPriceFromJsonAsync(_item.UniqueName, Location.Lymhurst).Result;
+        public decimal PriceAvgMartlock => ApiController.GetMarketStatAvgPriceFromJsonAsync(_item.UniqueName, Location.Martlock).Result;
+        public decimal PriceAvgThetford => ApiController.GetMarketStatAvgPriceFromJsonAsync(_item.UniqueName, Location.Thetford).Result;
 
     }
 }

@@ -92,6 +92,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\FrequentlyValues.cs" />
+    <Compile Include="Common\ApiController.cs" />
     <Compile Include="Models\ComboboxMarketMode.cs" />
     <Compile Include="Models\ItemWithMarketInformation.cs" />
     <Compile Include="Models\MarketOrder.cs" />

@@ -70,7 +70,7 @@ namespace StatisticsAnalysisTool
 
             StartAutoUpdater();
 
-            var itemDataTaskResult = await StatisticsAnalysisManager.GetItemDataFromJsonAsync(item);
+            var itemDataTaskResult = await ApiController.GetItemDataFromJsonAsync(item);
 
             if (itemDataTaskResult == null)
             {
@@ -122,7 +122,7 @@ namespace StatisticsAnalysisTool
 
             await Task.Run(async () =>
             {
-                var statPricesList = await StatisticsAnalysisManager.GetItemPricesFromJsonAsync(uniqueName, showVillages);
+                var statPricesList = await ApiController.GetItemPricesFromJsonAsync(uniqueName, showVillages);
 
                 if (statPricesList == null)
                     return;
