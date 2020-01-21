@@ -67,5 +67,8 @@
                     (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="Donate" /></Hyperlink>)</TextBlock>
             </Grid>
         </Grid>
+        <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
+            
+        </Grid>
     </Grid>
 </Window>

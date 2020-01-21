@@ -3,6 +3,6 @@
     class ComboboxMarketMode
     {
         public string Name { get; set; }
-        public MainWindow.MarketMode Mode { get; set; }
+        public MainWindow.ViewMode Mode { get; set; }
     }
 }

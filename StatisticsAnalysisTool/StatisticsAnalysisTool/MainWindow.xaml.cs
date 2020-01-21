@@ -1,4 +1,8 @@
-﻿using System;
+﻿using FontAwesome.WPF;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -10,10 +14,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using FontAwesome.WPF;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool
 {
@@ -22,9 +22,10 @@ namespace StatisticsAnalysisTool
     /// </summary>
     public partial class MainWindow: INotifyPropertyChanged
     {
-        public enum MarketMode
+        public enum ViewMode
         {
-            Normal
+            Normal,
+            Player
         }
         
         private readonly IniFile _iniFile =
@@ -105,13 +106,12 @@ namespace StatisticsAnalysisTool
 
         private void InitUi()
         {
-            LblToolName.Content =
-                $"AlbionOnline - STATISTICS ANALYSIS TOOL | v{Assembly.GetExecutingAssembly().GetName().Version}";
+            LblToolName.Content = $"AlbionOnline - STATISTICS ANALYSIS TOOL | v{Assembly.GetExecutingAssembly().GetName().Version}";
 
             CbMode.Items.Clear();
-            if (IsModeActive(MarketMode.Normal))
-                CbMode.Items.Add(new ComboboxMarketMode
-                    {Name = LanguageController.Translation("NORMAL"), Mode = MarketMode.Normal});
+            CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("NORMAL"), Mode = ViewMode.Normal });
+            CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = ViewMode.Player });
+
             if (CbMode.Items.Count > 0)
                 CbMode.SelectedIndex = 0;
         }
@@ -130,19 +130,6 @@ namespace StatisticsAnalysisTool
             });
         }
         
-        public bool IsModeActive(MarketMode mode)
-        {
-            var settingModes = Settings.Default.ActiveMode.Split(',');
-
-            switch (mode)
-            {
-                case MarketMode.Normal:
-                    return settingModes.Contains("Normal");
-                default:
-                    return false;
-            }
-        }
-
         private void TxtSearch_KeyUp(object sender, KeyEventArgs e)
         {
             LoadLvItems(TxtSearch.Text);
@@ -206,10 +193,21 @@ namespace StatisticsAnalysisTool
 
             switch (mode?.Mode)
             {
-                case MarketMode.Normal:
+                case ViewMode.Normal:
+                    HideAllGrids();
                     GridNormalMode.Visibility = Visibility.Visible;
                     return;
+                case ViewMode.Player:
+                    HideAllGrids();
+                    GridPlayerMode.Visibility = Visibility.Visible;
+                    return;
             }
+        }
+
+        private void HideAllGrids()
+        {
+            GridNormalMode.Visibility = Visibility.Hidden;
+            GridNormalMode.Visibility = Visibility.Hidden;
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
