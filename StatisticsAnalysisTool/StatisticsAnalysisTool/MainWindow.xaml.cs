@@ -41,6 +41,9 @@ namespace StatisticsAnalysisTool
             // TEST
             //var a = ApiController.GetSearchInfoFromJsonAsync("Triky313");
             //Debug.Print(a.Result.Players.FirstOrDefault()?.Id);
+
+            //var a = ApiController.GetPlayerInfoFromJsonAsync("nWBktpGoTraMWUb-xeRAwQ");
+            //Debug.Print(a.Result.Id);
         }
 
         private void InitMarketAnalysis()

@@ -6,10 +6,10 @@
     public class SearchInfo
     {
         [JsonProperty(PropertyName = "guilds")]
-        public List<SearchGuild> Guilds { get; set; }
+        public List<SearchGuild> SearchGuilds { get; set; }
 
         [JsonProperty(PropertyName = "players")]
-        public List<SearchPlayer> Players { get; set; }
+        public List<SearchPlayer> SearchPlayer { get; set; }
     }
 
     public class SearchGuild

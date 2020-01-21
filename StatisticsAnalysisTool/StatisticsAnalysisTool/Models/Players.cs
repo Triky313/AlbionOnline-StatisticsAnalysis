@@ -47,13 +47,13 @@
         [JsonProperty(PropertyName = "Cape")]
         public object Cape { get; set; }
 
-        [JsonProperty(PropertyName = "Cape")]
+        [JsonProperty(PropertyName = "Mount")]
         public object Mount { get; set; }
 
-        [JsonProperty(PropertyName = "Cape")]
+        [JsonProperty(PropertyName = "Potion")]
         public object Potion { get; set; }
 
-        [JsonProperty(PropertyName = "Cape")]
+        [JsonProperty(PropertyName = "Food")]
         public object Food { get; set; }
     }
     
