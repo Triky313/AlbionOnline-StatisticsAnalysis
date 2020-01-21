@@ -207,7 +207,7 @@ namespace StatisticsAnalysisTool
         private void HideAllGrids()
         {
             GridNormalMode.Visibility = Visibility.Hidden;
-            GridNormalMode.Visibility = Visibility.Hidden;
+            GridPlayerMode.Visibility = Visibility.Hidden;
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
