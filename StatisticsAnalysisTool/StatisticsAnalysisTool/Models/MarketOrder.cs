@@ -181,6 +181,12 @@ namespace StatisticsAnalysisTool.Models
                         return Application.Current.FindResource("LymhurstStyle") as Style;
                     case Location.FortSterling:
                         return Application.Current.FindResource("FortSterlingStyle") as Style;
+                    case Location.ArthursRest:
+                        return Application.Current.FindResource("ArthursRestStyle") as Style;
+                    case Location.MerlynsRest:
+                        return Application.Current.FindResource("MerlynsRestStyle") as Style;
+                    case Location.MorganasRest:
+                        return Application.Current.FindResource("MorganasRestStyle") as Style;
                     default:
                         return Application.Current.FindResource("DefaultCityStyle") as Style;
                 }

@@ -18,7 +18,10 @@ namespace StatisticsAnalysisTool.Common
           {Location.Martlock, "Martlock" },
           {Location.Caerleon, "Caerleon" },
           {Location.FortSterling, "Fort Sterling" },
-          {Location.MountainCross, "Mountain Cross" }
+          {Location.MountainCross, "Mountain Cross" },
+          {Location.ArthursRest, "Arthur's Rest" },
+          {Location.MerlynsRest, "Merlyn's Rest" },
+          {Location.MorganasRest, "Morgana's Rest" }
         };
 
         public static string GetName(Location location)
@@ -48,6 +51,9 @@ namespace StatisticsAnalysisTool.Common
         Caerleon = 3005,
         Martlock = 3008,
         FortSterling = 4002,
-        MountainCross = 4006
+        MountainCross = 4006,
+        ArthursRest = -1,
+        MerlynsRest = -2,
+        MorganasRest = -3,
     }
 }

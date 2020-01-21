@@ -51,6 +51,24 @@
             }
         }
 
+        public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations)
+        {
+            using (var wc = new WebClient())
+            {
+                var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/prices/";
+                statPricesDataJsonUrl += uniqueName;
+                statPricesDataJsonUrl += $"?locations=";
+                foreach (var location in locations)
+                {
+                    statPricesDataJsonUrl += $"{location},";
+                }
+                // TODO: Noch nicht fertig und eingebaut, ersetzt GetItemPricesFromJsonAsync!
+
+                var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
+                return JsonConvert.DeserializeObject<List<MarketResponse>>(itemString);
+            }
+        }
+
         public static async Task<List<MarketResponse>> GetItemPricesFromJsonAsync(string uniqueName, bool showVillages = false)
         {
             using (var wc = new WebClient())
