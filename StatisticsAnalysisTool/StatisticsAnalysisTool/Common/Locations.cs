@@ -37,9 +37,9 @@ namespace StatisticsAnalysisTool.Common
         
         public static Location GetName(string location) => Names.FirstOrDefault(x => x.Value == location).Key;
 
-        public static void GetLocationListByArea(List<LocationArea> areaList)
+        public static List<Location> GetLocationListByArea(List<LocationArea> areaList)
         {
-            List<Location> locations = new List<Location>();
+            var locations = new List<Location>();
 
             foreach (var area in areaList)
             {
@@ -48,7 +48,6 @@ namespace StatisticsAnalysisTool.Common
                     locations.Add(Location.ArthursRest);
                     locations.Add(Location.MerlynsRest);
                     locations.Add(Location.MorganasRest);
-                    return;
                 }
                 if (area == LocationArea.Villages)
                 {
@@ -57,7 +56,6 @@ namespace StatisticsAnalysisTool.Common
                     locations.Add(Location.SteppeCross);
                     locations.Add(Location.HighlandCross);
                     locations.Add(Location.MountainCross);
-                    return;
                 }
                 if (area == LocationArea.Cities)
                 {
@@ -67,9 +65,9 @@ namespace StatisticsAnalysisTool.Common
                     locations.Add(Location.BlackMarket);
                     locations.Add(Location.Martlock);
                     locations.Add(Location.Caerleon);
-                    return;
                 }
             }
+            return locations;
         }
 
     }
