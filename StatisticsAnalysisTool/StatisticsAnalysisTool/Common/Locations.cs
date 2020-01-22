@@ -86,6 +86,7 @@ namespace StatisticsAnalysisTool.Common
                         locations.Add(GetParameterName(Location.Bridgewatch));
                         locations.Add(GetParameterName(Location.BlackMarket));
                         locations.Add(GetParameterName(Location.Martlock));
+                        locations.Add(GetParameterName(Location.FortSterling));
                         locations.Add(GetParameterName(Location.Caerleon));
                         break;
                 }

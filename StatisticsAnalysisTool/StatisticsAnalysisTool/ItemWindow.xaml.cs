@@ -285,7 +285,7 @@ namespace StatisticsAnalysisTool
             }
             else
             {
-                Height = 335;
+                Height = 360;
                 GetPriceStats(_uniqueName);
             }
 
