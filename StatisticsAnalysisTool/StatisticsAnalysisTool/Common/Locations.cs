@@ -37,11 +37,28 @@ namespace StatisticsAnalysisTool.Common
         
         public static Location GetName(string location) => Names.FirstOrDefault(x => x.Value == location).Key;
 
-        public static List<string> GetLocationListByArea(List<LocationArea> locationAreas)
+        private static readonly List<LocationArea> LocationAreas = new List<LocationArea>();
+
+        public static List<string> GetLocationListByArea(IsLocationAreaActive isLocationAreaActive)
         {
+            if (isLocationAreaActive.Villages && LocationAreas.Exists(x => x == LocationArea.Villages) == false)
+                LocationAreas.Add(LocationArea.Villages);
+            else if (isLocationAreaActive.Villages == false && LocationAreas.Exists(x => x == LocationArea.Villages))
+                LocationAreas.Remove(LocationArea.Villages);
+
+            if (isLocationAreaActive.BlackZoneOutposts && LocationAreas.Exists(x => x == LocationArea.BlackZone) == false)
+                LocationAreas.Add(LocationArea.BlackZone);
+            else if (isLocationAreaActive.BlackZoneOutposts == false && LocationAreas.Exists(x => x == LocationArea.BlackZone))
+                LocationAreas.Remove(LocationArea.BlackZone);
+
+            if (isLocationAreaActive.BlackZoneOutposts && LocationAreas.Exists(x => x == LocationArea.Cities) == false)
+                LocationAreas.Add(LocationArea.Cities);
+            else if (isLocationAreaActive.BlackZoneOutposts == false && LocationAreas.Exists(x => x == LocationArea.Cities))
+                LocationAreas.Remove(LocationArea.Cities);
+
             var locations = new List<string>();
 
-            foreach (var area in locationAreas)
+            foreach (var area in LocationAreas)
             {
                 if (area == LocationArea.BlackZone)
                 {
@@ -97,4 +114,12 @@ namespace StatisticsAnalysisTool.Common
         Villages,
         Cities
     }
+
+    public class IsLocationAreaActive
+    {
+        public bool BlackZoneOutposts { get; set; }
+        public bool Villages { get; set; }
+        public bool Cities { get; set; }
+    }
+
 }

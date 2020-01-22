@@ -115,27 +115,20 @@ namespace StatisticsAnalysisTool
                 _isAutoUpdateActive = false;
             });
         }
-
-        private readonly List<LocationArea> _locationAreas = new List<LocationArea>();
-
+        
         private async void GetPriceStats(string uniqueName, bool showVillages = false, bool showBlackzoneOutposts = false)
         {
             if (uniqueName == null)
                 return;
 
-            if (showVillages && _locationAreas.Exists(x => x == LocationArea.Villages) == false)
-                _locationAreas.Add(LocationArea.Villages);
-            else if (showVillages == false && _locationAreas.Exists(x => x == LocationArea.Villages))
-                _locationAreas.Remove(LocationArea.Villages);
-
-            if (showVillages && _locationAreas.Exists(x => x == LocationArea.Villages) == false)
-                _locationAreas.Add(LocationArea.Villages);
-            else if (showVillages == false && _locationAreas.Exists(x => x == LocationArea.Villages))
-                _locationAreas.Remove(LocationArea.Villages);
-
             await Task.Run(async () =>
             {
-                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, Locations.GetLocationListByArea(_locationAreas));
+                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, Locations.GetLocationListByArea(new IsLocationAreaActive()
+                {
+                    Cities = true,
+                    Villages = showVillages,
+                    BlackZoneOutposts = showBlackzoneOutposts
+                }));
                 
                 if (statPricesList == null)
                     return;
