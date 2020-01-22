@@ -36,18 +36,18 @@ namespace StatisticsAnalysisTool.Common
             {Location.BlackMarket, "BlackMarket" },
             {Location.Martlock, "Martlock" },
             {Location.Caerleon, "Caerleon" },
-            {Location.FortSterling, "FortSterling" },
+            {Location.FortSterling, "Fort Sterling" },
             {Location.MountainCross, "MountainCross" },
-            {Location.ArthursRest, "ArthursRest" },
-            {Location.MerlynsRest, "MerlynsRest" },
-            {Location.MorganasRest, "MorganasRest" }
+            {Location.ArthursRest, "Arthurs Rest" },
+            {Location.MerlynsRest, "Merlyns Rest" },
+            {Location.MorganasRest, "Morganas Rest" }
         };
 
         public static string GetName(Location location) => Names.TryGetValue(location, out var name) ? name : null;
         
         public static string GetParameterName(Location location) => ParameterNames.TryGetValue(location, out var name) ? name : null;
         
-        public static Location GetName(string location) => Names.FirstOrDefault(x => x.Value == location).Key;
+        public static Location GetName(string location) => ParameterNames.FirstOrDefault(x => x.Value == location).Key;
 
         public static List<string> GetLocationsListByArea(IsLocationAreaActive isLocationAreaActive)
         {
@@ -109,7 +109,7 @@ namespace StatisticsAnalysisTool.Common
         Martlock = 3008,
         FortSterling = 4002,
         MountainCross = 4006,
-        ArthursRest = -1,
+        ArthursRest = 4300,
         MerlynsRest = -2,
         MorganasRest = -3,
     }

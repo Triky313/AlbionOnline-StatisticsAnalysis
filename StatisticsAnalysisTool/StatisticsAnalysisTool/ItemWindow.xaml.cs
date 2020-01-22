@@ -160,7 +160,7 @@ namespace StatisticsAnalysisTool
 
             foreach (var stats in statPricesList)
             {
-                if (statsPricesTotalList.Exists(s => Locations.GetName(s.City) == stats.City))
+                if (statsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == stats.City))
                 {
                     var spt = statsPricesTotalList.Find(s => Locations.GetName(s.City) == stats.City);
                     if (stats.SellPriceMin < spt.SellPriceMin)
