@@ -23,6 +23,14 @@
             <CheckBox x:Name="ChbShowVillages" Content="Dörfer Preise anzeigen" Margin="470,43,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="150" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="ShowVillagesPrices_Click" />
             <CheckBox x:Name="ChbAutoUpdateData" Content="Auto Daten Update" IsChecked="True" Margin="625,43,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="150" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             <Label x:Name="LblLastUpdate" Content="LAST__UPDATE" Margin="0,43,10,0" VerticalAlignment="Top" ToolTip="Letzte Aktualisierung" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="230"/>
+            <!--<ListBox Height="58" Width="150" Margin="315,11,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <ListBoxItem Height="20">Test1</ListBoxItem>
+                <ListBoxItem Height="20">Test2</ListBoxItem>
+                <ListBoxItem Height="20">Test3</ListBoxItem>
+                <ListBoxItem Height="20">Test4</ListBoxItem>
+                <ListBoxItem Height="20">Test5</ListBoxItem>
+                <ListBoxItem Height="20">Test6</ListBoxItem>
+            </ListBox>-->
         </Grid>
         <ListView x:Name="ListViewPrices" Margin="1,80,1,41" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
             <ListView.View>

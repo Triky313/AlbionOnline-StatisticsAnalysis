@@ -62,7 +62,6 @@
                 {
                     statPricesDataJsonUrl += $"{location},";
                 }
-                // TODO: Noch nicht fertig und eingebaut, ersetzt GetItemPricesFromJsonAsync!
 
                 var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
                 return JsonConvert.DeserializeObject<List<MarketResponse>>(itemString);

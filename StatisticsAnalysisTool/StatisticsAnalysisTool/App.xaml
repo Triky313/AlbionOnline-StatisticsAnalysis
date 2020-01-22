@@ -702,7 +702,7 @@
             </Setter>
         </Style>
 
-        <!--Scrollbar Thumbs-->
+        <!-- Scrollbar Thumbs -->
         <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -722,7 +722,7 @@
             </Setter>
         </Style>
 
-        <!--ScrollBars-->
+        <!-- ScrollBars -->
         <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
             <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
             <Setter Property="Foreground" Value="{StaticResource Item.MouseOver.Background}" />
@@ -783,6 +783,14 @@
             </Setter>
         </Style>
 
+        <!-- ListBox -->
+        <Style TargetType="{x:Type ListBox}">
+            <Setter Property="SelectionMode" Value="Multiple" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.Third}" />
+        </Style>
+        
     </Application.Resources>
 </Application>
 
