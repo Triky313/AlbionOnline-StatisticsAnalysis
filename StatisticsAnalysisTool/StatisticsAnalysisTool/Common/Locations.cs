@@ -24,69 +24,74 @@ namespace StatisticsAnalysisTool.Common
           {Location.MorganasRest, "Morgana's Rest" }
         };
 
-        public static string GetName(Location location)
+        public static readonly Dictionary<Location, string> ParameterNames = new Dictionary<Location, string>
         {
-            if (Names.TryGetValue(location, out var name))
-            {
-                return name;
-            }
-            return null;
-        }
+            {Location.Thetford, "Thetford" },
+            {Location.SwampCross, "SwampCross" },
+            {Location.Lymhurst, "Lymhurst" },
+            {Location.ForestCross, "ForestCross" },
+            {Location.Bridgewatch, "Bridgewatch" },
+            {Location.SteppeCross, "SteppeCross" },
+            {Location.HighlandCross, "HighlandCross" },
+            {Location.BlackMarket, "BlackMarket" },
+            {Location.Martlock, "Martlock" },
+            {Location.Caerleon, "Caerleon" },
+            {Location.FortSterling, "FortSterling" },
+            {Location.MountainCross, "MountainCross" },
+            {Location.ArthursRest, "ArthursRest" },
+            {Location.MerlynsRest, "MerlynsRest" },
+            {Location.MorganasRest, "MorganasRest" }
+        };
 
-        public static string GetName(int locationId) => GetName((Location)locationId) ?? locationId.ToString();
+        public static string GetName(Location location) => Names.TryGetValue(location, out var name) ? name : null;
+        
+        public static string GetParameterName(Location location) => ParameterNames.TryGetValue(location, out var name) ? name : null;
         
         public static Location GetName(string location) => Names.FirstOrDefault(x => x.Value == location).Key;
 
-        private static readonly List<LocationArea> LocationAreas = new List<LocationArea>();
-
-        public static List<string> GetLocationListByArea(IsLocationAreaActive isLocationAreaActive)
+        public static List<string> GetLocationsListByArea(IsLocationAreaActive isLocationAreaActive)
         {
-            if (isLocationAreaActive.Villages && LocationAreas.Exists(x => x == LocationArea.Villages) == false)
-                LocationAreas.Add(LocationArea.Villages);
-            else if (isLocationAreaActive.Villages == false && LocationAreas.Exists(x => x == LocationArea.Villages))
-                LocationAreas.Remove(LocationArea.Villages);
+            var locationAreas = new List<LocationArea>();
 
-            if (isLocationAreaActive.BlackZoneOutposts && LocationAreas.Exists(x => x == LocationArea.BlackZone) == false)
-                LocationAreas.Add(LocationArea.BlackZone);
-            else if (isLocationAreaActive.BlackZoneOutposts == false && LocationAreas.Exists(x => x == LocationArea.BlackZone))
-                LocationAreas.Remove(LocationArea.BlackZone);
+            if (isLocationAreaActive.Villages)
+                locationAreas.Add(LocationArea.Villages);
 
-            if (isLocationAreaActive.BlackZoneOutposts && LocationAreas.Exists(x => x == LocationArea.Cities) == false)
-                LocationAreas.Add(LocationArea.Cities);
-            else if (isLocationAreaActive.BlackZoneOutposts == false && LocationAreas.Exists(x => x == LocationArea.Cities))
-                LocationAreas.Remove(LocationArea.Cities);
+            if (isLocationAreaActive.BlackZoneOutposts)
+                locationAreas.Add(LocationArea.BlackZone);
+
+            if (isLocationAreaActive.Cities)
+                locationAreas.Add(LocationArea.Cities);
 
             var locations = new List<string>();
 
-            foreach (var area in LocationAreas)
+            foreach (var area in locationAreas)
             {
-                if (area == LocationArea.BlackZone)
+                switch (area)
                 {
-                    locations.Add(GetName(Location.ArthursRest));
-                    locations.Add(GetName(Location.MerlynsRest));
-                    locations.Add(GetName(Location.MorganasRest));
-                }
-                if (area == LocationArea.Villages)
-                {
-                    locations.Add(GetName(Location.SwampCross));
-                    locations.Add(GetName(Location.ForestCross));
-                    locations.Add(GetName(Location.SteppeCross));
-                    locations.Add(GetName(Location.HighlandCross));
-                    locations.Add(GetName(Location.MountainCross));
-                }
-                if (area == LocationArea.Cities)
-                {
-                    locations.Add(GetName(Location.Thetford));
-                    locations.Add(GetName(Location.Lymhurst));
-                    locations.Add(GetName(Location.Bridgewatch));
-                    locations.Add(GetName(Location.BlackMarket));
-                    locations.Add(GetName(Location.Martlock));
-                    locations.Add(GetName(Location.Caerleon));
+                    case LocationArea.BlackZone:
+                        locations.Add(GetParameterName(Location.ArthursRest));
+                        locations.Add(GetParameterName(Location.MerlynsRest));
+                        locations.Add(GetParameterName(Location.MorganasRest));
+                        break;
+                    case LocationArea.Villages:
+                        locations.Add(GetParameterName(Location.SwampCross));
+                        locations.Add(GetParameterName(Location.ForestCross));
+                        locations.Add(GetParameterName(Location.SteppeCross));
+                        locations.Add(GetParameterName(Location.HighlandCross));
+                        locations.Add(GetParameterName(Location.MountainCross));
+                        break;
+                    case LocationArea.Cities:
+                        locations.Add(GetParameterName(Location.Thetford));
+                        locations.Add(GetParameterName(Location.Lymhurst));
+                        locations.Add(GetParameterName(Location.Bridgewatch));
+                        locations.Add(GetParameterName(Location.BlackMarket));
+                        locations.Add(GetParameterName(Location.Martlock));
+                        locations.Add(GetParameterName(Location.Caerleon));
+                        break;
                 }
             }
             return locations;
         }
-
     }
 
     public enum Location

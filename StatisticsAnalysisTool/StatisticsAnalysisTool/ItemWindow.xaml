@@ -39,7 +39,7 @@
                     <GridViewColumn x:Name="GvcCityTitel" Header="CITY" Width="160">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Label Height="28" Width="150" Margin="0" Content="{Binding City}" Style="{Binding CityStyle}"/>
+                                <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

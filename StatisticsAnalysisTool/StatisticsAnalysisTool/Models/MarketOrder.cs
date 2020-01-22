@@ -125,7 +125,7 @@ namespace StatisticsAnalysisTool.Models
         public MarketCurrentPricesItem(MarketResponseTotal marketResponseTotal)
         {
             ItemTypeId = marketResponseTotal.ItemTypeId;
-            City = marketResponseTotal.City;
+            Location = marketResponseTotal.City;
             QualityLevel = marketResponseTotal.QualityLevel;
             SellPriceMin = marketResponseTotal.SellPriceMin;
             SellPriceMinDate = marketResponseTotal.SellPriceMinDate;
@@ -142,7 +142,8 @@ namespace StatisticsAnalysisTool.Models
         }
 
         public string ItemTypeId { get; set; }
-        public Location City { get; set; }
+        public Location Location { get; set; }
+        public string LocationName => Locations.GetName(Location);
         public byte QualityLevel { get; set; }
         public ulong SellPriceMin { get; set; }
         public string SellPriceMinString => SellPriceMin.ToString("N0", new CultureInfo(LanguageController.CurrentLanguage));
@@ -165,9 +166,10 @@ namespace StatisticsAnalysisTool.Models
         public bool BestBuyMinPrice { get; set; }
         public bool BestBuyMaxPrice { get; set; }
 
-        public Style CityStyle {
+        public Style LocationStyle
+        {
             get {
-                switch (City)
+                switch (Location)
                 {
                     case Location.Caerleon:
                         return Application.Current.FindResource("CaerleonStyle") as Style;

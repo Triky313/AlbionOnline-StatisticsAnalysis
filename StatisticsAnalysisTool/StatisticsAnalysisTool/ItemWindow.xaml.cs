@@ -108,26 +108,29 @@ namespace StatisticsAnalysisTool
                     await Task.Delay(500);
                     if (Dispatcher != null && Dispatcher.Invoke(() => !ChbAutoUpdateData.IsChecked ?? false))
                         continue;
-                    GetPriceStats(_uniqueName, Dispatcher != null && Dispatcher.Invoke(() => ChbShowVillages.IsChecked ?? false), 
-                        Dispatcher != null && Dispatcher.Invoke(() => ChbShowBlackZoneOutposts.IsChecked ?? false));
+
+                    GetPriceStats(_uniqueName);
                     await Task.Delay(StatisticsAnalysisManager.RefreshRate - 500);
                 }
                 _isAutoUpdateActive = false;
             });
         }
         
-        private async void GetPriceStats(string uniqueName, bool showVillages = false, bool showBlackzoneOutposts = false)
+        private async void GetPriceStats(string uniqueName)
         {
             if (uniqueName == null)
                 return;
 
             await Task.Run(async () =>
             {
-                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, Locations.GetLocationListByArea(new IsLocationAreaActive()
+                var showVillagesIsChecked = Dispatcher != null && Dispatcher.Invoke(() => ChbShowVillages.IsChecked ?? false);
+                var showBlackZoneOutpostsIsChecked = Dispatcher != null && Dispatcher.Invoke(() => ChbShowBlackZoneOutposts.IsChecked ?? false);
+
+                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, Locations.GetLocationsListByArea(new IsLocationAreaActive()
                 {
                     Cities = true,
-                    Villages = showVillages,
-                    BlackZoneOutposts = showBlackzoneOutposts
+                    Villages = showVillagesIsChecked,
+                    BlackZoneOutposts = showBlackZoneOutpostsIsChecked
                 }));
                 
                 if (statPricesList == null)
@@ -277,7 +280,7 @@ namespace StatisticsAnalysisTool
             if (chb?.IsChecked ?? false)
             {
                 Height = 515;
-                GetPriceStats(_uniqueName, true);
+                GetPriceStats(_uniqueName);
             }
             else
             {

@@ -53,6 +53,9 @@
 
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations)
         {
+            if (locations?.Count < 1)
+                return new List<MarketResponse>();
+
             using (var wc = new WebClient())
             {
                 var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/prices/";
@@ -61,42 +64,6 @@
                 foreach (var location in locations)
                 {
                     statPricesDataJsonUrl += $"{location},";
-                }
-
-                var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
-                return JsonConvert.DeserializeObject<List<MarketResponse>>(itemString);
-            }
-        }
-
-        public static async Task<List<MarketResponse>> GetItemPricesFromJsonAsync(string uniqueName, bool showVillages = false)
-        {
-            using (var wc = new WebClient())
-            {
-                var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/prices/" +
-                                            uniqueName +
-                                            $"?locations={Locations.GetName(Location.Caerleon)}," +
-                                            $"{Locations.GetName(Location.Bridgewatch)}," +
-                                            $"{Locations.GetName(Location.Thetford)}," +
-                                            $"{Locations.GetName(Location.FortSterling)}," +
-                                            $"{Locations.GetName(Location.Lymhurst)}," +
-                                            $"{Locations.GetName(Location.Martlock)},";
-
-                if (showVillages)
-                {
-                    statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/prices/" +
-                                            uniqueName +
-                                            $"?locations={Locations.GetName(Location.Caerleon)}," +
-                                            $"{Locations.GetName(Location.Bridgewatch)}," +
-                                            $"{Locations.GetName(Location.Thetford)}," +
-                                            $"{Locations.GetName(Location.FortSterling)}," +
-                                            $"{Locations.GetName(Location.Lymhurst)}," +
-                                            $"{Locations.GetName(Location.Martlock)}," +
-                                            $"{Locations.GetName(Location.ForestCross)}," +
-                                            $"{Locations.GetName(Location.SteppeCross)}," +
-                                            $"{Locations.GetName(Location.HighlandCross)}," +
-                                            $"{Locations.GetName(Location.MountainCross)}," +
-                                            $"{Locations.GetName(Location.SwampCross)}," +
-                                            $"{Locations.GetName(Location.BlackMarket)}";
                 }
 
                 var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
