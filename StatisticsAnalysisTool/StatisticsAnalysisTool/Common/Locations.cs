@@ -36,6 +36,42 @@ namespace StatisticsAnalysisTool.Common
         public static string GetName(int locationId) => GetName((Location)locationId) ?? locationId.ToString();
         
         public static Location GetName(string location) => Names.FirstOrDefault(x => x.Value == location).Key;
+
+        public static void GetLocationListByArea(List<LocationArea> areaList)
+        {
+            List<Location> locations = new List<Location>();
+
+            foreach (var area in areaList)
+            {
+                if (area == LocationArea.BlackZone)
+                {
+                    locations.Add(Location.ArthursRest);
+                    locations.Add(Location.MerlynsRest);
+                    locations.Add(Location.MorganasRest);
+                    return;
+                }
+                if (area == LocationArea.Villages)
+                {
+                    locations.Add(Location.SwampCross);
+                    locations.Add(Location.ForestCross);
+                    locations.Add(Location.SteppeCross);
+                    locations.Add(Location.HighlandCross);
+                    locations.Add(Location.MountainCross);
+                    return;
+                }
+                if (area == LocationArea.Cities)
+                {
+                    locations.Add(Location.Thetford);
+                    locations.Add(Location.Lymhurst);
+                    locations.Add(Location.Bridgewatch);
+                    locations.Add(Location.BlackMarket);
+                    locations.Add(Location.Martlock);
+                    locations.Add(Location.Caerleon);
+                    return;
+                }
+            }
+        }
+
     }
 
     public enum Location
@@ -55,5 +91,12 @@ namespace StatisticsAnalysisTool.Common
         ArthursRest = -1,
         MerlynsRest = -2,
         MorganasRest = -3,
+    }
+
+    public enum LocationArea
+    {
+        BlackZone,
+        Villages,
+        Cities
     }
 }
