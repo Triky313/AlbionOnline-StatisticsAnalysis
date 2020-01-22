@@ -38,6 +38,7 @@ namespace StatisticsAnalysisTool
         private void Translation()
         {
             ChbShowVillages.Content = LanguageController.Translation("SHOW_VILLAGES");
+            ChbShowBlackZoneOutposts.Content = LanguageController.Translation("SHOW_BLACKZONE_OUTPOSTS");
             ChbAutoUpdateData.Content = LanguageController.Translation("AUTO_UPDATE_DATA");
             LblLastUpdate.ToolTip = LanguageController.Translation("LAST_UPDATE");
             GvcCityTitel.Header = LanguageController.Translation("CITY");
