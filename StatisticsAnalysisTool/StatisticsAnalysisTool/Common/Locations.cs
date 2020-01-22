@@ -27,17 +27,17 @@ namespace StatisticsAnalysisTool.Common
         public static readonly Dictionary<Location, string> ParameterNames = new Dictionary<Location, string>
         {
             {Location.Thetford, "Thetford" },
-            {Location.SwampCross, "SwampCross" },
+            {Location.SwampCross, "Swamp Cross" },
             {Location.Lymhurst, "Lymhurst" },
-            {Location.ForestCross, "ForestCross" },
+            {Location.ForestCross, "Forest Cross" },
             {Location.Bridgewatch, "Bridgewatch" },
-            {Location.SteppeCross, "SteppeCross" },
-            {Location.HighlandCross, "HighlandCross" },
-            {Location.BlackMarket, "BlackMarket" },
+            {Location.SteppeCross, "Steppe Cross" },
+            {Location.HighlandCross, "Highland Cross" },
+            {Location.BlackMarket, "Black Market" },
             {Location.Martlock, "Martlock" },
             {Location.Caerleon, "Caerleon" },
             {Location.FortSterling, "Fort Sterling" },
-            {Location.MountainCross, "MountainCross" },
+            {Location.MountainCross, "Mountain Cross" },
             {Location.ArthursRest, "Arthurs Rest" },
             {Location.MerlynsRest, "Merlyns Rest" },
             {Location.MorganasRest, "Morganas Rest" }
