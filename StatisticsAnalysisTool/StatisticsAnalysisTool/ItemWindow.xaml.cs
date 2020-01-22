@@ -275,26 +275,13 @@ namespace StatisticsAnalysisTool
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
-        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e)
-        {
-            var chb = e.Source as CheckBox;
-            if (chb?.IsChecked ?? false)
-            {
-                Height = 515;
-                GetPriceStats(_uniqueName);
-            }
-            else
-            {
-                Height = 360;
-                GetPriceStats(_uniqueName);
-            }
+        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e) => GetPriceStats(_uniqueName);
 
-        }
+        private void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e) => GetPriceStats(_uniqueName);
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
             Process.Start(e.Uri.AbsoluteUri);
         }
-        
     }
 }

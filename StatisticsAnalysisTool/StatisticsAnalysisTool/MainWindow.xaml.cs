@@ -110,7 +110,7 @@ namespace StatisticsAnalysisTool
 
             CbMode.Items.Clear();
             CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("NORMAL"), Mode = ViewMode.Normal });
-            CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = ViewMode.Player });
+            //CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = ViewMode.Player });
 
             if (CbMode.Items.Count > 0)
                 CbMode.SelectedIndex = 0;
