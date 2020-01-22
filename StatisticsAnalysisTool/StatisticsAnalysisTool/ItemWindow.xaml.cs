@@ -108,22 +108,35 @@ namespace StatisticsAnalysisTool
                     await Task.Delay(500);
                     if (Dispatcher != null && Dispatcher.Invoke(() => !ChbAutoUpdateData.IsChecked ?? false))
                         continue;
-                    GetPriceStats(_uniqueName, Dispatcher != null && Dispatcher.Invoke(() => ChbShowVillages.IsChecked ?? false));
+                    GetPriceStats(_uniqueName, Dispatcher != null && Dispatcher.Invoke(() => ChbShowVillages.IsChecked ?? false), 
+                        Dispatcher != null && Dispatcher.Invoke(() => ChbShowBlackZoneOutposts.IsChecked ?? false));
                     await Task.Delay(StatisticsAnalysisManager.RefreshRate - 500);
                 }
                 _isAutoUpdateActive = false;
             });
         }
 
-        private async void GetPriceStats(string uniqueName, bool showVillages = false)
+        private readonly List<LocationArea> _locationAreas = new List<LocationArea>();
+
+        private async void GetPriceStats(string uniqueName, bool showVillages = false, bool showBlackzoneOutposts = false)
         {
             if (uniqueName == null)
                 return;
 
+            if (showVillages && _locationAreas.Exists(x => x == LocationArea.Villages) == false)
+                _locationAreas.Add(LocationArea.Villages);
+            else if (showVillages == false && _locationAreas.Exists(x => x == LocationArea.Villages))
+                _locationAreas.Remove(LocationArea.Villages);
+
+            if (showVillages && _locationAreas.Exists(x => x == LocationArea.Villages) == false)
+                _locationAreas.Add(LocationArea.Villages);
+            else if (showVillages == false && _locationAreas.Exists(x => x == LocationArea.Villages))
+                _locationAreas.Remove(LocationArea.Villages);
+
             await Task.Run(async () =>
             {
-                var statPricesList = await ApiController.GetItemPricesFromJsonAsync(uniqueName, showVillages);
-
+                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, Locations.GetLocationListByArea(_locationAreas));
+                
                 if (statPricesList == null)
                     return;
 

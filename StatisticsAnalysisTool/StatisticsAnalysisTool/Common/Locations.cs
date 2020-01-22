@@ -37,34 +37,34 @@ namespace StatisticsAnalysisTool.Common
         
         public static Location GetName(string location) => Names.FirstOrDefault(x => x.Value == location).Key;
 
-        public static List<Location> GetLocationListByArea(List<LocationArea> areaList)
+        public static List<string> GetLocationListByArea(List<LocationArea> locationAreas)
         {
-            var locations = new List<Location>();
+            var locations = new List<string>();
 
-            foreach (var area in areaList)
+            foreach (var area in locationAreas)
             {
                 if (area == LocationArea.BlackZone)
                 {
-                    locations.Add(Location.ArthursRest);
-                    locations.Add(Location.MerlynsRest);
-                    locations.Add(Location.MorganasRest);
+                    locations.Add(GetName(Location.ArthursRest));
+                    locations.Add(GetName(Location.MerlynsRest));
+                    locations.Add(GetName(Location.MorganasRest));
                 }
                 if (area == LocationArea.Villages)
                 {
-                    locations.Add(Location.SwampCross);
-                    locations.Add(Location.ForestCross);
-                    locations.Add(Location.SteppeCross);
-                    locations.Add(Location.HighlandCross);
-                    locations.Add(Location.MountainCross);
+                    locations.Add(GetName(Location.SwampCross));
+                    locations.Add(GetName(Location.ForestCross));
+                    locations.Add(GetName(Location.SteppeCross));
+                    locations.Add(GetName(Location.HighlandCross));
+                    locations.Add(GetName(Location.MountainCross));
                 }
                 if (area == LocationArea.Cities)
                 {
-                    locations.Add(Location.Thetford);
-                    locations.Add(Location.Lymhurst);
-                    locations.Add(Location.Bridgewatch);
-                    locations.Add(Location.BlackMarket);
-                    locations.Add(Location.Martlock);
-                    locations.Add(Location.Caerleon);
+                    locations.Add(GetName(Location.Thetford));
+                    locations.Add(GetName(Location.Lymhurst));
+                    locations.Add(GetName(Location.Bridgewatch));
+                    locations.Add(GetName(Location.BlackMarket));
+                    locations.Add(GetName(Location.Martlock));
+                    locations.Add(GetName(Location.Caerleon));
                 }
             }
             return locations;
