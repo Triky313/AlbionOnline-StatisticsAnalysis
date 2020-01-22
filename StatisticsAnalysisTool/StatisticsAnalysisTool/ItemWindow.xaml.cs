@@ -1,4 +1,6 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,8 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Utilities;
 
 namespace StatisticsAnalysisTool
 {
@@ -38,6 +38,7 @@ namespace StatisticsAnalysisTool
         private void Translation()
         {
             ChbShowVillages.Content = LanguageController.Translation("SHOW_VILLAGES");
+            ChbShowBlackZoneOutposts.Content = LanguageController.Translation("SHOW_BLACKZONE_OUTPOSTS");
             ChbAutoUpdateData.Content = LanguageController.Translation("AUTO_UPDATE_DATA");
             LblLastUpdate.ToolTip = LanguageController.Translation("LAST_UPDATE");
             GvcCityTitel.Header = LanguageController.Translation("CITY");
@@ -70,7 +71,7 @@ namespace StatisticsAnalysisTool
 
             StartAutoUpdater();
 
-            var itemDataTaskResult = await StatisticsAnalysisManager.GetItemDataFromJsonAsync(item);
+            var itemDataTaskResult = await ApiController.GetItemDataFromJsonAsync(item);
 
             if (itemDataTaskResult == null)
             {
@@ -108,22 +109,31 @@ namespace StatisticsAnalysisTool
                     await Task.Delay(500);
                     if (Dispatcher != null && Dispatcher.Invoke(() => !ChbAutoUpdateData.IsChecked ?? false))
                         continue;
-                    GetPriceStats(_uniqueName, Dispatcher != null && Dispatcher.Invoke(() => ChbShowVillages.IsChecked ?? false));
+
+                    GetPriceStats(_uniqueName);
                     await Task.Delay(StatisticsAnalysisManager.RefreshRate - 500);
                 }
                 _isAutoUpdateActive = false;
             });
         }
-
-        private async void GetPriceStats(string uniqueName, bool showVillages = false)
+        
+        private async void GetPriceStats(string uniqueName)
         {
             if (uniqueName == null)
                 return;
 
             await Task.Run(async () =>
             {
-                var statPricesList = await StatisticsAnalysisManager.GetItemPricesFromJsonAsync(uniqueName, showVillages);
+                var showVillagesIsChecked = Dispatcher != null && Dispatcher.Invoke(() => ChbShowVillages.IsChecked ?? false);
+                var showBlackZoneOutpostsIsChecked = Dispatcher != null && Dispatcher.Invoke(() => ChbShowBlackZoneOutposts.IsChecked ?? false);
 
+                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, Locations.GetLocationsListByArea(new IsLocationAreaActive()
+                {
+                    Cities = true,
+                    Villages = showVillagesIsChecked,
+                    BlackZoneOutposts = showBlackZoneOutpostsIsChecked
+                }));
+                
                 if (statPricesList == null)
                     return;
 
@@ -139,7 +149,7 @@ namespace StatisticsAnalysisTool
                 {
                     ListViewPrices.ItemsSource = marketCurrentPricesItemList;
                     SetDifferenceCalculationText(statsPricesTotalList);
-                    LblLastUpdate.Content = Utility.DateFormat(DateTime.Now, 0);
+                    LblLastUpdate.Content = Utilities.DateFormat(DateTime.Now, 0);
                 });
             });
         }
@@ -150,7 +160,7 @@ namespace StatisticsAnalysisTool
 
             foreach (var stats in statPricesList)
             {
-                if (statsPricesTotalList.Exists(s => Locations.GetName(s.City) == stats.City))
+                if (statsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == stats.City))
                 {
                     var spt = statsPricesTotalList.Find(s => Locations.GetName(s.City) == stats.City);
                     if (stats.SellPriceMin < spt.SellPriceMin)
@@ -167,40 +177,19 @@ namespace StatisticsAnalysisTool
                 }
                 else
                 {
-                    var newSpt = new MarketResponseTotal()
-                    {
-                        City = Locations.GetName(stats.City),
-                        SellPriceMin = stats.SellPriceMin,
-                        SellPriceMax = stats.SellPriceMax,
-                        BuyPriceMin = stats.BuyPriceMin,
-                        BuyPriceMax = stats.BuyPriceMax,
-                        SellPriceMinDate = stats.SellPriceMinDate,
-                        SellPriceMaxDate = stats.SellPriceMaxDate,
-                        BuyPriceMinDate = stats.BuyPriceMinDate,
-                        BuyPriceMaxDate = stats.BuyPriceMaxDate,
-                    };
-
-                    statsPricesTotalList.Add(newSpt);
+                    statsPricesTotalList.Add(new MarketResponseTotal(stats));
                 }
             }
 
             return statsPricesTotalList;
         }
-
+        
         private void FindBestPrice(ref List<MarketResponseTotal> list)
         {
             if (list.Count == 0)
                 return;
 
-            var max = ulong.MinValue;
-            foreach (var type in list)
-            {
-                if (type.BuyPriceMax == 0) 
-                    continue;
-
-                if (type.BuyPriceMax > max)
-                    max = type.BuyPriceMax;
-            }
+            var max = GetMaxPrice(list);
 
             try
             {
@@ -210,17 +199,8 @@ namespace StatisticsAnalysisTool
             {
                 Debug.Print(ex.ToString());
             }
-            
 
-            var min = ulong.MaxValue;
-            foreach (var type in list)
-            {
-                if (type.SellPriceMin == 0) 
-                    continue;
-
-                if (type.SellPriceMin < min)
-                    min = type.SellPriceMin;
-            }
+            var min = GetMinPrice(list);
 
             try
             {
@@ -231,6 +211,36 @@ namespace StatisticsAnalysisTool
                 Debug.Print(ex.ToString());
             }
 
+        }
+
+        private static ulong GetMaxPrice(List<MarketResponseTotal> list)
+        {
+            var max = ulong.MinValue;
+            foreach (var type in list)
+            {
+                if (type.BuyPriceMax == 0)
+                    continue;
+
+                if (type.BuyPriceMax > max)
+                    max = type.BuyPriceMax;
+            }
+
+            return max;
+        }
+
+        private static ulong GetMinPrice(List<MarketResponseTotal> list)
+        {
+            var min = ulong.MaxValue;
+            foreach (var type in list)
+            {
+                if (type.SellPriceMin == 0)
+                    continue;
+
+                if (type.SellPriceMin < min)
+                    min = type.SellPriceMin;
+            }
+
+            return min;
         }
 
         private void SetDifferenceCalculationText(List<MarketResponseTotal> statsPricesTotalList)
@@ -265,26 +275,13 @@ namespace StatisticsAnalysisTool
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
-        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e)
-        {
-            var chb = e.Source as CheckBox;
-            if (chb?.IsChecked ?? false)
-            {
-                Height = 515;
-                GetPriceStats(_uniqueName, true);
-            }
-            else
-            {
-                Height = 335;
-                GetPriceStats(_uniqueName);
-            }
+        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e) => GetPriceStats(_uniqueName);
 
-        }
+        private void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e) => GetPriceStats(_uniqueName);
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
             Process.Start(e.Uri.AbsoluteUri);
         }
-        
     }
 }

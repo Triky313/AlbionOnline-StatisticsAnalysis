@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using StatisticsAnalysisTool.Utilities;
+using StatisticsAnalysisTool.Common;
 using Newtonsoft.Json.Linq;
 
 namespace StatisticsAnalysisTool.Models

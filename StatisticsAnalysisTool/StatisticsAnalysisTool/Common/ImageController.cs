@@ -1,12 +1,12 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Properties;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Properties;
 
-namespace StatisticsAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Common
 {
     class ImageController
     {

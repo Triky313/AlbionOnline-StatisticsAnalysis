@@ -1,15 +1,16 @@
-﻿using System;
+﻿using AutoUpdaterDotNET;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
-using AutoUpdaterDotNET;
+using StatisticsAnalysisTool.Properties;
 
-namespace StatisticsAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Common
 {
-    public static class Utility
+    public static class Utilities
     {
         public static string DateFormat(string format, double hourModify)
         {
@@ -60,7 +61,7 @@ namespace StatisticsAnalysisTool.Utilities
 
         public static void AutoUpdate()
         {
-            AutoUpdater.Start("https://aaronschultz.de/software/ao-mat-update.xml");
+            AutoUpdater.Start(Settings.Default.AutoUpdateConfigUrl);
             AutoUpdater.DownloadPath = Environment.CurrentDirectory;
             AutoUpdater.RunUpdateAsAdmin = false;
             AutoUpdater.ApplicationExitEvent += AutoUpdater_ApplicationExitEvent;

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
+using System;
 using System.Globalization;
 using System.Windows;
-using Newtonsoft.Json;
-using StatisticsAnalysisTool.Utilities;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -65,6 +65,21 @@ namespace StatisticsAnalysisTool.Models
 
     public class MarketResponseTotal
     {
+        public MarketResponseTotal(MarketResponse item)
+        {
+            ItemTypeId = item.ItemTypeId;
+            City = Locations.GetName(item.City);
+            QualityLevel = (byte)item.QualityLevel;
+            SellPriceMin = item.SellPriceMin;
+            SellPriceMax = item.SellPriceMax;
+            BuyPriceMin = item.BuyPriceMin;
+            BuyPriceMax = item.BuyPriceMax;
+            SellPriceMinDate = item.SellPriceMinDate;
+            SellPriceMaxDate = item.SellPriceMaxDate;
+            BuyPriceMinDate = item.BuyPriceMinDate;
+            BuyPriceMaxDate = item.BuyPriceMaxDate;
+        }
+
         [JsonProperty(PropertyName = "item_id")]
         public string ItemTypeId { get; set; }
 
@@ -110,7 +125,7 @@ namespace StatisticsAnalysisTool.Models
         public MarketCurrentPricesItem(MarketResponseTotal marketResponseTotal)
         {
             ItemTypeId = marketResponseTotal.ItemTypeId;
-            City = marketResponseTotal.City;
+            Location = marketResponseTotal.City;
             QualityLevel = marketResponseTotal.QualityLevel;
             SellPriceMin = marketResponseTotal.SellPriceMin;
             SellPriceMinDate = marketResponseTotal.SellPriceMinDate;
@@ -127,7 +142,8 @@ namespace StatisticsAnalysisTool.Models
         }
 
         public string ItemTypeId { get; set; }
-        public Location City { get; set; }
+        public Location Location { get; set; }
+        public string LocationName => Locations.GetName(Location);
         public byte QualityLevel { get; set; }
         public ulong SellPriceMin { get; set; }
         public string SellPriceMinString => SellPriceMin.ToString("N0", new CultureInfo(LanguageController.CurrentLanguage));
@@ -150,9 +166,10 @@ namespace StatisticsAnalysisTool.Models
         public bool BestBuyMinPrice { get; set; }
         public bool BestBuyMaxPrice { get; set; }
 
-        public Style CityStyle {
+        public Style LocationStyle
+        {
             get {
-                switch (City)
+                switch (Location)
                 {
                     case Location.Caerleon:
                         return Application.Current.FindResource("CaerleonStyle") as Style;
@@ -166,6 +183,12 @@ namespace StatisticsAnalysisTool.Models
                         return Application.Current.FindResource("LymhurstStyle") as Style;
                     case Location.FortSterling:
                         return Application.Current.FindResource("FortSterlingStyle") as Style;
+                    case Location.ArthursRest:
+                        return Application.Current.FindResource("ArthursRestStyle") as Style;
+                    case Location.MerlynsRest:
+                        return Application.Current.FindResource("MerlynsRestStyle") as Style;
+                    case Location.MorganasRest:
+                        return Application.Current.FindResource("MorganasRestStyle") as Style;
                     default:
                         return Application.Current.FindResource("DefaultCityStyle") as Style;
                 }

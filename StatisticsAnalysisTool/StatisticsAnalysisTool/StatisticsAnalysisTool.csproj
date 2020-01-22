@@ -91,6 +91,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\FrequentlyValues.cs" />
+    <Compile Include="Common\ApiController.cs" />
     <Compile Include="Models\ComboboxMarketMode.cs" />
     <Compile Include="Models\ItemWithMarketInformation.cs" />
     <Compile Include="Models\MarketOrder.cs" />
@@ -103,12 +105,12 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\DirectoryController.cs" />
-    <Compile Include="Utilities\ImageController.cs" />
-    <Compile Include="Utilities\IniFile.cs" />
-    <Compile Include="Utilities\LanguageController.cs" />
-    <Compile Include="Utilities\Utility.cs" />
-    <Compile Include="Utilities\WebDownload.cs">
+    <Compile Include="Common\DirectoryController.cs" />
+    <Compile Include="Common\ImageController.cs" />
+    <Compile Include="Common\IniFile.cs" />
+    <Compile Include="Common\LanguageController.cs" />
+    <Compile Include="Common\Utilities.cs" />
+    <Compile Include="Common\WebDownload.cs">
       <SubType>Component</SubType>
     </Compile>
     <Page Include="ItemWindow.xaml">
@@ -126,7 +128,7 @@
     <Compile Include="ItemWindow.xaml.cs">
       <DependentUpon>ItemWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Locations.cs" />
+    <Compile Include="Common\Locations.cs" />
     <Compile Include="StatisticsAnalysisManager.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -237,5 +239,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

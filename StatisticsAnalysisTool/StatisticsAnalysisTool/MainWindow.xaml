@@ -61,17 +61,14 @@
                 </ListView.View>
             </ListView>
             <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom">
-                <Grid.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="{StaticResource Background.First}" Offset="0"/>
-                        <GradientStop Color="{StaticResource Background.Second}" Offset="1"/>
-                    </LinearGradientBrush>
-                </Grid.Background>
                 <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="35" Width="106"/>
                 <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center" 
                            FontSize="14" HorizontalAlignment="Right" Width="66" Margin="0,7,896,0" FontWeight="Bold">
                     (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="Donate" /></Hyperlink>)</TextBlock>
             </Grid>
+        </Grid>
+        <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
+            
         </Grid>
     </Grid>
 </Window>

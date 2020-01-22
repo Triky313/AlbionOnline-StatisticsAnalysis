@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Utilities;
+using StatisticsAnalysisTool.Common;
 using Newtonsoft.Json;
 
 namespace StatisticsAnalysisTool.Models

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace StatisticsAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Common
 {
     static class DirectoryController
     {
@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Utilities
                     Directory.CreateDirectory(directoryPath);
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

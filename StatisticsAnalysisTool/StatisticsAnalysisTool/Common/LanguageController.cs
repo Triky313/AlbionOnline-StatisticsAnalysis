@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Properties;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -6,9 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Xml;
-using StatisticsAnalysisTool.Properties;
 
-namespace StatisticsAnalysisTool.Utilities
+namespace StatisticsAnalysisTool.Common
 {
     public static class LanguageController
     {

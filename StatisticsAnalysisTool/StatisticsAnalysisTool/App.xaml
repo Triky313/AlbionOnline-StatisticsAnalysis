@@ -8,9 +8,9 @@
         <system:Double x:Key="BaseFontSize">12</system:Double>
 
         <!--Global colors -->
-        <Color x:Key="Background.First">#FF3C3C41</Color>
-        <Color x:Key="Background.Second">#FF2D2D32</Color>
-        <Color x:Key="Background.Third">#FF222226</Color>
+        <Color x:Key="Background.First">#FF36363F</Color>
+        <Color x:Key="Background.Second">#FF2B2B33</Color>
+        <Color x:Key="Background.Third">#FF202026</Color>
 
         <!-- Item level colors -->
         <Color x:Key="Item.Level.Color.0">#FFb1b0ae</Color>
@@ -19,12 +19,15 @@
         <Color x:Key="Item.Level.Color.3">#FFb866fe</Color>
 
         <!-- City colors -->
-        <Color x:Key="Color.City.Caerleon">#FF262A2E</Color>
+        <Color x:Key="Color.City.Caerleon">#FF24292D</Color>
         <Color x:Key="Color.City.Thetford">#FF3BAFDA</Color>
         <Color x:Key="Color.City.Bridgewatch">#FFF76397</Color>
         <Color x:Key="Color.City.Martlock">#FF7266BA</Color>
         <Color x:Key="Color.City.Lymhurst">#FFFFAA00</Color>
         <Color x:Key="Color.City.FortSterling">#FF00B19D</Color>
+        <Color x:Key="Color.City.ArthursRest">#FFF75656</Color>
+        <Color x:Key="Color.City.MerlynsRest">#FF435DE0</Color>
+        <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
 
         <!-- City colors -->
         <Color x:Key="Color.Button.First">#ff6fccf6</Color>
@@ -32,11 +35,11 @@
         <Color x:Key="Color.Button.Third">#ff3da2ca</Color>
 
         <!-- Text colors -->
-        <Color x:Key="Color.Text.Normal">#FFDCDCDC</Color>
-        <Color x:Key="Color.Text.ToOldFirst">#FF9898A5</Color>
-        <Color x:Key="Color.Text.ToOldSecond">#FF81818C</Color>
-        <Color x:Key="Color.Text.ToOldThird">#FF696972</Color>
-        <Color x:Key="Color.Text.NoValue">#FF525259</Color>
+        <Color x:Key="Color.Text.Normal">#FFDEDEEA</Color>
+        <Color x:Key="Color.Text.ToOldFirst">#FF8C8CA5</Color>
+        <Color x:Key="Color.Text.ToOldSecond">#FF77778C</Color>
+        <Color x:Key="Color.Text.ToOldThird">#FF616172</Color>
+        <Color x:Key="Color.Text.NoValue">#FF4B4B59</Color>
 
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.First" Color="Gainsboro"/>
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.Second" Color="#B4B4B4"/>
@@ -49,7 +52,7 @@
         <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#FF00799f"/>
         <SolidColorBrush x:Key="Item.IsSelected.Background" Color="#FF0e89b1"/>
         <SolidColorBrush x:Key="GridView.Column.Header.Font" Color="{StaticResource Color.Button.Second}"/>
-        <SolidColorBrush x:Key="WindowButtonForeground" Color="#FF3C3C41"/>
+        <SolidColorBrush x:Key="WindowButtonForeground" Color="#FF36363F"/>
         <SolidColorBrush x:Key="SolidColorBrush.Hyperlink.First" Color="#FF329bc3"/>
         <SolidColorBrush x:Key="SolidColorBrush.Progressbar" Color="#FF3BAFDA"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
@@ -67,6 +70,9 @@
         <SolidColorBrush x:Key="SolidColorBrush.City.Martlock" Color="{StaticResource Color.City.Martlock}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst" Color="{StaticResource Color.City.Lymhurst}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling" Color="{StaticResource Color.City.FortSterling}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest" Color="{StaticResource Color.City.ArthursRest}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
 
         <!-- ######################################################################################### -->
         
@@ -80,7 +86,7 @@
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="#FF33333F" Offset="1"/>
                         <GradientStop Color="{StaticResource Color.City.Caerleon}"/>
                     </LinearGradientBrush>
                 </Setter.Value>
@@ -95,7 +101,7 @@
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="#FF33333F" Offset="1"/>
                         <GradientStop Color="{StaticResource Color.City.Thetford}"/>
                     </LinearGradientBrush>
                 </Setter.Value>
@@ -110,7 +116,7 @@
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="#FF33333F" Offset="1"/>
                         <GradientStop Color="{StaticResource Color.City.Bridgewatch}"/>
                     </LinearGradientBrush>
                 </Setter.Value>
@@ -125,7 +131,7 @@
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="#FF33333F" Offset="1"/>
                         <GradientStop Color="{StaticResource Color.City.Martlock}"/>
                     </LinearGradientBrush>
                 </Setter.Value>
@@ -140,7 +146,7 @@
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="#FF33333F" Offset="1"/>
                         <GradientStop Color="{StaticResource Color.City.Lymhurst}"/>
                     </LinearGradientBrush>
                 </Setter.Value>
@@ -155,8 +161,53 @@
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="#FF3C3C41" Offset="1"/>
+                        <GradientStop Color="#FF33333F" Offset="1"/>
                         <GradientStop Color="{StaticResource Color.City.FortSterling}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="ArthursRestStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.ArthursRest}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="MerlynsRestStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.MerlynsRest}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="MorganasRestStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.MorganasRest}"/>
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
@@ -255,7 +306,7 @@
                 <Setter.Value>
                     <LinearGradientBrush EndPoint = "1,0" MappingMode = "RelativeToBoundingBox" StartPoint = "0,0" Opacity = "0.5">
                         <GradientStop Color = "#FF1DC160" />
-                        <GradientStop Color = "#FF3C3C41" Offset = "1" />
+                        <GradientStop Color = "#FF33333F" Offset = "1" />
                         <GradientStop Color = "#FF384A44" Offset = "0.45" />
                     </LinearGradientBrush>
                 </Setter.Value>
@@ -651,7 +702,7 @@
             </Setter>
         </Style>
 
-        <!--Scrollbar Thumbs-->
+        <!-- Scrollbar Thumbs -->
         <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -671,7 +722,7 @@
             </Setter>
         </Style>
 
-        <!--ScrollBars-->
+        <!-- ScrollBars -->
         <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
             <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
             <Setter Property="Foreground" Value="{StaticResource Item.MouseOver.Background}" />
@@ -732,6 +783,14 @@
             </Setter>
         </Style>
 
+        <!-- ListBox -->
+        <Style TargetType="{x:Type ListBox}">
+            <Setter Property="SelectionMode" Value="Multiple" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.Third}" />
+        </Style>
+        
     </Application.Resources>
 </Application>
 
