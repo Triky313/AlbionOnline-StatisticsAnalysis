@@ -37,7 +37,7 @@ namespace StatisticsAnalysisTool
             CbRefreshRate.Items.Add(new RefreshRateStruct() {Name = LanguageController.Translation("30_SECONDS"), Seconds = 30000});
             CbRefreshRate.Items.Add(new RefreshRateStruct() {Name = LanguageController.Translation("60_SECONDS"), Seconds = 60000});
             CbRefreshRate.Items.Add(new RefreshRateStruct() {Name = LanguageController.Translation("5_MINUTES"), Seconds = 300000});
-            CbRefreshRate.SelectedValue = StatisticsAnalysisManager.RefreshRate;
+            CbRefreshRate.SelectedValue = Settings.Default.RefreshRate;
 
             // Language
             foreach (var langInfos in LanguageController.FileInfos)
@@ -51,7 +51,7 @@ namespace StatisticsAnalysisTool
             CbUpdateItemListByDays.Items.Add(new UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
             CbUpdateItemListByDays.Items.Add(new UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
             CbUpdateItemListByDays.Items.Add(new UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
-            CbUpdateItemListByDays.SelectedValue = StatisticsAnalysisManager.UpdateItemListByDays;
+            CbUpdateItemListByDays.SelectedValue = Settings.Default.UpdateItemListByDays;
 
             // ItemList source url
             TxtboxItemListSourceUrl.Text = Settings.Default.CurrentItemListSourceUrl;
@@ -71,20 +71,16 @@ namespace StatisticsAnalysisTool
         {
             var refreshRateItem = (RefreshRateStruct)CbRefreshRate.SelectedItem;
             var updateItemListByDays = (UpdateItemListStruct)CbUpdateItemListByDays.SelectedItem;
-
-            var ini = new IniFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SettingsFileName));
-
+            
             Settings.Default.RefreshRate = refreshRateItem.Seconds;
 
-            ini.WriteValue("Settings", "UpdateItemListByDays", updateItemListByDays.Value.ToString());
-            StatisticsAnalysisManager.UpdateItemListByDays = updateItemListByDays.Value;
-            ini.WriteValue("Settings", "ItemListSourceUrl", TxtboxItemListSourceUrl.Text);
+            Settings.Default.UpdateItemListByDays = updateItemListByDays.Value;
             Settings.Default.CurrentItemListSourceUrl = TxtboxItemListSourceUrl.Text;
 
             if (CbLanguage.SelectedItem is LanguageController.FileInfo langItem)
             {
                 LanguageController.SetLanguage(langItem.FileName);
-                ini.WriteValue("Settings", "Language", langItem.FileName);
+                Settings.Default.CurrentLanguageCulture = langItem.FileName;
             }
             
             Close();

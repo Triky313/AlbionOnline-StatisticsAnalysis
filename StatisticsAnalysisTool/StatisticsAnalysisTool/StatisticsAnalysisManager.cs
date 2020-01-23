@@ -20,8 +20,6 @@ namespace StatisticsAnalysisTool
         // Models: https://github.com/broderickhyman/albiondata-models-dotNet
 
         public static List<Item> Items;
-        public static int RefreshRate = Settings.Default.RefreshRate;
-        public static int UpdateItemListByDays = Settings.Default.UpdateItemListByDays;
 
         private static bool GetItemListSourceUrlIfExist(ref string url)
         {

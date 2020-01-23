@@ -44,5 +44,8 @@
     <Setting Name="CurrentItemListSourceUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json</Value>
     </Setting>
+    <Setting Name="CurrentLanguageCulture" Type="System.String" Scope="User">
+      <Value Profile="(Default)">en-EN</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
