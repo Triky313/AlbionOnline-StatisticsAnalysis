@@ -65,13 +65,6 @@ namespace StatisticsAnalysisTool
 
                 #endregion
 
-                #region Load ItemList source url
-
-                if (_iniFile.SectionKeyExists("Settings", "ItemListSourceUrl"))
-                    StatisticsAnalysisManager.ItemListSourceUrl = _iniFile.ReadValue("Settings", "ItemListSourceUrl");
-
-                #endregion
-
                 var isItemListLoaded = await StatisticsAnalysisManager.GetItemListFromJsonAsync();
                 if (!isItemListLoaded)
                     MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), 

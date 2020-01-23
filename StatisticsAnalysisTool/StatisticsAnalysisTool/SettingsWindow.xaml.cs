@@ -54,7 +54,7 @@ namespace StatisticsAnalysisTool
             CbUpdateItemListByDays.SelectedValue = StatisticsAnalysisManager.UpdateItemListByDays;
 
             // ItemList source url
-            TxtboxItemListSourceUrl.Text = StatisticsAnalysisManager.ItemListSourceUrl;
+            TxtboxItemListSourceUrl.Text = Settings.Default.CurrentItemListSourceUrl;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
@@ -79,7 +79,7 @@ namespace StatisticsAnalysisTool
             ini.WriteValue("Settings", "UpdateItemListByDays", updateItemListByDays.Value.ToString());
             StatisticsAnalysisManager.UpdateItemListByDays = updateItemListByDays.Value;
             ini.WriteValue("Settings", "ItemListSourceUrl", TxtboxItemListSourceUrl.Text);
-            StatisticsAnalysisManager.ItemListSourceUrl = TxtboxItemListSourceUrl.Text;
+            Settings.Default.CurrentItemListSourceUrl = TxtboxItemListSourceUrl.Text;
 
             if (CbLanguage.SelectedItem is LanguageController.FileInfo langItem)
             {
