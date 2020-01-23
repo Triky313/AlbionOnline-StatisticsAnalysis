@@ -36,7 +36,7 @@ namespace StatisticsAnalysisTool.Common
 
         public bool SectionKeyExists(string section, string key)
         {
-            StringBuilder temp = new StringBuilder(1500);
+            var temp = new StringBuilder(1500);
             return (0 != GetPrivateProfileString(section, key, "", temp, 1500, _path));
         }
         

@@ -51,6 +51,20 @@ namespace StatisticsAnalysisTool
                     InitUi();
                 });
 
+                #region Set MainWindow height and width
+
+                Dispatcher?.Invoke(() =>
+                {
+                    Height = Settings.Default.MainWindowHeight;
+                    Width = Settings.Default.MainWindowWidth;
+                    if (Settings.Default.MainWindowMaximized)
+                    {
+                        WindowState = WindowState.Maximized;
+                    }
+                });
+
+                #endregion
+
                 #region Load ItemList source url
 
                 if (_iniFile.SectionKeyExists("Settings", "ItemListSourceUrl"))
@@ -70,7 +84,7 @@ namespace StatisticsAnalysisTool
                     StatisticsAnalysisManager.RefreshRate = refrashrate;
 
                 #endregion
-
+                
                 #region Update item list by days
 
                 if (_iniFile.SectionKeyExists("Settings", "UpdateItemListByDays") &&
@@ -222,6 +236,24 @@ namespace StatisticsAnalysisTool
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                Settings.Default.MainWindowHeight = RestoreBounds.Height;
+                Settings.Default.MainWindowWidth = RestoreBounds.Width;
+                Settings.Default.MainWindowMaximized = true;
+            }
+            else
+            {
+                Settings.Default.MainWindowHeight = Height;
+                Settings.Default.MainWindowWidth = Width;
+                Settings.Default.MainWindowMaximized = false;
+            }
+
+            Settings.Default.Save();
         }
     }
 }
