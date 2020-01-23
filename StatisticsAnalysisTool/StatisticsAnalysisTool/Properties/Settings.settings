@@ -41,5 +41,8 @@
     <Setting Name="MainWindowMaximized" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="CurrentItemListSourceUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -79,10 +79,8 @@ namespace StatisticsAnalysisTool
 
                 #region Refrash rate
 
-                if (_iniFile.SectionKeyExists("Settings", "RefreshRate") &&
-                    int.TryParse(_iniFile.ReadValue("Settings", "RefreshRate"), out var refrashrate))
-                    StatisticsAnalysisManager.RefreshRate = refrashrate;
-
+                Dispatcher?.Invoke(() => { StatisticsAnalysisManager.RefreshRate = Settings.Default.RefreshRate; });
+                
                 #endregion
                 
                 #region Update item list by days

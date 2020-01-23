@@ -10,6 +10,8 @@ using System.Windows.Input;
 
 namespace StatisticsAnalysisTool
 {
+    using Properties;
+
     /// <summary>
     ///     Interaktionslogik für ItemWindow.xaml
     /// </summary>
@@ -110,7 +112,7 @@ namespace StatisticsAnalysisTool
                         continue;
 
                     GetPriceStats(_uniqueName);
-                    await Task.Delay(StatisticsAnalysisManager.RefreshRate - 500);
+                    await Task.Delay(Settings.Default.RefreshRate - 500);
                 }
                 _isAutoUpdateActive = false;
             });

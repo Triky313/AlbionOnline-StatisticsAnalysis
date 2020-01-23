@@ -1,9 +1,9 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Properties;
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool
 {
@@ -74,8 +74,8 @@ namespace StatisticsAnalysisTool
 
             var ini = new IniFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SettingsFileName));
 
-            ini.WriteValue("Settings", "RefreshRate", refreshRateItem.Seconds.ToString());
-            StatisticsAnalysisManager.RefreshRate = refreshRateItem.Seconds;
+            Settings.Default.RefreshRate = refreshRateItem.Seconds;
+
             ini.WriteValue("Settings", "UpdateItemListByDays", updateItemListByDays.Value.ToString());
             StatisticsAnalysisManager.UpdateItemListByDays = updateItemListByDays.Value;
             ini.WriteValue("Settings", "ItemListSourceUrl", TxtboxItemListSourceUrl.Text);

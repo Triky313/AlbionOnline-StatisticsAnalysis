@@ -172,5 +172,18 @@ namespace StatisticsAnalysisTool.Properties {
                 this["MainWindowMaximized"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/it" +
+            "ems.json")]
+        public string CurrentItemListSourceUrl {
+            get {
+                return ((string)(this["CurrentItemListSourceUrl"]));
+            }
+            set {
+                this["CurrentItemListSourceUrl"] = value;
+            }
+        }
     }
 }
