@@ -40,7 +40,7 @@
                         <GridViewColumn x:Name="GvcNmlIcon" Header="ICON" Width="80">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Grid Background="#FF3C3C41">
+                                    <Grid Background="{StaticResource SolidColorBrush.Background.First}">
                                         <Image Source="{Binding Icon}" Width="75" Height="75" Stretch="Fill"/>
                                     </Grid>
                                 </DataTemplate>
