@@ -6,11 +6,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool
 {
+    using Properties;
+
     /// <summary>
     ///     Interaktionslogik für ItemWindow.xaml
     /// </summary>
@@ -111,7 +112,7 @@ namespace StatisticsAnalysisTool
                         continue;
 
                     GetPriceStats(_uniqueName);
-                    await Task.Delay(StatisticsAnalysisManager.RefreshRate - 500);
+                    await Task.Delay(Settings.Default.RefreshRate - 500);
                 }
                 _isAutoUpdateActive = false;
             });
@@ -282,6 +283,17 @@ namespace StatisticsAnalysisTool
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
             Process.Start(e.Uri.AbsoluteUri);
+        }
+
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2 && WindowState == WindowState.Normal)
+            {
+                WindowState = WindowState.Maximized;
+                return;
+            }
+
+            if (e.ClickCount == 2 && WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
         }
     }
 }

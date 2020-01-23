@@ -107,7 +107,6 @@
     </Compile>
     <Compile Include="Common\DirectoryController.cs" />
     <Compile Include="Common\ImageController.cs" />
-    <Compile Include="Common\IniFile.cs" />
     <Compile Include="Common\LanguageController.cs" />
     <Compile Include="Common\Utilities.cs" />
     <Compile Include="Common\WebDownload.cs">

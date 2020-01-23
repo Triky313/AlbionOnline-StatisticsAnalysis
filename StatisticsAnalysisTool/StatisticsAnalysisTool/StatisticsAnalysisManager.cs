@@ -20,20 +20,16 @@ namespace StatisticsAnalysisTool
         // Models: https://github.com/broderickhyman/albiondata-models-dotNet
 
         public static List<Item> Items;
-        public static int RefreshRate = Settings.Default.RefreshRate;
-        public static int UpdateItemListByDays = Settings.Default.UpdateItemListByDays;
-        public static string ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
 
         private static bool GetItemListSourceUrlIfExist(ref string url)
         {
-            if (string.IsNullOrEmpty(ItemListSourceUrl))
+            if (string.IsNullOrEmpty(Settings.Default.CurrentItemListSourceUrl))
             {
                 url = Settings.Default.DefaultItemListSourceUrl;
                 if (string.IsNullOrEmpty(url))
                     return false;
 
-                var ini = new IniFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SettingsFileName));
-                ini.WriteValue("Settings", "ItemListSourceUrl", url);
+                Settings.Default.CurrentItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
                 MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
             }
             return true;
@@ -80,8 +76,7 @@ namespace StatisticsAnalysisTool
 
         public static async Task<bool> GetItemListFromJsonAsync()
         {
-            var url = ItemListSourceUrl;
-
+            var url = Settings.Default.CurrentItemListSourceUrl;
             if (!GetItemListSourceUrlIfExist(ref url))
                 return false;
             
