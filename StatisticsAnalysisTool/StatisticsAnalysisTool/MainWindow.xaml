@@ -22,7 +22,7 @@
                 <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Hidden" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
         </Grid>
-        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
+        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtSearch" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="299" KeyUp="TxtSearch_KeyUp"/>
             <Label x:Name="LblItemCounter" Content="0/0" Height="26" Margin="0,6,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="110" />
 
@@ -67,7 +67,9 @@
                     (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="Donate" /></Hyperlink>)</TextBlock>
             </Grid>
         </Grid>
-        <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
+        <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Visible">
+            <TextBox HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
+            <Label Content="Label" HorizontalAlignment="Left" Margin="225,71,0,0" VerticalAlignment="Top" Width="120"/>
 
         </Grid>
     </Grid>

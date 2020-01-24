@@ -109,7 +109,7 @@
             using (var wc = new WebClient())
             {
                 var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}";
-                var itemString = wc.DownloadString(apiString);
+                var itemString = await wc.DownloadStringTaskAsync(apiString);
 
                 return JsonConvert.DeserializeObject<Player>(itemString);
             }
