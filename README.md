@@ -11,3 +11,25 @@ If the item list is outdated, you can change it yourself. Just change the "ITEM 
 Another good source is https://github.com/broderickhyman/ao-bin-dumps
 
 Or you extract the files yourself from the game. More information can be found here: https://github.com/broderickhyman/ao-id-extractor
+
+
+## Language translation
+
+### How it works
+To add your language, you only need to create or adapt a file in the `Languages` directory.
+The file must always have the language code. 
+
+Example:
+```
+en-US.xml
+```
+
+You can find language codes here: https://www.andiamo.co.uk/resources/iso-language-codes/
+
+### Create file
+Copy the en-US file and change everything, then all APP-CODES should be available. 
+```
+<translation name = "EVERY_3_DAYS">HERE YOUR TEXT</translation>
+```
+
+
