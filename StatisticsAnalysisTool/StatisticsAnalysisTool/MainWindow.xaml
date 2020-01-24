@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1080" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="799">
+        Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="799" Closing="Window_Closing">
     <Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
@@ -40,7 +40,7 @@
                         <GridViewColumn x:Name="GvcNmlIcon" Header="ICON" Width="80">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Grid Background="#FF3C3C41">
+                                    <Grid Background="{StaticResource SolidColorBrush.Background.First}">
                                         <Image Source="{Binding Icon}" Width="75" Height="75" Stretch="Fill"/>
                                     </Grid>
                                 </DataTemplate>
@@ -63,12 +63,12 @@
             <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom">
                 <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="35" Width="106"/>
                 <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center" 
-                           FontSize="14" HorizontalAlignment="Right" Width="66" Margin="0,7,896,0" FontWeight="Bold">
+                           FontSize="14" Margin="116,0,0,-1" FontWeight="Bold" HorizontalAlignment="Left" Width="66" Height="28" VerticalAlignment="Bottom">
                     (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="Donate" /></Hyperlink>)</TextBlock>
             </Grid>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
-            
+
         </Grid>
     </Grid>
 </Window>

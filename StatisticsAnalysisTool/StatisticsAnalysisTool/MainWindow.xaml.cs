@@ -28,9 +28,6 @@ namespace StatisticsAnalysisTool
             Player
         }
         
-        private readonly IniFile _iniFile =
-            new IniFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SettingsFileName));
-
         public MainWindow()
         {
             DataContext = this;
@@ -58,10 +55,19 @@ namespace StatisticsAnalysisTool
                     InitUi();
                 });
 
-                #region Load ItemList source url
+                #region Set MainWindow height and width and center window
 
-                if (_iniFile.SectionKeyExists("Settings", "ItemListSourceUrl"))
-                    StatisticsAnalysisManager.ItemListSourceUrl = _iniFile.ReadValue("Settings", "ItemListSourceUrl");
+                Dispatcher?.Invoke(() =>
+                {
+                    Height = Settings.Default.MainWindowHeight;
+                    Width = Settings.Default.MainWindowWidth;
+                    if (Settings.Default.MainWindowMaximized)
+                    {
+                        WindowState = WindowState.Maximized;
+                    }
+
+                    CenterWindowOnScreen();
+                });
 
                 #endregion
 
@@ -69,22 +75,6 @@ namespace StatisticsAnalysisTool
                 if (!isItemListLoaded)
                     MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), 
                         LanguageController.Translation("ERROR"));
-
-                #region Refrash rate
-
-                if (_iniFile.SectionKeyExists("Settings", "RefreshRate") &&
-                    int.TryParse(_iniFile.ReadValue("Settings", "RefreshRate"), out var refrashrate))
-                    StatisticsAnalysisManager.RefreshRate = refrashrate;
-
-                #endregion
-
-                #region Update item list by days
-
-                if (_iniFile.SectionKeyExists("Settings", "UpdateItemListByDays") &&
-                    int.TryParse(_iniFile.ReadValue("Settings", "UpdateItemListByDays"), out var updateItemListByDays))
-                    StatisticsAnalysisManager.UpdateItemListByDays = updateItemListByDays;
-
-                #endregion
 
                 Dispatcher?.Invoke(() =>
                 {
@@ -101,14 +91,14 @@ namespace StatisticsAnalysisTool
         {
             LanguageController.InitializeLanguageFiles();
 
-            if (_iniFile.SectionKeyExists("Settings", "Language") && LanguageController.SetLanguage(_iniFile.ReadValue("Settings", "Language")))
+            if (LanguageController.SetLanguage(Settings.Default.CurrentLanguageCulture))
                 return;
 
-            if (!LanguageController.SetLanguage(LanguageController.FileInfos.FirstOrDefault()?.FileName))
-            {
-                MessageBox.Show("ERROR: No language file found!");
-                Close();
-            }
+            if (LanguageController.SetLanguage(LanguageController.FileInfos.FirstOrDefault()?.FileName)) 
+                return;
+
+            MessageBox.Show("ERROR: No language file found!");
+            Close();
         }
 
         private void InitUi()
@@ -117,7 +107,7 @@ namespace StatisticsAnalysisTool
 
             CbMode.Items.Clear();
             CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("NORMAL"), Mode = ViewMode.Normal });
-            CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = ViewMode.Player });
+            //CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = ViewMode.Player });
 
             if (CbMode.Items.Count > 0)
                 CbMode.SelectedIndex = 0;
@@ -136,7 +126,17 @@ namespace StatisticsAnalysisTool
                 LblLocalImageCounter.Content = ImageController.LocalImagesCounter();
             });
         }
-        
+
+        private void CenterWindowOnScreen()
+        {
+            var screenWidth = SystemParameters.PrimaryScreenWidth;
+            var screenHeight = SystemParameters.PrimaryScreenHeight;
+            var windowWidth = Width;
+            var windowHeight = Height;
+            Left = (screenWidth / 2) - (windowWidth / 2);
+            Top = (screenHeight / 2) - (windowHeight / 2);
+        }
+
         private void TxtSearch_KeyUp(object sender, KeyEventArgs e)
         {
             LoadLvItems(TxtSearch.Text);
@@ -229,6 +229,24 @@ namespace StatisticsAnalysisTool
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                Settings.Default.MainWindowHeight = RestoreBounds.Height;
+                Settings.Default.MainWindowWidth = RestoreBounds.Width;
+                Settings.Default.MainWindowMaximized = true;
+            }
+            else
+            {
+                Settings.Default.MainWindowHeight = Height;
+                Settings.Default.MainWindowWidth = Width;
+                Settings.Default.MainWindowMaximized = false;
+            }
+
+            Settings.Default.Save();
         }
     }
 }

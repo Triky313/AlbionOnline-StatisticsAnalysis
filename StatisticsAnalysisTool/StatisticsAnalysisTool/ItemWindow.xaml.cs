@@ -6,11 +6,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool
 {
+    using Properties;
+
     /// <summary>
     ///     Interaktionslogik für ItemWindow.xaml
     /// </summary>
@@ -38,6 +39,7 @@ namespace StatisticsAnalysisTool
         private void Translation()
         {
             ChbShowVillages.Content = LanguageController.Translation("SHOW_VILLAGES");
+            ChbShowBlackZoneOutposts.Content = LanguageController.Translation("SHOW_BLACKZONE_OUTPOSTS");
             ChbAutoUpdateData.Content = LanguageController.Translation("AUTO_UPDATE_DATA");
             LblLastUpdate.ToolTip = LanguageController.Translation("LAST_UPDATE");
             GvcCityTitel.Header = LanguageController.Translation("CITY");
@@ -108,22 +110,31 @@ namespace StatisticsAnalysisTool
                     await Task.Delay(500);
                     if (Dispatcher != null && Dispatcher.Invoke(() => !ChbAutoUpdateData.IsChecked ?? false))
                         continue;
-                    GetPriceStats(_uniqueName, Dispatcher != null && Dispatcher.Invoke(() => ChbShowVillages.IsChecked ?? false));
-                    await Task.Delay(StatisticsAnalysisManager.RefreshRate - 500);
+
+                    GetPriceStats(_uniqueName);
+                    await Task.Delay(Settings.Default.RefreshRate - 500);
                 }
                 _isAutoUpdateActive = false;
             });
         }
-
-        private async void GetPriceStats(string uniqueName, bool showVillages = false)
+        
+        private async void GetPriceStats(string uniqueName)
         {
             if (uniqueName == null)
                 return;
 
             await Task.Run(async () =>
             {
-                var statPricesList = await ApiController.GetItemPricesFromJsonAsync(uniqueName, showVillages);
+                var showVillagesIsChecked = Dispatcher != null && Dispatcher.Invoke(() => ChbShowVillages.IsChecked ?? false);
+                var showBlackZoneOutpostsIsChecked = Dispatcher != null && Dispatcher.Invoke(() => ChbShowBlackZoneOutposts.IsChecked ?? false);
 
+                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, Locations.GetLocationsListByArea(new IsLocationAreaActive()
+                {
+                    Cities = true,
+                    Villages = showVillagesIsChecked,
+                    BlackZoneOutposts = showBlackZoneOutpostsIsChecked
+                }));
+                
                 if (statPricesList == null)
                     return;
 
@@ -150,7 +161,7 @@ namespace StatisticsAnalysisTool
 
             foreach (var stats in statPricesList)
             {
-                if (statsPricesTotalList.Exists(s => Locations.GetName(s.City) == stats.City))
+                if (statsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == stats.City))
                 {
                     var spt = statsPricesTotalList.Find(s => Locations.GetName(s.City) == stats.City);
                     if (stats.SellPriceMin < spt.SellPriceMin)
@@ -265,26 +276,24 @@ namespace StatisticsAnalysisTool
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
-        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e)
-        {
-            var chb = e.Source as CheckBox;
-            if (chb?.IsChecked ?? false)
-            {
-                Height = 515;
-                GetPriceStats(_uniqueName, true);
-            }
-            else
-            {
-                Height = 335;
-                GetPriceStats(_uniqueName);
-            }
+        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e) => GetPriceStats(_uniqueName);
 
-        }
+        private void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e) => GetPriceStats(_uniqueName);
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
             Process.Start(e.Uri.AbsoluteUri);
         }
-        
+
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2 && WindowState == WindowState.Normal)
+            {
+                WindowState = WindowState.Maximized;
+                return;
+            }
+
+            if (e.ClickCount == 2 && WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
+        }
     }
 }
