@@ -2,10 +2,8 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -186,6 +184,8 @@ namespace StatisticsAnalysisTool
 
             if (e.ClickCount == 2 && WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
         }
+
+        private void MaximizedButton_Click(object sender, RoutedEventArgs e) => WindowState = (WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
 
         private void CbMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

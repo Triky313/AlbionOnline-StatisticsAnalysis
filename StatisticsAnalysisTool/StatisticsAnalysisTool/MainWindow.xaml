@@ -9,8 +9,9 @@
     <Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
-            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
-            <Label x:Name="LblToolName" Content="AlbionOnline - STATISTICS ANALYSIS TOOL | VERSION" Margin="52,0,61,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Height="40" FontSize="20" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
+            <Button x:Name="MaximizedButton" Style="{StaticResource WindowButtonStyle}" Content="1" Margin="0,0,28,0" Click="MaximizedButton_Click" />
+            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,58,0" Click="MinimizeButton_Click"/>
+            <Label x:Name="LblToolName" Content="AlbionOnline - STATISTICS ANALYSIS TOOL | VERSION" Margin="52,0,128,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Height="40" FontSize="20" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
             <Image HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="37" Source="logo.ico" Margin="10,0,0,0"/>
         </Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" Margin="0,40,0,0">
