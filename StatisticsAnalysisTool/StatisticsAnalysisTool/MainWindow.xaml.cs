@@ -2,10 +2,8 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -192,6 +190,34 @@ namespace StatisticsAnalysisTool
             }
 
             if (e.ClickCount == 2 && WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
+        }
+
+        private static Rect _storedSize;
+        private static bool _isWindowMaximized;
+
+        private void MaximizedButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isWindowMaximized)
+            {
+                Left = _storedSize.Left;
+                Top = _storedSize.Top;
+                Height = _storedSize.Height;
+                Width = _storedSize.Width;
+                CenterWindowOnScreen();
+                MaximizedButton.Content = 1;
+                _isWindowMaximized = false;
+            }
+            else
+            {
+                _storedSize.Width = Width;
+                _storedSize.Height = Height;
+                Left = SystemParameters.WorkArea.Left;
+                Top = SystemParameters.WorkArea.Top;
+                Height = SystemParameters.WorkArea.Height;
+                Width = SystemParameters.WorkArea.Width;
+                MaximizedButton.Content = 2;
+                _isWindowMaximized = true;
+            }
         }
 
         private void CbMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
