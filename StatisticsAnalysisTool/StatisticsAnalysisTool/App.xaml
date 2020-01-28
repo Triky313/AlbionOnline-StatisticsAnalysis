@@ -426,6 +426,12 @@
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
         </Style>
 
+        <!-- PlayerMode label -->
+        <Style TargetType="Label" x:Key="PlayerMode.Title" >
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+        </Style>
+
         <!-- Price list column style -->
         <Style TargetType="Label" x:Key="Price.List.Column.Style" >
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>

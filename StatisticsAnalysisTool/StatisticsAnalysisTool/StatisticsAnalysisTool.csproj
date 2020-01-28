@@ -96,7 +96,7 @@
     <Compile Include="Common\PlayerModeController.cs" />
     <Compile Include="Models\ComboboxMarketMode.cs" />
     <Compile Include="Models\Guild.cs" />
-    <Compile Include="Models\GameInfoPlayersResponse.cs" />
+    <Compile Include="Models\GameInfoPlayers.cs" />
     <Compile Include="Models\SearchInfos.cs" />
     <Compile Include="Models\ItemWithMarketInformation.cs" />
     <Compile Include="Models\MarketOrder.cs" />

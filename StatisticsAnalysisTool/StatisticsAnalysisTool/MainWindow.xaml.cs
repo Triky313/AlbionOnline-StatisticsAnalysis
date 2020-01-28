@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -286,14 +287,21 @@ namespace StatisticsAnalysisTool
             {
                 var gameInfoSearchResponse = await ApiController.GetGameInfoSearchFromJsonAsync(TxtBoxPlayerModeUsername.Text);
 
-                if (gameInfoSearchResponse?.SearchPlayer == null)
-                    return;
-
-                foreach (var searchPlayer in gameInfoSearchResponse.SearchPlayer)
+                if (gameInfoSearchResponse?.SearchPlayer?.FirstOrDefault()?.Id == null)
                 {
-                    LblPlayerModeAvatarContent.Content = searchPlayer.Avatar;
-                    LblPlayerModeKillFameContent.Content = searchPlayer.KillFame ?? 0;
+                    return;
                 }
+
+                var gameInfoPlayer = await ApiController.GetGameInfoPlayersFromJsonAsync(gameInfoSearchResponse?.SearchPlayer?.FirstOrDefault()?.Id);
+
+                LblPlayerModeContentId.Content = gameInfoPlayer.Id;
+                LblPlayerModeContentName.Content = gameInfoPlayer.Name;
+                LblPlayerModeContentGuildName.Content = gameInfoPlayer.GuildName;
+                LblPlayerModeContentAllianceName.Content = gameInfoPlayer.AllianceName;
+                LblPlayerModeContentKillFame.Content = gameInfoPlayer.KillFame.ToString("N0", new CultureInfo(LanguageController.CurrentLanguage));
+                LblPlayerModeContentDeathFame.Content = gameInfoPlayer.DeathFame.ToString("N0", new CultureInfo(LanguageController.CurrentLanguage));
+                LblPlayerModeContentFameRatio.Content = gameInfoPlayer.FameRatio;
+
             }
         }
     }
