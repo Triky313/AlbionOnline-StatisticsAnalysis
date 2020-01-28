@@ -71,13 +71,39 @@
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Visible">
             <TextBox x:Name="TxtBoxPlayerModeUsername" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
             <Button x:Name="BtnPlayerModeSave" Content="SAVE" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="110" Height="25" Click="BtnPlayerModeSave_Click"/>
-
-            <Label x:Name="LblPlayerModeAvatar" Content="AVATAR" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top" Width="150"/>
-            <Label x:Name="LblPlayerModeAvatarContent" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="165,54,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
-
-            <Label x:Name="LblPlayerModeKillFame" Content="KILL__FAME" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="150"/>
-            <Label x:Name="LblPlayerModeKillFameContent" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="165,85,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
             <Separator Height="14" Margin="10,40,10,0" VerticalAlignment="Top" />
+
+            <StackPanel Margin="10,54,10,10">
+                <Grid Background="DarkBlue" Height="100">
+                    <StackPanel>
+                        <Image Height="20" VerticalAlignment="Top" Source="logo.ico" Margin="0,0,0,0" />
+
+                        <Grid>
+                            <Label x:Name="LblPlayerModeAvatar" Content="AVATAR" Style="{StaticResource PlayerMode.Label}" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150"/>
+                            <Label x:Name="LblPlayerModeAvatarContent" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="155,0,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+                        </Grid>
+                        <Grid>
+                            <Label x:Name="LblPlayerModeKillFame" Content="KILL__FAME" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                            <Label x:Name="LblPlayerModeKillFameContent" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="155,0,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+                <Grid Background="DarkBlue">
+                    <StackPanel>
+                        <Image Height="20" VerticalAlignment="Top" Source="logo.ico" Margin="0,0,0,0" />
+
+                        <Grid>
+                            <Label x:Name="LblPlayerModeAvatar2" Content="AVATAR" Style="{StaticResource PlayerMode.Label}" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150"/>
+                            <Label x:Name="LblPlayerModeAvatarContent2" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="155,0,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+                        </Grid>
+                        <Grid>
+                            <Label x:Name="LblPlayerModeKillFame2" Content="KILL__FAME" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"/>
+                            <Label x:Name="LblPlayerModeKillFameContent2" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="155,0,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
 
         </Grid>
     </Grid>
