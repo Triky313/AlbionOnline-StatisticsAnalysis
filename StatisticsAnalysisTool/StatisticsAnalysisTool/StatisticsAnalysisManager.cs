@@ -136,7 +136,7 @@ namespace StatisticsAnalysisTool
             {
                 var cultureCode = FrequentlyValues.GameLanguages.FirstOrDefault(x => x.Key == language).Value;
 
-                if (parsedObject["localizedNames"][cultureCode] != null)
+                if (parsedObject["localizedNames"]?[cultureCode] != null)
                     itemData.LocalizedNames.Add(new ItemData.KeyValueStruct() { Key = cultureCode, Value = parsedObject["localizedNames"][cultureCode].ToString() });
             }
         }
