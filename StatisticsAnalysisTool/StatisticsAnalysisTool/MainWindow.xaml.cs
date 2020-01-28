@@ -39,10 +39,10 @@ namespace StatisticsAnalysisTool
         private async void Test()
         {
             // TEST
-            var a = await ApiController.GetSearchInfoFromJsonAsync("Triky313");
+            var a = await ApiController.GetGameInfoSearchFromJsonAsync("Triky313");
             Debug.Print(a.SearchPlayer.FirstOrDefault()?.GuildName);
 
-            var b = await ApiController.GetPlayerInfoFromJsonAsync("nWBktpGoTraMWUb-xeRAwQ");
+            var b = await ApiController.GetGameInfoPlayersFromJsonAsync("nWBktpGoTraMWUb-xeRAwQ");
             Debug.Print(b.Id);
         }
 
@@ -110,7 +110,7 @@ namespace StatisticsAnalysisTool
 
             CbMode.Items.Clear();
             CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("NORMAL"), Mode = ViewMode.Normal });
-            //CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = ViewMode.GameInfoPlayersResponse });
+            CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = ViewMode.Player });
 
             if (CbMode.Items.Count > 0)
                 CbMode.SelectedIndex = 0;
@@ -278,6 +278,23 @@ namespace StatisticsAnalysisTool
             }
 
             Settings.Default.Save();
+        }
+
+        private async void BtnPlayerModeSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(TxtBoxPlayerModeUsername.Text))
+            {
+                var gameInfoSearchResponse = await ApiController.GetGameInfoSearchFromJsonAsync(TxtBoxPlayerModeUsername.Text);
+
+                if (gameInfoSearchResponse?.SearchPlayer == null)
+                    return;
+
+                foreach (var searchPlayer in gameInfoSearchResponse.SearchPlayer)
+                {
+                    LblPlayerModeAvatarContent.Content = searchPlayer.Avatar;
+                    LblPlayerModeKillFameContent.Content = searchPlayer.KillFame ?? 0;
+                }
+            }
         }
     }
 }

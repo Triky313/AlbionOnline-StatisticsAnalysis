@@ -93,6 +93,7 @@
     </ApplicationDefinition>
     <Compile Include="Common\FrequentlyValues.cs" />
     <Compile Include="Common\ApiController.cs" />
+    <Compile Include="Common\PlayerModeController.cs" />
     <Compile Include="Models\ComboboxMarketMode.cs" />
     <Compile Include="Models\Guild.cs" />
     <Compile Include="Models\GameInfoPlayersResponse.cs" />

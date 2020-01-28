@@ -409,6 +409,18 @@
             </Style.Triggers>
         </Style>
 
+        <!-- Separator -->
+        <Style TargetType="Separator">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <RadialGradientBrush>
+                        <GradientStop Color="{StaticResource Color.Button.First}" Offset="0"/>
+                        <GradientStop Color="{StaticResource Color.Button.Third}" Offset="1"/>
+                    </RadialGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- PlayerMode label -->
         <Style TargetType="Label" x:Key="PlayerMode.Label" >
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
