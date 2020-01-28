@@ -3,16 +3,16 @@
     using Newtonsoft.Json;
     using System.Collections.Generic;
 
-    public class SearchInfo
+    public class GameInfoSearchResponse
     {
         [JsonProperty(PropertyName = "guilds")]
-        public List<SearchGuild> SearchGuilds { get; set; }
+        public List<SearchGuildResponse> SearchGuilds { get; set; }
 
         [JsonProperty(PropertyName = "players")]
-        public List<SearchPlayer> SearchPlayer { get; set; }
+        public List<SearchPlayerResponse> SearchPlayer { get; set; }
     }
 
-    public class SearchGuild
+    public class SearchGuildResponse
     {
         [JsonProperty(PropertyName = "Id")]
         public string Id { get; set; }
@@ -33,7 +33,7 @@
         public ulong? DeathFame { get; set; }
     }
 
-    public class SearchPlayer
+    public class SearchPlayerResponse
     {
         [JsonProperty(PropertyName = "Id")]
         public string Id { get; set; }

@@ -4,10 +4,10 @@
     using System;
     using System.Collections.Generic;
 
-    public class Player
+    public class GameInfoPlayersResponse
     {
         public double AverageItemPower { get; set; }
-        public Equipment Equipment { get; set; }
+        public EquipmentResponse EquipmentResponse { get; set; }
         public List<object> Inventory { get; set; }
         public string Name { get; set; }
         public string Id { get; set; }
@@ -21,10 +21,10 @@
         public int DeathFame { get; set; }
         public long KillFame { get; set; }
         public double FameRatio { get; set; }
-        public LifetimeStatistics LifetimeStatistics { get; set; }
+        public LifetimeStatisticsResponse LifetimeStatisticsResponse { get; set; }
     }
 
-    public class Equipment
+    public class EquipmentResponse
     {
         [JsonProperty(PropertyName = "MainHand")]
         public object MainHand { get; set; }
@@ -57,7 +57,7 @@
         public object Food { get; set; }
     }
     
-    public class PvE
+    public class PvEResponse
     {
         public int Total { get; set; }
         public int Royal { get; set; }
@@ -65,70 +65,70 @@
         public int Hellgate { get; set; }
     }
 
-    public class Fiber
+    public class FiberResponse
     {
         public int Total { get; set; }
         public int Royal { get; set; }
         public int Outlands { get; set; }
     }
 
-    public class Hide
+    public class HideResponse
     {
         public int Total { get; set; }
         public int Royal { get; set; }
         public int Outlands { get; set; }
     }
 
-    public class Ore
+    public class OreResponse
     {
         public int Total { get; set; }
         public int Royal { get; set; }
         public int Outlands { get; set; }
     }
 
-    public class Rock
+    public class RockResponse
     {
         public int Total { get; set; }
         public int Royal { get; set; }
         public int Outlands { get; set; }
     }
 
-    public class Wood
+    public class WoodResponse
     {
         public int Total { get; set; }
         public int Royal { get; set; }
         public int Outlands { get; set; }
     }
 
-    public class All
+    public class AllResponse
     {
         public int Total { get; set; }
         public int Royal { get; set; }
         public int Outlands { get; set; }
     }
 
-    public class Gathering
+    public class GatheringResponse
     {
-        public Fiber Fiber { get; set; }
-        public Hide Hide { get; set; }
-        public Ore Ore { get; set; }
-        public Rock Rock { get; set; }
-        public Wood Wood { get; set; }
-        public All All { get; set; }
+        public FiberResponse FiberResponse { get; set; }
+        public HideResponse HideResponse { get; set; }
+        public OreResponse OreResponse { get; set; }
+        public RockResponse RockResponse { get; set; }
+        public WoodResponse WoodResponse { get; set; }
+        public AllResponse AllResponse { get; set; }
     }
 
-    public class Crafting
+    public class CraftingResponse
     {
         public int Total { get; set; }
         public int Royal { get; set; }
         public int Outlands { get; set; }
     }
 
-    public class LifetimeStatistics
+    public class LifetimeStatisticsResponse
     {
-        public PvE PvE { get; set; }
-        public Gathering Gathering { get; set; }
-        public Crafting Crafting { get; set; }
+        public PvEResponse PvEResponse { get; set; }
+        public GatheringResponse GatheringResponse { get; set; }
+        public CraftingResponse CraftingResponse { get; set; }
         public int CrystalLeague { get; set; }
         public DateTime Timestamp { get; set; }
     }

@@ -409,6 +409,11 @@
             </Style.Triggers>
         </Style>
 
+        <!-- PlayerMode label -->
+        <Style TargetType="Label" x:Key="PlayerMode.Label" >
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+        </Style>
+
         <!-- Price list column style -->
         <Style TargetType="Label" x:Key="Price.List.Column.Style" >
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>

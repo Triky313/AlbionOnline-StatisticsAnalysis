@@ -93,25 +93,36 @@
             }
         }
 
-        public static async Task<SearchInfo> GetSearchInfoFromJsonAsync(string username)
+        public static async Task<GameInfoSearchResponse> GetGameInfoSearchFromJsonAsync(string username)
         {
             using (var wc = new WebClient())
             {
                 var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/search?q={username}";
                 var itemString = await wc.DownloadStringTaskAsync(apiString);
                 
-                return JsonConvert.DeserializeObject<SearchInfo>(itemString);
+                return JsonConvert.DeserializeObject<GameInfoSearchResponse>(itemString);
             }
         }
-
-        public static async Task<Player> GetPlayerInfoFromJsonAsync(string userid)
+        
+        public static async Task<GameInfoPlayersResponse> GetGameInfoPlayersFromJsonAsync(string userid)
         {
             using (var wc = new WebClient())
             {
                 var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}";
                 var itemString = await wc.DownloadStringTaskAsync(apiString);
 
-                return JsonConvert.DeserializeObject<Player>(itemString);
+                return JsonConvert.DeserializeObject<GameInfoPlayersResponse>(itemString);
+            }
+        }
+
+        public static async Task<GameInfiGuildsResponse> GetGameInfoGuildsFromJsonAsync(string guildid)
+        {
+            using (var wc = new WebClient())
+            {
+                var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/guilds/{guildid}";
+                var itemString = await wc.DownloadStringTaskAsync(apiString);
+
+                return JsonConvert.DeserializeObject<GameInfiGuildsResponse>(itemString);
             }
         }
 

@@ -69,8 +69,14 @@
             </Grid>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Visible">
-            <TextBox HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
-            <Label Content="Label" HorizontalAlignment="Left" Margin="225,71,0,0" VerticalAlignment="Top" Width="120"/>
+            <TextBox HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
+            <Button Content="SAVE" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="84" Height="25"/>
+
+            <Label x:Name="LblUsername" Content="USERNAME" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top" Width="150"/>
+            <Label x:Name="LblPlayerModeUsername" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="165,54,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+
+            <Label x:Name="LblUsername2" Content="USERNAME" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="150"/>
+            <Label x:Name="LblPlayerModeUsername2" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="165,85,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
 
         </Grid>
     </Grid>

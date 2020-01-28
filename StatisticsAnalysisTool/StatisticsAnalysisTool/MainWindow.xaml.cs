@@ -33,12 +33,17 @@ namespace StatisticsAnalysisTool
             Utilities.AutoUpdate();
             InitMarketAnalysis();
 
-            // TEST
-            //var a = ApiController.GetSearchInfoFromJsonAsync("Triky313");
-            //Debug.Print(a.Result.Players.FirstOrDefault()?.Id);
+            Test();
+        }
 
-            //var a = ApiController.GetPlayerInfoFromJsonAsync("nWBktpGoTraMWUb-xeRAwQ");
-            //Debug.Print(a.Result.Id);
+        private async void Test()
+        {
+            // TEST
+            var a = await ApiController.GetSearchInfoFromJsonAsync("Triky313");
+            Debug.Print(a.SearchPlayer.FirstOrDefault()?.GuildName);
+
+            var b = await ApiController.GetPlayerInfoFromJsonAsync("nWBktpGoTraMWUb-xeRAwQ");
+            Debug.Print(b.Id);
         }
 
         private void InitMarketAnalysis()
@@ -105,7 +110,7 @@ namespace StatisticsAnalysisTool
 
             CbMode.Items.Clear();
             CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("NORMAL"), Mode = ViewMode.Normal });
-            //CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = ViewMode.Player });
+            //CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = ViewMode.GameInfoPlayersResponse });
 
             if (CbMode.Items.Count > 0)
                 CbMode.SelectedIndex = 0;
