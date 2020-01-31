@@ -96,6 +96,7 @@
     <Compile Include="Common\ApiController.cs" />
     <Compile Include="Common\PlayerModeController.cs" />
     <Compile Include="Models\ComboboxMarketMode.cs" />
+    <Compile Include="Models\PlayerModeTranslation.cs" />
     <Compile Include="Models\Guild.cs" />
     <Compile Include="Models\GameInfoPlayers.cs" />
     <Compile Include="Models\SearchInfos.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Common\WebDownload.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="ItemWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

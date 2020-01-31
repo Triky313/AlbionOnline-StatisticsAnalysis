@@ -95,23 +95,32 @@
 
         public static async Task<GameInfoSearchResponse> GetGameInfoSearchFromJsonAsync(string username)
         {
+            var gameInfoSearchResponse = new GameInfoSearchResponse();
+
             using (var wc = new WebClient())
             {
                 var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/search?q={username}";
                 var itemString = await wc.DownloadStringTaskAsync(apiString);
+            
+                var result = JsonConvert.DeserializeObject<GameInfoSearchResponse>(itemString);
+                gameInfoSearchResponse = result ?? gameInfoSearchResponse;
                 
-                return JsonConvert.DeserializeObject<GameInfoSearchResponse>(itemString);
+                return gameInfoSearchResponse;
             }
         }
         
         public static async Task<GameInfoPlayersResponse> GetGameInfoPlayersFromJsonAsync(string userid)
         {
+            var gameInfoPlayerResponse = new GameInfoPlayersResponse();
+
             using (var wc = new WebClient())
             {
                 var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}";
                 var itemString = await wc.DownloadStringTaskAsync(apiString);
 
-                return JsonConvert.DeserializeObject<GameInfoPlayersResponse>(itemString);
+                var result = JsonConvert.DeserializeObject<GameInfoPlayersResponse>(itemString);
+                gameInfoPlayerResponse = result ?? gameInfoPlayerResponse;
+                return gameInfoPlayerResponse;
             }
         }
 

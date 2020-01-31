@@ -6,44 +6,35 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool
 {
     /// <summary>
     ///     Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow: INotifyPropertyChanged
+    public partial class MainWindow
     {
         public enum ViewMode
         {
             Normal,
             Player
         }
-        
+
+        private readonly MainWindowViewModel _mainWindowViewModel;
+
         public MainWindow()
         {
-            DataContext = this;
             InitializeComponent();
             Utilities.AutoUpdate();
             InitMarketAnalysis();
-
-            Test();
-        }
-
-        private async void Test()
-        {
-            // TEST
-            var a = await ApiController.GetGameInfoSearchFromJsonAsync("Triky313");
-            Debug.Print(a.SearchPlayer.FirstOrDefault()?.GuildName);
-
-            var b = await ApiController.GetGameInfoPlayersFromJsonAsync("nWBktpGoTraMWUb-xeRAwQ");
-            Debug.Print(b.Id);
+            _mainWindowViewModel = new MainWindowViewModel(this);
+            DataContext = _mainWindowViewModel;
         }
 
         private void InitMarketAnalysis()
@@ -52,7 +43,6 @@ namespace StatisticsAnalysisTool
             {
                 Dispatcher?.Invoke(() =>
                 {
-                    InitLanguage();
                     TxtSearch.IsEnabled = false;
                     FaLoadIcon.Visibility = Visibility.Visible;
                     InitUi();
@@ -88,20 +78,6 @@ namespace StatisticsAnalysisTool
                     }
                 });
             });
-        }
-
-        private void InitLanguage()
-        {
-            LanguageController.InitializeLanguageFiles();
-
-            if (LanguageController.SetLanguage(Settings.Default.CurrentLanguageCulture))
-                return;
-
-            if (LanguageController.SetLanguage(LanguageController.FileInfos.FirstOrDefault()?.FileName)) 
-                return;
-
-            MessageBox.Show("ERROR: No language file found!");
-            Close();
         }
 
         private void InitUi()
@@ -253,15 +229,6 @@ namespace StatisticsAnalysisTool
             Process.Start(e.Uri.AbsoluteUri);
         }
         
-        public string DonateUrl => Settings.Default.DonateUrl;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (WindowState == WindowState.Maximized)
@@ -282,36 +249,17 @@ namespace StatisticsAnalysisTool
 
         private async void BtnPlayerModeSave_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(TxtBoxPlayerModeUsername.Text))
-            {
-                var gameInfoSearchResponse = await ApiController.GetGameInfoSearchFromJsonAsync(TxtBoxPlayerModeUsername.Text);
+            if (string.IsNullOrWhiteSpace(TxtBoxPlayerModeUsername.Text))
+                return;
+            
+            _mainWindowViewModel.GameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(TxtBoxPlayerModeUsername.Text);
 
-                if (gameInfoSearchResponse?.SearchPlayer?.FirstOrDefault()?.Id == null)
-                {
-                    return;
-                }
-
-                var gameInfoPlayer = await ApiController.GetGameInfoPlayersFromJsonAsync(gameInfoSearchResponse?.SearchPlayer?.FirstOrDefault()?.Id);
-
-                LblPlayerModeContentId.Content = gameInfoPlayer.Id;
-                LblPlayerModeContentName.Content = gameInfoPlayer.Name;
-                LblPlayerModeContentGuildName.Content = gameInfoPlayer.GuildName;
-                LblPlayerModeContentAllianceName.Content = gameInfoPlayer.AllianceName;
-                LblPlayerModeContentKillFame.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.KillFame);
-                LblPlayerModeContentDeathFame.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.DeathFame);
-                LblPlayerModeContentFameRatio.Content = gameInfoPlayer.FameRatio;
-                LblPlayerModeContentTotalKills.Content = Formatting.NumberValueWithPointSeparation(gameInfoSearchResponse.SearchPlayer?.FirstOrDefault()?.TotalKills);
-                LblPlayerModeContentGvgKills.Content = Formatting.NumberValueWithPointSeparation(gameInfoSearchResponse.SearchPlayer?.FirstOrDefault()?.GvgKills);
-                LblPlayerModeContentGvgWon.Content = Formatting.NumberValueWithPointSeparation(gameInfoSearchResponse.SearchPlayer?.FirstOrDefault()?.GvgWon);
-
-                LblPlayerModeContentCrystalLeague.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.LifetimeStatisticsResponse?.CrystalLeague);
-
-                LblPlayerModeContentPveTotal.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.LifetimeStatisticsResponse?.PvEResponse.Total);
-                LblPlayerModeContentPveRoyal.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.LifetimeStatisticsResponse?.PvEResponse.Royal);
-                LblPlayerModeContentPveOutlands.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.LifetimeStatisticsResponse?.PvEResponse.Outlands);
-                LblPlayerModeContentPveHellgate.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.LifetimeStatisticsResponse?.PvEResponse.Hellgate);
-
-            }
+            if (_mainWindowViewModel.GameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id == null)
+                return;
+            
+            _mainWindowViewModel.SearchPlayer = _mainWindowViewModel.GameInfoSearch?.SearchPlayer?.FirstOrDefault();
+            _mainWindowViewModel.GameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(_mainWindowViewModel.GameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id);
         }
+        
     }
 }
