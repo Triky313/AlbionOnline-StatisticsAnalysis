@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -298,9 +297,19 @@ namespace StatisticsAnalysisTool
                 LblPlayerModeContentName.Content = gameInfoPlayer.Name;
                 LblPlayerModeContentGuildName.Content = gameInfoPlayer.GuildName;
                 LblPlayerModeContentAllianceName.Content = gameInfoPlayer.AllianceName;
-                LblPlayerModeContentKillFame.Content = gameInfoPlayer.KillFame.ToString("N0", new CultureInfo(LanguageController.CurrentLanguage));
-                LblPlayerModeContentDeathFame.Content = gameInfoPlayer.DeathFame.ToString("N0", new CultureInfo(LanguageController.CurrentLanguage));
+                LblPlayerModeContentKillFame.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.KillFame);
+                LblPlayerModeContentDeathFame.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.DeathFame);
                 LblPlayerModeContentFameRatio.Content = gameInfoPlayer.FameRatio;
+                LblPlayerModeContentTotalKills.Content = Formatting.NumberValueWithPointSeparation(gameInfoSearchResponse.SearchPlayer?.FirstOrDefault()?.TotalKills);
+                LblPlayerModeContentGvgKills.Content = Formatting.NumberValueWithPointSeparation(gameInfoSearchResponse.SearchPlayer?.FirstOrDefault()?.GvgKills);
+                LblPlayerModeContentGvgWon.Content = Formatting.NumberValueWithPointSeparation(gameInfoSearchResponse.SearchPlayer?.FirstOrDefault()?.GvgWon);
+
+                LblPlayerModeContentCrystalLeague.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.LifetimeStatisticsResponse?.CrystalLeague);
+
+                LblPlayerModeContentPveTotal.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.LifetimeStatisticsResponse?.PvEResponse.Total);
+                LblPlayerModeContentPveRoyal.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.LifetimeStatisticsResponse?.PvEResponse.Royal);
+                LblPlayerModeContentPveOutlands.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.LifetimeStatisticsResponse?.PvEResponse.Outlands);
+                LblPlayerModeContentPveHellgate.Content = Formatting.NumberValueWithPointSeparation(gameInfoPlayer.LifetimeStatisticsResponse?.PvEResponse.Hellgate);
 
             }
         }

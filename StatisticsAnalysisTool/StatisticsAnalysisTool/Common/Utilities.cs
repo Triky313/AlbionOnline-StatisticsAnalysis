@@ -1,4 +1,5 @@
 ﻿using AutoUpdaterDotNET;
+using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common
 {
