@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -16,7 +17,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private GameInfoSearchResponse _gameInfoSearchResponse;
         private SearchPlayerResponse _searchPlayer;
         private GameInfoPlayersResponse _gameInfoPlayer;
-
+        
         public MainWindowViewModel(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
