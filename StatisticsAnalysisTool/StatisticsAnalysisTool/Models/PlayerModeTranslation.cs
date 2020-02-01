@@ -24,6 +24,12 @@ namespace StatisticsAnalysisTool.Models
         public static string Hellgate => LanguageController.Translation("HELLGATE");
         public static string Crafting => LanguageController.Translation("CRAFTING");
         public static string Gathering => LanguageController.Translation("GATHERING");
+        public static string GatheringFiber => $"{LanguageController.Translation("GATHERING")} ({LanguageController.Translation("FIBER")})";
+        public static string GatheringHide => $"{LanguageController.Translation("GATHERING")} ({LanguageController.Translation("HIDE")})";
+        public static string GatheringOre => $"{LanguageController.Translation("GATHERING")} ({LanguageController.Translation("ORE")})";
+        public static string GatheringRock => $"{LanguageController.Translation("GATHERING")} ({LanguageController.Translation("ROCK")})";
+        public static string GatheringWood => $"{LanguageController.Translation("GATHERING")} ({LanguageController.Translation("WOOD")})";
+        public static string GatheringAll => $"{LanguageController.Translation("GATHERING")} ({LanguageController.Translation("ALL")})";
         public static string All => LanguageController.Translation("ALL");
         public static string Fiber => LanguageController.Translation("FIBER");
         public static string Hide => LanguageController.Translation("HIDE");
