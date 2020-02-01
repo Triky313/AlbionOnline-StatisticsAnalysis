@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Models
         public static string Name => LanguageController.Translation("NAME");
         public static string AverageItemPower => LanguageController.Translation("AVERAGE_ITEM_POWER");
         public static string GuildName => LanguageController.Translation("GUILD_NAME");
-        public static string GuildId => LanguageController.Translation("AVERAGE_ITEM_POWER");
+        public static string GuildId => LanguageController.Translation("GUILD_ID");
         public static string AllianceName => LanguageController.Translation("ALLIANCE_NAME");
         public static string AllianceId => LanguageController.Translation("ALLIANCE_ID");
         public static string DeathFame => LanguageController.Translation("DEATH_FAME");
@@ -46,5 +46,8 @@ namespace StatisticsAnalysisTool.Models
         public static string Mount => LanguageController.Translation("MOUNT");
         public static string Potion => LanguageController.Translation("POTION");
         public static string Food => LanguageController.Translation("FOOD");
+        public static string GeneralInformation => LanguageController.Translation("GENERAL_INFORMATION");
+        public static string Pvp => LanguageController.Translation("PVP");
+        public static string Pve => LanguageController.Translation("PVE");
     }
 }

@@ -75,7 +75,7 @@
                 <StackPanel Margin="10,5,10,10">
                     <StackPanel Margin="0,0,0,20">
                         <Grid Margin="0,0,0,-15">
-                            <Label Content="GENERAL__INFORMATION" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.GeneralInformation}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14"/>
                             <Separator/>
                         </Grid>
                         <Grid>
@@ -121,7 +121,7 @@
                     </StackPanel>
                     <StackPanel Margin="0,0,0,20">
                         <Grid Margin="0,0,0,-15">
-                            <Label Content="PVP" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Pvp}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14"/>
                             <Separator/>
                         </Grid>
                         <Grid>
@@ -131,7 +131,7 @@
                     </StackPanel>
                     <StackPanel Margin="0,0,0,20">
                         <Grid Margin="0,0,0,-15">
-                            <Label Content="PVE" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Pve}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14"/>
                             <Separator/>
                         </Grid>
                         <Grid>
