@@ -70,7 +70,7 @@
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Visible">
             <TextBox x:Name="TxtBoxPlayerModeUsername" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
-            <Button x:Name="BtnPlayerModeSave" Content="SAVE" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="110" Height="25" Click="BtnPlayerModeSave_Click"/>
+            <Button x:Name="BtnPlayerModeSave" Content="{Binding Path=SaveTranslation}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="110" Height="25" Click="BtnPlayerModeSave_Click"/>
             <ScrollViewer  Margin="0,40,0,20" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Margin="10,5,10,10">
                     <StackPanel Margin="0,0,0,20">
@@ -95,16 +95,22 @@
                             <Label Content="{Binding Path=GameInfoPlayers.AllianceName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
+                            <Label Content="{Binding Path=PlayerModeTranslation.FameRatio}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=GameInfoPlayers.FameRatio, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N2" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,-15">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Pvp}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14"/>
+                            <Separator/>
+                        </Grid>
+                        <Grid>
                             <Label Content="{Binding Path=PlayerModeTranslation.KillFame}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
                             <Label Content="{Binding Path=GameInfoPlayers.KillFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
                             <Label Content="{Binding Path=PlayerModeTranslation.DeathFame}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
                             <Label Content="{Binding Path=GameInfoPlayers.DeathFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
-                        </Grid>
-                        <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.FameRatio}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
-                            <Label Content="{Binding Path=GameInfoPlayers.FameRatio, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N2" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
                             <Label Content="{Binding Path=PlayerModeTranslation.TotalKills}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
@@ -117,12 +123,6 @@
                         <Grid>
                             <Label Content="{Binding Path=PlayerModeTranslation.GvgWon}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
                             <Label Content="{Binding Path=SearchPlayer.GvgWon, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
-                        </Grid>
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,20">
-                        <Grid Margin="0,0,0,-15">
-                            <Label Content="{Binding Path=PlayerModeTranslation.Pvp}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14"/>
-                            <Separator/>
                         </Grid>
                         <Grid>
                             <Label Content="{Binding Path=PlayerModeTranslation.CrystalLeague}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>

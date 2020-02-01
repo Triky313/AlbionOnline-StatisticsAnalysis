@@ -66,6 +66,7 @@ namespace StatisticsAnalysisTool.ViewModels
         public PlayerModeTranslation PlayerModeTranslation => new PlayerModeTranslation();
 
         public string DonateUrl => Settings.Default.DonateUrl;
+        public string SaveTranslation => LanguageController.Translation("SAVE");
 
         public event PropertyChangedEventHandler PropertyChanged;
 
