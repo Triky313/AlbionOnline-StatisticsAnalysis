@@ -47,5 +47,8 @@
     <Setting Name="CurrentLanguageCulture" Type="System.String" Scope="User">
       <Value Profile="(Default)">en-EN</Value>
     </Setting>
+    <Setting Name="SavedPlayerInformationName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

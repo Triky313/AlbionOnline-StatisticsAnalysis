@@ -6,32 +6,35 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool
 {
     /// <summary>
     ///     Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow: INotifyPropertyChanged
+    public partial class MainWindow
     {
         public enum ViewMode
         {
             Normal,
             Player
         }
-        
+
+        private readonly MainWindowViewModel _mainWindowViewModel;
+
         public MainWindow()
         {
-            DataContext = this;
             InitializeComponent();
             Utilities.AutoUpdate();
             InitMarketAnalysis();
+            _mainWindowViewModel = new MainWindowViewModel(this);
+            DataContext = _mainWindowViewModel;
         }
 
         private void InitMarketAnalysis()
@@ -40,7 +43,6 @@ namespace StatisticsAnalysisTool
             {
                 Dispatcher?.Invoke(() =>
                 {
-                    InitLanguage();
                     TxtSearch.IsEnabled = false;
                     FaLoadIcon.Visibility = Visibility.Visible;
                     InitUi();
@@ -62,6 +64,11 @@ namespace StatisticsAnalysisTool
 
                 #endregion
 
+                Dispatcher?.Invoke(() =>
+                {
+                    TxtBoxPlayerModeUsername.Text = Settings.Default.SavedPlayerInformationName;
+                });
+
                 var isItemListLoaded = await StatisticsAnalysisManager.GetItemListFromJsonAsync();
                 if (!isItemListLoaded)
                     MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), 
@@ -73,23 +80,10 @@ namespace StatisticsAnalysisTool
                     {
                         FaLoadIcon.Visibility = Visibility.Hidden;
                         TxtSearch.IsEnabled = true;
+                        TxtSearch.Focus();
                     }
                 });
             });
-        }
-
-        private void InitLanguage()
-        {
-            LanguageController.InitializeLanguageFiles();
-
-            if (LanguageController.SetLanguage(Settings.Default.CurrentLanguageCulture))
-                return;
-
-            if (LanguageController.SetLanguage(LanguageController.FileInfos.FirstOrDefault()?.FileName)) 
-                return;
-
-            MessageBox.Show("ERROR: No language file found!");
-            Close();
         }
 
         private void InitUi()
@@ -98,7 +92,7 @@ namespace StatisticsAnalysisTool
 
             CbMode.Items.Clear();
             CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("NORMAL"), Mode = ViewMode.Normal });
-            //CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = ViewMode.Player });
+            CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = ViewMode.Player });
 
             if (CbMode.Items.Count > 0)
                 CbMode.SelectedIndex = 0;
@@ -222,10 +216,12 @@ namespace StatisticsAnalysisTool
                 case ViewMode.Normal:
                     HideAllGrids();
                     GridNormalMode.Visibility = Visibility.Visible;
+                    TxtSearch.Focus();
                     return;
                 case ViewMode.Player:
                     HideAllGrids();
                     GridPlayerMode.Visibility = Visibility.Visible;
+                    TxtBoxPlayerModeUsername.Focus();
                     return;
             }
         }
@@ -241,15 +237,6 @@ namespace StatisticsAnalysisTool
             Process.Start(e.Uri.AbsoluteUri);
         }
         
-        public string DonateUrl => Settings.Default.DonateUrl;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (WindowState == WindowState.Maximized)
@@ -265,7 +252,35 @@ namespace StatisticsAnalysisTool
                 Settings.Default.MainWindowMaximized = false;
             }
 
+            Settings.Default.SavedPlayerInformationName = TxtBoxPlayerModeUsername.Text;
             Settings.Default.Save();
+        }
+
+        private async Task LoadPlayerInformation()
+        {
+            if (string.IsNullOrWhiteSpace(TxtBoxPlayerModeUsername.Text))
+                return;
+
+            _mainWindowViewModel.GameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(TxtBoxPlayerModeUsername.Text);
+
+            if (_mainWindowViewModel.GameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id == null)
+                return;
+
+            _mainWindowViewModel.SearchPlayer = _mainWindowViewModel.GameInfoSearch?.SearchPlayer?.FirstOrDefault();
+            _mainWindowViewModel.GameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(_mainWindowViewModel.GameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id);
+        }
+        
+        private async void BtnPlayerModeSave_Click(object sender, RoutedEventArgs e)
+        {
+            await LoadPlayerInformation();
+        }
+
+        private async void TxtBoxPlayerModeUsername_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter)
+                return;
+
+            await LoadPlayerInformation();
         }
     }
 }
