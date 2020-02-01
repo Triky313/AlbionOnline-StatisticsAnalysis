@@ -60,10 +60,14 @@ namespace StatisticsAnalysisTool
                     }
 
                     CenterWindowOnScreen();
-                    TxtBoxPlayerModeUsername.Text = Settings.Default.SavedPlayerInformationName;
                 });
 
                 #endregion
+
+                Dispatcher?.Invoke(() =>
+                {
+                    TxtBoxPlayerModeUsername.Text = Settings.Default.SavedPlayerInformationName;
+                });
 
                 var isItemListLoaded = await StatisticsAnalysisManager.GetItemListFromJsonAsync();
                 if (!isItemListLoaded)
@@ -76,6 +80,7 @@ namespace StatisticsAnalysisTool
                     {
                         FaLoadIcon.Visibility = Visibility.Hidden;
                         TxtSearch.IsEnabled = true;
+                        TxtSearch.Focus();
                     }
                 });
             });
@@ -211,10 +216,12 @@ namespace StatisticsAnalysisTool
                 case ViewMode.Normal:
                     HideAllGrids();
                     GridNormalMode.Visibility = Visibility.Visible;
+                    TxtSearch.Focus();
                     return;
                 case ViewMode.Player:
                     HideAllGrids();
                     GridPlayerMode.Visibility = Visibility.Visible;
+                    TxtBoxPlayerModeUsername.Focus();
                     return;
             }
         }
