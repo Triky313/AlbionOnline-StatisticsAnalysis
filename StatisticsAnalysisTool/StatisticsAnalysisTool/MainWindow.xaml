@@ -24,7 +24,7 @@
             </Grid>
         </Grid>
         <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">
-            <TextBox x:Name="TxtSearch" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="299" KeyUp="TxtSearch_KeyUp"/>
+            <TextBox x:Name="TxtSearch" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="299" KeyUp="TxtSearch_KeyUp"/>
             <Label x:Name="LblItemCounter" Content="0/0" Height="26" Margin="0,6,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="110" />
 
             <StackPanel Orientation="Horizontal" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,7,120,0" Width="10">
@@ -69,7 +69,7 @@
             </Grid>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Visible">
-            <TextBox x:Name="TxtBoxPlayerModeUsername" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
+            <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding Path=SavedPlayerInformationName, ElementName=window}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown"/>
             <Button x:Name="BtnPlayerModeSave" Content="{Binding Path=SaveTranslation}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="110" Height="25" Click="BtnPlayerModeSave_Click"/>
             <ScrollViewer  Margin="0,40,0,20" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Margin="10,5,10,10">

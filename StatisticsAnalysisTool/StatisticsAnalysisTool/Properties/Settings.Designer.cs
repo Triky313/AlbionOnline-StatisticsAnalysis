@@ -197,5 +197,17 @@ namespace StatisticsAnalysisTool.Properties {
                 this["CurrentLanguageCulture"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SavedPlayerInformationName {
+            get {
+                return ((string)(this["SavedPlayerInformationName"]));
+            }
+            set {
+                this["SavedPlayerInformationName"] = value;
+            }
+        }
     }
 }

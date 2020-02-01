@@ -60,6 +60,7 @@ namespace StatisticsAnalysisTool
                     }
 
                     CenterWindowOnScreen();
+                    TxtBoxPlayerModeUsername.Text = Settings.Default.SavedPlayerInformationName;
                 });
 
                 #endregion
@@ -244,22 +245,35 @@ namespace StatisticsAnalysisTool
                 Settings.Default.MainWindowMaximized = false;
             }
 
+            Settings.Default.SavedPlayerInformationName = TxtBoxPlayerModeUsername.Text;
             Settings.Default.Save();
         }
 
-        private async void BtnPlayerModeSave_Click(object sender, RoutedEventArgs e)
+        private async Task LoadPlayerInformation()
         {
             if (string.IsNullOrWhiteSpace(TxtBoxPlayerModeUsername.Text))
                 return;
-            
+
             _mainWindowViewModel.GameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(TxtBoxPlayerModeUsername.Text);
 
             if (_mainWindowViewModel.GameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id == null)
                 return;
-            
+
             _mainWindowViewModel.SearchPlayer = _mainWindowViewModel.GameInfoSearch?.SearchPlayer?.FirstOrDefault();
             _mainWindowViewModel.GameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(_mainWindowViewModel.GameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id);
         }
         
+        private async void BtnPlayerModeSave_Click(object sender, RoutedEventArgs e)
+        {
+            await LoadPlayerInformation();
+        }
+
+        private async void TxtBoxPlayerModeUsername_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter)
+                return;
+
+            await LoadPlayerInformation();
+        }
     }
 }
