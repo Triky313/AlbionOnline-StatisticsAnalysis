@@ -104,7 +104,7 @@ namespace StatisticsAnalysisTool
             {
                 try
                 {
-                    return Items?.FindAll(s => (s.LocalizedNameAndEnglish().ToLower().Contains(searchText.ToLower())));
+                    return Items?.FindAll(s => (s.LocalizedNameAndEnglish.ToLower().Contains(searchText.ToLower())));
                 }
                 catch (Exception ex)
                 {
