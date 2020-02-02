@@ -97,7 +97,7 @@ namespace StatisticsAnalysisTool
             Items = await TryToGetItemListFromWeb(url);
             return (Items != null);
         }
-
+        
         public static async Task<List<Item>> FindItemsAsync(string searchText)
         {
             return await Task.Run(() =>
@@ -140,6 +140,5 @@ namespace StatisticsAnalysisTool
                     itemData.LocalizedNames.Add(new ItemData.KeyValueStruct() { Key = cultureCode, Value = parsedObject["localizedNames"][cultureCode].ToString() });
             }
         }
-
     }
 }
