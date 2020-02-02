@@ -97,14 +97,14 @@ namespace StatisticsAnalysisTool
             Items = await TryToGetItemListFromWeb(url);
             return (Items != null);
         }
-
+        
         public static async Task<List<Item>> FindItemsAsync(string searchText)
         {
             return await Task.Run(() =>
             {
                 try
                 {
-                    return Items?.FindAll(s => (s.LocalizedName().ToLower().Contains(searchText.ToLower())));
+                    return Items?.FindAll(s => (s.LocalizedNameAndEnglish.ToLower().Contains(searchText.ToLower())));
                 }
                 catch (Exception ex)
                 {
@@ -140,6 +140,5 @@ namespace StatisticsAnalysisTool
                     itemData.LocalizedNames.Add(new ItemData.KeyValueStruct() { Key = cultureCode, Value = parsedObject["localizedNames"][cultureCode].ToString() });
             }
         }
-
     }
 }
