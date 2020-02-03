@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -11,7 +12,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool
 {

@@ -18,7 +18,18 @@ namespace StatisticsAnalysisTool.ViewModels
         public MainWindowViewModel(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
+            UpgradeSettings();
             InitLanguage();
+        }
+
+        private void UpgradeSettings()
+        {
+            if (Settings.Default.UpgradeRequired)
+            {
+                Settings.Default.Upgrade();
+                Settings.Default.UpgradeRequired = false;
+                Settings.Default.Save();
+            }
         }
 
         private void InitLanguage()
