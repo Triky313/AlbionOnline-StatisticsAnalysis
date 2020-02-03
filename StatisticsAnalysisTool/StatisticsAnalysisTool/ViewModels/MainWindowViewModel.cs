@@ -1,12 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -26,12 +23,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void InitLanguage()
         {
-            LanguageController.InitializeLanguageFiles();
-
-            if (LanguageController.SetLanguage(Settings.Default.CurrentLanguageCulture))
-                return;
-
-            if (LanguageController.SetLanguage(LanguageController.FileInfos.FirstOrDefault()?.FileName))
+            if (LanguageController.SetFirstLanguageIfPossible())
                 return;
 
             MessageBox.Show("ERROR: No language file found!");

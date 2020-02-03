@@ -8,9 +8,6 @@
     <Setting Name="LanguageDirectoryName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Languages</Value>
     </Setting>
-    <Setting Name="SettingsFileName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">settings.ini</Value>
-    </Setting>
     <Setting Name="ImageResources" Type="System.String" Scope="User">
       <Value Profile="(Default)">ImageResources</Value>
     </Setting>
@@ -45,7 +42,7 @@
       <Value Profile="(Default)">https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json</Value>
     </Setting>
     <Setting Name="CurrentLanguageCulture" Type="System.String" Scope="User">
-      <Value Profile="(Default)">en-EN</Value>
+      <Value Profile="(Default)">en-US</Value>
     </Setting>
     <Setting Name="SavedPlayerInformationName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

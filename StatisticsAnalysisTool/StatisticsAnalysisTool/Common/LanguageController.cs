@@ -92,6 +92,22 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
+        public static bool SetFirstLanguageIfPossible()
+        {
+            InitializeLanguageFiles();
+
+            if (SetLanguage(CultureInfo.CurrentCulture.Name))
+                return true;
+
+            if (SetLanguage(Settings.Default.CurrentLanguageCulture))
+                return true;
+
+            if (SetLanguage(FileInfos.FirstOrDefault()?.FileName))
+                return true;
+
+            return false;
+        }
+
         public class FileInfo
         {
             public string FileName { get; set; }

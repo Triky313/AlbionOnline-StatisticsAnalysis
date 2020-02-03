@@ -1,7 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Properties;
-using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
