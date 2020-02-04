@@ -439,6 +439,25 @@
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
         </Style>
 
+        <!-- MainWindow title label -->
+        <Style TargetType="Label" x:Key="MainWindow.Title" >
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Top"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="Width" Value="425"></Setter>
+        </Style>
+
+        <!-- MainWindow version label -->
+        <Style TargetType="Label" x:Key="MainWindow.Version" >
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Progressbar}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Top"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+            <Setter Property="FontWeight" Value="Light"></Setter>
+        </Style>
+
         <!-- Progressbar style -->
         <Style x:Key="{x:Type ProgressBar}" TargetType="{x:Type ProgressBar}">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Progressbar}"/>
