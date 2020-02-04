@@ -1,10 +1,13 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using System;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Xaml;
+using Newtonsoft.Json;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -120,6 +123,30 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.LblItemCounter.Content = $"{items.Count}/{StatisticsAnalysisManager.Items.Count}";
                 _mainWindow.LblLocalImageCounter.Content = ImageController.LocalImagesCounter();
             });
+        }
+
+        private static bool SavePlayerModeInformationInBaseDirectory(PlayerModeInformationModel playerModeInformation)
+        {
+            var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.PlayerModeUpdateFileName);
+
+            var playerModeInformationString = JsonConvert.SerializeObject(playerModeInformation);
+
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    File.WriteAllText(filePath, playerModeInformationString);
+                    return true;
+                }
+
+                File.WriteAllText(filePath, playerModeInformationString);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task LoadPlayerInformation()

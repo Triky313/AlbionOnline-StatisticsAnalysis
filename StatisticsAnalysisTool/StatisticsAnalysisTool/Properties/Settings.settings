@@ -50,8 +50,8 @@
     <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="LastPlayerInfosJson" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="PlayerModeUpdateFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PlayerModeInformation.txt</Value>
     </Setting>
   </Settings>
 </SettingsFile>
