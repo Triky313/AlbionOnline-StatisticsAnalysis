@@ -96,6 +96,7 @@
     <Compile Include="Common\ApiController.cs" />
     <Compile Include="Common\PlayerModeController.cs" />
     <Compile Include="Models\ComboboxMarketMode.cs" />
+    <Compile Include="Models\PlayerModeInformationModel.cs" />
     <Compile Include="Models\PlayerModeTranslation.cs" />
     <Compile Include="Models\Guild.cs" />
     <Compile Include="Models\GameInfoPlayers.cs" />

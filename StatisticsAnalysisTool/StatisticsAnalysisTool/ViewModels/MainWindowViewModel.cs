@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Xaml;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -15,9 +16,7 @@ namespace StatisticsAnalysisTool.ViewModels
     {
         private readonly MainWindow _mainWindow;
 
-        private GameInfoSearchResponse _gameInfoSearchResponse;
-        private SearchPlayerResponse _searchPlayer;
-        private GameInfoPlayersResponse _gameInfoPlayer;
+        private PlayerModeInformationModel _playerModeInformation;
         
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -128,36 +127,26 @@ namespace StatisticsAnalysisTool.ViewModels
             if (string.IsNullOrWhiteSpace(_mainWindow.TxtBoxPlayerModeUsername.Text))
                 return;
 
-            GameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(_mainWindow.TxtBoxPlayerModeUsername.Text);
-
-            if (GameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id == null)
+            var gameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(_mainWindow.TxtBoxPlayerModeUsername.Text);
+            
+            if (gameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id == null)
                 return;
 
-            SearchPlayer = GameInfoSearch?.SearchPlayer?.FirstOrDefault();
-            GameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(GameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id);
+            var searchPlayer = gameInfoSearch?.SearchPlayer?.FirstOrDefault();
+            var gameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(gameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id);
+
+            PlayerModeInformation = new PlayerModeInformationModel() 
+            { 
+                GameInfoSearch = gameInfoSearch,
+                SearchPlayer = searchPlayer,
+                GameInfoPlayers = gameInfoPlayers
+            };
         }
 
-        public GameInfoSearchResponse GameInfoSearch {
-            get => _gameInfoSearchResponse;
+        public PlayerModeInformationModel PlayerModeInformation {
+            get => _playerModeInformation;
             set {
-                _gameInfoSearchResponse = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public SearchPlayerResponse SearchPlayer {
-            get => _searchPlayer;
-            set {
-                _searchPlayer = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public GameInfoPlayersResponse GameInfoPlayers
-        {
-            get => _gameInfoPlayer;
-            set {
-                _gameInfoPlayer = value;
+                _playerModeInformation = value;
                 OnPropertyChanged();
             }
         }
