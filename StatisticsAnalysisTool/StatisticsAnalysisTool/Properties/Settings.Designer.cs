@@ -212,13 +212,13 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LastPlayerInfosJson {
+        [global::System.Configuration.DefaultSettingValueAttribute("PlayerModeInformation.txt")]
+        public string PlayerModeUpdateFileName {
             get {
-                return ((string)(this["LastPlayerInfosJson"]));
+                return ((string)(this["PlayerModeUpdateFileName"]));
             }
             set {
-                this["LastPlayerInfosJson"] = value;
+                this["PlayerModeUpdateFileName"] = value;
             }
         }
     }

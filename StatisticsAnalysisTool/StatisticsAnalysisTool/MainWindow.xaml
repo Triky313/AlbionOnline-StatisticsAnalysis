@@ -26,7 +26,7 @@
                 <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Hidden" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
         </Grid>
-        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
+        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtSearch" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="299" KeyUp="TxtSearch_KeyUp"/>
             <Label x:Name="LblItemCounter" Content="0/0" Height="26" Margin="0,6,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="110" />
 
@@ -71,7 +71,7 @@
                     (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="Donate" /></Hyperlink>)</TextBlock>
             </Grid>
         </Grid>
-        <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
+        <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Visible">
             <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding Path=SavedPlayerInformationName, ElementName=window}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown"/>
             <Button x:Name="BtnPlayerModeSave" Content="{Binding Path=SaveTranslation}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="110" Height="25" Click="BtnPlayerModeSave_Click"/>
             <ScrollViewer  Margin="0,40,0,20" HorizontalScrollBarVisibility="Disabled">
@@ -81,24 +81,30 @@
                             <Label Content="{Binding Path=PlayerModeTranslation.GeneralInformation}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14"/>
                             <Separator/>
                         </Grid>
-                        <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Id}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
-                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.Id, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Id}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.Id, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.Id, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <!--<Grid>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Id}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.Id, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.Id, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="305,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Name}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Name}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.GuildName}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.GuildName}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.GuildName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.AllianceName}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.AllianceName}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.AllianceName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.FameRatio}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.FameRatio}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.FameRatio, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N2" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                     </StackPanel>
@@ -108,27 +114,27 @@
                             <Separator/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.KillFame}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.KillFame}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.KillFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.DeathFame}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.DeathFame}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.DeathFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.TotalKills}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.TotalKills}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.SearchPlayer.TotalKills, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.GvgKills}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.GvgKills}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.SearchPlayer.GvgKills, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.GvgWon}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.GvgWon}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.SearchPlayer.GvgWon, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.CrystalLeague}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.CrystalLeague}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.CrystalLeague, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                     </StackPanel>
@@ -138,19 +144,19 @@
                             <Separator/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Hellgate}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Hellgate}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Hellgate, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                     </StackPanel>
@@ -160,15 +166,15 @@
                             <Separator/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                     </StackPanel>
@@ -178,15 +184,15 @@
                             <Separator/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                     </StackPanel>
@@ -196,15 +202,15 @@
                             <Separator/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                     </StackPanel>
@@ -214,15 +220,15 @@
                             <Separator/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                     </StackPanel>
@@ -232,15 +238,15 @@
                             <Separator/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                     </StackPanel>
@@ -250,15 +256,15 @@
                             <Separator/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                     </StackPanel>
@@ -268,17 +274,17 @@
                             <Separator/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Width="200"/>
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
                             <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label}" HorizontalAlignment="Left" Margin="205,0,0,0" Width="Auto"/>
-                        </Grid>
+                        </Grid>-->
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>

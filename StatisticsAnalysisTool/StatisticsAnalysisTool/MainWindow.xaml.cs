@@ -167,7 +167,7 @@ namespace StatisticsAnalysisTool
 
         private async void BtnPlayerModeSave_Click(object sender, RoutedEventArgs e)
         {
-            await _mainWindowViewModel.LoadPlayerInformation();
+            await _mainWindowViewModel.SetComparedPlayerModeInfoValues();
         }
 
         private async void TxtBoxPlayerModeUsername_KeyDown(object sender, KeyEventArgs e)
@@ -175,7 +175,7 @@ namespace StatisticsAnalysisTool
             if (e.Key != Key.Enter)
                 return;
 
-            await _mainWindowViewModel.LoadPlayerInformation();
+            await _mainWindowViewModel.SetComparedPlayerModeInfoValues();
         }
     }
 }
