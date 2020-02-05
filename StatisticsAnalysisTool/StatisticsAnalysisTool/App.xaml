@@ -425,14 +425,14 @@
         <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Last" >
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
-            <Setter Property="Width" Value="200"></Setter>
+            <Setter Property="Width" Value="220"></Setter>
         </Style>
 
         <!-- PlayerMode label value current -->
         <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Current" >
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
-            <Setter Property="Width" Value="200"></Setter>
+            <Setter Property="Width" Value="220"></Setter>
         </Style>
 
         <!-- PlayerMode label title -->

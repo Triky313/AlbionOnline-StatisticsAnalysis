@@ -129,6 +129,7 @@ namespace StatisticsAnalysisTool.ViewModels
         public async Task SetComparedPlayerModeInfoValues()
         {
             PlayerModeInformationLocal = PlayerModeInformation;
+            PlayerModeInformation = new PlayerModeInformationModel();
             PlayerModeInformation = await GetPlayerModeInformationByApi().ConfigureAwait(true);
         }
         
@@ -175,7 +176,7 @@ namespace StatisticsAnalysisTool.ViewModels
         public PlayerModeTranslation PlayerModeTranslation => new PlayerModeTranslation();
         public string DonateUrl => Settings.Default.DonateUrl;
         public string SavedPlayerInformationName => Settings.Default.SavedPlayerInformationName ?? "";
-        public string SaveTranslation => LanguageController.Translation("SAVE");
+        public string LoadTranslation => LanguageController.Translation("LOAD");
         public string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;
