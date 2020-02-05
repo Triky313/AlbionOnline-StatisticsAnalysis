@@ -1,13 +1,11 @@
-﻿using System;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Xaml;
-using Newtonsoft.Json;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -17,10 +15,13 @@ namespace StatisticsAnalysisTool.ViewModels
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private readonly MainWindow _mainWindow;
+        private static MainWindow _mainWindow;
 
-        private PlayerModeInformationModel _playerModeInformation;
-        
+        private static PlayerModeInformationModel _playerModeInformationLocal;
+        private static PlayerModeInformationModel _playerModeInformation;
+
+        private static readonly string PlayerModeUpdateFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.PlayerModeUpdateFileName);
+
         public MainWindowViewModel(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
@@ -124,46 +125,29 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.LblLocalImageCounter.Content = ImageController.LocalImagesCounter();
             });
         }
-
-        private static bool SavePlayerModeInformationInBaseDirectory(PlayerModeInformationModel playerModeInformation)
+        
+        public async Task SetComparedPlayerModeInfoValues()
         {
-            var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.PlayerModeUpdateFileName);
-
-            var playerModeInformationString = JsonConvert.SerializeObject(playerModeInformation);
-
-            try
-            {
-                if (File.Exists(filePath))
-                {
-                    File.Delete(filePath);
-                    File.WriteAllText(filePath, playerModeInformationString);
-                    return true;
-                }
-
-                File.WriteAllText(filePath, playerModeInformationString);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            PlayerModeInformationLocal = PlayerModeInformation;
+            PlayerModeInformation = await GetPlayerModeInformationByApi().ConfigureAwait(true);
         }
-
-        public async Task LoadPlayerInformation()
+        
+        private static async Task<PlayerModeInformationModel> GetPlayerModeInformationByApi()
         {
             if (string.IsNullOrWhiteSpace(_mainWindow.TxtBoxPlayerModeUsername.Text))
-                return;
+                return null;
 
             var gameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(_mainWindow.TxtBoxPlayerModeUsername.Text);
             
             if (gameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id == null)
-                return;
+                return null;
 
-            var searchPlayer = gameInfoSearch?.SearchPlayer?.FirstOrDefault();
+            var searchPlayer = gameInfoSearch.SearchPlayer?.FirstOrDefault();
             var gameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(gameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id);
 
-            PlayerModeInformation = new PlayerModeInformationModel() 
+            return new PlayerModeInformationModel() 
             { 
+                Timestamp = DateTime.UtcNow,
                 GameInfoSearch = gameInfoSearch,
                 SearchPlayer = searchPlayer,
                 GameInfoPlayers = gameInfoPlayers
@@ -174,6 +158,16 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _playerModeInformation;
             set {
                 _playerModeInformation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public PlayerModeInformationModel PlayerModeInformationLocal
+        {
+            get => _playerModeInformationLocal;
+            set
+            {
+                _playerModeInformationLocal = value;
                 OnPropertyChanged();
             }
         }
