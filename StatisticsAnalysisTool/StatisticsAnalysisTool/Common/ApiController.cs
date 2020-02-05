@@ -77,7 +77,7 @@
             {
                 var apiString =
                     $"https://www.albion-online-data.com/api/v1/stats/charts/" +
-                    $"{uniqueName}?date={DateTime.Now:MM-dd-yyyy}?locations={Locations.GetName(location)}";
+                    $"?locations={Locations.GetName(location)}{uniqueName}?date={DateTime.Now:MM-dd-yyyy}";
 
                 try
                 {

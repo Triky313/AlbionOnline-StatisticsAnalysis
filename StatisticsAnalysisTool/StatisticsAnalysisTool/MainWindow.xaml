@@ -38,7 +38,7 @@
                 <fa:ImageAwesome Icon="FileImageOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
 
-            <ListView x:Name="LvItems" Style="{StaticResource {x:Type ListView}}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,38,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
+            <ListView ItemsSource="{Binding FilteredItems}" Style="{StaticResource {x:Type ListView}}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,38,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn x:Name="GvcNmlIcon" Header="ICON" Width="80">

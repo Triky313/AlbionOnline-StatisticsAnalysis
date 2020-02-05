@@ -2,10 +2,14 @@
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Windows;
+using Newtonsoft.Json;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -17,10 +21,10 @@ namespace StatisticsAnalysisTool.ViewModels
     {
         private static MainWindow _mainWindow;
 
+        private static List<Item> _items;
+        private static List<Item> _filteredItems;
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
-
-        private static readonly string PlayerModeUpdateFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.PlayerModeUpdateFileName);
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -85,7 +89,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     _mainWindow.TxtBoxPlayerModeUsername.Text = Settings.Default.SavedPlayerInformationName;
                 });
                 
-                var isItemListLoaded = await StatisticsAnalysisManager.GetItemListFromJsonAsync().ConfigureAwait(true);
+                var isItemListLoaded = await GetItemListFromJsonAsync().ConfigureAwait(true);
                 if (!isItemListLoaded)
                     MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"),
                         LanguageController.Translation("ERROR"));
@@ -112,6 +116,111 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
+        // Info Link -> https://github.com/broderickhyman/ao-bin-dumps
+        // Models: https://github.com/broderickhyman/albiondata-models-dotNet
+
+        #region Item list (Normal Mode)
+
+        public List<Item> FilteredItems {
+            get => _filteredItems;
+            set {
+                _filteredItems = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public async Task<List<Item>> FindItemsAsync(string searchText)
+        {
+            return await Task.Run(() =>
+            {
+                try
+                {
+                    return _items?.FindAll(s => (s.LocalizedNameAndEnglish.ToLower().Contains(searchText.ToLower())));
+                }
+                catch
+                {
+                    return null;
+                }
+            });
+        }
+
+        public async Task<bool> GetItemListFromJsonAsync()
+        {
+            var url = Settings.Default.CurrentItemListSourceUrl;
+            if (!GetItemListSourceUrlIfExist(ref url))
+                return false;
+
+            if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}"))
+            {
+                var fileDateTime = File.GetLastWriteTime($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
+
+                if (fileDateTime.AddDays(7) < DateTime.Now)
+                {
+                    _items = await TryToGetItemListFromWeb(url);
+                    return (_items != null);
+                }
+
+                _items = GetItemListFromLocal();
+                return (_items != null);
+            }
+
+            _items = await TryToGetItemListFromWeb(url);
+            return (_items != null);
+        }
+
+        private static List<Item> GetItemListFromLocal()
+        {
+            try
+            {
+                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
+                return JsonConvert.DeserializeObject<List<Item>>(localItemString);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static async Task<List<Item>> TryToGetItemListFromWeb(string url)
+        {
+            using (var wd = new WebDownload(30000))
+            {
+                try
+                {
+                    var itemsString = await wd.DownloadStringTaskAsync(url);
+                    File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
+                    return JsonConvert.DeserializeObject<List<Item>>(itemsString);
+                }
+                catch (Exception)
+                {
+                    try
+                    {
+                        var itemsString = await wd.DownloadStringTaskAsync(Settings.Default.DefaultItemListSourceUrl);
+                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
+                        return JsonConvert.DeserializeObject<List<Item>>(itemsString);
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+
+        private static bool GetItemListSourceUrlIfExist(ref string url)
+        {
+            if (string.IsNullOrEmpty(Settings.Default.CurrentItemListSourceUrl))
+            {
+                url = Settings.Default.DefaultItemListSourceUrl;
+                if (string.IsNullOrEmpty(url))
+                    return false;
+
+                Settings.Default.CurrentItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
+                MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
+            }
+            return true;
+        }
+
         public void LoadLvItems(string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
@@ -119,13 +228,17 @@ namespace StatisticsAnalysisTool.ViewModels
 
             _mainWindow.Dispatcher?.InvokeAsync(async () =>
             {
-                var items = await StatisticsAnalysisManager.FindItemsAsync(searchText);
-                _mainWindow.LvItems.ItemsSource = items;
-                _mainWindow.LblItemCounter.Content = $"{items.Count}/{StatisticsAnalysisManager.Items.Count}";
+                var items = await FindItemsAsync(searchText);
+                FilteredItems = items;
+                _mainWindow.LblItemCounter.Content = $"{items.Count}/{FilteredItems.Count}";
                 _mainWindow.LblLocalImageCounter.Content = ImageController.LocalImagesCounter();
             });
         }
-        
+
+        #endregion
+
+        #region Player information (Player Mode)
+
         public async Task SetComparedPlayerModeInfoValues()
         {
             PlayerModeInformationLocal = PlayerModeInformation;
@@ -172,6 +285,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        #endregion
 
         public PlayerModeTranslation PlayerModeTranslation => new PlayerModeTranslation();
         public string DonateUrl => Settings.Default.DonateUrl;
