@@ -1,10 +1,10 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Properties;
-using System.Windows;
-using System.Windows.Input;
-
-namespace StatisticsAnalysisTool
+﻿namespace StatisticsAnalysisTool.Views
 {
+    using Common;
+    using Properties;
+    using System.Windows;
+    using System.Windows.Input;
+
     /// <summary>
     /// Interaktionslogik für SettingsWindow.xaml
     /// </summary>

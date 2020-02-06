@@ -1,21 +1,22 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
-using Newtonsoft.Json;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
+    using Annotations;
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
+    using Views;
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
@@ -296,6 +297,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

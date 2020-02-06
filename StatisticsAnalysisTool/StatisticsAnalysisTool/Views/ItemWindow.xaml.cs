@@ -1,22 +1,25 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-
-namespace StatisticsAnalysisTool
+﻿namespace StatisticsAnalysisTool.Views
 {
+    using Common;
+    using Models;
     using Properties;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
+    using ViewModels;
 
     /// <summary>
     ///     Interaktionslogik für ItemWindow.xaml
     /// </summary>
     public partial class ItemWindow
     {
+
+        private readonly ItemWindowViewModel _itemWindowViewModel;
+
         private ItemData _itemData =  new ItemData();
         private string _uniqueName;
         private bool _runUpdate = true;
@@ -25,7 +28,9 @@ namespace StatisticsAnalysisTool
         public ItemWindow(Item item)
         {
             InitializeComponent();
-            
+            _itemWindowViewModel = new ItemWindowViewModel(this);
+            DataContext = _itemWindowViewModel;
+
             LblItemName.Content = "";
             LblItemId.Content = "";
             LblLastUpdate.Content = "";

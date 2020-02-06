@@ -1,16 +1,16 @@
-﻿using FontAwesome.WPF;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.ViewModels;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Navigation;
-
-namespace StatisticsAnalysisTool
+﻿namespace StatisticsAnalysisTool.Views
 {
+    using FontAwesome.WPF;
+    using Models;
+    using Properties;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Navigation;
+    using ViewModels;
+
     /// <summary>
     ///     Interaktionslogik für MainWindow.xaml
     /// </summary>

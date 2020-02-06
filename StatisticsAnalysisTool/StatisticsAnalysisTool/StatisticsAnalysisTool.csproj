@@ -103,12 +103,14 @@
     <Compile Include="Models\SearchInfos.cs" />
     <Compile Include="Models\MarketOrder.cs" />
     <Compile Include="Models\MarketStats.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SettingsWindow.xaml.cs">
+    <Compile Include="ViewModels\ItemWindowViewModel.cs" />
+    <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\DirectoryController.cs" />
@@ -119,11 +121,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Page Include="ItemWindow.xaml">
+    <Page Include="Views\ItemWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -131,16 +133,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ItemWindow.xaml.cs">
+    <Compile Include="Views\ItemWindow.xaml.cs">
       <DependentUpon>ItemWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Locations.cs" />
     <Compile Include="StatisticsAnalysisManager.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SettingsWindow.xaml">
+    <Page Include="Views\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
