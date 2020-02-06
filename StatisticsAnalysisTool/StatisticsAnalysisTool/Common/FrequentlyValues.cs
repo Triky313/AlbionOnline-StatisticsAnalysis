@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Common
 {
     public static class FrequentlyValues
     {
-        public enum GameLanguage { UnitedStates, Germany, Russia, Poland, Brazil, France, Spain }
+        public enum GameLanguage { UnitedStates, Germany, Russia, Poland, Brazil, France, Spain, Chinese }
 
         public enum ItemTier { T1 = 0, T2 = 1, T3 = 2, T4 = 3, T5 = 4, T6 = 5, T7 = 6, T8 = 7 }
 
@@ -50,7 +49,8 @@ namespace StatisticsAnalysisTool.Common
             {GameLanguage.Poland, "PL-PL" },
             {GameLanguage.Brazil, "PT-BR" },
             {GameLanguage.France, "FR-FR" },
-            {GameLanguage.Spain, "ES-ES" }
+            {GameLanguage.Spain, "ES-ES" },
+            {GameLanguage.Chinese, "ZH-CH" }
         };
     }
 }

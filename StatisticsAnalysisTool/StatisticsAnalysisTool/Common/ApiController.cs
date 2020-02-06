@@ -13,6 +13,22 @@
     public class ApiController
     {
 
+        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item)
+        {
+            var itemInformation = new ItemInformation();
+
+            using (var wc = new WebClient())
+            {
+                var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/items/{item.UniqueName}/data";
+                var itemString = await wc.DownloadStringTaskAsync(apiString);
+
+                var result = JsonConvert.DeserializeObject<ItemInformation>(itemString);
+                itemInformation = result ?? itemInformation;
+
+                return itemInformation;
+            }
+        }
+
         public static async Task<ItemData> GetItemDataFromJsonAsync(Item item)
         {
             try

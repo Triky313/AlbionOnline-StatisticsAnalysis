@@ -3,11 +3,30 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace StatisticsAnalysisTool
 {
     public class StatisticsAnalysisManager
     {
+        public static string LocalizedName(ItemInformation itemInformation, string uniqueName)
+        {
+
+            if (itemInformation.LocalizedNames.Exists(a => a.Key == LanguageController.CurrentLanguage.ToUpper()))
+            {
+                uniqueName = itemInformation.LocalizedNames.Find(a => a.Key == LanguageController.CurrentLanguage.ToUpper()).Value;
+                return Encoding.UTF8.GetString(Encoding.Default.GetBytes(uniqueName));
+            }
+
+            if (itemInformation.LocalizedNames.Exists(a => a.Key == LanguageController.DefaultCultureInfo.Name.ToUpper()))
+            {
+                uniqueName = itemInformation.LocalizedNames.Find(a => a.Key == LanguageController.DefaultCultureInfo.Name.ToUpper()).Value;
+                return Encoding.UTF8.GetString(Encoding.Default.GetBytes(uniqueName));
+            }
+
+            return name;
+        }
+
         public static FrequentlyValues.ItemTier GetItemTier(string uniqueName) => FrequentlyValues.ItemTiers.FirstOrDefault(x => x.Value == uniqueName.Split('_')[0]).Key;
 
         public static FrequentlyValues.ItemLevel GetItemLevel(string uniqueName)

@@ -15,8 +15,27 @@ namespace StatisticsAnalysisTool.Common
         public static string CurrentLanguage;
         public static CultureInfo DefaultCultureInfo = (CurrentLanguage != null) ? new CultureInfo(CurrentLanguage) : new CultureInfo("en-US");
         public static readonly List<FileInfo> FileInfos = new List<FileInfo>();
-        
+
+        public static readonly Dictionary<LocalizedNamesEnum, string> LocalizedNamesDictionary = new Dictionary<LocalizedNamesEnum, string>
+        {
+            {LocalizedNamesEnum.EnUs, "EN-US" },
+            {LocalizedNamesEnum.DeDe, "DE-DE" },
+            {LocalizedNamesEnum.KoKr, "KO-KR" },
+            {LocalizedNamesEnum.RuRu, "RU-RU" },
+            {LocalizedNamesEnum.PlPl, "PL-PL" },
+            {LocalizedNamesEnum.PtBr, "PT-BR" },
+            {LocalizedNamesEnum.FrFr, "FR-FR" },
+            {LocalizedNamesEnum.EsEs, "ES-ES" },
+            {LocalizedNamesEnum.ZhCh, "ZH-CH" }
+        };
+
+        public enum LocalizedNamesEnum
+        {
+            EnUs, DeDe, KoKr, RuRu, PlPl, PtBr, FrFr, EsEs, ZhCh
+        }
+
         private static Dictionary<string, string> _translations;
+
 
         public static string Translation(string key)
         {
