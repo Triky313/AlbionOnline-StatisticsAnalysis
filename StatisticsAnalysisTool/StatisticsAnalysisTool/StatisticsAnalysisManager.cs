@@ -12,6 +12,14 @@ namespace StatisticsAnalysisTool
         public static string LocalizedName(ItemInformation itemInformation, string uniqueName)
         {
 
+            switch (LanguageController.CurrentLanguage.ToUpper())
+            {
+                case LanguageController.LocalizedNamesDictionary:
+
+                    break;
+                default:
+            }
+
             if (itemInformation.LocalizedNames.Exists(a => a.Key == LanguageController.CurrentLanguage.ToUpper()))
             {
                 uniqueName = itemInformation.LocalizedNames.Find(a => a.Key == LanguageController.CurrentLanguage.ToUpper()).Value;
