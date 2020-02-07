@@ -8,9 +8,9 @@
 
     public class ItemController
     {
-        public static string LocalizedName(ItemInformation itemInformation, string uniqueName)
+        public static string LocalizedName(ItemInformation itemInformation)
         {
-            switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, uniqueName, StringComparison.CurrentCultureIgnoreCase)).Key)
+            switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, LanguageController.CurrentLanguage.ToUpper(), StringComparison.CurrentCultureIgnoreCase)).Key)
             {
                 case FrequentlyValues.GameLanguage.UnitedStates:
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(itemInformation.LocalizedNames.EnUs));

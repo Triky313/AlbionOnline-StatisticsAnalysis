@@ -2,10 +2,8 @@
 {
     using Models;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
@@ -26,44 +24,6 @@
                 itemInformation = result ?? itemInformation;
 
                 return itemInformation;
-            }
-        }
-
-        public static async Task<ItemData> GetItemDataFromJsonAsync(Item item)
-        {
-            try
-            {
-                using (var wc = new WebClient())
-                {
-                    var itemDataJsonUrl = $"https://gameinfo.albiononline.com/api/gameinfo/items/{item.UniqueName}/data";
-                    var itemString = await wc.DownloadStringTaskAsync(itemDataJsonUrl);
-                    var parsedObject = JObject.Parse(itemString);
-
-                    var itemData = new ItemData
-                    {
-                        ItemType = (string)parsedObject["itemType"],
-                        UniqueName = (string)parsedObject["uniqueName"],
-                        //UiSprite = (string)parsedObject["uiSprite"],
-                        Showinmarketplace = (bool)parsedObject["showinmarketplace"],
-                        Level = (int)parsedObject["level"],
-                        Tier = (int)parsedObject["tier"],
-                        LocalizedNames = new List<ItemData.KeyValueStruct>(),
-                        //CategoryId = (string)parsedObject["categoryId"],
-                        //CategoryName = (string)parsedObject["categoryName"],
-                        //LocalizedDescriptions = (string)parsedObject["localizedDescriptions"]["DE-DE"],
-                        //SlotType = (string)parsedObject["slotType"],
-                        //Stackable = (bool)parsedObject["stackable"],
-                        //Equipable = (bool)parsedObject["equipable"],
-                    };
-
-                    ItemController.AddLocalizedName(ref itemData, parsedObject);
-                    return itemData;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.Print(ex.ToString());
-                return null;
             }
         }
 
