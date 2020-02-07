@@ -2,7 +2,9 @@
 {
     using Common;
     using Properties;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Linq;
     using System.Runtime.CompilerServices;
     using Views;
 
@@ -10,6 +12,8 @@
     {
         private static SettingsWindow _settingsWindow;
         private static string _filteredItems;
+        private static ObservableCollection<LanguageController.FileInfo> _languages = new ObservableCollection<LanguageController.FileInfo>();
+        private static LanguageController.FileInfo _languagesSelectedItem;
 
         public SettingsWindowViewModel(SettingsWindow settingsWindow)
         {
@@ -39,11 +43,11 @@
             _settingsWindow.CbRefreshRate.Items.Add(new SettingsWindow.RefreshRateStruct() { Name = LanguageController.Translation("5_MINUTES"), Seconds = 300000 });
             _settingsWindow.CbRefreshRate.SelectedValue = Settings.Default.RefreshRate;
 
-            // Language
+            Languages.Clear();
             foreach (var langInfos in LanguageController.FileInfos)
-                _settingsWindow.CbLanguage.Items.Add(new LanguageController.FileInfo() { FileName = langInfos.FileName });
+                Languages.Add(new LanguageController.FileInfo() { FileName = langInfos.FileName });
 
-            _settingsWindow.CbLanguage.SelectedValue = LanguageController.CurrentLanguage;
+            LanguagesSelectedItem = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentLanguage);
 
             // Update item list by days
             _settingsWindow.CbUpdateItemListByDays.Items.Add(new SettingsWindow.UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
@@ -67,13 +71,30 @@
 
             Settings.Default.UpdateItemListByDays = updateItemListByDays.Value;
 
-            if (_settingsWindow.CbLanguage.SelectedItem is LanguageController.FileInfo langItem)
-            {
-                LanguageController.SetLanguage(langItem.FileName);
-                Settings.Default.CurrentLanguageCulture = langItem.FileName;
-            }
+            LanguageController.SetLanguage(LanguagesSelectedItem.FileName);
+            Settings.Default.CurrentLanguageCulture = LanguagesSelectedItem.FileName;
 
             _settingsWindow.Close();
+        }
+
+        public LanguageController.FileInfo LanguagesSelectedItem
+        {
+            get => _languagesSelectedItem;
+            set
+            {
+                _languagesSelectedItem = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<LanguageController.FileInfo> Languages
+        {
+            get => _languages;
+            set
+            {
+                _languages = value;
+                OnPropertyChanged();
+            }
         }
 
         public string CurrentItemListSourceUrl
@@ -85,7 +106,7 @@
                 OnPropertyChanged();
             }
         }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
