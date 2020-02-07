@@ -195,6 +195,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Trash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="ao-update-check.xml" />
     <Content Include="Languages\en-GB.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

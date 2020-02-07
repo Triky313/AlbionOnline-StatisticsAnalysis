@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -20,11 +22,12 @@ namespace StatisticsAnalysisTool.ViewModels
         private Item _item;
         private bool _runUpdate = true;
         private bool _isAutoUpdateActive;
+        private BitmapImage _icon;
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
             _mainWindow = mainWindow;
-            _item = item;
+            Item = item;
 
             _mainWindow.LblItemName.Content = "";
             _mainWindow.LblItemId.Content = "";
@@ -64,8 +67,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindow.FaLoadIcon.Visibility = Visibility.Visible;
                 _mainWindow.Icon = item.Icon;
+                Icon = item.Icon;
             });
 
             StartAutoUpdater();
@@ -76,7 +79,12 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 // TODO: Refactoring
                 _mainWindow.LblItemName.Content = LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED");
-                _mainWindow.Dispatcher?.Invoke(() => { _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden; });
+                _mainWindow.Dispatcher?.Invoke(() =>
+                {
+                    Icon = new BitmapImage(new Uri(@"pack://application:,,,/"
+                                                   + Assembly.GetExecutingAssembly().GetName().Name + ";component/"
+                                                   + "Resources/Trash.png", UriKind.Absolute));
+                });
                 return;
             }
 
@@ -87,12 +95,10 @@ namespace StatisticsAnalysisTool.ViewModels
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindow.Title = $"{ItemController.LocalizedName(_itemData)} (T{_itemData.Tier})";
-                _mainWindow.LblItemName.Content = $"{ItemController.LocalizedName(_itemData)} (T{_itemData.Tier})";
+                var localizedName = string.IsNullOrEmpty(ItemController.LocalizedName(_itemData.LocalizedNames)) ? _itemData.UniqueName : ItemController.LocalizedName(_itemData.LocalizedNames);
+                _mainWindow.Title = $"{localizedName} (T{_itemData.Tier})";
+                _mainWindow.LblItemName.Content = $"{localizedName} (T{_itemData.Tier})";
                 _mainWindow.LblItemId.Content = _itemData.UniqueName;
-                _mainWindow.ImgItemImage.Source = item.Icon;
-
-                _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
             });
 
         }
@@ -265,6 +271,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _item;
             set {
                 _item = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public BitmapImage Icon {
+            get => _icon;
+            set {
+                _icon = value;
                 OnPropertyChanged();
             }
         }

@@ -11,13 +11,10 @@
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
         <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
         <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
-        <Grid HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75">
-            <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Hidden" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-        </Grid>
-        <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="80" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+        <Grid ZIndex="-1" Height="80" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
-            <Image x:Name="ImgItemImage" HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75"/>
+            <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75"/>
             <Label x:Name="LblItemName" Content="ITEM__NAME" Margin="90,5,200,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}"/>
             <Label x:Name="LblItemId" Content="ITEM__ID" Margin="90,43,0,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Width="375"/>
             <CheckBox x:Name="ChbShowBlackZoneOutposts" Content="SHOW__BLACKZONE__OUTPOSTS" Margin="470,17,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="200" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="ChbShowBlackZoneOutposts_Click" />
