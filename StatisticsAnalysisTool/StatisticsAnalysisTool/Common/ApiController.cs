@@ -56,7 +56,7 @@
                         //Equipable = (bool)parsedObject["equipable"],
                     };
 
-                    StatisticsAnalysisManager.AddLocalizedName(ref itemData, parsedObject);
+                    ItemController.AddLocalizedName(ref itemData, parsedObject);
                     return itemData;
                 }
             }

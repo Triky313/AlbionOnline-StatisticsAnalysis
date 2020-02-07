@@ -94,6 +94,7 @@
     <Compile Include="Common\Formatting.cs" />
     <Compile Include="Common\FrequentlyValues.cs" />
     <Compile Include="Common\ApiController.cs" />
+    <Compile Include="Common\ItemController.cs" />
     <Compile Include="Common\PlayerModeController.cs" />
     <Compile Include="Models\ComboboxMarketMode.cs" />
     <Compile Include="Models\ItemInformationModels.cs" />
@@ -138,7 +139,6 @@
       <DependentUpon>ItemWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Locations.cs" />
-    <Compile Include="StatisticsAnalysisManager.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
