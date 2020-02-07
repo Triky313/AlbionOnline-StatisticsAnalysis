@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.Common
         public static string CurrentLanguage;
         public static CultureInfo DefaultCultureInfo = (CurrentLanguage != null) ? new CultureInfo(CurrentLanguage) : new CultureInfo("en-US");
         public static readonly List<FileInfo> FileInfos = new List<FileInfo>();
-        
+
         private static Dictionary<string, string> _translations;
 
         public static string Translation(string key)

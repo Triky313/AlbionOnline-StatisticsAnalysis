@@ -2,10 +2,8 @@
 {
     using Models;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
@@ -13,41 +11,19 @@
     public class ApiController
     {
 
-        public static async Task<ItemData> GetItemDataFromJsonAsync(Item item)
+        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item)
         {
-            try
-            {
-                using (var wc = new WebClient())
-                {
-                    var itemDataJsonUrl = $"https://gameinfo.albiononline.com/api/gameinfo/items/{item.UniqueName}/data";
-                    var itemString = await wc.DownloadStringTaskAsync(itemDataJsonUrl);
-                    var parsedObject = JObject.Parse(itemString);
+            var itemInformation = new ItemInformation();
 
-                    var itemData = new ItemData
-                    {
-                        ItemType = (string)parsedObject["itemType"],
-                        UniqueName = (string)parsedObject["uniqueName"],
-                        //UiSprite = (string)parsedObject["uiSprite"],
-                        Showinmarketplace = (bool)parsedObject["showinmarketplace"],
-                        Level = (int)parsedObject["level"],
-                        Tier = (int)parsedObject["tier"],
-                        LocalizedNames = new List<ItemData.KeyValueStruct>(),
-                        //CategoryId = (string)parsedObject["categoryId"],
-                        //CategoryName = (string)parsedObject["categoryName"],
-                        //LocalizedDescriptions = (string)parsedObject["localizedDescriptions"]["DE-DE"],
-                        //SlotType = (string)parsedObject["slotType"],
-                        //Stackable = (bool)parsedObject["stackable"],
-                        //Equipable = (bool)parsedObject["equipable"],
-                    };
-
-                    StatisticsAnalysisManager.AddLocalizedName(ref itemData, parsedObject);
-                    return itemData;
-                }
-            }
-            catch (Exception ex)
+            using (var wc = new WebClient())
             {
-                Debug.Print(ex.ToString());
-                return null;
+                var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/items/{item.UniqueName}/data";
+                var itemString = await wc.DownloadStringTaskAsync(apiString);
+
+                var result = JsonConvert.DeserializeObject<ItemInformation>(itemString);
+                itemInformation = result ?? itemInformation;
+
+                return itemInformation;
             }
         }
 

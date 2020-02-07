@@ -20,7 +20,7 @@
 
         private readonly ItemWindowViewModel _itemWindowViewModel;
 
-        private ItemData _itemData =  new ItemData();
+        private ItemInformation _itemData =  new ItemInformation();
         private string _uniqueName;
         private bool _runUpdate = true;
         private bool _isAutoUpdateActive;
@@ -77,10 +77,11 @@
 
             StartAutoUpdater();
 
-            var itemDataTaskResult = await ApiController.GetItemDataFromJsonAsync(item);
+            var itemDataTaskResult = await ApiController.GetItemInfoFromJsonAsync(item);
 
             if (itemDataTaskResult == null)
             {
+                // TODO: Refactoring
                 LblItemName.Content = LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED");
                 Dispatcher?.Invoke(() => { FaLoadIcon.Visibility = Visibility.Hidden; });
                 return;
@@ -92,14 +93,14 @@
                 return;
 
             await Dispatcher.InvokeAsync(() =>
-                {
-                    Title = $"{_itemData.LocalizedName} (T{_itemData.Tier})";
-                    LblItemName.Content = $"{_itemData.LocalizedName} (T{_itemData.Tier})";
-                    LblItemId.Content = _itemData.UniqueName;
-                    ImgItemImage.Source = item.Icon;
+            {
+                Title = $"{ItemController.LocalizedName(_itemData)} (T{_itemData.Tier})";
+                LblItemName.Content = $"{ItemController.LocalizedName(_itemData)} (T{_itemData.Tier})";
+                LblItemId.Content = _itemData.UniqueName;
+                ImgItemImage.Source = item.Icon;
 
-                    FaLoadIcon.Visibility = Visibility.Hidden;
-                });
+                FaLoadIcon.Visibility = Visibility.Hidden;
+            });
         
         }
 
