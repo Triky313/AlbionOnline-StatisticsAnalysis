@@ -17,11 +17,11 @@
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
         </Grid>
         <Label x:Name="LblLanguage" Content="LANGUAGE" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="186"/>
-        <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelectedItem}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" HorizontalAlignment="Left" Margin="201,80,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
+        <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" HorizontalAlignment="Left" Margin="201,80,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
         <Label x:Name="LblRefrashRate" Content="REFRESH__RATE" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top" Width="186"/>
-        <ComboBox x:Name="CbRefreshRate" DisplayMemberPath="Name" SelectedValuePath="Seconds" HorizontalAlignment="Left" Margin="201,111,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
+        <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Seconds" HorizontalAlignment="Left" Margin="201,111,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
         <Label x:Name="LblUpdateItemListByDays" Content="UPDATE__ITEM__LIST__BY__DAYS" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,142,0,0" VerticalAlignment="Top" Width="186"/>
-        <ComboBox x:Name="CbUpdateItemListByDays" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" Margin="201,142,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
+        <ComboBox ItemsSource="{Binding UpdateItemListByDays}" SelectedItem="{Binding UpdateItemListByDaysSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" Margin="201,142,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
         <Label x:Name="LblItemListSourceUrl" Content="ITEM__LIST_SOURCE__URL" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="186"/>
         <TextBox Text="{Binding Path=CurrentItemListSourceUrl}" Height="40" Margin="201,173,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
 

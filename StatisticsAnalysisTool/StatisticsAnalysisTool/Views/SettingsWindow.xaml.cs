@@ -32,18 +32,5 @@
         {
             _settingsWindowViewModel.SaveSettings();
         }
-
-        public struct RefreshRateStruct
-        {
-            public string Name { get; set; }
-            public int Seconds { get; set; }
-        }
-
-        public struct UpdateItemListStruct
-        {
-            public string Name { get; set; }
-            public int Value { get; set; }
-        }
-
     }
 }

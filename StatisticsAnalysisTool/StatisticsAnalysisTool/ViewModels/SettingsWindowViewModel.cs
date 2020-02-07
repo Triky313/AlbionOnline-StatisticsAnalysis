@@ -13,7 +13,11 @@
         private static SettingsWindow _settingsWindow;
         private static string _filteredItems;
         private static ObservableCollection<LanguageController.FileInfo> _languages = new ObservableCollection<LanguageController.FileInfo>();
-        private static LanguageController.FileInfo _languagesSelectedItem;
+        private static LanguageController.FileInfo _languagesSelection;        
+        private static ObservableCollection<RefreshRateStruct> _refreshRates = new ObservableCollection<RefreshRateStruct>();
+        private static RefreshRateStruct _refreshRatesSelection;
+        private static ObservableCollection<UpdateItemListStruct> _updateItemListByDays = new ObservableCollection<UpdateItemListStruct>();
+        private static UpdateItemListStruct _updateItemListByDaysSelection;
 
         public SettingsWindowViewModel(SettingsWindow settingsWindow)
         {
@@ -36,26 +40,28 @@
         private void InitializeSettings()
         {
             // Refresh rate
-            _settingsWindow.CbRefreshRate.Items.Add(new SettingsWindow.RefreshRateStruct() { Name = LanguageController.Translation("5_SECONDS"), Seconds = 5000 });
-            _settingsWindow.CbRefreshRate.Items.Add(new SettingsWindow.RefreshRateStruct() { Name = LanguageController.Translation("10_SECONDS"), Seconds = 10000 });
-            _settingsWindow.CbRefreshRate.Items.Add(new SettingsWindow.RefreshRateStruct() { Name = LanguageController.Translation("30_SECONDS"), Seconds = 30000 });
-            _settingsWindow.CbRefreshRate.Items.Add(new SettingsWindow.RefreshRateStruct() { Name = LanguageController.Translation("60_SECONDS"), Seconds = 60000 });
-            _settingsWindow.CbRefreshRate.Items.Add(new SettingsWindow.RefreshRateStruct() { Name = LanguageController.Translation("5_MINUTES"), Seconds = 300000 });
-            _settingsWindow.CbRefreshRate.SelectedValue = Settings.Default.RefreshRate;
+            RefreshRates.Clear();
+            RefreshRates.Add(new RefreshRateStruct() { Name = LanguageController.Translation("5_SECONDS"), Seconds = 5000 });
+            RefreshRates.Add(new RefreshRateStruct() { Name = LanguageController.Translation("10_SECONDS"), Seconds = 10000 });
+            RefreshRates.Add(new RefreshRateStruct() { Name = LanguageController.Translation("30_SECONDS"), Seconds = 30000 });
+            RefreshRates.Add(new RefreshRateStruct() { Name = LanguageController.Translation("60_SECONDS"), Seconds = 60000 });
+            RefreshRates.Add(new RefreshRateStruct() { Name = LanguageController.Translation("5_MINUTES"), Seconds = 300000 });
+            RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Seconds == Settings.Default.RefreshRate);
 
             Languages.Clear();
             foreach (var langInfos in LanguageController.FileInfos)
                 Languages.Add(new LanguageController.FileInfo() { FileName = langInfos.FileName });
 
-            LanguagesSelectedItem = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentLanguage);
+            LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentLanguage);
 
             // Update item list by days
-            _settingsWindow.CbUpdateItemListByDays.Items.Add(new SettingsWindow.UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
-            _settingsWindow.CbUpdateItemListByDays.Items.Add(new SettingsWindow.UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
-            _settingsWindow.CbUpdateItemListByDays.Items.Add(new SettingsWindow.UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
-            _settingsWindow.CbUpdateItemListByDays.Items.Add(new SettingsWindow.UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
-            _settingsWindow.CbUpdateItemListByDays.Items.Add(new SettingsWindow.UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
-            _settingsWindow.CbUpdateItemListByDays.SelectedValue = Settings.Default.UpdateItemListByDays;
+            UpdateItemListByDays.Clear();
+            UpdateItemListByDays.Add(new UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
+            UpdateItemListByDays.Add(new UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
+            UpdateItemListByDays.Add(new UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
+            UpdateItemListByDays.Add(new UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
+            UpdateItemListByDays.Add(new UpdateItemListStruct() { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
+            UpdateItemListByDaysSelection = UpdateItemListByDays.FirstOrDefault(x => x.Value == Settings.Default.UpdateItemListByDays);
 
             CurrentItemListSourceUrl = Settings.Default.CurrentItemListSourceUrl;
         }
@@ -63,26 +69,60 @@
         public void SaveSettings()
         {
             Settings.Default.CurrentItemListSourceUrl = CurrentItemListSourceUrl;
-
-            var refreshRateItem = (SettingsWindow.RefreshRateStruct)_settingsWindow.CbRefreshRate.SelectedItem;
-            var updateItemListByDays = (SettingsWindow.UpdateItemListStruct)_settingsWindow.CbUpdateItemListByDays.SelectedItem;
-
-            Settings.Default.RefreshRate = refreshRateItem.Seconds;
-
-            Settings.Default.UpdateItemListByDays = updateItemListByDays.Value;
-
-            LanguageController.SetLanguage(LanguagesSelectedItem.FileName);
-            Settings.Default.CurrentLanguageCulture = LanguagesSelectedItem.FileName;
+            Settings.Default.RefreshRate = RefreshRatesSelection.Seconds;
+            Settings.Default.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
+            LanguageController.SetLanguage(LanguagesSelection.FileName);
+            Settings.Default.CurrentLanguageCulture = LanguagesSelection.FileName;
 
             _settingsWindow.Close();
         }
 
-        public LanguageController.FileInfo LanguagesSelectedItem
+        public UpdateItemListStruct UpdateItemListByDaysSelection
         {
-            get => _languagesSelectedItem;
+            get => _updateItemListByDaysSelection;
             set
             {
-                _languagesSelectedItem = value;
+                _updateItemListByDaysSelection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<UpdateItemListStruct> UpdateItemListByDays
+        {
+            get => _updateItemListByDays;
+            set
+            {
+                _updateItemListByDays = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RefreshRateStruct RefreshRatesSelection
+        {
+            get => _refreshRatesSelection;
+            set
+            {
+                _refreshRatesSelection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<RefreshRateStruct> RefreshRates
+        {
+            get => _refreshRates;
+            set
+            {
+                _refreshRates = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public LanguageController.FileInfo LanguagesSelection
+        {
+            get => _languagesSelection;
+            set
+            {
+                _languagesSelection = value;
                 OnPropertyChanged();
             }
         }
@@ -105,6 +145,18 @@
                 _filteredItems = value;
                 OnPropertyChanged();
             }
+        }
+
+        public struct RefreshRateStruct
+        {
+            public string Name { get; set; }
+            public int Seconds { get; set; }
+        }
+
+        public struct UpdateItemListStruct
+        {
+            public string Name { get; set; }
+            public int Value { get; set; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
