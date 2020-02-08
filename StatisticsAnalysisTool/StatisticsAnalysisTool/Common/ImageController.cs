@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -15,27 +16,34 @@ namespace StatisticsAnalysisTool.Common
 
         public static BitmapImage GetItemImage(string webPath = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
         {
-            BitmapImage image;
-
             if (webPath == null)
                 return null;
 
-            var webUri = new Uri(webPath, UriKind.Absolute);
-            var filename = Path.GetFileName(webUri.AbsolutePath);
-
-            var localFilePath = Path.Combine(ImageDir, filename);
-            
-            if (File.Exists(localFilePath))
+            try
             {
-                image = SetImage(localFilePath, pixelHeight, pixelWidth, freeze);
-            }
-            else
-            {
-                image = SetImage(webPath, pixelHeight, pixelWidth, freeze);
-                SaveImageLocal(image, localFilePath);
-            }
+                var webUri = new Uri(webPath, UriKind.Absolute);
+                var filename = Path.GetFileName(webUri.AbsolutePath);
+                var localFilePath = Path.Combine(ImageDir, filename);
 
-            return image;
+                BitmapImage image;
+
+                if (File.Exists(localFilePath))
+                {
+                    image = SetImage(localFilePath, pixelHeight, pixelWidth, freeze);
+                }
+                else
+                {
+                    image = SetImage(webPath, pixelHeight, pixelWidth, freeze);
+                    SaveImageLocal(image, localFilePath);
+                }
+
+                return image;
+            }
+            catch (ArgumentException e)
+            {
+                Debug.Print(e.Message);
+                return new BitmapImage(new Uri(@"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png", UriKind.Absolute));
+            }
         }
 
         public static void SaveImageLocal(BitmapImage image, string localFilePath)

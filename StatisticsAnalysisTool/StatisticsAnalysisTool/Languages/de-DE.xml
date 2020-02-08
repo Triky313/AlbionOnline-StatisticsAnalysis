@@ -20,6 +20,8 @@
   <translation name="AUTO_UPDATE_DATA">Auto Daten Update</translation>
   <translation name="DIFFERENT_CALCULATION">Differenz Berechnung</translation>
   <translation name="ERROR_PRICES_CAN_NOT_BE_LOADED">Fehler: Preise können nicht geladen werden.</translation>
+  <translation name="ERROR_NO_ITEM_INFO">Fehler: Keine Item Informationen.</translation>
+  <translation name="ERROR_GENERAL_ERROR">Fehler: Allgemeiner Fehler.</translation>
   <translation name="BOUGHT_FOR">Gekauft für</translation>
   <translation name="SELL_FOR">Verkauft für</translation>
   <translation name="UNKNOWN_ITEM_NAME">UNBEKANNTER ITEM NAME</translation>

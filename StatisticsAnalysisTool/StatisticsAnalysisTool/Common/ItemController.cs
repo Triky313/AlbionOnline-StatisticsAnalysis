@@ -8,28 +8,34 @@
 
     public class ItemController
     {
-        public static string LocalizedName(ItemInformation itemInformation)
+        public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {
-            switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, LanguageController.CurrentLanguage.ToUpper(), StringComparison.CurrentCultureIgnoreCase)).Key)
+            if (localizedNames == null)
+                return "";
+
+            if (string.IsNullOrEmpty(currentLanguage))
+                currentLanguage = LanguageController.CurrentLanguage.ToUpper();
+
+            switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase)).Key)
             {
                 case FrequentlyValues.GameLanguage.UnitedStates:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(itemInformation.LocalizedNames.EnUs));
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EnUs));
                 case FrequentlyValues.GameLanguage.Germany:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(itemInformation.LocalizedNames.DeDe));
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.DeDe));
                 case FrequentlyValues.GameLanguage.Russia:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(itemInformation.LocalizedNames.RuRu));
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.RuRu));
                 case FrequentlyValues.GameLanguage.Poland:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(itemInformation.LocalizedNames.PlPl));
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PlPl));
                 case FrequentlyValues.GameLanguage.Brazil:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(itemInformation.LocalizedNames.PtBr));
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PtBr));
                 case FrequentlyValues.GameLanguage.France:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(itemInformation.LocalizedNames.FrFr));
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.FrFr));
                 case FrequentlyValues.GameLanguage.Spain:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(itemInformation.LocalizedNames.EsEs));
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EsEs));
                 case FrequentlyValues.GameLanguage.Chinese:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(itemInformation.LocalizedNames.ZhCn));
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.ZhCn));
                 default:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(itemInformation.UniqueName));
+                    return alternativeName;
             }
         }
 
