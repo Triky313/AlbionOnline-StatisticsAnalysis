@@ -6,7 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
+using FontAwesome.WPF;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -97,26 +99,43 @@ namespace StatisticsAnalysisTool.ViewModels
             switch (error)
             {
                 case Error.NoItemInfo:
-                    ItemTitle = LanguageController.Translation("ERROR_NO_ITEM_INFO");
                     _mainWindow.Dispatcher?.Invoke(() =>
                     {
+                        ItemTitle = LanguageController.Translation("ERROR_NO_ITEM_INFO");
                         Icon = new BitmapImage(new Uri(@"pack://application:,,,/"
                                                        + Assembly.GetExecutingAssembly().GetName().Name + ";component/"
                                                        + "Resources/Trash.png", UriKind.Absolute));
+                        _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
+                        _mainWindow.FaLoadIcon.Spin = false;
                     });
                     return;
                 case Error.NoPrices:
-                    ItemTitle = LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED");
+                    _mainWindow.Dispatcher?.Invoke(() =>
+                    {
+                        ItemTitle = LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED");
+                        _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
+                        _mainWindow.FaLoadIcon.Spin = false;
+                    });
                     return;
                 case Error.GeneralError:
-                    ItemTitle = LanguageController.Translation("ERROR_GENERAL_ERROR");
-                    Debug.Print(message);
+                    _mainWindow.Dispatcher?.Invoke(() =>
+                    {
+                        ItemTitle = LanguageController.Translation("ERROR_GENERAL_ERROR");
+                        _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
+                        _mainWindow.FaLoadIcon.Spin = false;
+                        Debug.Print(message);
+                    });
                     return;
                 default:
-                    ItemTitle = LanguageController.Translation("ERROR_GENERAL_ERROR");
-                    Debug.Print(message);
-                    return;
-            }
+                    _mainWindow.Dispatcher?.Invoke(() =>
+                    {
+                        ItemTitle = LanguageController.Translation("ERROR_GENERAL_ERROR");
+                        _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
+                        _mainWindow.FaLoadIcon.Spin = false;
+                        Debug.Print(message);
+                    });
+            return;
+        }
         }
         
         private async void StartAutoUpdater()
@@ -157,7 +176,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 }));
 
                 if (statPricesList == null)
+                {
                     return;
+                }
 
                 var statsPricesTotalList = PriceUpdate(statPricesList);
 
@@ -169,6 +190,10 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 _mainWindow.Dispatcher?.Invoke(() =>
                 {
+                    if(_mainWindow.FaLoadIcon.Visibility != Visibility.Hidden)
+                    {
+                        _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
+                    }
                     _mainWindow.ListViewPrices.ItemsSource = marketCurrentPricesItemList;
                     SetDifferenceCalculationText(statsPricesTotalList);
                     _mainWindow.LblLastUpdate.Content = Utilities.DateFormat(DateTime.Now, 0);

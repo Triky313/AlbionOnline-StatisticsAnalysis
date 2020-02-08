@@ -22,6 +22,9 @@
             <CheckBox x:Name="ChbAutoUpdateData" Content="Auto Daten Update" IsChecked="True" Margin="700,43,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="150" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             <Label x:Name="LblLastUpdate" Content="" Margin="0,43,10,0" VerticalAlignment="Top" ToolTip="Letzte Aktualisierung" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="230"/>
         </Grid>
+        <Grid ZIndex="1" Height="80" Width="80" HorizontalAlignment="Center" Margin="0,180,0,0" VerticalAlignment="Top">
+            <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Visible" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+        </Grid>
         <ListView x:Name="ListViewPrices" Margin="1,80,1,41" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
             <ListView.View>
                 <GridView>
