@@ -74,6 +74,9 @@
         <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
 
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Background" Color="#FFF75656"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Border" Color="#FFFF7272"/>
+
         <!-- ######################################################################################### -->
         
         <!-- City Styles -->
@@ -218,6 +221,19 @@
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
+
+        <!-- Grid Error bar -->
+        <Style x:Key="Grid.Error.Bar" TargetType="Grid">
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.ArthursRest}"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+
+        <!-- Grid Error bar label -->
+        <Style x:Key="Grid.Error.Bar.Label" TargetType="Label">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Margin" Value="10,0,40,0"/>
         </Style>
 
         <!-- Grid stackPanel item price -->

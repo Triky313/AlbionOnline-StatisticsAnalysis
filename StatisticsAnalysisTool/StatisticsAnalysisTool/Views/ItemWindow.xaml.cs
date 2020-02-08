@@ -54,5 +54,10 @@
 
             if (e.ClickCount == 2 && WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
         }
+
+        private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
+        {
+            _itemWindowViewModel.ErrorBarVisibility = Visibility.Hidden;
+        }
     }
 }

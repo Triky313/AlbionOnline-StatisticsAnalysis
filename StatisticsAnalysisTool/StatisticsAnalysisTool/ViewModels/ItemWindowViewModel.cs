@@ -23,6 +23,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private Item _item;
         private ItemInformation _itemInformation;
         private bool _runUpdate = true;
+        private Visibility _errorBarVisibility;
+        private string _errorBarText;
         private bool _isAutoUpdateActive;
         private BitmapImage _icon;
         private string _itemTitle;
@@ -34,6 +36,8 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             _mainWindow = mainWindow;
             Item = item;
+
+            ErrorBarVisibility = Visibility.Hidden;
 
             Translation();
             InitializeItemData(item);
@@ -101,41 +105,47 @@ namespace StatisticsAnalysisTool.ViewModels
                 case Error.NoItemInfo:
                     _mainWindow.Dispatcher?.Invoke(() =>
                     {
-                        ItemTitle = LanguageController.Translation("ERROR_NO_ITEM_INFO");
                         Icon = new BitmapImage(new Uri(@"pack://application:,,,/"
                                                        + Assembly.GetExecutingAssembly().GetName().Name + ";component/"
                                                        + "Resources/Trash.png", UriKind.Absolute));
                         _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
                         _mainWindow.FaLoadIcon.Spin = false;
+                        SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_NO_ITEM_INFO"));
                     });
                     return;
                 case Error.NoPrices:
                     _mainWindow.Dispatcher?.Invoke(() =>
                     {
-                        ItemTitle = LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED");
                         _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
                         _mainWindow.FaLoadIcon.Spin = false;
+                        SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED"));
                     });
                     return;
                 case Error.GeneralError:
                     _mainWindow.Dispatcher?.Invoke(() =>
                     {
-                        ItemTitle = LanguageController.Translation("ERROR_GENERAL_ERROR");
                         _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
                         _mainWindow.FaLoadIcon.Spin = false;
+                        SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                         Debug.Print(message);
                     });
                     return;
                 default:
                     _mainWindow.Dispatcher?.Invoke(() =>
                     {
-                        ItemTitle = LanguageController.Translation("ERROR_GENERAL_ERROR");
                         _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
                         _mainWindow.FaLoadIcon.Spin = false;
+                        SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                         Debug.Print(message);
                     });
             return;
+            }
         }
+
+        private void SetErrorBar(Visibility visibility, string errorMessage)
+        {
+            ErrorBarText = errorMessage;
+            ErrorBarVisibility = Visibility.Visible;
         }
         
         private async void StartAutoUpdater()
@@ -352,6 +362,22 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _runUpdate;
             set {
                 _runUpdate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ErrorBarText {
+            get => _errorBarText;
+            set {
+                _errorBarText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ErrorBarVisibility {
+            get => _errorBarVisibility;
+            set {
+                _errorBarVisibility = value;
                 OnPropertyChanged();
             }
         }

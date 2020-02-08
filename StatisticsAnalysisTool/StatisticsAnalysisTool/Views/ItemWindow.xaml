@@ -11,6 +11,14 @@
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
         <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
         <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Grid ZIndex="2" Style="{StaticResource Grid.Error.Bar}" Visibility="{Binding ErrorBarVisibility}">
+            <Button Style="{StaticResource WindowButtonStyle}" Foreground="{StaticResource SolidColorBrush.Background.Third}" Content="r" Margin="0,0,7,0" Click="BtnErrorBar_Click" />
+            <Label Style="{StaticResource Grid.Error.Bar.Label}" Content="{Binding ErrorBarText}"></Label>
+            <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}"/>
+            <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}"/>
+            <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}"/>
+            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}"/>
+        </Grid>
         <Grid ZIndex="-1" Height="80" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
