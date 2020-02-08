@@ -20,6 +20,8 @@
   <translation name="AUTO_UPDATE_DATA">Auto update data</translation>
   <translation name="DIFFERENT_CALCULATION">Different calculation</translation>
   <translation name="ERROR_PRICES_CAN_NOT_BE_LOADED">ERROR: Price can not be loaded</translation>
+  <translation name="ERROR_NO_ITEM_INFO">ERROR: No item information</translation>
+  <translation name="ERROR_GENERAL_ERROR">ERROR: General error.</translation>
   <translation name="BOUGHT_FOR">Bought for</translation>
   <translation name="SELL_FOR">Sell for</translation>
   <translation name="UNKNOWN_ITEM_NAME">Unknown item name</translation>

@@ -15,8 +15,6 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item)
         {
-            var itemInformation = new ItemInformation();
-
             using (var wc = new WebClient())
             {
                 try
@@ -24,8 +22,7 @@ namespace StatisticsAnalysisTool.Common
                     var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/items/{item.UniqueName}/data";
                     var itemString = await wc.DownloadStringTaskAsync(apiString);
                     var result = JsonConvert.DeserializeObject<ItemInformation>(itemString);
-                    itemInformation = result ?? itemInformation;
-                    return itemInformation;
+                    return result;
                 }
                 catch (ArgumentNullException)
                 {

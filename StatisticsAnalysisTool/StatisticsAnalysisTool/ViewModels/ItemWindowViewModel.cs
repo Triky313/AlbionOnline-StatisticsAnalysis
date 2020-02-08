@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media.Imaging;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
@@ -20,18 +19,19 @@ namespace StatisticsAnalysisTool.ViewModels
         private readonly ItemWindow _mainWindow;
         private ItemInformation _itemData = new ItemInformation();
         private Item _item;
+        private ItemInformation _itemInformation;
         private bool _runUpdate = true;
         private bool _isAutoUpdateActive;
         private BitmapImage _icon;
+        private string _itemTitle;
+        private string _itemId;
+        
+        public enum Error { NoPrices, NoItemInfo, GeneralError }
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
             _mainWindow = mainWindow;
             Item = item;
-
-            _mainWindow.LblItemName.Content = "";
-            _mainWindow.LblItemId.Content = "";
-            _mainWindow.LblLastUpdate.Content = "";
 
             Translation();
             InitializeItemData(item);
@@ -60,52 +60,65 @@ namespace StatisticsAnalysisTool.ViewModels
         private async void InitializeItemData(Item item)
         {
             if (item == null)
+            {
+                SetNoDataValues(Error.NoItemInfo);
                 return;
+            }
 
             if (_mainWindow.Dispatcher == null)
+            {
+                SetNoDataValues(Error.GeneralError);
                 return;
+            }
+
+            var localizedName = ItemController.LocalizedName(Item.LocalizedNames, null, Item.UniqueName);
+            ItemInformation = await ApiController.GetItemInfoFromJsonAsync(item).ConfigureAwait(false);
+
+            if (ItemInformation == null)
+            {
+                SetNoDataValues(Error.NoItemInfo);
+                return;
+            }
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindow.Icon = item.Icon;
+                ItemTitle = $"{localizedName} (T{ItemInformation.Tier})";
+                _mainWindow.Title = $"{localizedName} (T{ItemInformation.Tier})";
+                ItemId = ItemInformation.UniqueName;
                 Icon = item.Icon;
             });
 
-            var localizedName = string.IsNullOrEmpty(ItemController.LocalizedName(Item.LocalizedNames))
-                ? _itemData.UniqueName : ItemController.LocalizedName(Item.LocalizedNames, null, Item.UniqueName);
-
             StartAutoUpdater();
-
-            var itemDataTaskResult = await ApiController.GetItemInfoFromJsonAsync(item);
-
-            if (itemDataTaskResult == null)
-            {
-                // TODO: Refactoring
-                _mainWindow.LblItemName.Content = LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED");
-                _mainWindow.Dispatcher?.Invoke(() =>
-                {
-                    Icon = new BitmapImage(new Uri(@"pack://application:,,,/"
-                                                   + Assembly.GetExecutingAssembly().GetName().Name + ";component/"
-                                                   + "Resources/Trash.png", UriKind.Absolute));
-                });
-                return;
-            }
-
-            _itemData = itemDataTaskResult;
-
-            if (_mainWindow.Dispatcher == null)
-                return;
-
-            await _mainWindow.Dispatcher.InvokeAsync(() =>
-            {
-                
-                _mainWindow.Title = $"{localizedName} (T{_itemData.Tier})";
-                _mainWindow.LblItemName.Content = $"{localizedName} (T{_itemData.Tier})";
-                _mainWindow.LblItemId.Content = _itemData.UniqueName;
-            });
-
         }
 
+        private void SetNoDataValues(Error error, string message = null)
+        {
+            switch (error)
+            {
+                case Error.NoItemInfo:
+                    ItemTitle = LanguageController.Translation("ERROR_NO_ITEM_INFO");
+                    _mainWindow.Dispatcher?.Invoke(() =>
+                    {
+                        Icon = new BitmapImage(new Uri(@"pack://application:,,,/"
+                                                       + Assembly.GetExecutingAssembly().GetName().Name + ";component/"
+                                                       + "Resources/Trash.png", UriKind.Absolute));
+                    });
+                    return;
+                case Error.NoPrices:
+                    ItemTitle = LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED");
+                    return;
+                case Error.GeneralError:
+                    ItemTitle = LanguageController.Translation("ERROR_GENERAL_ERROR");
+                    Debug.Print(message);
+                    return;
+                default:
+                    ItemTitle = LanguageController.Translation("ERROR_GENERAL_ERROR");
+                    Debug.Print(message);
+                    return;
+            }
+        }
+        
         private async void StartAutoUpdater()
         {
             await Task.Run(async () => {
@@ -274,6 +287,30 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _item;
             set {
                 _item = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ItemInformation ItemInformation {
+            get => _itemInformation;
+            set {
+                _itemInformation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ItemTitle {
+            get => _itemTitle;
+            set {
+                _itemTitle = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ItemId {
+            get => _itemId;
+            set {
+                _itemId = value;
                 OnPropertyChanged();
             }
         }
