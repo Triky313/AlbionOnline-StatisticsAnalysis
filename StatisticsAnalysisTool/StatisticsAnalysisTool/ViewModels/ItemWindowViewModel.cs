@@ -71,6 +71,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 Icon = item.Icon;
             });
 
+            var localizedName = string.IsNullOrEmpty(ItemController.LocalizedName(Item.LocalizedNames))
+                ? _itemData.UniqueName : ItemController.LocalizedName(Item.LocalizedNames, null, Item.UniqueName);
+
             StartAutoUpdater();
 
             var itemDataTaskResult = await ApiController.GetItemInfoFromJsonAsync(item);
@@ -95,7 +98,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
-                var localizedName = string.IsNullOrEmpty(ItemController.LocalizedName(_itemData.LocalizedNames)) ? _itemData.UniqueName : ItemController.LocalizedName(_itemData.LocalizedNames);
+                
                 _mainWindow.Title = $"{localizedName} (T{_itemData.Tier})";
                 _mainWindow.LblItemName.Content = $"{localizedName} (T{_itemData.Tier})";
                 _mainWindow.LblItemId.Content = _itemData.UniqueName;

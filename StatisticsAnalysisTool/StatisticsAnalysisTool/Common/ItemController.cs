@@ -8,12 +8,15 @@
 
     public class ItemController
     {
-        public static string LocalizedName(LocalizedNames localizedNames)
+        public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {
             if (localizedNames == null)
                 return "";
 
-            switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, LanguageController.CurrentLanguage.ToUpper(), StringComparison.CurrentCultureIgnoreCase)).Key)
+            if (string.IsNullOrEmpty(currentLanguage))
+                currentLanguage = LanguageController.CurrentLanguage.ToUpper();
+
+            switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase)).Key)
             {
                 case FrequentlyValues.GameLanguage.UnitedStates:
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EnUs));
@@ -32,7 +35,7 @@
                 case FrequentlyValues.GameLanguage.Chinese:
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.ZhCn));
                 default:
-                    return "";
+                    return alternativeName;
             }
         }
 
