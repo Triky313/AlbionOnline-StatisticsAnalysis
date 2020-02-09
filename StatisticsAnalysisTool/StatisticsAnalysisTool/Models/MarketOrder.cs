@@ -80,39 +80,17 @@ namespace StatisticsAnalysisTool.Models
             BuyPriceMaxDate = item.BuyPriceMaxDate;
         }
 
-        [JsonProperty(PropertyName = "item_id")]
         public string ItemTypeId { get; set; }
-
-        [JsonProperty(PropertyName = "city")]
         public Location City { get; set; }
-
-        [JsonProperty(PropertyName = "quality")]
         public byte QualityLevel { get; set; }
-
-        [JsonProperty(PropertyName = "sellPriceMin")]
         public ulong SellPriceMin { get; set; }
-
-        [JsonProperty(PropertyName = "sellPriceMinDate")]
         public DateTime SellPriceMinDate { get; set; }
-
-        [JsonProperty(PropertyName = "sellPriceMax")]
         public ulong SellPriceMax { get; set; }
-
-        [JsonProperty(PropertyName = "sellPriceMaxDate")]
         public DateTime SellPriceMaxDate { get; set; }
-
-        [JsonProperty(PropertyName = "buyPriceMin")]
         public ulong BuyPriceMin { get; set; }
-
-        [JsonProperty(PropertyName = "buyPriceMinDate")]
         public DateTime BuyPriceMinDate { get; set; }
-
-        [JsonProperty(PropertyName = "buyPriceMax")]
         public ulong BuyPriceMax { get; set; }
-
-        [JsonProperty(PropertyName = "buyPriceMaxDate")]
         public DateTime BuyPriceMaxDate { get; set; }
-
         public bool BestSellMinPrice { get; set; }
         public bool BestSellMaxPrice { get; set; }
         public bool BestBuyMinPrice { get; set; }

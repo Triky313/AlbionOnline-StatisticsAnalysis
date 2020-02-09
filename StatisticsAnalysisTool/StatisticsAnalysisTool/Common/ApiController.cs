@@ -35,7 +35,7 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations)
+        public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
         {
             if (locations?.Count < 1)
                 return new List<MarketResponse>();
@@ -44,10 +44,18 @@ namespace StatisticsAnalysisTool.Common
             {
                 var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/prices/";
                 statPricesDataJsonUrl += uniqueName;
-                statPricesDataJsonUrl += $"?locations=";
+                statPricesDataJsonUrl += "?locations=";
                 foreach (var location in locations)
                 {
                     statPricesDataJsonUrl += $"{location},";
+                }
+                statPricesDataJsonUrl += "&qualities=";
+                if (qualities.Count >= 1)
+                {
+                    foreach (var quality in qualities)
+                    {
+                        statPricesDataJsonUrl += $"{quality},";
+                    }
                 }
 
                 var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);

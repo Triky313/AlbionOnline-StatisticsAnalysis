@@ -59,5 +59,26 @@
         {
             _itemWindowViewModel.ErrorBarVisibility = Visibility.Hidden;
         }
+
+        private void CbNormalQuality_Click(object sender, RoutedEventArgs e)
+        {
+            _itemWindowViewModel.GetPriceStats();
+        }
+        private void CbGoodQuality_Click(object sender, RoutedEventArgs e)
+        {
+            _itemWindowViewModel.GetPriceStats();
+        }
+        private void CbCbOutstandingQuality_Click(object sender, RoutedEventArgs e)
+        {
+            _itemWindowViewModel.GetPriceStats();
+        }
+        private void CbExcellentQuality_Click(object sender, RoutedEventArgs e)
+        {
+            _itemWindowViewModel.GetPriceStats();
+        }
+        private void CbMasterpieceQuality_Click(object sender, RoutedEventArgs e)
+        {
+            _itemWindowViewModel.GetPriceStats();
+        }
     }
 }

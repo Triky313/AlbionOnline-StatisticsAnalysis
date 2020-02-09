@@ -236,10 +236,4 @@ namespace StatisticsAnalysisTool.Models
     //{
     //    public List<Two> Two { get; set; }
     //}
-
-    public struct KeyValueStruct
-    {
-        public string Key { get; set; }
-        public string Value { get; set; }
-    }
 }
