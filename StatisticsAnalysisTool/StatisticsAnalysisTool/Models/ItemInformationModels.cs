@@ -99,7 +99,7 @@ namespace StatisticsAnalysisTool.Models
         public string DeDe { get; set; }
         [JsonProperty(PropertyName = "KO-KR")]
         public string KoKr { get; set; }
-        [JsonProperty(PropertyName = "RU-RUS")]
+        [JsonProperty(PropertyName = "RU-RU")]
         public string RuRu { get; set; }
         [JsonProperty(PropertyName = "PL-PL")]
         public string PlPl { get; set; }
