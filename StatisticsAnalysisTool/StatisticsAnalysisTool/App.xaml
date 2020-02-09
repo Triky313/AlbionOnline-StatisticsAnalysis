@@ -76,6 +76,7 @@
 
         <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Background" Color="#FFF75656"/>
         <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Border" Color="#FFFF7272"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Button" Color="#FF992E2E"/>
 
         <!-- ######################################################################################### -->
         
@@ -388,6 +389,47 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Foreground" Value="#B4B4B4" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Window Error Bar Button Style -->
+        <Style TargetType="{x:Type Button}" x:Key="Window.Error.Bar.Button.Style">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontFamily" Value="Webdings"/>
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Error.Bar.Button}"/>
+            <Setter Property="Margin" Value="0,2,3,0"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ButtonBase}">
+                        <Border
+                            x:Name="Chrome"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Margin="0"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Content="{TemplateBinding Content}"
+                                ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#FFE58080" />
                 </Trigger>
             </Style.Triggers>
         </Style>

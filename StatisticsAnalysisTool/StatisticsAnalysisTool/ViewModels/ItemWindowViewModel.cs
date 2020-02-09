@@ -28,8 +28,17 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isAutoUpdateActive;
         private BitmapImage _icon;
         private string _itemTitle;
-        private string _itemId;
-        
+        private bool _masterpieceQualityChecked;
+        private bool _excellentQualityChecked;
+        private bool _outstandingQualityChecked;
+        private bool _goodQualityChecked;
+        private bool _normalQualityChecked;
+        private ItemWindowTranslation _translation;
+        private bool _hasItemPrices;
+        private bool _showBlackZoneOutpostsChecked;
+        private bool _showVillagesChecked;
+        private bool _autoUpdateDataChecked;
+
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
@@ -38,29 +47,38 @@ namespace StatisticsAnalysisTool.ViewModels
             Item = item;
 
             ErrorBarVisibility = Visibility.Hidden;
+            AutoUpdateDataChecked = true;
 
-            Translation();
+            InitializeTranslation();
             InitializeItemData(item);
 
             _mainWindow.ListViewPrices.Language = System.Windows.Markup.XmlLanguage.GetLanguage(LanguageController.DefaultCultureInfo.ToString());
         }
 
-        private void Translation()
+        private void InitializeTranslation()
         {
-            _mainWindow.ChbShowVillages.Content = LanguageController.Translation("SHOW_VILLAGES");
-            _mainWindow.ChbShowBlackZoneOutposts.Content = LanguageController.Translation("SHOW_BLACKZONE_OUTPOSTS");
-            _mainWindow.ChbAutoUpdateData.Content = LanguageController.Translation("AUTO_UPDATE_DATA");
-            _mainWindow.LblLastUpdate.ToolTip = LanguageController.Translation("LAST_UPDATE");
-            _mainWindow.GvcCityTitel.Header = LanguageController.Translation("CITY");
-            _mainWindow.GvcSellPriceMin.Header = LanguageController.Translation("SELL_PRICE_MIN");
-            _mainWindow.GvcSellPriceMinDate.Header = LanguageController.Translation("SELL_PRICE_MIN_DATE");
-            _mainWindow.GvcSellPriceMax.Header = LanguageController.Translation("SELL_PRICE_MAX");
-            _mainWindow.GvcSellPriceMaxDate.Header = LanguageController.Translation("SELL_PRICE_MAX_DATE");
-            _mainWindow.GvcBuyPriceMin.Header = LanguageController.Translation("BUY_PRICE_MIN");
-            _mainWindow.GvcBuyPriceMinDate.Header = LanguageController.Translation("BUY_PRICE_MIN_DATE");
-            _mainWindow.GvcBuyPriceMax.Header = LanguageController.Translation("BUY_PRICE_MAX");
-            _mainWindow.GvcBuyPriceMaxDate.Header = LanguageController.Translation("BUY_PRICE_MAX_DATE");
-            _mainWindow.LblDifCalcName.Content = $"{LanguageController.Translation("DIFFERENT_CALCULATION")}:";
+            Translation = new ItemWindowTranslation()
+            {
+                Normal = LanguageController.Translation("NORMAL"),
+                Good = LanguageController.Translation("GOOD"),
+                Outstanding = LanguageController.Translation("OUTSTANDING"),
+                Excellent = LanguageController.Translation("EXCELLENT"),
+                Masterpiece = LanguageController.Translation("MASTERPIECE"),
+                ShowBlackzoneOutposts = LanguageController.Translation("SHOW_BLACKZONE_OUTPOSTS"),
+                ShowVillages = LanguageController.Translation("SHOW_VILLAGES"),
+                AutoUpdateData = LanguageController.Translation("AUTO_UPDATE_DATA"),
+                LastUpdate = LanguageController.Translation("LAST_UPDATE"),
+                City = LanguageController.Translation("CITY"),
+                SellPriceMin = LanguageController.Translation("SELL_PRICE_MIN"),
+                SellPriceMinDate = LanguageController.Translation("SELL_PRICE_MIN_DATE"),
+                SellPriceMax = LanguageController.Translation("SELL_PRICE_MAX"),
+                SellPriceMaxDate = LanguageController.Translation("SELL_PRICE_MAX_DATE"),
+                BuyPriceMin = LanguageController.Translation("BUY_PRICE_MIN"),
+                BuyPriceMinDate = LanguageController.Translation("BUY_PRICE_MIN_DATE"),
+                BuyPriceMax = LanguageController.Translation("BUY_PRICE_MAX"),
+                BuyPriceMaxDate = LanguageController.Translation("BUY_PRICE_MAX_DATE"),
+                DifferentCalculation = $"{LanguageController.Translation("DIFFERENT_CALCULATION")}:"
+            };
         }
 
         private async void InitializeItemData(Item item)
@@ -91,7 +109,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Icon = item.Icon;
                 ItemTitle = $"{localizedName} (T{ItemInformation.Tier})";
                 _mainWindow.Title = $"{localizedName} (T{ItemInformation.Tier})";
-                ItemId = ItemInformation.UniqueName;
                 Icon = item.Icon;
             });
 
@@ -118,6 +135,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     {
                         _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
                         _mainWindow.FaLoadIcon.Spin = false;
+                        HasItemPrices = false;
                         SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED"));
                     });
                     return;
@@ -126,6 +144,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     {
                         _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
                         _mainWindow.FaLoadIcon.Spin = false;
+                        HasItemPrices = false;
                         SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                         Debug.Print(message);
                     });
@@ -135,6 +154,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     {
                         _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
                         _mainWindow.FaLoadIcon.Spin = false;
+                        HasItemPrices = false;
                         SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                         Debug.Print(message);
                     });
@@ -158,7 +178,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 while (RunUpdate)
                 {
                     await Task.Delay(500);
-                    if (_mainWindow.Dispatcher != null && _mainWindow.Dispatcher.Invoke(() => !_mainWindow.ChbAutoUpdateData.IsChecked ?? false))
+                    if (_mainWindow.Dispatcher != null && !AutoUpdateDataChecked)
                         continue;
 
                     GetPriceStats();
@@ -175,15 +195,16 @@ namespace StatisticsAnalysisTool.ViewModels
 
             await Task.Run(async () =>
             {
-                var showVillagesIsChecked = _mainWindow.Dispatcher != null && _mainWindow.Dispatcher.Invoke(() => _mainWindow.ChbShowVillages.IsChecked ?? false);
-                var showBlackZoneOutpostsIsChecked = _mainWindow.Dispatcher != null && _mainWindow.Dispatcher.Invoke(() => _mainWindow.ChbShowBlackZoneOutposts.IsChecked ?? false);
+                var showVillagesIsChecked = ShowVillagesChecked;
 
-                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, Locations.GetLocationsListByArea(new IsLocationAreaActive()
-                {
-                    Cities = true,
-                    Villages = showVillagesIsChecked,
-                    BlackZoneOutposts = showBlackZoneOutpostsIsChecked
-                }));
+                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, 
+                    Locations.GetLocationsListByArea(new IsLocationAreaActive()
+                    {
+                        Cities = true,
+                        Villages = showVillagesIsChecked,
+                        BlackZoneOutposts = ShowBlackZoneOutpostsChecked
+                    }),
+                    GetQualities());
 
                 if (statPricesList == null)
                 {
@@ -205,6 +226,7 @@ namespace StatisticsAnalysisTool.ViewModels
                         _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
                     }
                     _mainWindow.ListViewPrices.ItemsSource = marketCurrentPricesItemList;
+                    HasItemPrices = true;
                     SetDifferenceCalculationText(statsPricesTotalList);
                     _mainWindow.LblLastUpdate.Content = Utilities.DateFormat(DateTime.Now, 0);
                 });
@@ -318,6 +340,37 @@ namespace StatisticsAnalysisTool.ViewModels
                                                  $"{LanguageController.Translation("PROFIT")} {string.Format(LanguageController.DefaultCultureInfo, "{0:n0}", diffPrice)}";
         }
 
+        private List<int> GetQualities()
+        {
+            var qualities = new List<int>();
+
+            if (NormalQualityChecked)
+                qualities.Add(1);
+
+            if (GoodQualityChecked)
+                qualities.Add(2);
+
+            if (OutstandingQualityChecked)
+                qualities.Add(3);
+
+            if (ExcellentQualityChecked)
+                qualities.Add(4);
+
+            if (MasterpieceQualityChecked)
+                qualities.Add(5);
+
+            return qualities;
+        }
+
+        public void UncheckAllRadioButtons()
+        {
+            NormalQualityChecked = false;
+            GoodQualityChecked = false;
+            OutstandingQualityChecked = false;
+            ExcellentQualityChecked = false;
+            MasterpieceQualityChecked = false;
+        }
+
         public Item Item {
             get => _item;
             set {
@@ -338,14 +391,6 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _itemTitle;
             set {
                 _itemTitle = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string ItemId {
-            get => _itemId;
-            set {
-                _itemId = value;
                 OnPropertyChanged();
             }
         }
@@ -382,6 +427,87 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public ItemWindowTranslation Translation {
+            get => _translation;
+            set {
+                _translation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool NormalQualityChecked {
+            get => _normalQualityChecked;
+            set
+            {
+                _normalQualityChecked = !_normalQualityChecked && value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool GoodQualityChecked {
+            get => _goodQualityChecked;
+            set {
+                _goodQualityChecked = !_goodQualityChecked && value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool OutstandingQualityChecked {
+            get => _outstandingQualityChecked;
+            set {
+                _outstandingQualityChecked = !_outstandingQualityChecked && value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ExcellentQualityChecked {
+            get => _excellentQualityChecked;
+            set {
+                _excellentQualityChecked = !_excellentQualityChecked && value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool MasterpieceQualityChecked {
+            get => _masterpieceQualityChecked;
+            set {
+                _masterpieceQualityChecked = !_masterpieceQualityChecked && value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool ShowBlackZoneOutpostsChecked {
+            get => _showBlackZoneOutpostsChecked;
+            set {
+                _showBlackZoneOutpostsChecked = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool ShowVillagesChecked {
+            get => _showVillagesChecked;
+            set {
+                _showVillagesChecked = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool AutoUpdateDataChecked {
+            get => _autoUpdateDataChecked;
+            set {
+                _autoUpdateDataChecked = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool HasItemPrices {
+            get => _hasItemPrices;
+            set {
+                _hasItemPrices = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
