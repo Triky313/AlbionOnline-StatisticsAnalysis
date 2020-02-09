@@ -29,37 +29,37 @@ namespace StatisticsAnalysisTool.Models
 
     public class MarketResponse
     {
-        [JsonProperty(PropertyName = "item_id")]
+        [JsonProperty(PropertyName = "itemTypeId")]
         public string ItemTypeId { get; set; }
 
         [JsonProperty(PropertyName = "city")]
         public string City { get; set; }
 
-        [JsonProperty(PropertyName = "quality")]
+        [JsonProperty(PropertyName = "qualityLevel")]
         public int QualityLevel { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_min")]
+        [JsonProperty(PropertyName = "sellPriceMin")]
         public ulong SellPriceMin { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_min_date")]
+        [JsonProperty(PropertyName = "sellPriceMinDate")]
         public DateTime SellPriceMinDate { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_max")]
+        [JsonProperty(PropertyName = "sellPriceMax")]
         public ulong SellPriceMax { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_max_date")]
+        [JsonProperty(PropertyName = "sellPriceMaxDate")]
         public DateTime SellPriceMaxDate { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_min")]
+        [JsonProperty(PropertyName = "buyPriceMin")]
         public ulong BuyPriceMin { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_min_date")]
+        [JsonProperty(PropertyName = "buyPriceMinDate")]
         public DateTime BuyPriceMinDate { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_max")]
+        [JsonProperty(PropertyName = "buyPriceMax")]
         public ulong BuyPriceMax { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_max_date")]
+        [JsonProperty(PropertyName = "buyPriceMaxDate")]
         public DateTime BuyPriceMaxDate { get; set; }
     }
 
@@ -89,28 +89,28 @@ namespace StatisticsAnalysisTool.Models
         [JsonProperty(PropertyName = "quality")]
         public byte QualityLevel { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_min")]
+        [JsonProperty(PropertyName = "sellPriceMin")]
         public ulong SellPriceMin { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_min_date")]
+        [JsonProperty(PropertyName = "sellPriceMinDate")]
         public DateTime SellPriceMinDate { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_max")]
+        [JsonProperty(PropertyName = "sellPriceMax")]
         public ulong SellPriceMax { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_max_date")]
+        [JsonProperty(PropertyName = "sellPriceMaxDate")]
         public DateTime SellPriceMaxDate { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_min")]
+        [JsonProperty(PropertyName = "buyPriceMin")]
         public ulong BuyPriceMin { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_min_date")]
+        [JsonProperty(PropertyName = "buyPriceMinDate")]
         public DateTime BuyPriceMinDate { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_max")]
+        [JsonProperty(PropertyName = "buyPriceMax")]
         public ulong BuyPriceMax { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_max_date")]
+        [JsonProperty(PropertyName = "buyPriceMaxDate")]
         public DateTime BuyPriceMaxDate { get; set; }
 
         public bool BestSellMinPrice { get; set; }
