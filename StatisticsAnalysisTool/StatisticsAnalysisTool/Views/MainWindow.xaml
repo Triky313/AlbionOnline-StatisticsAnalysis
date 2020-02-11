@@ -4,8 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:views="clr-namespace:StatisticsAnalysisTool.Views"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         mc:Ignorable="d"
-        Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="799" Closing="Window_Closing">
+        Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" d:DataContext="{d:DesignInstance views:MainWindow}" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="799" Closing="Window_Closing">
+    <Window.Resources>
+        <viewModels:MainWindowViewModel x:Key="ViewModel" />
+    </Window.Resources>
     <Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
@@ -324,15 +330,11 @@
             </ScrollViewer>
         </Grid>
         <Grid x:Name="GridGoldMode" Margin="0,80,0,0" Visibility="Visible">
-            <StackPanel Margin="0,0,0,20">
-                <Grid Margin="0,0,0,-15">
-                    <Label Content="{Binding Path=PlayerModeTranslation.GeneralInformation, FallbackValue=TEXT}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14"/>
-                    <Separator/>
-                </Grid>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding Path=CurrentGoldPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                </StackPanel>
-            </StackPanel>
+
+        <Grid DataContext="{StaticResource ViewModel}">
+            <lvc:CartesianChart Series="{Binding SampleData}" DisableAnimations="True"/>
+        </Grid>
+
         </Grid>
     </Grid>
 </Window>

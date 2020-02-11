@@ -10,16 +10,18 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
+using LiveCharts;
+using LiveCharts.Wpf;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Windows.Media;
+using StatisticsAnalysisTool.Annotations;
+using StatisticsAnalysisTool.Views;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
-    using Annotations;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading.Tasks;
-    using Views;
-
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private static MainWindow _mainWindow;
@@ -48,6 +50,32 @@ namespace StatisticsAnalysisTool.ViewModels
             InitLanguage();
             InitMainWindowData();
         }
+
+        public MainWindowViewModel()
+        {
+            SampleData = new SeriesCollection
+            {
+                new ColumnSeries()
+                {
+                    Values = new ChartValues<double> {3, 5},
+                    Name = "Peter",
+                    Fill = Brushes.SlateBlue,
+                    Stroke = Brushes.Aquamarine
+                },
+                new ColumnSeries
+                {
+                    Values = new ChartValues<decimal> {2, 7},
+                    Name = "Test"
+                },
+                new ColumnSeries
+                {
+                    Values = new ChartValues<decimal> {2, 5},
+                    Name = "Lilli"
+                }
+            };
+        }
+
+        public SeriesCollection SampleData { get; set; }
 
         private void UpgradeSettings()
         {

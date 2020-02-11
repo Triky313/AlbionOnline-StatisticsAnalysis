@@ -1,16 +1,20 @@
-﻿namespace StatisticsAnalysisTool.Views
-{
-    using FontAwesome.WPF;
-    using Models;
-    using Properties;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Input;
-    using System.Windows.Navigation;
-    using ViewModels;
+﻿using System;
+using FontAwesome.WPF;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Navigation;
+using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 
+namespace StatisticsAnalysisTool.Views
+{
     /// <summary>
     ///     Interaktionslogik für MainWindow.xaml
     /// </summary>
