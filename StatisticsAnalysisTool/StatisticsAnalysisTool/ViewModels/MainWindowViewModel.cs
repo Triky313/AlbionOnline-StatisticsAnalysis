@@ -29,6 +29,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private static PlayerModeInformationModel _playerModeInformation;
         private ObservableCollection<ModeStruct> _modes = new ObservableCollection<ModeStruct>();
         private ModeStruct _modeSelection;
+        private int _currentGoldPrice;
 
         public enum ViewMode
         {
@@ -113,6 +114,10 @@ namespace StatisticsAnalysisTool.ViewModels
                         _mainWindow.TxtSearch.Focus();
                     }
                 });
+
+                // TEST
+                var t = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(false);
+                CurrentGoldPrice = t.FirstOrDefault()?.Price ?? 0;
             });
         }
         
@@ -314,6 +319,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _modeSelection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int CurrentGoldPrice
+        {
+            get => _currentGoldPrice;
+            set
+            {
+                _currentGoldPrice = value;
                 OnPropertyChanged();
             }
         }

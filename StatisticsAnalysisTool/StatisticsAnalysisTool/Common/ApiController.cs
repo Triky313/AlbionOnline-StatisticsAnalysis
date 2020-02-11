@@ -125,5 +125,26 @@
             }
         }
 
+        public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count)
+        {
+            using (var wc = new WebClient())
+            {
+                var checkedDateTime = (dateTime != null)? dateTime.ToString() : "";
+                var apiString =
+                    "https://www.albion-online-data.com/api/v2/stats/Gold?" +
+                    $"date={checkedDateTime}" +
+                    $"&count={count}";
+
+                try
+                {
+                    var itemString = await wc.DownloadStringTaskAsync(apiString);
+                    return JsonConvert.DeserializeObject<List<GoldResponseModel>>(itemString);
+                }
+                catch
+                {
+                    return new List<GoldResponseModel>();
+                }
+            }
+        }
     }
 }

@@ -25,6 +25,7 @@
             <Grid HorizontalAlignment="Left" Height="24" Margin="185,7,0,0" VerticalAlignment="Top" Width="24">
                 <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Hidden" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
+            <Label Margin="214,0,0,0" HorizontalAlignment="Left" Width="350" Foreground="{StaticResource SolidColorBrush.Foreground.First}">100</Label>
         </Grid>
         <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtSearch" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="299" KeyUp="TxtSearch_KeyUp"/>
@@ -320,7 +321,15 @@
             </ScrollViewer>
         </Grid>
         <Grid x:Name="GridGoldMode" Margin="0,80,0,0" Visibility="Visible">
-            
+            <StackPanel Margin="0,0,0,20">
+                <Grid Margin="0,0,0,-15">
+                    <Label Content="{Binding Path=PlayerModeTranslation.GeneralInformation, FallbackValue=TEXT}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14"/>
+                    <Separator/>
+                </Grid>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding Path=CurrentGoldPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                </StackPanel>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>
