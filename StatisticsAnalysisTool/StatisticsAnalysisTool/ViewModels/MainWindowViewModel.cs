@@ -13,6 +13,7 @@ using System.Windows;
 namespace StatisticsAnalysisTool.ViewModels
 {
     using Annotations;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
@@ -26,6 +27,15 @@ namespace StatisticsAnalysisTool.ViewModels
         private static List<Item> _filteredItems;
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
+        private ObservableCollection<ModeStruct> _modes = new ObservableCollection<ModeStruct>();
+        private ModeStruct _modeSelection;
+
+        public enum ViewMode
+        {
+            Normal,
+            Player,
+            Gold
+        }
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -57,24 +67,23 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void InitMainWindowData()
         {
+            #region Set combobox mode
+
+            Modes.Clear();
+            Modes.Add(new ModeStruct { Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal });
+            Modes.Add(new ModeStruct { Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player });
+            Modes.Add(new ModeStruct { Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold });
+            ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
+
+            #endregion
+
             Task.Run(async () =>
             {
                 _mainWindow.Dispatcher?.Invoke(() =>
                 {
                     _mainWindow.TxtSearch.IsEnabled = false;
                     _mainWindow.FaLoadIcon.Visibility = Visibility.Visible;
-
-                    #region Set combobox mode
-
-                    _mainWindow.CbMode.Items.Clear();
-                    _mainWindow.CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("NORMAL"), Mode = MainWindow.ViewMode.Normal });
-                    _mainWindow.CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = MainWindow.ViewMode.Player });
-
-                    if (_mainWindow.CbMode.Items.Count > 0)
-                        _mainWindow.CbMode.SelectedIndex = 0;
-
-                    #endregion
-
+                    
                     #region Set MainWindow height and width and center window
 
                     _mainWindow.Height = Settings.Default.MainWindowHeight;
@@ -106,7 +115,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 });
             });
         }
-
+        
         public void CenterWindowOnScreen()
         {
             var screenWidth = SystemParameters.PrimaryScreenWidth;
@@ -289,6 +298,26 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion
 
+        public ObservableCollection<ModeStruct> Modes
+        {
+            get => _modes;
+            set
+            {
+                _modes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ModeStruct ModeSelection
+        {
+            get => _modeSelection;
+            set
+            {
+                _modeSelection = value;
+                OnPropertyChanged();
+            }
+        }
+
         public PlayerModeTranslation PlayerModeTranslation => new PlayerModeTranslation();
         public string DonateUrl => Settings.Default.DonateUrl;
         public string SavedPlayerInformationName => Settings.Default.SavedPlayerInformationName ?? "";
@@ -301,6 +330,12 @@ namespace StatisticsAnalysisTool.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public struct ModeStruct
+        {
+            public string Name { get; set; }
+            public ViewMode ViewMode { get; set; }
         }
     }
 }

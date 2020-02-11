@@ -18,7 +18,7 @@
             <Image HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="37" Source="logo.ico" Margin="10,0,0,0"/>
         </Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" Margin="0,40,0,0">
-            <ComboBox x:Name="CbMode" DisplayMemberPath="Name" SelectedValuePath="Mode" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="170" Height="23" SelectionChanged="CbMode_SelectionChanged"/>
+            <ComboBox ItemsSource="{Binding Modes}" SelectedItem="{Binding ModeSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="ViewMode" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="170" Height="23" SelectionChanged="CbMode_SelectionChanged"/>
             <Grid x:Name="BtnSettings" Margin="0,10,10,0" HorizontalAlignment="Right" Width="24" Height="24" VerticalAlignment="Top">
                 <fa:ImageAwesome Icon="Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
             </Grid>
@@ -26,7 +26,7 @@
                 <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Hidden" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
         </Grid>
-        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
+        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtSearch" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="299" KeyUp="TxtSearch_KeyUp"/>
             <Label x:Name="LblItemCounter" Content="0/0" Height="26" Margin="0,6,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="110" />
 
@@ -318,6 +318,9 @@
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
+        </Grid>
+        <Grid x:Name="GridGoldMode" Margin="0,80,0,0" Visibility="Visible">
+            
         </Grid>
     </Grid>
 </Window>

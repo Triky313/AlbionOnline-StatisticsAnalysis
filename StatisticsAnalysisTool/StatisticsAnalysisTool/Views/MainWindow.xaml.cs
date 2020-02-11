@@ -16,12 +16,6 @@
     /// </summary>
     public partial class MainWindow
     {
-        public enum ViewMode
-        {
-            Normal,
-            Player
-        }
-
         private readonly MainWindowViewModel _mainWindowViewModel;
 
         public MainWindow()
@@ -118,19 +112,23 @@
 
         private void CbMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var mode = (ComboboxMarketMode) CbMode.SelectedItem;
+            var mode = _mainWindowViewModel.ModeSelection;
 
-            switch (mode?.Mode)
+            switch (mode.ViewMode)
             {
-                case ViewMode.Normal:
+                case MainWindowViewModel.ViewMode.Normal:
                     HideAllGrids();
                     GridNormalMode.Visibility = Visibility.Visible;
                     TxtSearch.Focus();
                     return;
-                case ViewMode.Player:
+                case MainWindowViewModel.ViewMode.Player:
                     HideAllGrids();
                     GridPlayerMode.Visibility = Visibility.Visible;
                     TxtBoxPlayerModeUsername.Focus();
+                    return;
+                case MainWindowViewModel.ViewMode.Gold:
+                    HideAllGrids();
+                    GridGoldMode.Visibility = Visibility.Visible;
                     return;
             }
         }
@@ -139,6 +137,7 @@
         {
             GridNormalMode.Visibility = Visibility.Hidden;
             GridPlayerMode.Visibility = Visibility.Hidden;
+            GridGoldMode.Visibility = Visibility.Hidden;
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
