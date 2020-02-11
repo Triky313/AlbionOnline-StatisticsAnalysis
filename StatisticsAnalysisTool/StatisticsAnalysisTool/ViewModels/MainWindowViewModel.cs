@@ -66,7 +66,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.Close();
         }
 
-        private void InitMainWindowData()
+        private async void InitMainWindowData()
         {
             #region Set combobox mode
 
@@ -78,7 +78,10 @@ namespace StatisticsAnalysisTool.ViewModels
 
             #endregion
 
-            Task.Run(async () =>
+            var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
+            CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
+
+            await Task.Run(async () =>
             {
                 _mainWindow.Dispatcher?.Invoke(() =>
                 {
@@ -114,10 +117,6 @@ namespace StatisticsAnalysisTool.ViewModels
                         _mainWindow.TxtSearch.Focus();
                     }
                 });
-
-                // TEST
-                var t = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(false);
-                CurrentGoldPrice = t.FirstOrDefault()?.Price ?? 0;
             });
         }
         

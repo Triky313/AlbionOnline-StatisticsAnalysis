@@ -196,6 +196,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\gold.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Trash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
