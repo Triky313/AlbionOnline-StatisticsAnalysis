@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace StatisticsAnalysisTool.Common
+﻿namespace StatisticsAnalysisTool.Common
 {
     using Models;
     using Newtonsoft.Json;

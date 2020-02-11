@@ -1,4 +1,9 @@
-﻿using System;
+﻿using FontAwesome.WPF;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -8,11 +13,6 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using FontAwesome.WPF;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Views;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -165,7 +165,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private void SetErrorBar(Visibility visibility, string errorMessage)
         {
             ErrorBarText = errorMessage;
-            ErrorBarVisibility = Visibility.Visible;
+            ErrorBarVisibility = visibility;
         }
         
         private async void StartAutoUpdater()
@@ -233,34 +233,35 @@ namespace StatisticsAnalysisTool.ViewModels
             });
         }
 
-        private List<MarketResponseTotal> PriceUpdate(List<MarketResponse> statPricesList)
+        private List<MarketResponseTotal> PriceUpdate(List<MarketResponse> newStatsPricesList)
         {
-            var statsPricesTotalList = new List<MarketResponseTotal>();
+            var currentStatsPricesTotalList = new List<MarketResponseTotal>();
 
-            foreach (var stats in statPricesList)
+            foreach (var newStats in newStatsPricesList)
             {
-                if (statsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == stats.City))
+                if (currentStatsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == newStats.City))
                 {
-                    var spt = statsPricesTotalList.Find(s => Locations.GetName(s.City) == stats.City);
-                    if (stats.SellPriceMin < spt.SellPriceMin)
-                        spt.SellPriceMin = stats.SellPriceMin;
+                    var curStats = currentStatsPricesTotalList.Find(s => Locations.GetName(s.City) == newStats.City);
+                    
+                    if (newStats.SellPriceMinDate < curStats.SellPriceMinDate)
+                        curStats.SellPriceMin = newStats.SellPriceMin;
 
-                    if (stats.SellPriceMax > spt.SellPriceMax)
-                        spt.SellPriceMax = stats.SellPriceMax;
+                    if (newStats.SellPriceMaxDate < curStats.SellPriceMaxDate)
+                        curStats.SellPriceMax = newStats.SellPriceMax;
 
-                    if (stats.BuyPriceMin < spt.BuyPriceMin)
-                        spt.BuyPriceMin = stats.BuyPriceMin;
+                    if (newStats.BuyPriceMinDate < curStats.BuyPriceMinDate)
+                        curStats.BuyPriceMin = newStats.BuyPriceMin;
 
-                    if (stats.BuyPriceMax > spt.BuyPriceMax)
-                        spt.BuyPriceMax = stats.BuyPriceMax;
+                    if (newStats.BuyPriceMaxDate < curStats.BuyPriceMaxDate)
+                        curStats.BuyPriceMax = newStats.BuyPriceMax;
                 }
                 else
                 {
-                    statsPricesTotalList.Add(new MarketResponseTotal(stats));
+                    currentStatsPricesTotalList.Add(new MarketResponseTotal(newStats));
                 }
             }
 
-            return statsPricesTotalList;
+            return currentStatsPricesTotalList;
         }
 
         private void FindBestPrice(ref List<MarketResponseTotal> list)
