@@ -15,7 +15,7 @@
                 <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL | " Style="{StaticResource MainWindow.Title}" />
                 <Label Content="{Binding Version, FallbackValue=VERSION, Mode=OneTime}" Style="{StaticResource MainWindow.Version}" />
             </StackPanel>
-            <Image HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="37" Source="Resources/logo.ico" Margin="10,0,0,0"/>
+            <Image Style="{StaticResource Image.Logo}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
         </Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" Margin="0,40,0,0">
             <ComboBox ItemsSource="{Binding Modes}" SelectedItem="{Binding ModeSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="ViewMode" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="170" Height="23" SelectionChanged="CbMode_SelectionChanged"/>
@@ -27,7 +27,7 @@
             </Grid>
             <Grid Height="40" VerticalAlignment="Top" HorizontalAlignment="Center" Width="120">
                 <Image Style="{StaticResource Image.Gold}" Width="24" Height="24" Margin="10,8,0,8" HorizontalAlignment="Left" />
-                <Label Content="{Binding CurrentGoldPrice, FallbackValue=0, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Gold}" Height="26" Margin="35,5,10,9" FontWeight="Bold" />
+                <Label Content="{Binding CurrentGoldPrice, FallbackValue=0, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding CurrentGoldPriceTimestamp}" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Gold}" Height="26" Margin="35,5,10,9" FontWeight="Bold" />
             </Grid>
         </Grid>
         <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">

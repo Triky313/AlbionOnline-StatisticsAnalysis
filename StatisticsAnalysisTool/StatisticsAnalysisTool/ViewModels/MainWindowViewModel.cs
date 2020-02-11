@@ -5,6 +5,7 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -30,6 +31,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<ModeStruct> _modes = new ObservableCollection<ModeStruct>();
         private ModeStruct _modeSelection;
         private int _currentGoldPrice;
+        private string _currentGoldPriceTimestamp;
 
         public enum ViewMode
         {
@@ -80,6 +82,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
+            var a = CultureInfo.CurrentCulture;
+            CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
 
             await Task.Run(async () =>
             {
@@ -328,6 +332,15 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _currentGoldPrice = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string CurrentGoldPriceTimestamp {
+            get => _currentGoldPriceTimestamp;
+            set
+            {
+                _currentGoldPriceTimestamp = value;
                 OnPropertyChanged();
             }
         }

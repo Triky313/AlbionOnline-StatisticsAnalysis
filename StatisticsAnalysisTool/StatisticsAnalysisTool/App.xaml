@@ -276,6 +276,13 @@
             <Setter Property="Source" Value="Resources/gold.png"/>
         </Style>
 
+        <!-- Image logo -->
+        <Style TargetType="Image" x:Key="Image.Logo" >
+            <Setter Property="Source" Value="logo.ico"/>
+            <Setter Property="Height" Value="37"/>
+            <Setter Property="Width" Value="37"/>
+        </Style>
+
         <!-- ListView grid stackPanel item icon -->
         <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Icon">
             <Setter Property="Orientation" Value="Horizontal"></Setter>
