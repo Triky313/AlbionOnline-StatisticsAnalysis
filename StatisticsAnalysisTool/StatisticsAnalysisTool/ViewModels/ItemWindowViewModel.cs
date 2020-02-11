@@ -244,16 +244,28 @@ namespace StatisticsAnalysisTool.ViewModels
                     var curStats = currentStatsPricesTotalList.Find(s => Locations.GetName(s.City) == newStats.City);
                     
                     if (newStats.SellPriceMinDate < curStats.SellPriceMinDate)
+                    {
                         curStats.SellPriceMin = newStats.SellPriceMin;
+                        curStats.SellPriceMinDate = newStats.SellPriceMinDate;
+                    }
 
                     if (newStats.SellPriceMaxDate < curStats.SellPriceMaxDate)
+                    {
                         curStats.SellPriceMax = newStats.SellPriceMax;
+                        curStats.SellPriceMaxDate = newStats.SellPriceMaxDate;
+                    }
 
                     if (newStats.BuyPriceMinDate < curStats.BuyPriceMinDate)
+                    {
                         curStats.BuyPriceMin = newStats.BuyPriceMin;
+                        curStats.BuyPriceMinDate = newStats.BuyPriceMinDate;
+                    }
 
                     if (newStats.BuyPriceMaxDate < curStats.BuyPriceMaxDate)
+                    {
                         curStats.BuyPriceMax = newStats.BuyPriceMax;
+                        curStats.BuyPriceMaxDate = newStats.BuyPriceMaxDate;
+                    }
                 }
                 else
                 {
