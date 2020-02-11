@@ -1,0 +1,18 @@
+﻿<Window x:Class="StatisticsAnalysisTool.Views.InfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StatisticsAnalysisTool.Views"
+        mc:Ignorable="d"
+        Title="InfoWindow" Height="250" Width="350" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False">
+    <Grid>
+        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.First}"/>
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.First}"/>
+        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.First}"/>
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.First}"/>
+        <Label Content="{Binding Path=Title, FallbackValue=TITLE}" Margin="5,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
+        <Separator Margin="10,30,10,0" VerticalAlignment="Top" />
+        <TextBlock  Foreground="{StaticResource SolidColorBrush.Foreground.Second}" TextWrapping="WrapWithOverflow" Text="TEXT" Margin="10,33,10,10"/>
+    </Grid>
+</Window>
