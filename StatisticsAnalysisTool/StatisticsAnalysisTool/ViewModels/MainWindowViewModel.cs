@@ -1,27 +1,27 @@
-﻿using Newtonsoft.Json;
+﻿using LiveCharts;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Windows;
-using LiveCharts;
-using LiveCharts.Wpf;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media;
-using StatisticsAnalysisTool.Annotations;
-using StatisticsAnalysisTool.Views;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
+    using LiveCharts.Wpf;
+
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private static MainWindow _mainWindow;
@@ -34,6 +34,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ModeStruct _modeSelection;
         private int _currentGoldPrice;
         private string _currentGoldPriceTimestamp;
+        private SeriesCollection _seriesCollection;
 
         public enum ViewMode
         {
@@ -49,33 +50,17 @@ namespace StatisticsAnalysisTool.ViewModels
             UpgradeSettings();
             InitLanguage();
             InitMainWindowData();
+            SetChart(1);
         }
 
-        public MainWindowViewModel()
+        public void SetChart(int value)
         {
-            SampleData = new SeriesCollection
+            SeriesCollection = new SeriesCollection
             {
-                new ColumnSeries()
-                {
-                    Values = new ChartValues<double> {3, 5},
-                    Name = "Peter",
-                    Fill = Brushes.SlateBlue,
-                    Stroke = Brushes.Aquamarine
-                },
-                new ColumnSeries
-                {
-                    Values = new ChartValues<decimal> {2, 7},
-                    Name = "Test"
-                },
-                new ColumnSeries
-                {
-                    Values = new ChartValues<decimal> {2, 5},
-                    Name = "Lilli"
-                }
+                new ColumnSeries {Values = new ChartValues<int> {value, 2, 4, 3}, Title = "Gold", Name = "Gold"}
             };
-        }
 
-        public SeriesCollection SampleData { get; set; }
+        }
 
         private void UpgradeSettings()
         {
@@ -369,6 +354,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _currentGoldPriceTimestamp = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public SeriesCollection SeriesCollection
+        {
+            get => _seriesCollection;
+            set
+            {
+                _seriesCollection = value;
                 OnPropertyChanged();
             }
         }

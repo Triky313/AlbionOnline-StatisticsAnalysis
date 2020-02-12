@@ -1,17 +1,13 @@
-﻿using System;
-using FontAwesome.WPF;
+﻿using FontAwesome.WPF;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using LiveCharts;
-using LiveCharts.Defaults;
-using LiveCharts.Wpf;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Views
 {
@@ -179,6 +175,11 @@ namespace StatisticsAnalysisTool.Views
                 return;
 
             await _mainWindowViewModel.SetComparedPlayerModeInfoValues();
+        }
+
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _mainWindowViewModel.SetChart(15);
         }
     }
 }
