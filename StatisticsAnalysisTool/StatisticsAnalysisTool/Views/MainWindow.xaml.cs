@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -177,9 +178,14 @@ namespace StatisticsAnalysisTool.Views
             await _mainWindowViewModel.SetComparedPlayerModeInfoValues();
         }
 
+        private void TxtBoxGoldModeAmountValues_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
+        }
+
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            _mainWindowViewModel.SetChart(15);
+            _mainWindowViewModel.SetChart(10);
         }
     }
 }

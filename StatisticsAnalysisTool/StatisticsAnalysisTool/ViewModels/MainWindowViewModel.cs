@@ -20,7 +20,6 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
-    using LiveCharts.Configurations;
     using LiveCharts.Wpf;
 
     public class MainWindowViewModel : INotifyPropertyChanged
@@ -35,8 +34,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private ModeStruct _modeSelection;
         private int _currentGoldPrice;
         private string _currentGoldPriceTimestamp;
-        private ColumnSeries _columnSeries = new ColumnSeries();
-        private ChartValues<DateTimePoint> _rawDataSeries;
+        private SeriesCollection _seriesCollection;
+        private string[] _labels;
+        private Func<int, string> _yFormatter;
 
         public enum ViewMode
         {
@@ -55,67 +55,75 @@ namespace StatisticsAnalysisTool.ViewModels
             SetChart(1);
         }
 
-        public void SetChart(int value)
+        public async void SetChart(int count)
         {
-            //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
-            var customerVmMapper = Mappers.Weighted<DateTimePoint>()
-                .X((x, index) => index).Y(x => x.Value); //and PurchasedItems property as Y
+            var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true);
 
-            //lets save the mapper globally
-            Charting.For<DateTimePoint>(customerVmMapper);
+            var date = new List<string>();
+            var amount = new ChartValues<int>();
 
-            var list = new List<DateTimePoint>()
+            foreach (var goldPrice in goldPriceList)
             {
-                new DateTimePoint() {Timestamp = DateTime.Now, Value = value},
-                new DateTimePoint() {Timestamp = DateTime.Now, Value = 78},
-                new DateTimePoint() {Timestamp = DateTime.Now, Value = 21}
-            };
-
-            var values = new ChartValues<DateTimePoint>();
-            foreach (var obj in list)
-            {
-                values.Add(obj);
+                date.Add(goldPrice.Timestamp.ToString(CultureInfo.CurrentCulture));
+                amount.Add(goldPrice.Price);
             }
 
-            RawDataSeries = values;
+            Labels = date.ToArray();
 
-            //ColumnSeries = new ColumnSeries()
-            //{
-            //    Values = new ChartValues<int>
-            //    {
-            //        value, 2752, 2456
-            //    },
-            //    Fill = (SolidColorBrush)Application.Current.Resources["Solid.Color.Text.Gold"],
-            //};
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Gold",
+                    Values = amount
+                }
+            };
 
-            //ColumnSeries.Values.Add(new ColumnSeries
-            //{
-            //    Values = new ChartValues<int>
-            //    {
-            //        value, 2752, 2456
-            //    },
-            //    Title = "Gold",
-            //    Name = "Gold",
-            //    Fill = (SolidColorBrush)Application.Current.Resources["Solid.Color.Text.Gold"],
-            //});
+            //Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" };
+            YFormatter = x => x.ToString("C");
+
         }
 
-        public ChartValues<DateTimePoint> RawDataSeries
-        {
-            get => _rawDataSeries;
-            set
-            {
-                _rawDataSeries = value;
+        //public void SetCha()
+        //{
+        //    _mainWindowViewModel.Labels = new[] { "T", "E", "S", "T" };
+        //    _mainWindowViewModel.SeriesCollection = new SeriesCollection
+        //    {
+        //        new LineSeries
+        //        {
+        //            Title = "Gold",
+        //            Values = new ChartValues<int>
+        //            {
+        //                522, 455, 645, 855
+        //            }
+        //        }
+        //    };
+        //}
+
+        public SeriesCollection SeriesCollection {
+            get => _seriesCollection;
+            set {
+                _seriesCollection = value;
                 OnPropertyChanged();
             }
         }
 
-        public class DateTimePoint
-        {
-            public DateTime Timestamp { get; set; }
-            public int Value { get; set; }
+        public string[] Labels {
+            get => _labels;
+            set {
+                _labels = value;
+                OnPropertyChanged();
+            }
         }
 
+        public Func<int, string> YFormatter {
+            get => _yFormatter;
+            set {
+                _yFormatter = value;
+                OnPropertyChanged();
+            }
+        }
+        
         private void UpgradeSettings()
         {
             if (Settings.Default.UpgradeRequired)
@@ -408,16 +416,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _currentGoldPriceTimestamp = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ColumnSeries ColumnSeries
-        {
-            get => _columnSeries;
-            set
-            {
-                _columnSeries = value;
                 OnPropertyChanged();
             }
         }

@@ -494,41 +494,41 @@
         </Style>
 
         <!-- PlayerMode label value last -->
-        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Last" >
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Last">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="Width" Value="220"></Setter>
         </Style>
 
         <!-- PlayerMode label value current -->
-        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Current" >
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Current">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="Width" Value="220"></Setter>
         </Style>
 
         <!-- PlayerMode label title -->
-        <Style TargetType="Label" x:Key="PlayerMode.Label.Title" >
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Title">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="Width" Value="200"></Setter>
         </Style>
 
         <!-- PlayerMode label -->
-        <Style TargetType="Label" x:Key="PlayerMode.Title" >
+        <Style TargetType="Label" x:Key="PlayerMode.Title">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="FontWeight" Value="Bold"></Setter>
         </Style>
 
         <!-- Price list column style -->
-        <Style TargetType="Label" x:Key="Price.List.Column.Style" >
+        <Style TargetType="Label" x:Key="Price.List.Column.Style">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
         </Style>
 
         <!-- MainWindow title label -->
-        <Style TargetType="Label" x:Key="MainWindow.Title" >
+        <Style TargetType="Label" x:Key="MainWindow.Title">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
@@ -538,7 +538,7 @@
         </Style>
 
         <!-- MainWindow version label -->
-        <Style TargetType="Label" x:Key="MainWindow.Version" >
+        <Style TargetType="Label" x:Key="MainWindow.Version">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Progressbar}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
@@ -920,7 +920,7 @@
             <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
             <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.Third}" />
         </Style>
-        
+
     </Application.Resources>
 </Application>
 

@@ -325,22 +325,41 @@
             </ScrollViewer>
         </Grid>
         <Grid x:Name="GridGoldMode" Margin="0,80,0,0" Visibility="Visible">
-            <Grid Margin="10">
-                <lvc:CartesianChart Series="{Binding SeriesCollection, UpdateSourceTrigger=PropertyChanged}" />
-                <!-- 
-                <lvc:CartesianChart> 
-                    <lvc:CartesianChart.Series> 
-                        <lvc:ColumnSeries Values="{Binding RawDataSeries, UpdateSourceTrigger=PropertyChanged}" /> 
-                    </lvc:CartesianChart.Series> 
-                    <lvc:CartesianChart.AxisX > 
-                        <lvc:Axis Labels="{Binding Labels}"> 
-                            <lvc:Axis.Separator> 
-                                <lvc:Separator Step="1"></lvc:Separator> 
-                            </lvc:Axis.Separator> 
-                        </lvc:Axis> 
-                    </lvc:CartesianChart.AxisX> 
-                </lvc:CartesianChart> 
-                -->
+            <Button Style="{StaticResource ButtonStyle}" Content="{Binding LastTranslation, FallbackValue=UPDATE}" HorizontalAlignment="Left" Margin="35,10,0,0" Width="110" Height="24" VerticalAlignment="Top" />
+            <TextBox Margin="150,10,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" PreviewTextInput="TxtBoxGoldModeAmountValues_OnPreviewTextInput">
+                <TextBox.Style>
+                    <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                        <Style.Resources>
+                            <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                <VisualBrush.Visual>
+                                    <Label Content="{Binding AmountValuesTranslation, FallbackValue=AMOUNT__VALUES}" Foreground="{StaticResource Solid.Color.Text.ToOldSecond}" />
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Style.Resources>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+
+            <Grid Margin="10,34,10,10">
+                <lvc:CartesianChart Series="{Binding SeriesCollection, UpdateSourceTrigger=PropertyChanged}">
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis LabelFormatter="{Binding YFormatter, UpdateSourceTrigger=PropertyChanged}"/>
+                    </lvc:CartesianChart.AxisY>
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis LabelsRotation="-40" Labels="{Binding Labels, UpdateSourceTrigger=PropertyChanged}"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                </lvc:CartesianChart>
             </Grid>
         </Grid>
     </Grid>
