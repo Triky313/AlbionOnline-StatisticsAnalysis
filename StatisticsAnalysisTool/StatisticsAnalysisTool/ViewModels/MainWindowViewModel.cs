@@ -20,6 +20,7 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
+    using LiveCharts.Configurations;
     using LiveCharts.Wpf;
 
     public class MainWindowViewModel : INotifyPropertyChanged
@@ -34,7 +35,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private ModeStruct _modeSelection;
         private int _currentGoldPrice;
         private string _currentGoldPriceTimestamp;
-        private SeriesCollection _seriesCollection;
+        private ColumnSeries _columnSeries = new ColumnSeries();
+        private ChartValues<DateTimePoint> _rawDataSeries;
 
         public enum ViewMode
         {
@@ -55,11 +57,63 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void SetChart(int value)
         {
-            SeriesCollection = new SeriesCollection
+            //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
+            var customerVmMapper = Mappers.Weighted<DateTimePoint>()
+                .X((x, index) => index).Y(x => x.Value); //and PurchasedItems property as Y
+
+            //lets save the mapper globally
+            Charting.For<DateTimePoint>(customerVmMapper);
+
+            var list = new List<DateTimePoint>()
             {
-                new ColumnSeries {Values = new ChartValues<int> {value, 2, 4, 3}, Title = "Gold", Name = "Gold"}
+                new DateTimePoint() {Timestamp = DateTime.Now, Value = value},
+                new DateTimePoint() {Timestamp = DateTime.Now, Value = 78},
+                new DateTimePoint() {Timestamp = DateTime.Now, Value = 21}
             };
 
+            var values = new ChartValues<DateTimePoint>();
+            foreach (var obj in list)
+            {
+                values.Add(obj);
+            }
+
+            RawDataSeries = values;
+
+            //ColumnSeries = new ColumnSeries()
+            //{
+            //    Values = new ChartValues<int>
+            //    {
+            //        value, 2752, 2456
+            //    },
+            //    Fill = (SolidColorBrush)Application.Current.Resources["Solid.Color.Text.Gold"],
+            //};
+
+            //ColumnSeries.Values.Add(new ColumnSeries
+            //{
+            //    Values = new ChartValues<int>
+            //    {
+            //        value, 2752, 2456
+            //    },
+            //    Title = "Gold",
+            //    Name = "Gold",
+            //    Fill = (SolidColorBrush)Application.Current.Resources["Solid.Color.Text.Gold"],
+            //});
+        }
+
+        public ChartValues<DateTimePoint> RawDataSeries
+        {
+            get => _rawDataSeries;
+            set
+            {
+                _rawDataSeries = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public class DateTimePoint
+        {
+            public DateTime Timestamp { get; set; }
+            public int Value { get; set; }
         }
 
         private void UpgradeSettings()
@@ -358,12 +412,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public SeriesCollection SeriesCollection
+        public ColumnSeries ColumnSeries
         {
-            get => _seriesCollection;
+            get => _columnSeries;
             set
             {
-                _seriesCollection = value;
+                _columnSeries = value;
                 OnPropertyChanged();
             }
         }

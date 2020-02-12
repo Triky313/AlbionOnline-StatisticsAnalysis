@@ -327,6 +327,20 @@
         <Grid x:Name="GridGoldMode" Margin="0,80,0,0" Visibility="Visible">
             <Grid Margin="10">
                 <lvc:CartesianChart Series="{Binding SeriesCollection, UpdateSourceTrigger=PropertyChanged}" />
+                <!-- 
+                <lvc:CartesianChart> 
+                    <lvc:CartesianChart.Series> 
+                        <lvc:ColumnSeries Values="{Binding RawDataSeries, UpdateSourceTrigger=PropertyChanged}" /> 
+                    </lvc:CartesianChart.Series> 
+                    <lvc:CartesianChart.AxisX > 
+                        <lvc:Axis Labels="{Binding Labels}"> 
+                            <lvc:Axis.Separator> 
+                                <lvc:Separator Step="1"></lvc:Separator> 
+                            </lvc:Axis.Separator> 
+                        </lvc:Axis> 
+                    </lvc:CartesianChart.AxisX> 
+                </lvc:CartesianChart> 
+                -->
             </Grid>
         </Grid>
     </Grid>
