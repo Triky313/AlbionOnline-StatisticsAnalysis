@@ -33,4 +33,5 @@ Copy the en-US file and change everything, then all APP-CODES should be availabl
 <translation name = "EVERY_3_DAYS">HERE YOUR TEXT</translation>
 ```
 
-
+## Backers
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/N4N81FD7A)
