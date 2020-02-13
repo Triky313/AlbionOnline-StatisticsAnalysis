@@ -41,6 +41,7 @@
         <Color x:Key="Color.Text.ToOldThird">#FF616172</Color>
         <Color x:Key="Color.Text.NoValue">#FF4B4B59</Color>
         <Color x:Key="Color.Text.Gold">#FFf2b83b</Color>
+        <Color x:Key="Color.Gold.Fill">#55f2b83b</Color>
 
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.First" Color="Gainsboro"/>
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.Second" Color="#B4B4B4"/>
@@ -65,6 +66,7 @@
         <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
         <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
         <SolidColorBrush x:Key="Solid.Color.Text.Gold" Color="{StaticResource Color.Text.Gold}"/>
+        <SolidColorBrush x:Key="Solid.Color.Gold.Fill" Color="{StaticResource Color.Gold.Fill}"/>
 
         <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.Thetford" Color="{StaticResource Color.City.Thetford}"/>
@@ -919,6 +921,14 @@
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
             <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
             <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.Third}" />
+        </Style>
+
+        <!-- TextBox -->
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Foreground.Second}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
 
     </Application.Resources>

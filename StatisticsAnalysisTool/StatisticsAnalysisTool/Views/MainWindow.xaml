@@ -27,7 +27,7 @@
                 <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Hidden" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
             <Grid Height="40" VerticalAlignment="Top" HorizontalAlignment="Center" Width="120">
-                <Image Style="{StaticResource Image.Gold}" Width="24" Height="24" Margin="10,8,0,8" HorizontalAlignment="Left" MouseDown="Image_MouseDown" />
+                <Image Style="{StaticResource Image.Gold}" Width="24" Height="24" Margin="10,8,0,8" HorizontalAlignment="Left" />
                 <Label Content="{Binding CurrentGoldPrice, FallbackValue=0, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding CurrentGoldPriceTimestamp}" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Gold}" Height="26" Margin="35,5,10,9" FontWeight="Bold" />
             </Grid>
         </Grid>
@@ -325,37 +325,10 @@
             </ScrollViewer>
         </Grid>
         <Grid x:Name="GridGoldMode" Margin="0,80,0,0" Visibility="Visible">
-            <Button Style="{StaticResource ButtonStyle}" Content="{Binding LastTranslation, FallbackValue=UPDATE}" HorizontalAlignment="Left" Margin="35,10,0,0" Width="110" Height="24" VerticalAlignment="Top" />
-            <TextBox Margin="150,10,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" PreviewTextInput="TxtBoxGoldModeAmountValues_OnPreviewTextInput">
-                <TextBox.Style>
-                    <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
-                        <Style.Resources>
-                            <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
-                                <VisualBrush.Visual>
-                                    <Label Content="{Binding AmountValuesTranslation, FallbackValue=AMOUNT__VALUES}" Foreground="{StaticResource Solid.Color.Text.ToOldSecond}" />
-                                </VisualBrush.Visual>
-                            </VisualBrush>
-                        </Style.Resources>
-                        <Style.Triggers>
-                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
-                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
-                            </Trigger>
-                            <Trigger Property="Text" Value="{x:Null}">
-                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
-                            </Trigger>
-                            <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Foreground.First}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
-
+            <Button Style="{StaticResource ButtonStyle}" Content="{Binding UpdateTranslation, FallbackValue=UPDATE}" HorizontalAlignment="Left" Margin="10,10,0,0" Width="110" Height="24" VerticalAlignment="Top" Click="Button_Click" />
+            <TextBox Text="{Binding TextBoxGoldModeNumberOfValues}" ToolTip="{Binding NumberOfValuesTranslation, FallbackValue=NUMBER__OF__VALUES}" MaxLength="5" Margin="125,10,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" PreviewTextInput="TxtBoxGoldModeAmountValues_OnPreviewTextInput"/>
             <Grid Margin="10,34,10,10">
                 <lvc:CartesianChart Series="{Binding SeriesCollection, UpdateSourceTrigger=PropertyChanged}">
-                    <lvc:CartesianChart.AxisY>
-                        <lvc:Axis LabelFormatter="{Binding YFormatter, UpdateSourceTrigger=PropertyChanged}"/>
-                    </lvc:CartesianChart.AxisY>
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis LabelsRotation="-40" Labels="{Binding Labels, UpdateSourceTrigger=PropertyChanged}"></lvc:Axis>
                     </lvc:CartesianChart.AxisX>

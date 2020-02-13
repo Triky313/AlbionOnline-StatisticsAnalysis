@@ -183,9 +183,10 @@ namespace StatisticsAnalysisTool.Views
             e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
         }
 
-        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _mainWindowViewModel.SetChart(10);
+            if (int.TryParse(_mainWindowViewModel.TextBoxGoldModeNumberOfValues, out var numberOfValues))
+                _mainWindowViewModel.SetGoldChart(numberOfValues);
         }
     }
 }

@@ -21,6 +21,7 @@ using System.Windows;
 namespace StatisticsAnalysisTool.ViewModels
 {
     using LiveCharts.Wpf;
+    using System.Windows.Media;
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
@@ -36,7 +37,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _currentGoldPriceTimestamp;
         private SeriesCollection _seriesCollection;
         private string[] _labels;
-        private Func<int, string> _yFormatter;
+        private string _textBoxGoldModeNumberOfValues;
 
         public enum ViewMode
         {
@@ -52,78 +53,8 @@ namespace StatisticsAnalysisTool.ViewModels
             UpgradeSettings();
             InitLanguage();
             InitMainWindowData();
-            SetChart(1);
         }
 
-        public async void SetChart(int count)
-        {
-            var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true);
-
-            var date = new List<string>();
-            var amount = new ChartValues<int>();
-
-            foreach (var goldPrice in goldPriceList)
-            {
-                date.Add(goldPrice.Timestamp.ToString(CultureInfo.CurrentCulture));
-                amount.Add(goldPrice.Price);
-            }
-
-            Labels = date.ToArray();
-
-            SeriesCollection = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Title = "Gold",
-                    Values = amount
-                }
-            };
-
-            //Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" };
-            YFormatter = x => x.ToString("C");
-
-        }
-
-        //public void SetCha()
-        //{
-        //    _mainWindowViewModel.Labels = new[] { "T", "E", "S", "T" };
-        //    _mainWindowViewModel.SeriesCollection = new SeriesCollection
-        //    {
-        //        new LineSeries
-        //        {
-        //            Title = "Gold",
-        //            Values = new ChartValues<int>
-        //            {
-        //                522, 455, 645, 855
-        //            }
-        //        }
-        //    };
-        //}
-
-        public SeriesCollection SeriesCollection {
-            get => _seriesCollection;
-            set {
-                _seriesCollection = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string[] Labels {
-            get => _labels;
-            set {
-                _labels = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Func<int, string> YFormatter {
-            get => _yFormatter;
-            set {
-                _yFormatter = value;
-                OnPropertyChanged();
-            }
-        }
-        
         private void UpgradeSettings()
         {
             if (Settings.Default.UpgradeRequired)
@@ -154,10 +85,9 @@ namespace StatisticsAnalysisTool.ViewModels
             ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
 
             #endregion
-
+            
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
-            var a = CultureInfo.CurrentCulture;
             CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
 
             await Task.Run(async () =>
@@ -197,6 +127,8 @@ namespace StatisticsAnalysisTool.ViewModels
                     }
                 });
             });
+
+            TextBoxGoldModeNumberOfValues = "10";
         }
         
         public void CenterWindowOnScreen()
@@ -208,10 +140,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.Left = (screenWidth / 2) - (windowWidth / 2);
             _mainWindow.Top = (screenHeight / 2) - (windowHeight / 2);
         }
-
-        // Info Link -> https://github.com/broderickhyman/ao-bin-dumps
-        // Models: https://github.com/broderickhyman/albiondata-models-dotNet
-
+        
         #region Item list (Normal Mode)
 
         public List<Item> FilteredItems {
@@ -381,6 +310,57 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion
 
+        #region Gold (Gold Mode)
+
+        public async void SetGoldChart(int count)
+        {
+            var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true);
+
+            var date = new List<string>();
+            var amount = new ChartValues<int>();
+
+            foreach (var goldPrice in goldPriceList)
+            {
+                date.Add(goldPrice.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+                amount.Add(goldPrice.Price);
+            }
+
+            Labels = date.ToArray();
+            
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Gold",
+                    Values = amount,
+                    Fill = (Brush)Application.Current.Resources["Solid.Color.Gold.Fill"],
+                    Stroke = (Brush)Application.Current.Resources["Solid.Color.Text.Gold"]
+                }
+            };
+        }
+
+        public SeriesCollection SeriesCollection
+        {
+            get => _seriesCollection;
+            set
+            {
+                _seriesCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string[] Labels
+        {
+            get => _labels;
+            set
+            {
+                _labels = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        #endregion
+
         public ObservableCollection<ModeStruct> Modes
         {
             get => _modes;
@@ -411,7 +391,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string CurrentGoldPriceTimestamp {
+        public string CurrentGoldPriceTimestamp 
+        {
             get => _currentGoldPriceTimestamp;
             set
             {
@@ -420,10 +401,22 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public string TextBoxGoldModeNumberOfValues
+        {
+            get => _textBoxGoldModeNumberOfValues;
+            set
+            {
+                _textBoxGoldModeNumberOfValues = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public PlayerModeTranslation PlayerModeTranslation => new PlayerModeTranslation();
         public string DonateUrl => Settings.Default.DonateUrl;
         public string SavedPlayerInformationName => Settings.Default.SavedPlayerInformationName ?? "";
         public string LoadTranslation => LanguageController.Translation("LOAD");
+        public string NumberOfValuesTranslation => LanguageController.Translation("NUMBER_OF_VALUES");
+        public string UpdateTranslation => LanguageController.Translation("UPDATE");
         public string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;
