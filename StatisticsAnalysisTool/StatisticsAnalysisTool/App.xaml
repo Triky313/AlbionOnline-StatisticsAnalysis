@@ -40,6 +40,8 @@
         <Color x:Key="Color.Text.ToOldSecond">#FF77778C</Color>
         <Color x:Key="Color.Text.ToOldThird">#FF616172</Color>
         <Color x:Key="Color.Text.NoValue">#FF4B4B59</Color>
+        <Color x:Key="Color.Text.Gold">#FFf2b83b</Color>
+        <Color x:Key="Color.Gold.Fill">#55f2b83b</Color>
 
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.First" Color="Gainsboro"/>
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.Second" Color="#B4B4B4"/>
@@ -63,6 +65,8 @@
         <SolidColorBrush x:Key="Solid.Color.Text.ToOldSecond" Color="{StaticResource Color.Text.ToOldSecond}"/>
         <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
         <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.Gold" Color="{StaticResource Color.Text.Gold}"/>
+        <SolidColorBrush x:Key="Solid.Color.Gold.Fill" Color="{StaticResource Color.Gold.Fill}"/>
 
         <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.Thetford" Color="{StaticResource Color.City.Thetford}"/>
@@ -81,7 +85,7 @@
         <!-- ######################################################################################### -->
         
         <!-- City Styles -->
-        <Style TargetType="Label" x:Key="CaerleonStyle" >
+        <Style TargetType="Label" x:Key="CaerleonStyle">
             <Setter Property="Height" Value="28" />
             <Setter Property="Width" Value="150" />
             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -267,6 +271,18 @@
             <Setter Property="Height" Value="20"/>
             <Setter Property="Width" Value="20"/>
             <Setter Property="Source" Value="Resources/silver.png"/>
+        </Style>
+
+        <!-- Image gold -->
+        <Style TargetType="Image" x:Key="Image.Gold" >
+            <Setter Property="Source" Value="Resources/gold.png"/>
+        </Style>
+
+        <!-- Image logo -->
+        <Style TargetType="Image" x:Key="Image.Logo" >
+            <Setter Property="Source" Value="logo.ico"/>
+            <Setter Property="Height" Value="37"/>
+            <Setter Property="Width" Value="37"/>
         </Style>
 
         <!-- ListView grid stackPanel item icon -->
@@ -480,41 +496,41 @@
         </Style>
 
         <!-- PlayerMode label value last -->
-        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Last" >
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Last">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="Width" Value="220"></Setter>
         </Style>
 
         <!-- PlayerMode label value current -->
-        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Current" >
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Current">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="Width" Value="220"></Setter>
         </Style>
 
         <!-- PlayerMode label title -->
-        <Style TargetType="Label" x:Key="PlayerMode.Label.Title" >
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Title">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="Width" Value="200"></Setter>
         </Style>
 
         <!-- PlayerMode label -->
-        <Style TargetType="Label" x:Key="PlayerMode.Title" >
+        <Style TargetType="Label" x:Key="PlayerMode.Title">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="FontWeight" Value="Bold"></Setter>
         </Style>
 
         <!-- Price list column style -->
-        <Style TargetType="Label" x:Key="Price.List.Column.Style" >
+        <Style TargetType="Label" x:Key="Price.List.Column.Style">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
         </Style>
 
         <!-- MainWindow title label -->
-        <Style TargetType="Label" x:Key="MainWindow.Title" >
+        <Style TargetType="Label" x:Key="MainWindow.Title">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
@@ -524,7 +540,7 @@
         </Style>
 
         <!-- MainWindow version label -->
-        <Style TargetType="Label" x:Key="MainWindow.Version" >
+        <Style TargetType="Label" x:Key="MainWindow.Version">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Progressbar}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
@@ -906,7 +922,15 @@
             <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
             <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.Third}" />
         </Style>
-        
+
+        <!-- TextBox -->
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Foreground.Second}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
     </Application.Resources>
 </Application>
 

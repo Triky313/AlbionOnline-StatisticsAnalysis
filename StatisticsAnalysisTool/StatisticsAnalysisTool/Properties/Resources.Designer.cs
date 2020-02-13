@@ -63,6 +63,16 @@ namespace StatisticsAnalysisTool.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap gold {
+            get {
+                object obj = ResourceManager.GetObject("gold", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap level0 {
             get {
                 object obj = ResourceManager.GetObject("level0", resourceCulture);

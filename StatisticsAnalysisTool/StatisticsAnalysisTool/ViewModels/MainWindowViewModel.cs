@@ -1,22 +1,27 @@
-﻿using Newtonsoft.Json;
+﻿using LiveCharts;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
-    using Annotations;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading.Tasks;
-    using Views;
+    using LiveCharts.Wpf;
+    using System.Windows.Media;
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
@@ -26,6 +31,20 @@ namespace StatisticsAnalysisTool.ViewModels
         private static List<Item> _filteredItems;
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
+        private ObservableCollection<ModeStruct> _modes = new ObservableCollection<ModeStruct>();
+        private ModeStruct _modeSelection;
+        private int _currentGoldPrice;
+        private string _currentGoldPriceTimestamp;
+        private SeriesCollection _seriesCollection;
+        private string[] _labels;
+        private string _textBoxGoldModeNumberOfValues;
+
+        public enum ViewMode
+        {
+            Normal,
+            Player,
+            Gold
+        }
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -55,26 +74,29 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.Close();
         }
 
-        private void InitMainWindowData()
+        private async void InitMainWindowData()
         {
-            Task.Run(async () =>
+            #region Set combobox mode
+
+            Modes.Clear();
+            Modes.Add(new ModeStruct { Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal });
+            Modes.Add(new ModeStruct { Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player });
+            Modes.Add(new ModeStruct { Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold });
+            ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
+
+            #endregion
+            
+            var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
+            CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
+            CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
+
+            await Task.Run(async () =>
             {
                 _mainWindow.Dispatcher?.Invoke(() =>
                 {
                     _mainWindow.TxtSearch.IsEnabled = false;
                     _mainWindow.FaLoadIcon.Visibility = Visibility.Visible;
-
-                    #region Set combobox mode
-
-                    _mainWindow.CbMode.Items.Clear();
-                    _mainWindow.CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("NORMAL"), Mode = MainWindow.ViewMode.Normal });
-                    _mainWindow.CbMode.Items.Add(new ComboboxMarketMode { Name = LanguageController.Translation("PLAYER"), Mode = MainWindow.ViewMode.Player });
-
-                    if (_mainWindow.CbMode.Items.Count > 0)
-                        _mainWindow.CbMode.SelectedIndex = 0;
-
-                    #endregion
-
+                    
                     #region Set MainWindow height and width and center window
 
                     _mainWindow.Height = Settings.Default.MainWindowHeight;
@@ -105,8 +127,10 @@ namespace StatisticsAnalysisTool.ViewModels
                     }
                 });
             });
-        }
 
+            TextBoxGoldModeNumberOfValues = "10";
+        }
+        
         public void CenterWindowOnScreen()
         {
             var screenWidth = SystemParameters.PrimaryScreenWidth;
@@ -116,10 +140,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.Left = (screenWidth / 2) - (windowWidth / 2);
             _mainWindow.Top = (screenHeight / 2) - (windowHeight / 2);
         }
-
-        // Info Link -> https://github.com/broderickhyman/ao-bin-dumps
-        // Models: https://github.com/broderickhyman/albiondata-models-dotNet
-
+        
         #region Item list (Normal Mode)
 
         public List<Item> FilteredItems {
@@ -289,10 +310,113 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion
 
+        #region Gold (Gold Mode)
+
+        public async void SetGoldChart(int count)
+        {
+            var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true);
+
+            var date = new List<string>();
+            var amount = new ChartValues<int>();
+
+            foreach (var goldPrice in goldPriceList)
+            {
+                date.Add(goldPrice.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+                amount.Add(goldPrice.Price);
+            }
+
+            Labels = date.ToArray();
+            
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Gold",
+                    Values = amount,
+                    Fill = (Brush)Application.Current.Resources["Solid.Color.Gold.Fill"],
+                    Stroke = (Brush)Application.Current.Resources["Solid.Color.Text.Gold"]
+                }
+            };
+        }
+
+        public SeriesCollection SeriesCollection
+        {
+            get => _seriesCollection;
+            set
+            {
+                _seriesCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string[] Labels
+        {
+            get => _labels;
+            set
+            {
+                _labels = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        #endregion
+
+        public ObservableCollection<ModeStruct> Modes
+        {
+            get => _modes;
+            set
+            {
+                _modes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ModeStruct ModeSelection
+        {
+            get => _modeSelection;
+            set
+            {
+                _modeSelection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int CurrentGoldPrice
+        {
+            get => _currentGoldPrice;
+            set
+            {
+                _currentGoldPrice = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string CurrentGoldPriceTimestamp 
+        {
+            get => _currentGoldPriceTimestamp;
+            set
+            {
+                _currentGoldPriceTimestamp = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TextBoxGoldModeNumberOfValues
+        {
+            get => _textBoxGoldModeNumberOfValues;
+            set
+            {
+                _textBoxGoldModeNumberOfValues = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public PlayerModeTranslation PlayerModeTranslation => new PlayerModeTranslation();
         public string DonateUrl => Settings.Default.DonateUrl;
         public string SavedPlayerInformationName => Settings.Default.SavedPlayerInformationName ?? "";
         public string LoadTranslation => LanguageController.Translation("LOAD");
+        public string NumberOfValuesTranslation => LanguageController.Translation("NUMBER_OF_VALUES");
+        public string UpdateTranslation => LanguageController.Translation("UPDATE");
         public string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -301,6 +425,12 @@ namespace StatisticsAnalysisTool.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public struct ModeStruct
+        {
+            public string Name { get; set; }
+            public ViewMode ViewMode { get; set; }
         }
     }
 }
