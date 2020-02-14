@@ -56,7 +56,7 @@
         <SolidColorBrush x:Key="GridView.Column.Header.Font" Color="{StaticResource Color.Button.Second}"/>
         <SolidColorBrush x:Key="WindowButtonForeground" Color="#FF36363F"/>
         <SolidColorBrush x:Key="SolidColorBrush.Hyperlink.First" Color="#FF329bc3"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Progressbar" Color="#FF3BAFDA"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Highlighted.First" Color="#FF3BAFDA"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
@@ -541,7 +541,7 @@
 
         <!-- MainWindow version label -->
         <Style TargetType="Label" x:Key="MainWindow.Version">
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Progressbar}"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Highlighted.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
@@ -550,7 +550,7 @@
 
         <!-- Progressbar style -->
         <Style x:Key="{x:Type ProgressBar}" TargetType="{x:Type ProgressBar}">
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Progressbar}"/>
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Highlighted.First}"/>
             <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
@@ -929,6 +929,31 @@
             <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
             <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Foreground.Second}" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <!-- Tab item -->
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" CornerRadius="0,0,0,0" Margin="1,0,0,0">
+                            <ContentPresenter x:Name="ContentSite"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              ContentSource="Header"
+                                              Margin="10,2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Color.Button.Second}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Color.Button.Third}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
     </Application.Resources>
