@@ -38,7 +38,7 @@
 
             <Label x:Name="LblLastUpdate" Content="" Margin="0,43,10,0" VerticalAlignment="Top" ToolTip="Letzte Aktualisierung" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="230"/>
         </Grid>
-        <TabControl Margin="0,86,0,35" BorderThickness="0" Background="{StaticResource SolidColorBrush.Background.Third}">
+        <TabControl Margin="0,86,0,35" BorderThickness="0" Background="{StaticResource SolidColorBrush.Background.Third}" IsEnabled="False">
             <TabItem Header="Main">
                 <ListView x:Name="ListViewPrices" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
                     <ListView.View>
@@ -146,7 +146,7 @@
                     </ListView.View>
                 </ListView>
             </TabItem>
-            <TabItem Header="TabItem">
+            <TabItem Header="History">
                 <Grid Background="{StaticResource SolidColorBrush.Background.First}"/>
             </TabItem>
         </TabControl>

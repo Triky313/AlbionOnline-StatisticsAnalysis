@@ -31,7 +31,7 @@
                 <Label Content="{Binding CurrentGoldPrice, FallbackValue=0, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding CurrentGoldPriceTimestamp}" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Gold}" Height="26" Margin="35,5,10,9" FontWeight="Bold" />
             </Grid>
         </Grid>
-        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">
+        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
             <TextBox x:Name="TxtSearch" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="299" KeyUp="TxtSearch_KeyUp"/>
             <Label x:Name="LblItemCounter" Content="0/0" Height="26" Margin="0,6,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="110" />
 
@@ -43,7 +43,7 @@
                 <fa:ImageAwesome Icon="FileImageOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
 
-            <ListView ItemsSource="{Binding FilteredItems}" Style="{StaticResource {x:Type ListView}}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,38,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
+            <ListView IsEnabled="True" ItemsSource="{Binding FilteredItems}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,38,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn x:Name="GvcNmlIcon" Header="ICON" Width="80">
@@ -324,7 +324,7 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
-        <Grid x:Name="GridGoldMode" Margin="0,80,0,0" Visibility="Visible">
+        <Grid x:Name="GridGoldMode" Margin="0,80,0,0" Visibility="Hidden">
             <Button Style="{StaticResource ButtonStyle}" Content="{Binding UpdateTranslation, FallbackValue=UPDATE}" HorizontalAlignment="Left" Margin="10,10,0,0" Width="110" Height="24" VerticalAlignment="Top" Click="Button_Click" />
             <TextBox Text="{Binding TextBoxGoldModeNumberOfValues}" ToolTip="{Binding NumberOfValuesTranslation, FallbackValue=NUMBER__OF__VALUES}" MaxLength="5" Margin="125,10,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" PreviewTextInput="TxtBoxGoldModeAmountValues_OnPreviewTextInput"/>
             <Grid Margin="10,34,10,10">
