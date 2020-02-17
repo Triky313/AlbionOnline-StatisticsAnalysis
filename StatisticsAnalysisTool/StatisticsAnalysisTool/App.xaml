@@ -29,10 +29,19 @@
         <Color x:Key="Color.City.MerlynsRest">#FF435DE0</Color>
         <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
 
-        <!-- City colors -->
-        <Color x:Key="Color.Button.First">#ff6fccf6</Color>
-        <Color x:Key="Color.Button.Second">#ff57b6e0</Color>
-        <Color x:Key="Color.Button.Third">#ff3da2ca</Color>
+        <!-- Colors -->
+        <Color x:Key="Color.Blue.1">#ff6fccf6</Color>
+        <Color x:Key="Color.Blue.2">#ff57b6e0</Color>
+        <Color x:Key="Color.Blue.3">#ff3da2ca</Color>
+        <Color x:Key="Color.Blue.4">#ff20779E</Color>
+        <Color x:Key="Color.Blue.5">#ff196585</Color>
+
+        <Color x:Key="Color.Red.1">#FFFF7272</Color>
+        <Color x:Key="Color.Red.2">#FFF75656</Color>
+        <Color x:Key="Color.Red.3">#FF992E2E</Color>
+
+        <Color x:Key="Color.Gold.1">#FFf2b83b</Color>
+        <Color x:Key="Color.Gold.2">#55f2b83b</Color>
 
         <!-- Text colors -->
         <Color x:Key="Color.Text.Normal">#FFDEDEEA</Color>
@@ -40,23 +49,26 @@
         <Color x:Key="Color.Text.ToOldSecond">#FF77778C</Color>
         <Color x:Key="Color.Text.ToOldThird">#FF616172</Color>
         <Color x:Key="Color.Text.NoValue">#FF4B4B59</Color>
-        <Color x:Key="Color.Text.Gold">#FFf2b83b</Color>
-        <Color x:Key="Color.Gold.Fill">#55f2b83b</Color>
-
+        
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.First" Color="Gainsboro"/>
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.Second" Color="#B4B4B4"/>
         <SolidColorBrush x:Key="SolidColorBrush.Background.First" Color="{StaticResource Background.First}" />
         <SolidColorBrush x:Key="SolidColorBrush.Background.Second" Color="{StaticResource Background.Second}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Background.Third" Color="{StaticResource Background.Third}"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.First" Color="{StaticResource Color.Button.First}"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Second" Color="{StaticResource Color.Button.Second}"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Third" Color="{StaticResource Color.Button.Third}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.First" Color="{StaticResource Color.Blue.1}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Second" Color="{StaticResource Color.Blue.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Third" Color="{StaticResource Color.Blue.3}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.1" Color="{StaticResource Color.Blue.1}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.2" Color="{StaticResource Color.Blue.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.3" Color="{StaticResource Color.Blue.3}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.4" Color="{StaticResource Color.Blue.4}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.5" Color="{StaticResource Color.Blue.5}"/>
         <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#FF00799f"/>
         <SolidColorBrush x:Key="Item.IsSelected.Background" Color="#FF0e89b1"/>
-        <SolidColorBrush x:Key="GridView.Column.Header.Font" Color="{StaticResource Color.Button.Second}"/>
+        <SolidColorBrush x:Key="GridView.Column.Header.Font" Color="{StaticResource Color.Blue.2}"/>
         <SolidColorBrush x:Key="WindowButtonForeground" Color="#FF36363F"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Hyperlink.First" Color="#FF329bc3"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Highlighted.First" Color="#FF3BAFDA"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Hyperlink.First" Color="{StaticResource Color.Blue.3}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Highlighted.First" Color="{StaticResource Color.Blue.2}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
@@ -65,8 +77,8 @@
         <SolidColorBrush x:Key="Solid.Color.Text.ToOldSecond" Color="{StaticResource Color.Text.ToOldSecond}"/>
         <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
         <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
-        <SolidColorBrush x:Key="Solid.Color.Text.Gold" Color="{StaticResource Color.Text.Gold}"/>
-        <SolidColorBrush x:Key="Solid.Color.Gold.Fill" Color="{StaticResource Color.Gold.Fill}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.Gold" Color="{StaticResource Color.Gold.1}"/>
+        <SolidColorBrush x:Key="Solid.Color.Gold.Fill" Color="{StaticResource Color.Gold.2}"/>
 
         <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.Thetford" Color="{StaticResource Color.City.Thetford}"/>
@@ -78,9 +90,9 @@
         <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
 
-        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Background" Color="#FFF75656"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Border" Color="#FFFF7272"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Button" Color="#FF992E2E"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Background" Color="{StaticResource Color.Red.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Border" Color="{StaticResource Color.Red.1}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Button" Color="{StaticResource Color.Red.3}"/>
 
         <!-- ######################################################################################### -->
         
@@ -454,7 +466,7 @@
         <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="BorderBrush">
                 <Setter.Value>
-                    <SolidColorBrush Color="{StaticResource Color.Button.Third}"/>
+                    <SolidColorBrush Color="{StaticResource Color.Blue.3}"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="Template">
@@ -462,7 +474,7 @@
                     <ControlTemplate TargetType="Button">
                         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="0">
                             <Border.Effect>
-                                <DropShadowEffect Color="{StaticResource Color.Button.Third}" ShadowDepth="0"/>
+                                <DropShadowEffect Color="{StaticResource Color.Blue.3}" ShadowDepth="0"/>
                             </Border.Effect>
                             <TextBlock Foreground="{TemplateBinding BorderBrush}" Text="{TemplateBinding Content}" 
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -488,8 +500,8 @@
             <Setter Property="Background">
                 <Setter.Value>
                     <RadialGradientBrush>
-                        <GradientStop Color="{StaticResource Color.Button.First}" Offset="0"/>
-                        <GradientStop Color="{StaticResource Color.Button.Third}" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.Blue.1}" Offset="0"/>
+                        <GradientStop Color="{StaticResource Color.Blue.3}" Offset="1"/>
                     </RadialGradientBrush>
                 </Setter.Value>
             </Setter>
@@ -945,10 +957,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Color.Button.Second}" />
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Blue.2}" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="False">
-                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Color.Button.Third}" />
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Blue.4}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
