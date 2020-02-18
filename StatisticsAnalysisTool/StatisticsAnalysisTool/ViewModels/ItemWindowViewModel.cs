@@ -19,7 +19,6 @@ namespace StatisticsAnalysisTool.ViewModels
     using LiveCharts;
     using LiveCharts.Wpf;
     using System.Globalization;
-    using System.Windows.Media;
 
     public class ItemWindowViewModel: INotifyPropertyChanged
     {
@@ -406,15 +405,15 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     Title = Locations.GetName(Locations.GetName(item?.Location)),
                     Values = amount,
-                    Fill = (Brush)Application.Current.Resources["Solid.Color.Gold.Fill"],
-                    Stroke = (Brush)Application.Current.Resources["Solid.Color.Text.Gold"]
+                    Fill = Locations.GetLocationBrush(Locations.GetName(item?.Location), true),
+                    Stroke = Locations.GetLocationBrush(Locations.GetName(item?.Location), false)
                 });
             }
 
             LabelsHistory = date.ToArray();
             SeriesCollectionHistory = seriesCollectionHistory;
         }
-
+        
         public Item Item {
             get => _item;
             set {

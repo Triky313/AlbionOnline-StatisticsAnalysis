@@ -3,6 +3,11 @@ using System.Linq;
 
 namespace StatisticsAnalysisTool.Common
 {
+    using System;
+    using System.Diagnostics;
+    using System.Windows;
+    using System.Windows.Media;
+
     public static class Locations
     {
         public static readonly Dictionary<Location, string> Names = new Dictionary<Location, string>
@@ -93,6 +98,26 @@ namespace StatisticsAnalysisTool.Common
             }
             return locations;
         }
+
+        public static Brush GetLocationBrush(Location location, bool transparent)
+        {
+            try
+            {
+                if (transparent)
+                {
+                    return (Brush)Application.Current.Resources[$"SolidColorBrush.City.{GetParameterName(location)}.Transparent"];
+                }
+                else
+                {
+                    return (Brush)Application.Current.Resources[$"SolidColorBrush.City.{GetParameterName(location)}"];
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Print(e.Message);
+                return (Brush)Application.Current.Resources[$"SolidColorBrush.City.Default.Transparent"];
+            }
+        }
     }
 
     public enum Location
@@ -127,5 +152,5 @@ namespace StatisticsAnalysisTool.Common
         public bool Villages { get; set; }
         public bool Cities { get; set; }
     }
-
+    
 }
