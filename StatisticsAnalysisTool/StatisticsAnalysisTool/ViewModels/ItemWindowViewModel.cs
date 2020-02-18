@@ -16,6 +16,11 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
+    using LiveCharts;
+    using LiveCharts.Wpf;
+    using System.Globalization;
+    using System.Windows.Media;
+
     public class ItemWindowViewModel: INotifyPropertyChanged
     {
         private readonly ItemWindow _mainWindow;
@@ -38,6 +43,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _showBlackZoneOutpostsChecked;
         private bool _showVillagesChecked;
         private bool _autoUpdateDataChecked;
+        private SeriesCollection _seriesCollectionHistory;
+        private string[] _labelsHistory;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -195,13 +202,11 @@ namespace StatisticsAnalysisTool.ViewModels
 
             await Task.Run(async () =>
             {
-                var showVillagesIsChecked = ShowVillagesChecked;
-
                 var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, 
                     Locations.GetLocationsListByArea(new IsLocationAreaActive()
                     {
                         Cities = true,
-                        Villages = showVillagesIsChecked,
+                        Villages = ShowVillagesChecked,
                         BlackZoneOutposts = ShowBlackZoneOutpostsChecked
                     }),
                     GetQualities());
@@ -375,13 +380,39 @@ namespace StatisticsAnalysisTool.ViewModels
             return qualities;
         }
 
-        public void UncheckAllRadioButtons()
+        public async void SetHistoryChart()
         {
-            NormalQualityChecked = false;
-            GoodQualityChecked = false;
-            OutstandingQualityChecked = false;
-            ExcellentQualityChecked = false;
-            MasterpieceQualityChecked = false;
+            var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, 
+                Locations.GetLocationsListByArea(new IsLocationAreaActive()
+            {
+                Cities = true,
+                Villages = ShowVillagesChecked,
+                BlackZoneOutposts = ShowBlackZoneOutpostsChecked
+            }),DateTime.UtcNow, GetQualities()).ConfigureAwait(true);
+
+            var date = new List<string>();
+            var seriesCollectionHistory = new SeriesCollection();
+
+            foreach (var item in historyItemPrices)
+            {
+                var amount = new ChartValues<int>();
+                foreach (var data in item?.Data ?? new List<MarketHistoryResponse>())
+                {
+                    date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+                    amount.Add(data.AveragePrice);
+                }
+                
+                seriesCollectionHistory.Add(new LineSeries
+                {
+                    Title = Locations.GetName(Locations.GetName(item?.Location)),
+                    Values = amount,
+                    Fill = (Brush)Application.Current.Resources["Solid.Color.Gold.Fill"],
+                    Stroke = (Brush)Application.Current.Resources["Solid.Color.Text.Gold"]
+                });
+            }
+
+            LabelsHistory = date.ToArray();
+            SeriesCollectionHistory = seriesCollectionHistory;
         }
 
         public Item Item {
@@ -520,7 +551,27 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
+        public SeriesCollection SeriesCollectionHistory
+        {
+            get => _seriesCollectionHistory;
+            set
+            {
+                _seriesCollectionHistory = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string[] LabelsHistory
+        {
+            get => _labelsHistory;
+            set
+            {
+                _labelsHistory = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

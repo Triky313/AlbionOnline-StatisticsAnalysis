@@ -60,7 +60,7 @@
             }
         }
 
-        public static async Task<MarketHistoriesResponse> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<string> locations, DateTime date, IList<int> qualities, int timeScale = 1)
+        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<string> locations, DateTime? date, IList<int> qualities, int timeScale = 1)
         {
             var locationsString = "";
             var qualitiesString = "";
@@ -70,18 +70,18 @@
 
             if (qualities?.Count > 0)
                 qualitiesString = string.Join(",", qualities);
-
+            
             using (var wc = new WebClient())
             {
                 var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/history/";
                 statPricesDataJsonUrl += uniqueName;
                 statPricesDataJsonUrl += $"?locations={locationsString}";
-                statPricesDataJsonUrl += $"&date={date:s}";
+                //statPricesDataJsonUrl += $"&date={dateWithoutTime:s}";
                 statPricesDataJsonUrl += $"&qualities={qualitiesString}";
                 statPricesDataJsonUrl += $"&time-scale={timeScale}";
 
                 var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
-                return JsonConvert.DeserializeObject<MarketHistoriesResponse>(itemString);
+                return JsonConvert.DeserializeObject<List<MarketHistoriesResponse>>(itemString);
             }
         }
 

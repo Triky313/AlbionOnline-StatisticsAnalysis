@@ -639,7 +639,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListView">
-                        <Border Name="Border" Background="{StaticResource SolidColorBrush.Background.First}" BorderBrush="{StaticResource SolidColorBrush.Foreground.Second}" BorderThickness="1">
+                        <Border Name="Border" Background="{StaticResource SolidColorBrush.Background.First}" BorderBrush="{StaticResource SolidColorBrush.Foreground.Second}" BorderThickness="0">
                             <ScrollViewer Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
                                 <ItemsPresenter />
                             </ScrollViewer>
