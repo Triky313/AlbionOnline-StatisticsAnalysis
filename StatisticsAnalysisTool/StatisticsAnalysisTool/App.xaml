@@ -694,7 +694,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Border x:Name="GridViewColumnHeaderBorder" BorderBrush="{StaticResource GridView.Column.Header.Font}" Background="Transparent">
+                            <Border x:Name="GridViewColumnHeaderBorder" BorderThickness="0,0,1,1" BorderBrush="{StaticResource GridView.Column.Header.Font}" Background="Transparent">
                                 <TextBlock Text="{TemplateBinding Content}" Padding="5,5,5,0" Width="{TemplateBinding Width}" TextAlignment="Left" />
                             </Border>
                             <Thumb x:Name="PART_HeaderGripper" 
@@ -702,7 +702,6 @@
                                    HorizontalAlignment="Right"
                                    Width="0"
                                    Height="0"
-                                   BorderThickness="0"
                                    BorderBrush="{Binding VerticalGridLinesBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
                                    Cursor="SizeWE">
                                 <Thumb.Background>
