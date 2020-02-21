@@ -6,7 +6,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="ItemWindow" MinHeight="350" Height="400" MinWidth="900" Width="1210" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
+        Title="ItemWindow" MinHeight="350" Height="420" MinWidth="900" Width="1210" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
     <Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
@@ -36,12 +36,12 @@
                     <RadioButton Content="{Binding Translation.Masterpiece, FallbackValue=MASTERPIECE}" IsChecked="{Binding MasterpieceQualityChecked, FallbackValue=False}" Margin="910,20,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="200" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="CbMasterpieceQuality_Click" />
                 </Grid>
             </Grid>
-            <Label x:Name="LblLastUpdate" Content="" Margin="0,74,10,0" VerticalAlignment="Top" ToolTip="Letzte Aktualisierung" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="230"/>
+            <Label x:Name="LblLastUpdate" Content="" Margin="0,82,10,0" VerticalAlignment="Top" ToolTip="Letzte Aktualisierung" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="230"/>
         </Grid>
         <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top">
             <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Visible" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
         </Grid>
-        <TabControl Margin="0,86,0,35" BorderThickness="0" Background="{StaticResource SolidColorBrush.Background.Third}" IsEnabled="{Binding HasItemPrices}">
+        <TabControl Margin="0,86,0,35" IsEnabled="{Binding HasItemPrices}">
             <TabItem Header="Main">
                 <ListView x:Name="ListViewPrices" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
                     <ListView.View>
@@ -150,8 +150,11 @@
                 </ListView>
             </TabItem>
             <TabItem Header="History">
-                <Grid Margin="0" Background="{StaticResource SolidColorBrush.Background.First}">
-                    <wpf:CartesianChart Series="{Binding SeriesCollectionHistory, UpdateSourceTrigger=PropertyChanged}">
+                <Grid Background="{StaticResource SolidColorBrush.Background.First}">
+                    <DatePicker SelectedDate="{Binding SelectedDateFromHistory}" Margin="10,10,0,0" HorizontalAlignment="Left" Width="150" Height="24" VerticalAlignment="Top" />
+                    <Label Foreground="{StaticResource Solid.Color.Text.Normal}" Content="-" Margin="164,10,0,0" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" />
+                    <DatePicker SelectedDate="{Binding SelectedDateToHistory}" Margin="179,10,0,0" HorizontalAlignment="Left" Width="150" Height="24" VerticalAlignment="Top" />
+                    <wpf:CartesianChart Series="{Binding SeriesCollectionHistory, UpdateSourceTrigger=PropertyChanged}" Margin="0,39,0,0">
                         <wpf:CartesianChart.AxisX>
                             <wpf:Axis LabelsRotation="0" Labels="{Binding LabelsHistory, UpdateSourceTrigger=PropertyChanged}"></wpf:Axis>
                         </wpf:CartesianChart.AxisX>
@@ -159,7 +162,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        
+
         <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

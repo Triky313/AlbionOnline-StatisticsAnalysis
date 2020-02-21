@@ -18,12 +18,12 @@ namespace StatisticsAnalysisTool.ViewModels
 {
     using LiveCharts;
     using LiveCharts.Wpf;
+    using System.Collections;
     using System.Globalization;
 
     public class ItemWindowViewModel: INotifyPropertyChanged
     {
         private readonly ItemWindow _mainWindow;
-        private ItemInformation _itemData = new ItemInformation();
         private Item _item;
         private ItemInformation _itemInformation;
         private bool _runUpdate = true;
@@ -44,6 +44,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _autoUpdateDataChecked;
         private SeriesCollection _seriesCollectionHistory;
         private string[] _labelsHistory;
+        private DateTime _selectedDateFromHistory;
+        private DateTime _selectedDateToHistory;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -59,6 +61,8 @@ namespace StatisticsAnalysisTool.ViewModels
             InitializeItemData(item);
 
             _mainWindow.ListViewPrices.Language = System.Windows.Markup.XmlLanguage.GetLanguage(LanguageController.DefaultCultureInfo.ToString());
+            SelectedDateFromHistory = DateTime.Now;
+            SelectedDateToHistory = DateTime.Now.AddDays(-10);
         }
 
         private void InitializeTranslation()
@@ -243,37 +247,44 @@ namespace StatisticsAnalysisTool.ViewModels
 
             foreach (var newStats in newStatsPricesList)
             {
-                if (currentStatsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == newStats.City))
+                try
                 {
-                    var curStats = currentStatsPricesTotalList.Find(s => Locations.GetName(s.City) == newStats.City);
-                    
-                    if (newStats.SellPriceMinDate < curStats.SellPriceMinDate)
+                    if (currentStatsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == newStats.City))
                     {
-                        curStats.SellPriceMin = newStats.SellPriceMin;
-                        curStats.SellPriceMinDate = newStats.SellPriceMinDate;
-                    }
+                        var curStats = currentStatsPricesTotalList.Find(s => Locations.GetName(s.City) == newStats.City);
 
-                    if (newStats.SellPriceMaxDate < curStats.SellPriceMaxDate)
-                    {
-                        curStats.SellPriceMax = newStats.SellPriceMax;
-                        curStats.SellPriceMaxDate = newStats.SellPriceMaxDate;
-                    }
+                        if (newStats.SellPriceMinDate < curStats.SellPriceMinDate)
+                        {
+                            curStats.SellPriceMin = newStats.SellPriceMin;
+                            curStats.SellPriceMinDate = newStats.SellPriceMinDate;
+                        }
 
-                    if (newStats.BuyPriceMinDate < curStats.BuyPriceMinDate)
-                    {
-                        curStats.BuyPriceMin = newStats.BuyPriceMin;
-                        curStats.BuyPriceMinDate = newStats.BuyPriceMinDate;
-                    }
+                        if (newStats.SellPriceMaxDate < curStats.SellPriceMaxDate)
+                        {
+                            curStats.SellPriceMax = newStats.SellPriceMax;
+                            curStats.SellPriceMaxDate = newStats.SellPriceMaxDate;
+                        }
 
-                    if (newStats.BuyPriceMaxDate < curStats.BuyPriceMaxDate)
+                        if (newStats.BuyPriceMinDate < curStats.BuyPriceMinDate)
+                        {
+                            curStats.BuyPriceMin = newStats.BuyPriceMin;
+                            curStats.BuyPriceMinDate = newStats.BuyPriceMinDate;
+                        }
+
+                        if (newStats.BuyPriceMaxDate < curStats.BuyPriceMaxDate)
+                        {
+                            curStats.BuyPriceMax = newStats.BuyPriceMax;
+                            curStats.BuyPriceMaxDate = newStats.BuyPriceMaxDate;
+                        }
+                    }
+                    else
                     {
-                        curStats.BuyPriceMax = newStats.BuyPriceMax;
-                        curStats.BuyPriceMaxDate = newStats.BuyPriceMaxDate;
+                        currentStatsPricesTotalList.Add(new MarketResponseTotal(newStats));
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    currentStatsPricesTotalList.Add(new MarketResponseTotal(newStats));
+                    Debug.Print(e.Message);
                 }
             }
 
@@ -379,15 +390,72 @@ namespace StatisticsAnalysisTool.ViewModels
             return qualities;
         }
 
+        private IEnumerable GetDateList(DateTime from, DateTime to)
+        {
+            for (var day = from.Date; day.Date <= to.Date; day = day.AddDays(1))
+                yield return day;
+        }
+
+        private List<MarketHistoryChartModel> ConvertMarketHistorieResponsesToMarketHistoryChartModelList(List<MarketHistoriesResponse> values)
+        {
+            var marketHistoryChartsReturn = new List<MarketHistoryChartModel>();
+
+            foreach (var marketHistoriesResponse in values)
+            {
+
+                var marketHistoryChart = new MarketHistoryChartModel()
+                {
+                    Location = marketHistoriesResponse.Location,
+                    ItemId = marketHistoriesResponse.ItemId,
+                    Quality = marketHistoriesResponse.Quality,
+                    
+                    //public int ItemCount { get; set; }
+
+                    //public int AveragePrice { get; set; }
+
+                    //public DateTime Timestamp { get; set; }
+                };
+
+                foreach (var VARIABLE in COLLECTION)
+                {
+                    
+                }
+
+                marketHistoryChartsReturn.Add();
+            }
+        }
+
         public async void SetHistoryChart()
         {
+            if (SelectedDateFromHistory > SelectedDateToHistory)
+            {
+                MessageBox.Show("SelectedDateFromHistory is higher then SelectedDateToHistory", LanguageController.Translation("NOTE"), MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var listOfHistoryItemPrices = new List<MarketHistoryChartModel>();
+
+            foreach (DateTime day in GetDateList(SelectedDateFromHistory, SelectedDateToHistory))
+            {
+                var apiResult = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
+                    Locations.GetLocationsListByArea(new IsLocationAreaActive()
+                    {
+                        Cities = true,
+                        Villages = ShowVillagesChecked,
+                        BlackZoneOutposts = ShowBlackZoneOutpostsChecked
+                    }), day, GetQualities()).ConfigureAwait(true)
+
+            }
+
+            ////////////////////////////
+
             var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, 
-                Locations.GetLocationsListByArea(new IsLocationAreaActive()
+            Locations.GetLocationsListByArea(new IsLocationAreaActive()
             {
                 Cities = true,
                 Villages = ShowVillagesChecked,
                 BlackZoneOutposts = ShowBlackZoneOutpostsChecked
-            }),DateTime.UtcNow, GetQualities()).ConfigureAwait(true);
+            }), DateTime.UtcNow, GetQualities()).ConfigureAwait(true);
 
             var date = new List<string>();
             var seriesCollectionHistory = new SeriesCollection();
@@ -571,6 +639,26 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public DateTime SelectedDateFromHistory
+        {
+            get => _selectedDateFromHistory;
+            set
+            {
+                _selectedDateFromHistory = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public DateTime SelectedDateToHistory
+        {
+            get => _selectedDateToHistory;
+            set
+            {
+                _selectedDateToHistory = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

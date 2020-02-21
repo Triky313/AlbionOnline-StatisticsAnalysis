@@ -1008,6 +1008,12 @@
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
 
+        <!-- Tab control -->
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
         <!-- Tab item -->
         <Style TargetType="TabItem">
             <Setter Property="Template">

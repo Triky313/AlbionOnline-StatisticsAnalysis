@@ -60,7 +60,7 @@
             }
         }
 
-        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<string> locations, DateTime? date, IList<int> qualities, int timeScale = 1)
+        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<string> locations, DateTime? date, IList<int> qualities, int timeScale = 6)
         {
             var locationsString = "";
             var qualitiesString = "";
@@ -76,7 +76,7 @@
                 var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/history/";
                 statPricesDataJsonUrl += uniqueName;
                 statPricesDataJsonUrl += $"?locations={locationsString}";
-                //statPricesDataJsonUrl += $"&date={dateWithoutTime:s}";
+                statPricesDataJsonUrl += $"&date={date:M-d-yy}";
                 statPricesDataJsonUrl += $"&qualities={qualitiesString}";
                 statPricesDataJsonUrl += $"&time-scale={timeScale}";
 
