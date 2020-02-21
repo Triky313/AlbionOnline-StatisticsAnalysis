@@ -44,8 +44,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _autoUpdateDataChecked;
         private SeriesCollection _seriesCollectionHistory;
         private string[] _labelsHistory;
-        private DateTime _selectedDateFromHistory;
-        private DateTime _selectedDateToHistory;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -61,8 +59,6 @@ namespace StatisticsAnalysisTool.ViewModels
             InitializeItemData(item);
 
             _mainWindow.ListViewPrices.Language = System.Windows.Markup.XmlLanguage.GetLanguage(LanguageController.DefaultCultureInfo.ToString());
-            SelectedDateFromHistory = DateTime.Now;
-            SelectedDateToHistory = DateTime.Now.AddDays(-10);
         }
 
         private void InitializeTranslation()
@@ -390,80 +386,23 @@ namespace StatisticsAnalysisTool.ViewModels
             return qualities;
         }
 
-        private IEnumerable GetDateList(DateTime from, DateTime to)
-        {
-            for (var day = from.Date; day.Date <= to.Date; day = day.AddDays(1))
-                yield return day;
-        }
-
-        private List<MarketHistoryChartModel> ConvertMarketHistorieResponsesToMarketHistoryChartModelList(List<MarketHistoriesResponse> values)
-        {
-            var marketHistoryChartsReturn = new List<MarketHistoryChartModel>();
-
-            foreach (var marketHistoriesResponse in values)
-            {
-
-                var marketHistoryChart = new MarketHistoryChartModel()
-                {
-                    Location = marketHistoriesResponse.Location,
-                    ItemId = marketHistoriesResponse.ItemId,
-                    Quality = marketHistoriesResponse.Quality,
-                    
-                    //public int ItemCount { get; set; }
-
-                    //public int AveragePrice { get; set; }
-
-                    //public DateTime Timestamp { get; set; }
-                };
-
-                foreach (var VARIABLE in COLLECTION)
-                {
-                    
-                }
-
-                marketHistoryChartsReturn.Add();
-            }
-        }
-
         public async void SetHistoryChart()
         {
-            if (SelectedDateFromHistory > SelectedDateToHistory)
-            {
-                MessageBox.Show("SelectedDateFromHistory is higher then SelectedDateToHistory", LanguageController.Translation("NOTE"), MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            var listOfHistoryItemPrices = new List<MarketHistoryChartModel>();
-
-            foreach (DateTime day in GetDateList(SelectedDateFromHistory, SelectedDateToHistory))
-            {
-                var apiResult = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
-                    Locations.GetLocationsListByArea(new IsLocationAreaActive()
-                    {
-                        Cities = true,
-                        Villages = ShowVillagesChecked,
-                        BlackZoneOutposts = ShowBlackZoneOutpostsChecked
-                    }), day, GetQualities()).ConfigureAwait(true)
-
-            }
-
-            ////////////////////////////
-
-            var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, 
+            var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
             Locations.GetLocationsListByArea(new IsLocationAreaActive()
             {
                 Cities = true,
                 Villages = ShowVillagesChecked,
                 BlackZoneOutposts = ShowBlackZoneOutpostsChecked
-            }), DateTime.UtcNow, GetQualities()).ConfigureAwait(true);
+            }), DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
             var date = new List<string>();
             var seriesCollectionHistory = new SeriesCollection();
 
-            foreach (var item in historyItemPrices)
+            foreach (var marketHistory in historyItemPrices)
             {
                 var amount = new ChartValues<int>();
-                foreach (var data in item?.Data ?? new List<MarketHistoryResponse>())
+                foreach (var data in  marketHistory?.Data ?? new List<MarketHistoryResponse>())
                 {
                     date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
                     amount.Add(data.AveragePrice);
@@ -471,10 +410,10 @@ namespace StatisticsAnalysisTool.ViewModels
                 
                 seriesCollectionHistory.Add(new LineSeries
                 {
-                    Title = Locations.GetName(Locations.GetName(item?.Location)),
+                    Title = Locations.GetName(Locations.GetName(marketHistory?.Location)),
                     Values = amount,
-                    Fill = Locations.GetLocationBrush(Locations.GetName(item?.Location), true),
-                    Stroke = Locations.GetLocationBrush(Locations.GetName(item?.Location), false)
+                    Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
+                    Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false)
                 });
             }
 
@@ -635,26 +574,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _labelsHistory = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public DateTime SelectedDateFromHistory
-        {
-            get => _selectedDateFromHistory;
-            set
-            {
-                _selectedDateFromHistory = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        public DateTime SelectedDateToHistory
-        {
-            get => _selectedDateToHistory;
-            set
-            {
-                _selectedDateToHistory = value;
                 OnPropertyChanged();
             }
         }

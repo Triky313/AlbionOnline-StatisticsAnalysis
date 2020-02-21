@@ -151,10 +151,7 @@
             </TabItem>
             <TabItem Header="History">
                 <Grid Background="{StaticResource SolidColorBrush.Background.First}">
-                    <DatePicker SelectedDate="{Binding SelectedDateFromHistory}" Margin="10,10,0,0" HorizontalAlignment="Left" Width="150" Height="24" VerticalAlignment="Top" />
-                    <Label Foreground="{StaticResource Solid.Color.Text.Normal}" Content="-" Margin="164,10,0,0" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" />
-                    <DatePicker SelectedDate="{Binding SelectedDateToHistory}" Margin="179,10,0,0" HorizontalAlignment="Left" Width="150" Height="24" VerticalAlignment="Top" />
-                    <wpf:CartesianChart Series="{Binding SeriesCollectionHistory, UpdateSourceTrigger=PropertyChanged}" Margin="0,39,0,0">
+                    <wpf:CartesianChart Series="{Binding SeriesCollectionHistory, UpdateSourceTrigger=PropertyChanged}">
                         <wpf:CartesianChart.AxisX>
                             <wpf:Axis LabelsRotation="0" Labels="{Binding LabelsHistory, UpdateSourceTrigger=PropertyChanged}"></wpf:Axis>
                         </wpf:CartesianChart.AxisX>

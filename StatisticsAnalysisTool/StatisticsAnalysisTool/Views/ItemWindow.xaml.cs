@@ -35,9 +35,17 @@
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
-        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e) => _itemWindowViewModel.GetPriceStats();
+        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e)
+        {
+            _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetHistoryChart();
+        }
 
-        private void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e) => _itemWindowViewModel.GetPriceStats();
+        private void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e)
+        {
+            _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetHistoryChart();
+        }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {

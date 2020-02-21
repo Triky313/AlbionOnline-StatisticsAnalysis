@@ -105,7 +105,6 @@
     <Compile Include="Models\GoldModels.cs" />
     <Compile Include="Models\ItemInformationModels.cs" />
     <Compile Include="Models\ItemWindowTranslation.cs" />
-    <Compile Include="Models\MarketHistoryChartModel.cs" />
     <Compile Include="Models\MarketHistoriesResponse.cs" />
     <Compile Include="Models\MarketHistoryResponse.cs" />
     <Compile Include="Models\PlayerModeInformationModel.cs" />
