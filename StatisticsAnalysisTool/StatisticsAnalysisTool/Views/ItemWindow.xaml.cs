@@ -93,5 +93,11 @@
             _itemWindowViewModel.GetPriceStats();
             _itemWindowViewModel.SetHistoryChart();
         }
+        
+        private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _itemWindowViewModel.IsAutoUpdateActive = !_itemWindowViewModel.IsAutoUpdateActive;
+            _itemWindowViewModel.RefreshSpin = _itemWindowViewModel.IsAutoUpdateActive;
+        }
     }
 }
