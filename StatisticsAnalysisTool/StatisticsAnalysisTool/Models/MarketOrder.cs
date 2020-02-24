@@ -9,9 +9,9 @@ namespace StatisticsAnalysisTool.Models
     //public class MarketOrder
     //{
     //    public ulong Id { get; set; }
-    //    public string ItemTypeId { get; set; }
+    //    public string ItemId { get; set; }
     //    public ushort LocationId { get; set; }
-    //    public byte QualityLevel { get; set; }
+    //    public byte Quality { get; set; }
     //    public byte EnchantmentLevel { get; set; }
     //    public ulong UnitPriceSilver { get; set; }
     //    public uint Amount { get; set; }

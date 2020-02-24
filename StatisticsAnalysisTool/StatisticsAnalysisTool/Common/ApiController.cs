@@ -4,7 +4,6 @@
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
 
@@ -61,25 +60,28 @@
             }
         }
 
-        public static async Task<decimal> GetMarketStatAvgPriceFromJsonAsync(string uniqueName, Location location)
+        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<string> locations, DateTime? date, IList<int> qualities, int timeScale = 24)
         {
+            var locationsString = "";
+            var qualitiesString = "";
+
+            if (locations?.Count > 0)
+                locationsString = string.Join(",", locations);
+
+            if (qualities?.Count > 0)
+                qualitiesString = string.Join(",", qualities);
+            
             using (var wc = new WebClient())
             {
-                var apiString =
-                    $"https://www.albion-online-data.com/api/v1/stats/charts/" +
-                    $"?locations={Locations.GetName(location)}{uniqueName}?date={DateTime.Now:MM-dd-yyyy}";
+                var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/history/";
+                statPricesDataJsonUrl += uniqueName;
+                statPricesDataJsonUrl += $"?locations={locationsString}";
+                statPricesDataJsonUrl += $"&date={date:M-d-yy}";
+                statPricesDataJsonUrl += $"&qualities={qualitiesString}";
+                statPricesDataJsonUrl += $"&time-scale={timeScale}";
 
-                try
-                {
-                    var itemString = await wc.DownloadStringTaskAsync(apiString);
-                    var values = JsonConvert.DeserializeObject<List<MarketStatChartResponse>>(itemString);
-
-                    return values.FirstOrDefault()?.Data.PricesAvg.FirstOrDefault() ?? 0;
-                }
-                catch
-                {
-                    return 0;
-                }
+                var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
+                return JsonConvert.DeserializeObject<List<MarketHistoriesResponse>>(itemString);
             }
         }
 

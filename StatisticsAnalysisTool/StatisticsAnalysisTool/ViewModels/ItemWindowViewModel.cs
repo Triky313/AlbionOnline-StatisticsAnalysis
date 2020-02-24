@@ -16,16 +16,18 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
+    using LiveCharts;
+    using LiveCharts.Wpf;
+    using System.Globalization;
+
     public class ItemWindowViewModel: INotifyPropertyChanged
     {
         private readonly ItemWindow _mainWindow;
-        private ItemInformation _itemData = new ItemInformation();
         private Item _item;
         private ItemInformation _itemInformation;
         private bool _runUpdate = true;
         private Visibility _errorBarVisibility;
         private string _errorBarText;
-        private bool _isAutoUpdateActive;
         private BitmapImage _icon;
         private string _itemTitle;
         private bool _masterpieceQualityChecked;
@@ -37,7 +39,11 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _hasItemPrices;
         private bool _showBlackZoneOutpostsChecked;
         private bool _showVillagesChecked;
-        private bool _autoUpdateDataChecked;
+        private SeriesCollection _seriesCollectionHistory;
+        private string[] _labelsHistory;
+        private bool _refreshSpin;
+        private bool _isAutoUpdateActive;
+        private string _refreshIconTooltipText;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -47,7 +53,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Item = item;
 
             ErrorBarVisibility = Visibility.Hidden;
-            AutoUpdateDataChecked = true;
+            IsAutoUpdateActive = true;
 
             InitializeTranslation();
             InitializeItemData(item);
@@ -113,6 +119,7 @@ namespace StatisticsAnalysisTool.ViewModels
             });
 
             StartAutoUpdater();
+            RefreshSpin = IsAutoUpdateActive;
         }
 
         private void SetNoDataValues(Error error, string message = null)
@@ -171,20 +178,15 @@ namespace StatisticsAnalysisTool.ViewModels
         private async void StartAutoUpdater()
         {
             await Task.Run(async () => {
-                if (_isAutoUpdateActive)
-                    return;
-
-                _isAutoUpdateActive = true;
                 while (RunUpdate)
                 {
                     await Task.Delay(500);
-                    if (_mainWindow.Dispatcher != null && !AutoUpdateDataChecked)
+                    if (_mainWindow.Dispatcher != null && !IsAutoUpdateActive)
                         continue;
-
+                    
                     GetPriceStats();
                     await Task.Delay(Settings.Default.RefreshRate - 500);
                 }
-                _isAutoUpdateActive = false;
             });
         }
 
@@ -195,13 +197,11 @@ namespace StatisticsAnalysisTool.ViewModels
 
             await Task.Run(async () =>
             {
-                var showVillagesIsChecked = ShowVillagesChecked;
-
                 var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, 
                     Locations.GetLocationsListByArea(new IsLocationAreaActive()
                     {
                         Cities = true,
-                        Villages = showVillagesIsChecked,
+                        Villages = ShowVillagesChecked,
                         BlackZoneOutposts = ShowBlackZoneOutpostsChecked
                     }),
                     GetQualities());
@@ -228,7 +228,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     _mainWindow.ListViewPrices.ItemsSource = marketCurrentPricesItemList;
                     HasItemPrices = true;
                     SetDifferenceCalculationText(statsPricesTotalList);
-                    _mainWindow.LblLastUpdate.Content = Utilities.DateFormat(DateTime.Now, 0);
+                    RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
                 });
             });
         }
@@ -239,37 +239,44 @@ namespace StatisticsAnalysisTool.ViewModels
 
             foreach (var newStats in newStatsPricesList)
             {
-                if (currentStatsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == newStats.City))
+                try
                 {
-                    var curStats = currentStatsPricesTotalList.Find(s => Locations.GetName(s.City) == newStats.City);
-                    
-                    if (newStats.SellPriceMinDate < curStats.SellPriceMinDate)
+                    if (currentStatsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == newStats.City))
                     {
-                        curStats.SellPriceMin = newStats.SellPriceMin;
-                        curStats.SellPriceMinDate = newStats.SellPriceMinDate;
-                    }
+                        var curStats = currentStatsPricesTotalList.Find(s => Locations.GetName(s.City) == newStats.City);
 
-                    if (newStats.SellPriceMaxDate < curStats.SellPriceMaxDate)
-                    {
-                        curStats.SellPriceMax = newStats.SellPriceMax;
-                        curStats.SellPriceMaxDate = newStats.SellPriceMaxDate;
-                    }
+                        if (newStats.SellPriceMinDate < curStats.SellPriceMinDate)
+                        {
+                            curStats.SellPriceMin = newStats.SellPriceMin;
+                            curStats.SellPriceMinDate = newStats.SellPriceMinDate;
+                        }
 
-                    if (newStats.BuyPriceMinDate < curStats.BuyPriceMinDate)
-                    {
-                        curStats.BuyPriceMin = newStats.BuyPriceMin;
-                        curStats.BuyPriceMinDate = newStats.BuyPriceMinDate;
-                    }
+                        if (newStats.SellPriceMaxDate < curStats.SellPriceMaxDate)
+                        {
+                            curStats.SellPriceMax = newStats.SellPriceMax;
+                            curStats.SellPriceMaxDate = newStats.SellPriceMaxDate;
+                        }
 
-                    if (newStats.BuyPriceMaxDate < curStats.BuyPriceMaxDate)
+                        if (newStats.BuyPriceMinDate < curStats.BuyPriceMinDate)
+                        {
+                            curStats.BuyPriceMin = newStats.BuyPriceMin;
+                            curStats.BuyPriceMinDate = newStats.BuyPriceMinDate;
+                        }
+
+                        if (newStats.BuyPriceMaxDate < curStats.BuyPriceMaxDate)
+                        {
+                            curStats.BuyPriceMax = newStats.BuyPriceMax;
+                            curStats.BuyPriceMaxDate = newStats.BuyPriceMaxDate;
+                        }
+                    }
+                    else
                     {
-                        curStats.BuyPriceMax = newStats.BuyPriceMax;
-                        curStats.BuyPriceMaxDate = newStats.BuyPriceMaxDate;
+                        currentStatsPricesTotalList.Add(new MarketResponseTotal(newStats));
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    currentStatsPricesTotalList.Add(new MarketResponseTotal(newStats));
+                    Debug.Print(e.Message);
                 }
             }
 
@@ -375,15 +382,45 @@ namespace StatisticsAnalysisTool.ViewModels
             return qualities;
         }
 
-        public void UncheckAllRadioButtons()
+        public async void SetHistoryChart()
         {
-            NormalQualityChecked = false;
-            GoodQualityChecked = false;
-            OutstandingQualityChecked = false;
-            ExcellentQualityChecked = false;
-            MasterpieceQualityChecked = false;
-        }
+            var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
+            Locations.GetLocationsListByArea(new IsLocationAreaActive()
+            {
+                Cities = true,
+                Villages = ShowVillagesChecked,
+                BlackZoneOutposts = ShowBlackZoneOutpostsChecked
+            }), DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
+            var date = new List<string>();
+            var seriesCollectionHistory = new SeriesCollection();
+
+            foreach (var marketHistory in historyItemPrices)
+            {
+                var amount = new ChartValues<int>();
+                foreach (var data in  marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
+                {
+                    if(!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
+                    {
+                        date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+                    }
+
+                    amount.Add(data.AveragePrice);
+                }
+                
+                seriesCollectionHistory.Add(new LineSeries
+                {
+                    Title = Locations.GetName(Locations.GetName(marketHistory?.Location)),
+                    Values = amount,
+                    Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
+                    Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false)
+                });
+            }
+
+            LabelsHistory = date.ToArray();
+            SeriesCollectionHistory = seriesCollectionHistory;
+        }
+        
         public Item Item {
             get => _item;
             set {
@@ -505,10 +542,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
         
-        public bool AutoUpdateDataChecked {
-            get => _autoUpdateDataChecked;
+        public bool IsAutoUpdateActive
+        {
+            get => _isAutoUpdateActive;
             set {
-                _autoUpdateDataChecked = value;
+                _isAutoUpdateActive = value;
                 OnPropertyChanged();
             }
         }
@@ -520,7 +558,47 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public SeriesCollection SeriesCollectionHistory
+        {
+            get => _seriesCollectionHistory;
+            set
+            {
+                _seriesCollectionHistory = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string[] LabelsHistory
+        {
+            get => _labelsHistory;
+            set
+            {
+                _labelsHistory = value;
+                OnPropertyChanged();
+            }
+        }
         
+        public bool RefreshSpin
+        {
+            get => _refreshSpin;
+            set
+            {
+                _refreshSpin = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public string RefreshIconTooltipText
+        {
+            get => _refreshIconTooltipText;
+            set
+            {
+                _refreshIconTooltipText = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
