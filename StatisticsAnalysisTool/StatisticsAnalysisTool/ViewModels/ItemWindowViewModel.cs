@@ -19,6 +19,7 @@ namespace StatisticsAnalysisTool.ViewModels
     using LiveCharts;
     using LiveCharts.Wpf;
     using System.Globalization;
+    using System.Windows.Media;
 
     public class ItemWindowViewModel: INotifyPropertyChanged
     {
@@ -28,7 +29,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _runUpdate = true;
         private Visibility _errorBarVisibility;
         private string _errorBarText;
-        private bool _isAutoUpdateActive;
         private BitmapImage _icon;
         private string _itemTitle;
         private bool _masterpieceQualityChecked;
@@ -40,9 +40,12 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _hasItemPrices;
         private bool _showBlackZoneOutpostsChecked;
         private bool _showVillagesChecked;
-        private bool _autoUpdateDataChecked;
         private SeriesCollection _seriesCollectionHistory;
         private string[] _labelsHistory;
+        private bool _refreshSpin;
+        private bool _isAutoUpdateActive;
+        private Brush _refreshForegroundColor;
+        private string _refreshIconTooltipText;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -52,7 +55,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Item = item;
 
             ErrorBarVisibility = Visibility.Hidden;
-            AutoUpdateDataChecked = true;
+            IsAutoUpdateActive = true;
 
             InitializeTranslation();
             InitializeItemData(item);
@@ -118,6 +121,21 @@ namespace StatisticsAnalysisTool.ViewModels
             });
 
             StartAutoUpdater();
+            SetRefreshIcon(IsAutoUpdateActive);
+        }
+
+        public void SetRefreshIcon(bool isAutoUpdateActive)
+        {
+            if (isAutoUpdateActive)
+            {
+                RefreshSpin = true;
+                RefreshForegroundColor = (Brush)Application.Current.Resources["SolidColorBrush.Button.Refresh"];
+            }
+            else
+            {
+                RefreshSpin = false;
+                RefreshForegroundColor = (Brush)Application.Current.Resources["SolidColorBrush.Foreground.First"];
+            }
         }
 
         private void SetNoDataValues(Error error, string message = null)
@@ -176,20 +194,15 @@ namespace StatisticsAnalysisTool.ViewModels
         private async void StartAutoUpdater()
         {
             await Task.Run(async () => {
-                if (_isAutoUpdateActive)
-                    return;
-
-                _isAutoUpdateActive = true;
                 while (RunUpdate)
                 {
                     await Task.Delay(500);
-                    if (_mainWindow.Dispatcher != null && !AutoUpdateDataChecked)
+                    if (_mainWindow.Dispatcher != null && !IsAutoUpdateActive)
                         continue;
-
+                    
                     GetPriceStats();
                     await Task.Delay(Settings.Default.RefreshRate - 500);
                 }
-                _isAutoUpdateActive = false;
             });
         }
 
@@ -231,7 +244,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     _mainWindow.ListViewPrices.ItemsSource = marketCurrentPricesItemList;
                     HasItemPrices = true;
                     SetDifferenceCalculationText(statsPricesTotalList);
-                    _mainWindow.LblLastUpdate.Content = Utilities.DateFormat(DateTime.Now, 0);
+                    RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
                 });
             });
         }
@@ -545,10 +558,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
         
-        public bool AutoUpdateDataChecked {
-            get => _autoUpdateDataChecked;
+        public bool IsAutoUpdateActive
+        {
+            get => _isAutoUpdateActive;
             set {
-                _autoUpdateDataChecked = value;
+                _isAutoUpdateActive = value;
                 OnPropertyChanged();
             }
         }
@@ -581,6 +595,36 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
         
+        public bool RefreshSpin
+        {
+            get => _refreshSpin;
+            set
+            {
+                _refreshSpin = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public Brush RefreshForegroundColor
+        {
+            get => _refreshForegroundColor;
+            set
+            {
+                _refreshForegroundColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string RefreshIconTooltipText
+        {
+            get => _refreshIconTooltipText;
+            set
+            {
+                _refreshIconTooltipText = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

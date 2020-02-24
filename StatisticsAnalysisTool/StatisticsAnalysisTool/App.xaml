@@ -55,6 +55,11 @@
         <Color x:Key="Color.Gold.1">#FFf2b83b</Color>
         <Color x:Key="Color.Gold.2">#55f2b83b</Color>
 
+        <Color x:Key="Color.Green.1">#FF57E0A0</Color>
+        <Color x:Key="Color.Green.2">#FF3CC991</Color>
+        <Color x:Key="Color.Green.3">#FF1F9E6E</Color>
+        <Color x:Key="Color.Green.4">#FF19845A</Color>
+
         <!-- Text colors -->
         <Color x:Key="Color.Text.Normal">#FFDEDEEA</Color>
         <Color x:Key="Color.Text.ToOldFirst">#FF8C8CA5</Color>
@@ -117,6 +122,8 @@
         <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Background" Color="{StaticResource Color.Red.2}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Border" Color="{StaticResource Color.Red.1}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Button" Color="{StaticResource Color.Red.3}"/>
+
+        <SolidColorBrush x:Key="SolidColorBrush.Button.Refresh" Color="{StaticResource Color.Green.3}"/>
 
         <!-- ######################################################################################### -->
         
@@ -1011,7 +1018,8 @@
         <!-- Tab control -->
         <Style TargetType="TabControl">
             <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.Third}"/>
+            <Setter Property="BorderThickness" Value="1,0,1,0"/>
         </Style>
 
         <!-- Tab item -->
@@ -1024,7 +1032,7 @@
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Center"
                                               ContentSource="Header"
-                                              Margin="10,2"/>
+                                              Margin="15,2"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">

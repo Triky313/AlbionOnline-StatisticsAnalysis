@@ -93,5 +93,11 @@
             _itemWindowViewModel.GetPriceStats();
             _itemWindowViewModel.SetHistoryChart();
         }
+
+        private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _itemWindowViewModel.IsAutoUpdateActive = !_itemWindowViewModel.IsAutoUpdateActive;
+            _itemWindowViewModel.SetRefreshIcon(_itemWindowViewModel.IsAutoUpdateActive);
+        }
     }
 }

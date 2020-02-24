@@ -27,7 +27,6 @@
             <Grid IsEnabled="{Binding HasItemPrices, FallbackValue=false}" Margin="90,33,10,30">
                 <CheckBox Content="{Binding Translation.ShowBlackzoneOutposts, FallbackValue=SHOW__BLACKZONE__OUTPOSTS}" IsChecked="{Binding ShowBlackZoneOutpostsChecked}" Margin="0,0,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="200" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="ChbShowBlackZoneOutposts_Click" />
                 <CheckBox Content="{Binding Translation.ShowVillages, FallbackValue=SHOW__VILLAGES}" IsChecked="{Binding ShowVillagesChecked}" Margin="295,0,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="200" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="ShowVillagesPrices_Click" />
-                <CheckBox Content="{Binding Translation.AutoUpdateData, FallbackValue=AUTO__UPDATE__DATA}" IsChecked="{Binding AutoUpdateDataChecked, FallbackValue=True}" Margin="500,0,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="200" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                 <Grid>
                     <RadioButton Content="{Binding Translation.Normal, FallbackValue=NORMAL}" IsChecked="{Binding NormalQualityChecked, FallbackValue=False}" Margin="0,20,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="200" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="CbNormalQuality_Click" />
                     <RadioButton Content="{Binding Translation.Good, FallbackValue=GOOD}" IsChecked="{Binding GoodQualityChecked, FallbackValue=False}" Margin="295,20,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="200" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="CbGoodQuality_Click" />
@@ -36,13 +35,15 @@
                     <RadioButton Content="{Binding Translation.Masterpiece, FallbackValue=MASTERPIECE}" IsChecked="{Binding MasterpieceQualityChecked, FallbackValue=False}" Margin="910,20,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="200" Height="26" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="CbMasterpieceQuality_Click" />
                 </Grid>
             </Grid>
-            <Label x:Name="LblLastUpdate" Content="" Margin="0,82,10,0" VerticalAlignment="Top" ToolTip="Letzte Aktualisierung" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="230"/>
+            <Grid ZIndex="1" Width="24" HorizontalAlignment="Right" Margin="0,80,5,0" Height="24" VerticalAlignment="Top" MouseLeftButtonUp="Grid_MouseLeftButtonUp">
+                <fa:ImageAwesome MouseLeftButtonUp="Grid_MouseLeftButtonUp" Visibility="Visible" Icon="Refresh" ToolTip="{Binding RefreshIconTooltipText, FallbackValue=LAST__UPDATE: TIME}" Spin="{Binding RefreshSpin, FallbackValue=false, UpdateSourceTrigger=PropertyChanged}" SpinDuration="8" Foreground="{Binding RefreshForegroundColor, FallbackValue={StaticResource SolidColorBrush.Foreground.First}}" />
+            </Grid>
         </Grid>
         <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top">
             <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Visible" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
         </Grid>
         <TabControl Margin="0,86,0,35" IsEnabled="{Binding HasItemPrices}">
-            <TabItem Header="Main">
+            <TabItem Header="Main" >
                 <ListView x:Name="ListViewPrices" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
                     <ListView.View>
                         <GridView>
