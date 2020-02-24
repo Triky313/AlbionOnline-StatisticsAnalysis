@@ -123,8 +123,6 @@
         <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Border" Color="{StaticResource Color.Red.1}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Button" Color="{StaticResource Color.Red.3}"/>
 
-        <SolidColorBrush x:Key="SolidColorBrush.Button.Refresh" Color="{StaticResource Color.Green.3}"/>
-
         <!-- ######################################################################################### -->
         
         <!-- City Styles -->
