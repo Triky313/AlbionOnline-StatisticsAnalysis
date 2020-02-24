@@ -18,7 +18,6 @@ namespace StatisticsAnalysisTool.ViewModels
 {
     using LiveCharts;
     using LiveCharts.Wpf;
-    using System.Collections;
     using System.Globalization;
 
     public class ItemWindowViewModel: INotifyPropertyChanged
@@ -402,9 +401,13 @@ namespace StatisticsAnalysisTool.ViewModels
             foreach (var marketHistory in historyItemPrices)
             {
                 var amount = new ChartValues<int>();
-                foreach (var data in  marketHistory?.Data ?? new List<MarketHistoryResponse>())
+                foreach (var data in  marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
                 {
-                    date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+                    if(!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
+                    {
+                        date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+                    }
+
                     amount.Add(data.AveragePrice);
                 }
                 
