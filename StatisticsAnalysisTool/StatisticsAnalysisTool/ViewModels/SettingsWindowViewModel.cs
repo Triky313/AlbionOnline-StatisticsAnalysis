@@ -52,7 +52,7 @@
             foreach (var langInfos in LanguageController.FileInfos)
                 Languages.Add(new LanguageController.FileInfo() { FileName = langInfos.FileName });
 
-            LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentLanguage);
+            LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.DefaultCultureInfo.IetfLanguageTag);
 
             // Update item list by days
             UpdateItemListByDays.Clear();

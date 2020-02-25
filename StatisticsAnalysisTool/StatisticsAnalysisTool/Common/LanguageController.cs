@@ -12,8 +12,8 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class LanguageController
     {
-        public static string CurrentLanguage;
-        public static CultureInfo DefaultCultureInfo = (CurrentLanguage != null) ? new CultureInfo(CurrentLanguage) : new CultureInfo("en-US");
+        private static string _currentLanguage;
+        public static CultureInfo DefaultCultureInfo = (_currentLanguage != null) ? new CultureInfo(_currentLanguage) : new CultureInfo("en-US");
         public static readonly List<FileInfo> FileInfos = new List<FileInfo>();
 
         private static Dictionary<string, string> _translations;
@@ -40,7 +40,7 @@ namespace StatisticsAnalysisTool.Common
                 return false;
 
             ReadAndAddLanguageFile(fileInfo.FilePath);
-            CurrentLanguage = fileInfo.FileName;
+            _currentLanguage = fileInfo.FileName;
             return true;
         }
 
