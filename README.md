@@ -4,6 +4,11 @@
 [![Azure DevOps builds](https://img.shields.io/azure-devops/build/triky313/6a04e3a7-7acd-43e1-b81f-c117253b16de/1)](https://triky313.visualstudio.com/AlbionOnline-StatisticsAnalysis/_build?definitionId=1) 
 [![Donate](https://img.shields.io/badge/paypal-donate-1e477a)](https://www.paypal.me/schultzaaron) 
 
+## DOWNLOAD AND START THE PROGRAM
+:pushpin: **Download here**: [StatisticsAnalysis-AlbionOnline-v1.7.0.zip](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/1.7.0/StatisticsAnalysis-AlbionOnline-v1.7.0.zip)
+
+Unzip the .zip file and start StatisticsAnalysisTool.exe with a double click.
+
 ## SETTINGS 
 
 ### ITEM LIST SOURCE
