@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using StatisticsAnalysisTool.Common;
+using System.Collections.Generic;
 using System.Text;
-using StatisticsAnalysisTool.Common;
-using Newtonsoft.Json.Linq;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -28,15 +27,15 @@ namespace StatisticsAnalysisTool.Models
             {
                 var name = UniqueName;
 
-                if (LocalizedNames.Exists(a => a.Key == LanguageController.CurrentLanguage.ToUpper()))
+                if (LocalizedNames.Exists(a => a.Key == LanguageController.CurrentCultureInfo.IetfLanguageTag.ToUpper()))
                 {
-                    name = LocalizedNames.Find(a => a.Key == LanguageController.CurrentLanguage.ToUpper()).Value;
+                    name = LocalizedNames.Find(a => a.Key == LanguageController.CurrentCultureInfo.IetfLanguageTag.ToUpper()).Value;
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(name));
                 }
 
-                if (LocalizedNames.Exists(a => a.Key == LanguageController.DefaultCultureInfo.Name.ToUpper()))
+                if (LocalizedNames.Exists(a => a.Key == LanguageController.CurrentCultureInfo.Name.ToUpper()))
                 {
-                    name = LocalizedNames.Find(a => a.Key == LanguageController.DefaultCultureInfo.Name.ToUpper()).Value;
+                    name = LocalizedNames.Find(a => a.Key == LanguageController.CurrentCultureInfo.Name.ToUpper()).Value;
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(name));
                 }
 

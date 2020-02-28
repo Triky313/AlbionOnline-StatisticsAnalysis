@@ -12,11 +12,8 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class LanguageController
     {
-        private static string _currentLanguage;
-        public static CultureInfo DefaultCultureInfo = (_currentLanguage != null) ? new CultureInfo(_currentLanguage) : new CultureInfo("en-US");
-        public static readonly List<FileInfo> FileInfos = new List<FileInfo>();
-
         private static Dictionary<string, string> _translations;
+        private static string _currentCultureInfo;
 
         public static string Translation(string key)
         {
@@ -40,7 +37,7 @@ namespace StatisticsAnalysisTool.Common
                 return false;
 
             ReadAndAddLanguageFile(fileInfo.FilePath);
-            _currentLanguage = fileInfo.FileName;
+            CurrentCultureInfo = new CultureInfo(fileInfo.FileName);
             return true;
         }
 
@@ -73,7 +70,7 @@ namespace StatisticsAnalysisTool.Common
             }
         }
         
-        public static void InitializeLanguageFiles()
+        private static void InitializeLanguageFiles()
         {
             var languageFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.LanguageDirectoryName);
 
@@ -83,6 +80,9 @@ namespace StatisticsAnalysisTool.Common
 
                 if (files == null)
                     return;
+
+                if(FileInfos == null)
+                    FileInfos = new List<FileInfo>();
 
                 foreach (var file in files)
                 {
@@ -99,7 +99,7 @@ namespace StatisticsAnalysisTool.Common
             if (SetLanguage(CultureInfo.CurrentCulture.Name))
                 return true;
 
-            if (SetLanguage(Settings.Default.CurrentLanguageCulture))
+            if (SetLanguage(Settings.Default.DefaultLanguageCultureIetfLanguageTag))
                 return true;
 
             if (SetLanguage(FileInfos.FirstOrDefault()?.FileName))
@@ -108,13 +108,16 @@ namespace StatisticsAnalysisTool.Common
             return false;
         }
 
+        public static List<FileInfo> FileInfos { get; set; }
+
+        public static CultureInfo CurrentCultureInfo
+        {
+            get => (_currentCultureInfo != null) ? new CultureInfo(_currentCultureInfo) : new CultureInfo(Settings.Default.DefaultLanguageCultureIetfLanguageTag);
+            set => _currentCultureInfo = value.IetfLanguageTag;
+        }
+
         public class FileInfo
         {
-            public string FileName { get; set; }
-            public string FilePath { get; set; }
-            public string EnglishName => CultureInfo.CreateSpecificCulture(FileName).EnglishName;
-            public string NativeName => CultureInfo.CreateSpecificCulture(FileName).NativeName;
-
             public FileInfo() { }
 
             public FileInfo(string fileName, string filePath)
@@ -122,6 +125,11 @@ namespace StatisticsAnalysisTool.Common
                 FileName = fileName;
                 FilePath = filePath;
             }
+
+            public string FileName { get; set; }
+            public string FilePath { get; set; }
+            public string EnglishName => CultureInfo.CreateSpecificCulture(FileName).EnglishName;
+            public string NativeName => CultureInfo.CreateSpecificCulture(FileName).NativeName;
         }
 
     }

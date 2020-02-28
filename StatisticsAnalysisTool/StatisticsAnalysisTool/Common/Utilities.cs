@@ -19,9 +19,9 @@ namespace StatisticsAnalysisTool.Common
 
             try
             {
-                var value = DateTime.Parse(format, LanguageController.DefaultCultureInfo);
+                var value = DateTime.Parse(format, LanguageController.CurrentCultureInfo);
                 value = value.AddHours(hourModify);
-                return value.ToString(new CultureInfo(LanguageController.CurrentLanguage));
+                return value.ToString(new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
             }
             catch (FormatException ex)
             {

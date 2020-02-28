@@ -52,7 +52,7 @@
             foreach (var langInfos in LanguageController.FileInfos)
                 Languages.Add(new LanguageController.FileInfo() { FileName = langInfos.FileName });
 
-            LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.DefaultCultureInfo.IetfLanguageTag);
+            LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.IetfLanguageTag);
 
             // Update item list by days
             UpdateItemListByDays.Clear();
@@ -72,7 +72,7 @@
             Settings.Default.RefreshRate = RefreshRatesSelection.Seconds;
             Settings.Default.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
             LanguageController.SetLanguage(LanguagesSelection.FileName);
-            Settings.Default.CurrentLanguageCulture = LanguagesSelection.FileName;
+            Settings.Default.DefaultLanguageCultureIetfLanguageTag = LanguagesSelection.FileName;
 
             _settingsWindow.Close();
         }

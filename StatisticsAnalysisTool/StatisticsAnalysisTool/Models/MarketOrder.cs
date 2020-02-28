@@ -124,21 +124,21 @@ namespace StatisticsAnalysisTool.Models
         public string LocationName => Locations.GetName(Location);
         public byte QualityLevel { get; set; }
         public ulong SellPriceMin { get; set; }
-        public string SellPriceMinString => SellPriceMin.ToString("N0", new CultureInfo(LanguageController.CurrentLanguage));
+        public string SellPriceMinString => SellPriceMin.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
         public DateTime SellPriceMinDate { get; set; }
-        public string SellPriceMinDateString => DateTime.SpecifyKind(SellPriceMinDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentLanguage));
+        public string SellPriceMinDateString => DateTime.SpecifyKind(SellPriceMinDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
         public ulong SellPriceMax { get; set; }
-        public string SellPriceMaxString => SellPriceMax.ToString("N0", new CultureInfo(LanguageController.CurrentLanguage));
+        public string SellPriceMaxString => SellPriceMax.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
         public DateTime SellPriceMaxDate { get; set; }
-        public string SellPriceMaxDateString => DateTime.SpecifyKind(SellPriceMaxDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentLanguage));
+        public string SellPriceMaxDateString => DateTime.SpecifyKind(SellPriceMaxDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
         public ulong BuyPriceMin { get; set; }
-        public string BuyPriceMinString => BuyPriceMin.ToString("N0", new CultureInfo(LanguageController.CurrentLanguage));
+        public string BuyPriceMinString => BuyPriceMin.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
         public DateTime BuyPriceMinDate { get; set; }
-        public string BuyPriceMinDateString => DateTime.SpecifyKind(BuyPriceMinDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentLanguage));
+        public string BuyPriceMinDateString => DateTime.SpecifyKind(BuyPriceMinDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
         public ulong BuyPriceMax { get; set; }
-        public string BuyPriceMaxString => BuyPriceMax.ToString("N0", new CultureInfo(LanguageController.CurrentLanguage));
+        public string BuyPriceMaxString => BuyPriceMax.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
         public DateTime BuyPriceMaxDate { get; set; }
-        public string BuyPriceMaxDateString => DateTime.SpecifyKind(BuyPriceMaxDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentLanguage));
+        public string BuyPriceMaxDateString => DateTime.SpecifyKind(BuyPriceMaxDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
         public bool BestSellMinPrice { get; set; }
         public bool BestSellMaxPrice { get; set; }
         public bool BestBuyMinPrice { get; set; }
