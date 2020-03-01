@@ -174,15 +174,12 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
-        public string CurrentLanguageCulture {
+        public string DefaultLanguageCultureName {
             get {
-                return ((string)(this["CurrentLanguageCulture"]));
-            }
-            set {
-                this["CurrentLanguageCulture"] = value;
+                return ((string)(this["DefaultLanguageCultureName"]));
             }
         }
         
@@ -219,6 +216,18 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["PlayerModeUpdateFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CurrentLanguageCultureName {
+            get {
+                return ((string)(this["CurrentLanguageCultureName"]));
+            }
+            set {
+                this["CurrentLanguageCultureName"] = value;
             }
         }
     }

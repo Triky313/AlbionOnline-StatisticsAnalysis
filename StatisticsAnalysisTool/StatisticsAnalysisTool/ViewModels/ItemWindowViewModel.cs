@@ -58,7 +58,7 @@ namespace StatisticsAnalysisTool.ViewModels
             InitializeTranslation();
             InitializeItemData(item);
 
-            _mainWindow.ListViewPrices.Language = System.Windows.Markup.XmlLanguage.GetLanguage(LanguageController.DefaultCultureInfo.ToString());
+            _mainWindow.ListViewPrices.Language = System.Windows.Markup.XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
         }
 
         private void InitializeTranslation()
@@ -355,9 +355,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var diffPrice = (int)bestBuyMaxPrice - (int)bestSellMinPrice;
 
-            _mainWindow.LblDifCalcText.Content = $"{LanguageController.Translation("BOUGHT_FOR")} {string.Format(LanguageController.DefaultCultureInfo, "{0:n0}", bestSellMinPrice)} | " +
-                                                 $"{LanguageController.Translation("SELL_FOR")} {string.Format(LanguageController.DefaultCultureInfo, "{0:n0}", bestBuyMaxPrice)} | " +
-                                                 $"{LanguageController.Translation("PROFIT")} {string.Format(LanguageController.DefaultCultureInfo, "{0:n0}", diffPrice)}";
+            _mainWindow.LblDifCalcText.Content = $"{LanguageController.Translation("BOUGHT_FOR")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", bestSellMinPrice)} | " +
+                                                 $"{LanguageController.Translation("SELL_FOR")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", bestBuyMaxPrice)} | " +
+                                                 $"{LanguageController.Translation("PROFIT")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", diffPrice)}";
         }
 
         private List<int> GetQualities()
