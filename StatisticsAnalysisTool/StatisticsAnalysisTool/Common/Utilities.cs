@@ -21,7 +21,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 var value = DateTime.Parse(format, LanguageController.CurrentCultureInfo);
                 value = value.AddHours(hourModify);
-                return value.ToString(new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
+                return value.ToString(new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
             }
             catch (FormatException ex)
             {

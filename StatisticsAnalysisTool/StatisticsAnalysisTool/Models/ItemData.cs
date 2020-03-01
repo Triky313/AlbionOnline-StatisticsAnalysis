@@ -27,9 +27,9 @@ namespace StatisticsAnalysisTool.Models
             {
                 var name = UniqueName;
 
-                if (LocalizedNames.Exists(a => a.Key == LanguageController.CurrentCultureInfo.IetfLanguageTag.ToUpper()))
+                if (LocalizedNames.Exists(a => a.Key == LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper()))
                 {
-                    name = LocalizedNames.Find(a => a.Key == LanguageController.CurrentCultureInfo.IetfLanguageTag.ToUpper()).Value;
+                    name = LocalizedNames.Find(a => a.Key == LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper()).Value;
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(name));
                 }
 

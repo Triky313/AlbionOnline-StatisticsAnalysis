@@ -4,11 +4,11 @@
 
     public class Formatting
     {
-        public static string NumberValueWithPointSeparation(int value) => value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
+        public static string NumberValueWithPointSeparation(int value) => value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
 
-        public static string NumberValueWithPointSeparation(long value) => value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
+        public static string NumberValueWithPointSeparation(long value) => value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
 
-        public static string NumberValueWithPointSeparation(ulong value) => value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.IetfLanguageTag));
+        public static string NumberValueWithPointSeparation(ulong value) => value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
 
         public static object NumberValueWithPointSeparation(int? value) => (value != null) ? NumberValueWithPointSeparation(value) : 0 ;
 

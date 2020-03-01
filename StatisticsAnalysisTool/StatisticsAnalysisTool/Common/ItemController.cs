@@ -14,7 +14,7 @@
                 return "";
 
             if (string.IsNullOrEmpty(currentLanguage))
-                currentLanguage = LanguageController.CurrentCultureInfo.IetfLanguageTag.ToUpper();
+                currentLanguage = LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper();
 
             switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase)).Key)
             {

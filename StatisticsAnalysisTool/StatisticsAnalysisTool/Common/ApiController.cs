@@ -42,7 +42,7 @@
                 var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/prices/";
                 statPricesDataJsonUrl += uniqueName;
                 statPricesDataJsonUrl += "?locations=";
-                foreach (var location in locations)
+                foreach (var location in locations ?? new List<string>())
                 {
                     statPricesDataJsonUrl += $"{location},";
                 }
