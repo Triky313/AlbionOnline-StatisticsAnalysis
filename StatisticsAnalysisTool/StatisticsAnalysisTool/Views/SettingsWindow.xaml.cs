@@ -11,10 +11,10 @@
     {
         private readonly SettingsWindowViewModel _settingsWindowViewModel;
 
-        public SettingsWindow()
+        public SettingsWindow(MainWindowViewModel mainWindowViewModel)
         {
             InitializeComponent();
-            _settingsWindowViewModel = new SettingsWindowViewModel(this);
+            _settingsWindowViewModel = new SettingsWindowViewModel(this, mainWindowViewModel);
             DataContext = _settingsWindowViewModel;
         }
         

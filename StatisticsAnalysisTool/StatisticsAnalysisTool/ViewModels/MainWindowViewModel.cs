@@ -38,6 +38,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private SeriesCollection _seriesCollection;
         private string[] _labels;
         private string _textBoxGoldModeNumberOfValues;
+        private string _updateTranslation = LanguageController.Translation("UPDATE");
+        private string _numberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
+        private string _loadTranslation = LanguageController.Translation("LOAD");
+        private PlayerModeTranslation _playerModeTranslation = new PlayerModeTranslation();
 
         public enum ViewMode
         {
@@ -70,16 +74,8 @@ namespace StatisticsAnalysisTool.ViewModels
         
         private async void InitMainWindowData()
         {
-            #region Set combobox mode
+            SetModeCombobox();
 
-            Modes.Clear();
-            Modes.Add(new ModeStruct { Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal });
-            Modes.Add(new ModeStruct { Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player });
-            Modes.Add(new ModeStruct { Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold });
-            ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
-
-            #endregion
-            
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
             CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
@@ -124,7 +120,16 @@ namespace StatisticsAnalysisTool.ViewModels
 
             TextBoxGoldModeNumberOfValues = "10";
         }
-        
+
+        public void SetModeCombobox()
+        {
+            Modes.Clear();
+            Modes.Add(new ModeStruct { Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal });
+            Modes.Add(new ModeStruct { Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player });
+            Modes.Add(new ModeStruct { Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold });
+            ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
+        }
+
         public void CenterWindowOnScreen()
         {
             var screenWidth = SystemParameters.PrimaryScreenWidth;
@@ -405,12 +410,43 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
         
-        public PlayerModeTranslation PlayerModeTranslation => new PlayerModeTranslation();
+        public PlayerModeTranslation PlayerModeTranslation {
+            get => _playerModeTranslation;
+            set {
+                _playerModeTranslation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string LoadTranslation {
+            get => _loadTranslation;
+            set {
+                _loadTranslation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string NumberOfValuesTranslation {
+            get => _numberOfValuesTranslation;
+            set {
+                _numberOfValuesTranslation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string UpdateTranslation
+        {
+            get => _updateTranslation;
+            set
+            {
+                _updateTranslation = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string DonateUrl => Settings.Default.DonateUrl;
         public string SavedPlayerInformationName => Settings.Default.SavedPlayerInformationName ?? "";
-        public string LoadTranslation => LanguageController.Translation("LOAD");
-        public string NumberOfValuesTranslation => LanguageController.Translation("NUMBER_OF_VALUES");
-        public string UpdateTranslation => LanguageController.Translation("UPDATE");
+
         public string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -40,7 +40,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var sw = new SettingsWindow();
+            var sw = new SettingsWindow(_mainWindowViewModel);
             sw.ShowDialog();
         }
 

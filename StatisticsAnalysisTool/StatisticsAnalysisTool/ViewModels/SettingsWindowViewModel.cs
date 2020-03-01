@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -13,6 +14,7 @@ namespace StatisticsAnalysisTool.ViewModels
     public class SettingsWindowViewModel : INotifyPropertyChanged
     {
         private static SettingsWindow _settingsWindow;
+        private MainWindowViewModel _mainWindowViewModel;
         private static string _filteredItems;
         private static ObservableCollection<LanguageController.FileInfo> _languages = new ObservableCollection<LanguageController.FileInfo>();
         private static LanguageController.FileInfo _languagesSelection;        
@@ -21,9 +23,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private static ObservableCollection<UpdateItemListStruct> _updateItemListByDays = new ObservableCollection<UpdateItemListStruct>();
         private static UpdateItemListStruct _updateItemListByDaysSelection;
 
-        public SettingsWindowViewModel(SettingsWindow settingsWindow)
+        public SettingsWindowViewModel(SettingsWindow settingsWindow, MainWindowViewModel mainWindowViewModel)
         {
             _settingsWindow = settingsWindow;
+            _mainWindowViewModel = mainWindowViewModel;
             InitializeTranslation();
             InitializeSettings();
         }
@@ -77,7 +80,18 @@ namespace StatisticsAnalysisTool.ViewModels
             LanguageController.CurrentCultureInfo = new CultureInfo(LanguagesSelection.FileName);
             LanguageController.SetLanguage();
 
+            SetAppTranslations();
+
             _settingsWindow.Close();
+        }
+
+        private void SetAppTranslations()
+        {
+            _mainWindowViewModel.SetModeCombobox();
+            _mainWindowViewModel.PlayerModeTranslation = new PlayerModeTranslation();
+            _mainWindowViewModel.LoadTranslation = LanguageController.Translation("LOAD");
+            _mainWindowViewModel.NumberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
+            _mainWindowViewModel.UpdateTranslation = LanguageController.Translation("UPDATE");
         }
 
         public UpdateItemListStruct UpdateItemListByDaysSelection
