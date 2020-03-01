@@ -1,4 +1,6 @@
-﻿namespace StatisticsAnalysisTool.ViewModels
+﻿using System.Globalization;
+
+namespace StatisticsAnalysisTool.ViewModels
 {
     using Common;
     using Properties;
@@ -49,10 +51,10 @@
             RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Seconds == Settings.Default.RefreshRate);
 
             Languages.Clear();
-            foreach (var langInfos in LanguageController.FileInfos)
+            foreach (var langInfos in LanguageController.LanguageFiles)
                 Languages.Add(new LanguageController.FileInfo() { FileName = langInfos.FileName });
 
-            LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.IetfLanguageTag);
+            LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.TextInfo.CultureName);
 
             // Update item list by days
             UpdateItemListByDays.Clear();
@@ -71,8 +73,9 @@
             Settings.Default.CurrentItemListSourceUrl = CurrentItemListSourceUrl;
             Settings.Default.RefreshRate = RefreshRatesSelection.Seconds;
             Settings.Default.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
-            LanguageController.SetLanguage(LanguagesSelection.FileName);
-            Settings.Default.DefaultLanguageCultureIetfLanguageTag = LanguagesSelection.FileName;
+
+            LanguageController.CurrentCultureInfo = new CultureInfo(LanguagesSelection.FileName);
+            LanguageController.SetLanguage();
 
             _settingsWindow.Close();
         }

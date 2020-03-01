@@ -51,7 +51,10 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow = mainWindow;
             Utilities.AutoUpdate();
             UpgradeSettings();
-            InitLanguage();
+
+            if (!LanguageController.InitializeLanguage())
+                _mainWindow.Close();
+
             InitMainWindowData();
         }
 
@@ -64,16 +67,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 Settings.Default.Save();
             }
         }
-
-        private void InitLanguage()
-        {
-            if (LanguageController.SetFirstLanguageIfPossible())
-                return;
-
-            MessageBox.Show("ERROR: No language file found!");
-            _mainWindow.Close();
-        }
-
+        
         private async void InitMainWindowData()
         {
             #region Set combobox mode

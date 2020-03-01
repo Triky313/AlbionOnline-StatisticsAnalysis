@@ -13,7 +13,38 @@ namespace StatisticsAnalysisTool.Common
     public static class LanguageController
     {
         private static Dictionary<string, string> _translations;
-        private static string _currentCultureInfo;
+        private static CultureInfo _currentCultureInfo;
+
+        public static CultureInfo CurrentCultureInfo {
+            get => _currentCultureInfo ?? new CultureInfo(Settings.Default.DefaultLanguageCultureName);
+            set
+            {
+                _currentCultureInfo = value;
+                Settings.Default.CurrentLanguageCultureName = value.TextInfo.CultureName;
+            }
+        }
+
+        public static bool InitializeLanguage()
+        {
+            try
+            {
+                CurrentCultureInfo = new CultureInfo(Settings.Default.CurrentLanguageCultureName ?? Settings.Default.DefaultLanguageCultureName);
+                if (SetLanguage())
+                    return true;
+
+                throw new CultureNotFoundException();
+            }
+            catch (CultureNotFoundException)
+            {
+                CurrentCultureInfo = new CultureInfo(Settings.Default.DefaultLanguageCultureName);
+                if (SetLanguage())
+                    return true;
+
+                if(string.IsNullOrEmpty(CurrentCultureInfo.TextInfo.CultureName))
+                    MessageBox.Show("No culture info found!", Translation("ERROR"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+        }
 
         public static string Translation(string key)
         {
@@ -29,30 +60,60 @@ namespace StatisticsAnalysisTool.Common
             return key;
         }
 
-        public static bool SetLanguage(string lang)
+        public static bool SetLanguage()
         {
-            var fileInfo = (from fi in FileInfos where fi.FileName == lang select new FileInfo(fi.FileName, fi.FilePath)).FirstOrDefault();
+            InitializeLanguageFilesFromDirectory();
 
-            if (fileInfo == null)
+            try
+            {
+                if (LanguageFiles == null)
+                    throw new FileNotFoundException();
+
+                var fileInfo = (from file in LanguageFiles
+                    where file.FileName.ToUpper() == CurrentCultureInfo.TextInfo.CultureName.ToUpper()
+                    select new FileInfo(file.FileName, file.FilePath)).FirstOrDefault();
+
+                if (fileInfo == null)
+                    return false;
+
+                if (!ReadAndAddLanguageFile(fileInfo.FilePath))
+                    return false;
+
+                CurrentCultureInfo = new CultureInfo(fileInfo.FileName);
+                return true;
+            }
+            catch (ArgumentNullException ex)
+            {
+                MessageBox.Show(ex.Message, Translation("ERROR"));
                 return false;
-
-            ReadAndAddLanguageFile(fileInfo.FilePath);
-            CurrentCultureInfo = new CultureInfo(fileInfo.FileName);
-            return true;
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("Language file not found. ", Translation("ERROR"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
         }
 
-        private static void ReadAndAddLanguageFile(string filePath)
+        private static bool ReadAndAddLanguageFile(string filePath)
         {
-            _translations = null;
             _translations = new Dictionary<string, string>();
-            var xmlReader = XmlReader.Create(filePath);
-            while (xmlReader.Read())
+            try
             {
-                if (xmlReader.Name == "translation" && xmlReader.HasAttributes)
+                var xmlReader = XmlReader.Create(filePath);
+                while (xmlReader.Read())
                 {
-                    AddTranslationsToDictionary(xmlReader);
+                    if (xmlReader.Name == "translation" && xmlReader.HasAttributes)
+                    {
+                        AddTranslationsToDictionary(xmlReader);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Translation("ERROR"));
+                return false;
+            }
+            return true;
         }
 
         private static void AddTranslationsToDictionary(XmlReader xmlReader)
@@ -70,51 +131,32 @@ namespace StatisticsAnalysisTool.Common
             }
         }
         
-        private static void InitializeLanguageFiles()
+        private static void InitializeLanguageFilesFromDirectory()
         {
+            if (LanguageFiles != null)
+                return;
+
             var languageFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.LanguageDirectoryName);
 
-            if (Directory.Exists(languageFilePath))
+            if (!Directory.Exists(languageFilePath)) 
+                return;
+
+            var files = DirectoryController.GetFiles(languageFilePath, "*.xml");
+
+            if (files == null)
+                return;
+
+            if(LanguageFiles == null)
+                LanguageFiles = new List<FileInfo>();
+
+            foreach (var file in files)
             {
-                var files = DirectoryController.GetFiles(languageFilePath, "*.xml");
-
-                if (files == null)
-                    return;
-
-                if(FileInfos == null)
-                    FileInfos = new List<FileInfo>();
-
-                foreach (var file in files)
-                {
-                    var fileNameWithoutExtension = new FileInfo(Path.GetFileNameWithoutExtension(file), file);
-                    FileInfos.Add(fileNameWithoutExtension);
-                }
+                var fileNameWithoutExtension = new FileInfo(Path.GetFileNameWithoutExtension(file), file);
+                LanguageFiles.Add(fileNameWithoutExtension);
             }
         }
-
-        public static bool SetFirstLanguageIfPossible()
-        {
-            InitializeLanguageFiles();
-
-            if (SetLanguage(CultureInfo.CurrentCulture.Name))
-                return true;
-
-            if (SetLanguage(Settings.Default.DefaultLanguageCultureIetfLanguageTag))
-                return true;
-
-            if (SetLanguage(FileInfos.FirstOrDefault()?.FileName))
-                return true;
-
-            return false;
-        }
-
-        public static List<FileInfo> FileInfos { get; set; }
-
-        public static CultureInfo CurrentCultureInfo
-        {
-            get => (_currentCultureInfo != null) ? new CultureInfo(_currentCultureInfo) : new CultureInfo(Settings.Default.DefaultLanguageCultureIetfLanguageTag);
-            set => _currentCultureInfo = value.IetfLanguageTag;
-        }
+        
+        public static List<FileInfo> LanguageFiles { get; set; }
 
         public class FileInfo
         {
