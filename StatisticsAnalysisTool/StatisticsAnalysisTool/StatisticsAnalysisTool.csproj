@@ -108,6 +108,7 @@
     <Compile Include="Models\MarketHistoriesResponse.cs" />
     <Compile Include="Models\MarketHistoryResponse.cs" />
     <Compile Include="Models\PlayerModeInformationModel.cs" />
+    <Compile Include="Models\SettingsWindowTranslation.cs" />
     <Compile Include="Models\PlayerModeTranslation.cs" />
     <Compile Include="Models\Guild.cs" />
     <Compile Include="Models\GameInfoPlayers.cs" />

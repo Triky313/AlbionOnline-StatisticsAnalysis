@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.ViewModels
     public class SettingsWindowViewModel : INotifyPropertyChanged
     {
         private static SettingsWindow _settingsWindow;
-        private MainWindowViewModel _mainWindowViewModel;
+        private readonly MainWindowViewModel _mainWindowViewModel;
         private static string _filteredItems;
         private static ObservableCollection<LanguageController.FileInfo> _languages = new ObservableCollection<LanguageController.FileInfo>();
         private static LanguageController.FileInfo _languagesSelection;        
@@ -22,6 +22,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private static RefreshRateStruct _refreshRatesSelection;
         private static ObservableCollection<UpdateItemListStruct> _updateItemListByDays = new ObservableCollection<UpdateItemListStruct>();
         private static UpdateItemListStruct _updateItemListByDaysSelection;
+        private SettingsWindowTranslation _translation;
 
         public SettingsWindowViewModel(SettingsWindow settingsWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -34,12 +35,15 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void InitializeTranslation()
         {
-            _settingsWindow.LblSettingsWindowTitle.Content = LanguageController.Translation("SETTINGS");
-            _settingsWindow.LblLanguage.Content = $"{LanguageController.Translation("LANGUAGE")}:";
-            _settingsWindow.LblRefrashRate.Content = $"{LanguageController.Translation("REFRESH_RATE")}:";
-            _settingsWindow.LblUpdateItemListByDays.Content = $"{LanguageController.Translation("UPDATE_ITEM_LIST_BY_DAYS")}";
-            _settingsWindow.LblItemListSourceUrl.Content = $"{LanguageController.Translation("ITEM_LIST_SOURCE_URL")}";
-            _settingsWindow.BtnSave.Content = $"{LanguageController.Translation("SAVE")}";
+            Translation = new SettingsWindowTranslation()
+            {
+                Settings = LanguageController.Translation("SETTINGS"),
+                Language = LanguageController.Translation("LANGUAGE"),
+                RefrashRate = LanguageController.Translation("REFRESH_RATE"),
+                UpdateItemListByDays = LanguageController.Translation("UPDATE_ITEM_LIST_BY_DAYS"),
+                ItemListSourceUrl = LanguageController.Translation("ITEM_LIST_SOURCE_URL"),
+                Save = LanguageController.Translation("SAVE")
+            };
         }
 
         private void InitializeSettings()
@@ -87,6 +91,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void SetAppTranslations()
         {
+            InitializeTranslation();
+
             _mainWindowViewModel.SetModeCombobox();
             _mainWindowViewModel.PlayerModeTranslation = new PlayerModeTranslation();
             _mainWindowViewModel.LoadTranslation = LanguageController.Translation("LOAD");
@@ -174,6 +180,14 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             public string Name { get; set; }
             public int Value { get; set; }
+        }
+
+        public SettingsWindowTranslation Translation {
+            get => _translation;
+            set {
+                _translation = value;
+                OnPropertyChanged();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
