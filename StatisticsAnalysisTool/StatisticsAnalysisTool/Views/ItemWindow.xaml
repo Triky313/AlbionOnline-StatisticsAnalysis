@@ -168,8 +168,8 @@
                     <GradientStop Color="{StaticResource Background.Second}" Offset="1"/>
                 </LinearGradientBrush>
             </Grid.Background>
-            <Label x:Name="LblDifCalcName" Content="Differenz Berechnung:" HorizontalAlignment="Left" Margin="10,0,0,4" VerticalAlignment="Bottom" Width="130" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Background="{x:Null}"/>
-            <Label x:Name="LblDifCalcText" Content="" Margin="145,0,0,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="500"/>
+            <Label Content="{Binding Translation.DifferentCalculation, FallbackValue=DIFFERENT__CALCULATION}" HorizontalAlignment="Left" Margin="10,0,0,4" VerticalAlignment="Bottom" Width="150" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Background="{x:Null}"/>
+            <Label x:Name="LblDifCalcText" Content="" Margin="160,0,0,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="485"/>
             <TextBlock Margin="0,0,10,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="21" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="293">
                 Prices are provided by the
                 <Hyperlink NavigateUri="https://www.albion-online-data.com/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" BaselineAlignment="Center" RequestNavigate="Hyperlink_RequestNavigate">Albion Online Data Project</Hyperlink>
