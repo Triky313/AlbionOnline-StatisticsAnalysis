@@ -21,6 +21,8 @@
             DataContext = _itemWindowViewModel;
         }
 
+        public void InitializeItemWindow(Item item) => _itemWindowViewModel.InitializeItemWindow(item);
+
         private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)

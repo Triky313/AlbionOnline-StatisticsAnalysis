@@ -167,7 +167,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public async Task<bool> GetItemListFromJsonAsync()
         {
-            var url = Settings.Default.CurrentItemListSourceUrl;
+            var url = Settings.Default.ItemListSourceUrl;
             if (!GetItemListSourceUrlIfExist(ref url))
                 return false;
 
@@ -230,13 +230,13 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private static bool GetItemListSourceUrlIfExist(ref string url)
         {
-            if (string.IsNullOrEmpty(Settings.Default.CurrentItemListSourceUrl))
+            if (string.IsNullOrEmpty(Settings.Default.ItemListSourceUrl))
             {
                 url = Settings.Default.DefaultItemListSourceUrl;
                 if (string.IsNullOrEmpty(url))
                     return false;
 
-                Settings.Default.CurrentItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
+                Settings.Default.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
                 MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
             }
             return true;
@@ -359,6 +359,32 @@ namespace StatisticsAnalysisTool.ViewModels
         }
         
         #endregion
+
+        public static void OpenItemWindow(Item item)
+        {
+            if (string.IsNullOrEmpty(item.UniqueName))
+                return;
+
+            try
+            {
+                if (!Settings.Default.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
+                {
+                    var existItemWindow = Application.Current.Windows.OfType<ItemWindow>().FirstOrDefault();
+                    existItemWindow?.InitializeItemWindow(item);
+                    existItemWindow?.Activate();
+                }
+                else
+                {
+                    var itemWindow = new ItemWindow(item);
+                    itemWindow.Show();
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                var catchItemWindow = new ItemWindow(item);
+                catchItemWindow.Show();
+            }
+        }
 
         public ObservableCollection<ModeStruct> Modes
         {

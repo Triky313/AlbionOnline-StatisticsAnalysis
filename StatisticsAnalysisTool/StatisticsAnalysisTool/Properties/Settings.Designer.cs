@@ -165,12 +165,12 @@ namespace StatisticsAnalysisTool.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/it" +
             "ems.json")]
-        public string CurrentItemListSourceUrl {
+        public string ItemListSourceUrl {
             get {
-                return ((string)(this["CurrentItemListSourceUrl"]));
+                return ((string)(this["ItemListSourceUrl"]));
             }
             set {
-                this["CurrentItemListSourceUrl"] = value;
+                this["ItemListSourceUrl"] = value;
             }
         }
         
@@ -228,6 +228,18 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["CurrentLanguageCultureName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsOpenItemWindowInNewWindowChecked {
+            get {
+                return ((bool)(this["IsOpenItemWindowInNewWindowChecked"]));
+            }
+            set {
+                this["IsOpenItemWindowInNewWindowChecked"] = value;
             }
         }
     }

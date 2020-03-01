@@ -27,8 +27,8 @@
             <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" Margin="0,5,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200"/>
             <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Seconds" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
             <ComboBox ItemsSource="{Binding UpdateItemListByDays}" SelectedItem="{Binding UpdateItemListByDaysSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
-            <TextBox Text="{Binding CurrentItemListSourceUrl}" Height="40" Margin="0,5,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-            <CheckBox Height="26" VerticalContentAlignment="Center" Margin="0,5,10,0" />
+            <TextBox Text="{Binding ItemListSourceUrl}" Height="40" Margin="0,5,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <CheckBox IsChecked="{Binding IsOpenItemWindowInNewWindowChecked}" Height="26" VerticalContentAlignment="Center" Margin="0,5,10,0" />
         </StackPanel>
         <Button x:Name="BtnSave" Style="{StaticResource ButtonStyle}" Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click"/>
     </Grid>

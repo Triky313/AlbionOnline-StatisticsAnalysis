@@ -61,6 +61,19 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.ListViewPrices.Language = System.Windows.Markup.XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
         }
 
+        public void InitializeItemWindow(Item item)
+        {
+            Item = item;
+
+            ErrorBarVisibility = Visibility.Hidden;
+            IsAutoUpdateActive = true;
+
+            InitializeTranslation();
+            InitializeItemData(item);
+
+            _mainWindow.ListViewPrices.Language = System.Windows.Markup.XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+        }
+
         private void InitializeTranslation()
         {
             Translation = new ItemWindowTranslation()

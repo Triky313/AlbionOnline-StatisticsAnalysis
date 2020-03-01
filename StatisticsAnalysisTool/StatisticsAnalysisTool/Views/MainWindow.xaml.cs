@@ -34,8 +34,8 @@ namespace StatisticsAnalysisTool.Views
         private void LvItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var item = (Item) ((ListView) sender).SelectedValue;
-            var iw = new ItemWindow(item);
-            iw.Show();
+
+            MainWindowViewModel.OpenItemWindow(item);
         }
 
         private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
