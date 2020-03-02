@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 - Item search filter
 - Option to open a new item i a exist item window
+- Option to sort all types for quality of one item
 - Home screen info for the first opening of the app
 - User macros
 
