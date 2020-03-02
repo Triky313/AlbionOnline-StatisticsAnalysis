@@ -12,19 +12,24 @@
         <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}">
         </Border>
         <Grid ZIndex="-1" Height="75" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.Second}" MouseDown="Hotbar_MouseDown">
-            <Label x:Name="LblSettingsWindowTitle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Height="75" Margin="10,0,0,0" VerticalAlignment="Top" Width="532" FontSize="20" FontWeight="Bold"/>
+            <Label Content="{Binding Translation.Settings, FallbackValue=SETTINGS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Height="75" Margin="10,0,0,0" VerticalAlignment="Top" Width="532" FontSize="20" FontWeight="Bold"/>
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
         </Grid>
-        <Label x:Name="LblLanguage" Content="LANGUAGE" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="186"/>
-        <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" HorizontalAlignment="Left" Margin="201,80,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
-        <Label x:Name="LblRefrashRate" Content="REFRESH__RATE" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top" Width="186"/>
-        <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Seconds" HorizontalAlignment="Left" Margin="201,111,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
-        <Label x:Name="LblUpdateItemListByDays" Content="UPDATE__ITEM__LIST__BY__DAYS" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,142,0,0" VerticalAlignment="Top" Width="186"/>
-        <ComboBox ItemsSource="{Binding UpdateItemListByDays}" SelectedItem="{Binding UpdateItemListByDaysSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" Margin="201,142,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
-        <Label x:Name="LblItemListSourceUrl" Content="ITEM__LIST_SOURCE__URL" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="186"/>
-        <TextBox Text="{Binding Path=CurrentItemListSourceUrl}" Height="40" Margin="201,173,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-
-        <Button x:Name="BtnSave" Style="{StaticResource ButtonStyle}" Content="SAVE" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click"/>
+        <StackPanel Margin="10,75,0,39" HorizontalAlignment="Left" Width="250">
+            <Label Content="{Binding Translation.Language, FallbackValue=LANGUAGE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+            <Label Content="{Binding Translation.RefrashRate, FallbackValue=REFRESH__RATE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+            <Label Content="{Binding Translation.UpdateItemListByDays, FallbackValue=UPDATE__ITEM__LIST__BY__DAYS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+            <Label Content="{Binding Translation.ItemListSourceUrl, FallbackValue=ITEM_LIST_SOURCE_URL}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+            <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,18,0,0" VerticalAlignment="Top"/>
+        </StackPanel>
+        <StackPanel Margin="265,75,0,39">
+            <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" Margin="0,5,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200"/>
+            <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Seconds" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
+            <ComboBox ItemsSource="{Binding UpdateItemListByDays}" SelectedItem="{Binding UpdateItemListByDaysSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="200" Height="26"/>
+            <TextBox Text="{Binding ItemListSourceUrl}" Height="40" Margin="0,5,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <CheckBox IsChecked="{Binding IsOpenItemWindowInNewWindowChecked}" Height="26" VerticalContentAlignment="Center" Margin="0,5,10,0" />
+        </StackPanel>
+        <Button x:Name="BtnSave" Style="{StaticResource ButtonStyle}" Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click"/>
     </Grid>
 </Window>

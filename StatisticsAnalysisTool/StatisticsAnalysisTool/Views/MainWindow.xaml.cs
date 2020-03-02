@@ -1,27 +1,22 @@
-﻿namespace StatisticsAnalysisTool.Views
-{
-    using FontAwesome.WPF;
-    using Models;
-    using Properties;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Input;
-    using System.Windows.Navigation;
-    using ViewModels;
+﻿using FontAwesome.WPF;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Navigation;
 
+namespace StatisticsAnalysisTool.Views
+{
     /// <summary>
     ///     Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
-        public enum ViewMode
-        {
-            Normal,
-            Player
-        }
-
         private readonly MainWindowViewModel _mainWindowViewModel;
 
         public MainWindow()
@@ -39,13 +34,13 @@
         private void LvItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var item = (Item) ((ListView) sender).SelectedValue;
-            var iw = new ItemWindow(item);
-            iw.Show();
+
+            MainWindowViewModel.OpenItemWindow(item);
         }
 
         private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var sw = new SettingsWindow();
+            var sw = new SettingsWindow(_mainWindowViewModel);
             sw.ShowDialog();
         }
 
@@ -118,19 +113,23 @@
 
         private void CbMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var mode = (ComboboxMarketMode) CbMode.SelectedItem;
+            var mode = _mainWindowViewModel.ModeSelection;
 
-            switch (mode?.Mode)
+            switch (mode.ViewMode)
             {
-                case ViewMode.Normal:
+                case MainWindowViewModel.ViewMode.Normal:
                     HideAllGrids();
                     GridNormalMode.Visibility = Visibility.Visible;
                     TxtSearch.Focus();
                     return;
-                case ViewMode.Player:
+                case MainWindowViewModel.ViewMode.Player:
                     HideAllGrids();
                     GridPlayerMode.Visibility = Visibility.Visible;
                     TxtBoxPlayerModeUsername.Focus();
+                    return;
+                case MainWindowViewModel.ViewMode.Gold:
+                    HideAllGrids();
+                    GridGoldMode.Visibility = Visibility.Visible;
                     return;
             }
         }
@@ -139,6 +138,7 @@
         {
             GridNormalMode.Visibility = Visibility.Hidden;
             GridPlayerMode.Visibility = Visibility.Hidden;
+            GridGoldMode.Visibility = Visibility.Hidden;
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -176,6 +176,17 @@
                 return;
 
             await _mainWindowViewModel.SetComparedPlayerModeInfoValues();
+        }
+
+        private void TxtBoxGoldModeAmountValues_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(_mainWindowViewModel.TextBoxGoldModeNumberOfValues, out var numberOfValues))
+                _mainWindowViewModel.SetGoldChart(numberOfValues);
         }
     }
 }

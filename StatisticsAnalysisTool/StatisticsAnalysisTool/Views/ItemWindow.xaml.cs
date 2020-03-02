@@ -21,6 +21,8 @@
             DataContext = _itemWindowViewModel;
         }
 
+        public void InitializeItemWindow(Item item) => _itemWindowViewModel.InitializeItemWindow(item);
+
         private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -35,9 +37,17 @@
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
-        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e) => _itemWindowViewModel.GetPriceStats();
+        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e)
+        {
+            _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetHistoryChart();
+        }
 
-        private void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e) => _itemWindowViewModel.GetPriceStats();
+        private void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e)
+        {
+            _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetHistoryChart();
+        }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
@@ -63,22 +73,33 @@
         private void CbNormalQuality_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetHistoryChart();
         }
         private void CbGoodQuality_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetHistoryChart();
         }
         private void CbCbOutstandingQuality_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetHistoryChart();
         }
         private void CbExcellentQuality_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetHistoryChart();
         }
         private void CbMasterpieceQuality_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetHistoryChart();
+        }
+        
+        private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _itemWindowViewModel.IsAutoUpdateActive = !_itemWindowViewModel.IsAutoUpdateActive;
+            _itemWindowViewModel.RefreshSpin = _itemWindowViewModel.IsAutoUpdateActive;
         }
     }
 }

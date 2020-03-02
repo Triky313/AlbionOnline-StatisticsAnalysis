@@ -165,24 +165,21 @@ namespace StatisticsAnalysisTool.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/it" +
             "ems.json")]
-        public string CurrentItemListSourceUrl {
+        public string ItemListSourceUrl {
             get {
-                return ((string)(this["CurrentItemListSourceUrl"]));
+                return ((string)(this["ItemListSourceUrl"]));
             }
             set {
-                this["CurrentItemListSourceUrl"] = value;
+                this["ItemListSourceUrl"] = value;
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
-        public string CurrentLanguageCulture {
+        public string DefaultLanguageCultureName {
             get {
-                return ((string)(this["CurrentLanguageCulture"]));
-            }
-            set {
-                this["CurrentLanguageCulture"] = value;
+                return ((string)(this["DefaultLanguageCultureName"]));
             }
         }
         
@@ -219,6 +216,30 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["PlayerModeUpdateFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CurrentLanguageCultureName {
+            get {
+                return ((string)(this["CurrentLanguageCultureName"]));
+            }
+            set {
+                this["CurrentLanguageCultureName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsOpenItemWindowInNewWindowChecked {
+            get {
+                return ((bool)(this["IsOpenItemWindowInNewWindowChecked"]));
+            }
+            set {
+                this["IsOpenItemWindowInNewWindowChecked"] = value;
             }
         }
     }

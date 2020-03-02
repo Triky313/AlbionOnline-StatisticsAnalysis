@@ -19,6 +19,7 @@
         <Color x:Key="Item.Level.Color.3">#FFb866fe</Color>
 
         <!-- City colors -->
+        <Color x:Key="Color.City.Default">#FF24292D</Color>
         <Color x:Key="Color.City.Caerleon">#FF24292D</Color>
         <Color x:Key="Color.City.Thetford">#FF3BAFDA</Color>
         <Color x:Key="Color.City.Bridgewatch">#FFF76397</Color>
@@ -29,10 +30,35 @@
         <Color x:Key="Color.City.MerlynsRest">#FF435DE0</Color>
         <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
 
-        <!-- City colors -->
-        <Color x:Key="Color.Button.First">#ff6fccf6</Color>
-        <Color x:Key="Color.Button.Second">#ff57b6e0</Color>
-        <Color x:Key="Color.Button.Third">#ff3da2ca</Color>
+        <Color x:Key="Color.City.Default.Transparent">#5524292D</Color>
+        <Color x:Key="Color.City.Caerleon.Transparent">#5524292D</Color>
+        <Color x:Key="Color.City.Thetford.Transparent">#553BAFDA</Color>
+        <Color x:Key="Color.City.Bridgewatch.Transparent">#55F76397</Color>
+        <Color x:Key="Color.City.Martlock.Transparent">#557266BA</Color>
+        <Color x:Key="Color.City.Lymhurst.Transparent">#55FFAA00</Color>
+        <Color x:Key="Color.City.FortSterling.Transparent">#5500B19D</Color>
+        <Color x:Key="Color.City.ArthursRest.Transparent">#55F75656</Color>
+        <Color x:Key="Color.City.MerlynsRest.Transparent">#55435DE0</Color>
+        <Color x:Key="Color.City.MorganasRest.Transparent">#5583AF00</Color>
+
+        <!-- Colors -->
+        <Color x:Key="Color.Blue.1">#ff6fccf6</Color>
+        <Color x:Key="Color.Blue.2">#ff57b6e0</Color>
+        <Color x:Key="Color.Blue.3">#ff3da2ca</Color>
+        <Color x:Key="Color.Blue.4">#ff20779E</Color>
+        <Color x:Key="Color.Blue.5">#ff196585</Color>
+
+        <Color x:Key="Color.Red.1">#FFFF7272</Color>
+        <Color x:Key="Color.Red.2">#FFF75656</Color>
+        <Color x:Key="Color.Red.3">#FF992E2E</Color>
+
+        <Color x:Key="Color.Gold.1">#FFf2b83b</Color>
+        <Color x:Key="Color.Gold.2">#55f2b83b</Color>
+
+        <Color x:Key="Color.Green.1">#FF57E0A0</Color>
+        <Color x:Key="Color.Green.2">#FF3CC991</Color>
+        <Color x:Key="Color.Green.3">#FF1F9E6E</Color>
+        <Color x:Key="Color.Green.4">#FF19845A</Color>
 
         <!-- Text colors -->
         <Color x:Key="Color.Text.Normal">#FFDEDEEA</Color>
@@ -40,21 +66,26 @@
         <Color x:Key="Color.Text.ToOldSecond">#FF77778C</Color>
         <Color x:Key="Color.Text.ToOldThird">#FF616172</Color>
         <Color x:Key="Color.Text.NoValue">#FF4B4B59</Color>
-
+        
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.First" Color="Gainsboro"/>
         <SolidColorBrush x:Key="SolidColorBrush.Foreground.Second" Color="#B4B4B4"/>
         <SolidColorBrush x:Key="SolidColorBrush.Background.First" Color="{StaticResource Background.First}" />
         <SolidColorBrush x:Key="SolidColorBrush.Background.Second" Color="{StaticResource Background.Second}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Background.Third" Color="{StaticResource Background.Third}"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.First" Color="{StaticResource Color.Button.First}"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Second" Color="{StaticResource Color.Button.Second}"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Third" Color="{StaticResource Color.Button.Third}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.First" Color="{StaticResource Color.Blue.1}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Second" Color="{StaticResource Color.Blue.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Third" Color="{StaticResource Color.Blue.3}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.1" Color="{StaticResource Color.Blue.1}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.2" Color="{StaticResource Color.Blue.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.3" Color="{StaticResource Color.Blue.3}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.4" Color="{StaticResource Color.Blue.4}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.5" Color="{StaticResource Color.Blue.5}"/>
         <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#FF00799f"/>
         <SolidColorBrush x:Key="Item.IsSelected.Background" Color="#FF0e89b1"/>
-        <SolidColorBrush x:Key="GridView.Column.Header.Font" Color="{StaticResource Color.Button.Second}"/>
+        <SolidColorBrush x:Key="GridView.Column.Header.Font" Color="{StaticResource Color.Blue.2}"/>
         <SolidColorBrush x:Key="WindowButtonForeground" Color="#FF36363F"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Hyperlink.First" Color="#FF329bc3"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Progressbar" Color="#FF3BAFDA"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Hyperlink.First" Color="{StaticResource Color.Blue.3}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Highlighted.First" Color="{StaticResource Color.Blue.2}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
@@ -63,7 +94,10 @@
         <SolidColorBrush x:Key="Solid.Color.Text.ToOldSecond" Color="{StaticResource Color.Text.ToOldSecond}"/>
         <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
         <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.Gold" Color="{StaticResource Color.Gold.1}"/>
+        <SolidColorBrush x:Key="Solid.Color.Gold.Fill" Color="{StaticResource Color.Gold.2}"/>
 
+        <SolidColorBrush x:Key="SolidColorBrush.City.Default" Color="{StaticResource Color.City.Caerleon}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.Thetford" Color="{StaticResource Color.City.Thetford}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.Bridgewatch" Color="{StaticResource Color.City.Bridgewatch}"/>
@@ -74,14 +108,25 @@
         <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
         <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
 
-        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Background" Color="#FFF75656"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Border" Color="#FFFF7272"/>
-        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Button" Color="#FF992E2E"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Default.Transparent" Color="{StaticResource Color.City.Caerleon.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon.Transparent" Color="{StaticResource Color.City.Caerleon.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Thetford.Transparent" Color="{StaticResource Color.City.Thetford.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Bridgewatch.Transparent" Color="{StaticResource Color.City.Bridgewatch.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Martlock.Transparent" Color="{StaticResource Color.City.Martlock.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst.Transparent" Color="{StaticResource Color.City.Lymhurst.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling.Transparent" Color="{StaticResource Color.City.FortSterling.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest.Transparent" Color="{StaticResource Color.City.ArthursRest.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest.Transparent" Color="{StaticResource Color.City.MerlynsRest.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest.Transparent" Color="{StaticResource Color.City.MorganasRest.Transparent}"/>
+
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Background" Color="{StaticResource Color.Red.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Border" Color="{StaticResource Color.Red.1}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Button" Color="{StaticResource Color.Red.3}"/>
 
         <!-- ######################################################################################### -->
         
         <!-- City Styles -->
-        <Style TargetType="Label" x:Key="CaerleonStyle" >
+        <Style TargetType="Label" x:Key="CaerleonStyle">
             <Setter Property="Height" Value="28" />
             <Setter Property="Width" Value="150" />
             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -269,6 +314,18 @@
             <Setter Property="Source" Value="Resources/silver.png"/>
         </Style>
 
+        <!-- Image gold -->
+        <Style TargetType="Image" x:Key="Image.Gold" >
+            <Setter Property="Source" Value="Resources/gold.png"/>
+        </Style>
+
+        <!-- Image logo -->
+        <Style TargetType="Image" x:Key="Image.Logo" >
+            <Setter Property="Source" Value="logo.ico"/>
+            <Setter Property="Height" Value="37"/>
+            <Setter Property="Width" Value="37"/>
+        </Style>
+
         <!-- ListView grid stackPanel item icon -->
         <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Icon">
             <Setter Property="Orientation" Value="Horizontal"></Setter>
@@ -438,7 +495,7 @@
         <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="BorderBrush">
                 <Setter.Value>
-                    <SolidColorBrush Color="{StaticResource Color.Button.Third}"/>
+                    <SolidColorBrush Color="{StaticResource Color.Blue.3}"/>
                 </Setter.Value>
             </Setter>
             <Setter Property="Template">
@@ -446,7 +503,7 @@
                     <ControlTemplate TargetType="Button">
                         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="0">
                             <Border.Effect>
-                                <DropShadowEffect Color="{StaticResource Color.Button.Third}" ShadowDepth="0"/>
+                                <DropShadowEffect Color="{StaticResource Color.Blue.3}" ShadowDepth="0"/>
                             </Border.Effect>
                             <TextBlock Foreground="{TemplateBinding BorderBrush}" Text="{TemplateBinding Content}" 
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -472,49 +529,49 @@
             <Setter Property="Background">
                 <Setter.Value>
                     <RadialGradientBrush>
-                        <GradientStop Color="{StaticResource Color.Button.First}" Offset="0"/>
-                        <GradientStop Color="{StaticResource Color.Button.Third}" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.Blue.1}" Offset="0"/>
+                        <GradientStop Color="{StaticResource Color.Blue.3}" Offset="1"/>
                     </RadialGradientBrush>
                 </Setter.Value>
             </Setter>
         </Style>
 
         <!-- PlayerMode label value last -->
-        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Last" >
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Last">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="Width" Value="220"></Setter>
         </Style>
 
         <!-- PlayerMode label value current -->
-        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Current" >
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Current">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="Width" Value="220"></Setter>
         </Style>
 
         <!-- PlayerMode label title -->
-        <Style TargetType="Label" x:Key="PlayerMode.Label.Title" >
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Title">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="Width" Value="200"></Setter>
         </Style>
 
         <!-- PlayerMode label -->
-        <Style TargetType="Label" x:Key="PlayerMode.Title" >
+        <Style TargetType="Label" x:Key="PlayerMode.Title">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="FontWeight" Value="Bold"></Setter>
         </Style>
 
         <!-- Price list column style -->
-        <Style TargetType="Label" x:Key="Price.List.Column.Style" >
+        <Style TargetType="Label" x:Key="Price.List.Column.Style">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
         </Style>
 
         <!-- MainWindow title label -->
-        <Style TargetType="Label" x:Key="MainWindow.Title" >
+        <Style TargetType="Label" x:Key="MainWindow.Title">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
@@ -524,8 +581,8 @@
         </Style>
 
         <!-- MainWindow version label -->
-        <Style TargetType="Label" x:Key="MainWindow.Version" >
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Progressbar}"></Setter>
+        <Style TargetType="Label" x:Key="MainWindow.Version">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Highlighted.First}"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
@@ -534,7 +591,7 @@
 
         <!-- Progressbar style -->
         <Style x:Key="{x:Type ProgressBar}" TargetType="{x:Type ProgressBar}">
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Progressbar}"/>
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Highlighted.First}"/>
             <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
@@ -608,8 +665,32 @@
 
         <!-- ListView style -->
         <Style TargetType="{x:Type ListView}">
-            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListView">
+                        <Border Name="Border" Background="{StaticResource SolidColorBrush.Background.First}" BorderBrush="{StaticResource SolidColorBrush.Foreground.Second}" BorderThickness="0">
+                            <ScrollViewer Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
+                                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldSecond}" />
+                                <Setter Property="BorderBrush" Value="{StaticResource Solid.Color.Text.ToOldSecond}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                                <Setter Property="BorderBrush" Value="{StaticResource  GridView.Column.Header.Font}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
+
+        <!-- ListViewItem style -->
         <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -620,11 +701,20 @@
                     <Setter Property="Background" Value="{StaticResource Item.MouseOver.Background}" />
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="{StaticResource Item.IsSelected.Background}" />
+                    <Setter Property="Background" Value="{StaticResource Item.MouseOver.Background}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
+                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.NoValue}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <!-- Grid view column header style -->
         <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{StaticResource GridView.Column.Header.Font}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
@@ -633,13 +723,13 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Border BorderThickness="1,0,1,1" BorderBrush="{StaticResource GridView.Column.Header.Font}" Background="Transparent">
+                            <Border x:Name="GridViewColumnHeaderBorder" BorderThickness="1,0,1,1" BorderBrush="{StaticResource GridView.Column.Header.Font}" Background="Transparent">
                                 <TextBlock Text="{TemplateBinding Content}" Padding="5,5,5,0" Width="{TemplateBinding Width}" TextAlignment="Left" />
                             </Border>
                             <Thumb x:Name="PART_HeaderGripper" 
                                    Grid.Column="1"
                                    HorizontalAlignment="Right"
-                                   Width="1" 
+                                   Width="0" 
                                    BorderThickness="0"
                                    BorderBrush="{Binding VerticalGridLinesBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
                                    Cursor="SizeWE">
@@ -648,12 +738,20 @@
                                 </Thumb.Background>
                             </Thumb>
                         </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}" />
+                                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldSecond}" />
+                                <Setter TargetName="GridViewColumnHeaderBorder" Property="BorderThickness" Value="0,0,1,1" />
+                                <Setter TargetName="GridViewColumnHeaderBorder" Property="BorderBrush" Value="{StaticResource Solid.Color.Text.NoValue}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter TargetName="GridViewColumnHeaderBorder" Property="BorderThickness" Value="0,0,1,1" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Foreground" Value="{StaticResource GridView.Column.Header.Font}" />
         </Style>
 
         <!-- ComboBox style -->
@@ -906,7 +1004,51 @@
             <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
             <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.Third}" />
         </Style>
-        
+
+        <!-- TextBox -->
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Foreground.Second}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <!-- Tab control -->
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.Third}"/>
+            <Setter Property="BorderThickness" Value="1,0,1,0"/>
+        </Style>
+
+        <!-- Tab item -->
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" CornerRadius="0,0,0,0" Margin="2,0,0,0">
+                            <ContentPresenter x:Name="ContentSite"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              ContentSource="Header"
+                                              Margin="15,2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Blue.2}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Blue.4}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource Solid.Color.Text.NoValue}" />
+                                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldSecond}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Application.Resources>
 </Application>
 

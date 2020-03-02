@@ -1,6 +1,6 @@
-﻿using System.Windows.Media.Imaging;
+﻿using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
-using Newtonsoft.Json;
+using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -17,7 +17,12 @@ namespace StatisticsAnalysisTool.Models
         public int Index { get; set; }
         [JsonProperty("UniqueName")]
         public string UniqueName { get; set; }
-        public string LocalizedNameAndEnglish => LanguageController.CurrentLanguage.ToUpper() == "EN-US" ? ItemController.LocalizedName(LocalizedNames) : $"{ItemController.LocalizedName(LocalizedNames)}\n{ItemController.LocalizedName(LocalizedNames, "EN-US")}";
+
+        public string LocalizedNameAndEnglish =>
+            LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper() == "EN-US"
+                ? ItemController.LocalizedName(LocalizedNames)
+                : $"{ItemController.LocalizedName(LocalizedNames)}\n{ItemController.LocalizedName(LocalizedNames, "EN-US")}";
+
         private BitmapImage _icon;
         public BitmapImage Icon => _icon ?? (_icon = ImageController.GetItemImage($"https://gameinfo.albiononline.com/api/gameinfo/items/{UniqueName}"));
     }

@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 
@@ -19,9 +20,9 @@ namespace StatisticsAnalysisTool.Common
 
             try
             {
-                var value = DateTime.Parse(format, LanguageController.DefaultCultureInfo);
+                var value = DateTime.Parse(format, LanguageController.CurrentCultureInfo);
                 value = value.AddHours(hourModify);
-                return value.ToString(new CultureInfo(LanguageController.CurrentLanguage));
+                return value.ToString(new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
             }
             catch (FormatException ex)
             {
@@ -71,6 +72,13 @@ namespace StatisticsAnalysisTool.Common
         {
             Thread.Sleep(5000);
             Application.Current.Shutdown();
+        }
+
+        public static bool IsWindowOpen<T>(string name = "") where T : Window
+        {
+            return string.IsNullOrEmpty(name)
+                ? Application.Current.Windows.OfType<T>().Any()
+                : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
         }
     }
 }
