@@ -1,4 +1,4 @@
-﻿using FontAwesome.WPF;
+using FontAwesome.WPF;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -96,7 +96,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 BuyPriceMinDate = LanguageController.Translation("BUY_PRICE_MIN_DATE"),
                 BuyPriceMax = LanguageController.Translation("BUY_PRICE_MAX"),
                 BuyPriceMaxDate = LanguageController.Translation("BUY_PRICE_MAX_DATE"),
-                DifferentCalculation = $"{LanguageController.Translation("DIFFERENT_CALCULATION")}:"
+                DifferentCalculation = $"{LanguageController.Translation("DIFFERENT_CALCULATION")}:",
+                TabAllQualityToolTipDescription = LanguageController.Translation("TAB_ALL_QUALITY_TOOLTIP_DESCRIPTION"),
             };
         }
 
