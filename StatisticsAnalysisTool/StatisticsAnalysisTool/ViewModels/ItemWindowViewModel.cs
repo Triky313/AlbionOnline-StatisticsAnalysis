@@ -1,4 +1,4 @@
-using FontAwesome.WPF;
+﻿using FontAwesome.WPF;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -44,21 +44,14 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _refreshSpin;
         private bool _isAutoUpdateActive;
         private string _refreshIconTooltipText;
+        private List<MarketQualityObject> _allQualityPricesList;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
             _mainWindow = mainWindow;
-            Item = item;
-
-            ErrorBarVisibility = Visibility.Hidden;
-            IsAutoUpdateActive = true;
-
-            InitializeTranslation();
-            InitializeItemData(item);
-
-            _mainWindow.ListViewPrices.Language = System.Windows.Markup.XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+            InitializeItemWindow(item);
         }
 
         public void InitializeItemWindow(Item item)
@@ -98,6 +91,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 BuyPriceMaxDate = LanguageController.Translation("BUY_PRICE_MAX_DATE"),
                 DifferentCalculation = $"{LanguageController.Translation("DIFFERENT_CALCULATION")}:",
                 TabAllQualityToolTipDescription = LanguageController.Translation("TAB_ALL_QUALITY_TOOLTIP_DESCRIPTION"),
+                Main = LanguageController.Translation("MAIN"),
+                Quality = LanguageController.Translation("QUALITY"),
+                History = LanguageController.Translation("HISTORY")
             };
         }
 
@@ -194,14 +190,72 @@ namespace StatisticsAnalysisTool.ViewModels
             await Task.Run(async () => {
                 while (RunUpdate)
                 {
-                    await Task.Delay(500);
+                    await Task.Delay(50);
                     if (_mainWindow.Dispatcher != null && !IsAutoUpdateActive)
                         continue;
                     
                     GetPriceStats();
+                    SetQualityPriceStatsOnListView();
                     await Task.Delay(Settings.Default.RefreshRate - 500);
                 }
             });
+        }
+
+        public async void SetQualityPriceStatsOnListView()
+        {
+            var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName,
+                Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)),new List<int>());
+
+            if (statPricesList == null)
+                return;
+
+            var marketQualityObjectList = new List<MarketQualityObject>();
+            
+            foreach (var stat in statPricesList)
+            {
+                if (marketQualityObjectList.Exists(x => x.Location == stat.City))
+                {
+                    var marketQualityObject = marketQualityObjectList.Find(x => x.LocationName == stat.City);
+                    SetQualityStat(stat, ref marketQualityObject);
+                }
+                else
+                {
+                    var marketQualityObject = new MarketQualityObject { Location = stat.City };
+                    SetQualityStat(stat, ref marketQualityObject);
+                    marketQualityObjectList.Add(marketQualityObject);
+                }
+            }
+            AllQualityPricesList = marketQualityObjectList;
+        }
+
+        private static void SetQualityStat(MarketResponse marketResponse, ref MarketQualityObject marketQualityObject)
+        {
+            if (marketQualityObject == null)
+                return;
+
+            switch (ItemController.GetQuality(marketResponse.QualityLevel))
+            {
+                case FrequentlyValues.ItemQuality.Normal:
+                    marketQualityObject.SellPriceMinNormal = marketResponse.SellPriceMin;
+                    marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
+                    return;
+                case FrequentlyValues.ItemQuality.Good:
+                    marketQualityObject.SellPriceMinGood = marketResponse.SellPriceMin;
+                    marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
+                    return;
+                case FrequentlyValues.ItemQuality.Outstanding:
+                    marketQualityObject.SellPriceMinOutstanding = marketResponse.SellPriceMin;
+                    marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
+                    return;
+                case FrequentlyValues.ItemQuality.Excellent:
+                    marketQualityObject.SellPriceMinExcellent = marketResponse.SellPriceMin;
+                    marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
+                    return;
+                case FrequentlyValues.ItemQuality.Masterpiece:
+                    marketQualityObject.SellPriceMinMasterpiece = marketResponse.SellPriceMin;
+                    marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
+                    return;
+            }
         }
 
         public async void GetPriceStats()
@@ -211,20 +265,13 @@ namespace StatisticsAnalysisTool.ViewModels
 
             await Task.Run(async () =>
             {
-                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, 
-                    Locations.GetLocationsListByArea(new IsLocationAreaActive()
-                    {
-                        Cities = true,
-                        Villages = ShowVillagesChecked,
-                        BlackZoneOutposts = ShowBlackZoneOutpostsChecked
-                    }),
+                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName,
+                    Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)),
                     GetQualities());
 
                 if (statPricesList == null)
-                {
                     return;
-                }
-
+                
                 var statsPricesTotalList = PriceUpdate(statPricesList);
 
                 FindBestPrice(ref statsPricesTotalList);
@@ -259,25 +306,25 @@ namespace StatisticsAnalysisTool.ViewModels
                     {
                         var curStats = currentStatsPricesTotalList.Find(s => Locations.GetName(s.City) == newStats.City);
 
-                        if (newStats.SellPriceMinDate < curStats.SellPriceMinDate)
+                        if (newStats?.SellPriceMinDate < curStats?.SellPriceMinDate)
                         {
                             curStats.SellPriceMin = newStats.SellPriceMin;
                             curStats.SellPriceMinDate = newStats.SellPriceMinDate;
                         }
 
-                        if (newStats.SellPriceMaxDate < curStats.SellPriceMaxDate)
+                        if (newStats?.SellPriceMaxDate < curStats?.SellPriceMaxDate)
                         {
                             curStats.SellPriceMax = newStats.SellPriceMax;
                             curStats.SellPriceMaxDate = newStats.SellPriceMaxDate;
                         }
 
-                        if (newStats.BuyPriceMinDate < curStats.BuyPriceMinDate)
+                        if (newStats?.BuyPriceMinDate < curStats?.BuyPriceMinDate)
                         {
                             curStats.BuyPriceMin = newStats.BuyPriceMin;
                             curStats.BuyPriceMinDate = newStats.BuyPriceMinDate;
                         }
 
-                        if (newStats.BuyPriceMaxDate < curStats.BuyPriceMaxDate)
+                        if (newStats?.BuyPriceMaxDate < curStats?.BuyPriceMaxDate)
                         {
                             curStats.BuyPriceMax = newStats.BuyPriceMax;
                             curStats.BuyPriceMaxDate = newStats.BuyPriceMaxDate;
@@ -306,22 +353,28 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                list.Find(s => s.BuyPriceMax == max).BestBuyMaxPrice = true;
+                if (list.Exists(s => s.BuyPriceMax == max))
+                {
+                    list.Find(s => s.BuyPriceMax == max).BestBuyMaxPrice = true;
+                }
             }
             catch (Exception ex)
             {
-                Debug.Print(ex.ToString());
+                Debug.Print(ex.Message);
             }
 
             var min = GetMinPrice(list);
 
             try
             {
-                list.Find(s => s.SellPriceMin == min).BestSellMinPrice = true;
+                if (list.Exists(s => s.SellPriceMin == min))
+                {
+                    list.First(s => s.SellPriceMin == min).BestSellMinPrice = true;
+                }
             }
             catch (Exception ex)
             {
-                Debug.Print(ex.ToString());
+                Debug.Print(ex.Message);
             }
 
         }
@@ -399,12 +452,8 @@ namespace StatisticsAnalysisTool.ViewModels
         public async void SetHistoryChart()
         {
             var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
-            Locations.GetLocationsListByArea(new IsLocationAreaActive()
-            {
-                Cities = true,
-                Villages = ShowVillagesChecked,
-                BlackZoneOutposts = ShowBlackZoneOutpostsChecked
-            }), DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
+            Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)), 
+                DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
             var date = new List<string>();
             var seriesCollectionHistory = new SeriesCollection();
@@ -609,6 +658,15 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _refreshIconTooltipText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<MarketQualityObject> AllQualityPricesList {
+            get => _allQualityPricesList;
+            set
+            {
+                _allQualityPricesList = value;
                 OnPropertyChanged();
             }
         }

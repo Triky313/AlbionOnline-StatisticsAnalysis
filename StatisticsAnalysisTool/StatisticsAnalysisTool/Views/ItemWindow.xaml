@@ -43,7 +43,7 @@
             <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Visible" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
         </Grid>
         <TabControl Margin="0,86,0,35" IsEnabled="{Binding HasItemPrices}">
-            <TabItem Header="Main" >
+            <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}" >
                 <ListView x:Name="ListViewPrices" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
                     <ListView.View>
                         <GridView>
@@ -59,7 +59,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}" ToolTip="{Binding SellPriceMinDateString}"/>
+                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}"/>
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
@@ -150,8 +150,8 @@
                     </ListView.View>
                 </ListView>
             </TabItem>
-            <TabItem Header="All quality" ToolTip="Here are all sell prices sorted by quality">
-                <ListView ItemsSource="{Binding AllQualityPrices}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
+            <TabItem Header="{Binding Translation.Quality, FallbackValue=QUALITY}" ToolTip="{Binding Translation.TabAllQualityToolTipDescription}">
+                <ListView ItemsSource="{Binding AllQualityPricesList}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
@@ -166,7 +166,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}" ToolTip="{Binding SellPriceMinNormalDateString}" />
+                                                <Label Style="{Binding SellPriceMinNormalStyle}" Content="{Binding SellPriceMinNormalString}" ToolTip="{Binding SellPriceMinNormalDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
@@ -180,7 +180,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinQualityGoodString}" ToolTip="{Binding SellPriceMinGoodDateString}" />
+                                                <Label  Style="{Binding SellPriceMinGoodStyle}" Content="{Binding SellPriceMinGoodString}" ToolTip="{Binding SellPriceMinGoodDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
@@ -194,7 +194,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinQualityOutstandingString}" ToolTip="{Binding SellPriceMinOutstandingDateString}" />
+                                                <Label Style="{Binding SellPriceMinOutstandingStyle}" Content="{Binding SellPriceMinOutstandingString}" ToolTip="{Binding SellPriceMinOutstandingDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
@@ -208,7 +208,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinQualityExcellentString}" ToolTip="{Binding SellPriceMinExcellentDateString}" />
+                                                <Label Style="{Binding SellPriceMinExcellentStyle}" Content="{Binding SellPriceMinExcellentString}" ToolTip="{Binding SellPriceMinExcellentDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
@@ -222,7 +222,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinQualityMasterpieceString}" ToolTip="{Binding SellPriceMinMasterpieceDateString}" />
+                                                <Label Style="{Binding SellPriceMinMasterpieceStyle}" Content="{Binding SellPriceMinMasterpieceString}" ToolTip="{Binding SellPriceMinMasterpieceDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
@@ -235,7 +235,7 @@
                     </ListView.View>
                 </ListView>
             </TabItem>
-            <TabItem Header="History">
+            <TabItem Header="{Binding Translation.History, FallbackValue=HISTORY}">
                 <Grid Background="{StaticResource SolidColorBrush.Background.First}">
                     <wpf:CartesianChart Series="{Binding SeriesCollectionHistory, UpdateSourceTrigger=PropertyChanged}">
                         <wpf:CartesianChart.AxisX>

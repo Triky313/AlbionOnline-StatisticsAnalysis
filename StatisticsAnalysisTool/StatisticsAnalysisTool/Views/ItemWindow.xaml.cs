@@ -40,12 +40,14 @@
         private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetQualityPriceStatsOnListView();
             _itemWindowViewModel.SetHistoryChart();
         }
 
         private void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetQualityPriceStatsOnListView();
             _itemWindowViewModel.SetHistoryChart();
         }
 
@@ -73,26 +75,31 @@
         private void CbNormalQuality_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetQualityPriceStatsOnListView();
             _itemWindowViewModel.SetHistoryChart();
         }
         private void CbGoodQuality_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetQualityPriceStatsOnListView();
             _itemWindowViewModel.SetHistoryChart();
         }
         private void CbCbOutstandingQuality_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetQualityPriceStatsOnListView();
             _itemWindowViewModel.SetHistoryChart();
         }
         private void CbExcellentQuality_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetQualityPriceStatsOnListView();
             _itemWindowViewModel.SetHistoryChart();
         }
         private void CbMasterpieceQuality_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.GetPriceStats();
+            _itemWindowViewModel.SetQualityPriceStatsOnListView();
             _itemWindowViewModel.SetHistoryChart();
         }
         
