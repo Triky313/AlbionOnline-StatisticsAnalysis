@@ -1,4 +1,7 @@
-﻿namespace StatisticsAnalysisTool.Common
+﻿using System.Collections.Generic;
+using System.Windows;
+
+namespace StatisticsAnalysisTool.Common
 {
     using Models;
     using Newtonsoft.Json.Linq;
@@ -64,6 +67,76 @@
                 if (parsedObject["localizedNames"]?[cultureCode] != null)
                     itemData.LocalizedNames.Add(new ItemData.KeyValueStruct() { Key = cultureCode, Value = parsedObject["localizedNames"][cultureCode].ToString() });
             }
+        }
+
+        public static Style LocationStyle(Location location) {
+            switch (location)
+            {
+                case Location.Caerleon:
+                    return Application.Current.FindResource("CaerleonStyle") as Style;
+                case Location.Thetford:
+                    return Application.Current.FindResource("ThetfordStyle") as Style;
+                case Location.Bridgewatch:
+                    return Application.Current.FindResource("BridgewatchStyle") as Style;
+                case Location.Martlock:
+                    return Application.Current.FindResource("MartlockStyle") as Style;
+                case Location.Lymhurst:
+                    return Application.Current.FindResource("LymhurstStyle") as Style;
+                case Location.FortSterling:
+                    return Application.Current.FindResource("FortSterlingStyle") as Style;
+                case Location.ArthursRest:
+                    return Application.Current.FindResource("ArthursRestStyle") as Style;
+                case Location.MerlynsRest:
+                    return Application.Current.FindResource("MerlynsRestStyle") as Style;
+                case Location.MorganasRest:
+                    return Application.Current.FindResource("MorganasRestStyle") as Style;
+                default:
+                    return Application.Current.FindResource("DefaultCityStyle") as Style;
+            }
+        }
+
+        public static Style GetStyleByTimestamp(DateTime value)
+        {
+            if (value.Date == DateTime.MinValue.Date)
+                return Application.Current.FindResource("ListView.Grid.Label.Date.NoValue") as Style;
+
+            if (value.AddHours(8) < DateTime.Now.ToUniversalTime().AddHours(-1))
+                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldFirst") as Style;
+
+            if (value.AddHours(4) < DateTime.Now.ToUniversalTime().AddHours(-1))
+                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldSecond") as Style;
+
+            if (value.AddHours(2) < DateTime.Now.ToUniversalTime().AddHours(-1))
+                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldThird") as Style;
+
+            return Application.Current.FindResource("ListView.Grid.Label.Date.Normal") as Style;
+        }
+
+        public static Style PriceStyle(bool bestSellMinPrice) {
+            switch (bestSellMinPrice)
+            {
+                case true:
+                    return Application.Current.FindResource("ListView.Grid.StackPanel.Label.BestPrice") as Style;
+                case false:
+                    return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
+                default:
+                    return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
+            }
+        }
+
+        public static ulong GetMinPrice(List<ulong> list)
+        {
+            var min = ulong.MaxValue;
+            foreach (var value in list)
+            {
+                if (value == 0)
+                    continue;
+
+                if (value < min)
+                    min = value;
+            }
+
+            return min;
         }
     }
 }

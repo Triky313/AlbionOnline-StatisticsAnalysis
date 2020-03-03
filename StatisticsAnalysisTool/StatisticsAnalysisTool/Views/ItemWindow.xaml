@@ -43,7 +43,7 @@
             <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Visible" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
         </Grid>
         <TabControl Margin="0,86,0,35" IsEnabled="{Binding HasItemPrices}">
-            <TabItem Header="Main" >
+            <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}" >
                 <ListView x:Name="ListViewPrices" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
                     <ListView.View>
                         <GridView>
@@ -150,7 +150,92 @@
                     </ListView.View>
                 </ListView>
             </TabItem>
-            <TabItem Header="History">
+            <TabItem Header="{Binding Translation.Quality, FallbackValue=QUALITY}" ToolTip="{Binding Translation.TabAllQualityToolTipDescription}">
+                <ListView ItemsSource="{Binding AllQualityPricesList}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{Binding Translation.Normal, FallbackValue=NORMAL}" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                                <Label Style="{Binding SellPriceMinNormalStyle}" Content="{Binding SellPriceMinNormalString}" ToolTip="{Binding SellPriceMinNormalDateString}" />
+                                            </StackPanel>
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{Binding Translation.Good, FallbackValue=GOOD}" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                                <Label  Style="{Binding SellPriceMinGoodStyle}" Content="{Binding SellPriceMinGoodString}" ToolTip="{Binding SellPriceMinGoodDateString}" />
+                                            </StackPanel>
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{Binding Translation.Outstanding, FallbackValue=OUTSTANDING}" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                                <Label Style="{Binding SellPriceMinOutstandingStyle}" Content="{Binding SellPriceMinOutstandingString}" ToolTip="{Binding SellPriceMinOutstandingDateString}" />
+                                            </StackPanel>
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{Binding Translation.Excellent, FallbackValue=EXCELLENT}" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                                <Label Style="{Binding SellPriceMinExcellentStyle}" Content="{Binding SellPriceMinExcellentString}" ToolTip="{Binding SellPriceMinExcellentDateString}" />
+                                            </StackPanel>
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{Binding Translation.Masterpiece, FallbackValue=MASTERPIECE}" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                                <Label Style="{Binding SellPriceMinMasterpieceStyle}" Content="{Binding SellPriceMinMasterpieceString}" ToolTip="{Binding SellPriceMinMasterpieceDateString}" />
+                                            </StackPanel>
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+            <TabItem Header="{Binding Translation.History, FallbackValue=HISTORY}">
                 <Grid Background="{StaticResource SolidColorBrush.Background.First}">
                     <wpf:CartesianChart Series="{Binding SeriesCollectionHistory, UpdateSourceTrigger=PropertyChanged}">
                         <wpf:CartesianChart.AxisX>

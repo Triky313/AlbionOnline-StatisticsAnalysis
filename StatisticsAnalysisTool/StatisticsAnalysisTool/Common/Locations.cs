@@ -148,6 +148,13 @@ namespace StatisticsAnalysisTool.Common
 
     public class IsLocationAreaActive
     {
+        public IsLocationAreaActive(bool blackZoneOutposts, bool villages, bool cities)
+        {
+            BlackZoneOutposts = blackZoneOutposts;
+            Villages = villages;
+            Cities = cities;
+        }
+
         public bool BlackZoneOutposts { get; set; }
         public bool Villages { get; set; }
         public bool Cities { get; set; }
