@@ -5,14 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StatisticsAnalysisTool.Views"
         mc:Ignorable="d"
-        Title="InfoWindow" Height="250" Width="350" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False">
+        Title="InfoWindow" Height="350" Width="450" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False">
     <Grid>
-        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.First}"/>
-        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.First}"/>
-        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.First}"/>
-        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.First}"/>
-        <Label Content="{Binding Path=Title, FallbackValue=TITLE}" Margin="5,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
-        <Separator Margin="10,30,10,0" VerticalAlignment="Top" />
-        <TextBlock  Foreground="{StaticResource SolidColorBrush.Foreground.Second}" TextWrapping="WrapWithOverflow" Text="TEXT" Margin="10,33,10,10"/>
+        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}">
+        </Border>
+        <Grid ZIndex="1" Height="33" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.Second}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <Label Content="{Binding Path=Title, FallbackValue=TITLE}" Margin="5,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
+            <Separator Margin="10,30,10,0" VerticalAlignment="Top" />
+            <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
+            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
+        </Grid>
+        <WebBrowser Source="https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/blob/master/CHANGELOG.md" Margin="10,38,10,10" />
     </Grid>
 </Window>
