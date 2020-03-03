@@ -59,7 +59,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}"/>
+                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}" ToolTip="{Binding SellPriceMinDateString}"/>
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
@@ -142,6 +142,91 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
                                             <Label Style="{Binding BuyPriceMaxDateStyle}" Content="{Binding BuyPriceMaxDateString}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+            <TabItem Header="All quality" ToolTip="Here are all sell prices sorted by quality">
+                <ListView ItemsSource="{Binding AllQualityPrices}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{Binding Translation.Normal, FallbackValue=NORMAL}" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}" ToolTip="{Binding SellPriceMinNormalDateString}" />
+                                            </StackPanel>
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{Binding Translation.Good, FallbackValue=GOOD}" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinQualityGoodString}" ToolTip="{Binding SellPriceMinGoodDateString}" />
+                                            </StackPanel>
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{Binding Translation.Outstanding, FallbackValue=OUTSTANDING}" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinQualityOutstandingString}" ToolTip="{Binding SellPriceMinOutstandingDateString}" />
+                                            </StackPanel>
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{Binding Translation.Excellent, FallbackValue=EXCELLENT}" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinQualityExcellentString}" ToolTip="{Binding SellPriceMinExcellentDateString}" />
+                                            </StackPanel>
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{Binding Translation.Masterpiece, FallbackValue=MASTERPIECE}" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
+                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinQualityMasterpieceString}" ToolTip="{Binding SellPriceMinMasterpieceDateString}" />
+                                            </StackPanel>
+                                            <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                            </StackPanel>
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
