@@ -5,10 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 - Item search filter
-- Option to open a new item i a exist item window
-- Option to sort all types for quality of one item
 - Home screen info for the first opening of the app
 - User macros
+
+## [1.8.0] - 2020-03-03
+### Added
+- New ItemTab "Quality" added to the ItemWindow
+- New option "Open Item Window In New Window" added to the settings
+- GitHub icon in the MainWindow with hyperlink
+
+### Changed
+- Minor improvements and bug fixes
 
 ## [1.7.0] - 2020-02-24
 ### Added
@@ -92,7 +99,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.7.0...HEAD
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.0...HEAD
+[1.8.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.7.0...1.8.0
 [1.7.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.6.0...1.7.0
 [1.6.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.5.1...1.6.0
 [1.5.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.5.0...1.5.1
