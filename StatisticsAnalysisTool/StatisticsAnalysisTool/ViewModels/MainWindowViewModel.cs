@@ -471,6 +471,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         public string DonateUrl => Settings.Default.DonateUrl;
+        public string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
         public string SavedPlayerInformationName => Settings.Default.SavedPlayerInformationName ?? "";
 
         public string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";

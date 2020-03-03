@@ -59,5 +59,8 @@
     <Setting Name="IsOpenItemWindowInNewWindowChecked" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="GitHubRepoUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://github.com/Triky313/AlbionOnline-StatisticsAnalysis</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
