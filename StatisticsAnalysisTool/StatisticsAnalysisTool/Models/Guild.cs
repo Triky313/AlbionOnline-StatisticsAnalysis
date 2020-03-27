@@ -3,7 +3,7 @@
     using Newtonsoft.Json;
     using System;
 
-    public class GameInfiGuildsResponse
+    public class GameInfoGuildsResponse
     {
         public string Id { get; set; }
         public string Name { get; set; }
