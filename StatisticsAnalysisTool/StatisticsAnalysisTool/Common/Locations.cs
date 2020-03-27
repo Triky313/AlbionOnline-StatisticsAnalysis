@@ -3,8 +3,6 @@ using System.Linq;
 
 namespace StatisticsAnalysisTool.Common
 {
-    using System;
-    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Media;
 
@@ -112,10 +110,9 @@ namespace StatisticsAnalysisTool.Common
                     return (Brush)Application.Current.Resources[$"SolidColorBrush.City.{GetParameterName(location)}"];
                 }
             }
-            catch (Exception e)
+            catch
             {
-                Debug.Print(e.Message);
-                return (Brush)Application.Current.Resources[$"SolidColorBrush.City.Default.Transparent"];
+                return (Brush)Application.Current.Resources["SolidColorBrush.City.Default.Transparent"];
             }
         }
     }

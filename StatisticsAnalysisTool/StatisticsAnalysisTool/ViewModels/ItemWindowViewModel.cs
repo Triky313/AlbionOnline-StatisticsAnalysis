@@ -6,7 +6,6 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -163,7 +162,6 @@ namespace StatisticsAnalysisTool.ViewModels
                         _mainWindow.FaLoadIcon.Spin = false;
                         HasItemPrices = false;
                         SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
-                        Debug.Print(message);
                     });
                     return;
                 default:
@@ -173,7 +171,6 @@ namespace StatisticsAnalysisTool.ViewModels
                         _mainWindow.FaLoadIcon.Spin = false;
                         HasItemPrices = false;
                         SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
-                        Debug.Print(message);
                     });
             return;
             }
@@ -335,9 +332,9 @@ namespace StatisticsAnalysisTool.ViewModels
                         currentStatsPricesTotalList.Add(new MarketResponseTotal(newStats));
                     }
                 }
-                catch (Exception e)
+                catch
                 {
-                    Debug.Print(e.Message);
+                    return currentStatsPricesTotalList;
                 }
             }
 
@@ -358,9 +355,9 @@ namespace StatisticsAnalysisTool.ViewModels
                     list.Find(s => s.BuyPriceMax == max).BestBuyMaxPrice = true;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Debug.Print(ex.Message);
+                // ignored
             }
 
             var min = GetMinPrice(list);
@@ -372,11 +369,10 @@ namespace StatisticsAnalysisTool.ViewModels
                     list.First(s => s.SellPriceMin == min).BestSellMinPrice = true;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Debug.Print(ex.Message);
+                // ignored
             }
-
         }
 
         private static ulong GetMaxPrice(List<MarketResponseTotal> list)

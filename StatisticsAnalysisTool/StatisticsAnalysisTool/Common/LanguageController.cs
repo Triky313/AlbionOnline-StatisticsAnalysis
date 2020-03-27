@@ -1,7 +1,6 @@
 ﻿using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -53,9 +52,9 @@ namespace StatisticsAnalysisTool.Common
                 if (_translations.TryGetValue(key, out var value))
                     return (!string.IsNullOrEmpty(value)) ? value : key;
             }
-            catch (Exception ex)
+            catch (ArgumentNullException)
             {
-                Debug.Print(ex.ToString());
+                return "TRANSLATION-ERROR";
             }
             return key;
         }
