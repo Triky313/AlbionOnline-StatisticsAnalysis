@@ -101,7 +101,6 @@
     <Compile Include="Common\FrequentlyValues.cs" />
     <Compile Include="Common\ApiController.cs" />
     <Compile Include="Common\ItemController.cs" />
-    <Compile Include="Common\PlayerModeController.cs" />
     <Compile Include="Models\GoldModels.cs" />
     <Compile Include="Models\ItemInformationModels.cs" />
     <Compile Include="Models\ItemWindowTranslation.cs" />
