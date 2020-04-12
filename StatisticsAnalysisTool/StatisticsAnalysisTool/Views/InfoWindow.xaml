@@ -41,7 +41,7 @@
             <Image Style="{StaticResource Image.GoldChest}" Margin="0,165,0,-5" />
             <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center" 
                        FontSize="20" Margin="0,0,0,-35" FontWeight="Bold" Height="30" VerticalAlignment="Bottom">
-                <Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="PAYPAL" /></Hyperlink>
+                <Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="PayPal" /></Hyperlink>
             </TextBlock>
         </Grid>
         <Grid Height="33" VerticalAlignment="Bottom">

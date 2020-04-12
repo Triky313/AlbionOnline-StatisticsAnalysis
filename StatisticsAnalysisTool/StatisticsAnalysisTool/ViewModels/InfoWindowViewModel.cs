@@ -85,6 +85,8 @@ namespace StatisticsAnalysisTool.ViewModels
             Settings.Default.ShowInfoWindowOnStartChecked = ShowNotAgainChecked;
         }
 
+        public string DonateUrl => Settings.Default.DonateUrl;
+
         public string LastUpdate {
             get => _lastUpdate;
             set {
