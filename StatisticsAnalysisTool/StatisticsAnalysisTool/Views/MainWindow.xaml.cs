@@ -188,5 +188,11 @@ namespace StatisticsAnalysisTool.Views
             if (int.TryParse(_mainWindowViewModel.TextBoxGoldModeNumberOfValues, out var numberOfValues))
                 _mainWindowViewModel.SetGoldChart(numberOfValues);
         }
+
+        private void InfoCircle_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var changelogWindow = new InfoWindow();
+            changelogWindow.Show();
+        }
     }
 }

@@ -319,6 +319,11 @@
             <Setter Property="Source" Value="Resources/gold.png"/>
         </Style>
 
+        <!-- Image gold chest -->
+        <Style TargetType="Image" x:Key="Image.GoldChest" >
+            <Setter Property="Source" Value="Resources/goldchest.png"/>
+        </Style>
+
         <!-- Image logo -->
         <Style TargetType="Image" x:Key="Image.Logo" >
             <Setter Property="Source" Value="logo.ico"/>

@@ -1,5 +1,5 @@
-﻿using System.Globalization;
-using StatisticsAnalysisTool.Models;
+﻿using StatisticsAnalysisTool.Models;
+using System.Globalization;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -24,6 +24,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private static UpdateItemListStruct _updateItemListByDaysSelection;
         private SettingsWindowTranslation _translation;
         private bool _isOpenItemWindowInNewWindowChecked;
+        private bool _showInfoWindowOnStartChecked;
 
         public SettingsWindowViewModel(SettingsWindow settingsWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -44,6 +45,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 UpdateItemListByDays = LanguageController.Translation("UPDATE_ITEM_LIST_BY_DAYS"),
                 ItemListSourceUrl = LanguageController.Translation("ITEM_LIST_SOURCE_URL"),
                 OpenItemWindowInNewWindow = LanguageController.Translation("OPEN_ITEM_WINDOW_IN_NEW_WINDOW"),
+                ShowInfoWindowOnStart = LanguageController.Translation("SHOW_INFO_WINDOW_ON_START"),
                 Save = LanguageController.Translation("SAVE")
             };
         }
@@ -76,6 +78,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             ItemListSourceUrl = Settings.Default.ItemListSourceUrl;
             IsOpenItemWindowInNewWindowChecked = Settings.Default.IsOpenItemWindowInNewWindowChecked;
+            ShowInfoWindowOnStartChecked = Settings.Default.ShowInfoWindowOnStartChecked;
         }
 
         public void SaveSettings()
@@ -84,6 +87,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Settings.Default.RefreshRate = RefreshRatesSelection.Seconds;
             Settings.Default.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
             Settings.Default.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
+            Settings.Default.ShowInfoWindowOnStartChecked = ShowInfoWindowOnStartChecked;
 
             LanguageController.CurrentCultureInfo = new CultureInfo(LanguagesSelection.FileName);
             LanguageController.SetLanguage();
@@ -186,6 +190,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _isOpenItemWindowInNewWindowChecked;
             set {
                 _isOpenItemWindowInNewWindowChecked = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool ShowInfoWindowOnStartChecked {
+            get => _showInfoWindowOnStartChecked;
+            set {
+                _showInfoWindowOnStartChecked = value;
                 OnPropertyChanged();
             }
         }
