@@ -38,9 +38,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private SeriesCollection _seriesCollection;
         private string[] _labels;
         private string _textBoxGoldModeNumberOfValues;
-        private string _updateTranslation = LanguageController.Translation("UPDATE");
-        private string _numberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
-        private string _loadTranslation = LanguageController.Translation("LOAD");
+        private string _updateTranslation;
+        private string _numberOfValuesTranslation;
+        private string _loadTranslation;
         private PlayerModeTranslation _playerModeTranslation = new PlayerModeTranslation();
 
         public enum ViewMode
@@ -74,6 +74,10 @@ namespace StatisticsAnalysisTool.ViewModels
         
         private async void InitMainWindowData()
         {
+            UpdateTranslation = LanguageController.Translation("UPDATE");
+            NumberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
+            LoadTranslation = LanguageController.Translation("LOAD");
+
             SetModeCombobox();
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
@@ -278,7 +282,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 return null;
 
             var searchPlayer = gameInfoSearch.SearchPlayer?.FirstOrDefault();
-            var gameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(gameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id);
+            var gameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(gameInfoSearch.SearchPlayer?.FirstOrDefault()?.Id);
 
             return new PlayerModeInformationModel() 
             { 
@@ -471,6 +475,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         public string DonateUrl => Settings.Default.DonateUrl;
+        public string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
         public string SavedPlayerInformationName => Settings.Default.SavedPlayerInformationName ?? "";
 
         public string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";

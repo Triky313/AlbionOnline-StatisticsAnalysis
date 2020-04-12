@@ -21,5 +21,9 @@
         public string BuyPriceMax { get; set; }
         public string BuyPriceMaxDate { get; set; }
         public string DifferentCalculation { get; set; }
+        public string TabAllQualityToolTipDescription { get; set; }
+        public string Main { get; set; }
+        public string Quality { get; set; }
+        public string History { get; set; }
     }
 }

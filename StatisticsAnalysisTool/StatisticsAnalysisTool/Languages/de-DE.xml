@@ -103,4 +103,7 @@
   <translation name="NUMBER_OF_VALUES">Anzahl Werte</translation>
   <translation name="GOLD">Gold</translation>
   <translation name="OPEN_ITEM_WINDOW_IN_NEW_WINDOW">Öffne Item Fenster in neuem Fenster</translation>
+  <translation name="TAB_ALL_QUALITY_TOOLTIP_DESCRIPTION">Zeigt alle Qualitätspreise eines Items</translation>
+  <translation name="MAIN">Primär</translation>
+  <translation name="HISTORY">Historie</translation>
 </translations>

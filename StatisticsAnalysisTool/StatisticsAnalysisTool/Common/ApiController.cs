@@ -116,14 +116,14 @@
             }
         }
 
-        public static async Task<GameInfiGuildsResponse> GetGameInfoGuildsFromJsonAsync(string guildid)
+        public static async Task<GameInfoGuildsResponse> GetGameInfoGuildsFromJsonAsync(string guildid)
         {
             using (var wc = new WebClient())
             {
                 var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/guilds/{guildid}";
                 var itemString = await wc.DownloadStringTaskAsync(apiString);
 
-                return JsonConvert.DeserializeObject<GameInfiGuildsResponse>(itemString);
+                return JsonConvert.DeserializeObject<GameInfoGuildsResponse>(itemString);
             }
         }
 

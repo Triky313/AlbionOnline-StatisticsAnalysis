@@ -6,6 +6,7 @@
 
 A tool for easy reading of auction house data for the game AlbionOnline
 
+![Image of this Application](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/blob/master/StatisticsAnalysisTool.png)
 
 ## DOWNLOAD AND START THE PROGRAM
 ### Windows 10

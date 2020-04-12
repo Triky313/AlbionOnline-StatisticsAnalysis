@@ -1,6 +1,5 @@
 ﻿using StatisticsAnalysisTool.Properties;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -39,9 +38,8 @@ namespace StatisticsAnalysisTool.Common
 
                 return image;
             }
-            catch (ArgumentException e)
+            catch
             {
-                Debug.Print(e.Message);
                 return new BitmapImage(new Uri(@"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png", UriKind.Absolute));
             }
         }
@@ -82,12 +80,10 @@ namespace StatisticsAnalysisTool.Common
 
                 return userImage;
             }
-            catch (Exception ex)
+            catch
             {
-                Debug.Print(ex.ToString());
+                return null;
             }
-
-            return null;
         }
 
         public static BitmapImage GetImageFromResource(string resourcePath, int pixelHeight, int pixelWidth, bool freeze)

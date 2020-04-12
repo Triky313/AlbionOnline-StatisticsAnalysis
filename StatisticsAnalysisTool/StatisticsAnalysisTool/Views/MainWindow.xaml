@@ -69,9 +69,13 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom">
-                <Grid Margin="5,0,0,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
-                    <fa:ImageAwesome Icon="InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="InfoCircle_MouseUp" />
+            <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,30,0">
+                <Grid ZIndex="20" Margin="5,0,0,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+                    <TextBlock>
+                        <Hyperlink NavigateUri="{Binding Path=GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                            <fa:ImageAwesome Icon="Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                        </Hyperlink>
+                    </TextBlock>
                 </Grid>
                 <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="34,0,0,0" VerticalAlignment="Top" Height="35" Width="106"/>
                 <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center" 

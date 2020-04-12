@@ -1,32 +1,11 @@
 ﻿using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using System;
-using System.Globalization;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Models
 {
-    //public class MarketOrder
-    //{
-    //    public ulong Id { get; set; }
-    //    public string ItemId { get; set; }
-    //    public ushort LocationId { get; set; }
-    //    public byte Quality { get; set; }
-    //    public byte EnchantmentLevel { get; set; }
-    //    public ulong UnitPriceSilver { get; set; }
-    //    public uint Amount { get; set; }
-    //    public string AuctionType { get; set; }
-    //    public DateTime Expires { get; set; }
-
-    //    [NotMapped]
-    //    public string ItemGroupTypeId { get; set; }
-
-    //    public override string ToString()
-    //    {
-    //        return $"{Id}{Amount}";
-    //    }
-    //}
-
     public class MarketResponse
     {
         [JsonProperty(PropertyName = "item_id")]
@@ -124,112 +103,91 @@ namespace StatisticsAnalysisTool.Models
         public string LocationName => Locations.GetName(Location);
         public byte QualityLevel { get; set; }
         public ulong SellPriceMin { get; set; }
-        public string SellPriceMinString => SellPriceMin.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        public string SellPriceMinString => Utilities.UlongMarketPriceToString(SellPriceMin);
         public DateTime SellPriceMinDate { get; set; }
-        public string SellPriceMinDateString => DateTime.SpecifyKind(SellPriceMinDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        public string SellPriceMinDateString => Utilities.MarketPriceDateToString(SellPriceMinDate);
         public ulong SellPriceMax { get; set; }
-        public string SellPriceMaxString => SellPriceMax.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        public string SellPriceMaxString => Utilities.UlongMarketPriceToString(SellPriceMax);
         public DateTime SellPriceMaxDate { get; set; }
-        public string SellPriceMaxDateString => DateTime.SpecifyKind(SellPriceMaxDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        public string SellPriceMaxDateString => Utilities.MarketPriceDateToString(SellPriceMaxDate);
         public ulong BuyPriceMin { get; set; }
-        public string BuyPriceMinString => BuyPriceMin.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        public string BuyPriceMinString => Utilities.UlongMarketPriceToString(BuyPriceMin);
         public DateTime BuyPriceMinDate { get; set; }
-        public string BuyPriceMinDateString => DateTime.SpecifyKind(BuyPriceMinDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        public string BuyPriceMinDateString => Utilities.MarketPriceDateToString(BuyPriceMinDate);
         public ulong BuyPriceMax { get; set; }
-        public string BuyPriceMaxString => BuyPriceMax.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        public string BuyPriceMaxString => Utilities.UlongMarketPriceToString(BuyPriceMax);
         public DateTime BuyPriceMaxDate { get; set; }
-        public string BuyPriceMaxDateString => DateTime.SpecifyKind(BuyPriceMaxDate, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        public string BuyPriceMaxDateString => Utilities.MarketPriceDateToString(BuyPriceMaxDate);
         public bool BestSellMinPrice { get; set; }
         public bool BestSellMaxPrice { get; set; }
         public bool BestBuyMinPrice { get; set; }
         public bool BestBuyMaxPrice { get; set; }
 
-        public Style LocationStyle
-        {
-            get {
-                switch (Location)
-                {
-                    case Location.Caerleon:
-                        return Application.Current.FindResource("CaerleonStyle") as Style;
-                    case Location.Thetford:
-                        return Application.Current.FindResource("ThetfordStyle") as Style;
-                    case Location.Bridgewatch:
-                        return Application.Current.FindResource("BridgewatchStyle") as Style;
-                    case Location.Martlock:
-                        return Application.Current.FindResource("MartlockStyle") as Style;
-                    case Location.Lymhurst:
-                        return Application.Current.FindResource("LymhurstStyle") as Style;
-                    case Location.FortSterling:
-                        return Application.Current.FindResource("FortSterlingStyle") as Style;
-                    case Location.ArthursRest:
-                        return Application.Current.FindResource("ArthursRestStyle") as Style;
-                    case Location.MerlynsRest:
-                        return Application.Current.FindResource("MerlynsRestStyle") as Style;
-                    case Location.MorganasRest:
-                        return Application.Current.FindResource("MorganasRestStyle") as Style;
-                    default:
-                        return Application.Current.FindResource("DefaultCityStyle") as Style;
-                }
-            }
-        }
+        public Style LocationStyle => ItemController.LocationStyle(Location);
 
-        public Style SellPriceMinStyle
+        public Style SellPriceMinStyle => ItemController.PriceStyle(BestSellMinPrice);
+
+        public Style BuyPriceMaxStyle => ItemController.PriceStyle(BestBuyMaxPrice);
+
+        public Style SellPriceMinDateStyle => ItemController.GetStyleByTimestamp(SellPriceMinDate);
+
+        public Style SellPriceMaxDateStyle => ItemController.GetStyleByTimestamp(SellPriceMaxDate);
+
+        public Style BuyPriceMinDateStyle => ItemController.GetStyleByTimestamp(BuyPriceMinDate);
+
+        public Style BuyPriceMaxDateStyle => ItemController.GetStyleByTimestamp(BuyPriceMaxDate);
+
+    }
+
+    public class MarketQualityObject
+    {
+        public string Location { get; set; }
+        public string LocationName => Locations.GetName(LocationType);
+        private Location LocationType => Locations.GetName(Location);
+        public ulong SellPriceMinNormal { private get; set; }
+        public ulong SellPriceMinGood { private get; set; }
+        public ulong SellPriceMinOutstanding { private get; set; }
+        public ulong SellPriceMinExcellent { private get; set; }
+        public ulong SellPriceMinMasterpiece { private get; set; }
+        
+        public string SellPriceMinNormalString => Utilities.UlongMarketPriceToString(SellPriceMinNormal);
+        public string SellPriceMinGoodString => Utilities.UlongMarketPriceToString(SellPriceMinGood);
+        public string SellPriceMinOutstandingString => Utilities.UlongMarketPriceToString(SellPriceMinOutstanding);
+        public string SellPriceMinExcellentString => Utilities.UlongMarketPriceToString(SellPriceMinExcellent);
+        public string SellPriceMinMasterpieceString => Utilities.UlongMarketPriceToString(SellPriceMinMasterpiece);
+
+        public DateTime SellPriceMinNormalDate { private get; set; }
+        public DateTime SellPriceMinGoodDate { private get; set; }
+        public DateTime SellPriceMinOutstandingDate { private get; set; }
+        public DateTime SellPriceMinExcellentDate { private get; set; }
+        public DateTime SellPriceMinMasterpieceDate { private get; set; }
+
+        public string SellPriceMinNormalDateString => Utilities.MarketPriceDateToString(SellPriceMinNormalDate);
+        public string SellPriceMinGoodDateString => Utilities.MarketPriceDateToString(SellPriceMinGoodDate);
+        public string SellPriceMinOutstandingDateString => Utilities.MarketPriceDateToString(SellPriceMinOutstandingDate);
+        public string SellPriceMinExcellentDateString => Utilities.MarketPriceDateToString(SellPriceMinExcellentDate);
+        public string SellPriceMinMasterpieceDateString => Utilities.MarketPriceDateToString(SellPriceMinMasterpieceDate);
+
+        public Style LocationStyle => ItemController.LocationStyle(LocationType);
+
+        public Style SellPriceMinNormalStyle => ItemController.PriceStyle(BestMinPrice() == SellPriceMinNormal);
+        public Style SellPriceMinGoodStyle => ItemController.PriceStyle(BestMinPrice() == SellPriceMinGood);
+        public Style SellPriceMinOutstandingStyle => ItemController.PriceStyle(BestMinPrice() == SellPriceMinOutstanding);
+        public Style SellPriceMinExcellentStyle => ItemController.PriceStyle(BestMinPrice() == SellPriceMinExcellent);
+        public Style SellPriceMinMasterpieceStyle => ItemController.PriceStyle(BestMinPrice() == SellPriceMinMasterpiece);
+
+        private ulong BestMinPrice()
         {
-            get
+            var priceList = new List<ulong>
             {
-                switch (BestSellMinPrice)
-                {
-                    case true:
-                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.BestPrice") as Style;
-                    case false:
-                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
-                    default:
-                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
-                }
+                SellPriceMinNormal,
+                SellPriceMinGood,
+                SellPriceMinOutstanding,
+                SellPriceMinExcellent,
+                SellPriceMinMasterpiece
+            };
 
-            }
+            return ItemController.GetMinPrice(priceList);
         }
-
-        public Style BuyPriceMaxStyle {
-            get 
-            {
-                switch (BestBuyMaxPrice)
-                {
-                    case true:
-                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.BestPrice") as Style;
-                    case false:
-                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
-                    default:
-                        return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
-                }
-
-            }
-        }
-
-        private Style GetStyleByTimestamp(DateTime value)
-        {
-            if (value.Date == DateTime.MinValue.Date)
-                return Application.Current.FindResource("ListView.Grid.Label.Date.NoValue") as Style;
-
-            if (value.AddHours(8) < DateTime.Now.ToUniversalTime().AddHours(-1))
-                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldFirst") as Style;
-
-            if (value.AddHours(4) < DateTime.Now.ToUniversalTime().AddHours(-1))
-                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldSecond") as Style;
-
-            if (value.AddHours(2) < DateTime.Now.ToUniversalTime().AddHours(-1))
-                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldThird") as Style;
-
-            return Application.Current.FindResource("ListView.Grid.Label.Date.Normal") as Style;
-        }
-
-        public Style SellPriceMinDateStyle => GetStyleByTimestamp(SellPriceMinDate);
-
-        public Style SellPriceMaxDateStyle => GetStyleByTimestamp(SellPriceMaxDate);
-
-        public Style BuyPriceMinDateStyle => GetStyleByTimestamp(BuyPriceMinDate);
-
-        public Style BuyPriceMaxDateStyle => GetStyleByTimestamp(BuyPriceMaxDate);
-
     }
 }
