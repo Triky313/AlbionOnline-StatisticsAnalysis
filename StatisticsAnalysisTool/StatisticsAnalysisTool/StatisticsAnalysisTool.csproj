@@ -211,6 +211,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="ao-update-check.xml" />
+    <Resource Include="donation-progress.txt" />
     <Content Include="Languages\en-GB.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
