@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [1.8.1] - 2020-04-12
 ### Added
 - New InfoWindow with donation goal
+- Added a option to settings, to not show again the info window after a tool start
 
 ## [1.8.0] - 2020-03-03
 ### Added
