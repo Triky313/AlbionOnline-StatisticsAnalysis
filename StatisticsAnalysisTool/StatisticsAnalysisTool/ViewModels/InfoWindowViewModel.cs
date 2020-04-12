@@ -1,6 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -12,7 +11,6 @@ namespace StatisticsAnalysisTool.ViewModels
 {
     class InfoWindowViewModel : INotifyPropertyChanged
     {
-        private InfoWindow _infoWindow;
         private string _title;
         private string _showNotAgain;
         private bool _showNotAgainChecked;
@@ -20,12 +18,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private int _maximum;
         private int _minimum;
         private string _lastUpdate;
-        private DateTime _timestamp;
         private string _featureDescription;
 
-        public InfoWindowViewModel(InfoWindow infoWindow)
+        public InfoWindowViewModel()
         {
-            _infoWindow = infoWindow;
             Init();
         }
 

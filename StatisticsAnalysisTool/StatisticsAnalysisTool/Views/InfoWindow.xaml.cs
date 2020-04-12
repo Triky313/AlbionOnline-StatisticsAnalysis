@@ -16,7 +16,7 @@ namespace StatisticsAnalysisTool.Views
         public InfoWindow()
         {
             InitializeComponent();
-            _infoWindowViewModel = new InfoWindowViewModel(this);
+            _infoWindowViewModel = new InfoWindowViewModel();
             DataContext = _infoWindowViewModel;
         }
 
