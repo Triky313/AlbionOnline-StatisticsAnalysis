@@ -62,5 +62,8 @@
     <Setting Name="GitHubRepoUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://github.com/Triky313/AlbionOnline-StatisticsAnalysis</Value>
     </Setting>
+    <Setting Name="ShowInfoWindowOnStartChecked" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

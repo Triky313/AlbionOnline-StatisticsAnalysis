@@ -106,4 +106,8 @@
   <translation name="TAB_ALL_QUALITY_TOOLTIP_DESCRIPTION">Shows all quality prices of an item</translation>
   <translation name="MAIN">Main</translation>
   <translation name="HISTORY">History</translation>
+  <translation name="SHOW_NOT_AGAIN">Show not again</translation>
+  <translation name="SHOW_INFO_WINDOW_ON_START">Show info window on start</translation>
+  <translation name="DONATION_GOAL_FOR_A_NEW_FEATURE">Donation goal for a new feature</translation>
+  <translation name="FEATURE_DESCRIPTION">NEXT FEATURE &#x0a; Search items Filter by item type, tier and level.</translation>
 </translations>

@@ -122,6 +122,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 });
             });
 
+            ShowInfoWindow();
             TextBoxGoldModeNumberOfValues = "10";
         }
 
@@ -363,6 +364,15 @@ namespace StatisticsAnalysisTool.ViewModels
         }
         
         #endregion
+
+        private void ShowInfoWindow()
+        {
+            if (Settings.Default.ShowInfoWindowOnStartChecked)
+            {
+                var infoWindow = new InfoWindow();
+                infoWindow.Show();
+            }
+        }
 
         public static void OpenItemWindow(Item item)
         {
