@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StatisticsAnalysisTool.Views"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="InfoWindow" Height="450" Width="550" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False">
