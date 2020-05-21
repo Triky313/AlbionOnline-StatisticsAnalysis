@@ -7,7 +7,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Item search filter
 - Home screen info for the first opening of the app
 - User macros
-- 
+  
+## [1.8.2] - 2020-05-21
+### Added
+- Added a new simple information tab for item window
+
+### Fixed
+- Performance improvements
+- Fixed a bug that did not use local images
+
 ## [1.8.1] - 2020-04-12
 ### Added
 - New InfoWindow with donation goal
@@ -104,7 +112,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.1...HEAD
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.2...HEAD
+[1.8.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.1...1.8.2
 [1.8.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.0...1.8.1
 [1.8.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.7.0...1.8.0
 [1.7.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.6.0...1.7.0
