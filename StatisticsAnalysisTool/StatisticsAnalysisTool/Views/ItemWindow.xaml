@@ -244,6 +244,24 @@
                     </wpf:CartesianChart>
                 </Grid>
             </TabItem>
+            <TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}" >
+                <Grid>
+                    <StackPanel Margin="10,10,0,10" HorizontalAlignment="Left" Width="250">
+                        <Label Content="{Binding Translation.Equipable, FallbackValue=EQUIPABLE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding Translation.Stackable, FallbackValue=STACKABLE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding Translation.ShowInMarketplace, FallbackValue=SHOW_IN_MARKET_PLACE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding Translation.ItemType, FallbackValue=ITEM_TYPE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding Translation.CategoryName, FallbackValue=CATEGORY__NAME}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                    </StackPanel>
+                    <StackPanel Margin="265,10,10,10">
+                        <Label Content="{Binding IsEquipable, FallbackValue=-}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding IsStackable, FallbackValue=-}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding IsShowInMarketplace, FallbackValue=-}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding ItemType, FallbackValue=-}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding CategoryName, FallbackValue=-}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
         </TabControl>
 
         <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">

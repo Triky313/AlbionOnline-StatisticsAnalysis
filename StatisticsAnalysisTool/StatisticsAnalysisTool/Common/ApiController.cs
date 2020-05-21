@@ -7,7 +7,7 @@
     using System.Net;
     using System.Threading.Tasks;
 
-    public class ApiController
+    public static class ApiController
     {
 
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item)
@@ -55,8 +55,15 @@
                     }
                 }
 
-                var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
-                return JsonConvert.DeserializeObject<List<MarketResponse>>(itemString);
+                try
+                {
+                    var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
+                    return JsonConvert.DeserializeObject<List<MarketResponse>>(itemString);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
 

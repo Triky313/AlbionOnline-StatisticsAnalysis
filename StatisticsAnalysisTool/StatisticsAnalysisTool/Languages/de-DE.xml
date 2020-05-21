@@ -110,4 +110,12 @@
   <translation name="SHOW_INFO_WINDOW_ON_START">Zeige Info Fenster bei Programmstart</translation>
   <translation name="DONATION_GOAL_FOR_A_NEW_FEATURE">Spendenziel für ein neues Feature</translation>
   <translation name="FEATURE_DESCRIPTION">NÄCHSTES FEATURE &#x0a; Gegenstände in der Suche Filtern nach Item Type, Tier und Level.</translation>
+  <translation name="EQUIPABLE">Ausrüstbar</translation>
+  <translation name="STACKABLE">Stapelbar</translation>
+  <translation name="SHOW_IN_MARKET_PLACE">Wird im Auktionshaus angezeigt</translation>
+  <translation name="ITEM_TYPE">Item Type</translation>
+  <translation name="INFORMATION">Information</translation>
+  <translation name="YES">Ja</translation>
+  <translation name="NO">Nein</translation>
+  <translation name="CATEGORY_NAME">Kategorie Name</translation>
 </translations>
