@@ -49,7 +49,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _isShowInMarketplace;
         private string _itemType;
         private string _categoryName;
-        private Task _initializeItemDataTask;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -96,7 +95,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             var localizedName = ItemController.LocalizedName(Item.LocalizedNames, null, Item.UniqueName);
-            var itemInformationTask = ApiController.GetItemInfoFromJsonAsync(item);
+            _ = GetItemInformation(item);
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
@@ -107,9 +106,14 @@ namespace StatisticsAnalysisTool.ViewModels
             StartAutoUpdater();
             RefreshSpin = IsAutoUpdateActive;
 
-            ItemInformation = await itemInformationTask;
             ItemTitle = $"{localizedName} (T{ItemInformation?.Tier})";
             Icon = item.Icon;
+        }
+
+        private async Task GetItemInformation(Item item)
+        {
+            ItemInformation = await ApiController.GetItemInfoFromJsonAsync(item);
+
             IsEquipable = ItemInformation != null && (ItemInformation.Equipable) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
             IsStackable = ItemInformation != null && (ItemInformation.Stackable) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
             IsShowInMarketplace = ItemInformation != null && (ItemInformation.ShowInMarketplace) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
@@ -246,36 +250,33 @@ namespace StatisticsAnalysisTool.ViewModels
             if (Item.UniqueName == null)
                 return;
 
-            await Task.Run(async () =>
+            var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName,
+                Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)),
+                GetQualities());
+
+            if (statPricesList == null)
+                return;
+
+            var statsPricesTotalList = PriceUpdate(statPricesList);
+
+            FindBestPrice(ref statsPricesTotalList);
+
+            var marketCurrentPricesItemList = new List<MarketCurrentPricesItem>();
+            foreach (var item in statsPricesTotalList)
+                marketCurrentPricesItemList.Add(new MarketCurrentPricesItem(item));
+
+            _mainWindow.Dispatcher?.Invoke(() =>
             {
-                var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName,
-                    Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)),
-                    GetQualities());
-
-                if (statPricesList == null)
-                    return;
-                
-                var statsPricesTotalList = PriceUpdate(statPricesList);
-
-                FindBestPrice(ref statsPricesTotalList);
-
-                var marketCurrentPricesItemList = new List<MarketCurrentPricesItem>();
-                foreach (var item in statsPricesTotalList)
-                    marketCurrentPricesItemList.Add(new MarketCurrentPricesItem(item));
-
-                _mainWindow.Dispatcher?.Invoke(() =>
+                if (_mainWindow.FaLoadIcon.Visibility != Visibility.Hidden)
                 {
-                    if(_mainWindow.FaLoadIcon.Visibility != Visibility.Hidden)
-                    {
-                        _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
-                    }
-                    _mainWindow.ListViewPrices.ItemsSource = marketCurrentPricesItemList;
-                });
-
-                HasItemPrices = true;
+                    _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
+                }
+                _mainWindow.ListViewPrices.ItemsSource = marketCurrentPricesItemList;
                 SetDifferenceCalculationText(statsPricesTotalList);
-                RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
             });
+
+            HasItemPrices = true;
+            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
         }
 
         private List<MarketResponseTotal> PriceUpdate(List<MarketResponse> newStatsPricesList)
