@@ -1,17 +1,16 @@
 ﻿using StatisticsAnalysisTool.Properties;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Common
 {
     class ImageController
     {
-        private static readonly string ImageDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-            Settings.Default.ImageResources);
+        private static readonly string ImageDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ImageResources);
 
         public static BitmapImage GetItemImage(string webPath = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
         {
@@ -28,7 +27,7 @@ namespace StatisticsAnalysisTool.Common
 
                 if (File.Exists(localFilePath))
                 {
-                    image = SetImage(localFilePath, pixelHeight, pixelWidth, freeze);
+                    image = GetImageFromResource(localFilePath, pixelHeight, pixelWidth, freeze);
                 }
                 else
                 {
@@ -53,9 +52,9 @@ namespace StatisticsAnalysisTool.Common
             {
                 var encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create((BitmapImage)sender));
-                using (var filestream = new FileStream(localFilePath, FileMode.Create))
+                using (var fileStream = new FileStream(localFilePath, FileMode.Create))
                 {
-                    encoder.Save(filestream);
+                    encoder.Save(fileStream);
                 }
             };
         }
@@ -80,26 +79,34 @@ namespace StatisticsAnalysisTool.Common
 
                 return userImage;
             }
-            catch
+            catch(Exception e)
             {
+                Debug.Print($"SetImage: {e.Message}");
                 return null;
             }
         }
 
         public static BitmapImage GetImageFromResource(string resourcePath, int pixelHeight, int pixelWidth, bool freeze)
         {
-            var sri = Application.GetResourceStream(new Uri(resourcePath, UriKind.Absolute));
-            var bmp = new BitmapImage();
-            bmp.BeginInit();
-            bmp.CacheOption = BitmapCacheOption.OnDemand;
-            bmp.DecodePixelHeight = pixelHeight;
-            bmp.DecodePixelWidth = pixelWidth;
-            bmp.StreamSource = sri?.Stream;
-            bmp.EndInit();
-            if (freeze)
-                bmp.Freeze();
+            try
+            {
+                var bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.CacheOption = BitmapCacheOption.OnDemand;
+                bmp.DecodePixelHeight = pixelHeight;
+                bmp.DecodePixelWidth = pixelWidth;
+                bmp.UriSource = new Uri(resourcePath);
+                bmp.EndInit();
+                if (freeze)
+                    bmp.Freeze();
 
-            return bmp;
+                return bmp;
+            }
+            catch (Exception e)
+            {
+                Debug.Print($"SetImage: {e.Message}");
+                return null;
+            }
         }
 
         public static int LocalImagesCounter()
