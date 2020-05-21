@@ -55,7 +55,15 @@
                     }
                 }
 
-                var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
+                string itemString;
+                try
+                {
+                    itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
                 return JsonConvert.DeserializeObject<List<MarketResponse>>(itemString);
             }
         }

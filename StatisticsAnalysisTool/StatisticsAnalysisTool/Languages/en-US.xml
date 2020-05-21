@@ -110,4 +110,12 @@
   <translation name="SHOW_INFO_WINDOW_ON_START">Show info window on start</translation>
   <translation name="DONATION_GOAL_FOR_A_NEW_FEATURE">Donation goal for a new feature</translation>
   <translation name="FEATURE_DESCRIPTION">NEXT FEATURE &#x0a; Search items Filter by item type, tier and level.</translation>
+  <translation name="EQUIPABLE">Equipable</translation>
+  <translation name="STACKABLE">Stackable</translation>
+  <translation name="SHOW_IN_MARKET_PLACE">Show in market place</translation>
+  <translation name="ITEM_TYPE">Item Type</translation>
+  <translation name="INFORMATION">Information</translation>
+  <translation name="YES">Yes</translation>
+  <translation name="NO">No</translation>
+  <translation name="CATEGORY_NAME">Category name</translation>
 </translations>
