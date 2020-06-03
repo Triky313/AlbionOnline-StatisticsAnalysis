@@ -18,7 +18,7 @@
         </Grid>
         <StackPanel Margin="10,75,0,39" HorizontalAlignment="Left" Width="250">
             <Label Content="{Binding Translation.Language, FallbackValue=LANGUAGE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
-            <Label Content="{Binding Translation.RefrashRate, FallbackValue=REFRESH__RATE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+            <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
             <Label Content="{Binding Translation.UpdateItemListByDays, FallbackValue=UPDATE__ITEM__LIST__BY__DAYS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
             <Label Content="{Binding Translation.ItemListSourceUrl, FallbackValue=ITEM_LIST_SOURCE_URL}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
             <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,18,0,0" VerticalAlignment="Top"/>
