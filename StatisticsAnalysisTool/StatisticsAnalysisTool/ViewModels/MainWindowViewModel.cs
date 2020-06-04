@@ -56,6 +56,7 @@ namespace StatisticsAnalysisTool.ViewModels
         public MainWindowViewModel(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
+            InitWindowSettings();
             Utilities.AutoUpdate();
             UpgradeSettings();
 
@@ -74,7 +75,25 @@ namespace StatisticsAnalysisTool.ViewModels
                 Settings.Default.Save();
             }
         }
-        
+
+        private void InitWindowSettings()
+        {
+            _mainWindow.Dispatcher?.Invoke(() =>
+            {
+                #region Set MainWindow height and width and center window
+
+                _mainWindow.Height = Settings.Default.MainWindowHeight;
+                _mainWindow.Width = Settings.Default.MainWindowWidth;
+                if (Settings.Default.MainWindowMaximized)
+                {
+                    _mainWindow.WindowState = WindowState.Maximized;
+                }
+
+                CenterWindowOnScreen();
+                #endregion
+            });
+        }
+
         private async void InitMainWindowData()
         {
             UpdateTranslation = LanguageController.Translation("UPDATE");
@@ -93,18 +112,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     IsTxtSearchEnabled = false;
                     _mainWindow.FaLoadIcon.Visibility = Visibility.Visible;
-                    
-                    #region Set MainWindow height and width and center window
-
-                    _mainWindow.Height = Settings.Default.MainWindowHeight;
-                    _mainWindow.Width = Settings.Default.MainWindowWidth;
-                    if (Settings.Default.MainWindowMaximized)
-                    {
-                        _mainWindow.WindowState = WindowState.Maximized;
-                    }
-
-                    CenterWindowOnScreen();
-                    #endregion
 
                     _mainWindow.TxtBoxPlayerModeUsername.Text = Settings.Default.SavedPlayerInformationName;
                 });
