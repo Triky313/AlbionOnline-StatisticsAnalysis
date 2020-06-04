@@ -42,6 +42,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _numberOfValuesTranslation;
         private string _loadTranslation;
         private PlayerModeTranslation _playerModeTranslation = new PlayerModeTranslation();
+        private bool _isTxtSearchEnabled;
 
         public enum ViewMode
         {
@@ -88,7 +89,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _mainWindow.Dispatcher?.Invoke(() =>
                 {
-                    _mainWindow.TxtSearch.IsEnabled = false;
+                    IsTxtSearchEnabled = false;
                     _mainWindow.FaLoadIcon.Visibility = Visibility.Visible;
                     
                     #region Set MainWindow height and width and center window
@@ -116,7 +117,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     if (isItemListLoaded)
                     {
                         _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
-                        _mainWindow.TxtSearch.IsEnabled = true;
+                        IsTxtSearchEnabled = true;
                         _mainWindow.TxtSearch.Focus();
                     }
                 });
@@ -397,6 +398,14 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 var catchItemWindow = new ItemWindow(item);
                 catchItemWindow.Show();
+            }
+        }
+
+        public bool IsTxtSearchEnabled {
+            get => _isTxtSearchEnabled;
+            set {
+                _isTxtSearchEnabled = value;
+                OnPropertyChanged();
             }
         }
 
