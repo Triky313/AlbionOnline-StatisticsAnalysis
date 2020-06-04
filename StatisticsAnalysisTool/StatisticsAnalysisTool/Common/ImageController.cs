@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Common
@@ -109,22 +110,19 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static int LocalImagesCounter()
+        public static async Task<int> LocalImagesCounterAsync()
         {
-            try
+            return await Task.Run(() =>
             {
-                if (Directory.Exists(ImageDir))
+                try
                 {
-                    return Directory.GetFiles(ImageDir, "*", SearchOption.TopDirectoryOnly).Length;
-                } else
+                    return Directory.Exists(ImageDir) ? Directory.GetFiles(ImageDir, "*", SearchOption.TopDirectoryOnly).Length : 0;
+                }
+                catch
                 {
                     return 0;
                 }
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
+            });
         }
 
     }

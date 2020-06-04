@@ -43,6 +43,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _loadTranslation;
         private PlayerModeTranslation _playerModeTranslation = new PlayerModeTranslation();
         private bool _isTxtSearchEnabled;
+        private string _itemCounterString;
+        private int _localImageCounter;
 
         public enum ViewMode
         {
@@ -248,18 +250,20 @@ namespace StatisticsAnalysisTool.ViewModels
             return true;
         }
 
-        public void LoadLvItems(string searchText)
+        public async void LoadLvItems(string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
                 return;
 
+            var items = await FindItemsAsync(searchText);
+            FilteredItems = items;
+
             _mainWindow.Dispatcher?.InvokeAsync(async () =>
             {
-                var items = await FindItemsAsync(searchText);
-                FilteredItems = items;
-                _mainWindow.LblItemCounter.Content = $"{items.Count}/{FilteredItems.Count}";
-                _mainWindow.LblLocalImageCounter.Content = ImageController.LocalImagesCounter();
+                LocalImageCounter = await ImageController.LocalImagesCounterAsync();
             });
+
+            ItemCounterString = $"{items.Count}/{items.Count}";
         }
 
         #endregion
@@ -398,6 +402,22 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 var catchItemWindow = new ItemWindow(item);
                 catchItemWindow.Show();
+            }
+        }
+
+        public int LocalImageCounter {
+            get => _localImageCounter;
+            set {
+                _localImageCounter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ItemCounterString {
+            get => _itemCounterString;
+            set {
+                _itemCounterString = value;
+                OnPropertyChanged();
             }
         }
 
