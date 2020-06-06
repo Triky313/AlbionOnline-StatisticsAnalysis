@@ -42,6 +42,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _numberOfValuesTranslation;
         private string _loadTranslation;
         private PlayerModeTranslation _playerModeTranslation = new PlayerModeTranslation();
+        private bool _isTxtSearchEnabled;
+        private string _itemCounterString;
+        private int _localImageCounter;
 
         public enum ViewMode
         {
@@ -53,6 +56,7 @@ namespace StatisticsAnalysisTool.ViewModels
         public MainWindowViewModel(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
+            InitWindowSettings();
             Utilities.AutoUpdate();
             UpgradeSettings();
 
@@ -71,7 +75,25 @@ namespace StatisticsAnalysisTool.ViewModels
                 Settings.Default.Save();
             }
         }
-        
+
+        private void InitWindowSettings()
+        {
+            _mainWindow.Dispatcher?.Invoke(() =>
+            {
+                #region Set MainWindow height and width and center window
+
+                _mainWindow.Height = Settings.Default.MainWindowHeight;
+                _mainWindow.Width = Settings.Default.MainWindowWidth;
+                if (Settings.Default.MainWindowMaximized)
+                {
+                    _mainWindow.WindowState = WindowState.Maximized;
+                }
+
+                CenterWindowOnScreen();
+                #endregion
+            });
+        }
+
         private async void InitMainWindowData()
         {
             UpdateTranslation = LanguageController.Translation("UPDATE");
@@ -88,20 +110,8 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _mainWindow.Dispatcher?.Invoke(() =>
                 {
-                    _mainWindow.TxtSearch.IsEnabled = false;
+                    IsTxtSearchEnabled = false;
                     _mainWindow.FaLoadIcon.Visibility = Visibility.Visible;
-                    
-                    #region Set MainWindow height and width and center window
-
-                    _mainWindow.Height = Settings.Default.MainWindowHeight;
-                    _mainWindow.Width = Settings.Default.MainWindowWidth;
-                    if (Settings.Default.MainWindowMaximized)
-                    {
-                        _mainWindow.WindowState = WindowState.Maximized;
-                    }
-
-                    CenterWindowOnScreen();
-                    #endregion
 
                     _mainWindow.TxtBoxPlayerModeUsername.Text = Settings.Default.SavedPlayerInformationName;
                 });
@@ -116,7 +126,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     if (isItemListLoaded)
                     {
                         _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
-                        _mainWindow.TxtSearch.IsEnabled = true;
+                        IsTxtSearchEnabled = true;
                         _mainWindow.TxtSearch.Focus();
                     }
                 });
@@ -247,18 +257,20 @@ namespace StatisticsAnalysisTool.ViewModels
             return true;
         }
 
-        public void LoadLvItems(string searchText)
+        public async void LoadLvItems(string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
                 return;
 
+            var items = await FindItemsAsync(searchText);
+            FilteredItems = items;
+
             _mainWindow.Dispatcher?.InvokeAsync(async () =>
             {
-                var items = await FindItemsAsync(searchText);
-                FilteredItems = items;
-                _mainWindow.LblItemCounter.Content = $"{items.Count}/{FilteredItems.Count}";
-                _mainWindow.LblLocalImageCounter.Content = ImageController.LocalImagesCounter();
+                LocalImageCounter = await ImageController.LocalImagesCounterAsync();
             });
+
+            ItemCounterString = $"{items.Count}/{items.Count}";
         }
 
         #endregion
@@ -397,6 +409,30 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 var catchItemWindow = new ItemWindow(item);
                 catchItemWindow.Show();
+            }
+        }
+
+        public int LocalImageCounter {
+            get => _localImageCounter;
+            set {
+                _localImageCounter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ItemCounterString {
+            get => _itemCounterString;
+            set {
+                _itemCounterString = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTxtSearchEnabled {
+            get => _isTxtSearchEnabled;
+            set {
+                _isTxtSearchEnabled = value;
+                OnPropertyChanged();
             }
         }
 

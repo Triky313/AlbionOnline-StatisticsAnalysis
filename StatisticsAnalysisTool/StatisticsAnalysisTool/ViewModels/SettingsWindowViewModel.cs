@@ -41,7 +41,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 Settings = LanguageController.Translation("SETTINGS"),
                 Language = LanguageController.Translation("LANGUAGE"),
-                RefrashRate = LanguageController.Translation("REFRESH_RATE"),
+                RefreshRate = LanguageController.Translation("REFRESH_RATE"),
                 UpdateItemListByDays = LanguageController.Translation("UPDATE_ITEM_LIST_BY_DAYS"),
                 ItemListSourceUrl = LanguageController.Translation("ITEM_LIST_SOURCE_URL"),
                 OpenItemWindowInNewWindow = LanguageController.Translation("OPEN_ITEM_WINDOW_IN_NEW_WINDOW"),
