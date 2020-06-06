@@ -138,5 +138,15 @@ namespace StatisticsAnalysisTool.Common
 
             return min;
         }
+
+        public static bool IsItemInformationUpToDate(ItemInformation currentItemInfo, ItemInformation localItemInfo)
+        {
+            if (localItemInfo?.LastUpdate < DateTime.UtcNow.AddDays(-28) || localItemInfo?.Revision != currentItemInfo.Revision)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

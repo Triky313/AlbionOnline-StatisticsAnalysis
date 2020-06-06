@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Models
@@ -79,6 +80,9 @@ namespace StatisticsAnalysisTool.Models
         public bool Stackable { get; set; }
         [JsonProperty(PropertyName = "equipable")]
         public bool Equipable { get; set; }
+
+        [JsonProperty(PropertyName = "lastUpdate")]
+        public DateTime LastUpdate { get; set; }
     }
 
     public class CraftResourceList

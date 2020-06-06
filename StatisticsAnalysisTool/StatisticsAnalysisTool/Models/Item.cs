@@ -12,7 +12,7 @@ namespace StatisticsAnalysisTool.Models
         public string LocalizationDescriptionVariable { get; set; }
         [JsonProperty("LocalizedNames")]
         public LocalizedNames LocalizedNames { get; set; }
-        //public List<KeyValueStruct> LocalizedDescriptions { get; set; }
+
         [JsonProperty("Index")]
         public int Index { get; set; }
         [JsonProperty("UniqueName")]
