@@ -102,6 +102,7 @@
     <Compile Include="Common\ApiController.cs" />
     <Compile Include="Common\ItemController.cs" />
     <Compile Include="Models\GoldModels.cs" />
+    <Compile Include="Models\ItemCategoryTree.cs" />
     <Compile Include="Models\ItemInformationModels.cs" />
     <Compile Include="Models\ItemWindowTranslation.cs" />
     <Compile Include="Models\MarketHistoriesResponse.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Models\SearchInfos.cs" />
     <Compile Include="Models\MarketOrder.cs" />
     <Compile Include="Models\MarketStats.cs" />
+    <Compile Include="Models\WeaponCategories.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
