@@ -33,6 +33,7 @@
         </Grid>
         <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
             <TextBox x:Name="TxtSearch" IsEnabled="{Binding Path=IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="299" KeyUp="TxtSearch_KeyUp"/>
+
             <Label x:Name="LblItemCounter" Content="{Binding ItemCounterString, FallbackValue=0/0}" Height="26" Margin="0,6,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="110" />
 
             <StackPanel Orientation="Horizontal" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,7,120,0" Width="10">
@@ -60,6 +61,8 @@
                         <GridViewColumn Header="Type" Width="150" DisplayMemberBinding="{Binding Type}" />
                         -->
                         <GridViewColumn x:Name="GvcNmlName" Header="NAME" Width="500" DisplayMemberBinding="{Binding LocalizedNameAndEnglish}" />
+                        <GridViewColumn Header="{Binding HeaderNameHasCurrentInformation, FallbackValue=HAS_CURRENT_INFORMATION}" Width="500" DisplayMemberBinding="{Binding HasCurrentInformation, FallbackValue=false}" />
+
                         <!--<GridViewColumn x:Name="GvcNmlPriceAvgCaerleon" Header="PRICE__AVG__CAERLOEN" Width="80" DisplayMemberBinding="{Binding PriceAvgCaerleon, Mode=TwoWay, IsAsync=True}" />
                         <GridViewColumn x:Name="GvcNmlPriceAvgBridgewatch" Header="PRICE__AVG__BRIDGEWATCH" Width="80" DisplayMemberBinding="{Binding PriceAvgBridgewatch, Mode=TwoWay, IsAsync=True}" />
                         <GridViewColumn x:Name="GvcNmlPriceAvgFortSterling" Header="PRICE__AVG__FORT__STERLING" Width="80" DisplayMemberBinding="{Binding PriceAvgFortSterling, Mode=TwoWay, IsAsync=True}" />
