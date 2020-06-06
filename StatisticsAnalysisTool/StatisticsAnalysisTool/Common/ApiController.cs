@@ -9,14 +9,13 @@
 
     public static class ApiController
     {
-
-        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item)
+        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(string uniqueName)
         {
             using (var wc = new WebClient())
             {
                 try
                 {
-                    var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/items/{item.UniqueName}/data";
+                    var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
                     var itemString = await wc.DownloadStringTaskAsync(apiString);
                     var result = JsonConvert.DeserializeObject<ItemInformation>(itemString);
                     return result;
@@ -30,6 +29,11 @@
                     return null;
                 }
             }
+        }
+
+        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item)
+        {
+            return await GetItemInfoFromJsonAsync(item.UniqueName);
         }
 
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)

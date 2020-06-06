@@ -101,6 +101,7 @@ namespace StatisticsAnalysisTool.ViewModels
             LoadTranslation = LanguageController.Translation("LOAD");
 
             SetModeCombobox();
+            ItemController.GetItemInformationListFromLocalAsync();
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;

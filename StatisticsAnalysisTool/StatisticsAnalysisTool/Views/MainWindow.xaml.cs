@@ -1,4 +1,5 @@
 ﻿using FontAwesome.WPF;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
@@ -163,6 +164,8 @@ namespace StatisticsAnalysisTool.Views
 
             Settings.Default.SavedPlayerInformationName = TxtBoxPlayerModeUsername.Text;
             Settings.Default.Save();
+
+            ItemController.SaveItemInformationLocal();
         }
 
         private async void BtnPlayerModeSave_Click(object sender, RoutedEventArgs e)

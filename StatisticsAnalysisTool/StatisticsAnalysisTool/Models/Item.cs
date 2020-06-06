@@ -12,7 +12,7 @@ namespace StatisticsAnalysisTool.Models
         public string LocalizationDescriptionVariable { get; set; }
         [JsonProperty("LocalizedNames")]
         public LocalizedNames LocalizedNames { get; set; }
-
+        //public List<KeyValueStruct> LocalizedDescriptions { get; set; }
         [JsonProperty("Index")]
         public int Index { get; set; }
         [JsonProperty("UniqueName")]
@@ -25,5 +25,9 @@ namespace StatisticsAnalysisTool.Models
 
         private BitmapImage _icon;
         public BitmapImage Icon => _icon ?? (_icon = ImageController.GetItemImage($"https://gameinfo.albiononline.com/api/gameinfo/items/{UniqueName}"));
+
+        private ItemInformation _fullItemInformation;
+        public ItemInformation FullItemInformation => _fullItemInformation ?? (_fullItemInformation = ItemController.GetItemInformationAsync(UniqueName).Result);
+        public bool IsFullItemInformationUpToDate => ItemController.IsItemInformationUpToDate(_fullItemInformation?.LastUpdate);
     }
 }

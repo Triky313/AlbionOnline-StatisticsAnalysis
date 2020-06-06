@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using StatisticsAnalysisTool.Properties;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Common
@@ -11,6 +15,10 @@ namespace StatisticsAnalysisTool.Common
 
     public class ItemController
     {
+        private static readonly string FullItemInformationFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FullItemInformationFileName);
+
+        private static List<ItemInformation> _itemInformationList;
+
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {
             if (localizedNames == null)
@@ -139,14 +147,95 @@ namespace StatisticsAnalysisTool.Common
             return min;
         }
 
-        public static bool IsItemInformationUpToDate(ItemInformation currentItemInfo, ItemInformation localItemInfo)
+        #region ItemInformation
+
+        public static async Task<ItemInformation> GetItemInformationAsync(string uniqueName)
         {
-            if (localItemInfo?.LastUpdate < DateTime.UtcNow.AddDays(-28) || localItemInfo?.Revision != currentItemInfo.Revision)
+            if (_itemInformationList != null && _itemInformationList.Exists(x => x.UniqueName == uniqueName))
+            {
+                return _itemInformationList?.Find(x => x.UniqueName == uniqueName);
+            }
+
+            var itemInfo = await ApiController.GetItemInfoFromJsonAsync(uniqueName);
+            return itemInfo != null ? AddItemInformationToListAndReturn(itemInfo) : new ItemInformation();
+        }
+
+        public static ItemInformation AddItemInformationToListAndReturn(ItemInformation currentItemInformation)
+        {
+            if (_itemInformationList.Exists(x => x.UniqueName == currentItemInformation.UniqueName))
+            {
+                var localItemInfo = _itemInformationList.Find(x => x.UniqueName == currentItemInformation.UniqueName);
+
+                if (IsItemInformationRevisionUpToDate(currentItemInformation, localItemInfo))
+                {
+                    return localItemInfo;
+                }
+
+                if (IsItemInformationUpToDate(localItemInfo?.LastUpdate))
+                {
+                    localItemInfo = currentItemInformation;
+                }
+
+                return localItemInfo;
+            }
+
+            currentItemInformation.LastUpdate = DateTime.Now;
+            _itemInformationList.Add(currentItemInformation);
+            return currentItemInformation;
+        }
+
+        public static bool IsItemInformationUpToDate(DateTime? lastUpdate)
+        {
+            if (lastUpdate == null)
             {
                 return false;
             }
 
-            return true;
+            return !(lastUpdate < DateTime.UtcNow.AddDays(-28));
         }
+
+        private static bool IsItemInformationRevisionUpToDate(ItemInformation currentItemInfo, ItemInformation localItemInfo)
+        {
+            return localItemInfo?.Revision == currentItemInfo?.Revision;
+        }
+
+        public static async void GetItemInformationListFromLocalAsync()
+        {
+            await Task.Run(() =>
+            {
+                if (_itemInformationList != null)
+                    return;
+
+                if (File.Exists(FullItemInformationFilePath))
+                {
+                    using (var streamReader = new StreamReader(FullItemInformationFilePath, Encoding.UTF8))
+                    {
+                        var readContents = streamReader.ReadToEnd();
+                        _itemInformationList = JsonConvert.DeserializeObject<List<ItemInformation>>(readContents);
+                    }
+                }
+                else
+                {
+                    _itemInformationList = new List<ItemInformation>();
+                }
+            });
+        }
+
+        public static async void SaveItemInformationLocal()
+        {
+            if (_itemInformationList == null)
+            {
+                return;
+            }
+
+            var itemInformationString = JsonConvert.SerializeObject(_itemInformationList);
+
+            using (var writer = new StreamWriter(FullItemInformationFilePath))
+            {
+                await writer.WriteAsync(itemInformationString);
+            }
+        }
+
+        #endregion
     }
 }
