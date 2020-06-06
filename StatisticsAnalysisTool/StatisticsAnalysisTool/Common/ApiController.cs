@@ -1,4 +1,6 @@
-﻿namespace StatisticsAnalysisTool.Common
+﻿using System.Text;
+
+namespace StatisticsAnalysisTool.Common
 {
     using Models;
     using Newtonsoft.Json;
@@ -16,15 +18,15 @@
                 try
                 {
                     var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
-                    var itemString = await wc.DownloadStringTaskAsync(apiString);
+                    var itemString = await wc.DownloadStringTaskAsync(apiString).ConfigureAwait(true);
+                    
+                    var bytes = Encoding.Default.GetBytes(itemString);
+                    itemString = Encoding.UTF8.GetString(bytes);
+
                     var result = JsonConvert.DeserializeObject<ItemInformation>(itemString);
                     return result;
                 }
-                catch (ArgumentNullException)
-                {
-                    return null;
-                }
-                catch (WebException)
+                catch
                 {
                     return null;
                 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using StatisticsAnalysisTool.Properties;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace StatisticsAnalysisTool.Common
     {
         private static readonly string FullItemInformationFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FullItemInformationFileName);
 
-        private static List<ItemInformation> _itemInformationList;
+        private static BlockingCollection<ItemInformation> _itemInformationList = new BlockingCollection<ItemInformation>();
 
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {
@@ -151,20 +152,19 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<ItemInformation> GetItemInformationAsync(string uniqueName)
         {
-            if (_itemInformationList != null && _itemInformationList.Exists(x => x.UniqueName == uniqueName))
+            if (!string.IsNullOrEmpty(_itemInformationList.FirstOrDefault(x => x.UniqueName == uniqueName)?.UniqueName))
             {
-                return _itemInformationList?.Find(x => x.UniqueName == uniqueName);
+                return _itemInformationList.SingleOrDefault(x => x.UniqueName == uniqueName);
             }
 
-            var itemInfo = await ApiController.GetItemInfoFromJsonAsync(uniqueName);
-            return itemInfo != null ? AddItemInformationToListAndReturn(itemInfo) : new ItemInformation();
+            return AddItemInformationToListAndReturn(await ApiController.GetItemInfoFromJsonAsync(uniqueName));
         }
-
+        
         public static ItemInformation AddItemInformationToListAndReturn(ItemInformation currentItemInformation)
         {
-            if (_itemInformationList.Exists(x => x.UniqueName == currentItemInformation.UniqueName))
+            if (string.IsNullOrEmpty(_itemInformationList.FirstOrDefault(x => x.UniqueName == currentItemInformation.UniqueName)?.UniqueName))
             {
-                var localItemInfo = _itemInformationList.Find(x => x.UniqueName == currentItemInformation.UniqueName);
+                var localItemInfo = _itemInformationList.SingleOrDefault(x => x.UniqueName == currentItemInformation.UniqueName);
 
                 if (IsItemInformationRevisionUpToDate(currentItemInformation, localItemInfo))
                 {
@@ -211,12 +211,12 @@ namespace StatisticsAnalysisTool.Common
                     using (var streamReader = new StreamReader(FullItemInformationFilePath, Encoding.UTF8))
                     {
                         var readContents = streamReader.ReadToEnd();
-                        _itemInformationList = JsonConvert.DeserializeObject<List<ItemInformation>>(readContents);
+                        _itemInformationList = JsonConvert.DeserializeObject<BlockingCollection<ItemInformation>>(readContents);
                     }
                 }
                 else
                 {
-                    _itemInformationList = new List<ItemInformation>();
+                    _itemInformationList = new BlockingCollection<ItemInformation>();
                 }
             });
         }
