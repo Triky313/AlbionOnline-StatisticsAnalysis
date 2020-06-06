@@ -155,5 +155,41 @@
                 }
             }
         }
+
+        public static async Task<ItemCategoryTree> GetItemCategoryTreeAsync()
+        {
+            using (var wc = new WebClient())
+            {
+                try
+                {
+                    var apiString = "https://gameinfo.albiononline.com/api/gameinfo/items/_itemCategoryTree";
+                    var itemString = await wc.DownloadStringTaskAsync(apiString);
+                    var result = JsonConvert.DeserializeObject<ItemCategoryTree>(itemString);
+                    return result;
+                }
+                catch
+                {
+                    return new ItemCategoryTree();
+                }
+            }
+        }
+
+        public static async Task<WeaponCategories> GetWeaponCategoriesAsync()
+        {
+            using (var wc = new WebClient())
+            {
+                try
+                {
+                    var apiString = "https://gameinfo.albiononline.com/api/gameinfo/items/_weaponCategories";
+                    var itemString = await wc.DownloadStringTaskAsync(apiString);
+                    var result = JsonConvert.DeserializeObject<WeaponCategories>(itemString);
+                    return result;
+                }
+                catch
+                {
+                    return new WeaponCategories();
+                }
+            }
+        }
     }
 }
