@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -19,15 +19,19 @@ namespace StatisticsAnalysisTool.Common
                 {
                     var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
                     var itemString = await wc.DownloadStringTaskAsync(apiString).ConfigureAwait(true);
-                    
-                    var bytes = Encoding.Default.GetBytes(itemString);
-                    itemString = Encoding.UTF8.GetString(bytes);
+
+                    if (itemString == null)
+                    {
+                        return null;
+                    }
 
                     var result = JsonConvert.DeserializeObject<ItemInformation>(itemString);
                     return result;
                 }
-                catch
+                catch(Exception e)
                 {
+                    Debug.Print(e.Message);
+                    Debug.Print(e.StackTrace);
                     return null;
                 }
             }

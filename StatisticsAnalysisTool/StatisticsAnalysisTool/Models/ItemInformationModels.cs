@@ -46,34 +46,40 @@ namespace StatisticsAnalysisTool.Models
         public LocalizedDescriptions LocalizedDescriptions { get; set; }
         [JsonProperty(PropertyName = "slotType")]
         public object SlotType { get; set; }
-        
         [JsonProperty("physicalAttackDamageBonus")]
         public double PhysicalAttackDamageBonus { get; set; }
-
         [JsonProperty("skinCount")]
         public object SkinCount { get; set; }
-
         [JsonProperty("physicalArmor")]
         public int PhysicalArmor { get; set; }
-
         [JsonProperty("magicResistance")]
         public int MagicResistance { get; set; }
-
         [JsonProperty("magicAttackDamageBonus")]
         public object MagicAttackDamageBonus { get; set; }
-
-        [JsonProperty("activeSpellSlots")]
-        public int ActiveSpellSlots { get; set; }
-
-        [JsonProperty("passiveSpellSlots")]
-        public int PassiveSpellSlots { get; set; }
-
         [JsonProperty("itemPowerProgressionType")]
         public string ItemPowerProgressionType { get; set; }
-
         [JsonProperty("craftingRequirements")]
         public CraftingRequirements CraftingRequirements { get; set; }
-
+        [JsonProperty(PropertyName = "unlockedToEquip")]
+        public bool? UnlockedToEquip { get; set; }
+        [JsonProperty(PropertyName = "mountHitPointsRegeneration")]
+        public int? MountHitPointsRegeneration { get; set; }
+        [JsonProperty(PropertyName = "prefabScaling")]
+        public double? PrefabScaling { get; set; }
+        [JsonProperty(PropertyName = "abilityPower")]
+        public int? AbilityPower { get; set; }
+        [JsonProperty(PropertyName = "activeSpellSlots")]
+        public int? ActiveSpellSlots { get; set; }
+        [JsonProperty(PropertyName = "passiveSpellSlots")]
+        public int? PassiveSpellSlots { get; set; }
+        [JsonProperty(PropertyName = "dismountTime")]
+        public int? DismountTime { get; set; }
+        [JsonProperty(PropertyName = "mountHitPointsMax")]
+        public int? MountHitPointsMax { get; set; }
+        [JsonProperty(PropertyName = "prefabName")]
+        public string PrefabName { get; set; }
+        [JsonProperty(PropertyName = "dismountedBuff")]
+        public int? DismountedBuff { get; set; }
         [JsonProperty(PropertyName = "spriteName")]
         public string SpriteName { get; set; }
         [JsonProperty(PropertyName = "stackable")]

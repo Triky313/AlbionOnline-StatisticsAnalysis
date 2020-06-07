@@ -25,17 +25,5 @@ namespace StatisticsAnalysisTool.Models
 
         private BitmapImage _icon;
         public BitmapImage Icon => _icon ?? (_icon = ImageController.GetItemImage($"https://gameinfo.albiononline.com/api/gameinfo/items/{UniqueName}"));
-
-        private ItemInformation _fullItemInformation;
-
-        public ItemInformation FullItemInformation
-        {
-            get
-            {
-                var test = _fullItemInformation ?? (_fullItemInformation = ItemController.GetItemInformationAsync(UniqueName).Result);
-                return test;
-            }
-        }
-        public bool IsFullItemInformationUpToDate => ItemController.IsItemInformationUpToDate(_fullItemInformation?.LastUpdate);
     }
 }

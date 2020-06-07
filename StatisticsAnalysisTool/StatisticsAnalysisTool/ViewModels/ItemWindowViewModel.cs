@@ -112,13 +112,25 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async Task GetItemInformation(Item item)
         {
-            ItemInformation = await ApiController.GetItemInfoFromJsonAsync(item);
+            IsEquipable = null;
+            IsStackable = null;
+            IsShowInMarketplace = null;
+            ItemType = null;
+            CategoryName = null;
 
-            IsEquipable = ItemInformation != null && (ItemInformation.Equipable) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
-            IsStackable = ItemInformation != null && (ItemInformation.Stackable) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
-            IsShowInMarketplace = ItemInformation != null && (ItemInformation.ShowInMarketplace) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
-            ItemType = ItemInformation?.ItemType ?? "-";
-            CategoryName = ItemInformation?.CategoryName ?? "-";
+            var itemInformation = ItemController.GetItemInformationFromLocal(item.UniqueName);
+
+            if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !ItemController.IsItemInformationUpToDate(itemInformation.LastUpdate))
+            {
+                itemInformation = await ApiController.GetItemInfoFromJsonAsync(item).ConfigureAwait(false);
+                ItemController.AddItemInformationToLocal(itemInformation);
+            }
+            
+            IsEquipable = itemInformation != null && (itemInformation.Equipable) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
+            IsStackable = itemInformation != null && (itemInformation.Stackable) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
+            IsShowInMarketplace = itemInformation != null && (itemInformation.ShowInMarketplace) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
+            ItemType = itemInformation?.ItemType ?? "-";
+            CategoryName = itemInformation?.CategoryName ?? "-";
         }
 
         private void SetNoDataValues(Error error, string message = null)
