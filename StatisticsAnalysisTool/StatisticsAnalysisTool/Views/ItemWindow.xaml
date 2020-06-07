@@ -251,14 +251,18 @@
                         <Label Content="{Binding Translation.Stackable, FallbackValue=STACKABLE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                         <Label Content="{Binding Translation.ShowInMarketplace, FallbackValue=SHOW_IN_MARKET_PLACE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                         <Label Content="{Binding Translation.ItemType, FallbackValue=ITEM_TYPE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
-                        <Label Content="{Binding Translation.CategoryName, FallbackValue=CATEGORY__NAME}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding Translation.CategoryId, FallbackValue=CATEGORY__ID}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding Translation.Revision, FallbackValue=REVISION}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding Translation.LastFullInformationUpdate, FallbackValue=LAST__FULL__INFORMATION__UPDATE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                     </StackPanel>
                     <StackPanel Margin="265,10,10,10">
-                        <Label Content="{Binding IsEquipable, FallbackValue=-}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
-                        <Label Content="{Binding IsStackable, FallbackValue=-}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
-                        <Label Content="{Binding IsShowInMarketplace, FallbackValue=-}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
-                        <Label Content="{Binding ItemType, FallbackValue=-}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
-                        <Label Content="{Binding CategoryName, FallbackValue=-}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding ItemInfo.Equipable, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding ItemInfo.Stackable, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding ItemInfo.ShowInMarketplace, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding ItemInfo.ItemType, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding ItemInfo.CategoryId, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding ItemInfo.Revision, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding Item.LastFullItemInformationUpdate, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                     </StackPanel>
                 </Grid>
             </TabItem>

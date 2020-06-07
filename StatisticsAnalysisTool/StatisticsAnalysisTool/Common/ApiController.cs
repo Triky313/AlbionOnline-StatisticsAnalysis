@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace StatisticsAnalysisTool.Common
+﻿namespace StatisticsAnalysisTool.Common
 {
     using Models;
     using Newtonsoft.Json;
@@ -28,10 +26,8 @@ namespace StatisticsAnalysisTool.Common
                     var result = JsonConvert.DeserializeObject<ItemInformation>(itemString);
                     return result;
                 }
-                catch(Exception e)
+                catch
                 {
-                    Debug.Print(e.Message);
-                    Debug.Print(e.StackTrace);
                     return null;
                 }
             }
@@ -70,7 +66,7 @@ namespace StatisticsAnalysisTool.Common
                     var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
                     return JsonConvert.DeserializeObject<List<MarketResponse>>(itemString);
                 }
-                catch (Exception)
+                catch
                 {
                     return null;
                 }

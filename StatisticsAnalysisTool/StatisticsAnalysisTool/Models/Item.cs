@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
+using System;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models
@@ -25,5 +26,16 @@ namespace StatisticsAnalysisTool.Models
 
         private BitmapImage _icon;
         public BitmapImage Icon => _icon ?? (_icon = ImageController.GetItemImage($"https://gameinfo.albiononline.com/api/gameinfo/items/{UniqueName}"));
+
+        public bool ExistFullItemInformationLocal => ItemController.ExistFullItemInformationLocal(UniqueName);
+
+        public string LastFullItemInformationUpdate
+        {
+            get
+            {
+                var dt = ItemController.LastFullItemInformationUpdate(UniqueName);
+                return dt != null ? Common.Formatting.CurrentDateTimeFormat((DateTime)dt) : string.Empty;
+            }
+        }
     }
 }

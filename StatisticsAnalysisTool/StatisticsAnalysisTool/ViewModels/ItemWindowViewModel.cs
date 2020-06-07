@@ -44,11 +44,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isAutoUpdateActive;
         private string _refreshIconTooltipText;
         private List<MarketQualityObject> _allQualityPricesList;
-        private string _isEquipable;
-        private string _isStackable;
-        private string _isShowInMarketplace;
-        private string _itemType;
-        private string _categoryName;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -95,45 +90,39 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             var localizedName = ItemController.LocalizedName(Item.LocalizedNames, null, Item.UniqueName);
-            _ = GetItemInformation(item);
+            var _ = GetItemInformation(item);
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindow.Icon = item.Icon;
-                _mainWindow.Title = $"{localizedName} (T{ItemInformation?.Tier})";
+                _mainWindow.Title = $"{localizedName} (T{ItemInfo?.Tier})";
             });
 
             StartAutoUpdater();
             RefreshSpin = IsAutoUpdateActive;
 
-            ItemTitle = $"{localizedName} (T{ItemInformation?.Tier})";
+            ItemTitle = $"{localizedName} (T{ItemInfo?.Tier})";
             Icon = item.Icon;
         }
 
         private async Task GetItemInformation(Item item)
         {
-            IsEquipable = null;
-            IsStackable = null;
-            IsShowInMarketplace = null;
-            ItemType = null;
-            CategoryName = null;
-
+            ItemInfo = null;
+            
             var itemInformation = ItemController.GetItemInformationFromLocal(item.UniqueName);
 
             if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !ItemController.IsItemInformationUpToDate(itemInformation.LastUpdate))
             {
-                itemInformation = await ApiController.GetItemInfoFromJsonAsync(item).ConfigureAwait(false);
-                ItemController.AddItemInformationToLocal(itemInformation);
+                ItemInfo = await ApiController.GetItemInfoFromJsonAsync(item).ConfigureAwait(false);
+                ItemController.AddItemInformationToLocal(ItemInfo);
             }
-            
-            IsEquipable = itemInformation != null && (itemInformation.Equipable) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
-            IsStackable = itemInformation != null && (itemInformation.Stackable) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
-            IsShowInMarketplace = itemInformation != null && (itemInformation.ShowInMarketplace) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
-            ItemType = itemInformation?.ItemType ?? "-";
-            CategoryName = itemInformation?.CategoryName ?? "-";
+            else
+            {
+                ItemInfo = itemInformation;
+            }
         }
 
-        private void SetNoDataValues(Error error, string message = null)
+        private void SetNoDataValues(Error error)
         {
             switch (error)
             {
@@ -288,7 +277,7 @@ namespace StatisticsAnalysisTool.ViewModels
             });
 
             HasItemPrices = true;
-            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
+            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {Formatting.CurrentDateTimeFormat(DateTime.Now)}";
         }
 
         private List<MarketResponseTotal> PriceUpdate(List<MarketResponse> newStatsPricesList)
@@ -488,7 +477,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ItemInformation ItemInformation {
+        public ItemInformation ItemInfo {
             get => _itemInformation;
             set {
                 _itemInformation = value;
@@ -654,51 +643,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _refreshIconTooltipText = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string IsEquipable {
-            get => _isEquipable;
-            set
-            {
-                _isEquipable = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string IsStackable {
-            get => _isStackable;
-            set
-            {
-                _isStackable = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string IsShowInMarketplace {
-            get => _isShowInMarketplace;
-            set
-            {
-                _isShowInMarketplace = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string ItemType {
-            get => _itemType;
-            set
-            {
-                _itemType = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string CategoryName {
-            get => _categoryName;
-            set
-            {
-                _categoryName = value;
                 OnPropertyChanged();
             }
         }

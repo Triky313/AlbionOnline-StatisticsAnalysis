@@ -61,8 +61,9 @@
                         <GridViewColumn Header="Type" Width="150" DisplayMemberBinding="{Binding Type}" />
                         -->
                         <GridViewColumn x:Name="GvcNmlName" Header="NAME" Width="400" DisplayMemberBinding="{Binding LocalizedNameAndEnglish}" />
-                        <!--<GridViewColumn Header="{Binding HeaderNameHasCurrentInformation, FallbackValue=HAS_CURRENT_INFORMATION}" Width="200" DisplayMemberBinding="{Binding IsFullItemInformationUpToDate, IsAsync=True}" />
-                        <GridViewColumn Header="{Binding HeaderNameHasCurrentInformation, FallbackValue=LAST_UPDATE}" Width="100" DisplayMemberBinding="{Binding FullItemInformation.LastUpdate, IsAsync=True}" />-->
+                        <GridViewColumn Header="{Binding HeaderNameHasCurrentInformation, FallbackValue=HAS_FULL_ITEM_INFORMATION}" Width="150" DisplayMemberBinding="{Binding ExistFullItemInformationLocal, IsAsync=True}" />
+                        <GridViewColumn Header="{Binding HeaderNameHasCurrentInformation, FallbackValue=LAST_UPDATE}" Width="120" DisplayMemberBinding="{Binding LastFullItemInformationUpdate, IsAsync=True}" />
+
                     </GridView>
                 </ListView.View>
             </ListView>
