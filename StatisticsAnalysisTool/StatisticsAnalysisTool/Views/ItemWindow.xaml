@@ -253,7 +253,7 @@
                         <Label Content="{Binding Translation.ItemType, FallbackValue=ITEM_TYPE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                         <Label Content="{Binding Translation.CategoryId, FallbackValue=CATEGORY__ID}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                         <Label Content="{Binding Translation.Revision, FallbackValue=REVISION}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
-                        <Label Content="{Binding Translation.LastFullInformationUpdate, FallbackValue=LAST__FULL__INFORMATION__UPDATE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding Translation.LastFullInformationUpdate, FallbackValue=LAST_FULL_INFORMATION_UPDATE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                     </StackPanel>
                     <StackPanel Margin="265,10,10,10">
                         <Label Content="{Binding ItemInfo.Equipable, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
@@ -262,7 +262,7 @@
                         <Label Content="{Binding ItemInfo.ItemType, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                         <Label Content="{Binding ItemInfo.CategoryId, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                         <Label Content="{Binding ItemInfo.Revision, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
-                        <Label Content="{Binding Item.LastFullItemInformationUpdate, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
+                        <Label Content="{Binding ItemInfo.LastFullItemInformationUpdate, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                     </StackPanel>
                 </Grid>
             </TabItem>

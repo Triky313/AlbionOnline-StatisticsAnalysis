@@ -89,6 +89,8 @@ namespace StatisticsAnalysisTool.Models
 
         [JsonProperty(PropertyName = "lastUpdate")]
         public DateTime LastUpdate { get; set; }
+
+        public string LastFullItemInformationUpdate => Common.Formatting.CurrentDateTimeFormat(LastUpdate) ?? string.Empty;
     }
 
     public class CraftResourceList

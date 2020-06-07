@@ -175,16 +175,6 @@ namespace StatisticsAnalysisTool.Common
             return !(lastUpdate < DateTime.UtcNow.AddDays(-28));
         }
 
-        public static DateTime? LastFullItemInformationUpdate(string uniqueName)
-        {
-            if (_itemInformationList.Any(x => x.UniqueName == uniqueName))
-            {
-                return _itemInformationList?.FirstOrDefault(x => x.UniqueName == uniqueName)?.LastUpdate ?? null;
-            }
-
-            return null;
-        }
-
         public static ItemInformation GetItemInformationFromLocal(string uniqueName)
         {
             return _itemInformationList.SingleOrDefault(x => x.UniqueName == uniqueName);

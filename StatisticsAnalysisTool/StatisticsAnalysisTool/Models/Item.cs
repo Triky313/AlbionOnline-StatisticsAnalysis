@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Models
         public int Index { get; set; }
         [JsonProperty("UniqueName")]
         public string UniqueName { get; set; }
-
+        
         public string LocalizedNameAndEnglish =>
             LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper() == "EN-US"
                 ? ItemController.LocalizedName(LocalizedNames)
@@ -27,6 +27,6 @@ namespace StatisticsAnalysisTool.Models
         public BitmapImage Icon => _icon ?? (_icon = ImageController.GetItemImage($"https://gameinfo.albiononline.com/api/gameinfo/items/{UniqueName}"));
 
         private BitmapImage _existFullItemInformationLocal;
-        public BitmapImage ExistFullItemInformationLocal => _existFullItemInformationLocal ?? (_existFullItemInformationLocal = ItemController.ExistFullItemInformationLocal(UniqueName));
+        public BitmapImage ExistFullItemInformationLocal => _existFullItemInformationLocal ?? (_existFullItemInformationLocal = ItemController.ExistFullItemInformationLocal(this.UniqueNameWithoutAtSign()));
     }
 }
