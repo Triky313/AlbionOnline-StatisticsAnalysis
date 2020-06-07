@@ -45,6 +45,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTxtSearchEnabled;
         private string _itemCounterString;
         private int _localImageCounter;
+        private string _fullItemInformationExistLocal;
 
         public enum ViewMode
         {
@@ -99,6 +100,8 @@ namespace StatisticsAnalysisTool.ViewModels
             UpdateTranslation = LanguageController.Translation("UPDATE");
             NumberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
             LoadTranslation = LanguageController.Translation("LOAD");
+            LoadTranslation = LanguageController.Translation("LOAD");
+            FullItemInformationExistLocal = LanguageController.Translation("FULL_ITEM_INFORMATION_EXIST_LOCAL");
 
             SetModeCombobox();
             ItemController.GetItemInformationListFromLocalAsync();
@@ -499,6 +502,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _loadTranslation;
             set {
                 _loadTranslation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string FullItemInformationExistLocal {
+            get => _fullItemInformationExistLocal;
+            set {
+                _fullItemInformationExistLocal = value;
                 OnPropertyChanged();
             }
         }

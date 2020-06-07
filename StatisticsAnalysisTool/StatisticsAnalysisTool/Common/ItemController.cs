@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -189,9 +190,9 @@ namespace StatisticsAnalysisTool.Common
             return _itemInformationList.SingleOrDefault(x => x.UniqueName == uniqueName);
         }
 
-        public static bool ExistFullItemInformationLocal(string uniqueName)
+        public static BitmapImage ExistFullItemInformationLocal(string uniqueName)
         {
-            return _itemInformationList.Any(x => x.UniqueName == uniqueName);
+            return _itemInformationList.Any(x => x.UniqueName == uniqueName) ? new BitmapImage(new Uri(@"pack://application:,,,/Resources/check.png")) : null;
         }
 
         public static void SaveItemInformationLocal()
