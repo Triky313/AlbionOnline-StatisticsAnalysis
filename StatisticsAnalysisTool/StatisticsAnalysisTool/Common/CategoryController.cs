@@ -765,11 +765,8 @@ namespace StatisticsAnalysisTool.Common
             {ParentCategory.Trophies, LanguageController.Translation("TROPHIES")}
         };
 
-        //public static string GetName(Location location) => Names.TryGetValue(location, out var name) ? name : null;
-
-        //public static string GetParameterName(Location location) => ParameterNames.TryGetValue(location, out var name) ? name : null;
-
-        //public static Location GetName(string location) => ParameterNames.FirstOrDefault(x => x.Value == location).Key;
+        public static string GetCategoryName(Category category) => CategoryNames.TryGetValue(category, out var name) ? name : null;
+        public static string GetParentCategoryName(ParentCategory parentCategory) => ParentCategoryNames.TryGetValue(parentCategory, out var name) ? name : null;
     }
 
     public enum Category
