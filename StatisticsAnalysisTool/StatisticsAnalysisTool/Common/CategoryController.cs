@@ -1,502 +1,177 @@
-﻿using System.Collections.Generic;
+﻿using StatisticsAnalysisTool.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StatisticsAnalysisTool.Common
 {
     public static class CategoryController
     {
-        public static readonly Dictionary<Category, string> Categories = new Dictionary<Category, string>
+        public static List<CategoryObject> Categories = new List<CategoryObject>()
         {
-            #region Accessories
-
-            {Category.Bag, "bag"},
-            {Category.Cape, "cape"},
-
-            #endregion
-
-            #region Armor
-
-            {Category.ClothArmor, "cloth_armor"},
-            {Category.ClothHelmet, "cloth_helmet"},
-            {Category.ClothShoes, "cloth_shoes"},
-            {Category.LeatherArmor, "leather_armor"},
-            {Category.LeatherHelmet, "leather_helmet"},
-            {Category.LeatherShoes, "leather_shoes"},
-            {Category.PlateArmor, "plate_armor"},
-            {Category.PlateHelmet, "plate_helmet"},
-            {Category.PlateShoes, "plate_shoes"},
-            {Category.UniqueArmor, "unique_armor"},
-            {Category.UniqueHelmet, "unique_helmet"},
-            {Category.UniqueShoes, "unique_shoes"},
-
-            #endregion
-
-            #region Artifact
-
-            {Category.ArmorArtefact, "armor_artefact"},
-            {Category.MagicArtefact, "magic_artefact"},
-            {Category.MeleeArtefact, "melee_artefact"},
-            {Category.OffhandArtefact, "offhand_artefact"},
-            {Category.RangedArtefact, "ranged_artefact"},
-
-            #endregion
-
-            #region CityResources
-
-            {Category.BeastHeart, "beastheart"},
-            {Category.MountainHeart, "mountainheart"},
-            {Category.RockHeart, "rockheart"},
-            {Category.TreeHeart, "treeheart"},
-            {Category.VineHeart, "vineheart"},
-
-            #endregion
-
-            #region Consumable
-
-            {Category.Cooked, "cooked"},
-            {Category.Fish, "fish"},
-            {Category.FishingBait, "fishingbait"},
-            {Category.Maps, "maps"},
-            {Category.Other, "Other"},
-            {Category.SkillBook, "skillbook"},
-            {Category.Vanity, "vanity"},
-
-            #endregion
-
-            #region Farmable
-
-            {Category.Animals, "animals"},
-            {Category.Seed, "seed"},
-
-            #endregion
-
-            #region Furniture
-
-            {Category.Banner, "banner"},
-            {Category.Bed, "bed"},
-            {Category.Chest, "chest"},
-            {Category.DecorationFurniture, "decoration_furniture"},
-            {Category.Flag, "flag"},
-            {Category.HereticFurniture, "heretic_furniture"},
-            {Category.KeeperFurniture, "keeper_furniture"},
-            {Category.MorganaFurniture, "morgana_furniture"},
-            {Category.Table, "table"},
-            {Category.RepairKit, "repairkit"},
-            {Category.Unique, "unique"},
-
-            #endregion
-
-            #region GatheringGear
-
-            {Category.FibergathererArmor, "fibergatherer_armor"},
-            {Category.FibergathererHelmet, "fibergatherer_helmet"},
-            {Category.FibergathererShoes, "fibergatherer_shoes"},
-            {Category.FibergathererBackpack, "fibergatherer_backpack"},
-
-            {Category.FishgathererArmor, "fishgatherer_armor"},
-            {Category.FishgathererHelmet, "fishgatherer_helmet"},
-            {Category.FishgathererShoes, "fishgatherer_shoes"},
-            {Category.FishgathererBackpack, "fishgatherer_backpack"},
-
-            {Category.HidegathererArmor, "hidegatherer_armor"},
-            {Category.HidegathererHelmet, "hidegatherer_helmet"},
-            {Category.HidegathererShoes, "hidegatherer_shoes"},
-            {Category.HidegathererBackpack, "hidegatherer_backpack"},
-
-            {Category.OregathererArmor, "oregatherer_armor"},
-            {Category.OregathererHelmet, "oregatherer_helmet"},
-            {Category.OregathererShoes, "oregatherer_shoes"},
-            {Category.OregathererBackpack, "oregatherer_backpack"},
-
-            {Category.RockgathererArmor, "rockgatherer_armor"},
-            {Category.RockgathererHelmet, "rockgatherer_helmet"},
-            {Category.RockgathererShoes, "rockgatherer_shoes"},
-            {Category.RockgathererBackpack, "rockgatherer_backpack"},
-
-            {Category.WoodgathererArmor, "woodgatherer_armor"},
-            {Category.WoodgathererHelmet, "woodgatherer_helmet"},
-            {Category.WoodgathererShoes, "woodgatherer_shoes"},
-            {Category.WoodgathererBackpack, "woodgatherer_backpack"},
-
-            #endregion
-
-            #region LuxuryGoods
-
-            {Category.Bridgewatch, "bridgewatch"},
-            {Category.Caerleon, "caerleon"},
-            {Category.FortSterling, "fortsterling"},
-            {Category.Lymhurst, "lymhurst"},
-            {Category.Martlock, "martlock"},
-            {Category.Thetford, "thetford"},
-
-            #endregion
-
-            #region Magic
-
-            {Category.ArcaneStaff, "arcanestaff"},
-            {Category.CurseStaff, "cursestaff"},
-            {Category.FireStaff, "firestaff"},
-            {Category.FrostStaff, "froststaff"},
-            {Category.HolyStaff, "holystaff"},
-            {Category.NatureStaff, "naturestaff"},
-
-            #endregion
-
-            #region Materials
-
-            {Category.Essence, "essence"},
-            {Category.OtherMaterials, "other"},
-            {Category.Relic, "relic"},
-            {Category.Rune, "rune"},
-            {Category.Soul, "soul"},
-
-            #endregion
-
-            #region Melee
-
-            {Category.Axe, "axe"},
-            {Category.Dagger, "dagger"},
-            {Category.Hammer, "hammer"},
-            {Category.Mace, "mace"},
-            {Category.QuarterStaff, "quarterstaff"},
-            {Category.Spear, "spear"},
-            {Category.Sword, "sword"},
-
-            #endregion
-
-            #region Mount
-
-            {Category.ArmoredHorse, "armoredhorse"},
-            {Category.Ox, "ox"},
-            {Category.RareMount, "rare_mount"},
-            {Category.RidingHorse, "ridinghorse"},
-            
-            #endregion
-
-            #region Off-Hand
-
-            {Category.Book, "book"},
-            {Category.Horn, "horn"},
-            {Category.Orb, "orb"},
-            {Category.Shield, "shield"},
-            {Category.Torch, "torch"},
-            {Category.Totem, "totem"},
-
-            #endregion
-
-            #region Other
-
-            {Category.Trash, "trash"},
-
-            #endregion
-
-            #region Product
-
-            {Category.Farming, "farming"},
-            {Category.Journal, "journal"},
-
-            #endregion
-
-            #region Ranged
-
-            {Category.Bow, "bow"},
-            {Category.Crossbow, "crossbow"},
-
-            #endregion
-
-            #region Resource
-
-            {Category.Cloth, "cloth"},
-            {Category.Fiber, "fiber"},
-            {Category.Hide, "hide"},
-            {Category.Leather, "leather"},
-            {Category.Metalbar, "metalbar"},
-            {Category.Ore, "ore"},
-            {Category.Planks, "planks"},
-            {Category.Rock, "rock"},
-
-            #endregion
-
-            #region Token
-
-            {Category.ArenaSigils, "arenasigils"},
-            {Category.Event, "event"},
-            {Category.RoyalSigils, "royalsigils"},
-            
-            #endregion
-
-            #region Tool
-
-            {Category.DemolitionHammer, "demolitionhammer"},
-            {Category.Fishing, "fishing"},
-            {Category.Pickaxe, "pickaxe"},
-            {Category.Sickle, "sickle"},
-            {Category.SkinningKnife, "skinningknife"},
-            {Category.StoneHammer, "stonehammer"},
-            {Category.WoodAxe, "woodaxe"},
-
-            #endregion
-
-            #region Trophies
-
-            {Category.FiberTrophy, "fibertrophy"},
-            {Category.FishTrophy, "fishtrophy"},
-            {Category.GeneralTrophy, "generaltrophy"},
-            {Category.HideTrophy, "hidetrophy"},
-            {Category.MercenaryTrophy, "mercenarytrophy"},
-            {Category.OreTrophy, "oretrophy"},
-            {Category.RockTrophy, "rocktrophy"},
-            {Category.WoodTrophy, "woodtrophy"},
-
-            #endregion
-        };
-        
-        public static readonly Dictionary<ParentCategory, Category> CategoryAssignment = new Dictionary<ParentCategory, Category>
-        {
-            #region Accessories
-
-            {ParentCategory.Accessories, Category.Bag},
-            {ParentCategory.Accessories, Category.Cape},
-
-            #endregion
-            
-            #region Armor
-
-            {ParentCategory.Armor, Category.ClothArmor},
-            {ParentCategory.Armor, Category.ClothHelmet},
-            {ParentCategory.Armor, Category.ClothShoes},
-            {ParentCategory.Armor, Category.LeatherArmor},
-            {ParentCategory.Armor, Category.LeatherHelmet},
-            {ParentCategory.Armor, Category.LeatherShoes},
-            {ParentCategory.Armor, Category.PlateArmor},
-            {ParentCategory.Armor, Category.PlateHelmet},
-            {ParentCategory.Armor, Category.PlateShoes},
-            {ParentCategory.Armor, Category.UniqueArmor},
-            {ParentCategory.Armor, Category.UniqueHelmet},
-            {ParentCategory.Armor, Category.UniqueShoes},
-
-            #endregion
-
-            #region Artifact
-
-            {ParentCategory.Artifact, Category.ArmorArtefact},
-            {ParentCategory.Artifact, Category.MagicArtefact},
-            {ParentCategory.Artifact, Category.MeleeArtefact},
-            {ParentCategory.Artifact, Category.OffhandArtefact},
-            {ParentCategory.Artifact, Category.RangedArtefact},
-
-            #endregion
-
-            #region CityResources
-
-            {ParentCategory.CityResources, Category.BeastHeart},
-            {ParentCategory.CityResources, Category.MountainHeart},
-            {ParentCategory.CityResources, Category.RockHeart},
-            {ParentCategory.CityResources, Category.TreeHeart},
-            {ParentCategory.CityResources, Category.VineHeart},
-
-            #endregion
-
-            #region Consumable
-
-            {ParentCategory.Consumable, Category.Cooked},
-            {ParentCategory.Consumable, Category.Fish},
-            {ParentCategory.Consumable, Category.FishingBait},
-            {ParentCategory.Consumable, Category.Maps},
-            {ParentCategory.Consumable, Category.Other},
-            {ParentCategory.Consumable, Category.SkillBook},
-            {ParentCategory.Consumable, Category.Vanity},
-
-            #endregion
-            
-            #region Farmable
-
-            {ParentCategory.Farmable, Category.Animals},
-            {ParentCategory.Farmable, Category.Seed},
-
-            #endregion
-
-            #region Furniture
-
-            {ParentCategory.Furniture, Category.Banner},
-            {ParentCategory.Furniture, Category.Bed},
-            {ParentCategory.Furniture, Category.Chest},
-            {ParentCategory.Furniture, Category.DecorationFurniture},
-            {ParentCategory.Furniture, Category.Flag},
-            {ParentCategory.Furniture, Category.HereticFurniture},
-            {ParentCategory.Furniture, Category.KeeperFurniture},
-            {ParentCategory.Furniture, Category.MorganaFurniture},
-            {ParentCategory.Furniture, Category.Table},
-            {ParentCategory.Furniture, Category.RepairKit},
-            {ParentCategory.Furniture, Category.Unique},
-
-            #endregion
-
-            #region GatheringGear
-
-            {ParentCategory.GatheringGear, Category.FibergathererArmor},
-            {ParentCategory.GatheringGear, Category.FibergathererHelmet},
-            {ParentCategory.GatheringGear, Category.FibergathererShoes},
-            {ParentCategory.GatheringGear, Category.FibergathererBackpack},
-
-            {ParentCategory.GatheringGear, Category.FishgathererArmor},
-            {ParentCategory.GatheringGear, Category.FishgathererHelmet},
-            {ParentCategory.GatheringGear, Category.FishgathererShoes},
-            {ParentCategory.GatheringGear, Category.FishgathererBackpack},
-
-            {ParentCategory.GatheringGear, Category.HidegathererArmor},
-            {ParentCategory.GatheringGear, Category.HidegathererHelmet},
-            {ParentCategory.GatheringGear, Category.HidegathererShoes},
-            {ParentCategory.GatheringGear, Category.HidegathererBackpack},
-
-            {ParentCategory.GatheringGear, Category.OregathererArmor},
-            {ParentCategory.GatheringGear, Category.OregathererHelmet},
-            {ParentCategory.GatheringGear, Category.OregathererShoes},
-            {ParentCategory.GatheringGear, Category.OregathererBackpack},
-
-            {ParentCategory.GatheringGear, Category.RockgathererArmor},
-            {ParentCategory.GatheringGear, Category.RockgathererHelmet},
-            {ParentCategory.GatheringGear, Category.RockgathererShoes},
-            {ParentCategory.GatheringGear, Category.RockgathererBackpack},
-
-            {ParentCategory.GatheringGear, Category.WoodgathererArmor},
-            {ParentCategory.GatheringGear, Category.WoodgathererHelmet},
-            {ParentCategory.GatheringGear, Category.WoodgathererShoes},
-            {ParentCategory.GatheringGear, Category.WoodgathererBackpack},
-
-            #endregion
-
-            #region LuxuryGoods
-
-            {ParentCategory.LuxuryGoods, Category.Bridgewatch},
-            {ParentCategory.LuxuryGoods, Category.Caerleon},
-            {ParentCategory.LuxuryGoods, Category.FortSterling},
-            {ParentCategory.LuxuryGoods, Category.Lymhurst},
-            {ParentCategory.LuxuryGoods, Category.Martlock},
-            {ParentCategory.LuxuryGoods, Category.Thetford},
-
-            #endregion
-
-            #region Magic
-
-            {ParentCategory.Magic, Category.ArcaneStaff},
-            {ParentCategory.Magic, Category.CurseStaff},
-            {ParentCategory.Magic, Category.FireStaff},
-            {ParentCategory.Magic, Category.FrostStaff},
-            {ParentCategory.Magic, Category.HolyStaff},
-            {ParentCategory.Magic, Category.NatureStaff},
-
-            #endregion
-
-            #region Materials
-
-            {ParentCategory.Materials, Category.Essence},
-            {ParentCategory.Materials, Category.OtherMaterials},
-            {ParentCategory.Materials, Category.Relic},
-            {ParentCategory.Materials, Category.Rune},
-            {ParentCategory.Materials, Category.Soul},
-
-            #endregion
-
-            #region Melee
-
-            {ParentCategory.Melee, Category.Axe},
-            {ParentCategory.Melee, Category.Dagger},
-            {ParentCategory.Melee, Category.Hammer},
-            {ParentCategory.Melee, Category.Mace},
-            {ParentCategory.Melee, Category.QuarterStaff},
-            {ParentCategory.Melee, Category.Spear},
-            {ParentCategory.Melee, Category.Sword},
-            
-            #endregion
-
-            #region Mount
-
-            {ParentCategory.Mount, Category.ArmoredHorse},
-            {ParentCategory.Mount, Category.Ox},
-            {ParentCategory.Mount, Category.RareMount},
-            {ParentCategory.Mount, Category.RidingHorse},
-            
-            #endregion
-
-            #region Off-Hand
-
-            {ParentCategory.OffHand, Category.Book},
-            {ParentCategory.OffHand, Category.Horn},
-            {ParentCategory.OffHand, Category.Orb},
-            {ParentCategory.OffHand, Category.Shield},
-            {ParentCategory.OffHand, Category.Torch},
-            {ParentCategory.OffHand, Category.Totem},
-            
-            #endregion
-
-            #region Other
-
-            {ParentCategory.Other, Category.Trash},
-
-            #endregion
-
-            #region Product
-
-            {ParentCategory.Product, Category.Farming},
-            {ParentCategory.Other, Category.Journal},
-
-            #endregion
-
-            #region Ranged
-
-            {ParentCategory.Ranged, Category.Bow},
-            {ParentCategory.Ranged, Category.Crossbow},
-
-            #endregion
-
-            #region Resource
-
-            {ParentCategory.Resource, Category.Cloth},
-            {ParentCategory.Resource, Category.Hide},
-            {ParentCategory.Resource, Category.Leather},
-            {ParentCategory.Resource, Category.Metalbar},
-            {ParentCategory.Resource, Category.Ore},
-            {ParentCategory.Resource, Category.Planks},
-            {ParentCategory.Resource, Category.Rock},
-            
-            #endregion
-
-            #region Token
-
-            {ParentCategory.Token, Category.ArenaSigils},
-            {ParentCategory.Token, Category.Event},
-            {ParentCategory.Token, Category.RoyalSigils},
-            
-            #endregion
-
-            #region Tool
-
-            {ParentCategory.Tool, Category.DemolitionHammer},
-            {ParentCategory.Tool, Category.Fishing},
-            {ParentCategory.Tool, Category.Pickaxe},
-            {ParentCategory.Tool, Category.Sickle},
-            {ParentCategory.Tool, Category.SkinningKnife},
-            {ParentCategory.Tool, Category.StoneHammer},
-            {ParentCategory.Tool, Category.WoodAxe},
-            
-            #endregion
-
-            #region Trophies
-
-            {ParentCategory.Trophies, Category.FiberTrophy},
-            {ParentCategory.Trophies, Category.FishTrophy},
-            {ParentCategory.Trophies, Category.GeneralTrophy},
-            {ParentCategory.Trophies, Category.HideTrophy},
-            {ParentCategory.Trophies, Category.MercenaryTrophy},
-            {ParentCategory.Trophies, Category.OreTrophy},
-            {ParentCategory.Trophies, Category.RockTrophy},
-            {ParentCategory.Trophies, Category.WoodTrophy},
-
-            #endregion
+            new CategoryObject("bag", Category.Bag, ParentCategory.Accessories),
+            new CategoryObject("cape", Category.Cape, ParentCategory.Accessories),
+
+            new CategoryObject("cloth_armor", Category.ClothArmor, ParentCategory.Armor),
+            new CategoryObject("cloth_helmet", Category.ClothHelmet, ParentCategory.Armor),
+            new CategoryObject("cloth_shoes", Category.ClothShoes, ParentCategory.Armor),
+            new CategoryObject("leather_armor", Category.LeatherArmor, ParentCategory.Armor),
+            new CategoryObject("leather_helmet", Category.LeatherHelmet, ParentCategory.Armor),
+            new CategoryObject("leather_shoes", Category.LeatherShoes, ParentCategory.Armor),
+            new CategoryObject("plate_armor", Category.PlateArmor, ParentCategory.Armor),
+            new CategoryObject("plate_helmet", Category.PlateHelmet, ParentCategory.Armor),
+            new CategoryObject("plate_shoes", Category.PlateShoes, ParentCategory.Armor),
+            new CategoryObject("unique_armor", Category.UniqueArmor, ParentCategory.Armor),
+            new CategoryObject("unique_helmet", Category.UniqueHelmet, ParentCategory.Armor),
+            new CategoryObject("unique_shoes", Category.UniqueShoes, ParentCategory.Armor),
+
+            new CategoryObject("armor_artefact", Category.ArmorArtefact, ParentCategory.Artifact),
+            new CategoryObject("magic_artefact", Category.MagicArtefact, ParentCategory.Artifact),
+            new CategoryObject("melee_artefact", Category.MeleeArtefact, ParentCategory.Artifact),
+            new CategoryObject("offhand_artefact", Category.OffhandArtefact, ParentCategory.Artifact),
+            new CategoryObject("ranged_artefact", Category.RangedArtefact, ParentCategory.Artifact),
+
+            new CategoryObject("beastheart", Category.BeastHeart, ParentCategory.CityResources),
+            new CategoryObject("mountainheart", Category.MountainHeart, ParentCategory.CityResources),
+            new CategoryObject("rockheart", Category.RockHeart, ParentCategory.CityResources),
+            new CategoryObject("treeheart", Category.TreeHeart, ParentCategory.CityResources),
+            new CategoryObject("vineheart", Category.VineHeart, ParentCategory.CityResources),
+
+            new CategoryObject("cooked", Category.Cooked, ParentCategory.Consumable),
+            new CategoryObject("fish", Category.Fish, ParentCategory.Consumable),
+            new CategoryObject("fishingbait", Category.FishingBait, ParentCategory.Consumable),
+            new CategoryObject("maps", Category.Maps, ParentCategory.Consumable),
+            new CategoryObject("Other", Category.Other, ParentCategory.Consumable),
+            new CategoryObject("skillbook", Category.SkillBook, ParentCategory.Consumable),
+            new CategoryObject("vanity", Category.Vanity, ParentCategory.Consumable),
+
+            new CategoryObject("animals", Category.Animals, ParentCategory.Farmable),
+            new CategoryObject("seed", Category.Seed, ParentCategory.Farmable),
+
+            new CategoryObject("banner", Category.Banner, ParentCategory.Furniture),
+            new CategoryObject("bed", Category.Bed, ParentCategory.Furniture),
+            new CategoryObject("chest", Category.Chest, ParentCategory.Furniture),
+            new CategoryObject("decoration_furniture", Category.DecorationFurniture, ParentCategory.Furniture),
+            new CategoryObject("flag", Category.Flag, ParentCategory.Furniture),
+            new CategoryObject("heretic_furniture", Category.HereticFurniture, ParentCategory.Furniture),
+            new CategoryObject("keeper_furniture", Category.KeeperFurniture, ParentCategory.Furniture),
+            new CategoryObject("morgana_furniture", Category.MorganaFurniture, ParentCategory.Furniture),
+            new CategoryObject("table", Category.Table, ParentCategory.Furniture),
+            new CategoryObject("repairkit", Category.RepairKit, ParentCategory.Furniture),
+            new CategoryObject("unique", Category.Unique, ParentCategory.Furniture),
+
+            new CategoryObject("fibergatherer_armor", Category.FibergathererArmor, ParentCategory.GatheringGear),
+            new CategoryObject("fibergatherer_helmet", Category.FibergathererHelmet, ParentCategory.GatheringGear),
+            new CategoryObject("fibergatherer_shoes", Category.FibergathererShoes, ParentCategory.GatheringGear),
+            new CategoryObject("fibergatherer_backpack", Category.FibergathererBackpack, ParentCategory.GatheringGear),
+
+            new CategoryObject("fishgatherer_armor", Category.FishgathererArmor, ParentCategory.GatheringGear),
+            new CategoryObject("fishgatherer_helmet", Category.FishgathererHelmet, ParentCategory.GatheringGear),
+            new CategoryObject("fishgatherer_shoes", Category.FishgathererShoes, ParentCategory.GatheringGear),
+            new CategoryObject("fishgatherer_backpack", Category.FishgathererBackpack, ParentCategory.GatheringGear),
+
+            new CategoryObject("hidegatherer_armor", Category.HidegathererArmor, ParentCategory.GatheringGear),
+            new CategoryObject("hidegatherer_helmet", Category.HidegathererHelmet, ParentCategory.GatheringGear),
+            new CategoryObject("hidegatherer_shoes", Category.HidegathererShoes, ParentCategory.GatheringGear),
+            new CategoryObject("hidegatherer_backpack", Category.HidegathererBackpack, ParentCategory.GatheringGear),
+
+            new CategoryObject("oregatherer_armor", Category.OregathererArmor, ParentCategory.GatheringGear),
+            new CategoryObject("oregatherer_helmet", Category.OregathererHelmet, ParentCategory.GatheringGear),
+            new CategoryObject("oregatherer_shoes", Category.OregathererShoes, ParentCategory.GatheringGear),
+            new CategoryObject("oregatherer_backpack", Category.OregathererBackpack, ParentCategory.GatheringGear),
+
+            new CategoryObject("rockgatherer_armor", Category.RockgathererArmor, ParentCategory.GatheringGear),
+            new CategoryObject("rockgatherer_helmet", Category.RockgathererHelmet, ParentCategory.GatheringGear),
+            new CategoryObject("rockgatherer_shoes", Category.RockgathererShoes, ParentCategory.GatheringGear),
+            new CategoryObject("rockgatherer_backpack", Category.RockgathererBackpack, ParentCategory.GatheringGear),
+
+            new CategoryObject("woodgatherer_armor", Category.WoodgathererArmor, ParentCategory.GatheringGear),
+            new CategoryObject("woodgatherer_helmet", Category.WoodgathererHelmet, ParentCategory.GatheringGear),
+            new CategoryObject("woodgatherer_shoes", Category.WoodgathererShoes, ParentCategory.GatheringGear),
+            new CategoryObject("woodgatherer_backpack", Category.WoodgathererBackpack, ParentCategory.GatheringGear),
+
+            new CategoryObject("bridgewatch", Category.Bridgewatch, ParentCategory.LuxuryGoods),
+            new CategoryObject("caerleon", Category.Caerleon, ParentCategory.LuxuryGoods),
+            new CategoryObject("fortsterling", Category.FortSterling, ParentCategory.LuxuryGoods),
+            new CategoryObject("lymhurst", Category.Lymhurst, ParentCategory.LuxuryGoods),
+            new CategoryObject("martlock", Category.Martlock, ParentCategory.LuxuryGoods),
+            new CategoryObject("thetford", Category.Thetford, ParentCategory.LuxuryGoods),
+
+            new CategoryObject("arcanestaff", Category.ArcaneStaff, ParentCategory.Magic),
+            new CategoryObject("cursestaff", Category.CurseStaff, ParentCategory.Magic),
+            new CategoryObject("firestaff", Category.FireStaff, ParentCategory.Magic),
+            new CategoryObject("froststaff", Category.FrostStaff, ParentCategory.Magic),
+            new CategoryObject("holystaff", Category.HolyStaff, ParentCategory.Magic),
+            new CategoryObject("naturestaff", Category.NatureStaff, ParentCategory.Magic),
+
+            new CategoryObject("essence", Category.Essence, ParentCategory.Materials),
+            new CategoryObject("other", Category.OtherMaterials, ParentCategory.Materials),
+            new CategoryObject("relic", Category.Relic, ParentCategory.Materials),
+            new CategoryObject("rune", Category.Rune, ParentCategory.Materials),
+            new CategoryObject("soul", Category.Soul, ParentCategory.Materials),
+
+            new CategoryObject("axe", Category.Axe, ParentCategory.Melee),
+            new CategoryObject("dagger", Category.Dagger, ParentCategory.Melee),
+            new CategoryObject("hammer", Category.Hammer, ParentCategory.Melee),
+            new CategoryObject("mace", Category.Mace, ParentCategory.Melee),
+            new CategoryObject("quarterstaff", Category.QuarterStaff, ParentCategory.Melee),
+            new CategoryObject("spear", Category.Spear, ParentCategory.Melee),
+            new CategoryObject("sword", Category.Sword, ParentCategory.Melee),
+
+            new CategoryObject("armoredhorse", Category.ArmoredHorse, ParentCategory.Mount),
+            new CategoryObject("ox", Category.Ox, ParentCategory.Mount),
+            new CategoryObject("rare_mount", Category.RareMount, ParentCategory.Mount),
+            new CategoryObject("ridinghorse", Category.RidingHorse, ParentCategory.Mount),
+
+            new CategoryObject("book", Category.Book, ParentCategory.OffHand),
+            new CategoryObject("horn", Category.Horn, ParentCategory.OffHand),
+            new CategoryObject("orb", Category.Orb, ParentCategory.OffHand),
+            new CategoryObject("shield", Category.Shield, ParentCategory.OffHand),
+            new CategoryObject("torch", Category.Torch, ParentCategory.OffHand),
+            new CategoryObject("totem", Category.Totem, ParentCategory.OffHand),
+
+            new CategoryObject("trash", Category.Trash, ParentCategory.Other),
+
+            new CategoryObject("farming", Category.Farming, ParentCategory.Product),
+            new CategoryObject("journal", Category.Journal, ParentCategory.Product),
+
+            new CategoryObject("bow", Category.Bow, ParentCategory.Ranged),
+            new CategoryObject("crossbow", Category.Crossbow, ParentCategory.Ranged),
+
+            new CategoryObject("cloth", Category.Cloth, ParentCategory.Resource),
+            new CategoryObject("fiber", Category.Fiber, ParentCategory.Resource),
+            new CategoryObject("hide", Category.Hide, ParentCategory.Resource),
+            new CategoryObject("leather", Category.Leather, ParentCategory.Resource),
+            new CategoryObject("metalbar", Category.Metalbar, ParentCategory.Resource),
+            new CategoryObject("ore", Category.Ore, ParentCategory.Resource),
+            new CategoryObject("planks", Category.Planks, ParentCategory.Resource),
+            new CategoryObject("rock", Category.Rock, ParentCategory.Resource),
+
+            new CategoryObject("arenasigils", Category.ArenaSigils, ParentCategory.Token),
+            new CategoryObject("event", Category.Event, ParentCategory.Token),
+            new CategoryObject("royalsigils", Category.RoyalSigils, ParentCategory.Token),
+
+            new CategoryObject("demolitionhammer", Category.DemolitionHammer, ParentCategory.Tool),
+            new CategoryObject("fishing", Category.Fishing, ParentCategory.Tool),
+            new CategoryObject("pickaxe", Category.Pickaxe, ParentCategory.Tool),
+            new CategoryObject("sickle", Category.Sickle, ParentCategory.Tool),
+            new CategoryObject("skinningknife", Category.SkinningKnife, ParentCategory.Tool),
+            new CategoryObject("stonehammer", Category.StoneHammer, ParentCategory.Tool),
+            new CategoryObject("woodaxe", Category.WoodAxe, ParentCategory.Tool),
+
+            new CategoryObject("fibertrophy", Category.FiberTrophy, ParentCategory.Trophies),
+            new CategoryObject("fishtrophy", Category.FishTrophy, ParentCategory.Trophies),
+            new CategoryObject("generaltrophy", Category.GeneralTrophy, ParentCategory.Trophies),
+            new CategoryObject("hidetrophy", Category.HideTrophy, ParentCategory.Trophies),
+            new CategoryObject("mercenarytrophy", Category.MercenaryTrophy, ParentCategory.Trophies),
+            new CategoryObject("oretrophy", Category.OreTrophy, ParentCategory.Trophies),
+            new CategoryObject("rocktrophy", Category.RockTrophy, ParentCategory.Trophies),
+            new CategoryObject("woodtrophy", Category.WoodTrophy, ParentCategory.Trophies),
         };
 
         public static readonly Dictionary<Category, string> CategoryNames = new Dictionary<Category, string>
         {
+            {Category.Unknown, LanguageController.Translation("UNKNOWN")},
+
             #region Accessories
 
             {Category.Bag, LanguageController.Translation("BAG")},
@@ -742,6 +417,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static readonly Dictionary<ParentCategory, string> ParentCategoryNames = new Dictionary<ParentCategory, string>
         {
+            {ParentCategory.Unknown, LanguageController.Translation("UNKNOWN")},
             {ParentCategory.Accessories, LanguageController.Translation("ACCESSORIES")},
             {ParentCategory.Armor, LanguageController.Translation("ARMOR")},
             {ParentCategory.Artifact, LanguageController.Translation("ARTEFACT")},
@@ -764,13 +440,19 @@ namespace StatisticsAnalysisTool.Common
             {ParentCategory.Tool, LanguageController.Translation("TOOL")},
             {ParentCategory.Trophies, LanguageController.Translation("TROPHIES")}
         };
+        
+        public static CategoryObject GetCategory(string categoryId) => Categories.FirstOrDefault(x => x.CategoryId == categoryId);
 
         public static string GetCategoryName(Category category) => CategoryNames.TryGetValue(category, out var name) ? name : null;
+
         public static string GetParentCategoryName(ParentCategory parentCategory) => ParentCategoryNames.TryGetValue(parentCategory, out var name) ? name : null;
+
+        public static ParentCategory GetParentCategoryByCategory(Category category) => Categories?.FirstOrDefault(x => x.Category.Equals(category))?.ParentCategory ?? ParentCategory.Unknown;
     }
 
     public enum Category
     {
+        Unknown,
         Bag,
         Cape,
         ClothArmor,
@@ -908,6 +590,7 @@ namespace StatisticsAnalysisTool.Common
 
     public enum ParentCategory
     {
+        Unknown,
         Accessories,
         Armor,
         Artifact,

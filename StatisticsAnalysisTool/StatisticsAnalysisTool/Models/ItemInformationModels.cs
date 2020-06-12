@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 
@@ -91,6 +92,8 @@ namespace StatisticsAnalysisTool.Models
         public DateTime LastUpdate { get; set; }
 
         public string LastFullItemInformationUpdate => Common.Formatting.CurrentDateTimeFormat(LastUpdate) ?? string.Empty;
+
+        public CategoryObject CategoryObject => CategoryController.GetCategory(CategoryId);
     }
 
     public class CraftResourceList

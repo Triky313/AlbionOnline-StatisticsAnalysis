@@ -36,5 +36,7 @@ namespace StatisticsAnalysisTool.Models
         public string CategoryId => LanguageController.Translation("CATEGORY_ID");
         public string Revision => LanguageController.Translation("REVISION");
         public string LastFullInformationUpdate => LanguageController.Translation("LAST_FULL_INFORMATION_UPDATE");
+        public string Category => LanguageController.Translation("CATEGORY");
+        public string ParentCategory => LanguageController.Translation("PARENT_CATEGORY");
     }
 }
