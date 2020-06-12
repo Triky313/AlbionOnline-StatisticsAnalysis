@@ -119,4 +119,7 @@
   <translation name="NO">Nein</translation>
   <translation name="CATEGORY_NAME">Kategorie Name</translation>
   <translation name="FULL_ITEM_INFORMATION_EXIST_LOCAL">Item Informationen existieren local</translation>
+  <translation name="LAST_FULL_INFORMATION_UPDATE">Letztes voll Informationen Update</translation>
+  <translation name="CATEGORY">Kategorie</translation>
+  <translation name="PARENT_CATEGORY">Hauptkategorie</translation>
 </translations>

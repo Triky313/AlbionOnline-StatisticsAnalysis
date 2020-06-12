@@ -118,5 +118,8 @@
   <translation name="YES">Yes</translation>
   <translation name="NO">No</translation>
   <translation name="CATEGORY_NAME">Category name</translation>
-  <translation name="FULL_ITEM_INFORMATION_EXIST_LOCAL">Full item Information exist local</translation>
+  <translation name="FULL_ITEM_INFORMATION_EXIST_LOCAL">Full Item Information exist local</translation>
+  <translation name="LAST_FULL_INFORMATION_UPDATE">Last Full Information Update</translation>
+  <translation name="CATEGORY">Category</translation>
+  <translation name="PARENT_CATEGORY">Parent Category</translation>
 </translations>
