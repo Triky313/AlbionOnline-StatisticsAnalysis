@@ -39,15 +39,15 @@ namespace StatisticsAnalysisTool.Common
                 if (fileDateTime.AddDays(7) < DateTime.Now)
                 {
                     Items = await TryToGetItemListFromWeb(url);
-                    return (Items != null);
+                    return (Items?.Count > 0);
                 }
 
                 Items = GetItemListFromLocal();
-                return (Items != null);
+                return (Items?.Count > 0);
             }
 
             Items = await TryToGetItemListFromWeb(url);
-            return (Items != null);
+            return (Items?.Count > 0);
         }
 
         private static bool GetItemListSourceUrlIfExist(ref string url)
@@ -69,12 +69,24 @@ namespace StatisticsAnalysisTool.Common
             try
             {
                 var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
-                return JsonConvert.DeserializeObject<List<Item>>(localItemString);
+                return ConvertItemJsonObjectToItem(JsonConvert.DeserializeObject<List<ItemJsonObject>>(localItemString));
             }
             catch
             {
-                return null;
+                return new List<Item>();
             }
+        }
+
+        private static List<Item> ConvertItemJsonObjectToItem(List<ItemJsonObject> itemJsonObjectList)
+        {
+            return itemJsonObjectList.Select(item => new Item()
+            {
+                LocalizationNameVariable = item.LocalizationNameVariable,
+                LocalizationDescriptionVariable = item.LocalizationDescriptionVariable,
+                LocalizedNames = item.LocalizedNames,
+                Index = item.Index,
+                UniqueName = item.UniqueName
+            }).ToList();
         }
 
         private static async Task<List<Item>> TryToGetItemListFromWeb(string url)

@@ -105,6 +105,7 @@
     <Compile Include="Common\CategoryController.cs" />
     <Compile Include="Models\CategoryObject.cs" />
     <Compile Include="Models\GoldModels.cs" />
+    <Compile Include="Models\ItemJsonObject.cs" />
     <Compile Include="Models\ItemCategoryTree.cs" />
     <Compile Include="Models\ItemInformationModels.cs" />
     <Compile Include="Models\ItemWindowTranslation.cs" />

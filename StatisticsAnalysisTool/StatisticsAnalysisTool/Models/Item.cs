@@ -1,22 +1,14 @@
-﻿using Newtonsoft.Json;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models
 {
     public class Item
     {
-        // TODO: ItemJson erstellen und diese dann in Item converten, damit in Item kein JsonProperty mehr ist
-        [JsonProperty("LocalizationNameVariable")]
         public string LocalizationNameVariable { get; set; }
-        [JsonProperty("LocalizationDescriptionVariable")]
         public string LocalizationDescriptionVariable { get; set; }
-        [JsonProperty("LocalizedNames")]
         public LocalizedNames LocalizedNames { get; set; }
-        //public List<KeyValueStruct> LocalizedDescriptions { get; set; }
-        [JsonProperty("Index")]
         public int Index { get; set; }
-        [JsonProperty("UniqueName")]
         public string UniqueName { get; set; }
         
         public string LocalizedNameAndEnglish =>
