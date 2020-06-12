@@ -1,5 +1,4 @@
 ﻿using LiveCharts;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
@@ -10,11 +9,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -27,8 +24,7 @@ namespace StatisticsAnalysisTool.ViewModels
     {
         private static MainWindow _mainWindow;
 
-        private static List<Item> _items;
-        private static List<Item> _filteredItems;
+        private static List<Item> _itemListViewItemsSource;
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
         private ObservableCollection<ModeStruct> _modes = new ObservableCollection<ModeStruct>();
@@ -100,7 +96,6 @@ namespace StatisticsAnalysisTool.ViewModels
             UpdateTranslation = LanguageController.Translation("UPDATE");
             NumberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
             LoadTranslation = LanguageController.Translation("LOAD");
-            LoadTranslation = LanguageController.Translation("LOAD");
             FullItemInformationExistLocal = LanguageController.Translation("FULL_ITEM_INFORMATION_EXIST_LOCAL");
 
             SetModeCombobox();
@@ -120,7 +115,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     _mainWindow.TxtBoxPlayerModeUsername.Text = Settings.Default.SavedPlayerInformationName;
                 });
                 
-                var isItemListLoaded = await GetItemListFromJsonAsync().ConfigureAwait(true);
+                var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
                 if (!isItemListLoaded)
                     MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"),
                         LanguageController.Translation("ERROR"));
@@ -160,121 +155,30 @@ namespace StatisticsAnalysisTool.ViewModels
         }
         
         #region Item list (Normal Mode)
-
-        public List<Item> FilteredItems {
-            get => _filteredItems;
-            set {
-                _filteredItems = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public async Task<List<Item>> FindItemsAsync(string searchText)
-        {
-            return await Task.Run(() =>
-            {
-                try
-                {
-                    return _items?.FindAll(s => (s.LocalizedNameAndEnglish.ToLower().Contains(searchText.ToLower())));
-                }
-                catch
-                {
-                    return null;
-                }
-            });
-        }
-
-        public async Task<bool> GetItemListFromJsonAsync()
-        {
-            var url = Settings.Default.ItemListSourceUrl;
-            if (!GetItemListSourceUrlIfExist(ref url))
-                return false;
-
-            if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}"))
-            {
-                var fileDateTime = File.GetLastWriteTime($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
-
-                if (fileDateTime.AddDays(7) < DateTime.Now)
-                {
-                    _items = await TryToGetItemListFromWeb(url);
-                    return (_items != null);
-                }
-
-                _items = GetItemListFromLocal();
-                return (_items != null);
-            }
-
-            _items = await TryToGetItemListFromWeb(url);
-            return (_items != null);
-        }
-
-        private static List<Item> GetItemListFromLocal()
-        {
-            try
-            {
-                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
-                return JsonConvert.DeserializeObject<List<Item>>(localItemString);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        private static async Task<List<Item>> TryToGetItemListFromWeb(string url)
-        {
-            using (var wd = new WebDownload(30000))
-            {
-                try
-                {
-                    var itemsString = await wd.DownloadStringTaskAsync(url);
-                    File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
-                    return JsonConvert.DeserializeObject<List<Item>>(itemsString);
-                }
-                catch (Exception)
-                {
-                    try
-                    {
-                        var itemsString = await wd.DownloadStringTaskAsync(Settings.Default.DefaultItemListSourceUrl);
-                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
-                        return JsonConvert.DeserializeObject<List<Item>>(itemsString);
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-                }
-            }
-        }
-
-        private static bool GetItemListSourceUrlIfExist(ref string url)
-        {
-            if (string.IsNullOrEmpty(Settings.Default.ItemListSourceUrl))
-            {
-                url = Settings.Default.DefaultItemListSourceUrl;
-                if (string.IsNullOrEmpty(url))
-                    return false;
-
-                Settings.Default.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
-                MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
-            }
-            return true;
-        }
-
-        public async void LoadLvItems(string searchText)
+        
+        public async Task GetFilteredItemsAsync(string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
                 return;
 
-            var items = await FindItemsAsync(searchText);
-            FilteredItems = items;
+            var items = ItemController.FindItemsAsync(searchText);
+            ItemListViewItemsSource = items;
 
-            _mainWindow.Dispatcher?.InvokeAsync(async () =>
-            {
-                LocalImageCounter = await ImageController.LocalImagesCounterAsync();
-            });
+            await SetItemCounterAsync(items?.Count);
+        }
 
-            ItemCounterString = $"{items.Count}/{items.Count}";
+        private async Task SetItemCounterAsync(int? items)
+        {
+            LocalImageCounter = await ImageController.LocalImagesCounterAsync();
+            ItemCounterString = $"{items ?? 0}/{ItemController.Items?.Count ?? 0}";
+        }
+
+        public List<Item> ItemListViewItemsSource {
+            get => _itemListViewItemsSource;
+            set {
+                _itemListViewItemsSource = value;
+                OnPropertyChanged();
+            }
         }
 
         #endregion

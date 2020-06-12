@@ -6,6 +6,7 @@ namespace StatisticsAnalysisTool.Models
 {
     public class Item
     {
+        // TODO: ItemJson erstellen und diese dann in Item converten, damit in Item kein JsonProperty mehr ist
         [JsonProperty("LocalizationNameVariable")]
         public string LocalizationNameVariable { get; set; }
         [JsonProperty("LocalizationDescriptionVariable")]

@@ -27,9 +27,9 @@ namespace StatisticsAnalysisTool.Views
             DataContext = _mainWindowViewModel;
         }
 
-        private void TxtSearch_KeyUp(object sender, KeyEventArgs e)
+        private async void TxtSearch_KeyUp(object sender, KeyEventArgs e)
         {
-            _mainWindowViewModel.LoadLvItems(TxtSearch.Text);
+            await _mainWindowViewModel.GetFilteredItemsAsync(TxtSearch.Text);
         }
 
         private void LvItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)

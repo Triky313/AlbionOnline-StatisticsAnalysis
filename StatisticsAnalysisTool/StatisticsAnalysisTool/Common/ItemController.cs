@@ -10,16 +10,100 @@ using System.Windows.Media.Imaging;
 namespace StatisticsAnalysisTool.Common
 {
     using Models;
-    using Newtonsoft.Json.Linq;
     using System;
     using System.Linq;
     using System.Text;
 
     public class ItemController
     {
+        public static List<Item> Items;
+
         private static readonly string FullItemInformationFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FullItemInformationFileName);
 
         private static ObservableCollection<ItemInformation> _itemInformationList = new ObservableCollection<ItemInformation>();
+
+        #region Item list
+
+        public static List<Item> FindItemsAsync(string searchText) => Items?.FindAll(i => i.LocalizedNameAndEnglish.Contains(searchText.ToLower())) ?? new List<Item>();
+
+        public static async Task<bool> GetItemListFromJsonAsync()
+        {
+            var url = Settings.Default.ItemListSourceUrl;
+            if (!GetItemListSourceUrlIfExist(ref url))
+                return false;
+
+            if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}"))
+            {
+                var fileDateTime = File.GetLastWriteTime($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
+
+                if (fileDateTime.AddDays(7) < DateTime.Now)
+                {
+                    Items = await TryToGetItemListFromWeb(url);
+                    return (Items != null);
+                }
+
+                Items = GetItemListFromLocal();
+                return (Items != null);
+            }
+
+            Items = await TryToGetItemListFromWeb(url);
+            return (Items != null);
+        }
+
+        private static bool GetItemListSourceUrlIfExist(ref string url)
+        {
+            if (string.IsNullOrEmpty(Settings.Default.ItemListSourceUrl))
+            {
+                url = Settings.Default.DefaultItemListSourceUrl;
+                if (string.IsNullOrEmpty(url))
+                    return false;
+
+                Settings.Default.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
+                MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
+            }
+            return true;
+        }
+
+        private static List<Item> GetItemListFromLocal()
+        {
+            try
+            {
+                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
+                return JsonConvert.DeserializeObject<List<Item>>(localItemString);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static async Task<List<Item>> TryToGetItemListFromWeb(string url)
+        {
+            using (var wd = new WebDownload(30000))
+            {
+                try
+                {
+                    var itemsString = await wd.DownloadStringTaskAsync(url);
+                    File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
+                    return JsonConvert.DeserializeObject<List<Item>>(itemsString);
+                }
+                catch (Exception)
+                {
+                    try
+                    {
+                        var itemsString = await wd.DownloadStringTaskAsync(Settings.Default.DefaultItemListSourceUrl);
+                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
+                        return JsonConvert.DeserializeObject<List<Item>>(itemsString);
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+
+        #endregion
 
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {
@@ -67,18 +151,7 @@ namespace StatisticsAnalysisTool.Common
         public static int GetQuality(FrequentlyValues.ItemQuality value) => FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Key == value).Value;
 
         public static FrequentlyValues.ItemQuality GetQuality(int value) => FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Value == value).Key;
-
-        public static void AddLocalizedName(ref ItemData itemData, JObject parsedObject)
-        {
-            foreach (var language in Enum.GetValues(typeof(FrequentlyValues.GameLanguage)).Cast<FrequentlyValues.GameLanguage>())
-            {
-                var cultureCode = FrequentlyValues.GameLanguages.FirstOrDefault(x => x.Key == language).Value;
-
-                if (parsedObject["localizedNames"]?[cultureCode] != null)
-                    itemData.LocalizedNames.Add(new ItemData.KeyValueStruct() { Key = cultureCode, Value = parsedObject["localizedNames"][cultureCode].ToString() });
-            }
-        }
-
+        
         public static Style LocationStyle(Location location) {
             switch (location)
             {
