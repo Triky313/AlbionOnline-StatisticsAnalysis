@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.ViewModels
@@ -45,6 +46,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _refreshIconTooltipText;
         private List<MarketQualityObject> _allQualityPricesList;
         private string _itemTier;
+        private List<MarketCurrentPricesItem> _marketCurrentPricesItemList;
+        private XmlLanguage _itemListViewLanguage;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -66,12 +69,12 @@ namespace StatisticsAnalysisTool.ViewModels
             Translation = new ItemWindowTranslation();
             InitializeItemData(item);
 
-            _mainWindow.ListViewPrices.Language = System.Windows.Markup.XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+            ItemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
         }
         
         private async void InitializeItemData(Item item)
         {
-            var getFullItemInformationTask = ItemController.GetFullItemInformation(item); ;
+            var getFullItemInformationTask = ItemController.GetFullItemInformation(item);
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
@@ -256,9 +259,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             FindBestPrice(ref statsPricesTotalList);
 
-            var marketCurrentPricesItemList = new List<MarketCurrentPricesItem>();
-            foreach (var item in statsPricesTotalList)
-                marketCurrentPricesItemList.Add(new MarketCurrentPricesItem(item));
+            var marketCurrentPricesItemList = statsPricesTotalList.Select(item => new MarketCurrentPricesItem(item)).ToList();
 
             _mainWindow.Dispatcher?.Invoke(() =>
             {
@@ -266,7 +267,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
                 }
-                _mainWindow.ListViewPrices.ItemsSource = marketCurrentPricesItemList;
+                MarketCurrentPricesItemList = marketCurrentPricesItemList;
                 SetDifferenceCalculationText(statsPricesTotalList);
             });
 
@@ -499,6 +500,22 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _icon;
             set {
                 _icon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<MarketCurrentPricesItem> MarketCurrentPricesItemList {
+            get => _marketCurrentPricesItemList;
+            set {
+                _marketCurrentPricesItemList = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public XmlLanguage ItemListViewLanguage {
+            get => _itemListViewLanguage;
+            set {
+                _itemListViewLanguage = value;
                 OnPropertyChanged();
             }
         }

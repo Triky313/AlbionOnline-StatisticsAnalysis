@@ -48,7 +48,7 @@
         </Grid>
         <TabControl Margin="0,86,0,35" IsEnabled="{Binding HasItemPrices}">
             <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}" >
-                <ListView x:Name="ListViewPrices" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
+                <ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
