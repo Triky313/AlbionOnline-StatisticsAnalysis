@@ -44,6 +44,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isAutoUpdateActive;
         private string _refreshIconTooltipText;
         private List<MarketQualityObject> _allQualityPricesList;
+        private bool _isGetFullItemInformationOneTimeActivated;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -55,9 +56,12 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void InitializeItemWindow(Item item)
         {
-            Item = item;
-
+            ItemInformation = null;
+            _isGetFullItemInformationOneTimeActivated = false;
             ErrorBarVisibility = Visibility.Hidden;
+
+            Item = item;
+            
             IsAutoUpdateActive = true;
 
             Translation = new ItemWindowTranslation();
@@ -68,6 +72,8 @@ namespace StatisticsAnalysisTool.ViewModels
         
         private async void InitializeItemData(Item item)
         {
+            var getFullItemInformationTask = ItemController.GetFullItemInformation(item); ;
+
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindow.Icon = null;
@@ -90,38 +96,25 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             var localizedName = ItemController.LocalizedName(Item.LocalizedNames, null, Item.UniqueName);
-            var _ = GetItemInformation(item);
 
+            Icon = item.Icon;
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindow.Icon = item.Icon;
-                _mainWindow.Title = $"{localizedName} (T{ItemInfo?.Tier})";
+            });
+
+            ItemInformation = await getFullItemInformationTask;
+
+            ItemTitle = $"{localizedName} (T{ItemInformation?.Tier})";
+            await _mainWindow.Dispatcher.InvokeAsync(() =>
+            {
+                _mainWindow.Title = $"{localizedName} (T{ItemInformation?.Tier})";
             });
 
             StartAutoUpdater();
             RefreshSpin = IsAutoUpdateActive;
-
-            ItemTitle = $"{localizedName} (T{ItemInfo?.Tier})";
-            Icon = item.Icon;
         }
-
-        private async Task GetItemInformation(Item item)
-        {
-            ItemInfo = null;
-            
-            var itemInformation = ItemController.GetItemInformationFromLocal(item.UniqueName);
-
-            if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !ItemController.IsItemInformationUpToDate(itemInformation.LastUpdate))
-            {
-                ItemInfo = await ApiController.GetItemInfoFromJsonAsync(item).ConfigureAwait(false);
-                ItemController.AddItemInformationToLocal(ItemInfo);
-            }
-            else
-            {
-                ItemInfo = itemInformation;
-            }
-        }
-
+        
         private void SetNoDataValues(Error error)
         {
             switch (error)
@@ -477,7 +470,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ItemInformation ItemInfo {
+        public ItemInformation ItemInformation {
             get => _itemInformation;
             set {
                 _itemInformation = value;
@@ -662,7 +655,5 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-
     }
 }

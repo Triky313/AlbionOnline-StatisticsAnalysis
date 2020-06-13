@@ -1,4 +1,6 @@
-﻿namespace StatisticsAnalysisTool.Common
+﻿using System.Net.Http;
+
+namespace StatisticsAnalysisTool.Common
 {
     using Models;
     using Newtonsoft.Json;
@@ -11,20 +13,20 @@
     {
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(string uniqueName)
         {
-            using (var wc = new WebClient())
+            var url = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
+            
+            using (var client = new HttpClient())
             {
+                client.Timeout = TimeSpan.FromSeconds(30);
                 try
                 {
-                    var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
-                    var itemString = await wc.DownloadStringTaskAsync(apiString).ConfigureAwait(true);
-
-                    if (itemString == null)
+                    using (var response = await client.GetAsync(url))
                     {
-                        return null;
+                        using (var content = response.Content)
+                        {
+                            return JsonConvert.DeserializeObject<ItemInformation>(await content.ReadAsStringAsync());
+                        }
                     }
-
-                    var result = JsonConvert.DeserializeObject<ItemInformation>(itemString);
-                    return result;
                 }
                 catch
                 {
@@ -32,11 +34,8 @@
                 }
             }
         }
-
-        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item)
-        {
-            return await GetItemInfoFromJsonAsync(item.UniqueName);
-        }
+        
+        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item) => await GetItemInfoFromJsonAsync(item.UniqueName);
 
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
         {

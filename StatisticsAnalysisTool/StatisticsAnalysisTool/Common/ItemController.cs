@@ -236,7 +236,20 @@ namespace StatisticsAnalysisTool.Common
 
         #region ItemInformation
 
-        public static void AddItemInformationToLocal(ItemInformation currentItemInformation)
+        public static async Task<ItemInformation> GetFullItemInformation(Item item)
+        {
+            var itemInformation = _itemInformationList.SingleOrDefault(x => x.UniqueName == item?.UniqueName);
+
+            if (string.IsNullOrEmpty(item?.UniqueName) || !IsItemInformationUpToDate(itemInformation?.LastUpdate))
+            {
+                itemInformation = await ApiController.GetItemInfoFromJsonAsync(item?.UniqueName);
+                AddItemInformationToLocal(itemInformation);
+            }
+
+            return itemInformation;
+        }
+
+        private static void AddItemInformationToLocal(ItemInformation currentItemInformation)
         {
             if (currentItemInformation == null)
             {
@@ -250,7 +263,7 @@ namespace StatisticsAnalysisTool.Common
             _itemInformationList.Add(currentItemInformation);
         }
 
-        public static bool IsItemInformationUpToDate(DateTime? lastUpdate)
+        private static bool IsItemInformationUpToDate(DateTime? lastUpdate)
         {
             if (lastUpdate == null || lastUpdate.Value.Year == 1)
             {
@@ -259,12 +272,7 @@ namespace StatisticsAnalysisTool.Common
 
             return !(lastUpdate < DateTime.UtcNow.AddDays(-28));
         }
-
-        public static ItemInformation GetItemInformationFromLocal(string uniqueName)
-        {
-            return _itemInformationList.SingleOrDefault(x => x.UniqueName == uniqueName);
-        }
-
+        
         public static BitmapImage ExistFullItemInformationLocal(string uniqueName)
         {
             return _itemInformationList.Any(x => x.UniqueName == uniqueName) ? new BitmapImage(new Uri(@"pack://application:,,,/Resources/check.png")) : null;
