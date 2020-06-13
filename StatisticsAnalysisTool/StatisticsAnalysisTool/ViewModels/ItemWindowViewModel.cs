@@ -28,7 +28,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _errorBarVisibility;
         private string _errorBarText;
         private BitmapImage _icon;
-        private string _itemTitle;
+        private string _itemName;
         private bool _masterpieceQualityChecked;
         private bool _excellentQualityChecked;
         private bool _outstandingQualityChecked;
@@ -44,7 +44,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isAutoUpdateActive;
         private string _refreshIconTooltipText;
         private List<MarketQualityObject> _allQualityPricesList;
-        private bool _isGetFullItemInformationOneTimeActivated;
+        private string _itemTier;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -57,7 +57,6 @@ namespace StatisticsAnalysisTool.ViewModels
         public void InitializeItemWindow(Item item)
         {
             ItemInformation = null;
-            _isGetFullItemInformationOneTimeActivated = false;
             ErrorBarVisibility = Visibility.Hidden;
 
             Item = item;
@@ -81,7 +80,8 @@ namespace StatisticsAnalysisTool.ViewModels
             });
 
             Icon = null;
-            ItemTitle = "-";
+            ItemName = "-";
+            ItemTier = "";
 
             if (item == null)
             {
@@ -98,6 +98,7 @@ namespace StatisticsAnalysisTool.ViewModels
             var localizedName = ItemController.LocalizedName(Item.LocalizedNames, null, Item.UniqueName);
 
             Icon = item.Icon;
+            ItemName = localizedName;
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindow.Icon = item.Icon;
@@ -105,7 +106,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             ItemInformation = await getFullItemInformationTask;
 
-            ItemTitle = $"{localizedName} (T{ItemInformation?.Tier})";
+            ItemTier = $"(T{ItemInformation?.Tier})";
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindow.Title = $"{localizedName} (T{ItemInformation?.Tier})";
@@ -478,10 +479,18 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string ItemTitle {
-            get => _itemTitle;
+        public string ItemName {
+            get => _itemName;
             set {
-                _itemTitle = value;
+                _itemName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ItemTier {
+            get => _itemTier;
+            set {
+                _itemTier = value;
                 OnPropertyChanged();
             }
         }
