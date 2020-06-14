@@ -101,7 +101,6 @@
     <Compile Include="Common\FrequentlyValues.cs" />
     <Compile Include="Common\ApiController.cs" />
     <Compile Include="Common\ItemController.cs" />
-    <Compile Include="Common\ItemExtensions.cs" />
     <Compile Include="Common\CategoryController.cs" />
     <Compile Include="Models\CategoryObject.cs" />
     <Compile Include="Models\GoldModels.cs" />

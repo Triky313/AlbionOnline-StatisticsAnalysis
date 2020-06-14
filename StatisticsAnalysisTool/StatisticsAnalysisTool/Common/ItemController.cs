@@ -150,14 +150,14 @@ namespace StatisticsAnalysisTool.Common
 
         public static FrequentlyValues.ItemTier GetItemTier(string uniqueName) => FrequentlyValues.ItemTiers.FirstOrDefault(x => x.Value == uniqueName.Split('_')[0]).Key;
 
-        public static FrequentlyValues.ItemLevel GetItemLevel(string uniqueName)
+        public static int GetItemLevel(string uniqueName)
         {
             if (!uniqueName.Contains("@"))
-                return FrequentlyValues.ItemLevel.Level0;
+            {
+                return 0;
+            }
 
-            if (int.TryParse(uniqueName.Split('@')[1], out int number))
-                return FrequentlyValues.ItemLevels.First(x => x.Value == number).Key;
-            return FrequentlyValues.ItemLevel.Level0;
+            return int.TryParse(uniqueName.Split('@')[1], out int number) ? number : 0;
         }
 
         public static int GetQuality(FrequentlyValues.ItemQuality value) => FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Key == value).Value;
@@ -240,12 +240,24 @@ namespace StatisticsAnalysisTool.Common
         {
             var itemInformation = _itemInformationList.SingleOrDefault(x => x.UniqueName == item?.UniqueName);
 
-            if (string.IsNullOrEmpty(item?.UniqueName) || !IsItemInformationUpToDate(itemInformation?.LastUpdate))
+            if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !IsItemInformationUpToDate(itemInformation.LastUpdate))
             {
-                itemInformation = await ApiController.GetItemInfoFromJsonAsync(item?.UniqueName);
+                itemInformation = SetEssentialItemInformation(await ApiController.GetItemInfoFromJsonAsync(item?.UniqueName), item?.UniqueName);
                 AddItemInformationToLocal(itemInformation);
             }
 
+            return itemInformation;
+        }
+
+        private static ItemInformation SetEssentialItemInformation(ItemInformation itemInformation, string uniqueName)
+        {
+            if (itemInformation == null)
+            {
+                return null;
+            }
+
+            itemInformation.Level = GetItemLevel(uniqueName);
+            itemInformation.UniqueName = uniqueName;
             return itemInformation;
         }
 
@@ -256,7 +268,7 @@ namespace StatisticsAnalysisTool.Common
                 return;
             }
 
-            var localItemInfo = _itemInformationList.FirstOrDefault(x => x.UniqueName == currentItemInformation?.UniqueName);
+            var localItemInfo = _itemInformationList.FirstOrDefault(x => x.UniqueName == currentItemInformation.UniqueName);
             _itemInformationList.Remove(localItemInfo);
 
             currentItemInformation.LastUpdate = DateTime.Now;

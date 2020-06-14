@@ -109,7 +109,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             ItemInformation = await getFullItemInformationTask;
 
-            ItemTier = $"(T{ItemInformation?.Tier})";
+            ItemTier = (ItemInformation?.Tier != null) ? $"(T{ItemInformation?.Tier}.{ItemInformation?.Level})" : "";
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindow.Title = $"{localizedName} (T{ItemInformation?.Tier})";

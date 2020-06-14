@@ -20,6 +20,6 @@ namespace StatisticsAnalysisTool.Models
         public BitmapImage Icon => _icon ?? (_icon = ImageController.GetItemImage($"https://gameinfo.albiononline.com/api/gameinfo/items/{UniqueName}"));
 
         private BitmapImage _existFullItemInformationLocal;
-        public BitmapImage ExistFullItemInformationLocal => _existFullItemInformationLocal ?? (_existFullItemInformationLocal = ItemController.ExistFullItemInformationLocal(this.UniqueNameWithoutAtSign()));
+        public BitmapImage ExistFullItemInformationLocal => _existFullItemInformationLocal ?? (_existFullItemInformationLocal = ItemController.ExistFullItemInformationLocal(UniqueName));
     }
 }
