@@ -372,6 +372,7 @@ namespace StatisticsAnalysisTool.Common
             #region Resource
 
             {Category.Cloth, LanguageController.Translation("CLOTH")},
+            {Category.Fiber, LanguageController.Translation("FIBER")},
             {Category.Hide, LanguageController.Translation("HIDE")},
             {Category.Leather, LanguageController.Translation("LEATHER")},
             {Category.Metalbar, LanguageController.Translation("METALBAR")},
@@ -417,7 +418,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static readonly Dictionary<ParentCategory, string> ParentCategoryNames = new Dictionary<ParentCategory, string>
         {
-            {ParentCategory.Unknown, LanguageController.Translation("UNKNOWN")},
+            {ParentCategory.Unknown, ""},
             {ParentCategory.Accessories, LanguageController.Translation("ACCESSORIES")},
             {ParentCategory.Armor, LanguageController.Translation("ARMOR")},
             {ParentCategory.Artifact, LanguageController.Translation("ARTEFACT")},
@@ -446,8 +447,9 @@ namespace StatisticsAnalysisTool.Common
         public static string GetCategoryName(Category category) => CategoryNames.TryGetValue(category, out var name) ? name : null;
 
         public static string GetParentCategoryName(ParentCategory parentCategory) => ParentCategoryNames.TryGetValue(parentCategory, out var name) ? name : null;
-
         public static ParentCategory GetParentCategoryByCategory(Category category) => Categories?.FirstOrDefault(x => x.Category.Equals(category))?.ParentCategory ?? ParentCategory.Unknown;
+
+        public static Dictionary<Category, string> GetCategoriesByParentCategory(ParentCategory parentCategory) => Categories?.Where(x => x.ParentCategory == parentCategory).ToDictionary(x => x.Category, x => x.CategoryName);
     }
 
     public enum Category

@@ -97,6 +97,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\CategoryComboboxObject.cs" />
     <Compile Include="Common\Formatting.cs" />
     <Compile Include="Common\FrequentlyValues.cs" />
     <Compile Include="Common\ApiController.cs" />

@@ -42,6 +42,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _itemCounterString;
         private int _localImageCounter;
         private string _fullItemInformationExistLocal;
+        private Dictionary<ParentCategory, string> _itemParentCategories;
+        private Dictionary<Category, string> _itemCategories;
+        private ParentCategory _selectedItemParentCategories;
 
         public enum ViewMode
         {
@@ -100,6 +103,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
             SetModeCombobox();
             ItemController.GetItemInformationListFromLocalAsync();
+
+            ItemParentCategories = CategoryController.ParentCategoryNames;
+            ItemParentCategories = CategoryController.ParentCategoryNames;
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
@@ -317,6 +323,31 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 var catchItemWindow = new ItemWindow(item);
                 catchItemWindow.Show();
+            }
+        }
+
+        public Dictionary<Category, string> ItemCategories {
+            get => _itemCategories;
+            set {
+                _itemCategories = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Dictionary<ParentCategory, string> ItemParentCategories {
+            get => _itemParentCategories;
+            set {
+                _itemParentCategories = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ParentCategory SelectedItemParentCategories {
+            get => _selectedItemParentCategories;
+            set {
+                _selectedItemParentCategories = value;
+                ItemCategories = CategoryController.GetCategoriesByParentCategory(SelectedItemParentCategories);
+                OnPropertyChanged();
             }
         }
 
