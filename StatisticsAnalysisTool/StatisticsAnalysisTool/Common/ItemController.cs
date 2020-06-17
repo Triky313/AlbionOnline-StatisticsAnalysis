@@ -148,8 +148,6 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static FrequentlyValues.ItemTier GetItemTier(string uniqueName) => FrequentlyValues.ItemTiers.FirstOrDefault(x => x.Value == uniqueName.Split('_')[0]).Key;
-
         public static int GetItemLevel(string uniqueName)
         {
             if (!uniqueName.Contains("@"))
@@ -159,8 +157,6 @@ namespace StatisticsAnalysisTool.Common
 
             return int.TryParse(uniqueName.Split('@')[1], out int number) ? number : 0;
         }
-
-        public static int GetQuality(FrequentlyValues.ItemQuality value) => FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Key == value).Value;
 
         public static FrequentlyValues.ItemQuality GetQuality(int value) => FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Value == value).Key;
         

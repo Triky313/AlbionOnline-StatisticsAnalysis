@@ -14,14 +14,14 @@ namespace StatisticsAnalysisTool.Common
         
         public static readonly Dictionary<ItemTier, string> ItemTiers = new Dictionary<ItemTier, string>
         {
-            {ItemTier.T1, "T1" },
-            {ItemTier.T2, "T2" },
-            {ItemTier.T3, "T3" },
-            {ItemTier.T4, "T4" },
-            {ItemTier.T5, "T5" },
-            {ItemTier.T6, "T6" },
-            {ItemTier.T7, "T7" },
-            {ItemTier.T8, "T8" }
+            {ItemTier.T1, "Tier 1" },
+            {ItemTier.T2, "Tier 2" },
+            {ItemTier.T3, "Tier 3" },
+            {ItemTier.T4, "Tier 4" },
+            {ItemTier.T5, "Tier 5" },
+            {ItemTier.T6, "Tier 6" },
+            {ItemTier.T7, "Tier 7" },
+            {ItemTier.T8, "Tier 8" }
         };
 
         public static readonly Dictionary<ItemLevel, int> ItemLevels = new Dictionary<ItemLevel, int>

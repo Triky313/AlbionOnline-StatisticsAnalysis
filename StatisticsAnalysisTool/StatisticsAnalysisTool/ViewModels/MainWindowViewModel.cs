@@ -42,9 +42,14 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _itemCounterString;
         private int _localImageCounter;
         private string _fullItemInformationExistLocal;
-        private Dictionary<ParentCategory, string> _itemParentCategories;
         private Dictionary<Category, string> _itemCategories;
+        private Category _selectedItemCategories;
+        private Dictionary<ParentCategory, string> _itemParentCategories;
         private ParentCategory _selectedItemParentCategories;
+        private Dictionary<FrequentlyValues.ItemTier, string> _itemTiers;
+        private FrequentlyValues.ItemTier _selectedItemTier;
+        private Dictionary<FrequentlyValues.ItemLevel, int> _itemLevels;
+        private FrequentlyValues.ItemLevel _selectedItemLevel;
 
         public enum ViewMode
         {
@@ -105,7 +110,8 @@ namespace StatisticsAnalysisTool.ViewModels
             ItemController.GetItemInformationListFromLocalAsync();
 
             ItemParentCategories = CategoryController.ParentCategoryNames;
-            ItemParentCategories = CategoryController.ParentCategoryNames;
+            ItemTiers = FrequentlyValues.ItemTiers;
+            ItemLevels = FrequentlyValues.ItemLevels;
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
@@ -328,8 +334,19 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public Dictionary<Category, string> ItemCategories {
             get => _itemCategories;
+            set
+            {
+                var categories = value;
+                categories = (new Dictionary<Category, string> { { Category.Unknown, string.Empty } }).Concat(categories).ToDictionary(k => k.Key, v => v.Value);
+                _itemCategories = categories;
+                OnPropertyChanged();
+            }
+        }
+
+        public Category SelectedItemCategory {
+            get => _selectedItemCategories;
             set {
-                _itemCategories = value;
+                _selectedItemCategories = value;
                 OnPropertyChanged();
             }
         }
@@ -342,11 +359,44 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ParentCategory SelectedItemParentCategories {
+        public ParentCategory SelectedItemParentCategory {
             get => _selectedItemParentCategories;
             set {
                 _selectedItemParentCategories = value;
-                ItemCategories = CategoryController.GetCategoriesByParentCategory(SelectedItemParentCategories);
+                ItemCategories = CategoryController.GetCategoriesByParentCategory(SelectedItemParentCategory);
+                SelectedItemCategory = Category.Unknown;
+                OnPropertyChanged();
+            }
+        }
+
+        public Dictionary<FrequentlyValues.ItemTier, string> ItemTiers {
+            get => _itemTiers;
+            set {
+                _itemTiers = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public FrequentlyValues.ItemTier SelectedItemTier {
+            get => _selectedItemTier;
+            set {
+                _selectedItemTier = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Dictionary<FrequentlyValues.ItemLevel, int> ItemLevels {
+            get => _itemLevels;
+            set {
+                _itemLevels = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public FrequentlyValues.ItemLevel SelectedItemLevel {
+            get => _selectedItemLevel;
+            set {
+                _selectedItemLevel = value;
                 OnPropertyChanged();
             }
         }

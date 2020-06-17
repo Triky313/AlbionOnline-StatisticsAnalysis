@@ -32,8 +32,10 @@
         </Grid>
         <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
             <TextBox x:Name="TxtSearch" IsEnabled="{Binding Path=IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="250" KeyUp="TxtSearch_KeyUp"/>
-            <ComboBox ItemsSource="{Binding ItemParentCategories}" SelectedValue="{Binding SelectedItemParentCategories}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="265,10,0,0" VerticalAlignment="Top" Width="150"/>
-            <ComboBox ItemsSource="{Binding ItemCategories}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="265,37,0,0" VerticalAlignment="Top" Width="150"/>
+            <ComboBox ItemsSource="{Binding ItemParentCategories}" SelectedValue="{Binding SelectedItemParentCategory}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="265,10,0,0" VerticalAlignment="Top" Width="150"/>
+            <ComboBox ItemsSource="{Binding ItemCategories, FallbackValue=Category.Unknown}" SelectedValue="{Binding SelectedItemCategory}" SelectedValuePath="Key" DisplayMemberPath="Value" Visibility="{Binding IsItemCategoriesComboboxVisible}" HorizontalAlignment="Left" Margin="265,37,0,0" VerticalAlignment="Top" Width="150"/>
+            <ComboBox ItemsSource="{Binding ItemTiers}" SelectedValue="{Binding SelectedItemTier}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="420,10,0,0" VerticalAlignment="Top" Width="150"/>
+            <ComboBox ItemsSource="{Binding ItemLevels}" SelectedValue="{Binding SelectedItemLevel}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="575,10,0,0" VerticalAlignment="Top" Width="150"/>
 
             <Label Content="{Binding ItemCounterString, FallbackValue=0/0}" Height="26" Margin="0,6,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="110" />
 

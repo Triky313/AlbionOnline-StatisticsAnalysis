@@ -418,7 +418,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static readonly Dictionary<ParentCategory, string> ParentCategoryNames = new Dictionary<ParentCategory, string>
         {
-            {ParentCategory.Unknown, ""},
+            {ParentCategory.Unknown, string.Empty},
             {ParentCategory.Accessories, LanguageController.Translation("ACCESSORIES")},
             {ParentCategory.Armor, LanguageController.Translation("ARMOR")},
             {ParentCategory.Artifact, LanguageController.Translation("ARTEFACT")},
