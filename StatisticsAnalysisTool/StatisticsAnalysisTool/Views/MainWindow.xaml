@@ -5,7 +5,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-        Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="799" Closing="Window_Closing">
+        Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="800" Closing="Window_Closing">
     <Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
@@ -31,23 +31,22 @@
             </Grid>
         </Grid>
         <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
-            <TextBox x:Name="TxtSearch" IsEnabled="{Binding Path=IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="250" KeyUp="TxtSearch_KeyUp"/>
-            <ComboBox ItemsSource="{Binding ItemParentCategories}" SelectedValue="{Binding SelectedItemParentCategory}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="265,10,0,0" VerticalAlignment="Top" Width="150"/>
-            <ComboBox ItemsSource="{Binding ItemCategories, FallbackValue=Category.Unknown}" SelectedValue="{Binding SelectedItemCategory}" SelectedValuePath="Key" DisplayMemberPath="Value" Visibility="{Binding IsItemCategoriesComboboxVisible}" HorizontalAlignment="Left" Margin="265,37,0,0" VerticalAlignment="Top" Width="150"/>
-            <ComboBox ItemsSource="{Binding ItemTiers}" SelectedValue="{Binding SelectedItemTier}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="420,10,0,0" VerticalAlignment="Top" Width="150"/>
-            <ComboBox ItemsSource="{Binding ItemLevels}" SelectedValue="{Binding SelectedItemLevel}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="575,10,0,0" VerticalAlignment="Top" Width="150"/>
+            <TextBox x:Name="TxtSearch" IsEnabled="{Binding Path=IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyUp="TxtSearch_KeyUp"/>
+            <ComboBox ItemsSource="{Binding ItemParentCategories}" SelectedValue="{Binding SelectedItemParentCategory}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="150"/>
+            <ComboBox ItemsSource="{Binding ItemCategories, FallbackValue=Category.Unknown}" SelectedValue="{Binding SelectedItemCategory}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="215,37,0,0" VerticalAlignment="Top" Width="150"/>
+            <ComboBox ItemsSource="{Binding ItemTiers}" SelectedValue="{Binding SelectedItemTier}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="370,10,0,0" VerticalAlignment="Top" Width="44" MinWidth="80"/>
+            <ComboBox ItemsSource="{Binding ItemLevels}" SelectedValue="{Binding SelectedItemLevel}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="455,10,0,0" VerticalAlignment="Top" Width="54" MinWidth="80"/>
 
-            <Label Content="{Binding ItemCounterString, FallbackValue=0/0}" Height="26" Margin="0,6,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="110" />
-
-            <StackPanel Orientation="Horizontal" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,7,120,0" Width="10">
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" HorizontalContentAlignment="Center" />
-            </StackPanel>
-            <Label Content="{Binding LocalImageCounter, FallbackValue=0}" Height="26" Margin="0,7,135,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Left" HorizontalAlignment="Right" Width="55" />
-            <Grid Margin="0,6,195,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <Grid Margin="0,6,160,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <fa:ImageAwesome Icon="FileImageOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
+            <Label Content="{Binding LocalImageCounter, FallbackValue=0}" Height="26" Margin="0,6,105,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Left" HorizontalAlignment="Right" Width="50" />
+            <StackPanel Orientation="Horizontal" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,6,90,0" Width="10">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" HorizontalContentAlignment="Center" />
+            </StackPanel>
+            <Label Content="{Binding ItemCounterString, FallbackValue=0/0}" Height="26" Margin="0,7,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="75" />
 
-            <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemListViewItemsSource}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,70,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
+            <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemListViewItemsSource}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,64,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ICON" Width="80">

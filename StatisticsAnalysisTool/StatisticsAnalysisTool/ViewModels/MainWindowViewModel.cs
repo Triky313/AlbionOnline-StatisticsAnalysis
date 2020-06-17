@@ -400,7 +400,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public int LocalImageCounter {
             get => _localImageCounter;
             set {
