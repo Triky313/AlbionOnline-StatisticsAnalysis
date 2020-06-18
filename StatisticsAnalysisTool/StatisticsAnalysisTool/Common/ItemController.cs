@@ -278,7 +278,7 @@ namespace StatisticsAnalysisTool.Common
                 return false;
             }
 
-            return !(lastUpdate < DateTime.UtcNow.AddDays(-28));
+            return !(lastUpdate < DateTime.UtcNow.AddDays(Settings.Default.FullItemInformationUpdateCycleDays));
         }
         
         public static BitmapImage ExistFullItemInformationLocal(string uniqueName)

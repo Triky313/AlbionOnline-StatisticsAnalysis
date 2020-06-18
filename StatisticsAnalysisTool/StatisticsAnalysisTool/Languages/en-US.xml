@@ -123,4 +123,5 @@
   <translation name="CATEGORY">Category</translation>
   <translation name="PARENT_CATEGORY">Parent Category</translation>
   <translation name="FULL_ITEM_INFO_SEARCH">Full Item Info Search</translation>
+  <translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Full Item Info Update Cycle Days</translation>
 </translations>

@@ -123,4 +123,5 @@
   <translation name="CATEGORY">Kategorie</translation>
   <translation name="PARENT_CATEGORY">Hauptkategorie</translation>
   <translation name="FULL_ITEM_INFO_SEARCH">Voll-Item-Info Suche</translation>
+  <translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Voll-Item-Info Update Zyklus in Tagen</translation>
 </translations>

@@ -287,5 +287,17 @@ namespace StatisticsAnalysisTool.Properties {
                 this["IsFullItemInfoSearch"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("90")]
+        public int FullItemInformationUpdateCycleDays {
+            get {
+                return ((int)(this["FullItemInformationUpdateCycleDays"]));
+            }
+            set {
+                this["FullItemInformationUpdateCycleDays"] = value;
+            }
+        }
     }
 }
