@@ -115,12 +115,13 @@ namespace StatisticsAnalysisTool.ViewModels
             SetModeCombobox();
             ItemController.GetItemInformationListFromLocalAsync();
 
+            IsFullItemInfoSearch = Settings.Default.IsFullItemInfoSearch;
             ItemParentCategories = CategoryController.ParentCategoryNames;
             ItemTiers = FrequentlyValues.ItemTiers;
             SelectedItemTier = ItemTier.Unknown;
             ItemLevels = FrequentlyValues.ItemLevels;
             SelectedItemLevel = ItemLevel.Unknown;
-
+            
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
             CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
@@ -189,7 +190,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 filteredItemList = ItemController.Items.Where(x =>
                     x?.FullItemInformationFromLocal != null &&
-                    x.LocalizedNameAndEnglish.ToLower().Contains(searchText.ToLower())
+                    x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)
                     && (x.FullItemInformationFromLocal.CategoryObject.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
                     && (x.FullItemInformationFromLocal.CategoryObject.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
                     && ((ItemTier)x.FullItemInformationFromLocal.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
@@ -197,7 +198,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             else
             {
-                filteredItemList = ItemController.Items.Where(x => x.LocalizedNameAndEnglish.ToLower().Contains(searchText.ToLower())).ToList();
+                filteredItemList = ItemController.Items.Where(x => x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)).ToList();
             }
 
             SetItemCounterAsync(filteredItemList.Count);

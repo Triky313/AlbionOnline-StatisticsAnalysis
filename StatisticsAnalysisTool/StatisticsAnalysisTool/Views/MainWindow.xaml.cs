@@ -158,6 +158,13 @@ namespace StatisticsAnalysisTool.Views
             }
 
             Settings.Default.SavedPlayerInformationName = TxtBoxPlayerModeUsername.Text;
+
+            #region MainWindow settings
+
+            Settings.Default.IsFullItemInfoSearch = _mainWindowViewModel.IsFullItemInfoSearch;
+
+            #endregion
+
             Settings.Default.Save();
 
             ItemController.SaveItemInformationLocal();

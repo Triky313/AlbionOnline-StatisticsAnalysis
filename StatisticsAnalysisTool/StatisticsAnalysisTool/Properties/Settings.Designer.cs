@@ -275,5 +275,17 @@ namespace StatisticsAnalysisTool.Properties {
                 this["FullItemInformationFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsFullItemInfoSearch {
+            get {
+                return ((bool)(this["IsFullItemInfoSearch"]));
+            }
+            set {
+                this["IsFullItemInfoSearch"] = value;
+            }
+        }
     }
 }
