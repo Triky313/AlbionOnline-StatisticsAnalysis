@@ -57,6 +57,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _itemCategoriesVisibility;
         private Visibility _itemParentCategoriesVisibility;
         private MainWindowTranslation _translation;
+        private string _savedPlayerInformationName;
 
         public enum ViewMode
         {
@@ -131,7 +132,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     IsTxtSearchEnabled = false;
                     _mainWindow.FaLoadIcon.Visibility = Visibility.Visible;
 
-                    _mainWindow.TxtBoxPlayerModeUsername.Text = Settings.Default.SavedPlayerInformationName;
+                    SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
                 });
                 
                 var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
@@ -229,12 +230,12 @@ namespace StatisticsAnalysisTool.ViewModels
             PlayerModeInformation = await GetPlayerModeInformationByApi().ConfigureAwait(true);
         }
         
-        private static async Task<PlayerModeInformationModel> GetPlayerModeInformationByApi()
+        private async Task<PlayerModeInformationModel> GetPlayerModeInformationByApi()
         {
-            if (string.IsNullOrWhiteSpace(_mainWindow.TxtBoxPlayerModeUsername.Text))
+            if (string.IsNullOrWhiteSpace(SavedPlayerInformationName))
                 return null;
 
-            var gameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(_mainWindow.TxtBoxPlayerModeUsername.Text);
+            var gameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(SavedPlayerInformationName);
             
             if (gameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id == null)
                 return null;
@@ -383,6 +384,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 ItemListViewItemsSource = GetFilteredItemList(_searchText);
+                Settings.Default.IsFullItemInfoSearch = _isFullItemInfoSearch;
                 OnPropertyChanged();
             }
         }
@@ -599,6 +601,15 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public string SavedPlayerInformationName {
+            get => _savedPlayerInformationName;
+            set {
+                _savedPlayerInformationName = value;
+                Settings.Default.SavedPlayerInformationName = _savedPlayerInformationName;
+                OnPropertyChanged();
+            }
+        }
+
         public string UpdateTranslation
         {
             get => _updateTranslation;
@@ -619,8 +630,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public string DonateUrl => Settings.Default.DonateUrl;
         public string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
-        public string SavedPlayerInformationName => Settings.Default.SavedPlayerInformationName ?? "";
-
         public string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;

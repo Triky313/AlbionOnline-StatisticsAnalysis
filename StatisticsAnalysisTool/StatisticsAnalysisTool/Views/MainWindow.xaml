@@ -49,7 +49,7 @@
             <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemListViewItemsSource}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,64,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="ICON" Width="80">
+                        <GridViewColumn Header="{Binding Translation.Icon, FallbackValue=ICON}" Width="80">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -59,9 +59,9 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="NAME" Width="400" DisplayMemberBinding="{Binding LocalizedNameAndEnglish}" />
+                        <GridViewColumn Header="{Binding Translation.Name, FallbackValue=NAME}" Width="400" DisplayMemberBinding="{Binding LocalizedNameAndEnglish}" />
 
-                        <GridViewColumn Header="{Binding (viewModels:MainWindowViewModel.FullItemInformationExistLocal), FallbackValue=FULL_ITEM_INFORMATION_EXIST_LOCAL}" Width="40">
+                        <GridViewColumn Header="{Binding Translation.FullItemInformationExistLocal, FallbackValue=FULL_ITEM_INFORMATION_EXIST_LOCAL}" Width="40">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -90,7 +90,7 @@
             <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearch, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="200"/>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
-            <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding Path=SavedPlayerInformationName, ElementName=window}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown"/>
+            <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding SavedPlayerInformationName}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown"/>
             <Button x:Name="BtnPlayerModeSave" Content="{Binding Path=Translation.Load, FallbackValue=LOAD}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="110" Height="25" Click="BtnPlayerModeSave_Click"/>
             <ScrollViewer  Margin="0,40,0,20" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Margin="10,5,10,10">
