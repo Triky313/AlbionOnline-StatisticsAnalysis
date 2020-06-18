@@ -87,11 +87,11 @@
                     (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="Donate" /></Hyperlink>)
                 </TextBlock>
             </Grid>
-            <CheckBox Content="{Binding IsFullItemInfoSearchTranslation, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearch, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="200"/>
+            <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearch, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="200"/>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding Path=SavedPlayerInformationName, ElementName=window}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown"/>
-            <Button x:Name="BtnPlayerModeSave" Content="{Binding Path=LoadTranslation, FallbackValue=LOAD}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="110" Height="25" Click="BtnPlayerModeSave_Click"/>
+            <Button x:Name="BtnPlayerModeSave" Content="{Binding Path=Translation.Load, FallbackValue=LOAD}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="110" Height="25" Click="BtnPlayerModeSave_Click"/>
             <ScrollViewer  Margin="0,40,0,20" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Margin="10,5,10,10">
                     <StackPanel Margin="0,0,0,20">
@@ -338,8 +338,8 @@
             </ScrollViewer>
         </Grid>
         <Grid x:Name="GridGoldMode" Margin="0,80,0,0" Visibility="Hidden">
-            <Button Style="{StaticResource ButtonStyle}" Content="{Binding UpdateTranslation, FallbackValue=UPDATE}" HorizontalAlignment="Left" Margin="10,10,0,0" Width="110" Height="24" VerticalAlignment="Top" Click="Button_Click" />
-            <TextBox Text="{Binding TextBoxGoldModeNumberOfValues}" ToolTip="{Binding NumberOfValuesTranslation, FallbackValue=NUMBER__OF__VALUES}" MaxLength="5" Margin="125,10,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" PreviewTextInput="TxtBoxGoldModeAmountValues_OnPreviewTextInput"/>
+            <Button Style="{StaticResource ButtonStyle}" Content="{Binding Translation.Update, FallbackValue=UPDATE}" HorizontalAlignment="Left" Margin="10,10,0,0" Width="110" Height="24" VerticalAlignment="Top" Click="Button_Click" />
+            <TextBox Text="{Binding TextBoxGoldModeNumberOfValues}" ToolTip="{Binding Translation.NumberOfValues, FallbackValue=NUMBER__OF__VALUES}" MaxLength="5" Margin="125,10,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" PreviewTextInput="TxtBoxGoldModeAmountValues_OnPreviewTextInput"/>
             <Grid Margin="10,34,10,10">
                 <lvc:CartesianChart Series="{Binding SeriesCollection, UpdateSourceTrigger=PropertyChanged}">
                     <lvc:CartesianChart.AxisX>

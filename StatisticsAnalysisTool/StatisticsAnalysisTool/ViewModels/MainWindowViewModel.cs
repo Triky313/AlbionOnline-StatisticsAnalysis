@@ -56,6 +56,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _itemTiersVisibility;
         private Visibility _itemCategoriesVisibility;
         private Visibility _itemParentCategoriesVisibility;
+        private MainWindowTranslation _translation;
 
         public enum ViewMode
         {
@@ -107,10 +108,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async void InitMainWindowData()
         {
-            UpdateTranslation = LanguageController.Translation("UPDATE");
-            NumberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
-            LoadTranslation = LanguageController.Translation("LOAD");
-            FullItemInformationExistLocal = LanguageController.Translation("FULL_ITEM_INFORMATION_EXIST_LOCAL");
+            Translation = new MainWindowTranslation();
 
             SetModeCombobox();
             ItemController.GetItemInformationListFromLocalAsync();
@@ -607,6 +605,14 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _updateTranslation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public MainWindowTranslation Translation {
+            get => _translation;
+            set {
+                _translation = value;
                 OnPropertyChanged();
             }
         }

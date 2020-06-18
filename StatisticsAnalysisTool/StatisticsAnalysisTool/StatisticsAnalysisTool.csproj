@@ -108,6 +108,7 @@
     <Compile Include="Models\ItemJsonObject.cs" />
     <Compile Include="Models\ItemCategoryTree.cs" />
     <Compile Include="Models\ItemInformationModels.cs" />
+    <Compile Include="Models\MainWindowTranslation.cs" />
     <Compile Include="Models\ItemWindowTranslation.cs" />
     <Compile Include="Models\MarketHistoriesResponse.cs" />
     <Compile Include="Models\MarketHistoryResponse.cs" />
