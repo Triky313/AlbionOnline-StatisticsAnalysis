@@ -80,19 +80,11 @@
   <translation name="HELLGATE">Hellgate</translation>
   <translation name="CRAFTING">Crafting</translation>
   <translation name="GATHERING">Gathering</translation>
-  <translation name="FIBER">Fiber</translation>
-  <translation name="HIDE">Hide</translation>
-  <translation name="ORE">Ore</translation>
-  <translation name="ROCK">Rock</translation>
-  <translation name="WOOD">Wood</translation>
   <translation name="MAINHAND">Mainhand</translation>
-  <translation name="OFFHAND">Offhand</translation>
   <translation name="HEAD">Head</translation>
   <translation name="SHOES">Shoes</translation>
   <translation name="BAG">Bag</translation>
   <translation name="CAPE">Cape</translation>
-  <translation name="MOUNT">Mount</translation>
-  <translation name="POTION">Potion</translation>
   <translation name="FOOD">Food</translation>
   <translation name="PLAYER">Player</translation>
   <translation name="GENERAL_INFORMATION">General Information</translation>
@@ -124,4 +116,186 @@
   <translation name="PARENT_CATEGORY">Parent Category</translation>
   <translation name="FULL_ITEM_INFO_SEARCH">Full Item Info Search</translation>
   <translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Full Item Info Update Cycle Days</translation>
+  <translation name="UNKNOWN">Unknown</translation>
+
+  <translation name="CLOTH_ARMOR">Cloth Armor</translation>
+  <translation name="CLOTH_HELMET">Cloth Helmet</translation>
+  <translation name="CLOTH_SHOES">Cloth Shoes</translation>
+  <translation name="LEATHER_ARMOR">Leather Armor</translation>
+  <translation name="LEATHER_HELMET">Leather Helmet</translation>
+  <translation name="LEATHER_SHOES">Leather Shoes</translation>
+  <translation name="PLATE_ARMOR">Plate Armor</translation>
+  <translation name="PLATE_HELMET">Plate Helmet</translation>
+  <translation name="PLATE_SHOES">Plate Shoes</translation>
+  <translation name="UNIQUE_ARMOR">Unique Armor</translation>
+  <translation name="UNIQUE_HELMET">Unique Helmet</translation>
+  <translation name="UNIQUE_SHOES">Unique Shoes</translation>
+
+  <translation name="ARMOR_ARTEFACT">Armor Artefact</translation>
+  <translation name="MAGIC_ARTEFACT">Magic Artefact</translation>
+  <translation name="MELEE_ARTEFACT">Melee Artefact</translation>
+  <translation name="OFFHAND_ARTEFACT">Offhand Artefact</translation>
+  <translation name="RANGED_ARTEFACT">Ranged Artefact</translation>
+
+  <translation name="BEASTHEART">Beast Heart</translation>
+  <translation name="MOUNTAINHEART">Mountain Heart</translation>
+  <translation name="ROCKHEART">Rock Heart</translation>
+  <translation name="TREEHEART">Tree Heart</translation>
+  <translation name="VINEHEART">Vine Heart</translation>
+
+  <translation name="COOKED">Cooked</translation>
+  <translation name="FISH">Fish</translation>
+  <translation name="FISHING_BAIT">Fishing Bait</translation>
+  <translation name="MAPS">Maps</translation>
+  <translation name="OTHER">Other</translation>
+  <translation name="POTION">Potion</translation>
+  <translation name="SKILL_BOOK">Skill Book</translation>
+  <translation name="VANITY">Vanity</translation>
+
+  <translation name="ANIMALS">Animals</translation>
+  <translation name="SEED">Seed</translation>
+
+  <translation name="BANNER">Banner</translation>
+  <translation name="BED">Bed</translation>
+  <translation name="CHEST">Chest</translation>
+  <translation name="DECORATION_FURNITURE">DecorationFurniture</translation>
+  <translation name="FLAG">Flag</translation>
+  <translation name="HERETIC_FURNITURE">HereticFurniture</translation>
+  <translation name="KEEPER_FURNITURE">KeeperFurniture</translation>
+  <translation name="MORGANA_FURNITURE">MorganaFurniture</translation>
+  <translation name="TABLE">Table</translation>
+  <translation name="REPAIR_KIT">RepairKit</translation>
+  <translation name="UNIQUE">Unique</translation>
+
+  <translation name="FIBERGATHERER_ARMOR">Fibergatherer Armor</translation>
+  <translation name="FIBERGATHERER_HELMET">Fibergatherer Helmet</translation>
+  <translation name="FIBERGATHERER_SHOES">Fibergatherer Shoes</translation>
+  <translation name="FIBERGATHERER_BACKPACK">Fibergatherer Backpack</translation>
+
+  <translation name="FISHGATHERER_ARMOR">Fishgatherer Armor</translation>
+  <translation name="FISHGATHERER_HELMET">Fishgatherer Helmet</translation>
+  <translation name="FISHGATHERER_SHOES">Fishgatherer Shoes</translation>
+  <translation name="FISHGATHERER_BACKPACK">Fishgatherer Backpack</translation>
+
+  <translation name="HIDEGATHERER_ARMOR">Hidegatherer Armor</translation>
+  <translation name="HIDEGATHERER_HELMET">Hidegatherer Helmet</translation>
+  <translation name="HIDEGATHERER_SHOES">Hidegatherer Shoes</translation>
+  <translation name="HIDEGATHERERR_BACKPACK">Hidegatherer Backpack</translation>
+
+  <translation name="OREGATHERER_ARMOR">Oregatherer Armor</translation>
+  <translation name="OREGATHERER_HELMET">Oregatherer Helmet</translation>
+  <translation name="OREGATHERER_SHOES">Oregatherer Shoes</translation>
+  <translation name="OREGATHERER_BACKPACK">Oregatherer Backpack</translation>
+
+  <translation name="ROCKGATHERER_ARMOR">Rockgatherer Armor</translation>
+  <translation name="ROCKGATHERER_HELMET">Rockgatherer Helmet</translation>
+  <translation name="ROCKGATHERER_SHOES">Rockgatherer Shoes</translation>
+  <translation name="ROCKGATHERER_BACKPACK">Rockgatherer Backpack</translation>
+
+  <translation name="WOODGATHERER_ARMOR">Woodgatherer Armor</translation>
+  <translation name="WOODGATHERER_HELMET">Woodgatherer Helmet</translation>
+  <translation name="WOODGATHERER_SHOES">Woodgatherer Shoes</translation>
+  <translation name="WOODGATHERER_BACKPACK">Woodgatherer Backpack</translation>
+  
+  <translation name="BRIDGEWATCH">Bridgewatch</translation>
+  <translation name="CAERLEON">Caerleon</translation>
+  <translation name="FORT_STERLING">Fort Sterling</translation>
+  <translation name="LYMHURST">Lymhurst</translation>
+  <translation name="MARTLOCK">Martlock</translation>
+  <translation name="THETFORD">Thetford</translation>
+
+  <translation name="ARCANE_STAFF">Arcane Staff</translation>
+  <translation name="CURSE_STAFF">Curse Staff</translation>
+  <translation name="FIRE_STAFF">Fire Staff</translation>
+  <translation name="FROST_STAFF">Frost Staff</translation>
+  <translation name="HOLY_STAFF">Holy Staff</translation>
+  <translation name="NATURE_STAFF">Nature Staff</translation>
+
+  <translation name="ESSENCE">Essence</translation>
+  <translation name="RELIC">Relic</translation>
+  <translation name="RUNE">Rune</translation>
+  <translation name="SOUL">Soul</translation>
+
+  <translation name="AXE">Axe</translation>
+  <translation name="DAGGER">Dagger</translation>
+  <translation name="HAMMER">Hammer</translation>
+  <translation name="MACE">Mace</translation>
+  <translation name="QUARTER_STAFF">Quarter Staff</translation>
+  <translation name="SPEAR">Spear</translation>
+  <translation name="SWORD">Sword</translation>
+
+  <translation name="ARMORED_HORSE">Armored Horse</translation>
+  <translation name="OX">Ox</translation>
+  <translation name="RARE_MOUNT">Rare Mount</translation>
+  <translation name="RIDING_HORSE">Riding Horse</translation>
+
+  <translation name="BOOK">Book</translation>
+  <translation name="HORN">Horn</translation>
+  <translation name="ORB">Orb</translation>
+  <translation name="SHIELD">Shield</translation>
+  <translation name="TORCH">Torch</translation>
+  <translation name="TOTEM">Totem</translation>
+  <translation name="TRASH">Trash</translation>
+
+  <translation name="FARMING">Farming</translation>
+  <translation name="JOURNAL">Journal</translation>
+
+  <translation name="BOW">Bow</translation>
+  <translation name="CROSSBOW">Crossbow</translation>
+
+  <translation name="CLOTH">Cloth</translation>
+  <translation name="FIBER">Fiber</translation>
+  <translation name="HIDE">Hide</translation>
+  <translation name="LEATHER">Leather</translation>
+  <translation name="METALBAR">Metalbar</translation>
+  <translation name="ORE">Ore</translation>
+  <translation name="WOOD">Wood</translation>
+  <translation name="PLANKS">Planks</translation>
+  <translation name="ROCK">Rock</translation>
+  <translation name="STONEBLOCK">Stoneblock</translation>
+
+  <translation name="ARENA_SIGILS">Arena Sigils</translation>
+  <translation name="EVENT">Event</translation>
+  <translation name="ROYAL_SIGILS">Royal Sigils</translation>
+
+  <translation name="DEMOLITION_HAMMER">Demolition Hammer</translation>
+  <translation name="FISHING">Fishing</translation>
+  <translation name="PICKAXE">Pickaxe</translation>
+  <translation name="SICKLE">Sickle</translation>
+  <translation name="SKINNING_KNIFE">Skinning Knife</translation>
+  <translation name="STONE_HAMMER">Stone Hammer</translation>
+  <translation name="WOOD_AXE">Wood Axe</translation>
+
+  <translation name="FIBER_TROPHY">Fiber Trophy</translation>
+  <translation name="FISH_TROPHY">Fish Trophy</translation>
+  <translation name="GENERAL_TROPHY">General Trophy</translation>
+  <translation name="HIDE_TROPHY">Hide Trophy</translation>
+  <translation name="MERCENARY_TROPHY">Mercenary Trophy</translation>
+  <translation name="ORE_TROPHY">Ore Trophy</translation>
+  <translation name="ROCK_TROPHY">Rock Trophy</translation>
+  <translation name="WOOD_TROPHY">Wood Trophy</translation>
+
+  <translation name="ACCESSORIES">Accessories</translation>
+  <translation name="ARMOR">Armor</translation>
+  <translation name="ARTEFACT">Artifact</translation>
+  <translation name="CITY_RESOURCES">City Resources</translation>
+  <translation name="CONSUMABLE">Consumable</translation>
+
+  <translation name="FARMABLE">Farmable</translation>
+  <translation name="FURNITURE">Furniture</translation>
+  <translation name="GATHERING_GEAR">Gathering Gear</translation>
+  <translation name="LUXURY_GOODS">Luxury Goods</translation>
+  <translation name="MAGIC">Magic</translation>
+
+  <translation name="MATERIALS">Materials</translation>
+  <translation name="MELEE">Melee</translation>
+  <translation name="MOUNT">Mount</translation>
+  <translation name="OFFHAND">OffHand</translation>
+  <translation name="PRODUCT">Product</translation>
+
+  <translation name="RANGED">Ranged</translation>
+  <translation name="RESOURCE">Resource</translation>
+  <translation name="TOKEN">Token</translation>
+  <translation name="TOOL">Tool</translation>
+  <translation name="TROPHIES">Trophies</translation>
 </translations>
