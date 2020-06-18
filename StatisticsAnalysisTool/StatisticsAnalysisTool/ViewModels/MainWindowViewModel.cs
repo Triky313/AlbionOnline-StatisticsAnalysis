@@ -190,10 +190,10 @@ namespace StatisticsAnalysisTool.ViewModels
                 filteredItemList = ItemController.Items.Where(x =>
                     x?.FullItemInformationFromLocal != null &&
                     x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)
-                    && (x.FullItemInformationFromLocal.CategoryObject.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
-                    && (x.FullItemInformationFromLocal.CategoryObject.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
-                    && ((ItemTier)x.FullItemInformationFromLocal.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                    && ((ItemLevel)x.FullItemInformationFromLocal.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)).ToList();
+                    && (x.FullItemInformationFromLocal?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
+                    && (x.FullItemInformationFromLocal?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                    && ((ItemTier)x.FullItemInformationFromLocal?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                    && ((ItemLevel)x.FullItemInformationFromLocal?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)).ToList();
             }
             else
             {

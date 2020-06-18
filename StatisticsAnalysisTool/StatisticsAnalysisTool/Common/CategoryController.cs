@@ -41,6 +41,7 @@ namespace StatisticsAnalysisTool.Common
             new CategoryObject("fishingbait", Category.FishingBait, ParentCategory.Consumable),
             new CategoryObject("maps", Category.Maps, ParentCategory.Consumable),
             new CategoryObject("Other", Category.Other, ParentCategory.Consumable),
+            new CategoryObject("potion", Category.Potion, ParentCategory.Consumable),
             new CategoryObject("skillbook", Category.SkillBook, ParentCategory.Consumable),
             new CategoryObject("vanity", Category.Vanity, ParentCategory.Consumable),
 
@@ -130,7 +131,6 @@ namespace StatisticsAnalysisTool.Common
             new CategoryObject("totem", Category.Totem, ParentCategory.OffHand),
 
             new CategoryObject("trash", Category.Trash, ParentCategory.Other),
-
             new CategoryObject("farming", Category.Farming, ParentCategory.Product),
             new CategoryObject("journal", Category.Journal, ParentCategory.Product),
 
@@ -143,8 +143,10 @@ namespace StatisticsAnalysisTool.Common
             new CategoryObject("leather", Category.Leather, ParentCategory.Resource),
             new CategoryObject("metalbar", Category.Metalbar, ParentCategory.Resource),
             new CategoryObject("ore", Category.Ore, ParentCategory.Resource),
+            new CategoryObject("wood", Category.Wood, ParentCategory.Resource),
             new CategoryObject("planks", Category.Planks, ParentCategory.Resource),
             new CategoryObject("rock", Category.Rock, ParentCategory.Resource),
+            new CategoryObject("stoneblock", Category.Stoneblock, ParentCategory.Resource),
 
             new CategoryObject("arenasigils", Category.ArenaSigils, ParentCategory.Token),
             new CategoryObject("event", Category.Event, ParentCategory.Token),
@@ -205,7 +207,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.RangedArtefact, LanguageController.Translation("RANGED_ARTEFACT")},
 
             #endregion
-            
+
             #region CityResources
 
             {Category.BeastHeart, LanguageController.Translation("BEASTHEART")},
@@ -223,6 +225,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.FishingBait, LanguageController.Translation("FISHING_BAIT")},
             {Category.Maps, LanguageController.Translation("MAPS")},
             {Category.Other, LanguageController.Translation("OTHER")},
+            {Category.Potion, LanguageController.Translation("POTION")},
             {Category.SkillBook, LanguageController.Translation("SKILL_BOOK")},
             {Category.Vanity, LanguageController.Translation("VANITY")},
 
@@ -282,7 +285,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.WoodgathererHelmet, LanguageController.Translation("WOODGATHERER_HELMET")},
             {Category.WoodgathererShoes, LanguageController.Translation("WOODGATHERER_SHOES")},
             {Category.WoodgathererBackpack, LanguageController.Translation("WOODGATHERER_BACKPACK")},
-            
+
             #endregion
 
             #region LuxuryGoods
@@ -314,7 +317,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.Relic, LanguageController.Translation("RELIC")},
             {Category.Rune, LanguageController.Translation("RUNE")},
             {Category.Soul, LanguageController.Translation("SOUL")},
-            
+
             #endregion
 
             #region Melee
@@ -326,7 +329,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.QuarterStaff, LanguageController.Translation("QUARTER_STAFF")},
             {Category.Spear, LanguageController.Translation("SPEAR")},
             {Category.Sword, LanguageController.Translation("SWORD")},
-            
+
             #endregion
 
             #region Mount
@@ -337,7 +340,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.RidingHorse, LanguageController.Translation("RIDING_HORSE")},
 
             #endregion
-            
+
             #region Off-Hand
 
             {Category.Book, LanguageController.Translation("BOOK")},
@@ -346,13 +349,13 @@ namespace StatisticsAnalysisTool.Common
             {Category.Shield, LanguageController.Translation("SHIELD")},
             {Category.Torch, LanguageController.Translation("TORCH")},
             {Category.Totem, LanguageController.Translation("TOTEM")},
-            
+
             #endregion
 
             #region Other
 
             {Category.Trash, LanguageController.Translation("TRASH")},
-            
+
             #endregion
 
             #region Product
@@ -378,8 +381,10 @@ namespace StatisticsAnalysisTool.Common
             {Category.Metalbar, LanguageController.Translation("METALBAR")},
             {Category.Ore, LanguageController.Translation("ORE")},
             {Category.Planks, LanguageController.Translation("PLANKS")},
+            {Category.Wood, LanguageController.Translation("WOOD")},
             {Category.Rock, LanguageController.Translation("ROCK")},
-            
+            {Category.Stoneblock, LanguageController.Translation("STONEBLOCK")},
+
             #endregion
 
             #region Token
@@ -399,7 +404,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.SkinningKnife, LanguageController.Translation("SKINNING_KNIFE")},
             {Category.StoneHammer, LanguageController.Translation("STONE_HAMMER")},
             {Category.WoodAxe, LanguageController.Translation("WOOD_AXE")},
-            
+
             #endregion
 
             #region Trophies
@@ -412,7 +417,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.OreTrophy, LanguageController.Translation("ORE_TROPHY")},
             {Category.RockTrophy, LanguageController.Translation("ROCK_TROPHY")},
             {Category.WoodTrophy, LanguageController.Translation("WOOD_TROPHY")},
-            
+
             #endregion
         };
 
@@ -441,15 +446,17 @@ namespace StatisticsAnalysisTool.Common
             {ParentCategory.Tool, LanguageController.Translation("TOOL")},
             {ParentCategory.Trophies, LanguageController.Translation("TROPHIES")}
         };
-        
-        public static CategoryObject GetCategory(string categoryId) => Categories.FirstOrDefault(x => x.CategoryId == categoryId);
+
+        public static CategoryObject GetCategory(string categoryId) => Categories.SingleOrDefault(x => x.CategoryId == categoryId);
 
         public static string GetCategoryName(Category category) => CategoryNames.TryGetValue(category, out var name) ? name : null;
 
         public static string GetParentCategoryName(ParentCategory parentCategory) => ParentCategoryNames.TryGetValue(parentCategory, out var name) ? name : null;
+
         public static ParentCategory GetParentCategoryByCategory(Category category) => Categories?.FirstOrDefault(x => x.Category.Equals(category))?.ParentCategory ?? ParentCategory.Unknown;
 
-        public static Dictionary<Category, string> GetCategoriesByParentCategory(ParentCategory parentCategory) => Categories?.Where(x => x.ParentCategory == parentCategory).ToDictionary(x => x.Category, x => x.CategoryName);
+        public static Dictionary<Category, string> GetCategoriesByParentCategory(ParentCategory parentCategory) =>
+            Categories?.Where(x => x.ParentCategory == parentCategory).ToDictionary(x => x.Category, x => x.CategoryName);
     }
 
     public enum Category
@@ -484,6 +491,7 @@ namespace StatisticsAnalysisTool.Common
         FishingBait,
         Maps,
         Other,
+        Potion,
         SkillBook,
         Vanity,
         Animals,
@@ -569,7 +577,9 @@ namespace StatisticsAnalysisTool.Common
         Metalbar,
         Ore,
         Planks,
+        Wood,
         Rock,
+        Stoneblock,
         ArenaSigils,
         Event,
         RoyalSigils,
