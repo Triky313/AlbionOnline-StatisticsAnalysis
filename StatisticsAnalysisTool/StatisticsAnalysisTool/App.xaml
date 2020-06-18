@@ -414,6 +414,44 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
         </Style>
 
+        <!-- CheckBox -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Height" Value="21"/>
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <BulletDecorator Background="Transparent">
+                            <BulletDecorator.Bullet>
+                                <Border x:Name="Border" Width="21" Height="21" CornerRadius="0" Background="{StaticResource SolidColorBrush.Background.Third}" BorderThickness="3">
+                                    <Path Width="9" Height="9" x:Name="CheckMark" SnapsToDevicePixels="False" Stroke="{StaticResource SolidColorBrush.Blue.3}" StrokeThickness="2" Data="M 0 4 L 3 8 8 0" />
+                                </Border>
+                            </BulletDecorator.Bullet>
+                            <ContentPresenter Margin="4,-2,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" RecognizesAccessKey="True"/>
+                        </BulletDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="false">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter TargetName="CheckMark" Property="Data" Value="M 0 8 L 8 0" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="CheckMark" Property="Stroke" Value="{StaticResource Solid.Color.Text.NoValue}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.NoValue}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- Window Button Style -->
         <Style TargetType="{x:Type Button}" x:Key="WindowButtonStyle">
             <Setter Property="Background" Value="Transparent"/>

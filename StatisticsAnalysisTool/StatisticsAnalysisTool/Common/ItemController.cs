@@ -24,8 +24,6 @@ namespace StatisticsAnalysisTool.Common
 
         #region Item list
 
-        public static List<Item> FindItemsAsync(string searchText) => Items?.FindAll(i => i.LocalizedNameAndEnglish.Contains(searchText.ToLower())) ?? new List<Item>();
-
         public static async Task<bool> GetItemListFromJsonAsync()
         {
             var url = Settings.Default.ItemListSourceUrl;
@@ -127,21 +125,21 @@ namespace StatisticsAnalysisTool.Common
 
             switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase)).Key)
             {
-                case FrequentlyValues.GameLanguage.UnitedStates:
+                case GameLanguage.UnitedStates:
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EnUs));
-                case FrequentlyValues.GameLanguage.Germany:
+                case GameLanguage.Germany:
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.DeDe));
-                case FrequentlyValues.GameLanguage.Russia:
+                case GameLanguage.Russia:
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.RuRu));
-                case FrequentlyValues.GameLanguage.Poland:
+                case GameLanguage.Poland:
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PlPl));
-                case FrequentlyValues.GameLanguage.Brazil:
+                case GameLanguage.Brazil:
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PtBr));
-                case FrequentlyValues.GameLanguage.France:
+                case GameLanguage.France:
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.FrFr));
-                case FrequentlyValues.GameLanguage.Spain:
+                case GameLanguage.Spain:
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EsEs));
-                case FrequentlyValues.GameLanguage.Chinese:
+                case GameLanguage.Chinese:
                     return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.ZhCn));
                 default:
                     return alternativeName;
@@ -157,8 +155,8 @@ namespace StatisticsAnalysisTool.Common
 
             return int.TryParse(uniqueName.Split('@')[1], out int number) ? number : 0;
         }
-
-        public static FrequentlyValues.ItemQuality GetQuality(int value) => FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Value == value).Key;
+        
+        public static ItemQuality GetQuality(int value) => FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Value == value).Key;
         
         public static Style LocationStyle(Location location) {
             switch (location)
@@ -244,6 +242,8 @@ namespace StatisticsAnalysisTool.Common
 
             return itemInformation;
         }
+
+        public static ItemInformation GetFullItemInformationFromLocal(Item item) => _itemInformationList.SingleOrDefault(x => x.UniqueName == item?.UniqueName);
 
         private static ItemInformation SetEssentialItemInformation(ItemInformation itemInformation, string uniqueName)
         {

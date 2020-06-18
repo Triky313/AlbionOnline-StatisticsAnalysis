@@ -46,10 +46,16 @@ namespace StatisticsAnalysisTool.ViewModels
         private Category _selectedItemCategories;
         private Dictionary<ParentCategory, string> _itemParentCategories;
         private ParentCategory _selectedItemParentCategories;
-        private Dictionary<FrequentlyValues.ItemTier, string> _itemTiers;
-        private FrequentlyValues.ItemTier _selectedItemTier;
-        private Dictionary<FrequentlyValues.ItemLevel, int> _itemLevels;
-        private FrequentlyValues.ItemLevel _selectedItemLevel;
+        private Dictionary<ItemTier, string> _itemTiers;
+        private ItemTier _selectedItemTier;
+        private Dictionary<ItemLevel, string> _itemLevels;
+        private ItemLevel _selectedItemLevel;
+        private string _searchText;
+        private bool _isFullItemInfoSearch;
+        private Visibility _itemLevelsVisibility;
+        private Visibility _itemTiersVisibility;
+        private Visibility _itemCategoriesVisibility;
+        private Visibility _itemParentCategoriesVisibility;
 
         public enum ViewMode
         {
@@ -67,7 +73,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (!LanguageController.InitializeLanguage())
                 _mainWindow.Close();
-
+            
             InitMainWindowData();
         }
 
@@ -111,7 +117,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
             ItemParentCategories = CategoryController.ParentCategoryNames;
             ItemTiers = FrequentlyValues.ItemTiers;
+            SelectedItemTier = ItemTier.Unknown;
             ItemLevels = FrequentlyValues.ItemLevels;
+            SelectedItemLevel = ItemLevel.Unknown;
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
@@ -168,18 +176,36 @@ namespace StatisticsAnalysisTool.ViewModels
         
         #region Item list (Normal Mode)
         
-        public async Task GetFilteredItemsAsync(string searchText)
+        private List<Item> GetFilteredItemList(string searchText)
         {
-            if (string.IsNullOrEmpty(searchText))
-                return;
+            var filteredItemList = new List<Item>();
 
-            var items = ItemController.FindItemsAsync(searchText);
-            ItemListViewItemsSource = items;
+            if (ItemController.Items == null)
+            {
+                return filteredItemList;
+            }
 
-            await SetItemCounterAsync(items?.Count);
+            if (IsFullItemInfoSearch)
+            {
+                filteredItemList = ItemController.Items.Where(x =>
+                    x?.FullItemInformationFromLocal != null &&
+                    x.LocalizedNameAndEnglish.ToLower().Contains(searchText.ToLower())
+                    && (x.FullItemInformationFromLocal.CategoryObject.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
+                    && (x.FullItemInformationFromLocal.CategoryObject.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                    && ((ItemTier)x.FullItemInformationFromLocal.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                    && ((ItemLevel)x.FullItemInformationFromLocal.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)).ToList();
+            }
+            else
+            {
+                filteredItemList = ItemController.Items.Where(x => x.LocalizedNameAndEnglish.ToLower().Contains(searchText.ToLower())).ToList();
+            }
+
+            SetItemCounterAsync(filteredItemList.Count);
+
+            return filteredItemList;
         }
 
-        private async Task SetItemCounterAsync(int? items)
+        private async void SetItemCounterAsync(int? items)
         {
             LocalImageCounter = await ImageController.LocalImagesCounterAsync();
             ItemCounterString = $"{items ?? 0}/{ItemController.Items?.Count ?? 0}";
@@ -332,6 +358,69 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public string SearchText {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                ItemListViewItemsSource = GetFilteredItemList(_searchText);
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsFullItemInfoSearch {
+            get => _isFullItemInfoSearch;
+            set
+            {
+                _isFullItemInfoSearch = value;
+
+                if (_isFullItemInfoSearch)
+                {
+                    ItemLevelsVisibility = ItemTiersVisibility = ItemCategoriesVisibility = ItemParentCategoriesVisibility = Visibility.Visible;
+                }
+                else
+                {
+                    ItemLevelsVisibility = ItemTiersVisibility = ItemCategoriesVisibility = ItemParentCategoriesVisibility = Visibility.Hidden;
+                }
+
+                ItemListViewItemsSource = GetFilteredItemList(_searchText);
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ItemLevelsVisibility {
+            get => _itemLevelsVisibility;
+            set {
+                _itemLevelsVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ItemTiersVisibility {
+            get => _itemTiersVisibility;
+            set {
+                _itemTiersVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ItemCategoriesVisibility {
+            get => _itemCategoriesVisibility;
+            set {
+                _itemCategoriesVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ItemParentCategoriesVisibility {
+            get => _itemParentCategoriesVisibility;
+            set
+            {
+                _itemParentCategoriesVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Dictionary<Category, string> ItemCategories {
             get => _itemCategories;
             set
@@ -342,11 +431,12 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public Category SelectedItemCategory {
             get => _selectedItemCategories;
             set {
                 _selectedItemCategories = value;
+                ItemListViewItemsSource = GetFilteredItemList(SearchText);
                 OnPropertyChanged();
             }
         }
@@ -365,11 +455,12 @@ namespace StatisticsAnalysisTool.ViewModels
                 _selectedItemParentCategories = value;
                 ItemCategories = CategoryController.GetCategoriesByParentCategory(SelectedItemParentCategory);
                 SelectedItemCategory = Category.Unknown;
+                ItemListViewItemsSource = GetFilteredItemList(SearchText);
                 OnPropertyChanged();
             }
         }
 
-        public Dictionary<FrequentlyValues.ItemTier, string> ItemTiers {
+        public Dictionary<ItemTier, string> ItemTiers {
             get => _itemTiers;
             set {
                 _itemTiers = value;
@@ -377,15 +468,16 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public FrequentlyValues.ItemTier SelectedItemTier {
+        public ItemTier SelectedItemTier {
             get => _selectedItemTier;
             set {
                 _selectedItemTier = value;
+                ItemListViewItemsSource = GetFilteredItemList(SearchText);
                 OnPropertyChanged();
             }
         }
 
-        public Dictionary<FrequentlyValues.ItemLevel, int> ItemLevels {
+        public Dictionary<ItemLevel, string> ItemLevels {
             get => _itemLevels;
             set {
                 _itemLevels = value;
@@ -393,10 +485,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public FrequentlyValues.ItemLevel SelectedItemLevel {
+        public ItemLevel SelectedItemLevel {
             get => _selectedItemLevel;
             set {
                 _selectedItemLevel = value;
+                ItemListViewItemsSource = GetFilteredItemList(SearchText);
                 OnPropertyChanged();
             }
         }

@@ -31,11 +31,11 @@
             </Grid>
         </Grid>
         <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
-            <TextBox x:Name="TxtSearch" IsEnabled="{Binding Path=IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyUp="TxtSearch_KeyUp"/>
-            <ComboBox ItemsSource="{Binding ItemParentCategories}" SelectedValue="{Binding SelectedItemParentCategory}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="150"/>
-            <ComboBox ItemsSource="{Binding ItemCategories, FallbackValue=Category.Unknown}" SelectedValue="{Binding SelectedItemCategory}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="215,37,0,0" VerticalAlignment="Top" Width="150"/>
-            <ComboBox ItemsSource="{Binding ItemTiers}" SelectedValue="{Binding SelectedItemTier}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="370,10,0,0" VerticalAlignment="Top" Width="44" MinWidth="80"/>
-            <ComboBox ItemsSource="{Binding ItemLevels}" SelectedValue="{Binding SelectedItemLevel}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="455,10,0,0" VerticalAlignment="Top" Width="54" MinWidth="80"/>
+            <TextBox x:Name="TxtSearch" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
+            <ComboBox ItemsSource="{Binding ItemParentCategories, UpdateSourceTrigger=PropertyChanged}" SelectedValue="{Binding SelectedItemParentCategory}" Visibility="{Binding ItemParentCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="150"/>
+            <ComboBox ItemsSource="{Binding ItemCategories, UpdateSourceTrigger=PropertyChanged, FallbackValue=Category.Unknown}" SelectedValue="{Binding SelectedItemCategory}" Visibility="{Binding ItemCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="215,37,0,0" VerticalAlignment="Top" Width="150"/>
+            <ComboBox ItemsSource="{Binding ItemTiers, UpdateSourceTrigger=PropertyChanged, FallbackValue=ItemTier.Unknown}" SelectedValue="{Binding SelectedItemTier}" Visibility="{Binding ItemTiersVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="370,10,0,0" VerticalAlignment="Top" Width="44" MinWidth="80"/>
+            <ComboBox ItemsSource="{Binding ItemLevels, UpdateSourceTrigger=PropertyChanged, FallbackValue=ItemLevel.Unknown}" SelectedValue="{Binding SelectedItemLevel}" Visibility="{Binding ItemLevelsVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="455,10,0,0" VerticalAlignment="Top" Width="54" MinWidth="80"/>
 
             <Grid Margin="0,6,160,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <fa:ImageAwesome Icon="FileImageOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
@@ -87,6 +87,7 @@
                     (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="Donate" /></Hyperlink>)
                 </TextBlock>
             </Grid>
+            <CheckBox Content="{Binding IsFullItemInfoSearchTranslation, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearch, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="200"/>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding Path=SavedPlayerInformationName, ElementName=window}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown"/>

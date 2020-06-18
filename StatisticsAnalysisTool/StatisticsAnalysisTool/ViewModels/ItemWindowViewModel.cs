@@ -220,23 +220,23 @@ namespace StatisticsAnalysisTool.ViewModels
 
             switch (ItemController.GetQuality(marketResponse.QualityLevel))
             {
-                case FrequentlyValues.ItemQuality.Normal:
+                case ItemQuality.Normal:
                     marketQualityObject.SellPriceMinNormal = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
                     return;
-                case FrequentlyValues.ItemQuality.Good:
+                case ItemQuality.Good:
                     marketQualityObject.SellPriceMinGood = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
                     return;
-                case FrequentlyValues.ItemQuality.Outstanding:
+                case ItemQuality.Outstanding:
                     marketQualityObject.SellPriceMinOutstanding = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
                     return;
-                case FrequentlyValues.ItemQuality.Excellent:
+                case ItemQuality.Excellent:
                     marketQualityObject.SellPriceMinExcellent = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
                     return;
-                case FrequentlyValues.ItemQuality.Masterpiece:
+                case ItemQuality.Masterpiece:
                     marketQualityObject.SellPriceMinMasterpiece = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
                     return;
