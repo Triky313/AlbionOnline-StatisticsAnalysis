@@ -44,7 +44,7 @@
             </TextBlock>
         </Grid>
         <Grid Height="33" VerticalAlignment="Bottom">
-            <CheckBox x:Name="ChbShowNotAgain" Content="{Binding ShowNotAgain, FallbackValue=SHOW__NOT__AGAIN}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="10,0,0,0" VerticalAlignment="Bottom" Width="Auto" Height="33" Click="ChbShowNotAgain_Click"/>
+            <CheckBox x:Name="ChbShowNotAgain" Content="{Binding ShowNotAgain, FallbackValue=SHOW__NOT__AGAIN}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="Auto" Click="ChbShowNotAgain_Click"/>
         </Grid>
     </Grid>
 </Window>
