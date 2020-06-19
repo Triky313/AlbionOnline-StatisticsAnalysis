@@ -58,6 +58,12 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _itemParentCategoriesVisibility;
         private MainWindowTranslation _translation;
         private string _savedPlayerInformationName;
+        private Visibility _loadFullItemInfoButtonVisibility;
+        private bool _isLoadFullItemInfoButtonEnabled;
+        private int _loadFullItemInfoProBarValue;
+        private int _loadFullItemInfoProBarMax;
+        private int _loadFullItemInfoProBarMin;
+        private Visibility _loadFullItemInfoProBarVisibility;
 
         public enum ViewMode
         {
@@ -120,7 +126,8 @@ namespace StatisticsAnalysisTool.ViewModels
             SelectedItemTier = ItemTier.Unknown;
             ItemLevels = FrequentlyValues.ItemLevels;
             SelectedItemLevel = ItemLevel.Unknown;
-            
+            LoadFullItemInfoProBarVisibility = Visibility.Hidden;
+
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
             CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
@@ -139,6 +146,16 @@ namespace StatisticsAnalysisTool.ViewModels
                 if (!isItemListLoaded)
                     MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"),
                         LanguageController.Translation("ERROR"));
+
+                if (ItemController.IsFullItemInformationComplete())
+                {
+                    LoadFullItemInfoButtonVisibility = Visibility.Hidden;
+                    IsLoadFullItemInfoButtonEnabled = false;
+                }
+                else
+                {
+                    IsLoadFullItemInfoButtonEnabled = true;
+                }
 
                 _mainWindow.Dispatcher?.Invoke(() =>
                 {
@@ -174,8 +191,28 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.Top = (screenHeight / 2) - (windowHeight / 2);
         }
         
+        public async void LoadAllFullItemInformationFromWeb()
+        {
+            IsLoadFullItemInfoButtonEnabled = false;
+            LoadFullItemInfoButtonVisibility = Visibility.Hidden;
+            LoadFullItemInfoProBarVisibility = Visibility.Visible;
+
+            LoadFullItemInfoProBarMin = 0;
+            LoadFullItemInfoProBarMax = ItemController.Items.Count;
+            LoadFullItemInfoProBarValue = ItemController.Items.Count(x => x.FullItemInformationFromLocal != null);
+            foreach (var item in ItemController.Items)
+            {
+                await ItemController.GetFullItemInformationAsync(item);
+                LoadFullItemInfoProBarValue++;
+            }
+
+            LoadFullItemInfoProBarVisibility = Visibility.Hidden;
+            LoadFullItemInfoButtonVisibility = Visibility.Visible;
+            IsLoadFullItemInfoButtonEnabled = true;
+        }
+
         #region Item list (Normal Mode)
-        
+
         private List<Item> GetFilteredItemList(string searchText)
         {
             var filteredItemList = new List<Item>();
@@ -368,6 +405,54 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #region Bindings
+
+        public Visibility LoadFullItemInfoProBarVisibility {
+            get => _loadFullItemInfoProBarVisibility;
+            set {
+                _loadFullItemInfoProBarVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int LoadFullItemInfoProBarValue {
+            get => _loadFullItemInfoProBarValue;
+            set {
+                _loadFullItemInfoProBarValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int LoadFullItemInfoProBarMax {
+            get => _loadFullItemInfoProBarMax;
+            set {
+                _loadFullItemInfoProBarMax = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int LoadFullItemInfoProBarMin {
+            get => _loadFullItemInfoProBarMin;
+            set {
+                _loadFullItemInfoProBarMin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLoadFullItemInfoButtonEnabled {
+            get => _isLoadFullItemInfoButtonEnabled;
+            set {
+                _isLoadFullItemInfoButtonEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility LoadFullItemInfoButtonVisibility {
+            get => _loadFullItemInfoButtonVisibility;
+            set {
+                _loadFullItemInfoButtonVisibility = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string SearchText {
             get => _searchText;

@@ -230,7 +230,9 @@ namespace StatisticsAnalysisTool.Common
 
         #region ItemInformation
 
-        public static async Task<ItemInformation> GetFullItemInformation(Item item)
+        public static bool IsFullItemInformationComplete() => Items?.All(item => item.FullItemInformationFromLocal != null) ?? false;
+
+        public static async Task<ItemInformation> GetFullItemInformationAsync(Item item)
         {
             var itemInformation = _itemInformationList.SingleOrDefault(x => x.UniqueName == item?.UniqueName);
 

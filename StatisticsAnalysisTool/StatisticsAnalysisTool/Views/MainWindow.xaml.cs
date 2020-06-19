@@ -190,5 +190,10 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.ItemFilterReset();
         }
+
+        private void LoadFullItemInfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel.LoadAllFullItemInformationFromWeb();
+        }
     }
 }

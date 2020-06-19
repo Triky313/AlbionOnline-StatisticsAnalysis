@@ -49,6 +49,8 @@
             </StackPanel>
             <Label Content="{Binding ItemCounterString, FallbackValue=0/0}" Height="26" Margin="0,7,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="75" />
 
+
+
             <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemListViewItemsSource}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,64,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
@@ -64,7 +66,7 @@
 
                         <GridViewColumn Header="{Binding Translation.Name, FallbackValue=NAME}" Width="400" DisplayMemberBinding="{Binding LocalizedNameAndEnglish}" />
 
-                        <GridViewColumn Header="{Binding Translation.FullItemInformationExistLocal, FallbackValue=FULL_ITEM_INFORMATION_EXIST_LOCAL}" Width="40">
+                        <GridViewColumn Header="{Binding Translation.FullItemInformationExistLocal, FallbackValue=FULL_ITEM_INFORMATION_EXIST_LOCAL}" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -91,6 +93,8 @@
                 </TextBlock>
             </Grid>
             <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearch, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="200"/>
+            <Button Style="{StaticResource ButtonStyle}" Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176"/>
+            <ProgressBar Visibility="{Binding LoadFullItemInfoProBarVisibility, FallbackValue=Hidden}" Minimum="{Binding LoadFullItemInfoProBarMin, IsAsync=True, FallbackValue=0}" Maximum="{Binding LoadFullItemInfoProBarMax, IsAsync=True, FallbackValue=0}" Value="{Binding LoadFullItemInfoProBarValue, IsAsync=True, FallbackValue=0}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="176"/>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding SavedPlayerInformationName}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown"/>

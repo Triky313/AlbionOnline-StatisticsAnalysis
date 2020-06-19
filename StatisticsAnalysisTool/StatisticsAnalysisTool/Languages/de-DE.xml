@@ -116,7 +116,9 @@
   <translation name="PARENT_CATEGORY">Hauptkategorie</translation>
   <translation name="FULL_ITEM_INFO_SEARCH">Voll-Item-Info Suche</translation>
   <translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Voll-Item-Info Update Zyklus in Tagen</translation>
+  <translation name="LOAD_FULL_ITEM_INFO">Lade Voll-Item-Info</translation>
   <translation name="UNKNOWN">Unbekannt</translation>
+
   <translation name="CLOTH_ARMOR">Leichte Rüstung</translation>
   <translation name="CLOTH_HELMET">Leichter Helm</translation>
   <translation name="CLOTH_SHOES">Leichte Schuhe</translation>
@@ -129,6 +131,7 @@
   <translation name="UNIQUE_ARMOR">Einmalige Rüstung</translation>
   <translation name="UNIQUE_HELMET">Einmaliger Helm</translation>
   <translation name="UNIQUE_SHOES">Einmalige Schuhe</translation>
+
   <translation name="ARMOR_ARTEFACT">Rüstung</translation>
   <translation name="MAGIC_ARTEFACT">Magisch</translation>
   <translation name="MELEE_ARTEFACT">Nahkampf</translation>

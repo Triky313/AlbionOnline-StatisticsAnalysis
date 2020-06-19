@@ -11,5 +11,6 @@ namespace StatisticsAnalysisTool.Models
         public string FullItemInfoSearch => LanguageController.Translation("FULL_ITEM_INFO_SEARCH");
         public string Icon => LanguageController.Translation("ICON");
         public string Name => LanguageController.Translation("NAME");
+        public string LoadFullItemInfo => LanguageController.Translation("LOAD_FULL_ITEM_INFO");
     }
 }

@@ -74,7 +74,13 @@ namespace StatisticsAnalysisTool.ViewModels
         
         private async void InitializeItemData(Item item)
         {
-            var getFullItemInformationTask = ItemController.GetFullItemInformation(item);
+            if (item == null)
+            {
+                SetNoDataValues(Error.NoItemInfo);
+                return;
+            }
+
+            var getFullItemInformationTask = ItemController.GetFullItemInformationAsync(item);
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
@@ -85,13 +91,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Icon = null;
             ItemName = "-";
             ItemTier = "";
-
-            if (item == null)
-            {
-                SetNoDataValues(Error.NoItemInfo);
-                return;
-            }
-
+            
             if (_mainWindow.Dispatcher == null)
             {
                 SetNoDataValues(Error.GeneralError);
