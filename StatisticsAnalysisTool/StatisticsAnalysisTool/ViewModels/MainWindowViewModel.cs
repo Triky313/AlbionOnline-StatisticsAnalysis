@@ -219,6 +219,15 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public void ItemFilterReset()
+        {
+            SearchText = string.Empty;
+            SelectedItemCategory = Category.Unknown;
+            SelectedItemParentCategory = ParentCategory.Unknown;
+            SelectedItemLevel = ItemLevel.Unknown;
+            SelectedItemTier = ItemTier.Unknown;
+        }
+
         #endregion
 
         #region Player information (Player Mode)
@@ -358,10 +367,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        #region Bindings
+
         public string SearchText {
             get => _searchText;
-            set
-            {
+            set {
                 _searchText = value;
                 ItemListViewItemsSource = GetFilteredItemList(_searchText);
                 OnPropertyChanged();
@@ -370,8 +380,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public bool IsFullItemInfoSearch {
             get => _isFullItemInfoSearch;
-            set
-            {
+            set {
                 _isFullItemInfoSearch = value;
 
                 if (_isFullItemInfoSearch)
@@ -415,8 +424,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public Visibility ItemParentCategoriesVisibility {
             get => _itemParentCategoriesVisibility;
-            set
-            {
+            set {
                 _itemParentCategoriesVisibility = value;
                 OnPropertyChanged();
             }
@@ -424,15 +432,14 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public Dictionary<Category, string> ItemCategories {
             get => _itemCategories;
-            set
-            {
+            set {
                 var categories = value;
                 categories = (new Dictionary<Category, string> { { Category.Unknown, string.Empty } }).Concat(categories).ToDictionary(k => k.Key, v => v.Value);
                 _itemCategories = categories;
                 OnPropertyChanged();
             }
         }
-        
+
         public Category SelectedItemCategory {
             get => _selectedItemCategories;
             set {
@@ -494,7 +501,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public int LocalImageCounter {
             get => _localImageCounter;
             set {
@@ -519,56 +526,46 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<ModeStruct> Modes
-        {
+        public ObservableCollection<ModeStruct> Modes {
             get => _modes;
-            set
-            {
+            set {
                 _modes = value;
                 OnPropertyChanged();
             }
         }
 
-        public ModeStruct ModeSelection
-        {
+        public ModeStruct ModeSelection {
             get => _modeSelection;
-            set
-            {
+            set {
                 _modeSelection = value;
                 OnPropertyChanged();
             }
         }
 
-        public int CurrentGoldPrice
-        {
+        public int CurrentGoldPrice {
             get => _currentGoldPrice;
-            set
-            {
+            set {
                 _currentGoldPrice = value;
                 OnPropertyChanged();
             }
         }
 
-        public string CurrentGoldPriceTimestamp 
-        {
+        public string CurrentGoldPriceTimestamp {
             get => _currentGoldPriceTimestamp;
-            set
-            {
+            set {
                 _currentGoldPriceTimestamp = value;
                 OnPropertyChanged();
             }
         }
 
-        public string TextBoxGoldModeNumberOfValues
-        {
+        public string TextBoxGoldModeNumberOfValues {
             get => _textBoxGoldModeNumberOfValues;
-            set
-            {
+            set {
                 _textBoxGoldModeNumberOfValues = value;
                 OnPropertyChanged();
             }
         }
-        
+
         public PlayerModeTranslation PlayerModeTranslation {
             get => _playerModeTranslation;
             set {
@@ -610,11 +607,9 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string UpdateTranslation
-        {
+        public string UpdateTranslation {
             get => _updateTranslation;
-            set
-            {
+            set {
                 _updateTranslation = value;
                 OnPropertyChanged();
             }
@@ -639,6 +634,8 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
 
         public struct ModeStruct
         {

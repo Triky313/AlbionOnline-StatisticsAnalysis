@@ -185,5 +185,10 @@ namespace StatisticsAnalysisTool.Views
             if (int.TryParse(_mainWindowViewModel.TextBoxGoldModeNumberOfValues, out var numberOfValues))
                 _mainWindowViewModel.SetGoldChart(numberOfValues);
         }
+
+        private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _mainWindowViewModel.ItemFilterReset();
+        }
     }
 }
