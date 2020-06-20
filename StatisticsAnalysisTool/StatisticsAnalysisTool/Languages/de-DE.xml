@@ -298,4 +298,8 @@
   <translation name="TOKEN">Abzeichen</translation>
   <translation name="TOOL">Werkzeuge</translation>
   <translation name="TROPHIES">Trophäen</translation>
+
+  <translation name="WEIGHT">Gewicht</translation>
+  <translation name="ITEM_POWER">Gegenstandstärke (IP)</translation>
+  <translation name="DURABILITY">Haltrbarkeit</translation>
 </translations>

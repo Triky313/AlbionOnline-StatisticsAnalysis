@@ -69,10 +69,34 @@ namespace StatisticsAnalysisTool.Models
         public double? PrefabScaling { get; set; }
         [JsonProperty(PropertyName = "abilityPower")]
         public int? AbilityPower { get; set; }
+
+
+        [JsonProperty(PropertyName = "attackDamage")]
+        public int? AttackDamage { get; set; }
+        [JsonProperty(PropertyName = "attackSpeed")]
+        public double? AttackSpeed { get; set; }
+        [JsonProperty(PropertyName = "attackRange")]
+        public double? AttackRange { get; set; }
+        [JsonProperty(PropertyName = "weight")]
+        public double? Weight { get; set; }
         [JsonProperty(PropertyName = "activeSpellSlots")]
-        public int? ActiveSpellSlots { get; set; }
+        public int? ActiveSpellSlots { get; set; }        
         [JsonProperty(PropertyName = "passiveSpellSlots")]
         public int? PassiveSpellSlots { get; set; }
+        [JsonProperty(PropertyName = "durability")]
+        public int? Durability { get; set; }
+        [JsonProperty(PropertyName = "durabilityLossAttack")]
+        public int? DurabilityLossAttack { get; set; }
+        [JsonProperty(PropertyName = "durabilityLossSpelluse")]
+        public int? DurabilityLossSpellUse { get; set; }
+        [JsonProperty(PropertyName = "durabilityLossReceivedattack")]
+        public int? DurabilityLossReceivedAttack { get; set; }
+        [JsonProperty(PropertyName = "durabilityLossReceivedspell")]
+        public int? DurabilityLossReceivedSpell { get; set; }
+        [JsonProperty(PropertyName = "hitpointsMax")]
+        public int? HitPointsMax { get; set; }
+        [JsonProperty(PropertyName = "itemPower")]
+        public int? ItemPower { get; set; }
         [JsonProperty(PropertyName = "dismountTime")]
         public int? DismountTime { get; set; }
         [JsonProperty(PropertyName = "mountHitPointsMax")]

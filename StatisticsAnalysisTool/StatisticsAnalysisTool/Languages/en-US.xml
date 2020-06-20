@@ -299,4 +299,8 @@
   <translation name="TOKEN">Token</translation>
   <translation name="TOOL">Tool</translation>
   <translation name="TROPHIES">Trophies</translation>
+
+  <translation name="WEIGHT">Weight</translation>
+  <translation name="ITEM_POWER">Trophäen</translation>
+  <translation name="DURABILITY">Trophäen</translation>
 </translations>

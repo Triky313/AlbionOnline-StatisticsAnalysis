@@ -38,5 +38,8 @@ namespace StatisticsAnalysisTool.Models
         public string LastFullInformationUpdate => LanguageController.Translation("LAST_FULL_INFORMATION_UPDATE");
         public string Category => LanguageController.Translation("CATEGORY");
         public string ParentCategory => LanguageController.Translation("PARENT_CATEGORY");
+        public string Weight => LanguageController.Translation("WEIGHT");
+        public string ItemPower => LanguageController.Translation("ITEM_POWER");
+        public string Durability => LanguageController.Translation("DURABILITY");
     }
 }
