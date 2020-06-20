@@ -12,7 +12,7 @@ namespace StatisticsAnalysisTool.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.6.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -261,6 +261,42 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["ShowInfoWindowOnStartChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("FullItemInformation.json")]
+        public string FullItemInformationFileName {
+            get {
+                return ((string)(this["FullItemInformationFileName"]));
+            }
+            set {
+                this["FullItemInformationFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsFullItemInfoSearch {
+            get {
+                return ((bool)(this["IsFullItemInfoSearch"]));
+            }
+            set {
+                this["IsFullItemInfoSearch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("90")]
+        public int FullItemInformationUpdateCycleDays {
+            get {
+                return ((int)(this["FullItemInformationUpdateCycleDays"]));
+            }
+            set {
+                this["FullItemInformationUpdateCycleDays"] = value;
             }
         }
     }

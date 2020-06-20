@@ -33,5 +33,13 @@ namespace StatisticsAnalysisTool.Models
         public string ShowInMarketplace => LanguageController.Translation("SHOW_IN_MARKET_PLACE");
         public string ItemType => LanguageController.Translation("ITEM_TYPE");
         public string CategoryName => LanguageController.Translation("CATEGORY_NAME");
+        public string CategoryId => LanguageController.Translation("CATEGORY_ID");
+        public string Revision => LanguageController.Translation("REVISION");
+        public string LastFullInformationUpdate => LanguageController.Translation("LAST_FULL_INFORMATION_UPDATE");
+        public string Category => LanguageController.Translation("CATEGORY");
+        public string ParentCategory => LanguageController.Translation("PARENT_CATEGORY");
+        public string Weight => LanguageController.Translation("WEIGHT");
+        public string ItemPower => LanguageController.Translation("ITEM_POWER");
+        public string Durability => LanguageController.Translation("DURABILITY");
     }
 }

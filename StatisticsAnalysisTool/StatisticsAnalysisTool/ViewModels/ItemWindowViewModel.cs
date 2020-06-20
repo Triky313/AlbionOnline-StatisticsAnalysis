@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.ViewModels
@@ -28,7 +29,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _errorBarVisibility;
         private string _errorBarText;
         private BitmapImage _icon;
-        private string _itemTitle;
+        private string _itemName;
         private bool _masterpieceQualityChecked;
         private bool _excellentQualityChecked;
         private bool _outstandingQualityChecked;
@@ -44,11 +45,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isAutoUpdateActive;
         private string _refreshIconTooltipText;
         private List<MarketQualityObject> _allQualityPricesList;
-        private string _isEquipable;
-        private string _isStackable;
-        private string _isShowInMarketplace;
-        private string _itemType;
-        private string _categoryName;
+        private string _itemTierLevel;
+        private List<MarketCurrentPricesItem> _marketCurrentPricesItemList;
+        private XmlLanguage _itemListViewLanguage;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -60,27 +59,24 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void InitializeItemWindow(Item item)
         {
+            ItemInformation = null;
+            ErrorBarVisibility = Visibility.Hidden;
+
             Item = item;
 
-            ErrorBarVisibility = Visibility.Hidden;
             IsAutoUpdateActive = true;
 
             Translation = new ItemWindowTranslation();
             InitializeItemData(item);
 
-            _mainWindow.ListViewPrices.Language = System.Windows.Markup.XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+            ItemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
         }
         
         private async void InitializeItemData(Item item)
         {
-            await _mainWindow.Dispatcher.InvokeAsync(() =>
-            {
-                _mainWindow.Icon = null;
-                _mainWindow.Title = "-";
-            });
-
             Icon = null;
-            ItemTitle = "-";
+            ItemName = "-";
+            ItemTierLevel = string.Empty;
 
             if (item == null)
             {
@@ -88,40 +84,43 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
+            ItemTierLevel = (Item?.Tier != -1 && Item?.Level != -1) ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
+
+            var getFullItemInformationTask = ItemController.GetFullItemInformationAsync(item);
+
+            await _mainWindow.Dispatcher.InvokeAsync(() =>
+            {
+                _mainWindow.Icon = null;
+                _mainWindow.Title = "-";
+            });
+            
             if (_mainWindow.Dispatcher == null)
             {
                 SetNoDataValues(Error.GeneralError);
                 return;
             }
 
-            var localizedName = ItemController.LocalizedName(Item.LocalizedNames, null, Item.UniqueName);
-            _ = GetItemInformation(item);
+            var localizedName = ItemController.LocalizedName(Item?.LocalizedNames, null, Item?.UniqueName);
 
+            Icon = item.Icon;
+            ItemName = localizedName;
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindow.Icon = item.Icon;
+            });
+
+            ItemInformation = await getFullItemInformationTask;
+            
+            await _mainWindow.Dispatcher.InvokeAsync(() =>
+            {
                 _mainWindow.Title = $"{localizedName} (T{ItemInformation?.Tier})";
             });
 
             StartAutoUpdater();
             RefreshSpin = IsAutoUpdateActive;
-
-            ItemTitle = $"{localizedName} (T{ItemInformation?.Tier})";
-            Icon = item.Icon;
         }
-
-        private async Task GetItemInformation(Item item)
-        {
-            ItemInformation = await ApiController.GetItemInfoFromJsonAsync(item);
-
-            IsEquipable = ItemInformation != null && (ItemInformation.Equipable) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
-            IsStackable = ItemInformation != null && (ItemInformation.Stackable) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
-            IsShowInMarketplace = ItemInformation != null && (ItemInformation.ShowInMarketplace) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
-            ItemType = ItemInformation?.ItemType ?? "-";
-            CategoryName = ItemInformation?.CategoryName ?? "-";
-        }
-
-        private void SetNoDataValues(Error error, string message = null)
+        
+        private void SetNoDataValues(Error error)
         {
             switch (error)
             {
@@ -188,16 +187,75 @@ namespace StatisticsAnalysisTool.ViewModels
             });
         }
 
+        private List<int> GetQualities()
+        {
+            var qualities = new List<int>();
+
+            if (NormalQualityChecked)
+                qualities.Add(1);
+
+            if (GoodQualityChecked)
+                qualities.Add(2);
+
+            if (OutstandingQualityChecked)
+                qualities.Add(3);
+
+            if (ExcellentQualityChecked)
+                qualities.Add(4);
+
+            if (MasterpieceQualityChecked)
+                qualities.Add(5);
+
+            return qualities;
+        }
+        
+        public async void SetHistoryChart()
+        {
+            var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
+            Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)), 
+                DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
+
+            var date = new List<string>();
+            var seriesCollectionHistory = new SeriesCollection();
+
+            foreach (var marketHistory in historyItemPrices)
+            {
+                var amount = new ChartValues<int>();
+                foreach (var data in  marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
+                {
+                    if(!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
+                    {
+                        date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+                    }
+
+                    amount.Add(data.AveragePrice);
+                }
+                
+                seriesCollectionHistory.Add(new LineSeries
+                {
+                    Title = Locations.GetName(Locations.GetName(marketHistory?.Location)),
+                    Values = amount,
+                    Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
+                    Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false)
+                });
+            }
+
+            LabelsHistory = date.ToArray();
+            SeriesCollectionHistory = seriesCollectionHistory;
+        }
+
+        #region Prices
+
         public async void SetQualityPriceStatsOnListView()
         {
             var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName,
-                Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)),new List<int>());
+                Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)), new List<int>());
 
             if (statPricesList == null)
                 return;
 
             var marketQualityObjectList = new List<MarketQualityObject>();
-            
+
             foreach (var stat in statPricesList)
             {
                 if (marketQualityObjectList.Exists(x => x.Location == stat.City))
@@ -222,23 +280,23 @@ namespace StatisticsAnalysisTool.ViewModels
 
             switch (ItemController.GetQuality(marketResponse.QualityLevel))
             {
-                case FrequentlyValues.ItemQuality.Normal:
+                case ItemQuality.Normal:
                     marketQualityObject.SellPriceMinNormal = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
                     return;
-                case FrequentlyValues.ItemQuality.Good:
+                case ItemQuality.Good:
                     marketQualityObject.SellPriceMinGood = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
                     return;
-                case FrequentlyValues.ItemQuality.Outstanding:
+                case ItemQuality.Outstanding:
                     marketQualityObject.SellPriceMinOutstanding = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
                     return;
-                case FrequentlyValues.ItemQuality.Excellent:
+                case ItemQuality.Excellent:
                     marketQualityObject.SellPriceMinExcellent = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
                     return;
-                case FrequentlyValues.ItemQuality.Masterpiece:
+                case ItemQuality.Masterpiece:
                     marketQualityObject.SellPriceMinMasterpiece = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
                     return;
@@ -261,9 +319,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             FindBestPrice(ref statsPricesTotalList);
 
-            var marketCurrentPricesItemList = new List<MarketCurrentPricesItem>();
-            foreach (var item in statsPricesTotalList)
-                marketCurrentPricesItemList.Add(new MarketCurrentPricesItem(item));
+            var marketCurrentPricesItemList = statsPricesTotalList.Select(item => new MarketCurrentPricesItem(item)).ToList();
 
             _mainWindow.Dispatcher?.Invoke(() =>
             {
@@ -271,12 +327,12 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
                 }
-                _mainWindow.ListViewPrices.ItemsSource = marketCurrentPricesItemList;
+                MarketCurrentPricesItemList = marketCurrentPricesItemList;
                 SetDifferenceCalculationText(statsPricesTotalList);
             });
 
             HasItemPrices = true;
-            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
+            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {Formatting.CurrentDateTimeFormat(DateTime.Now)}";
         }
 
         private List<MarketResponseTotal> PriceUpdate(List<MarketResponse> newStatsPricesList)
@@ -411,63 +467,11 @@ namespace StatisticsAnalysisTool.ViewModels
                                                  $"{LanguageController.Translation("PROFIT")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", diffPrice)}";
         }
 
-        private List<int> GetQualities()
-        {
-            var qualities = new List<int>();
 
-            if (NormalQualityChecked)
-                qualities.Add(1);
+        #endregion
 
-            if (GoodQualityChecked)
-                qualities.Add(2);
+        #region Bindings
 
-            if (OutstandingQualityChecked)
-                qualities.Add(3);
-
-            if (ExcellentQualityChecked)
-                qualities.Add(4);
-
-            if (MasterpieceQualityChecked)
-                qualities.Add(5);
-
-            return qualities;
-        }
-
-        public async void SetHistoryChart()
-        {
-            var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
-            Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)), 
-                DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
-
-            var date = new List<string>();
-            var seriesCollectionHistory = new SeriesCollection();
-
-            foreach (var marketHistory in historyItemPrices)
-            {
-                var amount = new ChartValues<int>();
-                foreach (var data in  marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
-                {
-                    if(!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
-                    {
-                        date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
-                    }
-
-                    amount.Add(data.AveragePrice);
-                }
-                
-                seriesCollectionHistory.Add(new LineSeries
-                {
-                    Title = Locations.GetName(Locations.GetName(marketHistory?.Location)),
-                    Values = amount,
-                    Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
-                    Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false)
-                });
-            }
-
-            LabelsHistory = date.ToArray();
-            SeriesCollectionHistory = seriesCollectionHistory;
-        }
-        
         public Item Item {
             get => _item;
             set {
@@ -484,10 +488,18 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string ItemTitle {
-            get => _itemTitle;
+        public string ItemName {
+            get => _itemName;
             set {
-                _itemTitle = value;
+                _itemName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ItemTierLevel {
+            get => _itemTierLevel;
+            set {
+                _itemTierLevel = value;
                 OnPropertyChanged();
             }
         }
@@ -496,6 +508,22 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _icon;
             set {
                 _icon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<MarketCurrentPricesItem> MarketCurrentPricesItemList {
+            get => _marketCurrentPricesItemList;
+            set {
+                _marketCurrentPricesItemList = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public XmlLanguage ItemListViewLanguage {
+            get => _itemListViewLanguage;
+            set {
+                _itemListViewLanguage = value;
                 OnPropertyChanged();
             }
         }
@@ -534,8 +562,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public bool NormalQualityChecked {
             get => _normalQualityChecked;
-            set
-            {
+            set {
                 _normalQualityChecked = !_normalQualityChecked && value;
                 OnPropertyChanged();
             }
@@ -580,7 +607,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public bool ShowVillagesChecked {
             get => _showVillagesChecked;
             set {
@@ -588,16 +615,15 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
-        public bool IsAutoUpdateActive
-        {
+
+        public bool IsAutoUpdateActive {
             get => _isAutoUpdateActive;
             set {
                 _isAutoUpdateActive = value;
                 OnPropertyChanged();
             }
         }
-        
+
         public bool HasItemPrices {
             get => _hasItemPrices;
             set {
@@ -606,95 +632,41 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public SeriesCollection SeriesCollectionHistory
-        {
+        public SeriesCollection SeriesCollectionHistory {
             get => _seriesCollectionHistory;
-            set
-            {
+            set {
                 _seriesCollectionHistory = value;
                 OnPropertyChanged();
             }
         }
 
-        public string[] LabelsHistory
-        {
+        public string[] LabelsHistory {
             get => _labelsHistory;
-            set
-            {
+            set {
                 _labelsHistory = value;
                 OnPropertyChanged();
             }
         }
-        
-        public bool RefreshSpin
-        {
+
+        public bool RefreshSpin {
             get => _refreshSpin;
-            set
-            {
+            set {
                 _refreshSpin = value;
                 OnPropertyChanged();
             }
         }
-        
-        public string RefreshIconTooltipText
-        {
+
+        public string RefreshIconTooltipText {
             get => _refreshIconTooltipText;
-            set
-            {
+            set {
                 _refreshIconTooltipText = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string IsEquipable {
-            get => _isEquipable;
-            set
-            {
-                _isEquipable = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string IsStackable {
-            get => _isStackable;
-            set
-            {
-                _isStackable = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string IsShowInMarketplace {
-            get => _isShowInMarketplace;
-            set
-            {
-                _isShowInMarketplace = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string ItemType {
-            get => _itemType;
-            set
-            {
-                _itemType = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string CategoryName {
-            get => _categoryName;
-            set
-            {
-                _categoryName = value;
                 OnPropertyChanged();
             }
         }
 
         public List<MarketQualityObject> AllQualityPricesList {
             get => _allQualityPricesList;
-            set
-            {
+            set {
                 _allQualityPricesList = value;
                 OnPropertyChanged();
             }
@@ -707,6 +679,6 @@ namespace StatisticsAnalysisTool.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
+        #endregion
     }
 }

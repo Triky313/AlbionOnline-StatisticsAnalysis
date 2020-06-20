@@ -1,4 +1,5 @@
 ﻿using FontAwesome.WPF;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
@@ -24,11 +25,6 @@ namespace StatisticsAnalysisTool.Views
             InitializeComponent();
             _mainWindowViewModel = new MainWindowViewModel(this);
             DataContext = _mainWindowViewModel;
-        }
-
-        private void TxtSearch_KeyUp(object sender, KeyEventArgs e)
-        {
-            _mainWindowViewModel.LoadLvItems(TxtSearch.Text);
         }
 
         private void LvItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -160,9 +156,10 @@ namespace StatisticsAnalysisTool.Views
                 Settings.Default.MainWindowWidth = Width;
                 Settings.Default.MainWindowMaximized = false;
             }
-
-            Settings.Default.SavedPlayerInformationName = TxtBoxPlayerModeUsername.Text;
+            
             Settings.Default.Save();
+
+            ItemController.SaveItemInformationLocal();
         }
 
         private async void BtnPlayerModeSave_Click(object sender, RoutedEventArgs e)
@@ -189,10 +186,14 @@ namespace StatisticsAnalysisTool.Views
                 _mainWindowViewModel.SetGoldChart(numberOfValues);
         }
 
-        private void InfoCircle_MouseUp(object sender, MouseButtonEventArgs e)
+        private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var changelogWindow = new InfoWindow();
-            changelogWindow.Show();
+            _mainWindowViewModel.ItemFilterReset();
+        }
+
+        private void LoadFullItemInfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel.LoadAllFullItemInformationFromWeb();
         }
     }
 }

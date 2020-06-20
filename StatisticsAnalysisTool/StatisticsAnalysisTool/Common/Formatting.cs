@@ -1,4 +1,6 @@
-﻿namespace StatisticsAnalysisTool.Common
+﻿using System;
+
+namespace StatisticsAnalysisTool.Common
 {
     using System.Globalization;
 
@@ -15,5 +17,7 @@
         public static object NumberValueWithPointSeparation(long? value) => (value != null) ? NumberValueWithPointSeparation(value) : 0 ;
 
         public static object NumberValueWithPointSeparation(ulong? value) => (value != null) ? NumberValueWithPointSeparation(value) : 0 ;
+
+        public static string CurrentDateTimeFormat(DateTime value) => DateTime.SpecifyKind(value, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
     }
 }

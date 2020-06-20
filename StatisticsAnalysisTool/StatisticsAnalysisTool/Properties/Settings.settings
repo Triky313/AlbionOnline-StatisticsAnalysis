@@ -65,5 +65,14 @@
     <Setting Name="ShowInfoWindowOnStartChecked" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="FullItemInformationFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">FullItemInformation.json</Value>
+    </Setting>
+    <Setting Name="IsFullItemInfoSearch" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FullItemInformationUpdateCycleDays" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">90</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

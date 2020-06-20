@@ -1,5 +1,4 @@
 ﻿using LiveCharts;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
@@ -10,11 +9,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -27,8 +24,7 @@ namespace StatisticsAnalysisTool.ViewModels
     {
         private static MainWindow _mainWindow;
 
-        private static List<Item> _items;
-        private static List<Item> _filteredItems;
+        private static List<Item> _itemListViewItemsSource;
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
         private ObservableCollection<ModeStruct> _modes = new ObservableCollection<ModeStruct>();
@@ -45,6 +41,29 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTxtSearchEnabled;
         private string _itemCounterString;
         private int _localImageCounter;
+        private string _fullItemInformationExistLocal;
+        private Dictionary<Category, string> _itemCategories;
+        private Category _selectedItemCategories;
+        private Dictionary<ParentCategory, string> _itemParentCategories;
+        private ParentCategory _selectedItemParentCategories;
+        private Dictionary<ItemTier, string> _itemTiers;
+        private ItemTier _selectedItemTier;
+        private Dictionary<ItemLevel, string> _itemLevels;
+        private ItemLevel _selectedItemLevel;
+        private string _searchText;
+        private bool _isFullItemInfoSearch;
+        private Visibility _itemLevelsVisibility;
+        private Visibility _itemTiersVisibility;
+        private Visibility _itemCategoriesVisibility;
+        private Visibility _itemParentCategoriesVisibility;
+        private MainWindowTranslation _translation;
+        private string _savedPlayerInformationName;
+        private Visibility _loadFullItemInfoButtonVisibility;
+        private bool _isLoadFullItemInfoButtonEnabled;
+        private int _loadFullItemInfoProBarValue;
+        private int _loadFullItemInfoProBarMax;
+        private int _loadFullItemInfoProBarMin;
+        private Visibility _loadFullItemInfoProBarVisibility;
 
         public enum ViewMode
         {
@@ -62,7 +81,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (!LanguageController.InitializeLanguage())
                 _mainWindow.Close();
-
+            
             InitMainWindowData();
         }
 
@@ -96,11 +115,18 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async void InitMainWindowData()
         {
-            UpdateTranslation = LanguageController.Translation("UPDATE");
-            NumberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
-            LoadTranslation = LanguageController.Translation("LOAD");
+            Translation = new MainWindowTranslation();
 
             SetModeCombobox();
+            ItemController.GetItemInformationListFromLocalAsync();
+
+            IsFullItemInfoSearch = Settings.Default.IsFullItemInfoSearch;
+            ItemParentCategories = CategoryController.ParentCategoryNames;
+            ItemTiers = FrequentlyValues.ItemTiers;
+            SelectedItemTier = ItemTier.Unknown;
+            ItemLevels = FrequentlyValues.ItemLevels;
+            SelectedItemLevel = ItemLevel.Unknown;
+            LoadFullItemInfoProBarVisibility = Visibility.Hidden;
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
@@ -113,13 +139,23 @@ namespace StatisticsAnalysisTool.ViewModels
                     IsTxtSearchEnabled = false;
                     _mainWindow.FaLoadIcon.Visibility = Visibility.Visible;
 
-                    _mainWindow.TxtBoxPlayerModeUsername.Text = Settings.Default.SavedPlayerInformationName;
+                    SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
                 });
                 
-                var isItemListLoaded = await GetItemListFromJsonAsync().ConfigureAwait(true);
+                var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
                 if (!isItemListLoaded)
                     MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"),
                         LanguageController.Translation("ERROR"));
+
+                if (ItemController.IsFullItemInformationComplete())
+                {
+                    LoadFullItemInfoButtonVisibility = Visibility.Hidden;
+                    IsLoadFullItemInfoButtonEnabled = false;
+                }
+                else
+                {
+                    IsLoadFullItemInfoButtonEnabled = true;
+                }
 
                 _mainWindow.Dispatcher?.Invoke(() =>
                 {
@@ -155,122 +191,78 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.Top = (screenHeight / 2) - (windowHeight / 2);
         }
         
+        public async void LoadAllFullItemInformationFromWeb()
+        {
+            IsLoadFullItemInfoButtonEnabled = false;
+            LoadFullItemInfoButtonVisibility = Visibility.Hidden;
+            LoadFullItemInfoProBarVisibility = Visibility.Visible;
+
+            LoadFullItemInfoProBarMin = 0;
+            LoadFullItemInfoProBarMax = ItemController.Items.Count;
+            LoadFullItemInfoProBarValue = ItemController.Items.Count(x => x.FullItemInformationFromLocal != null);
+            foreach (var item in ItemController.Items)
+            {
+                await ItemController.GetFullItemInformationAsync(item);
+                LoadFullItemInfoProBarValue++;
+            }
+
+            LoadFullItemInfoProBarVisibility = Visibility.Hidden;
+            LoadFullItemInfoButtonVisibility = Visibility.Visible;
+            IsLoadFullItemInfoButtonEnabled = true;
+        }
+
         #region Item list (Normal Mode)
 
-        public List<Item> FilteredItems {
-            get => _filteredItems;
+        private List<Item> GetFilteredItemList(string searchText)
+        {
+            var filteredItemList = new List<Item>();
+
+            if (ItemController.Items == null)
+            {
+                return filteredItemList;
+            }
+
+            if (IsFullItemInfoSearch)
+            {
+                filteredItemList = ItemController.Items.Where(x =>
+                    x?.FullItemInformationFromLocal != null &&
+                    x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)
+                    && (x.FullItemInformationFromLocal?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
+                    && (x.FullItemInformationFromLocal?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                    && ((ItemTier)x.FullItemInformationFromLocal?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                    && ((ItemLevel)x.FullItemInformationFromLocal?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)).ToList();
+            }
+            else
+            {
+                filteredItemList = ItemController.Items.Where(x => x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)).ToList();
+            }
+
+            SetItemCounterAsync(filteredItemList.Count);
+
+            return filteredItemList;
+        }
+
+        private async void SetItemCounterAsync(int? items)
+        {
+            LocalImageCounter = await ImageController.LocalImagesCounterAsync();
+            ItemCounterString = $"{items ?? 0}/{ItemController.Items?.Count ?? 0}";
+        }
+
+        public List<Item> ItemListViewItemsSource {
+            get => _itemListViewItemsSource;
             set {
-                _filteredItems = value;
+                _itemListViewItemsSource = value;
                 OnPropertyChanged();
             }
         }
 
-        public async Task<List<Item>> FindItemsAsync(string searchText)
+        public void ItemFilterReset()
         {
-            return await Task.Run(() =>
-            {
-                try
-                {
-                    return _items?.FindAll(s => (s.LocalizedNameAndEnglish.ToLower().Contains(searchText.ToLower())));
-                }
-                catch
-                {
-                    return null;
-                }
-            });
-        }
-
-        public async Task<bool> GetItemListFromJsonAsync()
-        {
-            var url = Settings.Default.ItemListSourceUrl;
-            if (!GetItemListSourceUrlIfExist(ref url))
-                return false;
-
-            if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}"))
-            {
-                var fileDateTime = File.GetLastWriteTime($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
-
-                if (fileDateTime.AddDays(7) < DateTime.Now)
-                {
-                    _items = await TryToGetItemListFromWeb(url);
-                    return (_items != null);
-                }
-
-                _items = GetItemListFromLocal();
-                return (_items != null);
-            }
-
-            _items = await TryToGetItemListFromWeb(url);
-            return (_items != null);
-        }
-
-        private static List<Item> GetItemListFromLocal()
-        {
-            try
-            {
-                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
-                return JsonConvert.DeserializeObject<List<Item>>(localItemString);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        private static async Task<List<Item>> TryToGetItemListFromWeb(string url)
-        {
-            using (var wd = new WebDownload(30000))
-            {
-                try
-                {
-                    var itemsString = await wd.DownloadStringTaskAsync(url);
-                    File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
-                    return JsonConvert.DeserializeObject<List<Item>>(itemsString);
-                }
-                catch (Exception)
-                {
-                    try
-                    {
-                        var itemsString = await wd.DownloadStringTaskAsync(Settings.Default.DefaultItemListSourceUrl);
-                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
-                        return JsonConvert.DeserializeObject<List<Item>>(itemsString);
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-                }
-            }
-        }
-
-        private static bool GetItemListSourceUrlIfExist(ref string url)
-        {
-            if (string.IsNullOrEmpty(Settings.Default.ItemListSourceUrl))
-            {
-                url = Settings.Default.DefaultItemListSourceUrl;
-                if (string.IsNullOrEmpty(url))
-                    return false;
-
-                Settings.Default.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
-                MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
-            }
-            return true;
-        }
-
-        public async void LoadLvItems(string searchText)
-        {
-            if (string.IsNullOrEmpty(searchText))
-                return;
-
-            var items = await FindItemsAsync(searchText);
-            FilteredItems = items;
-
-            _mainWindow.Dispatcher?.InvokeAsync(async () =>
-            {
-                LocalImageCounter = await ImageController.LocalImagesCounterAsync();
-            });
-
-            ItemCounterString = $"{items.Count}/{items.Count}";
+            SearchText = string.Empty;
+            SelectedItemCategory = Category.Unknown;
+            SelectedItemParentCategory = ParentCategory.Unknown;
+            SelectedItemLevel = ItemLevel.Unknown;
+            SelectedItemTier = ItemTier.Unknown;
         }
 
         #endregion
@@ -284,12 +276,12 @@ namespace StatisticsAnalysisTool.ViewModels
             PlayerModeInformation = await GetPlayerModeInformationByApi().ConfigureAwait(true);
         }
         
-        private static async Task<PlayerModeInformationModel> GetPlayerModeInformationByApi()
+        private async Task<PlayerModeInformationModel> GetPlayerModeInformationByApi()
         {
-            if (string.IsNullOrWhiteSpace(_mainWindow.TxtBoxPlayerModeUsername.Text))
+            if (string.IsNullOrWhiteSpace(SavedPlayerInformationName))
                 return null;
 
-            var gameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(_mainWindow.TxtBoxPlayerModeUsername.Text);
+            var gameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(SavedPlayerInformationName);
             
             if (gameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id == null)
                 return null;
@@ -412,6 +404,189 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        #region Bindings
+
+        public Visibility LoadFullItemInfoProBarVisibility {
+            get => _loadFullItemInfoProBarVisibility;
+            set {
+                _loadFullItemInfoProBarVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int LoadFullItemInfoProBarValue {
+            get => _loadFullItemInfoProBarValue;
+            set {
+                _loadFullItemInfoProBarValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int LoadFullItemInfoProBarMax {
+            get => _loadFullItemInfoProBarMax;
+            set {
+                _loadFullItemInfoProBarMax = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int LoadFullItemInfoProBarMin {
+            get => _loadFullItemInfoProBarMin;
+            set {
+                _loadFullItemInfoProBarMin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLoadFullItemInfoButtonEnabled {
+            get => _isLoadFullItemInfoButtonEnabled;
+            set {
+                _isLoadFullItemInfoButtonEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility LoadFullItemInfoButtonVisibility {
+            get => _loadFullItemInfoButtonVisibility;
+            set {
+                _loadFullItemInfoButtonVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SearchText {
+            get => _searchText;
+            set {
+                _searchText = value;
+                ItemListViewItemsSource = GetFilteredItemList(_searchText);
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsFullItemInfoSearch {
+            get => _isFullItemInfoSearch;
+            set {
+                _isFullItemInfoSearch = value;
+
+                if (_isFullItemInfoSearch)
+                {
+                    ItemLevelsVisibility = ItemTiersVisibility = ItemCategoriesVisibility = ItemParentCategoriesVisibility = Visibility.Visible;
+                }
+                else
+                {
+                    ItemLevelsVisibility = ItemTiersVisibility = ItemCategoriesVisibility = ItemParentCategoriesVisibility = Visibility.Hidden;
+                }
+
+                ItemListViewItemsSource = GetFilteredItemList(_searchText);
+                Settings.Default.IsFullItemInfoSearch = _isFullItemInfoSearch;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ItemLevelsVisibility {
+            get => _itemLevelsVisibility;
+            set {
+                _itemLevelsVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ItemTiersVisibility {
+            get => _itemTiersVisibility;
+            set {
+                _itemTiersVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ItemCategoriesVisibility {
+            get => _itemCategoriesVisibility;
+            set {
+                _itemCategoriesVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ItemParentCategoriesVisibility {
+            get => _itemParentCategoriesVisibility;
+            set {
+                _itemParentCategoriesVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Dictionary<Category, string> ItemCategories {
+            get => _itemCategories;
+            set {
+                var categories = value;
+                categories = (new Dictionary<Category, string> { { Category.Unknown, string.Empty } }).Concat(categories).ToDictionary(k => k.Key, v => v.Value);
+                _itemCategories = categories;
+                OnPropertyChanged();
+            }
+        }
+
+        public Category SelectedItemCategory {
+            get => _selectedItemCategories;
+            set {
+                _selectedItemCategories = value;
+                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                OnPropertyChanged();
+            }
+        }
+
+        public Dictionary<ParentCategory, string> ItemParentCategories {
+            get => _itemParentCategories;
+            set {
+                _itemParentCategories = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ParentCategory SelectedItemParentCategory {
+            get => _selectedItemParentCategories;
+            set {
+                _selectedItemParentCategories = value;
+                ItemCategories = CategoryController.GetCategoriesByParentCategory(SelectedItemParentCategory);
+                SelectedItemCategory = Category.Unknown;
+                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                OnPropertyChanged();
+            }
+        }
+
+        public Dictionary<ItemTier, string> ItemTiers {
+            get => _itemTiers;
+            set {
+                _itemTiers = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ItemTier SelectedItemTier {
+            get => _selectedItemTier;
+            set {
+                _selectedItemTier = value;
+                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                OnPropertyChanged();
+            }
+        }
+
+        public Dictionary<ItemLevel, string> ItemLevels {
+            get => _itemLevels;
+            set {
+                _itemLevels = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ItemLevel SelectedItemLevel {
+            get => _selectedItemLevel;
+            set {
+                _selectedItemLevel = value;
+                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                OnPropertyChanged();
+            }
+        }
+
         public int LocalImageCounter {
             get => _localImageCounter;
             set {
@@ -436,56 +611,46 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<ModeStruct> Modes
-        {
+        public ObservableCollection<ModeStruct> Modes {
             get => _modes;
-            set
-            {
+            set {
                 _modes = value;
                 OnPropertyChanged();
             }
         }
 
-        public ModeStruct ModeSelection
-        {
+        public ModeStruct ModeSelection {
             get => _modeSelection;
-            set
-            {
+            set {
                 _modeSelection = value;
                 OnPropertyChanged();
             }
         }
 
-        public int CurrentGoldPrice
-        {
+        public int CurrentGoldPrice {
             get => _currentGoldPrice;
-            set
-            {
+            set {
                 _currentGoldPrice = value;
                 OnPropertyChanged();
             }
         }
 
-        public string CurrentGoldPriceTimestamp 
-        {
+        public string CurrentGoldPriceTimestamp {
             get => _currentGoldPriceTimestamp;
-            set
-            {
+            set {
                 _currentGoldPriceTimestamp = value;
                 OnPropertyChanged();
             }
         }
 
-        public string TextBoxGoldModeNumberOfValues
-        {
+        public string TextBoxGoldModeNumberOfValues {
             get => _textBoxGoldModeNumberOfValues;
-            set
-            {
+            set {
                 _textBoxGoldModeNumberOfValues = value;
                 OnPropertyChanged();
             }
         }
-        
+
         public PlayerModeTranslation PlayerModeTranslation {
             get => _playerModeTranslation;
             set {
@@ -502,6 +667,14 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public string FullItemInformationExistLocal {
+            get => _fullItemInformationExistLocal;
+            set {
+                _fullItemInformationExistLocal = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string NumberOfValuesTranslation {
             get => _numberOfValuesTranslation;
             set {
@@ -510,20 +683,33 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string UpdateTranslation
-        {
+        public string SavedPlayerInformationName {
+            get => _savedPlayerInformationName;
+            set {
+                _savedPlayerInformationName = value;
+                Settings.Default.SavedPlayerInformationName = _savedPlayerInformationName;
+                OnPropertyChanged();
+            }
+        }
+
+        public string UpdateTranslation {
             get => _updateTranslation;
-            set
-            {
+            set {
                 _updateTranslation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public MainWindowTranslation Translation {
+            get => _translation;
+            set {
+                _translation = value;
                 OnPropertyChanged();
             }
         }
 
         public string DonateUrl => Settings.Default.DonateUrl;
         public string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
-        public string SavedPlayerInformationName => Settings.Default.SavedPlayerInformationName ?? "";
-
         public string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -533,6 +719,8 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
 
         public struct ModeStruct
         {

@@ -1,8 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
+using System;
 using System.Collections.Generic;
-using System.Net;
 
 namespace StatisticsAnalysisTool.IntegrationTests
 {
@@ -74,16 +74,25 @@ namespace StatisticsAnalysisTool.IntegrationTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(WebException),
-            "A userId of null was inappropriately allowed.")]
-        public void GetCityItemPricesFromJsonAsync_WithInvalidValues_ThrowsException()
+        public void GetCityItemPricesFromJsonAsync_WithInvalidValues_ZeroValues()
         {
-            var uniqueName = ",:/T20_LEATHER";
+            var uniqueName = "T20_LEATHER";
 
-            Common.ApiController.GetCityItemPricesFromJsonAsync(
+            var result = Common.ApiController.GetCityItemPricesFromJsonAsync(
                 uniqueName,
                 Locations.GetLocationsListByArea(new IsLocationAreaActive(true, true, true)),
                 new List<int>()).GetAwaiter().GetResult();
+
+            foreach (var marketResponse in result)
+            {
+                Assert.IsNotNull(marketResponse.City);
+                Assert.AreEqual(0UL, marketResponse.SellPriceMin);
+                Assert.AreEqual(0UL, marketResponse.SellPriceMax);
+                Assert.AreEqual(0UL, marketResponse.BuyPriceMin);
+                Assert.AreEqual(0UL, marketResponse.BuyPriceMax);
+                Assert.AreEqual(Convert.ChangeType("0001-01-01T00:00:00", typeof(DateTime)), marketResponse.SellPriceMinDate);
+                Assert.AreEqual(uniqueName, marketResponse.ItemTypeId);
+            }
         }
     }
 }

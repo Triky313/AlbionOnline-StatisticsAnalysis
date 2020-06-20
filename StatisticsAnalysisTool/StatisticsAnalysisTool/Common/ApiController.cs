@@ -1,66 +1,86 @@
-﻿namespace StatisticsAnalysisTool.Common
+﻿using System.Linq;
+using System.Net;
+using System.Net.Http;
+
+namespace StatisticsAnalysisTool.Common
 {
     using Models;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-    using System.Net;
     using System.Threading.Tasks;
 
     public static class ApiController
     {
-
-        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item)
+        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(string uniqueName)
         {
-            using (var wc = new WebClient())
+            var url = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
+            
+            using (var client = new HttpClient())
             {
+                client.Timeout = TimeSpan.FromSeconds(30);
                 try
                 {
-                    var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/items/{item.UniqueName}/data";
-                    var itemString = await wc.DownloadStringTaskAsync(apiString);
-                    var result = JsonConvert.DeserializeObject<ItemInformation>(itemString);
-                    return result;
+                    using (var response = await client.GetAsync(url))
+                    {
+                        using (var content = response.Content)
+                        {
+                            var emptyItemInfo = new ItemInformation()
+                            {
+                                UniqueName = uniqueName,
+                                LastUpdate = DateTime.Now
+                            };
+
+                            if (response.StatusCode == HttpStatusCode.NotFound)
+                            {
+                                return emptyItemInfo;
+                            }
+
+                            return response.IsSuccessStatusCode ? JsonConvert.DeserializeObject<ItemInformation>(await content.ReadAsStringAsync()) : emptyItemInfo;
+                        }
+                    }
                 }
-                catch (ArgumentNullException)
-                {
-                    return null;
-                }
-                catch (WebException)
+                catch
                 {
                     return null;
                 }
             }
         }
+        
+        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item) => await GetItemInfoFromJsonAsync(item.UniqueName);
 
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
         {
             if (locations?.Count < 1)
-                return new List<MarketResponse>();
-
-            using (var wc = new WebClient())
             {
-                var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/prices/";
-                statPricesDataJsonUrl += uniqueName;
-                statPricesDataJsonUrl += "?locations=";
-                foreach (var location in locations ?? new List<string>())
-                {
-                    statPricesDataJsonUrl += $"{location},";
-                }
-                statPricesDataJsonUrl += "&qualities=";
-                if (qualities.Count >= 1)
-                {
-                    foreach (var quality in qualities)
-                    {
-                        statPricesDataJsonUrl += $"{quality},";
-                    }
-                }
+                return new List<MarketResponse>();
+            }
 
+            var url = "https://www.albion-online-data.com/api/v2/stats/prices/";
+            url += uniqueName;
+            url += "?locations=";
+            url = (locations ?? new List<string>()).Aggregate(url, (current, location) => current + $"{location},");
+            url += "&qualities=";
+
+            if (qualities.Count >= 1)
+            {
+                url = qualities.Aggregate(url, (current, quality) => current + $"{quality},");
+            }
+
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(30);
                 try
                 {
-                    var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
-                    return JsonConvert.DeserializeObject<List<MarketResponse>>(itemString);
+                    using (var response = await client.GetAsync(url))
+                    {
+                        using (var content = response.Content)
+                        {
+                            return JsonConvert.DeserializeObject<List<MarketResponse>>(await content.ReadAsStringAsync());
+                        }
+                    }
                 }
-                catch (Exception)
+                catch
                 {
                     return null;
                 }
@@ -78,80 +98,135 @@
             if (qualities?.Count > 0)
                 qualitiesString = string.Join(",", qualities);
             
-            using (var wc = new WebClient())
-            {
-                var statPricesDataJsonUrl = "https://www.albion-online-data.com/api/v2/stats/history/";
-                statPricesDataJsonUrl += uniqueName;
-                statPricesDataJsonUrl += $"?locations={locationsString}";
-                statPricesDataJsonUrl += $"&date={date:M-d-yy}";
-                statPricesDataJsonUrl += $"&qualities={qualitiesString}";
-                statPricesDataJsonUrl += $"&time-scale={timeScale}";
+            var url = "https://www.albion-online-data.com/api/v2/stats/history/";
+            url += uniqueName;
+            url += $"?locations={locationsString}";
+            url += $"&date={date:M-d-yy}";
+            url += $"&qualities={qualitiesString}";
+            url += $"&time-scale={timeScale}";
 
-                var itemString = await wc.DownloadStringTaskAsync(statPricesDataJsonUrl);
-                return JsonConvert.DeserializeObject<List<MarketHistoriesResponse>>(itemString);
+
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(30);
+                try
+                {
+                    using (var response = await client.GetAsync(url))
+                    {
+                        using (var content = response.Content)
+                        {
+                            return JsonConvert.DeserializeObject<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
+                        }
+                    }
+                }
+                catch
+                {
+                    return null;
+                }
             }
+
+
         }
 
         public static async Task<GameInfoSearchResponse> GetGameInfoSearchFromJsonAsync(string username)
         {
             var gameInfoSearchResponse = new GameInfoSearchResponse();
+            var url = $"https://gameinfo.albiononline.com/api/gameinfo/search?q={username}";
 
-            using (var wc = new WebClient())
+            using (var client = new HttpClient())
             {
-                var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/search?q={username}";
-                var itemString = await wc.DownloadStringTaskAsync(apiString);
-            
-                var result = JsonConvert.DeserializeObject<GameInfoSearchResponse>(itemString);
-                gameInfoSearchResponse = result ?? gameInfoSearchResponse;
-                
-                return gameInfoSearchResponse;
+                client.Timeout = TimeSpan.FromSeconds(30);
+                try
+                {
+                    using (var response = await client.GetAsync(url))
+                    {
+                        using (var content = response.Content)
+                        {
+                            return JsonConvert.DeserializeObject<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
+                        }
+                    }
+                }
+                catch
+                {
+                    return gameInfoSearchResponse;
+                }
             }
         }
         
         public static async Task<GameInfoPlayersResponse> GetGameInfoPlayersFromJsonAsync(string userid)
         {
             var gameInfoPlayerResponse = new GameInfoPlayersResponse();
+            var url = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}";
 
-            using (var wc = new WebClient())
+            using (var client = new HttpClient())
             {
-                var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}";
-                var itemString = await wc.DownloadStringTaskAsync(apiString);
-
-                var result = JsonConvert.DeserializeObject<GameInfoPlayersResponse>(itemString);
-                gameInfoPlayerResponse = result ?? gameInfoPlayerResponse;
-                return gameInfoPlayerResponse;
+                client.Timeout = TimeSpan.FromSeconds(30);
+                try
+                {
+                    using (var response = await client.GetAsync(url))
+                    {
+                        using (var content = response.Content)
+                        {
+                            return JsonConvert.DeserializeObject<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ?? gameInfoPlayerResponse;
+                        }
+                    }
+                }
+                catch
+                {
+                    return gameInfoPlayerResponse;
+                }
             }
         }
 
-        public static async Task<GameInfoGuildsResponse> GetGameInfoGuildsFromJsonAsync(string guildid)
+        public static async Task<GameInfoGuildsResponse> GetGameInfoGuildsFromJsonAsync(string guildId)
         {
-            using (var wc = new WebClient())
-            {
-                var apiString = $"https://gameinfo.albiononline.com/api/gameinfo/guilds/{guildid}";
-                var itemString = await wc.DownloadStringTaskAsync(apiString);
+            var url = $"https://gameinfo.albiononline.com/api/gameinfo/guilds/{guildId}";
 
-                return JsonConvert.DeserializeObject<GameInfoGuildsResponse>(itemString);
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(30);
+                try
+                {
+                    using (var response = await client.GetAsync(url))
+                    {
+                        using (var content = response.Content)
+                        {
+                            return JsonConvert.DeserializeObject<GameInfoGuildsResponse>(await content.ReadAsStringAsync());
+                        }
+                    }
+                }
+                catch
+                {
+                    return null;
+                }
             }
         }
 
         public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count)
         {
-            using (var wc = new WebClient())
-            {
-                var checkedDateTime = (dateTime != null)? dateTime.ToString() : "";
-                var apiString =
-                    "https://www.albion-online-data.com/api/v2/stats/Gold?" +
-                    $"date={checkedDateTime}" +
-                    $"&count={count}";
+            var checkedDateTime = (dateTime != null) ? dateTime.ToString() : string.Empty;
 
+            var url = $"https://www.albion-online-data.com/api/v2/stats/Gold?" +
+                      $"date={checkedDateTime}" +
+                      $"&count={count}";
+
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(30);
                 try
                 {
-                    var itemString = await wc.DownloadStringTaskAsync(apiString);
-                    return JsonConvert.DeserializeObject<List<GoldResponseModel>>(itemString);
+                    using (var response = await client.GetAsync(url))
+                    {
+                        using (var content = response.Content)
+                        {
+                            return JsonConvert.DeserializeObject<List<GoldResponseModel>>(await content.ReadAsStringAsync());
+                        }
+                    }
                 }
                 catch
                 {
                     return new List<GoldResponseModel>();
+
                 }
             }
         }

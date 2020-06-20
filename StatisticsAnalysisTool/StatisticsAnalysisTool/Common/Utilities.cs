@@ -33,6 +33,6 @@ namespace StatisticsAnalysisTool.Common
 
         public static string UlongMarketPriceToString(ulong value) => value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
 
-        public static string MarketPriceDateToString(DateTime value) => DateTime.SpecifyKind(value, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        public static string MarketPriceDateToString(DateTime value) => Formatting.CurrentDateTimeFormat(value);
     }
 }

@@ -97,12 +97,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\CategoryComboboxObject.cs" />
     <Compile Include="Common\Formatting.cs" />
     <Compile Include="Common\FrequentlyValues.cs" />
     <Compile Include="Common\ApiController.cs" />
     <Compile Include="Common\ItemController.cs" />
+    <Compile Include="Common\CategoryController.cs" />
+    <Compile Include="Models\CategoryObject.cs" />
     <Compile Include="Models\GoldModels.cs" />
+    <Compile Include="Models\ItemJsonObject.cs" />
+    <Compile Include="Models\ItemCategoryTree.cs" />
     <Compile Include="Models\ItemInformationModels.cs" />
+    <Compile Include="Models\InfoWindowTranslation.cs" />
+    <Compile Include="Models\MainWindowTranslation.cs" />
     <Compile Include="Models\ItemWindowTranslation.cs" />
     <Compile Include="Models\MarketHistoriesResponse.cs" />
     <Compile Include="Models\MarketHistoryResponse.cs" />
@@ -114,6 +121,7 @@
     <Compile Include="Models\SearchInfos.cs" />
     <Compile Include="Models\MarketOrder.cs" />
     <Compile Include="Models\MarketStats.cs" />
+    <Compile Include="Models\WeaponCategories.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -212,6 +220,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\check.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\goldchest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -222,7 +233,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="ao-update-check.xml" />
-    <Resource Include="donation-progress.txt" />
     <Content Include="Languages\en-GB.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

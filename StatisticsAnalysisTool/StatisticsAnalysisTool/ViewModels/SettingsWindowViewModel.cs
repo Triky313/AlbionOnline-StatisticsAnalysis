@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.ViewModels
     {
         private static SettingsWindow _settingsWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private static string _filteredItems;
+        private static string _itemListSourceUrl;
         private static ObservableCollection<LanguageController.FileInfo> _languages = new ObservableCollection<LanguageController.FileInfo>();
         private static LanguageController.FileInfo _languagesSelection;        
         private static ObservableCollection<RefreshRateStruct> _refreshRates = new ObservableCollection<RefreshRateStruct>();
@@ -25,31 +25,16 @@ namespace StatisticsAnalysisTool.ViewModels
         private SettingsWindowTranslation _translation;
         private bool _isOpenItemWindowInNewWindowChecked;
         private bool _showInfoWindowOnStartChecked;
+        private int _fullItemInformationUpdateCycleDays;
 
         public SettingsWindowViewModel(SettingsWindow settingsWindow, MainWindowViewModel mainWindowViewModel)
         {
             _settingsWindow = settingsWindow;
             _mainWindowViewModel = mainWindowViewModel;
-            InitializeTranslation();
+            Translation = new SettingsWindowTranslation();
             InitializeSettings();
         }
-
-
-        private void InitializeTranslation()
-        {
-            Translation = new SettingsWindowTranslation()
-            {
-                Settings = LanguageController.Translation("SETTINGS"),
-                Language = LanguageController.Translation("LANGUAGE"),
-                RefreshRate = LanguageController.Translation("REFRESH_RATE"),
-                UpdateItemListByDays = LanguageController.Translation("UPDATE_ITEM_LIST_BY_DAYS"),
-                ItemListSourceUrl = LanguageController.Translation("ITEM_LIST_SOURCE_URL"),
-                OpenItemWindowInNewWindow = LanguageController.Translation("OPEN_ITEM_WINDOW_IN_NEW_WINDOW"),
-                ShowInfoWindowOnStart = LanguageController.Translation("SHOW_INFO_WINDOW_ON_START"),
-                Save = LanguageController.Translation("SAVE")
-            };
-        }
-
+        
         private void InitializeSettings()
         {
             // Refresh rate
@@ -79,6 +64,7 @@ namespace StatisticsAnalysisTool.ViewModels
             ItemListSourceUrl = Settings.Default.ItemListSourceUrl;
             IsOpenItemWindowInNewWindowChecked = Settings.Default.IsOpenItemWindowInNewWindowChecked;
             ShowInfoWindowOnStartChecked = Settings.Default.ShowInfoWindowOnStartChecked;
+            FullItemInformationUpdateCycleDays = Settings.Default.FullItemInformationUpdateCycleDays;
         }
 
         public void SaveSettings()
@@ -88,6 +74,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Settings.Default.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
             Settings.Default.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
             Settings.Default.ShowInfoWindowOnStartChecked = ShowInfoWindowOnStartChecked;
+            Settings.Default.FullItemInformationUpdateCycleDays = FullItemInformationUpdateCycleDays;
 
             LanguageController.CurrentCultureInfo = new CultureInfo(LanguagesSelection.FileName);
             LanguageController.SetLanguage();
@@ -99,7 +86,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void SetAppTranslations()
         {
-            InitializeTranslation();
+            Translation = new SettingsWindowTranslation();
 
             _mainWindowViewModel.SetModeCombobox();
             _mainWindowViewModel.PlayerModeTranslation = new PlayerModeTranslation();
@@ -108,72 +95,68 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindowViewModel.UpdateTranslation = LanguageController.Translation("UPDATE");
         }
 
-        public UpdateItemListStruct UpdateItemListByDaysSelection
-        {
+        #region Bindings
+
+        public int FullItemInformationUpdateCycleDays {
+            get => _fullItemInformationUpdateCycleDays;
+            set {
+                _fullItemInformationUpdateCycleDays = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public UpdateItemListStruct UpdateItemListByDaysSelection {
             get => _updateItemListByDaysSelection;
-            set
-            {
+            set {
                 _updateItemListByDaysSelection = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<UpdateItemListStruct> UpdateItemListByDays
-        {
+        public ObservableCollection<UpdateItemListStruct> UpdateItemListByDays {
             get => _updateItemListByDays;
-            set
-            {
+            set {
                 _updateItemListByDays = value;
                 OnPropertyChanged();
             }
         }
 
-        public RefreshRateStruct RefreshRatesSelection
-        {
+        public RefreshRateStruct RefreshRatesSelection {
             get => _refreshRatesSelection;
-            set
-            {
+            set {
                 _refreshRatesSelection = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<RefreshRateStruct> RefreshRates
-        {
+        public ObservableCollection<RefreshRateStruct> RefreshRates {
             get => _refreshRates;
-            set
-            {
+            set {
                 _refreshRates = value;
                 OnPropertyChanged();
             }
         }
 
-        public LanguageController.FileInfo LanguagesSelection
-        {
+        public LanguageController.FileInfo LanguagesSelection {
             get => _languagesSelection;
-            set
-            {
+            set {
                 _languagesSelection = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<LanguageController.FileInfo> Languages
-        {
+        public ObservableCollection<LanguageController.FileInfo> Languages {
             get => _languages;
-            set
-            {
+            set {
                 _languages = value;
                 OnPropertyChanged();
             }
         }
 
-        public string ItemListSourceUrl
-        {
-            get => _filteredItems;
-            set
-            {
-                _filteredItems = value;
+        public string ItemListSourceUrl {
+            get => _itemListSourceUrl;
+            set {
+                _itemListSourceUrl = value;
                 OnPropertyChanged();
             }
         }
@@ -193,7 +176,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public bool ShowInfoWindowOnStartChecked {
             get => _showInfoWindowOnStartChecked;
             set {
@@ -201,13 +184,15 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
 
         public struct RefreshRateStruct
         {

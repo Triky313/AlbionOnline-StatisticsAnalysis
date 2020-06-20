@@ -414,6 +414,75 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
         </Style>
 
+        <!-- CheckBox -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Height" Value="21"/>
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <BulletDecorator Background="Transparent">
+                            <BulletDecorator.Bullet>
+                                <Border x:Name="Border" Width="21" Height="21" CornerRadius="0" Background="{StaticResource SolidColorBrush.Background.Third}" BorderThickness="3">
+                                    <Path Width="9" Height="9" x:Name="CheckMark" SnapsToDevicePixels="False" Stroke="{StaticResource SolidColorBrush.Blue.3}" StrokeThickness="2" Data="M 0 4 L 3 8 8 0" />
+                                </Border>
+                            </BulletDecorator.Bullet>
+                            <ContentPresenter Margin="4,-2,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" RecognizesAccessKey="True"/>
+                        </BulletDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="false">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter TargetName="CheckMark" Property="Data" Value="M 0 8 L 8 0" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="CheckMark" Property="Stroke" Value="{StaticResource Solid.Color.Text.NoValue}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.NoValue}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Radio Button -->
+        <Style TargetType="{x:Type RadioButton}" >
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Height" Value="21"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <BulletDecorator>
+                            <BulletDecorator.Bullet>
+                                <Grid Height="16" Width="16">
+                                    <Border Name="RadioOuter" Background="Transparent" BorderBrush="{StaticResource SolidColorBrush.Foreground.First}" BorderThickness="1" CornerRadius="10" />
+                                    <Border CornerRadius="10" Margin="4" Name="RadioMark" Background="{StaticResource SolidColorBrush.Blue.3}" Visibility="Hidden" />
+                                </Grid>
+                            </BulletDecorator.Bullet>
+                            <TextBlock Margin="4,0,0,0" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
+                                <ContentPresenter />
+                            </TextBlock>
+                        </BulletDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="RadioMark" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="RadioOuter" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Blue.4}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- Window Button Style -->
         <Style TargetType="{x:Type Button}" x:Key="WindowButtonStyle">
             <Setter Property="Background" Value="Transparent"/>
@@ -592,6 +661,13 @@
             <Setter Property="VerticalAlignment" Value="Top"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
             <Setter Property="FontWeight" Value="Light"></Setter>
+        </Style>
+
+        <!-- ItemWindow Full Information value label -->
+        <Style TargetType="Label" x:Key="ItemWindow.Information.FullInfoValue">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="Margin" Value="0,5,0,0"></Setter>
+            <Setter Property="VerticalAlignment" Value="Top"></Setter>
         </Style>
 
         <!-- Progressbar style -->
