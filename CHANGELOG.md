@@ -4,10 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
-- Item search filter
 - Home screen info for the first opening of the app
 - User macros
-  
+
+## [2.0.0] - 2020-06-20
+### Added
+- Added a new Item search filter: Filtering by tier, level, category and parent category possible
+- Load full item information from the web
+- New item information can be viewed in the ItemWindow
+- New setting: Update FullItemInfo configurable per cycle (days)
+- Added new radio button style
+- Added new checkbox style
+- A lot of new translations added
+
+### Changed
+- Revision of the InfoWindow
+
+### Fixed
+- Performance improvements
+- Fix Item level and Item tier issue with an @ in UniqueName in ItemWindow
+
 ## [1.9.0] - 2020-05-21
 ### Added
 - Added a new simple information tab for item window
@@ -112,7 +128,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.9.0...HEAD
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.0...HEAD
+[1.9.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.9.0...2.0.0
 [1.8.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.1...1.9.0
 [1.8.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.0...1.8.1
 [1.8.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.7.0...1.8.0
