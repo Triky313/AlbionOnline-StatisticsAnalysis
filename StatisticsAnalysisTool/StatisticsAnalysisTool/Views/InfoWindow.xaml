@@ -16,35 +16,21 @@
             <Grid Margin="10,5,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left">
                 <fa:ImageAwesome Icon="NewspaperOutline" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
             </Grid>
-            <Label Content="{Binding Path=Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
+            <Label Content="{Binding Translation.Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
             <Separator Margin="10,30,10,0" VerticalAlignment="Top" />
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
         </Grid>
-        <Grid Margin="0,33,0,100">
-            <TextBlock Text="{Binding FeatureDescription, FallbackValue=FEATURE_DESCRIPTION}" FontSize="20" Foreground="{StaticResource Solid.Color.Text.Gold}" TextAlignment="Center" Margin="10,10,10,220" TextWrapping="Wrap"/>
-            <ProgressBar Value="{Binding Progress}" Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Background="{StaticResource SolidColorBrush.Background.Third}" Width="AUTO" Margin="50,100,50,0" Height="30" VerticalAlignment="Top" />
-            <Grid  Margin="50,100,50,0" Height="30" VerticalAlignment="Top">
-                <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Center" VerticalAlignment="Center" >
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0} € / {1} €">
-                            <Binding Path="Progress" FallbackValue="0" />
-                            <Binding Path="Maximum" FallbackValue="0" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-            </Grid>
-            <Grid  Margin="0,130,0,0" Height="30" VerticalAlignment="Top">
-                <TextBlock Text="{Binding LastUpdate, FallbackValue=LAST__UPDATE: 2020-04-12 03:15:00}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            </Grid>
-            <Image Style="{StaticResource Image.GoldChest}" Margin="0,165,0,-5" />
-            <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center" 
+        <Grid Margin="0,33">
+            <TextBlock Text="{Binding Translation.FeatureDescription, FallbackValue=FEATURE_DESCRIPTION}" FontSize="20" Foreground="{StaticResource Solid.Color.Text.Gold}" TextAlignment="Center" Margin="10,10,10,205" TextWrapping="Wrap"/>
+            <Image Style="{StaticResource Image.GoldChest}" Margin="0,115,0,-5" />
+            <!--<TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center" 
                        FontSize="20" Margin="0,0,0,-35" FontWeight="Bold" Height="30" VerticalAlignment="Bottom">
                 <Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="PayPal" /></Hyperlink>
-            </TextBlock>
+            </TextBlock>-->
         </Grid>
         <Grid Height="33" VerticalAlignment="Bottom">
-            <CheckBox x:Name="ChbShowNotAgain" Content="{Binding ShowNotAgain, FallbackValue=SHOW__NOT__AGAIN}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="Auto" Click="ChbShowNotAgain_Click"/>
+            <CheckBox Content="{Binding Translation.ShowNotAgainContent, FallbackValue=SHOW__NOT__AGAIN}" IsChecked="{Binding ShowNotAgainChecked, FallbackValue=false}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="Auto" Click="ChbShowNotAgain_Click"/>
         </Grid>
     </Grid>
 </Window>

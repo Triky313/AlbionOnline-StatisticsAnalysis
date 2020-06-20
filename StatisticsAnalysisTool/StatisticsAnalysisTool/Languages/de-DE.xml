@@ -100,8 +100,8 @@
   <translation name="HISTORY">Historie</translation>
   <translation name="SHOW_NOT_AGAIN">Nicht wieder anzeigen</translation>
   <translation name="SHOW_INFO_WINDOW_ON_START">Zeige Info Fenster bei Programmstart</translation>
-  <translation name="DONATION_GOAL_FOR_A_NEW_FEATURE">Spendenziel für ein neues Feature</translation>
-  <translation name="FEATURE_DESCRIPTION">NÄCHSTES FEATURE &#x0a; Gegenstände in der Suche Filtern nach Item Type, Tier und Level.</translation>
+  <translation name="NEW_FEATURE">Neue Funktion</translation>
+  <translation name="FEATURE_DESCRIPTION">NEUE FUNKTION &#x0a; - Gegenstände in der Suche Filtern nach Item Type, Tier und Level &#x0a; - Laden von Voll-Item-Info aus dem Web</translation>
   <translation name="EQUIPABLE">Ausrüstbar</translation>
   <translation name="STACKABLE">Stapelbar</translation>
   <translation name="SHOW_IN_MARKET_PLACE">Wird im Auktionshaus angezeigt</translation>
