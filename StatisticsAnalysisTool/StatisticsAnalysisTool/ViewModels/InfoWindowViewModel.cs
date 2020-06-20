@@ -20,11 +20,6 @@ namespace StatisticsAnalysisTool.ViewModels
             Translation = new InfoWindowTranslation();
         }
         
-        public void SaveShowNotAgainSetting()
-        {
-            Settings.Default.ShowInfoWindowOnStartChecked = ShowNotAgainChecked;
-        }
-
         #region Bindings
 
         public InfoWindowTranslation Translation {
@@ -39,6 +34,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _showNotAgainChecked;
             set {
                 _showNotAgainChecked = value;
+                Settings.Default.ShowInfoWindowOnStartChecked = !_showNotAgainChecked;
                 OnPropertyChanged();
             }
         }

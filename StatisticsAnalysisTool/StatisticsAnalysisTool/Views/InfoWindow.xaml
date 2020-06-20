@@ -30,7 +30,7 @@
             </TextBlock>-->
         </Grid>
         <Grid Height="33" VerticalAlignment="Bottom">
-            <CheckBox Content="{Binding Translation.ShowNotAgainContent, FallbackValue=SHOW__NOT__AGAIN}" IsChecked="{Binding ShowNotAgainChecked, FallbackValue=false}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="Auto" Click="ChbShowNotAgain_Click"/>
+            <CheckBox Content="{Binding Translation.ShowNotAgainContent, FallbackValue=SHOW__NOT__AGAIN}" IsChecked="{Binding ShowNotAgainChecked, FallbackValue=false}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="Auto"/>
         </Grid>
     </Grid>
 </Window>
