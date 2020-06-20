@@ -156,6 +156,26 @@ namespace StatisticsAnalysisTool.Common
             return int.TryParse(uniqueName.Split('@')[1], out int number) ? number : 0;
         }
         
+        public static int GetItemTier(Item item)
+        {
+            var itemNameTierText = item.UniqueName.Split('_')[0];
+            if (itemNameTierText.Substring(0, 1) == "T" && int.TryParse(itemNameTierText.Substring(1, 1), out var result))
+            {
+                return result;
+            }
+            else
+            {
+                var itemInfo = GetFullItemInformationFromLocal(item);
+
+                if (itemInfo != null)
+                {
+                    return itemInfo.Tier;
+                }
+            }
+
+            return -1;
+        }
+
         public static ItemQuality GetQuality(int value) => FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Value == value).Key;
         
         public static Style LocationStyle(Location location) {

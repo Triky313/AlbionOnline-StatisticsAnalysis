@@ -16,6 +16,9 @@ namespace StatisticsAnalysisTool.Models
                 ? ItemController.LocalizedName(LocalizedNames)
                 : $"{ItemController.LocalizedName(LocalizedNames)}\n{ItemController.LocalizedName(LocalizedNames, "EN-US")}";
 
+        public int Level => ItemController.GetItemLevel(UniqueName);
+        public int Tier => ItemController.GetItemTier(this);
+
         private BitmapImage _icon;
         public BitmapImage Icon => _icon ?? (_icon = ImageController.GetItemImage($"https://gameinfo.albiononline.com/api/gameinfo/items/{UniqueName}"));
 

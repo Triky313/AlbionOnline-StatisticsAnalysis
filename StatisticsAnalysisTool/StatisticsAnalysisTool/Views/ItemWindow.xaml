@@ -28,7 +28,7 @@
             <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75"/>
             <DockPanel Margin="90,5,200,0" VerticalAlignment="Top" Height="28">
                 <Label Content="{Binding Path=ItemName, FallbackValue=ITEM__TITLE}" HorizontalAlignment="Left" FontSize="14" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
-                <Label Content="{Binding Path=ItemTier, FallbackValue=ITEM__TIER}" HorizontalAlignment="Left" FontSize="14" Margin="-5 0 0 0" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
+                <Label Content="{Binding Path=ItemTierLevel, FallbackValue=T0.0}" HorizontalAlignment="Left" FontSize="14" Margin="-5 0 0 0" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
             </DockPanel>
 
             <Grid IsEnabled="{Binding HasItemPrices, FallbackValue=false}" Margin="90,33,10,30">
@@ -262,7 +262,7 @@
                             <Label Content="{Binding Translation.ParentCategory, FallbackValue=PARENT_CATEGORY}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                             <Label Content="{Binding Translation.LastFullInformationUpdate, FallbackValue=LAST_FULL_INFORMATION_UPDATE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                         </StackPanel>
-                        <StackPanel Margin="265,10,10,10">
+                        <StackPanel Margin="265,10,670,10" Width="250">
                             <Label Content="{Binding ItemInformation.Equipable, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                             <Label Content="{Binding ItemInformation.Stackable, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>
                             <Label Content="{Binding ItemInformation.ShowInMarketplace, FallbackValue=-, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top"/>

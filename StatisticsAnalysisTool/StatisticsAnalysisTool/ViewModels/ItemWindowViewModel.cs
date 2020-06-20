@@ -45,7 +45,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isAutoUpdateActive;
         private string _refreshIconTooltipText;
         private List<MarketQualityObject> _allQualityPricesList;
-        private string _itemTier;
+        private string _itemTierLevel;
         private List<MarketCurrentPricesItem> _marketCurrentPricesItemList;
         private XmlLanguage _itemListViewLanguage;
 
@@ -63,7 +63,7 @@ namespace StatisticsAnalysisTool.ViewModels
             ErrorBarVisibility = Visibility.Hidden;
 
             Item = item;
-            
+
             IsAutoUpdateActive = true;
 
             Translation = new ItemWindowTranslation();
@@ -74,11 +74,17 @@ namespace StatisticsAnalysisTool.ViewModels
         
         private async void InitializeItemData(Item item)
         {
+            Icon = null;
+            ItemName = "-";
+            ItemTierLevel = string.Empty;
+
             if (item == null)
             {
                 SetNoDataValues(Error.NoItemInfo);
                 return;
             }
+
+            ItemTierLevel = (Item?.Tier != -1 && Item?.Level != -1) ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
 
             var getFullItemInformationTask = ItemController.GetFullItemInformationAsync(item);
 
@@ -87,10 +93,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Icon = null;
                 _mainWindow.Title = "-";
             });
-
-            Icon = null;
-            ItemName = "-";
-            ItemTier = "";
             
             if (_mainWindow.Dispatcher == null)
             {
@@ -98,7 +100,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            var localizedName = ItemController.LocalizedName(Item.LocalizedNames, null, Item.UniqueName);
+            var localizedName = ItemController.LocalizedName(Item?.LocalizedNames, null, Item?.UniqueName);
 
             Icon = item.Icon;
             ItemName = localizedName;
@@ -108,8 +110,7 @@ namespace StatisticsAnalysisTool.ViewModels
             });
 
             ItemInformation = await getFullItemInformationTask;
-
-            ItemTier = (ItemInformation?.Tier != null) ? $"(T{ItemInformation?.Tier}.{ItemInformation?.Level})" : "";
+            
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindow.Title = $"{localizedName} (T{ItemInformation?.Tier})";
@@ -186,16 +187,75 @@ namespace StatisticsAnalysisTool.ViewModels
             });
         }
 
+        private List<int> GetQualities()
+        {
+            var qualities = new List<int>();
+
+            if (NormalQualityChecked)
+                qualities.Add(1);
+
+            if (GoodQualityChecked)
+                qualities.Add(2);
+
+            if (OutstandingQualityChecked)
+                qualities.Add(3);
+
+            if (ExcellentQualityChecked)
+                qualities.Add(4);
+
+            if (MasterpieceQualityChecked)
+                qualities.Add(5);
+
+            return qualities;
+        }
+        
+        public async void SetHistoryChart()
+        {
+            var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
+            Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)), 
+                DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
+
+            var date = new List<string>();
+            var seriesCollectionHistory = new SeriesCollection();
+
+            foreach (var marketHistory in historyItemPrices)
+            {
+                var amount = new ChartValues<int>();
+                foreach (var data in  marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
+                {
+                    if(!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
+                    {
+                        date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+                    }
+
+                    amount.Add(data.AveragePrice);
+                }
+                
+                seriesCollectionHistory.Add(new LineSeries
+                {
+                    Title = Locations.GetName(Locations.GetName(marketHistory?.Location)),
+                    Values = amount,
+                    Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
+                    Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false)
+                });
+            }
+
+            LabelsHistory = date.ToArray();
+            SeriesCollectionHistory = seriesCollectionHistory;
+        }
+
+        #region Prices
+
         public async void SetQualityPriceStatsOnListView()
         {
             var statPricesList = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName,
-                Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)),new List<int>());
+                Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)), new List<int>());
 
             if (statPricesList == null)
                 return;
 
             var marketQualityObjectList = new List<MarketQualityObject>();
-            
+
             foreach (var stat in statPricesList)
             {
                 if (marketQualityObjectList.Exists(x => x.Location == stat.City))
@@ -407,63 +467,11 @@ namespace StatisticsAnalysisTool.ViewModels
                                                  $"{LanguageController.Translation("PROFIT")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", diffPrice)}";
         }
 
-        private List<int> GetQualities()
-        {
-            var qualities = new List<int>();
 
-            if (NormalQualityChecked)
-                qualities.Add(1);
+        #endregion
 
-            if (GoodQualityChecked)
-                qualities.Add(2);
+        #region Bindings
 
-            if (OutstandingQualityChecked)
-                qualities.Add(3);
-
-            if (ExcellentQualityChecked)
-                qualities.Add(4);
-
-            if (MasterpieceQualityChecked)
-                qualities.Add(5);
-
-            return qualities;
-        }
-
-        public async void SetHistoryChart()
-        {
-            var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
-            Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)), 
-                DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
-
-            var date = new List<string>();
-            var seriesCollectionHistory = new SeriesCollection();
-
-            foreach (var marketHistory in historyItemPrices)
-            {
-                var amount = new ChartValues<int>();
-                foreach (var data in  marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
-                {
-                    if(!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
-                    {
-                        date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
-                    }
-
-                    amount.Add(data.AveragePrice);
-                }
-                
-                seriesCollectionHistory.Add(new LineSeries
-                {
-                    Title = Locations.GetName(Locations.GetName(marketHistory?.Location)),
-                    Values = amount,
-                    Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
-                    Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false)
-                });
-            }
-
-            LabelsHistory = date.ToArray();
-            SeriesCollectionHistory = seriesCollectionHistory;
-        }
-        
         public Item Item {
             get => _item;
             set {
@@ -488,10 +496,10 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string ItemTier {
-            get => _itemTier;
+        public string ItemTierLevel {
+            get => _itemTierLevel;
             set {
-                _itemTier = value;
+                _itemTierLevel = value;
                 OnPropertyChanged();
             }
         }
@@ -554,8 +562,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public bool NormalQualityChecked {
             get => _normalQualityChecked;
-            set
-            {
+            set {
                 _normalQualityChecked = !_normalQualityChecked && value;
                 OnPropertyChanged();
             }
@@ -600,7 +607,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public bool ShowVillagesChecked {
             get => _showVillagesChecked;
             set {
@@ -608,16 +615,15 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
-        public bool IsAutoUpdateActive
-        {
+
+        public bool IsAutoUpdateActive {
             get => _isAutoUpdateActive;
             set {
                 _isAutoUpdateActive = value;
                 OnPropertyChanged();
             }
         }
-        
+
         public bool HasItemPrices {
             get => _hasItemPrices;
             set {
@@ -626,41 +632,33 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public SeriesCollection SeriesCollectionHistory
-        {
+        public SeriesCollection SeriesCollectionHistory {
             get => _seriesCollectionHistory;
-            set
-            {
+            set {
                 _seriesCollectionHistory = value;
                 OnPropertyChanged();
             }
         }
 
-        public string[] LabelsHistory
-        {
+        public string[] LabelsHistory {
             get => _labelsHistory;
-            set
-            {
+            set {
                 _labelsHistory = value;
                 OnPropertyChanged();
             }
         }
-        
-        public bool RefreshSpin
-        {
+
+        public bool RefreshSpin {
             get => _refreshSpin;
-            set
-            {
+            set {
                 _refreshSpin = value;
                 OnPropertyChanged();
             }
         }
-        
-        public string RefreshIconTooltipText
-        {
+
+        public string RefreshIconTooltipText {
             get => _refreshIconTooltipText;
-            set
-            {
+            set {
                 _refreshIconTooltipText = value;
                 OnPropertyChanged();
             }
@@ -668,8 +666,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public List<MarketQualityObject> AllQualityPricesList {
             get => _allQualityPricesList;
-            set
-            {
+            set {
                 _allQualityPricesList = value;
                 OnPropertyChanged();
             }
@@ -681,5 +678,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }
