@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Net.Http;
 
 namespace StatisticsAnalysisTool.Common
@@ -24,7 +25,18 @@ namespace StatisticsAnalysisTool.Common
                     {
                         using (var content = response.Content)
                         {
-                            return JsonConvert.DeserializeObject<ItemInformation>(await content.ReadAsStringAsync());
+                            var emptyItemInfo = new ItemInformation()
+                            {
+                                UniqueName = uniqueName,
+                                LastUpdate = DateTime.Now
+                            };
+
+                            if (response.StatusCode == HttpStatusCode.NotFound)
+                            {
+                                return emptyItemInfo;
+                            }
+
+                            return response.IsSuccessStatusCode ? JsonConvert.DeserializeObject<ItemInformation>(await content.ReadAsStringAsync()) : emptyItemInfo;
                         }
                     }
                 }

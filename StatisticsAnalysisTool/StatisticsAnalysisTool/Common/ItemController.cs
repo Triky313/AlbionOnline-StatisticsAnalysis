@@ -254,7 +254,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<ItemInformation> GetFullItemInformationAsync(Item item)
         {
-            var itemInformation = _itemInformationList.SingleOrDefault(x => x.UniqueName == item?.UniqueName);
+            var itemInformation = _itemInformationList.FirstOrDefault(x => x.UniqueName == item?.UniqueName);
 
             if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !IsItemInformationUpToDate(itemInformation.LastUpdate))
             {
@@ -300,7 +300,8 @@ namespace StatisticsAnalysisTool.Common
                 return false;
             }
 
-            return !(lastUpdate < DateTime.UtcNow.AddDays(Settings.Default.FullItemInformationUpdateCycleDays));
+            var lastUpdateWithCycleDays =  lastUpdate.Value.AddDays(Settings.Default.FullItemInformationUpdateCycleDays);
+            return lastUpdateWithCycleDays >= DateTime.UtcNow;
         }
         
         public static BitmapImage ExistFullItemInformationLocal(string uniqueName)
