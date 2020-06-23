@@ -23,7 +23,7 @@
                 <fa:ImageAwesome Icon="Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
             </Grid>
             <Grid HorizontalAlignment="Left" Height="24" Margin="185,7,0,0" VerticalAlignment="Top" Width="24">
-                <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Hidden" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                <fa:ImageAwesome Visibility="{Binding LoadIconVisibility}" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
             <Grid Height="40" VerticalAlignment="Top" HorizontalAlignment="Center" Width="120">
                 <Image Style="{StaticResource Image.Gold}" Width="24" Height="24" Margin="10,8,0,8" HorizontalAlignment="Left" />
@@ -35,10 +35,10 @@
             <Grid Margin="215,11,0,0" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left">
                 <fa:ImageAwesome Icon="Repeat" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="FilterReset_MouseUp"/>
             </Grid>
-            <ComboBox ItemsSource="{Binding ItemParentCategories, UpdateSourceTrigger=PropertyChanged}" SelectedValue="{Binding SelectedItemParentCategory}" Visibility="{Binding ItemParentCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="240,10,0,0" VerticalAlignment="Top" Width="150"/>
-            <ComboBox ItemsSource="{Binding ItemCategories, UpdateSourceTrigger=PropertyChanged, FallbackValue=Category.Unknown}" SelectedValue="{Binding SelectedItemCategory}" Visibility="{Binding ItemCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="240,37,0,0" VerticalAlignment="Top" Width="150"/>
-            <ComboBox ItemsSource="{Binding ItemTiers, UpdateSourceTrigger=PropertyChanged, FallbackValue=ItemTier.Unknown}" SelectedValue="{Binding SelectedItemTier}" Visibility="{Binding ItemTiersVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="395,10,0,0" VerticalAlignment="Top" Width="44" MinWidth="80"/>
-            <ComboBox ItemsSource="{Binding ItemLevels, UpdateSourceTrigger=PropertyChanged, FallbackValue=ItemLevel.Unknown}" SelectedValue="{Binding SelectedItemLevel}" Visibility="{Binding ItemLevelsVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="480,10,0,0" VerticalAlignment="Top" Width="54" MinWidth="80"/>
+            <ComboBox ItemsSource="{Binding ItemParentCategories}" SelectedValue="{Binding SelectedItemParentCategory}" Visibility="{Binding ItemParentCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="240,10,0,0" VerticalAlignment="Top" Width="150"/>
+            <ComboBox ItemsSource="{Binding ItemCategories}" SelectedValue="{Binding SelectedItemCategory}" Visibility="{Binding ItemCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="240,37,0,0" VerticalAlignment="Top" Width="150"/>
+            <ComboBox ItemsSource="{Binding ItemTiers}" SelectedValue="{Binding SelectedItemTier}" Visibility="{Binding ItemTiersVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="395,10,0,0" VerticalAlignment="Top" Width="44" MinWidth="80"/>
+            <ComboBox ItemsSource="{Binding ItemLevels}" SelectedValue="{Binding SelectedItemLevel}" Visibility="{Binding ItemLevelsVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="480,10,0,0" VerticalAlignment="Top" Width="54" MinWidth="80"/>
 
             <Grid Margin="0,6,160,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <fa:ImageAwesome Icon="FileImageOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
@@ -48,8 +48,6 @@
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" HorizontalContentAlignment="Center" />
             </StackPanel>
             <Label Content="{Binding ItemCounterString, FallbackValue=0/0}" Height="26" Margin="0,7,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="75" />
-
-
 
             <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemListViewItemsSource}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,64,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
                 <ListView.View>
@@ -92,9 +90,12 @@
                     (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="Donate" /></Hyperlink>)
                 </TextBlock>
             </Grid>
-            <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearch, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="200"/>
+            <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearchActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="200"/>
+            <Grid Visibility="{Binding LoadFullItemInfoProBarGridVisibility, FallbackValue=Hidden}">
+                <ProgressBar Minimum="{Binding LoadFullItemInfoProBarMin, IsAsync=True, FallbackValue=0}" Maximum="{Binding LoadFullItemInfoProBarMax, IsAsync=True, FallbackValue=0}" Value="{Binding LoadFullItemInfoProBarValue, IsAsync=True, FallbackValue=0}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="176"/>
+                <Label Content="{Binding LoadFullItemInfoProBarCounter, FallbackValue=0/0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="24" Margin="0,36,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="176"></Label>
+            </Grid>
             <Button Style="{StaticResource ButtonStyle}" Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176"/>
-            <ProgressBar Visibility="{Binding LoadFullItemInfoProBarVisibility, FallbackValue=Hidden}" Minimum="{Binding LoadFullItemInfoProBarMin, IsAsync=True, FallbackValue=0}" Maximum="{Binding LoadFullItemInfoProBarMax, IsAsync=True, FallbackValue=0}" Value="{Binding LoadFullItemInfoProBarValue, IsAsync=True, FallbackValue=0}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="176"/>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding SavedPlayerInformationName}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown"/>

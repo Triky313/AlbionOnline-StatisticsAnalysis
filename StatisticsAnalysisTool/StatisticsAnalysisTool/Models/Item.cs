@@ -24,6 +24,6 @@ namespace StatisticsAnalysisTool.Models
 
         private BitmapImage _existFullItemInformationLocal;
         public BitmapImage ExistFullItemInformationLocal => _existFullItemInformationLocal ?? (_existFullItemInformationLocal = ItemController.ExistFullItemInformationLocal(UniqueName));
-        public ItemInformation FullItemInformationFromLocal => ItemController.GetFullItemInformationFromLocal(this);
+        public ItemInformation FullItemInformation { get; set; }
     }
 }

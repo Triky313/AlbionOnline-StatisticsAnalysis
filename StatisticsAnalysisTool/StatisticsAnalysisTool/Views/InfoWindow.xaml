@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="{Binding Path=Title, FallbackValue=TITLE}" Height="450" Width="550" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False">
+        Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="450" Width="550" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False">
     <Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
@@ -24,10 +24,6 @@
         <Grid Margin="0,33">
             <TextBlock Text="{Binding Translation.FeatureDescription, FallbackValue=FEATURE_DESCRIPTION}" FontSize="20" Foreground="{StaticResource Solid.Color.Text.Gold}" TextAlignment="Center" Margin="10,10,10,205" TextWrapping="Wrap"/>
             <Image Style="{StaticResource Image.GoldChest}" Margin="0,115,0,-5" />
-            <!--<TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center" 
-                       FontSize="20" Margin="0,0,0,-35" FontWeight="Bold" Height="30" VerticalAlignment="Bottom">
-                <Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="PayPal" /></Hyperlink>
-            </TextBlock>-->
         </Grid>
         <Grid Height="33" VerticalAlignment="Bottom">
             <CheckBox Content="{Binding Translation.ShowNotAgainContent, FallbackValue=SHOW__NOT__AGAIN}" IsChecked="{Binding ShowNotAgainChecked, FallbackValue=false}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="Auto"/>

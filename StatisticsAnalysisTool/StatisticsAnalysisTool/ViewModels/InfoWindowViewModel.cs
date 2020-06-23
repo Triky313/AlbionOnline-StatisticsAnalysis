@@ -30,7 +30,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool ShowNotAgainChecked {
+        public bool ShowNotAgainChecked
+        {
             get => _showNotAgainChecked;
             set {
                 _showNotAgainChecked = value;

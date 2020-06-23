@@ -279,12 +279,12 @@ namespace StatisticsAnalysisTool.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsFullItemInfoSearch {
+        public bool IsFullItemInfoSearchActive {
             get {
-                return ((bool)(this["IsFullItemInfoSearch"]));
+                return ((bool)(this["IsFullItemInfoSearchActive"]));
             }
             set {
-                this["IsFullItemInfoSearch"] = value;
+                this["IsFullItemInfoSearchActive"] = value;
             }
         }
         

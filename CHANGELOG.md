@@ -8,6 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Home screen info for the first opening of the app
 - User macros
 
+## [2.0.1] - 2020-06-23
+### Added
+- Added item counter to FullItemInfo progress bar
+
+### Fixed
+- Performance improvements for a better and faster filter search
+
 ## [2.0.0] - 2020-06-20
 ### Added
 - Added a new Item search filter: Filtering by tier, level, category and parent category possible
@@ -130,7 +137,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.1...HEAD
+[2.0.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.0...2.0.1
 [1.9.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.9.0...2.0.0
 [1.8.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.1...1.9.0
 [1.8.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.0...1.8.1

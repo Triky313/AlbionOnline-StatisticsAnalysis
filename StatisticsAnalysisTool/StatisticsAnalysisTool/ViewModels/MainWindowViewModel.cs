@@ -42,16 +42,16 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _itemCounterString;
         private int _localImageCounter;
         private string _fullItemInformationExistLocal;
-        private Dictionary<Category, string> _itemCategories;
+        private Dictionary<Category, string> _itemCategories = new Dictionary<Category, string>();
         private Category _selectedItemCategories;
-        private Dictionary<ParentCategory, string> _itemParentCategories;
+        private Dictionary<ParentCategory, string> _itemParentCategories = new Dictionary<ParentCategory, string>();
         private ParentCategory _selectedItemParentCategories;
-        private Dictionary<ItemTier, string> _itemTiers;
+        private Dictionary<ItemTier, string> _itemTiers = new Dictionary<ItemTier, string>();
         private ItemTier _selectedItemTier;
-        private Dictionary<ItemLevel, string> _itemLevels;
+        private Dictionary<ItemLevel, string> _itemLevels = new Dictionary<ItemLevel, string>();
         private ItemLevel _selectedItemLevel;
         private string _searchText;
-        private bool _isFullItemInfoSearch;
+        private bool _isFullItemInfoSearchActive;
         private Visibility _itemLevelsVisibility;
         private Visibility _itemTiersVisibility;
         private Visibility _itemCategoriesVisibility;
@@ -63,7 +63,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private int _loadFullItemInfoProBarValue;
         private int _loadFullItemInfoProBarMax;
         private int _loadFullItemInfoProBarMin;
-        private Visibility _loadFullItemInfoProBarVisibility;
+        private Visibility _loadFullItemInfoProBarGridVisibility;
+        private Visibility _loadIconVisibility;
+        private string _loadFullItemInfoProBarCounter;
 
         public enum ViewMode
         {
@@ -117,68 +119,90 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             Translation = new MainWindowTranslation();
 
-            SetModeCombobox();
-            ItemController.GetItemInformationListFromLocalAsync();
+            SetUiElements();
 
-            IsFullItemInfoSearch = Settings.Default.IsFullItemInfoSearch;
-            ItemParentCategories = CategoryController.ParentCategoryNames;
-            ItemTiers = FrequentlyValues.ItemTiers;
-            SelectedItemTier = ItemTier.Unknown;
-            ItemLevels = FrequentlyValues.ItemLevels;
-            SelectedItemLevel = ItemLevel.Unknown;
-            LoadFullItemInfoProBarVisibility = Visibility.Hidden;
+            IsTxtSearchEnabled = false;
+            LoadIconVisibility = Visibility.Visible;
 
-            var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
-            CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
-            CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
-
-            await Task.Run(async () =>
+            var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
+            if (!isItemListLoaded)
             {
-                _mainWindow.Dispatcher?.Invoke(() =>
-                {
-                    IsTxtSearchEnabled = false;
-                    _mainWindow.FaLoadIcon.Visibility = Visibility.Visible;
+                MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), LanguageController.Translation("ERROR"));
+            }
 
-                    SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
-                });
-                
-                var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
-                if (!isItemListLoaded)
-                    MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"),
-                        LanguageController.Translation("ERROR"));
-
-                if (ItemController.IsFullItemInformationComplete())
-                {
-                    LoadFullItemInfoButtonVisibility = Visibility.Hidden;
-                    IsLoadFullItemInfoButtonEnabled = false;
-                }
-                else
-                {
-                    IsLoadFullItemInfoButtonEnabled = true;
-                }
+            if (isItemListLoaded)
+            {
+                await ItemController.GetItemInformationListFromLocalAsync();
+                IsFullItemInformationCompleteCheck();
+                LoadIconVisibility = Visibility.Hidden;
+                IsTxtSearchEnabled = true;
 
                 _mainWindow.Dispatcher?.Invoke(() =>
                 {
-                    if (isItemListLoaded)
-                    {
-                        _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
-                        IsTxtSearchEnabled = true;
-                        _mainWindow.TxtSearch.Focus();
-                    }
+                    _mainWindow.TxtSearch.Focus();
                 });
-            });
+            }
 
             ShowInfoWindow();
             TextBoxGoldModeNumberOfValues = "10";
         }
 
-        public void SetModeCombobox()
+        private void IsFullItemInformationCompleteCheck()
         {
+            if (ItemController.IsFullItemInformationComplete)
+            {
+                LoadFullItemInfoButtonVisibility = Visibility.Hidden;
+                IsLoadFullItemInfoButtonEnabled = false;
+                LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
+            }
+            else
+            {
+                IsLoadFullItemInfoButtonEnabled = true;
+            }
+        }
+
+        public async void SetUiElements()
+        {
+            #region Set Modes to combobox
+
             Modes.Clear();
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal });
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player });
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold });
             ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
+
+            #endregion
+
+            #region Full Item Info Search elements
+
+            IsFullItemInfoSearchActive = Settings.Default.IsFullItemInfoSearchActive;
+
+            ItemParentCategories = CategoryController.ParentCategoryNames;
+            SelectedItemParentCategory = ParentCategory.Unknown;
+
+            ItemTiers = FrequentlyValues.ItemTiers;
+            SelectedItemTier = ItemTier.Unknown;
+
+            ItemLevels = FrequentlyValues.ItemLevels;
+            SelectedItemLevel = ItemLevel.Unknown;
+
+            LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
+
+            #endregion
+
+            #region Gold price
+
+            var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
+            CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
+            CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
+
+            #endregion
+
+            #region Player information
+
+            SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
+
+            #endregion
         }
 
         public void CenterWindowOnScreen()
@@ -195,51 +219,55 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             IsLoadFullItemInfoButtonEnabled = false;
             LoadFullItemInfoButtonVisibility = Visibility.Hidden;
-            LoadFullItemInfoProBarVisibility = Visibility.Visible;
+            LoadFullItemInfoProBarGridVisibility = Visibility.Visible;
 
             LoadFullItemInfoProBarMin = 0;
             LoadFullItemInfoProBarMax = ItemController.Items.Count;
-            LoadFullItemInfoProBarValue = ItemController.Items.Count(x => x.FullItemInformationFromLocal != null);
+            LoadFullItemInfoProBarValue = ItemController.Items.Count(x => x?.FullItemInformation != null);
+
             foreach (var item in ItemController.Items)
             {
-                await ItemController.GetFullItemInformationAsync(item);
+                item.FullItemInformation = await ItemController.GetFullItemInformationAsync(item);
                 LoadFullItemInfoProBarValue++;
             }
 
-            LoadFullItemInfoProBarVisibility = Visibility.Hidden;
+            LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
             LoadFullItemInfoButtonVisibility = Visibility.Visible;
             IsLoadFullItemInfoButtonEnabled = true;
         }
 
         #region Item list (Normal Mode)
 
-        private List<Item> GetFilteredItemList(string searchText)
+        private async void GetFilteredItemListAsync(string searchText)
         {
-            var filteredItemList = new List<Item>();
-
-            if (ItemController.Items == null)
+            ItemListViewItemsSource = await Task.Run(() =>
             {
+                var filteredItemList = new List<Item>();
+
+                if (ItemController.Items == null)
+                {
+                    return filteredItemList;
+                }
+
+                if (IsFullItemInfoSearchActive)
+                {
+                    filteredItemList = ItemController.Items.Where(x =>
+                        x?.FullItemInformation != null &&
+                        x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)
+                        && (x.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
+                        && (x.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                        && ((ItemTier)x.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                        && ((ItemLevel)x.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)).ToList();
+                }
+                else
+                {
+                    filteredItemList = ItemController.Items.Where(x => x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)).ToList();
+                }
+
+                SetItemCounterAsync(filteredItemList.Count);
+
                 return filteredItemList;
-            }
-
-            if (IsFullItemInfoSearch)
-            {
-                filteredItemList = ItemController.Items.Where(x =>
-                    x?.FullItemInformationFromLocal != null &&
-                    x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)
-                    && (x.FullItemInformationFromLocal?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
-                    && (x.FullItemInformationFromLocal?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
-                    && ((ItemTier)x.FullItemInformationFromLocal?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                    && ((ItemLevel)x.FullItemInformationFromLocal?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)).ToList();
-            }
-            else
-            {
-                filteredItemList = ItemController.Items.Where(x => x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)).ToList();
-            }
-
-            SetItemCounterAsync(filteredItemList.Count);
-
-            return filteredItemList;
+            }).ConfigureAwait(false);
         }
 
         private async void SetItemCounterAsync(int? items)
@@ -406,10 +434,26 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Bindings
 
-        public Visibility LoadFullItemInfoProBarVisibility {
-            get => _loadFullItemInfoProBarVisibility;
+        public string LoadFullItemInfoProBarCounter {
+            get => _loadFullItemInfoProBarCounter;
             set {
-                _loadFullItemInfoProBarVisibility = value;
+                _loadFullItemInfoProBarCounter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility LoadIconVisibility {
+            get => _loadIconVisibility;
+            set {
+                _loadIconVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility LoadFullItemInfoProBarGridVisibility {
+            get => _loadFullItemInfoProBarGridVisibility;
+            set {
+                _loadFullItemInfoProBarGridVisibility = value;
                 OnPropertyChanged();
             }
         }
@@ -418,6 +462,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _loadFullItemInfoProBarValue;
             set {
                 _loadFullItemInfoProBarValue = value;
+                LoadFullItemInfoProBarCounter = $"{_loadFullItemInfoProBarValue}/{LoadFullItemInfoProBarMax}";
                 OnPropertyChanged();
             }
         }
@@ -458,17 +503,17 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _searchText;
             set {
                 _searchText = value;
-                ItemListViewItemsSource = GetFilteredItemList(_searchText);
+                GetFilteredItemListAsync(_searchText);
                 OnPropertyChanged();
             }
         }
 
-        public bool IsFullItemInfoSearch {
-            get => _isFullItemInfoSearch;
+        public bool IsFullItemInfoSearchActive {
+            get => _isFullItemInfoSearchActive;
             set {
-                _isFullItemInfoSearch = value;
+                _isFullItemInfoSearchActive = value;
 
-                if (_isFullItemInfoSearch)
+                if (_isFullItemInfoSearchActive)
                 {
                     ItemLevelsVisibility = ItemTiersVisibility = ItemCategoriesVisibility = ItemParentCategoriesVisibility = Visibility.Visible;
                 }
@@ -477,8 +522,8 @@ namespace StatisticsAnalysisTool.ViewModels
                     ItemLevelsVisibility = ItemTiersVisibility = ItemCategoriesVisibility = ItemParentCategoriesVisibility = Visibility.Hidden;
                 }
 
-                ItemListViewItemsSource = GetFilteredItemList(_searchText);
-                Settings.Default.IsFullItemInfoSearch = _isFullItemInfoSearch;
+                GetFilteredItemListAsync(_searchText);
+                Settings.Default.IsFullItemInfoSearchActive = _isFullItemInfoSearchActive;
                 OnPropertyChanged();
             }
         }
@@ -529,7 +574,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _selectedItemCategories;
             set {
                 _selectedItemCategories = value;
-                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                GetFilteredItemListAsync(_searchText);
                 OnPropertyChanged();
             }
         }
@@ -548,7 +593,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 _selectedItemParentCategories = value;
                 ItemCategories = CategoryController.GetCategoriesByParentCategory(SelectedItemParentCategory);
                 SelectedItemCategory = Category.Unknown;
-                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                GetFilteredItemListAsync(_searchText);
                 OnPropertyChanged();
             }
         }
@@ -565,7 +610,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _selectedItemTier;
             set {
                 _selectedItemTier = value;
-                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                GetFilteredItemListAsync(_searchText);
                 OnPropertyChanged();
             }
         }
@@ -582,7 +627,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _selectedItemLevel;
             set {
                 _selectedItemLevel = value;
-                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                GetFilteredItemListAsync(_searchText);
                 OnPropertyChanged();
             }
         }

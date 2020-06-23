@@ -16,7 +16,7 @@ namespace StatisticsAnalysisTool.Common
 
     public class ItemController
     {
-        public static List<Item> Items;
+        public static ObservableCollection<Item> Items;
 
         private static readonly string FullItemInformationFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FullItemInformationFileName);
 
@@ -62,22 +62,22 @@ namespace StatisticsAnalysisTool.Common
             return true;
         }
 
-        private static List<Item> GetItemListFromLocal()
+        private static ObservableCollection<Item> GetItemListFromLocal()
         {
             try
             {
                 var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
-                return ConvertItemJsonObjectToItem(JsonConvert.DeserializeObject<List<ItemJsonObject>>(localItemString));
+                return ConvertItemJsonObjectToItem(JsonConvert.DeserializeObject<ObservableCollection<ItemJsonObject>>(localItemString));
             }
             catch
             {
-                return new List<Item>();
+                return new ObservableCollection<Item>();
             }
         }
 
-        private static List<Item> ConvertItemJsonObjectToItem(List<ItemJsonObject> itemJsonObjectList)
+        private static ObservableCollection<Item> ConvertItemJsonObjectToItem(ObservableCollection<ItemJsonObject> itemJsonObjectList)
         {
-            return itemJsonObjectList.Select(item => new Item()
+            var result = itemJsonObjectList.Select(item => new Item()
             {
                 LocalizationNameVariable = item.LocalizationNameVariable,
                 LocalizationDescriptionVariable = item.LocalizationDescriptionVariable,
@@ -85,9 +85,11 @@ namespace StatisticsAnalysisTool.Common
                 Index = item.Index,
                 UniqueName = item.UniqueName
             }).ToList();
+
+            return new ObservableCollection<Item>(result);
         }
 
-        private static async Task<List<Item>> TryToGetItemListFromWeb(string url)
+        private static async Task<ObservableCollection<Item>> TryToGetItemListFromWeb(string url)
         {
             using (var wd = new WebDownload(30000))
             {
@@ -95,7 +97,7 @@ namespace StatisticsAnalysisTool.Common
                 {
                     var itemsString = await wd.DownloadStringTaskAsync(url);
                     File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
-                    return JsonConvert.DeserializeObject<List<Item>>(itemsString);
+                    return JsonConvert.DeserializeObject<ObservableCollection<Item>>(itemsString);
                 }
                 catch (Exception)
                 {
@@ -103,7 +105,7 @@ namespace StatisticsAnalysisTool.Common
                     {
                         var itemsString = await wd.DownloadStringTaskAsync(Settings.Default.DefaultItemListSourceUrl);
                         File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
-                        return JsonConvert.DeserializeObject<List<Item>>(itemsString);
+                        return JsonConvert.DeserializeObject<ObservableCollection<Item>>(itemsString);
                     }
                     catch
                     {
@@ -163,14 +165,10 @@ namespace StatisticsAnalysisTool.Common
             {
                 return result;
             }
-            else
-            {
-                var itemInfo = GetFullItemInformationFromLocal(item);
 
-                if (itemInfo != null)
-                {
-                    return itemInfo.Tier;
-                }
+            if (item.FullItemInformation?.Tier != null)
+            {
+                return item.FullItemInformation.Tier;
             }
 
             return -1;
@@ -248,7 +246,7 @@ namespace StatisticsAnalysisTool.Common
 
         #region ItemInformation
 
-        public static bool IsFullItemInformationComplete() => Items?.All(item => item.FullItemInformationFromLocal != null) ?? false;
+        public static bool IsFullItemInformationComplete => Items?.All(item => item.FullItemInformation != null) ?? false;
 
         public static async Task<ItemInformation> GetFullItemInformationAsync(Item item)
         {
@@ -262,8 +260,6 @@ namespace StatisticsAnalysisTool.Common
 
             return itemInformation;
         }
-
-        public static ItemInformation GetFullItemInformationFromLocal(Item item) => _itemInformationList.SingleOrDefault(x => x.UniqueName == item?.UniqueName);
 
         private static ItemInformation SetEssentialItemInformation(ItemInformation itemInformation, string uniqueName)
         {
@@ -309,12 +305,13 @@ namespace StatisticsAnalysisTool.Common
 
         public static void SaveItemInformationLocal()
         {
-            if (_itemInformationList == null)
+            var list = _itemInformationList;
+            if (list == null)
             {
                 return;
             }
 
-            var itemInformationString = JsonConvert.SerializeObject(_itemInformationList);
+            var itemInformationString = JsonConvert.SerializeObject(list);
 
             using (var writer = new StreamWriter(FullItemInformationFilePath))
             {
@@ -322,12 +319,14 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static async void GetItemInformationListFromLocalAsync()
+        public static async Task GetItemInformationListFromLocalAsync()
         {
             await Task.Run(() =>
             {
                 if (_itemInformationList != null && _itemInformationList.Count > 0)
+                {
                     return;
+                }
 
                 if (File.Exists(FullItemInformationFilePath))
                 {
@@ -341,7 +340,23 @@ namespace StatisticsAnalysisTool.Common
                 {
                     _itemInformationList = new ObservableCollection<ItemInformation>();
                 }
+
+                SetItemInformationToItems(Items);
             });
+        }
+
+        private static void SetItemInformationToItems(ObservableCollection<Item> items)
+        {
+            if (items == null)
+            {
+                return;
+            }
+
+            foreach (var item in items)
+            {
+                var itemInformation = _itemInformationList.FirstOrDefault(x => x.UniqueName == item?.UniqueName);
+                item.FullItemInformation = itemInformation;
+            }
         }
         
         #endregion
