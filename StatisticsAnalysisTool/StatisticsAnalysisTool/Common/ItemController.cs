@@ -115,6 +115,20 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
+        public static void SetFullItemInformationToItemsFromLocal()
+        {
+            if (Items == null)
+            {
+                return;
+            }
+
+            foreach (var item in Items)
+            {
+                var itemInformation = _itemInformationList.FirstOrDefault(x => x.UniqueName == item?.UniqueName);
+                item.FullItemInformation = itemInformation;
+            }
+        }
+
         #endregion
 
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
@@ -165,14 +179,10 @@ namespace StatisticsAnalysisTool.Common
             {
                 return result;
             }
-            else
-            {
-                var itemInfo = GetFullItemInformationFromLocal(item);
 
-                if (itemInfo != null)
-                {
-                    return itemInfo.Tier;
-                }
+            if (item.FullItemInformation?.Tier != null)
+            {
+                return item.FullItemInformation.Tier;
             }
 
             return -1;
@@ -250,7 +260,7 @@ namespace StatisticsAnalysisTool.Common
 
         #region ItemInformation
 
-        public static bool IsFullItemInformationComplete() => Items?.All(item => item.FullItemInformationFromLocal != null) ?? false;
+        public static bool IsFullItemInformationComplete => Items?.All(item => item.FullItemInformation != null) ?? false;
 
         public static async Task<ItemInformation> GetFullItemInformationAsync(Item item)
         {
@@ -263,12 +273,6 @@ namespace StatisticsAnalysisTool.Common
             }
 
             return itemInformation;
-        }
-
-        public static ItemInformation GetFullItemInformationFromLocal(Item item)
-        {
-            var list = _itemInformationList;
-            return list.SingleOrDefault(x => x.UniqueName == item?.UniqueName);
         }
 
         private static ItemInformation SetEssentialItemInformation(ItemInformation itemInformation, string uniqueName)
@@ -315,12 +319,13 @@ namespace StatisticsAnalysisTool.Common
 
         public static void SaveItemInformationLocal()
         {
-            if (_itemInformationList == null)
+            var list = _itemInformationList;
+            if (list == null)
             {
                 return;
             }
 
-            var itemInformationString = JsonConvert.SerializeObject(_itemInformationList);
+            var itemInformationString = JsonConvert.SerializeObject(list);
 
             using (var writer = new StreamWriter(FullItemInformationFilePath))
             {
@@ -328,12 +333,14 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static async void GetItemInformationListFromLocalAsync()
+        public static async Task GetItemInformationListFromLocalAsync()
         {
             await Task.Run(() =>
             {
                 if (_itemInformationList != null && _itemInformationList.Count > 0)
+                {
                     return;
+                }
 
                 if (File.Exists(FullItemInformationFilePath))
                 {
@@ -346,6 +353,17 @@ namespace StatisticsAnalysisTool.Common
                 else
                 {
                     _itemInformationList = new ObservableCollection<ItemInformation>();
+                }
+
+                if (Items == null)
+                {
+                    return;
+                }
+
+                foreach (var item in Items)
+                {
+                    var itemInformation = _itemInformationList.FirstOrDefault(x => x.UniqueName == item?.UniqueName);
+                    item.FullItemInformation = itemInformation;
                 }
             });
         }

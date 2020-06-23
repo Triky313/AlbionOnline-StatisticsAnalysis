@@ -104,17 +104,15 @@ namespace StatisticsAnalysisTool.ViewModels
 
             Icon = item.Icon;
             ItemName = localizedName;
+
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindow.Icon = item.Icon;
+                _mainWindow.Title = $"{localizedName} (T{item.Tier})";
             });
 
-            ItemInformation = await getFullItemInformationTask;
-            
-            await _mainWindow.Dispatcher.InvokeAsync(() =>
-            {
-                _mainWindow.Title = $"{localizedName} (T{ItemInformation?.Tier})";
-            });
+            item.FullItemInformation = await getFullItemInformationTask;
+            ItemInformation = item.FullItemInformation;
 
             StartAutoUpdater();
             RefreshSpin = IsAutoUpdateActive;

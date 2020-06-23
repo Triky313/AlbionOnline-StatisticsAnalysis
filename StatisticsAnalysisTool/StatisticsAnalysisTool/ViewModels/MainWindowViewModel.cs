@@ -118,8 +118,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Translation = new MainWindowTranslation();
 
             SetModeCombobox();
-            ItemController.GetItemInformationListFromLocalAsync();
-
+            
             IsFullItemInfoSearch = Settings.Default.IsFullItemInfoSearch;
             ItemParentCategories = CategoryController.ParentCategoryNames;
             ItemTiers = FrequentlyValues.ItemTiers;
@@ -144,10 +143,11 @@ namespace StatisticsAnalysisTool.ViewModels
                 
                 var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
                 if (!isItemListLoaded)
-                    MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"),
-                        LanguageController.Translation("ERROR"));
+                {
+                    MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), LanguageController.Translation("ERROR"));
+                }
 
-                if (ItemController.IsFullItemInformationComplete())
+                if (ItemController.IsFullItemInformationComplete)
                 {
                     LoadFullItemInfoButtonVisibility = Visibility.Hidden;
                     IsLoadFullItemInfoButtonEnabled = false;
@@ -156,11 +156,12 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     IsLoadFullItemInfoButtonEnabled = true;
                 }
-
-                _mainWindow.Dispatcher?.Invoke(() =>
+                
+                _mainWindow.Dispatcher?.Invoke(async () =>
                 {
                     if (isItemListLoaded)
                     {
+                        await ItemController.GetItemInformationListFromLocalAsync();
                         _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
                         IsTxtSearchEnabled = true;
                         _mainWindow.TxtSearch.Focus();
@@ -199,10 +200,11 @@ namespace StatisticsAnalysisTool.ViewModels
 
             LoadFullItemInfoProBarMin = 0;
             LoadFullItemInfoProBarMax = ItemController.Items.Count;
-            LoadFullItemInfoProBarValue = ItemController.Items.Count(x => x.FullItemInformationFromLocal != null);
+            LoadFullItemInfoProBarValue = ItemController.Items.Count(x => x?.FullItemInformation != null);
+
             foreach (var item in ItemController.Items)
             {
-                await ItemController.GetFullItemInformationAsync(item);
+                item.FullItemInformation = await ItemController.GetFullItemInformationAsync(item);
                 LoadFullItemInfoProBarValue++;
             }
 
@@ -227,12 +229,12 @@ namespace StatisticsAnalysisTool.ViewModels
                 if (IsFullItemInfoSearch)
                 {
                     filteredItemList = ItemController.Items.Where(x =>
-                        x?.FullItemInformationFromLocal != null &&
+                        x?.FullItemInformation != null &&
                         x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)
-                        && (x.FullItemInformationFromLocal?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
-                        && (x.FullItemInformationFromLocal?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
-                        && ((ItemTier)x.FullItemInformationFromLocal?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                        && ((ItemLevel)x.FullItemInformationFromLocal?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)).ToList();
+                        && (x.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
+                        && (x.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                        && ((ItemTier)x.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                        && ((ItemLevel)x.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)).ToList();
                 }
                 else
                 {
