@@ -63,8 +63,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private int _loadFullItemInfoProBarValue;
         private int _loadFullItemInfoProBarMax;
         private int _loadFullItemInfoProBarMin;
-        private Visibility _loadFullItemInfoProBarVisibility;
+        private Visibility _loadFullItemInfoProBarGridVisibility;
         private Visibility _loadIconVisibility;
+        private string _loadFullItemInfoProBarCounter;
 
         public enum ViewMode
         {
@@ -152,7 +153,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 LoadFullItemInfoButtonVisibility = Visibility.Hidden;
                 IsLoadFullItemInfoButtonEnabled = false;
-                LoadFullItemInfoProBarVisibility = Visibility.Hidden;
+                LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
             }
             else
             {
@@ -185,7 +186,7 @@ namespace StatisticsAnalysisTool.ViewModels
             ItemLevels = FrequentlyValues.ItemLevels;
             SelectedItemLevel = ItemLevel.Unknown;
 
-            LoadFullItemInfoProBarVisibility = Visibility.Hidden;
+            LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
 
             #endregion
 
@@ -218,7 +219,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             IsLoadFullItemInfoButtonEnabled = false;
             LoadFullItemInfoButtonVisibility = Visibility.Hidden;
-            LoadFullItemInfoProBarVisibility = Visibility.Visible;
+            LoadFullItemInfoProBarGridVisibility = Visibility.Visible;
 
             LoadFullItemInfoProBarMin = 0;
             LoadFullItemInfoProBarMax = ItemController.Items.Count;
@@ -230,7 +231,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 LoadFullItemInfoProBarValue++;
             }
 
-            LoadFullItemInfoProBarVisibility = Visibility.Hidden;
+            LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
             LoadFullItemInfoButtonVisibility = Visibility.Visible;
             IsLoadFullItemInfoButtonEnabled = true;
         }
@@ -433,6 +434,14 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Bindings
 
+        public string LoadFullItemInfoProBarCounter {
+            get => _loadFullItemInfoProBarCounter;
+            set {
+                _loadFullItemInfoProBarCounter = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Visibility LoadIconVisibility {
             get => _loadIconVisibility;
             set {
@@ -441,10 +450,10 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Visibility LoadFullItemInfoProBarVisibility {
-            get => _loadFullItemInfoProBarVisibility;
+        public Visibility LoadFullItemInfoProBarGridVisibility {
+            get => _loadFullItemInfoProBarGridVisibility;
             set {
-                _loadFullItemInfoProBarVisibility = value;
+                _loadFullItemInfoProBarGridVisibility = value;
                 OnPropertyChanged();
             }
         }
@@ -453,6 +462,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _loadFullItemInfoProBarValue;
             set {
                 _loadFullItemInfoProBarValue = value;
+                LoadFullItemInfoProBarCounter = $"{_loadFullItemInfoProBarValue}/{LoadFullItemInfoProBarMax}";
                 OnPropertyChanged();
             }
         }

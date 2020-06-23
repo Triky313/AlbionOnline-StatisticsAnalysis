@@ -672,7 +672,7 @@
 
         <!-- Progressbar style -->
         <Style x:Key="{x:Type ProgressBar}" TargetType="{x:Type ProgressBar}">
-            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Highlighted.First}"/>
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Blue.3}"/>
             <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
