@@ -213,33 +213,36 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Item list (Normal Mode)
 
-        private List<Item> GetFilteredItemList(string searchText)
+        private async void GetFilteredItemListAsync(string searchText)
         {
-            var filteredItemList = new List<Item>();
-
-            if (ItemController.Items == null)
+            ItemListViewItemsSource = await Task.Run(() =>
             {
+                var filteredItemList = new List<Item>();
+
+                if (ItemController.Items == null)
+                {
+                    return filteredItemList;
+                }
+
+                if (IsFullItemInfoSearch)
+                {
+                    filteredItemList = ItemController.Items.Where(x =>
+                        x?.FullItemInformationFromLocal != null &&
+                        x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)
+                        && (x.FullItemInformationFromLocal?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
+                        && (x.FullItemInformationFromLocal?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                        && ((ItemTier)x.FullItemInformationFromLocal?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                        && ((ItemLevel)x.FullItemInformationFromLocal?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)).ToList();
+                }
+                else
+                {
+                    filteredItemList = ItemController.Items.Where(x => x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)).ToList();
+                }
+
+                SetItemCounterAsync(filteredItemList.Count);
+
                 return filteredItemList;
-            }
-
-            if (IsFullItemInfoSearch)
-            {
-                filteredItemList = ItemController.Items.Where(x =>
-                    x?.FullItemInformationFromLocal != null &&
-                    x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)
-                    && (x.FullItemInformationFromLocal?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
-                    && (x.FullItemInformationFromLocal?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
-                    && ((ItemTier)x.FullItemInformationFromLocal?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                    && ((ItemLevel)x.FullItemInformationFromLocal?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)).ToList();
-            }
-            else
-            {
-                filteredItemList = ItemController.Items.Where(x => x.LocalizedNameAndEnglish.ToLower().Contains(searchText?.ToLower() ?? string.Empty)).ToList();
-            }
-
-            SetItemCounterAsync(filteredItemList.Count);
-
-            return filteredItemList;
+            }).ConfigureAwait(false);
         }
 
         private async void SetItemCounterAsync(int? items)
@@ -458,7 +461,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _searchText;
             set {
                 _searchText = value;
-                ItemListViewItemsSource = GetFilteredItemList(_searchText);
+                GetFilteredItemListAsync(_searchText);
                 OnPropertyChanged();
             }
         }
@@ -477,7 +480,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     ItemLevelsVisibility = ItemTiersVisibility = ItemCategoriesVisibility = ItemParentCategoriesVisibility = Visibility.Hidden;
                 }
 
-                ItemListViewItemsSource = GetFilteredItemList(_searchText);
+                GetFilteredItemListAsync(_searchText);
                 Settings.Default.IsFullItemInfoSearch = _isFullItemInfoSearch;
                 OnPropertyChanged();
             }
@@ -529,7 +532,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _selectedItemCategories;
             set {
                 _selectedItemCategories = value;
-                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                GetFilteredItemListAsync(_searchText);
                 OnPropertyChanged();
             }
         }
@@ -548,7 +551,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 _selectedItemParentCategories = value;
                 ItemCategories = CategoryController.GetCategoriesByParentCategory(SelectedItemParentCategory);
                 SelectedItemCategory = Category.Unknown;
-                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                GetFilteredItemListAsync(_searchText);
                 OnPropertyChanged();
             }
         }
@@ -565,7 +568,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _selectedItemTier;
             set {
                 _selectedItemTier = value;
-                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                GetFilteredItemListAsync(_searchText);
                 OnPropertyChanged();
             }
         }
@@ -582,7 +585,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _selectedItemLevel;
             set {
                 _selectedItemLevel = value;
-                ItemListViewItemsSource = GetFilteredItemList(SearchText);
+                GetFilteredItemListAsync(_searchText);
                 OnPropertyChanged();
             }
         }
