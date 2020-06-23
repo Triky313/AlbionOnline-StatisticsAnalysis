@@ -115,20 +115,6 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static void SetFullItemInformationToItemsFromLocal()
-        {
-            if (Items == null)
-            {
-                return;
-            }
-
-            foreach (var item in Items)
-            {
-                var itemInformation = _itemInformationList.FirstOrDefault(x => x.UniqueName == item?.UniqueName);
-                item.FullItemInformation = itemInformation;
-            }
-        }
-
         #endregion
 
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
@@ -355,17 +341,22 @@ namespace StatisticsAnalysisTool.Common
                     _itemInformationList = new ObservableCollection<ItemInformation>();
                 }
 
-                if (Items == null)
-                {
-                    return;
-                }
-
-                foreach (var item in Items)
-                {
-                    var itemInformation = _itemInformationList.FirstOrDefault(x => x.UniqueName == item?.UniqueName);
-                    item.FullItemInformation = itemInformation;
-                }
+                SetItemInformationToItems(Items);
             });
+        }
+
+        private static void SetItemInformationToItems(ObservableCollection<Item> items)
+        {
+            if (items == null)
+            {
+                return;
+            }
+
+            foreach (var item in items)
+            {
+                var itemInformation = _itemInformationList.FirstOrDefault(x => x.UniqueName == item?.UniqueName);
+                item.FullItemInformation = itemInformation;
+            }
         }
         
         #endregion

@@ -88,7 +88,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             Translation = new SettingsWindowTranslation();
 
-            _mainWindowViewModel.SetModeCombobox();
+            _mainWindowViewModel.SetUiElements();
             _mainWindowViewModel.PlayerModeTranslation = new PlayerModeTranslation();
             _mainWindowViewModel.LoadTranslation = LanguageController.Translation("LOAD");
             _mainWindowViewModel.NumberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");

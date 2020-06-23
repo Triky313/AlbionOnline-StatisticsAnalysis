@@ -51,7 +51,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Dictionary<ItemLevel, string> _itemLevels;
         private ItemLevel _selectedItemLevel;
         private string _searchText;
-        private bool _isFullItemInfoSearch;
+        private bool _isFullItemInfoSearchActive;
         private Visibility _itemLevelsVisibility;
         private Visibility _itemTiersVisibility;
         private Visibility _itemCategoriesVisibility;
@@ -64,6 +64,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private int _loadFullItemInfoProBarMax;
         private int _loadFullItemInfoProBarMin;
         private Visibility _loadFullItemInfoProBarVisibility;
+        private Visibility _loadIconVisibility;
 
         public enum ViewMode
         {
@@ -117,69 +118,90 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             Translation = new MainWindowTranslation();
 
-            SetModeCombobox();
-            
-            IsFullItemInfoSearch = Settings.Default.IsFullItemInfoSearch;
-            ItemParentCategories = CategoryController.ParentCategoryNames;
-            ItemTiers = FrequentlyValues.ItemTiers;
-            SelectedItemTier = ItemTier.Unknown;
-            ItemLevels = FrequentlyValues.ItemLevels;
-            SelectedItemLevel = ItemLevel.Unknown;
-            LoadFullItemInfoProBarVisibility = Visibility.Hidden;
+            SetUiElements();
 
-            var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
-            CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
-            CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
+            IsTxtSearchEnabled = false;
+            LoadIconVisibility = Visibility.Visible;
 
-            await Task.Run(async () =>
+            var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
+            if (!isItemListLoaded)
             {
+                MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), LanguageController.Translation("ERROR"));
+            }
+
+            if (isItemListLoaded)
+            {
+                await ItemController.GetItemInformationListFromLocalAsync();
+                IsFullItemInformationCompleteCheck();
+                LoadIconVisibility = Visibility.Hidden;
+                IsTxtSearchEnabled = true;
+
                 _mainWindow.Dispatcher?.Invoke(() =>
                 {
-                    IsTxtSearchEnabled = false;
-                    _mainWindow.FaLoadIcon.Visibility = Visibility.Visible;
-
-                    SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
+                    _mainWindow.TxtSearch.Focus();
                 });
-                
-                var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
-                if (!isItemListLoaded)
-                {
-                    MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), LanguageController.Translation("ERROR"));
-                }
-
-                if (ItemController.IsFullItemInformationComplete)
-                {
-                    LoadFullItemInfoButtonVisibility = Visibility.Hidden;
-                    IsLoadFullItemInfoButtonEnabled = false;
-                }
-                else
-                {
-                    IsLoadFullItemInfoButtonEnabled = true;
-                }
-                
-                _mainWindow.Dispatcher?.Invoke(async () =>
-                {
-                    if (isItemListLoaded)
-                    {
-                        await ItemController.GetItemInformationListFromLocalAsync();
-                        _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
-                        IsTxtSearchEnabled = true;
-                        _mainWindow.TxtSearch.Focus();
-                    }
-                });
-            });
+            }
 
             ShowInfoWindow();
             TextBoxGoldModeNumberOfValues = "10";
         }
 
-        public void SetModeCombobox()
+        private void IsFullItemInformationCompleteCheck()
         {
+            if (ItemController.IsFullItemInformationComplete)
+            {
+                LoadFullItemInfoButtonVisibility = Visibility.Hidden;
+                IsLoadFullItemInfoButtonEnabled = false;
+                LoadFullItemInfoProBarVisibility = Visibility.Hidden;
+            }
+            else
+            {
+                IsLoadFullItemInfoButtonEnabled = true;
+            }
+        }
+
+        public async void SetUiElements()
+        {
+            #region Set Modes to combobox
+
             Modes.Clear();
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal });
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player });
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold });
             ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
+
+            #endregion
+
+            #region Full Item Info Search elements
+
+            IsFullItemInfoSearchActive = Settings.Default.IsFullItemInfoSearchActive;
+
+            ItemParentCategories = CategoryController.ParentCategoryNames;
+            SelectedItemParentCategory = ParentCategory.Unknown;
+
+            ItemTiers = FrequentlyValues.ItemTiers;
+            SelectedItemTier = ItemTier.Unknown;
+
+            ItemLevels = FrequentlyValues.ItemLevels;
+            SelectedItemLevel = ItemLevel.Unknown;
+
+            LoadFullItemInfoProBarVisibility = Visibility.Hidden;
+
+            #endregion
+
+            #region Gold price
+
+            var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
+            CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
+            CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
+
+            #endregion
+
+            #region Player information
+
+            SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
+
+            #endregion
         }
 
         public void CenterWindowOnScreen()
@@ -226,7 +248,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     return filteredItemList;
                 }
 
-                if (IsFullItemInfoSearch)
+                if (IsFullItemInfoSearchActive)
                 {
                     filteredItemList = ItemController.Items.Where(x =>
                         x?.FullItemInformation != null &&
@@ -411,6 +433,14 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Bindings
 
+        public Visibility LoadIconVisibility {
+            get => _loadIconVisibility;
+            set {
+                _loadIconVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Visibility LoadFullItemInfoProBarVisibility {
             get => _loadFullItemInfoProBarVisibility;
             set {
@@ -468,12 +498,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsFullItemInfoSearch {
-            get => _isFullItemInfoSearch;
+        public bool IsFullItemInfoSearchActive {
+            get => _isFullItemInfoSearchActive;
             set {
-                _isFullItemInfoSearch = value;
+                _isFullItemInfoSearchActive = value;
 
-                if (_isFullItemInfoSearch)
+                if (_isFullItemInfoSearchActive)
                 {
                     ItemLevelsVisibility = ItemTiersVisibility = ItemCategoriesVisibility = ItemParentCategoriesVisibility = Visibility.Visible;
                 }
@@ -483,7 +513,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 GetFilteredItemListAsync(_searchText);
-                Settings.Default.IsFullItemInfoSearch = _isFullItemInfoSearch;
+                Settings.Default.IsFullItemInfoSearchActive = _isFullItemInfoSearchActive;
                 OnPropertyChanged();
             }
         }
