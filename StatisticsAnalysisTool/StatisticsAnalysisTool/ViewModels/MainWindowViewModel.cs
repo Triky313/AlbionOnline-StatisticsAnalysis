@@ -42,13 +42,13 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _itemCounterString;
         private int _localImageCounter;
         private string _fullItemInformationExistLocal;
-        private Dictionary<Category, string> _itemCategories;
+        private Dictionary<Category, string> _itemCategories = new Dictionary<Category, string>();
         private Category _selectedItemCategories;
-        private Dictionary<ParentCategory, string> _itemParentCategories;
+        private Dictionary<ParentCategory, string> _itemParentCategories = new Dictionary<ParentCategory, string>();
         private ParentCategory _selectedItemParentCategories;
-        private Dictionary<ItemTier, string> _itemTiers;
+        private Dictionary<ItemTier, string> _itemTiers = new Dictionary<ItemTier, string>();
         private ItemTier _selectedItemTier;
-        private Dictionary<ItemLevel, string> _itemLevels;
+        private Dictionary<ItemLevel, string> _itemLevels = new Dictionary<ItemLevel, string>();
         private ItemLevel _selectedItemLevel;
         private string _searchText;
         private bool _isFullItemInfoSearchActive;
