@@ -121,7 +121,7 @@ namespace StatisticsAnalysisTool.Common
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {
             if (localizedNames == null)
-                return "";
+                return alternativeName;
 
             if (string.IsNullOrEmpty(currentLanguage))
                 currentLanguage = LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper();

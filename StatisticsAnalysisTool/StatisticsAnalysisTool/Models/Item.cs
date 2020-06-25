@@ -13,8 +13,8 @@ namespace StatisticsAnalysisTool.Models
         
         public string LocalizedNameAndEnglish =>
             LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper() == "EN-US"
-                ? ItemController.LocalizedName(LocalizedNames)
-                : $"{ItemController.LocalizedName(LocalizedNames)}\n{ItemController.LocalizedName(LocalizedNames, "EN-US")}";
+                ? ItemController.LocalizedName(LocalizedNames, null, UniqueName)
+                : $"{ItemController.LocalizedName(LocalizedNames, null, UniqueName)}\n{ItemController.LocalizedName(LocalizedNames, "EN-US", string.Empty)}";
 
         public int Level => ItemController.GetItemLevel(UniqueName);
         public int Tier => ItemController.GetItemTier(this);
