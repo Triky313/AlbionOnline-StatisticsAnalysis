@@ -33,10 +33,19 @@ namespace StatisticsAnalysisTool.Common
 
                             if (response.StatusCode == HttpStatusCode.NotFound)
                             {
+                                emptyItemInfo.HttpStatus = HttpStatusCode.NotFound;
                                 return emptyItemInfo;
                             }
 
-                            return response.IsSuccessStatusCode ? JsonConvert.DeserializeObject<ItemInformation>(await content.ReadAsStringAsync()) : emptyItemInfo;
+                            if (response.IsSuccessStatusCode)
+                            {
+                                var itemInfo = JsonConvert.DeserializeObject<ItemInformation>(await content.ReadAsStringAsync());
+                                itemInfo.HttpStatus = HttpStatusCode.OK;
+                                return itemInfo;
+                            }
+
+                            emptyItemInfo.HttpStatus = response.StatusCode;
+                            return emptyItemInfo;
                         }
                     }
                 }
