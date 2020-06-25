@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Properties;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -120,7 +121,7 @@ namespace StatisticsAnalysisTool.Common
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {
             if (localizedNames == null)
-                return "";
+                return alternativeName;
 
             if (string.IsNullOrEmpty(currentLanguage))
                 currentLanguage = LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper();
@@ -252,7 +253,12 @@ namespace StatisticsAnalysisTool.Common
         {
             var itemInformation = _itemInformationList.FirstOrDefault(x => x.UniqueName == item?.UniqueName);
 
-            if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !IsItemInformationUpToDate(itemInformation.LastUpdate))
+            if (itemInformation?.HttpStatus == HttpStatusCode.NotFound)
+            {
+                return itemInformation;
+            }
+
+            if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !IsItemInformationUpToDate(itemInformation.LastUpdate) || itemInformation.CategoryObject?.ParentCategory == null)
             {
                 itemInformation = SetEssentialItemInformation(await ApiController.GetItemInfoFromJsonAsync(item?.UniqueName), item?.UniqueName);
                 AddItemInformationToLocal(itemInformation);

@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -118,6 +119,7 @@ namespace StatisticsAnalysisTool.Models
         public string LastFullItemInformationUpdate => Common.Formatting.CurrentDateTimeFormat(LastUpdate) ?? string.Empty;
 
         public CategoryObject CategoryObject => CategoryController.GetCategory(CategoryId);
+        public HttpStatusCode HttpStatus { get; set; }
     }
 
     public class CraftResourceList
