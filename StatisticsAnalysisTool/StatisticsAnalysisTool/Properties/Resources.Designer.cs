@@ -133,6 +133,16 @@ namespace StatisticsAnalysisTool.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap outdated {
+            get {
+                object obj = ResourceManager.GetObject("outdated", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap silver {
             get {
                 object obj = ResourceManager.GetObject("silver", resourceCulture);

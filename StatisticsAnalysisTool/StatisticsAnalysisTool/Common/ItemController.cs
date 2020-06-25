@@ -306,7 +306,19 @@ namespace StatisticsAnalysisTool.Common
         
         public static BitmapImage ExistFullItemInformationLocal(string uniqueName)
         {
-            return _itemInformationList.Any(x => x.UniqueName == uniqueName) ? new BitmapImage(new Uri(@"pack://application:,,,/Resources/check.png")) : null;
+            if (_itemInformationList.Any(x => x.UniqueName == uniqueName) 
+                && IsItemInformationUpToDate(_itemInformationList.FirstOrDefault(x => x.UniqueName == uniqueName)?.LastUpdate))
+            {
+                return new BitmapImage(new Uri(@"pack://application:,,,/Resources/check.png"));
+            }
+
+            if (_itemInformationList.Any(x => x.UniqueName == uniqueName)
+                && !IsItemInformationUpToDate(_itemInformationList.FirstOrDefault(x => x.UniqueName == uniqueName)?.LastUpdate))
+            {
+                return new BitmapImage(new Uri(@"pack://application:,,,/Resources/outdated.png"));
+            }
+
+            return null;
         }
 
         public static void SaveItemInformationLocal()

@@ -116,6 +116,7 @@ namespace StatisticsAnalysisTool.Models
         [JsonProperty(PropertyName = "lastUpdate")]
         public DateTime LastUpdate { get; set; }
 
+        [JsonIgnore]
         public string LastFullItemInformationUpdate => Common.Formatting.CurrentDateTimeFormat(LastUpdate) ?? string.Empty;
 
         public CategoryObject CategoryObject => CategoryController.GetCategory(CategoryId);
