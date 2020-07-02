@@ -223,7 +223,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
             LoadFullItemInfoProBarMin = 0;
             LoadFullItemInfoProBarMax = ItemController.Items.Count;
-            LoadFullItemInfoProBarValue = ItemController.Items.Count(x => x?.FullItemInformation != null);
 
             foreach (var item in ItemController.Items)
             {
