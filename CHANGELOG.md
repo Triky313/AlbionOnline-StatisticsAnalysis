@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Home screen info for the first opening of the app
 - User macros
 
+## [2.0.2] - 2020-07-03
+
+### Added
+- Abort button for FullItemInfo added
+- Added outdated icon for FullItemInfo
+- Show UniqueName if LocalizedNames not exist
+- Added HttpStatus in FullItemInformation for better filtering
+
+### Fixed
+- Fix a progress bar counter bug
+- Fixed a bug that hide the FullItemInfo Progress Bar if settings are saved
+
 ## [2.0.1] - 2020-06-23
 ### Added
 - Added item counter to FullItemInfo progress bar
@@ -137,7 +149,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.1...HEAD
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.2...HEAD
+[2.0.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.1...2.0.2
 [2.0.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.0...2.0.1
 [1.9.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.9.0...2.0.0
 [1.8.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.1...1.9.0
