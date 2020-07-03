@@ -66,6 +66,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _loadFullItemInfoProBarGridVisibility;
         private Visibility _loadIconVisibility;
         private string _loadFullItemInfoProBarCounter;
+        private bool _isFullItemInfoLoading;
 
         public enum ViewMode
         {
@@ -186,7 +187,10 @@ namespace StatisticsAnalysisTool.ViewModels
             ItemLevels = FrequentlyValues.ItemLevels;
             SelectedItemLevel = ItemLevel.Unknown;
 
-            LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
+            if (!IsFullItemInfoLoading)
+            {
+                LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
+            }
 
             #endregion
 
@@ -222,10 +226,17 @@ namespace StatisticsAnalysisTool.ViewModels
             LoadFullItemInfoProBarGridVisibility = Visibility.Visible;
 
             LoadFullItemInfoProBarMin = 0;
+            LoadFullItemInfoProBarValue = 0;
             LoadFullItemInfoProBarMax = ItemController.Items.Count;
+            IsFullItemInfoLoading = true;
 
             foreach (var item in ItemController.Items)
             {
+                if (!IsFullItemInfoLoading)
+                {
+                    break;
+                }
+
                 item.FullItemInformation = await ItemController.GetFullItemInformationAsync(item);
                 LoadFullItemInfoProBarValue++;
             }
@@ -432,6 +443,14 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #region Bindings
+        
+        public bool IsFullItemInfoLoading {
+            get => _isFullItemInfoLoading;
+            set {
+                _isFullItemInfoLoading = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string LoadFullItemInfoProBarCounter {
             get => _loadFullItemInfoProBarCounter;

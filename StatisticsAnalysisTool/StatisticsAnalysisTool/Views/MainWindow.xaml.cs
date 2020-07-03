@@ -40,6 +40,11 @@ namespace StatisticsAnalysisTool.Views
             sw.ShowDialog();
         }
 
+        private void StopLoadFullItemInfo_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _mainWindowViewModel.IsFullItemInfoLoading = false;
+        }
+
         private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)

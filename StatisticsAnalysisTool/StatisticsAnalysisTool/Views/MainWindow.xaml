@@ -92,10 +92,13 @@
             </Grid>
             <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearchActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="200"/>
             <Grid Visibility="{Binding LoadFullItemInfoProBarGridVisibility, FallbackValue=Hidden}">
-                <ProgressBar Minimum="{Binding LoadFullItemInfoProBarMin, IsAsync=True, FallbackValue=0}" Maximum="{Binding LoadFullItemInfoProBarMax, IsAsync=True, FallbackValue=0}" Value="{Binding LoadFullItemInfoProBarValue, IsAsync=True, FallbackValue=0}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="176"/>
-                <Label Content="{Binding LoadFullItemInfoProBarCounter, FallbackValue=0/0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="24" Margin="0,36,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="176"></Label>
+                <ProgressBar Minimum="{Binding LoadFullItemInfoProBarMin, IsAsync=True, FallbackValue=0}" Maximum="{Binding LoadFullItemInfoProBarMax, IsAsync=True, FallbackValue=0}" Value="{Binding LoadFullItemInfoProBarValue, IsAsync=True, FallbackValue=0}" Height="22" Margin="0,38,36,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150"/>
+                <Label Content="{Binding LoadFullItemInfoProBarCounter, FallbackValue=0/0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="24" Margin="0,36,36,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150"></Label>
+                <Grid Margin="0,38,10,0" HorizontalAlignment="Right" Width="24" Height="22" VerticalAlignment="Top">
+                    <fa:ImageAwesome Icon="StopCircle" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="StopLoadFullItemInfo_MouseUp" />
+                </Grid>
             </Grid>
-            <Button Style="{StaticResource ButtonStyle}" Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176"/>
+            <Button Style="{StaticResource ButtonStyle}" Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176"/>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding SavedPlayerInformationName}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown"/>
