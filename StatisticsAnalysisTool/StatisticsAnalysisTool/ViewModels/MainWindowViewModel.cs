@@ -78,9 +78,9 @@ namespace StatisticsAnalysisTool.ViewModels
         public MainWindowViewModel(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
+            UpgradeSettings();
             InitWindowSettings();
             Utilities.AutoUpdate();
-            UpgradeSettings();
 
             if (!LanguageController.InitializeLanguage())
                 _mainWindow.Close();

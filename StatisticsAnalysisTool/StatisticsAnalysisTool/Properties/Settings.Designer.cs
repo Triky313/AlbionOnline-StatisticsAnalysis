@@ -83,12 +83,15 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Normal")]
         public string ActiveMode {
             get {
                 return ((string)(this["ActiveMode"]));
+            }
+            set {
+                this["ActiveMode"] = value;
             }
         }
         
@@ -102,13 +105,16 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/it" +
             "ems.json")]
         public string DefaultItemListSourceUrl {
             get {
                 return ((string)(this["DefaultItemListSourceUrl"]));
+            }
+            set {
+                this["DefaultItemListSourceUrl"] = value;
             }
         }
         
