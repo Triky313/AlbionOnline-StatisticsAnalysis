@@ -148,7 +148,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TextBoxGoldModeNumberOfValues = "10";
         }
 
-        private void IsFullItemInformationCompleteCheck()
+        public void IsFullItemInformationCompleteCheck()
         {
             if (ItemController.IsFullItemInformationComplete)
             {
@@ -158,6 +158,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             else
             {
+                LoadFullItemInfoButtonVisibility = Visibility.Visible;
                 IsLoadFullItemInfoButtonEnabled = true;
             }
         }
@@ -174,7 +175,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
             #endregion
 
-            #region Full Item Info Search elements
+            #region Full Item Info elements
+
+            LoadFullItemInfoButtonVisibility = Visibility.Hidden;
 
             IsFullItemInfoSearchActive = Settings.Default.IsFullItemInfoSearchActive;
 

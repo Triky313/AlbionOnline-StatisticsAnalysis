@@ -79,16 +79,17 @@ namespace StatisticsAnalysisTool.ViewModels
             LanguageController.CurrentCultureInfo = new CultureInfo(LanguagesSelection.FileName);
             LanguageController.SetLanguage();
 
-            SetAppTranslations();
+            SetAppSettingsAndTranslations();
 
             _settingsWindow.Close();
         }
 
-        private void SetAppTranslations()
+        private void SetAppSettingsAndTranslations()
         {
             Translation = new SettingsWindowTranslation();
 
             _mainWindowViewModel.SetUiElements();
+            _mainWindowViewModel.IsFullItemInformationCompleteCheck();
             _mainWindowViewModel.PlayerModeTranslation = new PlayerModeTranslation();
             _mainWindowViewModel.LoadTranslation = LanguageController.Translation("LOAD");
             _mainWindowViewModel.NumberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
