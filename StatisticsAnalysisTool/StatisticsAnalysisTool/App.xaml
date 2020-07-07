@@ -1,0 +1,1135 @@
+﻿<Application x:Class="StatisticsAnalysisTool.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             StartupUri="Views/MainWindow.xaml">
+    <Application.Resources>
+        <!-- Base font size -->
+        <system:Double x:Key="BaseFontSize">12</system:Double>
+
+        <!--Global colors -->
+        <Color x:Key="Background.First">#FF36363F</Color>
+        <Color x:Key="Background.Second">#FF2B2B33</Color>
+        <Color x:Key="Background.Third">#FF202026</Color>
+
+        <!-- Item level colors -->
+        <Color x:Key="Item.Level.Color.0">#FFb1b0ae</Color>
+        <Color x:Key="Item.Level.Color.1">#FF6bff91</Color>
+        <Color x:Key="Item.Level.Color.2">#FF4ff0fd</Color>
+        <Color x:Key="Item.Level.Color.3">#FFb866fe</Color>
+
+        <!-- City colors -->
+        <Color x:Key="Color.City.Default">#FF24292D</Color>
+        <Color x:Key="Color.City.Caerleon">#FF24292D</Color>
+        <Color x:Key="Color.City.Thetford">#FF3BAFDA</Color>
+        <Color x:Key="Color.City.Bridgewatch">#FFF76397</Color>
+        <Color x:Key="Color.City.Martlock">#FF7266BA</Color>
+        <Color x:Key="Color.City.Lymhurst">#FFFFAA00</Color>
+        <Color x:Key="Color.City.FortSterling">#FF00B19D</Color>
+        <Color x:Key="Color.City.ArthursRest">#FFF75656</Color>
+        <Color x:Key="Color.City.MerlynsRest">#FF435DE0</Color>
+        <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
+
+        <Color x:Key="Color.City.Default.Transparent">#5524292D</Color>
+        <Color x:Key="Color.City.Caerleon.Transparent">#5524292D</Color>
+        <Color x:Key="Color.City.Thetford.Transparent">#553BAFDA</Color>
+        <Color x:Key="Color.City.Bridgewatch.Transparent">#55F76397</Color>
+        <Color x:Key="Color.City.Martlock.Transparent">#557266BA</Color>
+        <Color x:Key="Color.City.Lymhurst.Transparent">#55FFAA00</Color>
+        <Color x:Key="Color.City.FortSterling.Transparent">#5500B19D</Color>
+        <Color x:Key="Color.City.ArthursRest.Transparent">#55F75656</Color>
+        <Color x:Key="Color.City.MerlynsRest.Transparent">#55435DE0</Color>
+        <Color x:Key="Color.City.MorganasRest.Transparent">#5583AF00</Color>
+
+        <!-- Colors -->
+        <Color x:Key="Color.Blue.1">#ff6fccf6</Color>
+        <Color x:Key="Color.Blue.2">#ff57b6e0</Color>
+        <Color x:Key="Color.Blue.3">#ff3da2ca</Color>
+        <Color x:Key="Color.Blue.4">#ff20779E</Color>
+        <Color x:Key="Color.Blue.5">#ff196585</Color>
+
+        <Color x:Key="Color.Red.1">#FFFF7272</Color>
+        <Color x:Key="Color.Red.2">#FFF75656</Color>
+        <Color x:Key="Color.Red.3">#FF992E2E</Color>
+
+        <Color x:Key="Color.Gold.1">#FFf2b83b</Color>
+        <Color x:Key="Color.Gold.2">#55f2b83b</Color>
+
+        <Color x:Key="Color.Green.1">#FF57E0A0</Color>
+        <Color x:Key="Color.Green.2">#FF3CC991</Color>
+        <Color x:Key="Color.Green.3">#FF1F9E6E</Color>
+        <Color x:Key="Color.Green.4">#FF19845A</Color>
+
+        <!-- Text colors -->
+        <Color x:Key="Color.Text.Normal">#FFDEDEEA</Color>
+        <Color x:Key="Color.Text.ToOldFirst">#FF8C8CA5</Color>
+        <Color x:Key="Color.Text.ToOldSecond">#FF77778C</Color>
+        <Color x:Key="Color.Text.ToOldThird">#FF616172</Color>
+        <Color x:Key="Color.Text.NoValue">#FF4B4B59</Color>
+        
+        <SolidColorBrush x:Key="SolidColorBrush.Foreground.First" Color="Gainsboro"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Foreground.Second" Color="#B4B4B4"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Background.First" Color="{StaticResource Background.First}" />
+        <SolidColorBrush x:Key="SolidColorBrush.Background.Second" Color="{StaticResource Background.Second}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Background.Third" Color="{StaticResource Background.Third}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.First" Color="{StaticResource Color.Blue.1}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Second" Color="{StaticResource Color.Blue.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Third" Color="{StaticResource Color.Blue.3}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.1" Color="{StaticResource Color.Blue.1}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.2" Color="{StaticResource Color.Blue.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.3" Color="{StaticResource Color.Blue.3}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.4" Color="{StaticResource Color.Blue.4}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Blue.5" Color="{StaticResource Color.Blue.5}"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#FF00799f"/>
+        <SolidColorBrush x:Key="Item.IsSelected.Background" Color="#FF0e89b1"/>
+        <SolidColorBrush x:Key="GridView.Column.Header.Font" Color="{StaticResource Color.Blue.2}"/>
+        <SolidColorBrush x:Key="WindowButtonForeground" Color="#FF36363F"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Hyperlink.First" Color="{StaticResource Color.Blue.3}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Highlighted.First" Color="{StaticResource Color.Blue.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.Normal" Color="{StaticResource Color.Text.Normal}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.ToOldFirst" Color="{StaticResource Color.Text.ToOldFirst}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.ToOldSecond" Color="{StaticResource Color.Text.ToOldSecond}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
+        <SolidColorBrush x:Key="Solid.Color.Text.Gold" Color="{StaticResource Color.Gold.1}"/>
+        <SolidColorBrush x:Key="Solid.Color.Gold.Fill" Color="{StaticResource Color.Gold.2}"/>
+
+        <SolidColorBrush x:Key="SolidColorBrush.City.Default" Color="{StaticResource Color.City.Caerleon}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Thetford" Color="{StaticResource Color.City.Thetford}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Bridgewatch" Color="{StaticResource Color.City.Bridgewatch}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Martlock" Color="{StaticResource Color.City.Martlock}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst" Color="{StaticResource Color.City.Lymhurst}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling" Color="{StaticResource Color.City.FortSterling}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest" Color="{StaticResource Color.City.ArthursRest}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
+
+        <SolidColorBrush x:Key="SolidColorBrush.City.Default.Transparent" Color="{StaticResource Color.City.Caerleon.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon.Transparent" Color="{StaticResource Color.City.Caerleon.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Thetford.Transparent" Color="{StaticResource Color.City.Thetford.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Bridgewatch.Transparent" Color="{StaticResource Color.City.Bridgewatch.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Martlock.Transparent" Color="{StaticResource Color.City.Martlock.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst.Transparent" Color="{StaticResource Color.City.Lymhurst.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling.Transparent" Color="{StaticResource Color.City.FortSterling.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest.Transparent" Color="{StaticResource Color.City.ArthursRest.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest.Transparent" Color="{StaticResource Color.City.MerlynsRest.Transparent}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest.Transparent" Color="{StaticResource Color.City.MorganasRest.Transparent}"/>
+
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Background" Color="{StaticResource Color.Red.2}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Border" Color="{StaticResource Color.Red.1}"/>
+        <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Button" Color="{StaticResource Color.Red.3}"/>
+
+        <!-- ######################################################################################### -->
+        
+        <!-- City Styles -->
+        <Style TargetType="Label" x:Key="CaerleonStyle">
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.Caerleon}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="ThetfordStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.Thetford}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="BridgewatchStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.Bridgewatch}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="MartlockStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.Martlock}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="LymhurstStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.Lymhurst}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="FortSterlingStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.FortSterling}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="ArthursRestStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.ArthursRest}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="MerlynsRestStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.MerlynsRest}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="MorganasRestStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF33333F" Offset="1"/>
+                        <GradientStop Color="{StaticResource Color.City.MorganasRest}"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="DefaultCityStyle" >
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
+
+        <!-- Grid Error bar -->
+        <Style x:Key="Grid.Error.Bar" TargetType="Grid">
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.ArthursRest}"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+
+        <!-- Grid Error bar label -->
+        <Style x:Key="Grid.Error.Bar.Label" TargetType="Label">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Margin" Value="10,0,40,0"/>
+        </Style>
+
+        <!-- Grid stackPanel item price -->
+        <Style x:Key="ListView.Grid.Item.Price" TargetType="Grid">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Width" Value="Auto"/>
+        </Style>
+
+        <!-- Grid stackPanel item date -->
+        <Style x:Key="ListView.Grid.Item.Date" TargetType="Grid">
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="24"/>
+        </Style>
+
+        <!-- ListView grid stackPanel item price -->
+        <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Price">
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="22,0,0,0"/>
+        </Style>
+
+        <!-- ListView grid stackPanel image price silver -->
+        <Style TargetType="Image" x:Key="ListView.Grid.StackPanel.Image.Price.Silver" >
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Source" Value="Resources/silver.png"/>
+        </Style>
+
+        <!-- Image gold -->
+        <Style TargetType="Image" x:Key="Image.Gold" >
+            <Setter Property="Source" Value="Resources/gold.png"/>
+        </Style>
+
+        <!-- Image gold chest -->
+        <Style TargetType="Image" x:Key="Image.GoldChest" >
+            <Setter Property="Source" Value="Resources/goldchest.png"/>
+        </Style>
+
+        <!-- Image logo -->
+        <Style TargetType="Image" x:Key="Image.Logo" >
+            <Setter Property="Source" Value="logo.ico"/>
+            <Setter Property="Height" Value="37"/>
+            <Setter Property="Width" Value="37"/>
+        </Style>
+
+        <!-- ListView grid stackPanel item icon -->
+        <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Icon">
+            <Setter Property="Orientation" Value="Horizontal"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+
+        <!-- ListView grid stackPanel label date -->
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.Normal">
+            <Setter Property="Width" Value="Auto"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldFirst">
+            <Setter Property="Width" Value="Auto"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldFirst}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldSecond">
+            <Setter Property="Width" Value="Auto"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldSecond}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldThird">
+            <Setter Property="Width" Value="Auto"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldThird}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+        <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.NoValue">
+            <Setter Property="Width" Value="Auto"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.NoValue}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+        </Style>
+
+        <!-- Best Price Label -->
+        <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.BestPrice" >
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="MinWidth" Value="80"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint = "1,0" MappingMode = "RelativeToBoundingBox" StartPoint = "0,0" Opacity = "0.5">
+                        <GradientStop Color = "#FF1DC160" />
+                        <GradientStop Color = "#FF33333F" Offset = "1" />
+                        <GradientStop Color = "#FF384A44" Offset = "0.45" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ListView grid stackPanel label price -->
+        <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.Price">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="MinWidth" Value="80"/>
+        </Style>
+
+        <!-- Primary Window -->
+        <Style x:Key="PrimaryWindow" TargetType="Window">
+            <Setter Property="BorderThickness" Value="1,1,1,1" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.First}"/>
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
+        </Style>
+
+        <!-- Hotbar Grid -->
+        <Style x:Key="HotbarGrid" TargetType="Grid">
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+
+        <!-- CheckBox -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Height" Value="21"/>
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <BulletDecorator Background="Transparent">
+                            <BulletDecorator.Bullet>
+                                <Border x:Name="Border" Width="21" Height="21" CornerRadius="0" Background="{StaticResource SolidColorBrush.Background.Third}" BorderThickness="3">
+                                    <Path Width="9" Height="9" x:Name="CheckMark" SnapsToDevicePixels="False" Stroke="{StaticResource SolidColorBrush.Blue.3}" StrokeThickness="2" Data="M 0 4 L 3 8 8 0" />
+                                </Border>
+                            </BulletDecorator.Bullet>
+                            <ContentPresenter Margin="4,-2,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" RecognizesAccessKey="True"/>
+                        </BulletDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="false">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter TargetName="CheckMark" Property="Data" Value="M 0 8 L 8 0" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="CheckMark" Property="Stroke" Value="{StaticResource Solid.Color.Text.NoValue}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.NoValue}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Radio Button -->
+        <Style TargetType="{x:Type RadioButton}" >
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Height" Value="21"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <BulletDecorator>
+                            <BulletDecorator.Bullet>
+                                <Grid Height="16" Width="16">
+                                    <Border Name="RadioOuter" Background="Transparent" BorderBrush="{StaticResource SolidColorBrush.Foreground.First}" BorderThickness="1" CornerRadius="10" />
+                                    <Border CornerRadius="10" Margin="4" Name="RadioMark" Background="{StaticResource SolidColorBrush.Blue.3}" Visibility="Hidden" />
+                                </Grid>
+                            </BulletDecorator.Bullet>
+                            <TextBlock Margin="4,0,0,0" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
+                                <ContentPresenter />
+                            </TextBlock>
+                        </BulletDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="RadioMark" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="RadioOuter" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Blue.4}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Window Button Style -->
+        <Style TargetType="{x:Type Button}" x:Key="WindowButtonStyle">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontFamily" Value="Webdings"/>
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Margin" Value="0,2,3,0"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ButtonBase}">
+                        <Border
+                            x:Name="Chrome"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Margin="0"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Content="{TemplateBinding Content}"
+                                ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#B4B4B4" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Window Error Bar Button Style -->
+        <Style TargetType="{x:Type Button}" x:Key="Window.Error.Bar.Button.Style">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontFamily" Value="Webdings"/>
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Error.Bar.Button}"/>
+            <Setter Property="Margin" Value="0,2,3,0"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ButtonBase}">
+                        <Border
+                            x:Name="Chrome"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Margin="0"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Content="{TemplateBinding Content}"
+                                ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#FFE58080" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Normal Button Style -->
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="BorderBrush">
+                <Setter.Value>
+                    <SolidColorBrush Color="{StaticResource Color.Blue.3}"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="0">
+                            <Border.Effect>
+                                <DropShadowEffect Color="{StaticResource Color.Blue.3}" ShadowDepth="0"/>
+                            </Border.Effect>
+                            <TextBlock Foreground="{TemplateBinding BorderBrush}" Text="{TemplateBinding Content}" 
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Color.Button.First}" />
+                    <Setter Property="Background" Value="{StaticResource SolidColorBrush.Color.Button.First}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Color.Button.First}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SolidColorBrush.Color.Button.Second}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Color.Button.Second}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Separator -->
+        <Style TargetType="Separator">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <RadialGradientBrush>
+                        <GradientStop Color="{StaticResource Color.Blue.1}" Offset="0"/>
+                        <GradientStop Color="{StaticResource Color.Blue.3}" Offset="1"/>
+                    </RadialGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- PlayerMode label value last -->
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Last">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="Width" Value="220"></Setter>
+        </Style>
+
+        <!-- PlayerMode label value current -->
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Current">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="Width" Value="220"></Setter>
+        </Style>
+
+        <!-- PlayerMode label title -->
+        <Style TargetType="Label" x:Key="PlayerMode.Label.Title">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="Width" Value="200"></Setter>
+        </Style>
+
+        <!-- PlayerMode label -->
+        <Style TargetType="Label" x:Key="PlayerMode.Title">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+        </Style>
+
+        <!-- Price list column style -->
+        <Style TargetType="Label" x:Key="Price.List.Column.Style">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Top"></Setter>
+        </Style>
+
+        <!-- MainWindow title label -->
+        <Style TargetType="Label" x:Key="MainWindow.Title">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Top"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="Width" Value="425"></Setter>
+        </Style>
+
+        <!-- MainWindow version label -->
+        <Style TargetType="Label" x:Key="MainWindow.Version">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Highlighted.First}"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Top"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+            <Setter Property="FontWeight" Value="Light"></Setter>
+        </Style>
+
+        <!-- ItemWindow Full Information value label -->
+        <Style TargetType="Label" x:Key="ItemWindow.Information.FullInfoValue">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+            <Setter Property="Margin" Value="0,5,0,0"></Setter>
+            <Setter Property="VerticalAlignment" Value="Top"></Setter>
+        </Style>
+
+        <!-- Progressbar style -->
+        <Style x:Key="{x:Type ProgressBar}" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Blue.3}"/>
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid Name="TemplateRoot" SnapsToDevicePixels="true">
+                            <Rectangle Fill="{TemplateBinding Background}"/>
+                            <Rectangle Name="PART_Track" Margin="0"/>
+                            <Decorator x:Name="PART_Indicator" HorizontalAlignment="Left" Margin="0">
+                                <Grid Name="Foreground">
+                                    <Rectangle Fill="{TemplateBinding Foreground}" Name="Indicator" />
+                                    <Grid Name="Animation" ClipToBounds="True">
+                                        <Border Name="PART_GlowRect"  Margin="0,0,0,0" HorizontalAlignment="Left" Background="{TemplateBinding Foreground}"/>
+                                    </Grid>
+                                    <Grid Name="Overlay">
+                                    </Grid>
+                                </Grid>
+                            </Decorator>
+
+                            <Border BorderThickness="{TemplateBinding BorderThickness}"
+                        BorderBrush="{TemplateBinding BorderBrush}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsIndeterminate" Value="true">
+                                <Setter TargetName="Indicator" Property="Fill" Value="Transparent" />
+                                <Setter TargetName="PART_GlowRect" Property="Width" Value="100" />
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation 
+                                        Storyboard.TargetName="PART_GlowRect"
+                                        Storyboard.TargetProperty="Margin"
+                                        From="-50,0,0,0"  To="400,0,0,0" Duration="0:0:2"
+                                        AutoReverse="True" RepeatBehavior="Forever" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ContextMenu style -->
+        <Style TargetType="{x:Type ContextMenu}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Grid.IsSharedSizeScope" Value="true" />
+            <Setter Property="HasDropShadow" Value="True" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContextMenu}">
+                        <Border x:Name="Border" Background="{StaticResource SolidColorBrush.Background.First}" BorderThickness="1">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{StaticResource Background.Second}" />
+                            </Border.BorderBrush>
+                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasDropShadow" Value="true">
+                                <Setter TargetName="Border" Property="Padding" Value="0,3,0,3" />
+                                <Setter TargetName="Border" Property="CornerRadius" Value="4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ListView style -->
+        <Style TargetType="{x:Type ListView}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListView">
+                        <Border Name="Border" Background="{StaticResource SolidColorBrush.Background.First}" BorderBrush="{StaticResource SolidColorBrush.Foreground.Second}" BorderThickness="0">
+                            <ScrollViewer Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
+                                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldSecond}" />
+                                <Setter Property="BorderBrush" Value="{StaticResource Solid.Color.Text.ToOldSecond}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                                <Setter Property="BorderBrush" Value="{StaticResource  GridView.Column.Header.Font}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ListViewItem style -->
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource Item.MouseOver.Background}" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource Item.MouseOver.Background}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
+                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.NoValue}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Grid view column header style -->
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{StaticResource GridView.Column.Header.Font}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                        <Grid Margin="{TemplateBinding Padding}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="GridViewColumnHeaderBorder" BorderThickness="1,0,1,1" BorderBrush="{StaticResource GridView.Column.Header.Font}" Background="Transparent">
+                                <TextBlock Text="{TemplateBinding Content}" Padding="5,5,5,0" Width="{TemplateBinding Width}" TextAlignment="Left" />
+                            </Border>
+                            <Thumb x:Name="PART_HeaderGripper" 
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   Width="0" 
+                                   BorderThickness="0"
+                                   BorderBrush="{Binding VerticalGridLinesBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                   Cursor="SizeWE">
+                                <Thumb.Background>
+                                    <StaticResource ResourceKey="Item.MouseOver.Background" />
+                                </Thumb.Background>
+                            </Thumb>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}" />
+                                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldSecond}" />
+                                <Setter TargetName="GridViewColumnHeaderBorder" Property="BorderThickness" Value="0,0,1,1" />
+                                <Setter TargetName="GridViewColumnHeaderBorder" Property="BorderBrush" Value="{StaticResource Solid.Color.Text.NoValue}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter TargetName="GridViewColumnHeaderBorder" Property="BorderThickness" Value="0,0,1,1" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ComboBox style -->
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+                <Border
+                  x:Name="Border" 
+                  Grid.ColumnSpan="2"
+                  CornerRadius="0"
+                  Background="{StaticResource WindowButtonForeground}"
+                  BorderBrush="{StaticResource SolidColorBrush.Foreground.First}"
+                  BorderThickness="1" />
+                <Border 
+                  Grid.Column="0"
+                  CornerRadius="0" 
+                  Margin="1" 
+                  Background="{StaticResource WindowButtonForeground}" 
+                  BorderBrush="{StaticResource SolidColorBrush.Foreground.First}"
+                  BorderThickness="0,0,1,0" />
+                <Path 
+                  x:Name="Arrow"
+                  Grid.Column="1"     
+                  Fill="{StaticResource SolidColorBrush.Foreground.First}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
+                />
+            </Grid>
+            <ControlTemplate.Triggers>
+            <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                    <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.First}" />
+                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Background.Second}"/>
+                    <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource SolidColorBrush.Background.Second}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
+            <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
+        </ControlTemplate>
+        <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Grid>
+                            <ToggleButton 
+                            Name="ToggleButton" 
+                            Template="{StaticResource ComboBoxToggleButton}" 
+                            Focusable="false"
+                            IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                            ClickMode="Press">
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False"  Content="{TemplateBinding SelectionBoxItem}"
+                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                            Margin="3,3,23,3"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                            Style="{x:Null}" 
+                            Template="{StaticResource ComboBoxTextBox}" 
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center" 
+                            Margin="3,3,23,3"
+                            Focusable="True" 
+                            Background="{StaticResource SolidColorBrush.Background.Second}"
+                            Foreground="{StaticResource SolidColorBrush.Foreground.Second}"
+                            Visibility="Hidden"
+                            IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            <Popup 
+                            Name="Popup"
+                            Placement="Bottom"
+                            IsOpen="{TemplateBinding IsDropDownOpen}"
+                            AllowsTransparency="True" 
+                            Focusable="False"
+                            PopupAnimation="Slide">
+
+                                <Grid Name="DropDown"
+                              SnapsToDevicePixels="True"                
+                              MinWidth="{TemplateBinding ActualWidth}"
+                              MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border 
+                                x:Name="DropDownBorder"
+                                Background="{StaticResource SolidColorBrush.Background.Second}"
+
+                                BorderThickness="1"
+                                BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.Second}"/>
+                            </Trigger>
+                            <Trigger Property="IsGrouping" Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </Trigger>
+                            <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
+                                <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0"/>
+                                <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
+                            </Trigger>
+                            <Trigger Property="IsEditable"  Value="true">
+                                <Setter Property="IsTabStop" Value="false"/>
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!--<Style.Triggers>
+            </Style.Triggers>-->
+        </Style>
+
+        <!-- SimpleStyles: ComboBoxItem -->
+        <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                        <Border Name="Border"
+                              Padding="2"
+                              SnapsToDevicePixels="true">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.Second}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Scrollbar Thumbs -->
+        <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Grid x:Name="Grid">
+                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Fill="Transparent" />
+                            <Border x:Name="Rectangle1" CornerRadius="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"  Background="{TemplateBinding Background}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Tag" Value="Horizontal">
+                                <Setter TargetName="Rectangle1" Property="Width" Value="Auto" />
+                                <Setter TargetName="Rectangle1" Property="Height" Value="20" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ScrollBars -->
+        <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+            <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+            <Setter Property="Foreground" Value="{StaticResource Item.MouseOver.Background}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
+            <Setter Property="Width" Value="15" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid x:Name="GridRoot" Width="15" Background="{TemplateBinding Background}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.00001*" />
+                            </Grid.RowDefinitions>
+
+                            <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="false">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}" Style="{DynamicResource ScrollThumbs}" />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="false" />
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="false" />
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
+                                <Setter Value="{StaticResource Item.IsSelected.Background}" TargetName="Thumb" Property="Background" />
+                            </Trigger>
+                            <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
+                                <Setter Value="{StaticResource Item.IsSelected.Background}" TargetName="Thumb" Property="Background" />
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="Orientation" Value="Horizontal">
+                                <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Width" Value="Auto" />
+                                <Setter Property="Height" Value="12" />
+                                <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
+                                <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                                <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ListBox -->
+        <Style TargetType="{x:Type ListBox}">
+            <Setter Property="SelectionMode" Value="Multiple" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.Third}" />
+        </Style>
+
+        <!-- TextBox -->
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Foreground.Second}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <!-- Tab control -->
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.Third}"/>
+            <Setter Property="BorderThickness" Value="1,0,1,0"/>
+        </Style>
+
+        <!-- Tab item -->
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" CornerRadius="0,0,0,0" Margin="2,0,0,0">
+                            <ContentPresenter x:Name="ContentSite"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              ContentSource="Header"
+                                              Margin="15,2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Blue.2}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource SolidColorBrush.Blue.4}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource Solid.Color.Text.NoValue}" />
+                                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.ToOldSecond}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Application.Resources>
+</Application>
+

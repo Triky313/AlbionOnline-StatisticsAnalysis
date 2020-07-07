@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool", "src/StatisticsAnalysisTool\StatisticsAnalysisTool.csproj", "{02F8395A-F9F6-4D53-AF2F-D83F6B8F8ADD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool", "StatisticsAnalysisTool\StatisticsAnalysisTool.csproj", "{02F8395A-F9F6-4D53-AF2F-D83F6B8F8ADD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6FA208BE-5EAF-4C1B-BE23-07B79BA85B9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.UnitTests", "src/StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests.csproj", "{00AF1C3A-E926-405F-93E5-B8394E10B85D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.UnitTests", "StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests.csproj", "{00AF1C3A-E926-405F-93E5-B8394E10B85D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.IntegrationTests", "src/StatisitcsAnalysisTool.IntegrationTests\StatisticsAnalysisTool.IntegrationTests.csproj", "{0BD75570-9FC4-4CE0-A831-70443588AFF7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.IntegrationTests", "StatisitcsAnalysisTool.IntegrationTests\StatisticsAnalysisTool.IntegrationTests.csproj", "{0BD75570-9FC4-4CE0-A831-70443588AFF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
