@@ -247,7 +247,7 @@ namespace StatisticsAnalysisTool.Common
 
         #region ItemInformation
 
-        public static bool IsFullItemInformationComplete => Items?.All(item => IsItemInformationUpToDate(item.FullItemInformation.LastUpdate)) ?? false;
+        public static bool IsFullItemInformationComplete => Items?.All(item => IsItemInformationUpToDate(item?.FullItemInformation?.LastUpdate)) ?? false;
 
         public static async Task<ItemInformation> GetFullItemInformationAsync(Item item)
         {

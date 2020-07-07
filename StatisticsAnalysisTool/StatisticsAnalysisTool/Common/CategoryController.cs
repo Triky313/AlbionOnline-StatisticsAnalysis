@@ -453,8 +453,6 @@ namespace StatisticsAnalysisTool.Common
 
         public static string GetParentCategoryName(ParentCategory parentCategory) => ParentCategoryNames.TryGetValue(parentCategory, out var name) ? name : null;
 
-        public static ParentCategory GetParentCategoryByCategory(Category category) => Categories?.FirstOrDefault(x => x.Category.Equals(category))?.ParentCategory ?? ParentCategory.Unknown;
-
         public static Dictionary<Category, string> GetCategoriesByParentCategory(ParentCategory parentCategory) =>
             Categories?.Where(x => x.ParentCategory == parentCategory).ToDictionary(x => x.Category, x => x.CategoryName);
     }
