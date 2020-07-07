@@ -23,8 +23,8 @@
                 </LinearGradientBrush>
             </Grid.Background>
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
-            <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
-            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
+            <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
+            <Button Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
             <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75"/>
             <DockPanel Margin="90,5,200,0" VerticalAlignment="Top" Height="28">
                 <Label Content="{Binding Path=ItemName, FallbackValue=ITEM__TITLE}" HorizontalAlignment="Left" FontSize="14" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
@@ -44,7 +44,7 @@
             </Grid>
         </Grid>
         <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top">
-            <fa:ImageAwesome x:Name="FaLoadIcon" Visibility="Visible" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+            <fa:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
         </Grid>
         <TabControl Margin="0,86,0,35" IsEnabled="{Binding HasItemPrices}">
             <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}" >
@@ -292,7 +292,7 @@
                 </LinearGradientBrush>
             </Grid.Background>
             <Label Content="{Binding Translation.DifferentCalculation, FallbackValue=DIFFERENT__CALCULATION}" HorizontalAlignment="Left" Margin="10,0,0,4" VerticalAlignment="Bottom" Width="150" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Background="{x:Null}"/>
-            <Label x:Name="LblDifCalcText" Content="" Margin="160,0,0,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="485"/>
+            <Label Content="{Binding DifferentCalculation}" Margin="160,0,0,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="485"/>
             <TextBlock Margin="0,0,10,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="21" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="293">
                 Prices are provided by the
                 <Hyperlink NavigateUri="https://www.albion-online-data.com/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" BaselineAlignment="Center" RequestNavigate="Hyperlink_RequestNavigate">Albion Online Data Project</Hyperlink>

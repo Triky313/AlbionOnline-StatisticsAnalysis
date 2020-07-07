@@ -48,6 +48,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _itemTierLevel;
         private List<MarketCurrentPricesItem> _marketCurrentPricesItemList;
         private XmlLanguage _itemListViewLanguage;
+        private Visibility _loadingImageVisibility;
+        private FontAwesomeIcon _loadingImageIcon;
+        private bool _loadingImageSpin;
+        private string _differentCalculation;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
 
@@ -123,44 +127,34 @@ namespace StatisticsAnalysisTool.ViewModels
             switch (error)
             {
                 case Error.NoItemInfo:
-                    _mainWindow.Dispatcher?.Invoke(() =>
-                    {
-                        Icon = new BitmapImage(new Uri(@"pack://application:,,,/"
-                                                       + Assembly.GetExecutingAssembly().GetName().Name + ";component/"
-                                                       + "Resources/Trash.png", UriKind.Absolute));
-                        _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
-                        _mainWindow.FaLoadIcon.Spin = false;
-                        SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_NO_ITEM_INFO"));
-                    });
+                    Icon = new BitmapImage(new Uri(@"pack://application:,,,/"
+                                                   + Assembly.GetExecutingAssembly().GetName().Name + ";component/"
+                                                   + "Resources/Trash.png", UriKind.Absolute));
+                    SetLoadingImageToError();
+                    SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_NO_ITEM_INFO"));
                     return;
                 case Error.NoPrices:
-                    _mainWindow.Dispatcher?.Invoke(() =>
-                    {
-                        _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
-                        _mainWindow.FaLoadIcon.Spin = false;
-                        HasItemPrices = false;
-                        SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED"));
-                    });
+                    SetLoadingImageToError();
+                    HasItemPrices = false;
+                    SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED"));
                     return;
                 case Error.GeneralError:
-                    _mainWindow.Dispatcher?.Invoke(() =>
-                    {
-                        _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
-                        _mainWindow.FaLoadIcon.Spin = false;
-                        HasItemPrices = false;
-                        SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
-                    });
+                    SetLoadingImageToError();
+                    HasItemPrices = false;
+                    SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                     return;
                 default:
-                    _mainWindow.Dispatcher?.Invoke(() =>
-                    {
-                        _mainWindow.FaLoadIcon.Icon = FontAwesomeIcon.Times;
-                        _mainWindow.FaLoadIcon.Spin = false;
-                        HasItemPrices = false;
-                        SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
-                    });
-            return;
+                    SetLoadingImageToError();
+                    HasItemPrices = false;
+                    SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
+                    return;
             }
+        }
+
+        private void SetLoadingImageToError()
+        {
+            LoadingImageIcon = FontAwesomeIcon.Times;
+            LoadingImageSpin = false;
         }
 
         private void SetErrorBar(Visibility visibility, string errorMessage)
@@ -319,15 +313,13 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var marketCurrentPricesItemList = statsPricesTotalList.Select(item => new MarketCurrentPricesItem(item)).ToList();
 
-            _mainWindow.Dispatcher?.Invoke(() =>
+            if (LoadingImageVisibility != Visibility.Hidden)
             {
-                if (_mainWindow.FaLoadIcon.Visibility != Visibility.Hidden)
-                {
-                    _mainWindow.FaLoadIcon.Visibility = Visibility.Hidden;
-                }
-                MarketCurrentPricesItemList = marketCurrentPricesItemList;
-                SetDifferenceCalculationText(statsPricesTotalList);
-            });
+                LoadingImageVisibility = Visibility.Hidden;
+            }
+
+            MarketCurrentPricesItemList = marketCurrentPricesItemList;
+            SetDifferenceCalculationText(statsPricesTotalList);
 
             HasItemPrices = true;
             RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {Formatting.CurrentDateTimeFormat(DateTime.Now)}";
@@ -460,9 +452,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var diffPrice = (int)bestBuyMaxPrice - (int)bestSellMinPrice;
 
-            _mainWindow.LblDifCalcText.Content = $"{LanguageController.Translation("BOUGHT_FOR")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", bestSellMinPrice)} | " +
-                                                 $"{LanguageController.Translation("SELL_FOR")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", bestBuyMaxPrice)} | " +
-                                                 $"{LanguageController.Translation("PROFIT")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", diffPrice)}";
+            DifferentCalculation = $"{LanguageController.Translation("BOUGHT_FOR")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", bestSellMinPrice)} | " +
+                                           $"{LanguageController.Translation("SELL_FOR")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", bestBuyMaxPrice)} | " +
+                                           $"{LanguageController.Translation("PROFIT")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", diffPrice)}";
         }
 
 
@@ -506,6 +498,38 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _icon;
             set {
                 _icon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DifferentCalculation {
+            get => _differentCalculation;
+            set {
+                _differentCalculation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility LoadingImageVisibility {
+            get => _loadingImageVisibility;
+            set {
+                _loadingImageVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public FontAwesomeIcon LoadingImageIcon {
+            get => _loadingImageIcon;
+            set {
+                _loadingImageIcon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool LoadingImageSpin {
+            get => _loadingImageSpin;
+            set {
+                _loadingImageSpin = value;
                 OnPropertyChanged();
             }
         }
