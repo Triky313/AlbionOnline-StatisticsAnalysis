@@ -20,7 +20,7 @@ namespace StatisticsAnalysisTool.Models
         public int Tier => ItemController.GetItemTier(this);
 
         private BitmapImage _icon;
-        public BitmapImage Icon => _icon ?? (_icon = ImageController.GetItemImage($"https://gameinfo.albiononline.com/api/gameinfo/items/{UniqueName}"));
+        public BitmapImage Icon => _icon ?? (_icon = ImageController.GetItemImage($"https://render.albiononline.com/v1/item/{UniqueName}.png"));
 
         public BitmapImage ExistFullItemInformationLocal => ItemController.ExistFullItemInformationLocal(UniqueName);
         public ItemInformation FullItemInformation { get; set; }

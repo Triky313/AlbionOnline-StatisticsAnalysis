@@ -23,8 +23,11 @@ https://gameinfo.albiononline.com/api/gameinfo/alliances/{alliance_id}
 Item / Weapon Categories
 https://gameinfo.albiononline.com/api/gameinfo/items/_itemCategoryTree https://gameinfo.albiononline.com/api/gameinfo/items/_weaponCategories
 
-Item info / icon
-https://gameinfo.albiononline.com/api/gameinfo/items/{item_id}/data https://gameinfo.albiononline.com/api/gameinfo/items/{item_id}
+Item info 
+https://gameinfo.albiononline.com/api/gameinfo/items/{item_id}/data
+
+Item icon
+https://render.albiononline.com/v1/item/T4_OFF_SHIELD@1.png
 
 Spell icon
 https://gameinfo.albiononline.com/api/gameinfo/spells/{spell_id}
