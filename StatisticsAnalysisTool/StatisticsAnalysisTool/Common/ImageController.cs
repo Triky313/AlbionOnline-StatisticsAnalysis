@@ -13,18 +13,12 @@ namespace StatisticsAnalysisTool.Common
     {
         private static readonly string ImageDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ImageResources);
 
-        public static BitmapImage GetItemImage(string webPath = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
+        public static BitmapImage GetItemImage(string uniqueName = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
         {
-            if (webPath == null)
-                return null;
-
             try
             {
-                var webUri = new Uri(webPath, UriKind.Absolute);
-                var filename = Path.GetFileName(webUri.AbsolutePath);
-                var localFilePath = Path.Combine(ImageDir, filename);
-
                 BitmapImage image;
+                var localFilePath = Path.Combine(ImageDir, uniqueName);
 
                 if (File.Exists(localFilePath))
                 {
@@ -32,7 +26,7 @@ namespace StatisticsAnalysisTool.Common
                 }
                 else
                 {
-                    image = SetImage(webPath, pixelHeight, pixelWidth, freeze);
+                    image = SetImage($"https://render.albiononline.com/v1/item/{uniqueName}", pixelHeight, pixelWidth, freeze);
                     SaveImageLocal(image, localFilePath);
                 }
 
