@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Home screen info for the first opening of the app
 - User macros
 
+## [2.1.0] - 2020-07-08
+
+### Fixed
+- ItemIcon URL adjusted, ItemIcons are now loaded again as usual.
+- Fixed a bug that always resets the settings
+- Fix a visibility issue with LoadFullItemInfoButton
+- Fix null ref issue in IsFullItemInformationComplete
+
 ## [2.0.2] - 2020-07-03
 
 ### Added
@@ -149,7 +157,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.2...HEAD
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.1.0...HEAD
+[2.0.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.2...2.1.0
 [2.0.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.1...2.0.2
 [2.0.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.0...2.0.1
 [1.9.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.9.0...2.0.0
