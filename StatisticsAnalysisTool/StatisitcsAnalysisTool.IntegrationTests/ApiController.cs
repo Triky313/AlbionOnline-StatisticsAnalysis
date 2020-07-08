@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace StatisticsAnalysisTool.IntegrationTests
 {
@@ -52,7 +53,7 @@ namespace StatisticsAnalysisTool.IntegrationTests
 
             var itemInformation = Common.ApiController.GetItemInfoFromJsonAsync(item).GetAwaiter().GetResult();
 
-            Assert.AreEqual(null, itemInformation);
+            Assert.AreEqual(HttpStatusCode.NotFound, itemInformation.HttpStatus);
         }
 
         [TestMethod]
