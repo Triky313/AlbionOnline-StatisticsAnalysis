@@ -32,6 +32,15 @@ Another good source is https://github.com/broderickhyman/ao-bin-dumps
 Or you extract the files yourself from the game. More information can be found here: https://github.com/broderickhyman/ao-id-extractor
 
 
+## INFORMATION
+
+### Where does the price information come from?
+From this project: [https://www.albion-online-data.com/](https://www.albion-online-data.com/)
+
+### I want more current prices!
+Download the [Albion online data client](https://www.albion-online-data.com/) and scan the auction houses.
+
+
 ## CONTRIBUTING
 
 ### Problem or question?
