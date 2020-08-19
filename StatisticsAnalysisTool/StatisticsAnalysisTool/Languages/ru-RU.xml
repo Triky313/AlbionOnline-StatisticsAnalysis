@@ -1,25 +1,307 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 
 <translations>
-  <translation name="LANGUAGE"></translation>
-  <translation name="REFRESH_RATE"></translation>
-  <translation name="SETTINGS"></translation>
-  <translation name="SAVE"></translation>
-  <translation name="CITY"></translation>
-  <translation name="SELL_PRICE_MIN"></translation>
-  <translation name="SELL_PRICE_MIN_DATE"></translation>
-  <translation name="SELL_PRICE_MAX"></translation>
-  <translation name="SELL_PRICE_MAX_DATE"></translation>
-  <translation name="BUY_PRICE_MIN"></translation>
-  <translation name="BUY_PRICE_MIN_DATE"></translation>
-  <translation name="BUY_PRICE_MAX"></translation>
-  <translation name="BUY_PRICE_MAX_DATE"></translation>
-  <translation name="LAST_UPDATE"></translation>
-  <translation name="SHOW_VILLAGES"></translation>
-  <translation name="AUTO_UPDATE_DATA"></translation>
-  <translation name="DIFFERENT_CALCULATION"></translation>
-  <translation name="ERROR_PRICES_CAN_NOT_BE_LOADED"></translation>
-  <translation name="BOUGHT_FOR"></translation>
-  <translation name="SELL_FOR"></translation>
-  <translation name="PROFIT"></translation>
+  <translation name="LANGUAGE">Язык</translation>
+  <translation name="REFRESH_RATE">Частота обновления</translation>
+  <translation name="UPDATE_ITEM_LIST_BY_DAYS">Обновление списка предметов по дням: </translation>
+  <translation name="SETTINGS">Settings</translation>
+  <translation name="SAVE">Настройки</translation>
+  <translation name="CITY">Город</translation>
+  <translation name="SELL_PRICE_MIN">Продажа MIN</translation>
+  <translation name="SELL_PRICE_MIN_DATE">Продажа MIN Dt</translation>
+  <translation name="SELL_PRICE_MAX">Продажа MAX</translation>
+  <translation name="SELL_PRICE_MAX_DATE">Продажа MAX Dt</translation>
+  <translation name="BUY_PRICE_MIN">Покупка MIN</translation>
+  <translation name="BUY_PRICE_MIN_DATE">Покупка MIN Dt</translation>
+  <translation name="BUY_PRICE_MAX">Покупка MAX</translation>
+  <translation name="BUY_PRICE_MAX_DATE">Покупка MAX Dt</translation>
+  <translation name="LAST_UPDATE">Последнее обновление</translation>
+  <translation name="SHOW_VILLAGES">Показать деревни</translation>
+  <translation name="AUTO_UPDATE_DATA">Автоматическое обновление данных</translation>
+  <translation name="DIFFERENT_CALCULATION">Различные расчеты</translation>
+  <translation name="ERROR_PRICES_CAN_NOT_BE_LOADED">ОШИБКА: Цена не может быть загружена</translation>
+  <translation name="ERROR_NO_ITEM_INFO">ОШИБКА: Информация об предмете отсутствует</translation>
+  <translation name="ERROR_GENERAL_ERROR">ОШИБКА: Общая ошибка</translation>
+  <translation name="BOUGHT_FOR">Купить за</translation>
+  <translation name="SELL_FOR">Продать за</translation>
+  <translation name="UNKNOWN_ITEM_NAME">Неизвестное имя предмета</translation>
+  <translation name="NORMAL">Нормальный</translation>
+  <translation name="GOOD">Хороший</translation>
+  <translation name="OUTSTANDING">Выдающийся</translation>
+  <translation name="EXCELLENT">Отличное</translation>
+  <translation name="MASTERPIECE">Шедевр</translation>
+  <translation name="MIN_PROFIT">Мин прибыль</translation>
+  <translation name="ALL">Все</translation>
+  <translation name="ICON">Иконка</translation>
+  <translation name="NAME">Имя</translation>
+  <translation name="TIER">Tier</translation>
+  <translation name="LEVEL">Уровень</translation>
+  <translation name="QUALITY">Качество</translation>
+  <translation name="COSTS">Стоимость</translation>
+  <translation name="REVENUE">Доход</translation>
+  <translation name="REVENUE_WITHOUT_FEE">Выручка без комиссии</translation>
+  <translation name="PROFIT">Прибыль</translation>
+  <translation name="PURCHASE_CITY">Город покупки</translation>
+  <translation name="DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE">В языковом файле существует двойное значение</translation>
+  <translation name="EVERY_DAY">Каждый день</translation>
+  <translation name="EVERY_3_DAYS">Каждые 3 дня</translation>
+  <translation name="EVERY_7_DAYS">Каждые 7 дней</translation>
+  <translation name="EVERY_14_DAYS">Каждые 14 дней</translation>
+  <translation name="EVERY_28_DAYS">Каждые 28 дней</translation>
+  <translation name="5_SECONDS">5 секунд</translation>
+  <translation name="10_SECONDS">10 секунд</translation>
+  <translation name="30_SECONDS">30 секунд</translation>
+  <translation name="60_SECONDS">60 секунд</translation>
+  <translation name="5_MINUTES">5 минут</translation>
+  <translation name="MIN_PROFIT_TOOLTIP">Определяет минимальную прибыль, которую должен получить элемент.</translation>
+  <translation name="REMOVE">Удалить</translation>
+  <translation name="ITEM_LIST_SOURCE_URL">Список источников предметов url</translation>
+  <translation name="ITEM_LIST_CAN_NOT_BE_LOADED">Список предметов не может быть загружен.</translation>
+  <translation name="ERROR">Ошибка</translation>
+  <translation name="NOTE">Примечание</translation>
+  <translation name="DEFAULT_ITEMLIST_HAS_BEEN_LOADED">Загружен список предметов по умолчанию.</translation>
+  <translation name="SHOW_BLACKZONE_OUTPOSTS">Аванпосты в черных зонах</translation>
+  <translation name="ID">Id</translation>
+  <translation name="AVERAGE_ITEM_POWER">Средняя мощность изделия</translation>
+  <translation name="GUILD_NAME">Имя гильдии</translation>
+  <translation name="GUILD_ID">ID Гильдии</translation>
+  <translation name="ALLIANCE_NAME">Название альянса</translation>
+  <translation name="ALLIANCE_ID">ID альянса</translation>
+  <translation name="DEATH_FAME">Death Fame</translation>
+  <translation name="KILL_FAME">Слава за убийство игроков</translation>
+  <translation name="FAME_RATIO">Соотношение славы</translation>
+  <translation name="TOTAL_KILLS">Тотальные убийства</translation>
+  <translation name="GVG_KILLS">GVG kills</translation>
+  <translation name="GVG_WON">GVG won</translation>
+  <translation name="CRYSTAL_LEAGUE">Кристальная лига</translation>
+  <translation name="TOTAL">Всего</translation>
+  <translation name="ROYAL">Королевство</translation>
+  <translation name="OUTLANDS">Черные</translation>
+  <translation name="HELLGATE">Hellgate</translation>
+  <translation name="CRAFTING">Крафтинг</translation>
+  <translation name="GATHERING">Собирательство</translation>
+  <translation name="MAINHAND">Основная рука</translation>
+  <translation name="HEAD">Голова</translation>
+  <translation name="SHOES">Обувь</translation>
+  <translation name="BAG">Сумка</translation>
+  <translation name="CAPE">Плащ</translation>
+  <translation name="FOOD">Еда</translation>
+  <translation name="PLAYER">Игрок</translation>
+  <translation name="GENERAL_INFORMATION">Общая информация</translation>
+  <translation name="PVP">PvP</translation>
+  <translation name="PVE">PvE</translation>
+  <translation name="LOAD">Загрузить</translation>
+  <translation name="UPDATE">Обновить</translation>
+  <translation name="NUMBER_OF_VALUES">Количество промежутков времени (столбцов)</translation>
+  <translation name="GOLD">Gold</translation>
+  <translation name="OPEN_ITEM_WINDOW_IN_NEW_WINDOW">Открыть окно предметов в новом окне</translation>
+  <translation name="TAB_ALL_QUALITY_TOOLTIP_DESCRIPTION">Показывает все качественные цены товара</translation>
+  <translation name="MAIN">Главная</translation>
+  <translation name="HISTORY">История</translation>
+  <translation name="SHOW_NOT_AGAIN">Больше не показывать</translation>
+  <translation name="SHOW_INFO_WINDOW_ON_START">Показывать информ. окно при старте?</translation>
+  <translation name="NEW_FEATURE">Новая функция</translation>
+  <translation name="FEATURE_DESCRIPTION">НОВАЯ ФУНКЦИЯ &#x0a; - Поиск элементов Фильтр по типу элемента, тиру и уровню &#x0a; - Загрузка полной информации об предмете из Интернета</translation>
+  <translation name="EQUIPABLE">Экипируемый</translation>
+  <translation name="STACKABLE">Складываемый в стак</translation>
+  <translation name="SHOW_IN_MARKET_PLACE">Показать на рынке</translation>
+  <translation name="ITEM_TYPE">Тип предмета</translation>
+  <translation name="INFORMATION">Информация</translation>
+  <translation name="YES">Да</translation>
+  <translation name="NO">Нет</translation>
+  <translation name="CATEGORY_NAME">Наименование категории</translation>
+  <translation name="FULL_ITEM_INFORMATION_EXIST_LOCAL">Сохранено</translation>
+  <translation name="LAST_FULL_INFORMATION_UPDATE">Дата полного обновления информации</translation>
+  <translation name="CATEGORY">Категория</translation>
+  <translation name="PARENT_CATEGORY">Родительская категория</translation>
+  <translation name="FULL_ITEM_INFO_SEARCH">Поиск полн. инфы об предмете</translation>
+  <translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Обновлять список предметов через n-дней</translation>
+  <translation name="LOAD_FULL_ITEM_INFO">Загрузить все предметы</translation>
+  <translation name="UNKNOWN">Неизвестный</translation>
+
+  <translation name="CLOTH_ARMOR">Ткан. мантии</translation>
+  <translation name="CLOTH_HELMET">Ткан. колпаки</translation>
+  <translation name="CLOTH_SHOES">Ткан. сандали</translation>
+  <translation name="LEATHER_ARMOR">Кож. куртки</translation>
+  <translation name="LEATHER_HELMET">Кож. капюшоны</translation>
+  <translation name="LEATHER_SHOES">Кож. ботинки</translation>
+  <translation name="PLATE_ARMOR">Латная броня</translation>
+  <translation name="PLATE_HELMET">Латные шлемы</translation>
+  <translation name="PLATE_SHOES">Латные сапоги</translation>
+  <translation name="UNIQUE_ARMOR">Уник. броня</translation>
+  <translation name="UNIQUE_HELMET">Уник. шлемы</translation>
+  <translation name="UNIQUE_SHOES">Уник. сапоги</translation>
+
+  <translation name="ARMOR_ARTEFACT">Броня</translation>
+  <translation name="MAGIC_ARTEFACT">Магия</translation>
+  <translation name="MELEE_ARTEFACT">Ближний бой</translation>
+  <translation name="OFFHAND_ARTEFACT">Левая рука</translation>
+  <translation name="RANGED_ARTEFACT">Ближний бой</translation>
+
+  <translation name="BEASTHEART">Звериное сердце</translation>
+  <translation name="MOUNTAINHEART">Сердце горы</translation>
+  <translation name="ROCKHEART">Каменное сердце</translation>
+  <translation name="TREEHEART">Древесное сердце</translation>
+  <translation name="VINEHEART">Сердце лозы</translation>
+
+  <translation name="COOKED">Еда</translation>
+  <translation name="FISH">Рыба</translation>
+  <translation name="FISHING_BAIT">Наживка</translation>
+  <translation name="MAPS">Карта</translation>
+  <translation name="OTHER">Другое</translation>
+  <translation name="POTION">Зелья</translation>
+  <translation name="SKILL_BOOK">Книга интуиции</translation>
+  <translation name="VANITY">Роскошь</translation>
+
+  <translation name="ANIMALS">Животные</translation>
+  <translation name="SEED">Семена</translation>
+
+  <translation name="BANNER">Баннеры</translation>
+  <translation name="BED">Кровати</translation>
+  <translation name="CHEST">Сундуки</translation>
+  <translation name="DECORATION_FURNITURE">Украшения</translation>
+  <translation name="FLAG">Флаги</translation>
+  <translation name="HERETIC_FURNITURE">Еретик</translation>
+  <translation name="KEEPER_FURNITURE">Хранитель</translation>
+  <translation name="MORGANA_FURNITURE">Моргана</translation>
+  <translation name="TABLE">Столы</translation>
+  <translation name="REPAIR_KIT">Набор для ремонта</translation>
+  <translation name="UNIQUE">Уникальное</translation>
+
+  <translation name="FIBERGATHERER_ARMOR">Одежда жнеца</translation>
+  <translation name="FIBERGATHERER_HELMET">Рюкзак жнеца</translation>
+  <translation name="FIBERGATHERER_SHOES">Шапка жнеца</translation>
+  <translation name="FIBERGATHERER_BACKPACK">Сапоги жнеца</translation>
+
+  <translation name="FISHGATHERER_ARMOR">Одежда рыбака</translation>
+  <translation name="FISHGATHERER_HELMET">Рюкзак рыбака</translation>
+  <translation name="FISHGATHERER_SHOES">Шапка рыбака</translation>
+  <translation name="FISHGATHERER_BACKPACK">Сапоги рыбака</translation>
+
+  <translation name="HIDEGATHERER_ARMOR">Одежда свежевателя</translation>
+  <translation name="HIDEGATHERER_HELMET">Рюкзак свежевателя</translation>
+  <translation name="HIDEGATHERER_SHOES">Шапка свежевателя</translation>
+  <translation name="HIDEGATHERERR_BACKPACK">Сапоги свежевателя</translation>
+
+  <translation name="OREGATHERER_ARMOR">Одежда шахтера</translation>
+  <translation name="OREGATHERER_HELMET">Рюкзак шахтера</translation>
+  <translation name="OREGATHERER_SHOES">Шапка шахтера</translation>
+  <translation name="OREGATHERER_BACKPACK">Сапоги шахтера</translation>
+
+  <translation name="ROCKGATHERER_ARMOR">Одежда каменолома</translation>
+  <translation name="ROCKGATHERER_HELMET">Рюкзак каменолома</translation>
+  <translation name="ROCKGATHERER_SHOES">Шапка каменолома</translation>
+  <translation name="ROCKGATHERER_BACKPACK">Сапоги каменолома</translation>
+
+  <translation name="WOODGATHERER_ARMOR">Одежда дровосека</translation>
+  <translation name="WOODGATHERER_HELMET">Рюкзак дровосека</translation>
+  <translation name="WOODGATHERER_SHOES">Шапка дровосека</translation>
+  <translation name="WOODGATHERER_BACKPACK">Сапоги дровосека</translation>
+
+  <translation name="BRIDGEWATCH">Bridgewatch</translation>
+  <translation name="CAERLEON">Caerleon</translation>
+  <translation name="FORT_STERLING">Fort Sterling</translation>
+  <translation name="LYMHURST">Lymhurst</translation>
+  <translation name="MARTLOCK">Martlock</translation>
+  <translation name="THETFORD">Thetford</translation>
+
+  <translation name="ARCANE_STAFF">Мистический</translation>
+  <translation name="CURSE_STAFF">Проклятый</translation>
+  <translation name="FIRE_STAFF">Огненный</translation>
+  <translation name="FROST_STAFF">Морозный</translation>
+  <translation name="HOLY_STAFF">Священный</translation>
+  <translation name="NATURE_STAFF">Древесный</translation>
+
+  <translation name="ESSENCE">Эссенции</translation>
+  <translation name="RELIC">Реликты</translation>
+  <translation name="RUNE">Руны</translation>
+  <translation name="SOUL">Души</translation>
+
+  <translation name="AXE">Топоры</translation>
+  <translation name="DAGGER">Кинжалы</translation>
+  <translation name="HAMMER">Молоты</translation>
+  <translation name="MACE">Булавы</translation>
+  <translation name="QUARTER_STAFF">Шесты</translation>
+  <translation name="SPEAR">Копья</translation>
+  <translation name="SWORD">Мечи</translation>
+
+  <translation name="ARMORED_HORSE">Бронир. кони</translation>
+  <translation name="OX">Быки</translation>
+  <translation name="RARE_MOUNT">Редкий транспорт</translation>
+  <translation name="RIDING_HORSE">Ездовые лошади</translation>
+
+  <translation name="BOOK">Книги</translation>
+  <translation name="HORN">Рога</translation>
+  <translation name="ORB">Сферы</translation>
+  <translation name="SHIELD">Щиты</translation>
+  <translation name="TORCH">Факелы</translation>
+  <translation name="TOTEM">Тотемы</translation>
+
+  <translation name="TRASH">Мусор</translation>
+
+  <translation name="FARMING">Фермерство</translation>
+  <translation name="JOURNAL">Журналы</translation>
+
+  <translation name="BOW">Луки</translation>
+  <translation name="CROSSBOW">Арбалеты</translation>
+
+  <translation name="CLOTH">Ткань</translation>
+  <translation name="FIBER">Волокно</translation>
+  <translation name="HIDE">Шкуры</translation>
+  <translation name="LEATHER">Кожа</translation>
+  <translation name="METALBAR">Слитки</translation>
+  <translation name="ORE">Руда</translation>
+  <translation name="WOOD">Древесина</translation>
+  <translation name="PLANKS">Брусья</translation>
+  <translation name="ROCK">Камни</translation>
+  <translation name="STONEBLOCK">Блоки</translation>
+
+  <translation name="ARENA_SIGILS">Знак арены</translation>
+  <translation name="EVENT">Событие</translation>
+  <translation name="ROYAL_SIGILS">Королевский знак</translation>
+
+  <translation name="DEMOLITION_HAMMER">Осадные молоты</translation>
+  <translation name="FISHING">Удачка рыбака</translation>
+  <translation name="PICKAXE">Кирки шихтера</translation>
+  <translation name="SICKLE">Серпы жнеца</translation>
+  <translation name="SKINNING_KNIFE">Ножи свежевателя</translation>
+  <translation name="STONE_HAMMER">Кувалды коменолома</translation>
+  <translation name="WOOD_AXE">Топоры дровосека</translation>
+
+  <translation name="FIBER_TROPHY">Трофей жнеца</translation>
+  <translation name="FISH_TROPHY">Трофей рыбака</translation>
+  <translation name="GENERAL_TROPHY">Обычный трофей</translation>
+  <translation name="HIDE_TROPHY">Трофей из шкуры</translation>
+  <translation name="MERCENARY_TROPHY">Трофей наемника</translation>
+  <translation name="ORE_TROPHY">Трофей шахтера</translation>
+  <translation name="ROCK_TROPHY">Трофей камнетеса</translation>
+  <translation name="WOOD_TROPHY">Трофей лесоруба</translation>
+
+  <translation name="ACCESSORIES">Аксессуары</translation>
+  <translation name="ARMOR">Броня</translation>
+  <translation name="ARTEFACT">Артефакты</translation>
+  <translation name="CITY_RESOURCES">Ресурсы города</translation>
+  <translation name="CONSUMABLE">Расходники</translation>
+
+  <translation name="FARMABLE">Выращивание</translation>
+  <translation name="FURNITURE">Мебель</translation>
+  <translation name="GATHERING_GEAR">Собирательство</translation>
+  <translation name="LUXURY_GOODS">Роскошь</translation>
+  <translation name="MAGIC">Магия</translation>
+
+  <translation name="MATERIALS">Материалы</translation>
+  <translation name="MELEE">Ближний бой</translation>
+  <translation name="MOUNT">Транспорт</translation>
+  <translation name="OFFHAND">Левая рука</translation>
+  <translation name="PRODUCT">Продукты</translation>
+
+  <translation name="RANGED">Дальний бой</translation>
+  <translation name="RESOURCE">Ресурсы</translation>
+  <translation name="TOKEN">Жетон</translation>
+  <translation name="TOOL">Инструменты</translation>
+  <translation name="TROPHIES">Трофеи</translation>
+
+  <translation name="WEIGHT">Вес</translation>
+  <translation name="ITEM_POWER">Trophäen</translation>
+  <translation name="DURABILITY">Trophäen</translation>
 </translations>
