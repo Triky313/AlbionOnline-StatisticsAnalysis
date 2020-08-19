@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Home screen info for the first opening of the app
 - User macros
 
+## [2.1.1] - 2020-08-19
+
+### Added
+- New russian translations added
+
 ## [2.1.0] - 2020-07-08
 
 ### Fixed
@@ -157,12 +162,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.1.0...HEAD
-[2.0.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.2...2.1.0
-[2.0.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.1...2.0.2
-[2.0.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.0...2.0.1
-[1.9.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.9.0...2.0.0
-[1.8.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.1...1.9.0
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.1.1...HEAD
+[2.1.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.1.0...2.1.1
+[2.1.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.2...2.1.0
+[2.0.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.1...2.0.2
+[2.0.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.0.0...2.0.1
+[2.0.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.9.0...2.0.0
+[1.9.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.2...1.9.0
+[1.8.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.1...1.8.2
 [1.8.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.8.0...1.8.1
 [1.8.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.7.0...1.8.0
 [1.7.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/1.6.0...1.7.0
