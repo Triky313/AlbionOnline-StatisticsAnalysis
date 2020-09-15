@@ -301,6 +301,7 @@
   <translation name="TROPHIES">Trophies</translation>
 
   <translation name="WEIGHT">Weight</translation>
-  <translation name="ITEM_POWER">Trophäen</translation>
-  <translation name="DURABILITY">Trophäen</translation>
+  <translation name="ITEM_POWER">Item Power</translation>
+  <translation name="DURABILITY">Durability</translation>
+  <translation name="REAL_MONEY_PRICE">Real money price</translation>
 </translations>

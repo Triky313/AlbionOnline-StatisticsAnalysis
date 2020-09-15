@@ -1,4 +1,6 @@
-﻿namespace StatisticsAnalysisTool.Views
+﻿using System.Threading.Tasks;
+
+namespace StatisticsAnalysisTool.Views
 {
     using Models;
     using System.Diagnostics;
@@ -37,18 +39,14 @@
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
-        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e)
+        private async void ShowVillagesPrices_Click(object sender, RoutedEventArgs e)
         {
-            _itemWindowViewModel.GetPriceStats();
-            _itemWindowViewModel.SetQualityPriceStatsOnListView();
-            _itemWindowViewModel.SetHistoryChart();
+            await UpdatePriceValues();
         }
 
-        private void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e)
+        private async void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e)
         {
-            _itemWindowViewModel.GetPriceStats();
-            _itemWindowViewModel.SetQualityPriceStatsOnListView();
-            _itemWindowViewModel.SetHistoryChart();
+            await UpdatePriceValues();
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -72,41 +70,40 @@
             _itemWindowViewModel.ErrorBarVisibility = Visibility.Hidden;
         }
 
-        private void CbNormalQuality_Click(object sender, RoutedEventArgs e)
+        private async void CbNormalQuality_Click(object sender, RoutedEventArgs e)
         {
-            _itemWindowViewModel.GetPriceStats();
-            _itemWindowViewModel.SetQualityPriceStatsOnListView();
-            _itemWindowViewModel.SetHistoryChart();
+            await UpdatePriceValues();
         }
-        private void CbGoodQuality_Click(object sender, RoutedEventArgs e)
+        private async void CbGoodQuality_Click(object sender, RoutedEventArgs e)
         {
-            _itemWindowViewModel.GetPriceStats();
-            _itemWindowViewModel.SetQualityPriceStatsOnListView();
-            _itemWindowViewModel.SetHistoryChart();
+            await UpdatePriceValues();
         }
-        private void CbCbOutstandingQuality_Click(object sender, RoutedEventArgs e)
+        private async void CbCbOutstandingQuality_Click(object sender, RoutedEventArgs e)
         {
-            _itemWindowViewModel.GetPriceStats();
-            _itemWindowViewModel.SetQualityPriceStatsOnListView();
-            _itemWindowViewModel.SetHistoryChart();
+            await UpdatePriceValues();
         }
-        private void CbExcellentQuality_Click(object sender, RoutedEventArgs e)
+        private async void CbExcellentQuality_Click(object sender, RoutedEventArgs e)
         {
-            _itemWindowViewModel.GetPriceStats();
-            _itemWindowViewModel.SetQualityPriceStatsOnListView();
-            _itemWindowViewModel.SetHistoryChart();
+            await UpdatePriceValues();
         }
-        private void CbMasterpieceQuality_Click(object sender, RoutedEventArgs e)
+        private async void CbMasterpieceQuality_Click(object sender, RoutedEventArgs e)
         {
-            _itemWindowViewModel.GetPriceStats();
-            _itemWindowViewModel.SetQualityPriceStatsOnListView();
-            _itemWindowViewModel.SetHistoryChart();
+            await UpdatePriceValues();
         }
         
         private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
         {
             _itemWindowViewModel.IsAutoUpdateActive = !_itemWindowViewModel.IsAutoUpdateActive;
             _itemWindowViewModel.RefreshSpin = _itemWindowViewModel.IsAutoUpdateActive;
+        }
+
+        private async Task UpdatePriceValues()
+        {
+            await _itemWindowViewModel.GetCityItemPricesAsync();
+            _itemWindowViewModel.GetMainPriceStats();
+            _itemWindowViewModel.SetQualityPriceStatsOnListView();
+            _itemWindowViewModel.SetHistoryChartAsync();
+            _itemWindowViewModel.GetItemPricesInRealMoney();
         }
     }
 }

@@ -156,6 +156,12 @@ namespace StatisticsAnalysisTool.Models
         public string SellPriceMinExcellentString => Utilities.UlongMarketPriceToString(SellPriceMinExcellent);
         public string SellPriceMinMasterpieceString => Utilities.UlongMarketPriceToString(SellPriceMinMasterpiece);
 
+        public string SellPriceMinNormalStringInRalMoney { get; set; }
+        public string SellPriceMinGoodStringInRalMoney { get; set; }
+        public string SellPriceMinOutstandingStringInRalMoney { get; set; }
+        public string SellPriceMinExcellentStringInRalMoney { get; set; }
+        public string SellPriceMinMasterpieceStringInRalMoney { get; set; }
+
         public DateTime SellPriceMinNormalDate { private get; set; }
         public DateTime SellPriceMinGoodDate { private get; set; }
         public DateTime SellPriceMinOutstandingDate { private get; set; }
