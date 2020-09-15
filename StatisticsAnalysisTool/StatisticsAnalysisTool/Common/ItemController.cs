@@ -188,11 +188,11 @@ namespace StatisticsAnalysisTool.Common
                     break;
             }
 
-            if (string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EnUs))))
+            if (string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(localizedNames.EnUs))
             {
                 name = Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EnUs));
             }
-            else
+            else if (string.IsNullOrEmpty(name))
             {
                 name = alternativeName;
             }
