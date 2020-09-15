@@ -178,10 +178,10 @@ namespace StatisticsAnalysisTool.ViewModels
                     if (Item.UniqueName != null)
                     {
                         await GetCityItemPricesAsync();
+                        GetItemPricesInRealMoney();
                     }
 
                     GetMainPriceStats();
-                    GetItemPricesInRealMoneyAsync();
                     SetQualityPriceStatsOnListView();
                     await Task.Delay(Settings.Default.RefreshRate - 500);
                 }
@@ -258,7 +258,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Prices
 
-        public void GetItemPricesInRealMoneyAsync()
+        public void GetItemPricesInRealMoney()
         {
             if (_currentCityPrices == null)
                 return;

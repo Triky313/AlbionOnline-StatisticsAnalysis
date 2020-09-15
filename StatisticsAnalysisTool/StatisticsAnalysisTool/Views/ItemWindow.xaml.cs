@@ -103,7 +103,7 @@ namespace StatisticsAnalysisTool.Views
             _itemWindowViewModel.GetMainPriceStats();
             _itemWindowViewModel.SetQualityPriceStatsOnListView();
             _itemWindowViewModel.SetHistoryChartAsync();
-            _itemWindowViewModel.GetItemPricesInRealMoneyAsync();
+            _itemWindowViewModel.GetItemPricesInRealMoney();
         }
     }
 }
