@@ -172,6 +172,5 @@ namespace StatisticsAnalysisTool.Common
             public string EnglishName => CultureInfo.CreateSpecificCulture(FileName).EnglishName;
             public string NativeName => CultureInfo.CreateSpecificCulture(FileName).NativeName;
         }
-
     }
 }
