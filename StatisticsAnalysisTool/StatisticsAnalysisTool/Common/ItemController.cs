@@ -129,21 +129,21 @@ namespace StatisticsAnalysisTool.Common
             switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase)).Key)
             {
                 case GameLanguage.UnitedStates:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EnUs ?? alternativeName));
+                    return localizedNames.EnUs ?? alternativeName;
                 case GameLanguage.Germany:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.DeDe ?? alternativeName));
+                    return localizedNames.DeDe ?? alternativeName;
                 case GameLanguage.Russia:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.RuRu ?? alternativeName));
+                    return localizedNames.RuRu ?? alternativeName;
                 case GameLanguage.Poland:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PlPl ?? alternativeName));
+                    return localizedNames.PlPl ?? alternativeName;
                 case GameLanguage.Brazil:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PtBr ?? alternativeName));
+                    return localizedNames.PtBr ?? alternativeName;
                 case GameLanguage.France:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.FrFr ?? alternativeName));
+                    return localizedNames.FrFr ?? alternativeName;
                 case GameLanguage.Spain:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EsEs ?? alternativeName));
+                    return localizedNames.EsEs ?? alternativeName;
                 case GameLanguage.Chinese:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.ZhCn ?? alternativeName));
+                    return localizedNames.ZhCn ?? alternativeName;
                 default:
                     return alternativeName;
             }
