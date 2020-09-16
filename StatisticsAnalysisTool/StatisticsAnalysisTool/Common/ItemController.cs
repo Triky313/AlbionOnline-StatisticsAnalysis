@@ -129,24 +129,29 @@ namespace StatisticsAnalysisTool.Common
             switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase)).Key)
             {
                 case GameLanguage.UnitedStates:
-                    return localizedNames.EnUs ?? alternativeName;
+                    return TextUtf8Encoding(localizedNames.EnUs ?? alternativeName);
                 case GameLanguage.Germany:
-                    return localizedNames.DeDe ?? alternativeName;
+                    return TextUtf8Encoding(localizedNames.DeDe ?? alternativeName);
                 case GameLanguage.Russia:
-                    return localizedNames.RuRu ?? alternativeName;
+                    return TextUtf8Encoding(localizedNames.RuRu ?? alternativeName);
                 case GameLanguage.Poland:
-                    return localizedNames.PlPl ?? alternativeName;
+                    return TextUtf8Encoding(localizedNames.PlPl ?? alternativeName);
                 case GameLanguage.Brazil:
-                    return localizedNames.PtBr ?? alternativeName;
+                    return TextUtf8Encoding(localizedNames.PtBr ?? alternativeName);
                 case GameLanguage.France:
-                    return localizedNames.FrFr ?? alternativeName;
+                    return TextUtf8Encoding(localizedNames.FrFr ?? alternativeName);
                 case GameLanguage.Spain:
-                    return localizedNames.EsEs ?? alternativeName;
+                    return TextUtf8Encoding(localizedNames.EsEs ?? alternativeName);
                 case GameLanguage.Chinese:
-                    return localizedNames.ZhCn ?? alternativeName;
+                    return TextUtf8Encoding(localizedNames.ZhCn ?? alternativeName);
                 default:
                     return alternativeName;
             }
+        }
+
+        private static string TextUtf8Encoding(string text)
+        {
+            return Encoding.UTF8.GetString(Encoding.Default.GetBytes(text));
         }
 
         public static int GetItemLevel(string uniqueName)
