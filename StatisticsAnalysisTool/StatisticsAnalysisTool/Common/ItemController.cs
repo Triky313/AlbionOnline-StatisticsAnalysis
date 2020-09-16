@@ -126,78 +126,27 @@ namespace StatisticsAnalysisTool.Common
             if (string.IsNullOrEmpty(currentLanguage))
                 currentLanguage = LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper();
 
-            return Encoding.UTF8.GetString(Encoding.Default.GetBytes(GetLocalizedNameOrEnglishOrDefault(localizedNames, currentLanguage, alternativeName)));
-        }
-
-        private static string GetLocalizedNameOrEnglishOrDefault(LocalizedNames localizedNames, string currentLanguage, string alternativeName)
-        {
-            var name = string.Empty;
-
             switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase)).Key)
             {
                 case GameLanguage.UnitedStates:
-                    if (localizedNames.EnUs != null)
-                    {
-                        name = localizedNames.EnUs;
-                    }
-                    break;
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EnUs ?? alternativeName));
                 case GameLanguage.Germany:
-                    if (localizedNames.DeDe != null)
-                    {
-                        name = localizedNames.DeDe;
-                    }
-                    break;
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.DeDe ?? alternativeName));
                 case GameLanguage.Russia:
-                    if (localizedNames.RuRu != null)
-                    {
-                        name = localizedNames.RuRu;
-                    }
-                    break;
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.RuRu ?? alternativeName));
                 case GameLanguage.Poland:
-                    if (localizedNames.PlPl != null)
-                    {
-                        name = localizedNames.PlPl;
-                    }
-                    break;
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PlPl ?? alternativeName));
                 case GameLanguage.Brazil:
-                    if (localizedNames.PtBr != null)
-                    {
-                        name = localizedNames.PtBr;
-                    }
-                    break;
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PtBr ?? alternativeName));
                 case GameLanguage.France:
-                    if (localizedNames.FrFr != null)
-                    {
-                        name = localizedNames.FrFr;
-                    }
-                    break;
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.FrFr ?? alternativeName));
                 case GameLanguage.Spain:
-                    if (localizedNames.EsEs != null)
-                    {
-                        name = localizedNames.EsEs;
-                    }
-                    break;
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EsEs ?? alternativeName));
                 case GameLanguage.Chinese:
-                    if (localizedNames.ZhCn != null)
-                    {
-                        name = localizedNames.ZhCn;
-                    }
-                    break;
+                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.ZhCn ?? alternativeName));
                 default:
-                    name = alternativeName;
-                    break;
+                    return alternativeName;
             }
-
-            if (string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(localizedNames.EnUs))
-            {
-                name = Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EnUs));
-            }
-            else if (string.IsNullOrEmpty(name))
-            {
-                name = alternativeName;
-            }
-
-            return name;
         }
 
         public static int GetItemLevel(string uniqueName)
