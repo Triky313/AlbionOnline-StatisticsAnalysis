@@ -97,7 +97,7 @@ namespace StatisticsAnalysisTool.Common
                 try
                 {
                     var itemsString = await wd.DownloadStringTaskAsync(url);
-                    File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
+                    File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.Default);
                     return JsonConvert.DeserializeObject<ObservableCollection<Item>>(itemsString);
                 }
                 catch (Exception)
@@ -105,7 +105,7 @@ namespace StatisticsAnalysisTool.Common
                     try
                     {
                         var itemsString = await wd.DownloadStringTaskAsync(Settings.Default.DefaultItemListSourceUrl);
-                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
+                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.Default);
                         return JsonConvert.DeserializeObject<ObservableCollection<Item>>(itemsString);
                     }
                     catch
