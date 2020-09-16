@@ -97,7 +97,7 @@ namespace StatisticsAnalysisTool.Common
                 try
                 {
                     var itemsString = await wd.DownloadStringTaskAsync(url);
-                    File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
+                    File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.Default);
                     return JsonConvert.DeserializeObject<ObservableCollection<Item>>(itemsString);
                 }
                 catch (Exception)
@@ -105,7 +105,7 @@ namespace StatisticsAnalysisTool.Common
                     try
                     {
                         var itemsString = await wd.DownloadStringTaskAsync(Settings.Default.DefaultItemListSourceUrl);
-                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.UTF8);
+                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.Default);
                         return JsonConvert.DeserializeObject<ObservableCollection<Item>>(itemsString);
                     }
                     catch
@@ -129,24 +129,29 @@ namespace StatisticsAnalysisTool.Common
             switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase)).Key)
             {
                 case GameLanguage.UnitedStates:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EnUs ?? alternativeName));
+                    return TextUtf8Encoding(localizedNames.EnUs ?? alternativeName);
                 case GameLanguage.Germany:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.DeDe ?? alternativeName));
+                    return TextUtf8Encoding(localizedNames.DeDe ?? alternativeName);
                 case GameLanguage.Russia:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.RuRu ?? alternativeName));
+                    return TextUtf8Encoding(localizedNames.RuRu ?? alternativeName);
                 case GameLanguage.Poland:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PlPl ?? alternativeName));
+                    return TextUtf8Encoding(localizedNames.PlPl ?? alternativeName);
                 case GameLanguage.Brazil:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PtBr ?? alternativeName));
+                    return TextUtf8Encoding(localizedNames.PtBr ?? alternativeName);
                 case GameLanguage.France:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.FrFr ?? alternativeName));
+                    return TextUtf8Encoding(localizedNames.FrFr ?? alternativeName);
                 case GameLanguage.Spain:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EsEs ?? alternativeName));
+                    return TextUtf8Encoding(localizedNames.EsEs ?? alternativeName);
                 case GameLanguage.Chinese:
-                    return Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.ZhCn ?? alternativeName));
+                    return TextUtf8Encoding(localizedNames.ZhCn ?? alternativeName);
                 default:
                     return alternativeName;
             }
+        }
+
+        private static string TextUtf8Encoding(string text)
+        {
+            return Encoding.UTF8.GetString(Encoding.Default.GetBytes(text));
         }
 
         public static int GetItemLevel(string uniqueName)
