@@ -126,7 +126,7 @@ namespace StatisticsAnalysisTool.Common
             if (string.IsNullOrEmpty(currentLanguage))
                 currentLanguage = LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper();
 
-            return GetLocalizedNameOrEnglishOrDefault(localizedNames, currentLanguage, alternativeName);
+            return Encoding.UTF8.GetString(Encoding.Default.GetBytes(GetLocalizedNameOrEnglishOrDefault(localizedNames, currentLanguage, alternativeName)));
         }
 
         private static string GetLocalizedNameOrEnglishOrDefault(LocalizedNames localizedNames, string currentLanguage, string alternativeName)
@@ -138,49 +138,49 @@ namespace StatisticsAnalysisTool.Common
                 case GameLanguage.UnitedStates:
                     if (localizedNames.EnUs != null)
                     {
-                        name = Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EnUs));
+                        name = localizedNames.EnUs;
                     }
                     break;
                 case GameLanguage.Germany:
                     if (localizedNames.DeDe != null)
                     {
-                        name = Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.DeDe));
+                        name = localizedNames.DeDe;
                     }
                     break;
                 case GameLanguage.Russia:
                     if (localizedNames.RuRu != null)
                     {
-                        name = Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.RuRu));
+                        name = localizedNames.RuRu;
                     }
                     break;
                 case GameLanguage.Poland:
                     if (localizedNames.PlPl != null)
                     {
-                        name = Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PlPl));
+                        name = localizedNames.PlPl;
                     }
                     break;
                 case GameLanguage.Brazil:
                     if (localizedNames.PtBr != null)
                     {
-                        name = Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.PtBr));
+                        name = localizedNames.PtBr;
                     }
                     break;
                 case GameLanguage.France:
                     if (localizedNames.FrFr != null)
                     {
-                        name = Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.FrFr));
+                        name = localizedNames.FrFr;
                     }
                     break;
                 case GameLanguage.Spain:
                     if (localizedNames.EsEs != null)
                     {
-                        name = Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.EsEs));
+                        name = localizedNames.EsEs;
                     }
                     break;
                 case GameLanguage.Chinese:
                     if (localizedNames.ZhCn != null)
                     {
-                        name = Encoding.UTF8.GetString(Encoding.Default.GetBytes(localizedNames.ZhCn));
+                        name = localizedNames.ZhCn;
                     }
                     break;
                 default:
