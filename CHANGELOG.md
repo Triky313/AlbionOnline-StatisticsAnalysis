@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Home screen info for the first opening of the app
 - User macros
 
+## [2.2.2] - 2020-09-16
+
+### Fixed
+- Fixed a bug that did not output the correct UTF8 texts.
+
+
 ## [2.2.1] - 2020-09-15
 
 ### Fixed
@@ -176,7 +182,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.1...HEAD
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.2...HEAD
+[2.2.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.1...2.2.2
 [2.2.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.1.1...2.2.0
 [2.1.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.1.0...2.1.1
