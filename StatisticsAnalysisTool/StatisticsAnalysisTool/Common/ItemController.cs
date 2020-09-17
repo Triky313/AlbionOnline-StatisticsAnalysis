@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using StatisticsAnalysisTool.Properties;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -28,16 +29,21 @@ namespace StatisticsAnalysisTool.Common
         public static async Task<bool> GetItemListFromJsonAsync()
         {
             var url = Settings.Default.ItemListSourceUrl;
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
+
             if (!GetItemListSourceUrlIfExist(ref url))
                 return false;
 
-            if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}"))
+            if (File.Exists(localFilePath))
             {
-                var fileDateTime = File.GetLastWriteTime($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
+                var fileDateTime = File.GetLastWriteTime(localFilePath);
 
-                if (fileDateTime.AddDays(7) < DateTime.Now)
+                if (fileDateTime.AddDays(Settings.Default.UpdateItemListByDays) < DateTime.Now)
                 {
-                    Items = await TryToGetItemListFromWeb(url);
+                    if (await GetItemListFromWebAsync(url))
+                    {
+                        Items = GetItemListFromLocal();
+                    }
                     return (Items?.Count > 0);
                 }
 
@@ -45,7 +51,10 @@ namespace StatisticsAnalysisTool.Common
                 return (Items?.Count > 0);
             }
 
-            Items = await TryToGetItemListFromWeb(url);
+            if (await GetItemListFromWebAsync(url))
+            {
+                Items = GetItemListFromLocal();
+            }
             return (Items?.Count > 0);
         }
 
@@ -67,7 +76,7 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
+                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", Encoding.UTF8);
                 return ConvertItemJsonObjectToItem(JsonConvert.DeserializeObject<ObservableCollection<ItemJsonObject>>(localItemString));
             }
             catch
@@ -90,28 +99,26 @@ namespace StatisticsAnalysisTool.Common
             return new ObservableCollection<Item>(result);
         }
 
-        private static async Task<ObservableCollection<Item>> TryToGetItemListFromWeb(string url)
+        private static async Task<bool> GetItemListFromWebAsync(string url)
         {
-            using (var wd = new WebDownload(30000))
+            using (var client = new HttpClient())
             {
+                client.Timeout = TimeSpan.FromSeconds(30);
                 try
                 {
-                    var itemsString = await wd.DownloadStringTaskAsync(url);
-                    File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.Default);
-                    return JsonConvert.DeserializeObject<ObservableCollection<Item>>(itemsString);
+                    using (var response = await client.GetAsync(url))
+                    {
+                        using (var content = response.Content)
+                        {
+                            var fileString = await content.ReadAsStringAsync();
+                            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", fileString, Encoding.UTF8);
+                            return true;
+                        }
+                    }
                 }
-                catch (Exception)
+                catch
                 {
-                    try
-                    {
-                        var itemsString = await wd.DownloadStringTaskAsync(Settings.Default.DefaultItemListSourceUrl);
-                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", itemsString, Encoding.Default);
-                        return JsonConvert.DeserializeObject<ObservableCollection<Item>>(itemsString);
-                    }
-                    catch
-                    {
-                        return null;
-                    }
+                    return false;
                 }
             }
         }
@@ -129,29 +136,24 @@ namespace StatisticsAnalysisTool.Common
             switch (FrequentlyValues.GameLanguages.FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase)).Key)
             {
                 case GameLanguage.UnitedStates:
-                    return TextUtf8Encoding(localizedNames.EnUs ?? alternativeName);
+                    return localizedNames.EnUs ?? alternativeName;
                 case GameLanguage.Germany:
-                    return TextUtf8Encoding(localizedNames.DeDe ?? alternativeName);
+                    return localizedNames.DeDe ?? alternativeName;
                 case GameLanguage.Russia:
-                    return TextUtf8Encoding(localizedNames.RuRu ?? alternativeName);
+                    return localizedNames.RuRu ?? alternativeName;
                 case GameLanguage.Poland:
-                    return TextUtf8Encoding(localizedNames.PlPl ?? alternativeName);
+                    return localizedNames.PlPl ?? alternativeName;
                 case GameLanguage.Brazil:
-                    return TextUtf8Encoding(localizedNames.PtBr ?? alternativeName);
+                    return localizedNames.PtBr ?? alternativeName;
                 case GameLanguage.France:
-                    return TextUtf8Encoding(localizedNames.FrFr ?? alternativeName);
+                    return localizedNames.FrFr ?? alternativeName;
                 case GameLanguage.Spain:
-                    return TextUtf8Encoding(localizedNames.EsEs ?? alternativeName);
+                    return localizedNames.EsEs ?? alternativeName;
                 case GameLanguage.Chinese:
-                    return TextUtf8Encoding(localizedNames.ZhCn ?? alternativeName);
+                    return localizedNames.ZhCn ?? alternativeName;
                 default:
                     return alternativeName;
             }
-        }
-
-        private static string TextUtf8Encoding(string text)
-        {
-            return Encoding.UTF8.GetString(Encoding.Default.GetBytes(text));
         }
 
         public static int GetItemLevel(string uniqueName)
