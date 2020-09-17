@@ -38,7 +38,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 var fileDateTime = File.GetLastWriteTime(localFilePath);
 
-                if (fileDateTime.AddDays(7) < DateTime.Now)
+                if (fileDateTime.AddDays(Settings.Default.UpdateItemListByDays) < DateTime.Now)
                 {
                     if (await TryToGetItemListFromWeb(url))
                     {
