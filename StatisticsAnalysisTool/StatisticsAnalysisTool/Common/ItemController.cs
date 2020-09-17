@@ -40,7 +40,7 @@ namespace StatisticsAnalysisTool.Common
 
                 if (fileDateTime.AddDays(Settings.Default.UpdateItemListByDays) < DateTime.Now)
                 {
-                    if (await TryToGetItemListFromWeb(url))
+                    if (await GetItemListFromWebAsync(url))
                     {
                         Items = GetItemListFromLocal();
                     }
@@ -51,7 +51,7 @@ namespace StatisticsAnalysisTool.Common
                 return (Items?.Count > 0);
             }
 
-            if (await TryToGetItemListFromWeb(url))
+            if (await GetItemListFromWebAsync(url))
             {
                 Items = GetItemListFromLocal();
             }
@@ -99,7 +99,7 @@ namespace StatisticsAnalysisTool.Common
             return new ObservableCollection<Item>(result);
         }
 
-        private static async Task<bool> TryToGetItemListFromWeb(string url)
+        private static async Task<bool> GetItemListFromWebAsync(string url)
         {
             using (var client = new HttpClient())
             {
