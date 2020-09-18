@@ -14,8 +14,10 @@
         public string AllianceId { get; set; }
         public object AllianceName { get; set; }
         public object Logo { get; set; }
+
         [JsonProperty(PropertyName = "killFame")]
         public ulong KillFame { get; set; }
+
         public ulong DeathFame { get; set; }
         public object AttacksWon { get; set; }
         public object DefensesWon { get; set; }

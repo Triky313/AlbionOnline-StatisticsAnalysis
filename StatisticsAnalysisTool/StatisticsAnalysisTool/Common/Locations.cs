@@ -47,9 +47,9 @@ namespace StatisticsAnalysisTool.Common
         };
 
         public static string GetName(Location location) => Names.TryGetValue(location, out var name) ? name : null;
-        
+
         public static string GetParameterName(Location location) => ParameterNames.TryGetValue(location, out var name) ? name : null;
-        
+
         public static Location GetName(string location) => ParameterNames.FirstOrDefault(x => x.Value == location).Key;
 
         public static List<string> GetLocationsListByArea(IsLocationAreaActive isLocationAreaActive)
@@ -76,6 +76,7 @@ namespace StatisticsAnalysisTool.Common
                         locations.Add(GetParameterName(Location.MerlynsRest));
                         locations.Add(GetParameterName(Location.MorganasRest));
                         break;
+
                     case LocationArea.Villages:
                         locations.Add(GetParameterName(Location.SwampCross));
                         locations.Add(GetParameterName(Location.ForestCross));
@@ -83,6 +84,7 @@ namespace StatisticsAnalysisTool.Common
                         locations.Add(GetParameterName(Location.HighlandCross));
                         locations.Add(GetParameterName(Location.MountainCross));
                         break;
+
                     case LocationArea.Cities:
                         locations.Add(GetParameterName(Location.Thetford));
                         locations.Add(GetParameterName(Location.Lymhurst));
@@ -156,5 +158,4 @@ namespace StatisticsAnalysisTool.Common
         public bool Villages { get; set; }
         public bool Cities { get; set; }
     }
-    
 }

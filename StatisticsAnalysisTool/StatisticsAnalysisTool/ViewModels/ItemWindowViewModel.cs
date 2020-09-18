@@ -20,7 +20,7 @@ namespace StatisticsAnalysisTool.ViewModels
     using LiveCharts.Wpf;
     using System.Globalization;
 
-    public class ItemWindowViewModel: INotifyPropertyChanged
+    public class ItemWindowViewModel : INotifyPropertyChanged
     {
         private readonly ItemWindow _mainWindow;
         private Item _item;
@@ -78,7 +78,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             ItemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
         }
-        
+
         private async void InitializeItemData(Item item)
         {
             Icon = null;
@@ -100,7 +100,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Icon = null;
                 _mainWindow.Title = "-";
             });
-            
+
             if (_mainWindow.Dispatcher == null)
             {
                 SetNoDataValues(Error.GeneralError);
@@ -124,7 +124,7 @@ namespace StatisticsAnalysisTool.ViewModels
             StartAutoUpdater();
             RefreshSpin = IsAutoUpdateActive;
         }
-        
+
         private void SetNoDataValues(Error error)
         {
             switch (error)
@@ -136,16 +136,19 @@ namespace StatisticsAnalysisTool.ViewModels
                     SetLoadingImageToError();
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_NO_ITEM_INFO"));
                     return;
+
                 case Error.NoPrices:
                     SetLoadingImageToError();
                     HasItemPrices = false;
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED"));
                     return;
+
                 case Error.GeneralError:
                     SetLoadingImageToError();
                     HasItemPrices = false;
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                     return;
+
                 default:
                     SetLoadingImageToError();
                     HasItemPrices = false;
@@ -165,10 +168,11 @@ namespace StatisticsAnalysisTool.ViewModels
             ErrorBarText = errorMessage;
             ErrorBarVisibility = visibility;
         }
-        
+
         private async void StartAutoUpdater()
         {
-            await Task.Run(async () => {
+            await Task.Run(async () =>
+            {
                 while (RunUpdate)
                 {
                     await Task.Delay(50);
@@ -219,7 +223,7 @@ namespace StatisticsAnalysisTool.ViewModels
         public async void SetHistoryChartAsync()
         {
             var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
-            Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)), 
+            Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)),
                 DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
             if (historyItemPrices == null)
@@ -233,16 +237,16 @@ namespace StatisticsAnalysisTool.ViewModels
             foreach (var marketHistory in historyItemPrices)
             {
                 var amount = new ChartValues<int>();
-                foreach (var data in  marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
+                foreach (var data in marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
                 {
-                    if(!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
+                    if (!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
                     {
                         date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
                     }
 
                     amount.Add(data.AveragePrice);
                 }
-                
+
                 seriesCollectionHistory.Add(new LineSeries
                 {
                     Title = Locations.GetName(Locations.GetName(marketHistory?.Location)),
@@ -316,7 +320,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 var getGoldPricesObjectList = ApiController.GetGoldPricesFromJsonAsync(null, 1).Result;
                 _currentGoldPrice = getGoldPricesObjectList?.FirstOrDefault();
             }
-            
+
             if (_currentGoldPrice?.Price == 0)
             {
                 return;
@@ -328,18 +332,22 @@ namespace StatisticsAnalysisTool.ViewModels
                     marketQualityObject.SellPriceMinNormalStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
                     return;
+
                 case ItemQuality.Good:
                     marketQualityObject.SellPriceMinGoodStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
                     return;
+
                 case ItemQuality.Outstanding:
                     marketQualityObject.SellPriceMinOutstandingStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
                     return;
+
                 case ItemQuality.Excellent:
                     marketQualityObject.SellPriceMinExcellentStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
                     return;
+
                 case ItemQuality.Masterpiece:
                     marketQualityObject.SellPriceMinMasterpieceStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
@@ -385,18 +393,22 @@ namespace StatisticsAnalysisTool.ViewModels
                     marketQualityObject.SellPriceMinNormal = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
                     return;
+
                 case ItemQuality.Good:
                     marketQualityObject.SellPriceMinGood = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
                     return;
+
                 case ItemQuality.Outstanding:
                     marketQualityObject.SellPriceMinOutstanding = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
                     return;
+
                 case ItemQuality.Excellent:
                     marketQualityObject.SellPriceMinExcellent = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
                     return;
+
                 case ItemQuality.Masterpiece:
                     marketQualityObject.SellPriceMinMasterpiece = marketResponse.SellPriceMin;
                     marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
@@ -559,8 +571,7 @@ namespace StatisticsAnalysisTool.ViewModels
                                            $"{LanguageController.Translation("PROFIT")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", diffPrice)}";
         }
 
-
-        #endregion
+        #endregion Prices
 
         #region Bindings
 
@@ -811,6 +822,6 @@ namespace StatisticsAnalysisTool.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #endregion
+        #endregion Bindings
     }
 }

@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.Common
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(string uniqueName)
         {
             var url = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
-            
+
             using (var client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromSeconds(30);
@@ -55,7 +55,7 @@ namespace StatisticsAnalysisTool.Common
                 }
             }
         }
-        
+
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item) => await GetItemInfoFromJsonAsync(item.UniqueName);
 
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
@@ -106,14 +106,13 @@ namespace StatisticsAnalysisTool.Common
 
             if (qualities?.Count > 0)
                 qualitiesString = string.Join(",", qualities);
-            
+
             var url = "https://www.albion-online-data.com/api/v2/stats/history/";
             url += uniqueName;
             url += $"?locations={locationsString}";
             url += $"&date={date:M-d-yy}";
             url += $"&qualities={qualitiesString}";
             url += $"&time-scale={timeScale}";
-
 
             using (var client = new HttpClient())
             {
@@ -133,8 +132,6 @@ namespace StatisticsAnalysisTool.Common
                     return null;
                 }
             }
-
-
         }
 
         public static async Task<GameInfoSearchResponse> GetGameInfoSearchFromJsonAsync(string username)
@@ -161,7 +158,7 @@ namespace StatisticsAnalysisTool.Common
                 }
             }
         }
-        
+
         public static async Task<GameInfoPlayersResponse> GetGameInfoPlayersFromJsonAsync(string userid)
         {
             var gameInfoPlayerResponse = new GameInfoPlayersResponse();
@@ -235,7 +232,6 @@ namespace StatisticsAnalysisTool.Common
                 catch
                 {
                     return new List<GoldResponseModel>();
-
                 }
             }
         }

@@ -78,7 +78,6 @@ namespace StatisticsAnalysisTool.Models
 
     public class MarketCurrentPricesItem
     {
-
         public MarketCurrentPricesItem(MarketResponseTotal marketResponseTotal)
         {
             ItemTypeId = marketResponseTotal.ItemTypeId;
@@ -136,7 +135,6 @@ namespace StatisticsAnalysisTool.Models
         public Style BuyPriceMinDateStyle => ItemController.GetStyleByTimestamp(BuyPriceMinDate);
 
         public Style BuyPriceMaxDateStyle => ItemController.GetStyleByTimestamp(BuyPriceMaxDate);
-
     }
 
     public class MarketQualityObject
@@ -149,7 +147,7 @@ namespace StatisticsAnalysisTool.Models
         public ulong SellPriceMinOutstanding { private get; set; }
         public ulong SellPriceMinExcellent { private get; set; }
         public ulong SellPriceMinMasterpiece { private get; set; }
-        
+
         public string SellPriceMinNormalString => Utilities.UlongMarketPriceToString(SellPriceMinNormal);
         public string SellPriceMinGoodString => Utilities.UlongMarketPriceToString(SellPriceMinGood);
         public string SellPriceMinOutstandingString => Utilities.UlongMarketPriceToString(SellPriceMinOutstanding);

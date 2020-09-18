@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private readonly MainWindowViewModel _mainWindowViewModel;
         private static string _itemListSourceUrl;
         private static ObservableCollection<LanguageController.FileInfo> _languages = new ObservableCollection<LanguageController.FileInfo>();
-        private static LanguageController.FileInfo _languagesSelection;        
+        private static LanguageController.FileInfo _languagesSelection;
         private static ObservableCollection<RefreshRateStruct> _refreshRates = new ObservableCollection<RefreshRateStruct>();
         private static RefreshRateStruct _refreshRatesSelection;
         private static ObservableCollection<UpdateItemListStruct> _updateItemListByDays = new ObservableCollection<UpdateItemListStruct>();
@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Translation = new SettingsWindowTranslation();
             InitializeSettings();
         }
-        
+
         private void InitializeSettings()
         {
             // Refresh rate
@@ -193,7 +193,7 @@ namespace StatisticsAnalysisTool.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #endregion
+        #endregion Bindings
 
         public struct RefreshRateStruct
         {

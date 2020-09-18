@@ -179,7 +179,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.Bag, LanguageController.Translation("BAG")},
             {Category.Cape, LanguageController.Translation("CAPE")},
 
-            #endregion
+            #endregion Accessories
 
             #region Armor
 
@@ -196,7 +196,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.UniqueHelmet, LanguageController.Translation("UNIQUE_HELMET")},
             {Category.UniqueShoes, LanguageController.Translation("UNIQUE_SHOES")},
 
-            #endregion
+            #endregion Armor
 
             #region Artifact
 
@@ -206,7 +206,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.OffhandArtefact, LanguageController.Translation("OFFHAND_ARTEFACT")},
             {Category.RangedArtefact, LanguageController.Translation("RANGED_ARTEFACT")},
 
-            #endregion
+            #endregion Artifact
 
             #region CityResources
 
@@ -216,7 +216,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.TreeHeart, LanguageController.Translation("TREEHEART")},
             {Category.VineHeart, LanguageController.Translation("VINEHEART")},
 
-            #endregion
+            #endregion CityResources
 
             #region Consumable
 
@@ -229,14 +229,14 @@ namespace StatisticsAnalysisTool.Common
             {Category.SkillBook, LanguageController.Translation("SKILL_BOOK")},
             {Category.Vanity, LanguageController.Translation("VANITY")},
 
-            #endregion
+            #endregion Consumable
 
             #region Farmable
 
             {Category.Animals, LanguageController.Translation("ANIMALS")},
             {Category.Seed, LanguageController.Translation("SEED")},
 
-            #endregion
+            #endregion Farmable
 
             #region Furniture
 
@@ -252,7 +252,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.RepairKit, LanguageController.Translation("REPAIR_KIT")},
             {Category.Unique, LanguageController.Translation("UNIQUE")},
 
-            #endregion
+            #endregion Furniture
 
             #region GatheringGear
 
@@ -286,7 +286,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.WoodgathererShoes, LanguageController.Translation("WOODGATHERER_SHOES")},
             {Category.WoodgathererBackpack, LanguageController.Translation("WOODGATHERER_BACKPACK")},
 
-            #endregion
+            #endregion GatheringGear
 
             #region LuxuryGoods
 
@@ -297,7 +297,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.Martlock, LanguageController.Translation("MARTLOCK")},
             {Category.Thetford, LanguageController.Translation("THETFORD")},
 
-            #endregion
+            #endregion LuxuryGoods
 
             #region Magic
 
@@ -308,7 +308,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.HolyStaff, LanguageController.Translation("HOLY_STAFF")},
             {Category.NatureStaff, LanguageController.Translation("NATURE_STAFF")},
 
-            #endregion
+            #endregion Magic
 
             #region Materials
 
@@ -318,7 +318,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.Rune, LanguageController.Translation("RUNE")},
             {Category.Soul, LanguageController.Translation("SOUL")},
 
-            #endregion
+            #endregion Materials
 
             #region Melee
 
@@ -330,7 +330,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.Spear, LanguageController.Translation("SPEAR")},
             {Category.Sword, LanguageController.Translation("SWORD")},
 
-            #endregion
+            #endregion Melee
 
             #region Mount
 
@@ -339,7 +339,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.RareMount, LanguageController.Translation("RARE_MOUNT")},
             {Category.RidingHorse, LanguageController.Translation("RIDING_HORSE")},
 
-            #endregion
+            #endregion Mount
 
             #region Off-Hand
 
@@ -350,27 +350,27 @@ namespace StatisticsAnalysisTool.Common
             {Category.Torch, LanguageController.Translation("TORCH")},
             {Category.Totem, LanguageController.Translation("TOTEM")},
 
-            #endregion
+            #endregion Off-Hand
 
             #region Other
 
             {Category.Trash, LanguageController.Translation("TRASH")},
 
-            #endregion
+            #endregion Other
 
             #region Product
 
             {Category.Farming, LanguageController.Translation("FARMING")},
             {Category.Journal, LanguageController.Translation("JOURNAL")},
 
-            #endregion
+            #endregion Product
 
             #region Ranged
 
             {Category.Bow, LanguageController.Translation("BOW")},
             {Category.Crossbow, LanguageController.Translation("CROSSBOW")},
 
-            #endregion
+            #endregion Ranged
 
             #region Resource
 
@@ -385,7 +385,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.Rock, LanguageController.Translation("ROCK")},
             {Category.Stoneblock, LanguageController.Translation("STONEBLOCK")},
 
-            #endregion
+            #endregion Resource
 
             #region Token
 
@@ -393,7 +393,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.Event, LanguageController.Translation("EVENT")},
             {Category.RoyalSigils, LanguageController.Translation("ROYAL_SIGILS")},
 
-            #endregion
+            #endregion Token
 
             #region Tool
 
@@ -405,7 +405,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.StoneHammer, LanguageController.Translation("STONE_HAMMER")},
             {Category.WoodAxe, LanguageController.Translation("WOOD_AXE")},
 
-            #endregion
+            #endregion Tool
 
             #region Trophies
 
@@ -418,7 +418,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.RockTrophy, LanguageController.Translation("ROCK_TROPHY")},
             {Category.WoodTrophy, LanguageController.Translation("WOOD_TROPHY")},
 
-            #endregion
+            #endregion Trophies
         };
 
         public static readonly Dictionary<ParentCategory, string> ParentCategoryNames = new Dictionary<ParentCategory, string>

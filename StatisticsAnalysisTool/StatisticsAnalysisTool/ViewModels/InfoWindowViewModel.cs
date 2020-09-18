@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
-    class InfoWindowViewModel : INotifyPropertyChanged
+    internal class InfoWindowViewModel : INotifyPropertyChanged
     {
         private bool _showNotAgainChecked;
         private InfoWindowTranslation _translation;
@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             Translation = new InfoWindowTranslation();
         }
-        
+
         #region Bindings
 
         public InfoWindowTranslation Translation {
@@ -30,8 +30,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool ShowNotAgainChecked
-        {
+        public bool ShowNotAgainChecked {
             get => _showNotAgainChecked;
             set {
                 _showNotAgainChecked = value;
@@ -49,6 +48,6 @@ namespace StatisticsAnalysisTool.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #endregion
+        #endregion Bindings
     }
 }

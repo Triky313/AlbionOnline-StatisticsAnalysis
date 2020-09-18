@@ -84,7 +84,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (!LanguageController.InitializeLanguage())
                 _mainWindow.Close();
-            
+
             InitMainWindowData();
         }
 
@@ -112,7 +112,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 CenterWindowOnScreen();
-                #endregion
+
+                #endregion Set MainWindow height and width and center window
             });
         }
 
@@ -173,7 +174,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold });
             ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
 
-            #endregion
+            #endregion Set Modes to combobox
 
             #region Full Item Info elements
 
@@ -195,7 +196,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
             }
 
-            #endregion
+            #endregion Full Item Info elements
 
             #region Gold price
 
@@ -203,13 +204,13 @@ namespace StatisticsAnalysisTool.ViewModels
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
             CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
 
-            #endregion
+            #endregion Gold price
 
             #region Player information
 
             SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
 
-            #endregion
+            #endregion Player information
         }
 
         public void CenterWindowOnScreen()
@@ -221,7 +222,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.Left = (screenWidth / 2) - (windowWidth / 2);
             _mainWindow.Top = (screenHeight / 2) - (windowHeight / 2);
         }
-        
+
         public async void LoadAllFullItemInformationFromWeb()
         {
             IsLoadFullItemInfoButtonEnabled = false;
@@ -306,7 +307,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SelectedItemTier = ItemTier.Unknown;
         }
 
-        #endregion
+        #endregion Item list (Normal Mode)
 
         #region Player information (Player Mode)
 
@@ -316,22 +317,22 @@ namespace StatisticsAnalysisTool.ViewModels
             PlayerModeInformation = new PlayerModeInformationModel();
             PlayerModeInformation = await GetPlayerModeInformationByApi().ConfigureAwait(true);
         }
-        
+
         private async Task<PlayerModeInformationModel> GetPlayerModeInformationByApi()
         {
             if (string.IsNullOrWhiteSpace(SavedPlayerInformationName))
                 return null;
 
             var gameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(SavedPlayerInformationName);
-            
+
             if (gameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id == null)
                 return null;
 
             var searchPlayer = gameInfoSearch.SearchPlayer?.FirstOrDefault();
             var gameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(gameInfoSearch.SearchPlayer?.FirstOrDefault()?.Id);
 
-            return new PlayerModeInformationModel() 
-            { 
+            return new PlayerModeInformationModel()
+            {
                 Timestamp = DateTime.UtcNow,
                 GameInfoSearch = gameInfoSearch,
                 SearchPlayer = searchPlayer,
@@ -347,17 +348,15 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public PlayerModeInformationModel PlayerModeInformationLocal
-        {
+        public PlayerModeInformationModel PlayerModeInformationLocal {
             get => _playerModeInformationLocal;
-            set
-            {
+            set {
                 _playerModeInformationLocal = value;
                 OnPropertyChanged();
             }
         }
 
-        #endregion
+        #endregion Player information (Player Mode)
 
         #region Gold (Gold Mode)
 
@@ -375,7 +374,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             Labels = date.ToArray();
-            
+
             SeriesCollection = new SeriesCollection
             {
                 new LineSeries
@@ -388,27 +387,23 @@ namespace StatisticsAnalysisTool.ViewModels
             };
         }
 
-        public SeriesCollection SeriesCollection
-        {
+        public SeriesCollection SeriesCollection {
             get => _seriesCollection;
-            set
-            {
+            set {
                 _seriesCollection = value;
                 OnPropertyChanged();
             }
         }
 
-        public string[] Labels
-        {
+        public string[] Labels {
             get => _labels;
-            set
-            {
+            set {
                 _labels = value;
                 OnPropertyChanged();
             }
         }
-        
-        #endregion
+
+        #endregion Gold (Gold Mode)
 
         private void ShowInfoWindow()
         {
@@ -446,7 +441,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #region Bindings
-        
+
         public bool IsFullItemInfoLoading {
             get => _isFullItemInfoLoading;
             set {
@@ -786,7 +781,7 @@ namespace StatisticsAnalysisTool.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #endregion
+        #endregion Bindings
 
         public struct ModeStruct
         {

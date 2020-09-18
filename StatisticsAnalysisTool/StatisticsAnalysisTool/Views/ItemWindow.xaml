@@ -8,27 +8,27 @@
         mc:Ignorable="d"
         Title="ItemWindow" MinHeight="350" Height="420" MinWidth="900" Width="1210" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
     <Grid>
-        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
-        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
-        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
-        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
+        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
+        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
         <Grid ZIndex="1" Width="24" Height="24" Margin="0,80,5,0" HorizontalAlignment="Right" VerticalAlignment="Top">
             <fa:ImageAwesome Visibility="Visible" Icon="Refresh" ToolTip="{Binding RefreshIconTooltipText, FallbackValue=LAST__UPDATE: TIME}" Spin="{Binding RefreshSpin, FallbackValue=false, UpdateSourceTrigger=PropertyChanged}" SpinDuration="10" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" />
         </Grid>
         <Grid ZIndex="-1" Height="110" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="{StaticResource Background.First}" Offset="0"/>
-                    <GradientStop Color="{StaticResource Background.Second}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Background.First}" Offset="0" />
+                    <GradientStop Color="{StaticResource Background.Second}" Offset="1" />
                 </LinearGradientBrush>
             </Grid.Background>
-            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}"/>
-            <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click"/>
-            <Button Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click"/>
-            <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75"/>
+            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
+            <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
+            <Button Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
+            <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75" />
             <DockPanel Margin="90,5,200,0" VerticalAlignment="Top" Height="28">
-                <Label Content="{Binding Path=ItemName, FallbackValue=ITEM__TITLE}" HorizontalAlignment="Left" FontSize="14" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
-                <Label Content="{Binding Path=ItemTierLevel, FallbackValue=T0.0}" HorizontalAlignment="Left" FontSize="14" Margin="-5 0 0 0" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold"/>
+                <Label Content="{Binding Path=ItemName, FallbackValue=ITEM__TITLE}" HorizontalAlignment="Left" FontSize="14" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold" />
+                <Label Content="{Binding Path=ItemTierLevel, FallbackValue=T0.0}" HorizontalAlignment="Left" FontSize="14" Margin="-5 0 0 0" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold" />
             </DockPanel>
 
             <Grid IsEnabled="{Binding HasItemPrices, FallbackValue=false}" Margin="90,33,10,30">
@@ -47,14 +47,14 @@
             <fa:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
         </Grid>
         <TabControl Margin="0,86,0,35" IsEnabled="{Binding HasItemPrices}">
-            <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}" >
+            <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}">
                 <ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}"/>
+                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -63,10 +63,10 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}"/>
+                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -76,7 +76,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding SellPriceMinDateStyle}" Content="{Binding SellPriceMinDateString}"/>
+                                            <Label Style="{Binding SellPriceMinDateStyle}" Content="{Binding SellPriceMinDateString}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -86,10 +86,10 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMaxString}"/>
+                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMaxString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -99,7 +99,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding SellPriceMaxDateStyle}" Content="{Binding SellPriceMaxDateString}"/>
+                                            <Label Style="{Binding SellPriceMaxDateStyle}" Content="{Binding SellPriceMaxDateString}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -109,10 +109,10 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding BuyPriceMinString}"/>
+                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding BuyPriceMinString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -122,7 +122,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding BuyPriceMinDateStyle}" Content="{Binding BuyPriceMinDateString}"/>
+                                            <Label Style="{Binding BuyPriceMinDateStyle}" Content="{Binding BuyPriceMinDateString}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -132,10 +132,10 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding BuyPriceMaxStyle}" Content="{Binding BuyPriceMaxString}"/>
+                                                <Label Style="{Binding BuyPriceMaxStyle}" Content="{Binding BuyPriceMaxString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -145,7 +145,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding BuyPriceMaxDateStyle}" Content="{Binding BuyPriceMaxDateString}"/>
+                                            <Label Style="{Binding BuyPriceMaxDateStyle}" Content="{Binding BuyPriceMaxDateString}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -161,7 +161,7 @@
                             <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}"/>
+                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -173,7 +173,7 @@
                                                 <Label Style="{Binding SellPriceMinNormalStyle}" Content="{Binding SellPriceMinNormalString}" ToolTip="{Binding SellPriceMinNormalDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -187,7 +187,7 @@
                                                 <Label  Style="{Binding SellPriceMinGoodStyle}" Content="{Binding SellPriceMinGoodString}" ToolTip="{Binding SellPriceMinGoodDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -201,7 +201,7 @@
                                                 <Label Style="{Binding SellPriceMinOutstandingStyle}" Content="{Binding SellPriceMinOutstandingString}" ToolTip="{Binding SellPriceMinOutstandingDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -215,7 +215,7 @@
                                                 <Label Style="{Binding SellPriceMinExcellentStyle}" Content="{Binding SellPriceMinExcellentString}" ToolTip="{Binding SellPriceMinExcellentDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -229,7 +229,7 @@
                                                 <Label Style="{Binding SellPriceMinMasterpieceStyle}" Content="{Binding SellPriceMinMasterpieceString}" ToolTip="{Binding SellPriceMinMasterpieceDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -252,32 +252,32 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden">
                     <Grid>
                         <StackPanel Margin="10,10,0,10" HorizontalAlignment="Left" Width="250">
-                            <Label Content="{Binding Translation.Equipable, FallbackValue=EQUIPABLE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding Translation.Stackable, FallbackValue=STACKABLE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding Translation.ShowInMarketplace, FallbackValue=SHOW_IN_MARKET_PLACE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding Translation.ItemType, FallbackValue=ITEM_TYPE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding Translation.CategoryId, FallbackValue=CATEGORY__ID}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding Translation.Revision, FallbackValue=REVISION}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding Translation.Category, FallbackValue=CATEGORY}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding Translation.ParentCategory, FallbackValue=PARENT_CATEGORY}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding Translation.Weight, FallbackValue=WEIGHT}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding Translation.ItemPower, FallbackValue=ITEM__POWER}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding Translation.Durability, FallbackValue=DURABILITY}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding Translation.LastFullInformationUpdate, FallbackValue=LAST_FULL_INFORMATION_UPDATE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
+                            <Label Content="{Binding Translation.Equipable, FallbackValue=EQUIPABLE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.Stackable, FallbackValue=STACKABLE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.ShowInMarketplace, FallbackValue=SHOW_IN_MARKET_PLACE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.ItemType, FallbackValue=ITEM_TYPE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.CategoryId, FallbackValue=CATEGORY__ID}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.Revision, FallbackValue=REVISION}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.Category, FallbackValue=CATEGORY}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.ParentCategory, FallbackValue=PARENT_CATEGORY}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.Weight, FallbackValue=WEIGHT}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.ItemPower, FallbackValue=ITEM__POWER}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.Durability, FallbackValue=DURABILITY}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.LastFullInformationUpdate, FallbackValue=LAST_FULL_INFORMATION_UPDATE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
                         </StackPanel>
                         <StackPanel Margin="265,10,0,10">
-                            <Label Content="{Binding ItemInformation.Equipable, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding ItemInformation.Stackable, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding ItemInformation.ShowInMarketplace, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding ItemInformation.ItemType, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding ItemInformation.CategoryId, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding ItemInformation.Revision, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding ItemInformation.CategoryObject.CategoryName, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding ItemInformation.CategoryObject.ParentCategoryName, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding ItemInformation.Weight, FallbackValue=-, IsAsync=true, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding ItemInformation.ItemPower, FallbackValue=-, IsAsync=true, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding ItemInformation.Durability, FallbackValue=-, IsAsync=true, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
-                            <Label Content="{Binding ItemInformation.LastFullItemInformationUpdate, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}"/>
+                            <Label Content="{Binding ItemInformation.Equipable, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ItemInformation.Stackable, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ItemInformation.ShowInMarketplace, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ItemInformation.ItemType, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ItemInformation.CategoryId, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ItemInformation.Revision, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ItemInformation.CategoryObject.CategoryName, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ItemInformation.CategoryObject.ParentCategoryName, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ItemInformation.Weight, FallbackValue=-, IsAsync=true, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ItemInformation.ItemPower, FallbackValue=-, IsAsync=true, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ItemInformation.Durability, FallbackValue=-, IsAsync=true, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ItemInformation.LastFullItemInformationUpdate, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
@@ -289,7 +289,7 @@
                             <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}"/>
+                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -301,7 +301,7 @@
                                                 <Label Style="{Binding SellPriceMinNormalStyle}" Content="{Binding SellPriceMinNormalStringInRalMoney}" ToolTip="{Binding SellPriceMinNormalDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -315,7 +315,7 @@
                                                 <Label  Style="{Binding SellPriceMinGoodStyle}" Content="{Binding SellPriceMinGoodStringInRalMoney}" ToolTip="{Binding SellPriceMinGoodDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -329,7 +329,7 @@
                                                 <Label Style="{Binding SellPriceMinOutstandingStyle}" Content="{Binding SellPriceMinOutstandingStringInRalMoney}" ToolTip="{Binding SellPriceMinOutstandingDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -343,7 +343,7 @@
                                                 <Label Style="{Binding SellPriceMinExcellentStyle}" Content="{Binding SellPriceMinExcellentStringInRalMoney}" ToolTip="{Binding SellPriceMinExcellentDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -357,7 +357,7 @@
                                                 <Label Style="{Binding SellPriceMinMasterpieceStyle}" Content="{Binding SellPriceMinMasterpieceStringInRalMoney}" ToolTip="{Binding SellPriceMinMasterpieceDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
-                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}"/>
+                                                <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -372,25 +372,24 @@
         <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="{StaticResource Background.First}" Offset="0"/>
-                    <GradientStop Color="{StaticResource Background.Second}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Background.First}" Offset="0" />
+                    <GradientStop Color="{StaticResource Background.Second}" Offset="1" />
                 </LinearGradientBrush>
             </Grid.Background>
-            <Label Content="{Binding Translation.DifferentCalculation, FallbackValue=DIFFERENT__CALCULATION}" HorizontalAlignment="Left" Margin="10,0,0,4" VerticalAlignment="Bottom" Width="150" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Background="{x:Null}"/>
-            <Label Content="{Binding DifferentCalculation}" Margin="160,0,0,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="485"/>
+            <Label Content="{Binding Translation.DifferentCalculation, FallbackValue=DIFFERENT__CALCULATION}" HorizontalAlignment="Left" Margin="10,0,0,4" VerticalAlignment="Bottom" Width="150" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Background="{x:Null}" />
+            <Label Content="{Binding DifferentCalculation}" Margin="160,0,0,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="485" />
             <TextBlock Margin="0,0,10,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="21" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="293">
                 Prices are provided by the
                 <Hyperlink NavigateUri="https://www.albion-online-data.com/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" BaselineAlignment="Center" RequestNavigate="Hyperlink_RequestNavigate">Albion Online Data Project</Hyperlink>
             </TextBlock>
         </Grid>
         <Grid ZIndex="2" Style="{StaticResource Grid.Error.Bar}" Visibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}">
-            <Button Style="{StaticResource Window.Error.Bar.Button.Style}" Content="r" Margin="0,0,7,0" Click="BtnErrorBar_Click"  />
+            <Button Style="{StaticResource Window.Error.Bar.Button.Style}" Content="r" Margin="0,0,7,0" Click="BtnErrorBar_Click" />
             <Label Style="{StaticResource Grid.Error.Bar.Label}" Content="{Binding ErrorBarText}"></Label>
-            <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}"/>
-            <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}"/>
-            <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}"/>
-            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}"/>
+            <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
+            <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
+            <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
+            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
         </Grid>
     </Grid>
-
 </Window>

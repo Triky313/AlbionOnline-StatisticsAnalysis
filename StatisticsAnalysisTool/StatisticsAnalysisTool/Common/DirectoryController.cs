@@ -3,9 +3,8 @@ using System.IO;
 
 namespace StatisticsAnalysisTool.Common
 {
-    static class DirectoryController
+    internal static class DirectoryController
     {
-
         public static bool CreateDirectoryWhenNotExists(string directoryPath)
         {
             try
@@ -31,7 +30,5 @@ namespace StatisticsAnalysisTool.Common
                 return null;
             }
         }
-
-
     }
 }

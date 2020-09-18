@@ -19,7 +19,7 @@
 
         [JsonProperty(PropertyName = "Name")]
         public string Name { get; set; }
-        
+
         [JsonProperty(PropertyName = "AllianceId")]
         public string AllianceId { get; set; }
 
@@ -37,7 +37,7 @@
     {
         [JsonProperty(PropertyName = "Id")]
         public string Id { get; set; }
-        
+
         [JsonProperty(PropertyName = "Name")]
         public string Name { get; set; }
 

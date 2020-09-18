@@ -16,8 +16,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static CultureInfo CurrentCultureInfo {
             get => _currentCultureInfo ?? new CultureInfo(Settings.Default.DefaultLanguageCultureName);
-            set
-            {
+            set {
                 _currentCultureInfo = value;
                 Settings.Default.CurrentLanguageCultureName = value.TextInfo.CultureName;
             }
@@ -39,7 +38,7 @@ namespace StatisticsAnalysisTool.Common
                 if (SetLanguage())
                     return true;
 
-                if(string.IsNullOrEmpty(CurrentCultureInfo.TextInfo.CultureName))
+                if (string.IsNullOrEmpty(CurrentCultureInfo.TextInfo.CultureName))
                     MessageBox.Show("No culture info found!", Translation("ERROR"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
@@ -69,8 +68,8 @@ namespace StatisticsAnalysisTool.Common
                     throw new FileNotFoundException();
 
                 var fileInfo = (from file in LanguageFiles
-                    where file.FileName.ToUpper() == CurrentCultureInfo.TextInfo.CultureName.ToUpper()
-                    select new FileInfo(file.FileName, file.FilePath)).FirstOrDefault();
+                                where file.FileName.ToUpper() == CurrentCultureInfo.TextInfo.CultureName.ToUpper()
+                                select new FileInfo(file.FileName, file.FilePath)).FirstOrDefault();
 
                 if (fileInfo == null)
                     return false;
@@ -122,14 +121,14 @@ namespace StatisticsAnalysisTool.Common
                 if (_translations.ContainsKey(xmlReader.Value))
                 {
                     MessageBox.Show($"{Translation("DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE")}: {xmlReader.Value}");
-                } 
+                }
                 else if (xmlReader.Name == "name")
                 {
                     _translations.Add(xmlReader.Value, xmlReader.ReadString());
                 }
             }
         }
-        
+
         private static void InitializeLanguageFilesFromDirectory()
         {
             if (LanguageFiles != null)
@@ -137,7 +136,7 @@ namespace StatisticsAnalysisTool.Common
 
             var languageFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.LanguageDirectoryName);
 
-            if (!Directory.Exists(languageFilePath)) 
+            if (!Directory.Exists(languageFilePath))
                 return;
 
             var files = DirectoryController.GetFiles(languageFilePath, "*.xml");
@@ -145,7 +144,7 @@ namespace StatisticsAnalysisTool.Common
             if (files == null)
                 return;
 
-            if(LanguageFiles == null)
+            if (LanguageFiles == null)
                 LanguageFiles = new List<FileInfo>();
 
             foreach (var file in files)
@@ -154,12 +153,14 @@ namespace StatisticsAnalysisTool.Common
                 LanguageFiles.Add(fileNameWithoutExtension);
             }
         }
-        
+
         public static List<FileInfo> LanguageFiles { get; set; }
 
         public class FileInfo
         {
-            public FileInfo() { }
+            public FileInfo()
+            {
+            }
 
             public FileInfo(string fileName, string filePath)
             {

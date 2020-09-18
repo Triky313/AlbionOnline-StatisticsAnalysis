@@ -36,7 +36,7 @@
         public object Potion { get; set; }
         public object Food { get; set; }
     }
-    
+
     public class PvEResponse
     {
         public ulong Total { get; set; }
@@ -112,5 +112,4 @@
         public int CrystalLeague { get; set; }
         public DateTime Timestamp { get; set; }
     }
-
 }

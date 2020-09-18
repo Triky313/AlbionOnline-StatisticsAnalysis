@@ -14,7 +14,7 @@
 
         [JsonProperty(PropertyName = "quality")]
         public int Quality { get; set; }
-        
+
         [JsonProperty(PropertyName = "data")]
         [CanBeNull]
         public List<MarketHistoryResponse> Data { get; set; }

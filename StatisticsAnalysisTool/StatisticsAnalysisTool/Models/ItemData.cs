@@ -19,12 +19,12 @@ namespace StatisticsAnalysisTool.Models
         public string Enchantments { get; set; }
         public List<string> ActiveSlots { get; set; }
         public List<string> PassiveSlots { get; set; }
+
         //public List<KeyValueStruct> LocalizedNames { get; set; }
         public List<KeyValueStruct> LocalizedNames { get; set; }
-        public string LocalizedName
-        {
-            get
-            {
+
+        public string LocalizedName {
+            get {
                 var name = UniqueName;
 
                 if (LocalizedNames.Exists(a => a.Key == LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper()))
@@ -42,8 +42,10 @@ namespace StatisticsAnalysisTool.Models
                 return name;
             }
         }
+
         //public List<KeyValueStruct> LocalizedDescriptions { get; set; }
         public string LocalizedDescriptions { get; set; }
+
         public string SlotType { get; set; }
         public int CraftFameGainFactor { get; set; }
         public int PlaceCost { get; set; }
@@ -54,12 +56,11 @@ namespace StatisticsAnalysisTool.Models
         public string SpriteName { get; set; }
         public bool Stackable { get; set; }
         public bool Equipable { get; set; }
-        
+
         public struct KeyValueStruct
         {
             public string Key { get; set; }
             public string Value { get; set; }
         }
-
     }
 }

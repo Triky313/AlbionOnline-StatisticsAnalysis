@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Common
 {
-    class ImageController
+    internal class ImageController
     {
         private static readonly string ImageDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ImageResources);
 
@@ -40,7 +40,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static void SaveImageLocal(BitmapImage image, string localFilePath)
         {
-            if(!DirectoryController.CreateDirectoryWhenNotExists(ImageDir) && !Directory.Exists(ImageDir))
+            if (!DirectoryController.CreateDirectoryWhenNotExists(ImageDir) && !Directory.Exists(ImageDir))
                 return;
 
             image.DownloadCompleted += (sender, args) =>
@@ -74,7 +74,7 @@ namespace StatisticsAnalysisTool.Common
 
                 return userImage;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.Print($"SetImage: {e.Message}");
                 return null;
@@ -118,6 +118,5 @@ namespace StatisticsAnalysisTool.Common
                 }
             });
         }
-
     }
 }

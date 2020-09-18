@@ -123,7 +123,7 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        #endregion
+        #endregion Item list
 
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {
@@ -137,20 +137,28 @@ namespace StatisticsAnalysisTool.Common
             {
                 case GameLanguage.UnitedStates:
                     return localizedNames.EnUs ?? alternativeName;
+
                 case GameLanguage.Germany:
                     return localizedNames.DeDe ?? alternativeName;
+
                 case GameLanguage.Russia:
                     return localizedNames.RuRu ?? alternativeName;
+
                 case GameLanguage.Poland:
                     return localizedNames.PlPl ?? alternativeName;
+
                 case GameLanguage.Brazil:
                     return localizedNames.PtBr ?? alternativeName;
+
                 case GameLanguage.France:
                     return localizedNames.FrFr ?? alternativeName;
+
                 case GameLanguage.Spain:
                     return localizedNames.EsEs ?? alternativeName;
+
                 case GameLanguage.Chinese:
                     return localizedNames.ZhCn ?? alternativeName;
+
                 default:
                     return alternativeName;
             }
@@ -165,7 +173,7 @@ namespace StatisticsAnalysisTool.Common
 
             return int.TryParse(uniqueName.Split('@')[1], out int number) ? number : 0;
         }
-        
+
         public static int GetItemTier(Item item)
         {
             var itemNameTierText = item.UniqueName.Split('_')[0];
@@ -183,28 +191,38 @@ namespace StatisticsAnalysisTool.Common
         }
 
         public static ItemQuality GetQuality(int value) => FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Value == value).Key;
-        
-        public static Style LocationStyle(Location location) {
+
+        public static Style LocationStyle(Location location)
+        {
             switch (location)
             {
                 case Location.Caerleon:
                     return Application.Current.FindResource("CaerleonStyle") as Style;
+
                 case Location.Thetford:
                     return Application.Current.FindResource("ThetfordStyle") as Style;
+
                 case Location.Bridgewatch:
                     return Application.Current.FindResource("BridgewatchStyle") as Style;
+
                 case Location.Martlock:
                     return Application.Current.FindResource("MartlockStyle") as Style;
+
                 case Location.Lymhurst:
                     return Application.Current.FindResource("LymhurstStyle") as Style;
+
                 case Location.FortSterling:
                     return Application.Current.FindResource("FortSterlingStyle") as Style;
+
                 case Location.ArthursRest:
                     return Application.Current.FindResource("ArthursRestStyle") as Style;
+
                 case Location.MerlynsRest:
                     return Application.Current.FindResource("MerlynsRestStyle") as Style;
+
                 case Location.MorganasRest:
                     return Application.Current.FindResource("MorganasRestStyle") as Style;
+
                 default:
                     return Application.Current.FindResource("DefaultCityStyle") as Style;
             }
@@ -227,7 +245,7 @@ namespace StatisticsAnalysisTool.Common
             return Application.Current.FindResource("ListView.Grid.Label.Date.Normal") as Style;
         }
 
-        public static Style PriceStyle(bool bestSellMinPrice) 
+        public static Style PriceStyle(bool bestSellMinPrice)
         {
             if (bestSellMinPrice)
             {
@@ -307,13 +325,13 @@ namespace StatisticsAnalysisTool.Common
                 return false;
             }
 
-            var lastUpdateWithCycleDays =  lastUpdate.Value.AddDays(Settings.Default.FullItemInformationUpdateCycleDays);
+            var lastUpdateWithCycleDays = lastUpdate.Value.AddDays(Settings.Default.FullItemInformationUpdateCycleDays);
             return lastUpdateWithCycleDays >= DateTime.UtcNow;
         }
-        
+
         public static BitmapImage ExistFullItemInformationLocal(string uniqueName)
         {
-            if (_itemInformationList.Any(x => x.UniqueName == uniqueName) 
+            if (_itemInformationList.Any(x => x.UniqueName == uniqueName)
                 && IsItemInformationUpToDate(_itemInformationList.FirstOrDefault(x => x.UniqueName == uniqueName)?.LastUpdate))
             {
                 return new BitmapImage(new Uri(@"pack://application:,,,/Resources/check.png"));
@@ -383,7 +401,7 @@ namespace StatisticsAnalysisTool.Common
                 item.FullItemInformation = itemInformation;
             }
         }
-        
-        #endregion
+
+        #endregion ItemInformation
     }
 }

@@ -4,7 +4,6 @@ namespace StatisticsAnalysisTool.Models
 {
     public class ItemCategoryTree
     {
-
         [JsonProperty("head")]
         public Head Head { get; set; }
 
@@ -68,7 +67,6 @@ namespace StatisticsAnalysisTool.Models
 
     public class Mainhand
     {
-
         [JsonProperty("firestaff")]
         public string Firestaff { get; set; }
 
@@ -117,7 +115,6 @@ namespace StatisticsAnalysisTool.Models
 
     public class Potion
     {
-
         [JsonProperty("potion")]
         public string PotionValue { get; set; }
 
@@ -130,7 +127,6 @@ namespace StatisticsAnalysisTool.Models
 
     public class Armor
     {
-
         [JsonProperty("rockgatherer_armor")]
         public string RockgathererArmor { get; set; }
 
@@ -161,14 +157,12 @@ namespace StatisticsAnalysisTool.Models
 
     public class Bag
     {
-
         [JsonProperty("bag")]
         public string BagValue { get; set; }
     }
 
     public class Mount
     {
-
         [JsonProperty("rare_mount")]
         public string RareMount { get; set; }
 
@@ -184,7 +178,6 @@ namespace StatisticsAnalysisTool.Models
 
     public class Shoes
     {
-
         [JsonProperty("unique_shoes")]
         public string UniqueShoes { get; set; }
 
@@ -218,7 +211,6 @@ namespace StatisticsAnalysisTool.Models
 
     public class Cape
     {
-
         [JsonProperty("rockgatherer_backpack")]
         public string RockgathererBackpack { get; set; }
 
@@ -243,7 +235,6 @@ namespace StatisticsAnalysisTool.Models
 
     public class Food
     {
-
         [JsonProperty("fish")]
         public string Fish { get; set; }
 
@@ -256,7 +247,6 @@ namespace StatisticsAnalysisTool.Models
 
     public class Offhand
     {
-
         [JsonProperty("shield")]
         public string Shield { get; set; }
 
