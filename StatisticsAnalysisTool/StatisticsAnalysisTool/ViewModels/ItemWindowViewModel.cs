@@ -117,9 +117,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Icon = item.Icon;
                 _mainWindow.Title = $"{localizedName} (T{item.Tier})";
             });
-
-            ItemInformation = item.FullItemInformation;
-
+            
             StartAutoUpdater();
             RefreshSpin = IsAutoUpdateActive;
         }
