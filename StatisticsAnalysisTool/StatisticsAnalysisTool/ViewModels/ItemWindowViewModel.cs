@@ -93,7 +93,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             ItemTierLevel = (Item?.Tier != -1 && Item?.Level != -1) ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
 
-            var getFullItemInformationTask = ItemController.GetFullItemInformationAsync(item);
+            SetFullItemInformationAsync(item);
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
@@ -118,11 +118,15 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Title = $"{localizedName} (T{item.Tier})";
             });
 
-            item.FullItemInformation = await getFullItemInformationTask;
             ItemInformation = item.FullItemInformation;
 
             StartAutoUpdater();
             RefreshSpin = IsAutoUpdateActive;
+        }
+
+        private async void SetFullItemInformationAsync(Item item)
+        {
+            ItemInformation = await ItemController.GetFullItemInformationAsync(item);
         }
 
         private void SetNoDataValues(Error error)
