@@ -251,6 +251,9 @@
             <TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}">
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden">
                     <Grid>
+                        <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" Margin="18,88,0,0" VerticalAlignment="Top">
+                            <fa:ImageAwesome Visibility="{Binding InformationLoadingImageVisibility}" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                        </Grid>
                         <StackPanel Margin="10,10,0,10" HorizontalAlignment="Left" Width="250">
                             <Label Content="{Binding Translation.Equipable, FallbackValue=EQUIPABLE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
                             <Label Content="{Binding Translation.Stackable, FallbackValue=STACKABLE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />

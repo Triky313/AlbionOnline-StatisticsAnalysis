@@ -55,9 +55,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private List<MarketQualityObject> _realMoneyPriceList;
         private GoldResponseModel _currentGoldPrice;
         private List<MarketResponse> _currentCityPrices;
+        private Visibility _informationLoadingImageVisibility;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError }
-
+        
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
             _mainWindow = mainWindow;
@@ -92,7 +93,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             ItemTierLevel = (Item?.Tier != -1 && Item?.Level != -1) ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
-
             SetFullItemInformationAsync(item);
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
@@ -126,7 +126,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async void SetFullItemInformationAsync(Item item)
         {
+            InformationLoadingImageVisibility = Visibility.Visible;
             ItemInformation = await ItemController.GetFullItemInformationAsync(item);
+            InformationLoadingImageVisibility = Visibility.Hidden;
         }
 
         private void SetNoDataValues(Error error)
@@ -631,6 +633,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _loadingImageVisibility;
             set {
                 _loadingImageVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility InformationLoadingImageVisibility {
+            get => _informationLoadingImageVisibility;
+            set {
+                _informationLoadingImageVisibility = value;
                 OnPropertyChanged();
             }
         }
