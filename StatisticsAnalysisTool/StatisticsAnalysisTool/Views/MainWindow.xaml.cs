@@ -186,6 +186,11 @@ namespace StatisticsAnalysisTool.Views
             e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
         }
 
+        private void TxtBoxMinSellPriceIsUndercutPrice_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(_mainWindowViewModel.TextBoxGoldModeNumberOfValues, out var numberOfValues))
