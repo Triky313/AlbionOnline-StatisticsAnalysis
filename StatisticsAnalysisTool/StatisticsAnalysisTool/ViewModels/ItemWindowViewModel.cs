@@ -156,7 +156,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 case Error.ToManyRequests:
                     SetLoadingImageToError();
-                    HasItemPrices = false;
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT"));
                     return;
 
@@ -215,12 +214,13 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 var locations = Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true));
-                _currentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, locations, GetQualities());
+                _currentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, locations, GetQualities()).ConfigureAwait(false);
                 ErrorBarReset();
             }
             catch (TooManyRequestsException)
             {
                 _currentCityPrices = null;
+                HasItemPrices = false;
                 SetErrorValues(Error.ToManyRequests);
             }
         }
@@ -247,17 +247,31 @@ namespace StatisticsAnalysisTool.ViewModels
             return qualities;
         }
 
-        public async void SetHistoryChartAsync()
+        public async void SetHistoryChartPricesAsync()
         {
-            var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
-            Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)),
-                DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
+            List<MarketHistoriesResponse> historyItemPrices;
 
-            if (historyItemPrices == null)
+            try
             {
+                var locations = Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true));
+                historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
+
+                if (historyItemPrices == null)
+                {
+                    return;
+                }
+            }
+            catch (TooManyRequestsException)
+            {
+                SetErrorValues(Error.ToManyRequests);
                 return;
             }
 
+            SetHistoryChart(historyItemPrices);
+        }
+
+        private void SetHistoryChart(List<MarketHistoriesResponse> historyItemPrices)
+        {
             var date = new List<string>();
             var seriesCollectionHistory = new SeriesCollection();
 

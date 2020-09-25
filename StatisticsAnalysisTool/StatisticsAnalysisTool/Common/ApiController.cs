@@ -138,9 +138,18 @@ namespace StatisticsAnalysisTool.Common
                     {
                         using (var content = response.Content)
                         {
+                            if (response.StatusCode == (HttpStatusCode)429)
+                            {
+                                throw new TooManyRequestsException();
+                            }
+
                             return JsonConvert.DeserializeObject<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
                         }
                     }
+                }
+                catch (TooManyRequestsException)
+                {
+                    throw new TooManyRequestsException();
                 }
                 catch
                 {
