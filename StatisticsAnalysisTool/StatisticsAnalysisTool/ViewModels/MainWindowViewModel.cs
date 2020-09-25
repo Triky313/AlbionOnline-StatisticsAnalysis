@@ -1,4 +1,5 @@
 ﻿using LiveCharts;
+using log4net;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
@@ -67,6 +68,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _loadIconVisibility;
         private string _loadFullItemInfoProBarCounter;
         private bool _isFullItemInfoLoading;
+
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public enum ViewMode
         {
@@ -416,7 +419,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public static void OpenItemWindow(Item item)
         {
-            if (string.IsNullOrEmpty(item.UniqueName))
+            if (string.IsNullOrEmpty(item?.UniqueName))
                 return;
 
             try
@@ -433,8 +436,9 @@ namespace StatisticsAnalysisTool.ViewModels
                     itemWindow.Show();
                 }
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
+                Log.Error(nameof(OpenItemWindow), e);
                 var catchItemWindow = new ItemWindow(item);
                 catchItemWindow.Show();
             }

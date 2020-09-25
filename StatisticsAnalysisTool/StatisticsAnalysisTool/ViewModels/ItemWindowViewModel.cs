@@ -1,4 +1,5 @@
 ﻿using FontAwesome.WPF;
+using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
@@ -59,7 +60,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _informationLoadingImageVisibility;
 
         public enum Error { NoPrices, NoItemInfo, GeneralError, ToManyRequests }
-        
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
             _mainWindow = mainWindow;
@@ -217,11 +219,12 @@ namespace StatisticsAnalysisTool.ViewModels
                 _currentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, locations, GetQualities()).ConfigureAwait(false);
                 ErrorBarReset();
             }
-            catch (TooManyRequestsException)
+            catch (TooManyRequestsException e)
             {
                 _currentCityPrices = null;
                 HasItemPrices = false;
                 SetErrorValues(Error.ToManyRequests);
+                Log.Warn(nameof(GetCityItemPricesAsync), e);
             }
         }
 

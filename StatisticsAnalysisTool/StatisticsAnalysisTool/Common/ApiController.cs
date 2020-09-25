@@ -1,18 +1,20 @@
-﻿using StatisticsAnalysisTool.Exceptions;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-
-namespace StatisticsAnalysisTool.Common
+﻿namespace StatisticsAnalysisTool.Common
 {
+    using Exceptions;
+    using log4net;
     using Models;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
 
     public static class ApiController
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(string uniqueName)
         {
             var url = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
@@ -50,8 +52,9 @@ namespace StatisticsAnalysisTool.Common
                         }
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Log.Error(nameof(GetItemInfoFromJsonAsync), e);
                     return null;
                 }
             }
@@ -104,8 +107,9 @@ namespace StatisticsAnalysisTool.Common
                 {
                     throw new TooManyRequestsException();
                 }
-                catch
+                catch(Exception e)
                 {
+                    Log.Error(nameof(GetCityItemPricesFromJsonAsync), e);
                     return null;
                 }
             }
@@ -151,8 +155,9 @@ namespace StatisticsAnalysisTool.Common
                 {
                     throw new TooManyRequestsException();
                 }
-                catch
+                catch(Exception e)
                 {
+                    Log.Error(nameof(GetHistoryItemPricesFromJsonAsync), e);
                     return null;
                 }
             }
@@ -176,8 +181,9 @@ namespace StatisticsAnalysisTool.Common
                         }
                     }
                 }
-                catch
+                catch(Exception e)
                 {
+                    Log.Error(nameof(GetGameInfoSearchFromJsonAsync), e);
                     return gameInfoSearchResponse;
                 }
             }
@@ -201,8 +207,9 @@ namespace StatisticsAnalysisTool.Common
                         }
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Log.Error(nameof(GetGameInfoPlayersFromJsonAsync), e);
                     return gameInfoPlayerResponse;
                 }
             }
@@ -225,8 +232,9 @@ namespace StatisticsAnalysisTool.Common
                         }
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Log.Error(nameof(GetGameInfoGuildsFromJsonAsync), e);
                     return null;
                 }
             }
@@ -253,8 +261,9 @@ namespace StatisticsAnalysisTool.Common
                         }
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Log.Error(nameof(GetGoldPricesFromJsonAsync), e);
                     return new List<GoldResponseModel>();
                 }
             }
