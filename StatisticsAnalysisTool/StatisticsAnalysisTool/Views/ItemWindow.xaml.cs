@@ -102,7 +102,7 @@ namespace StatisticsAnalysisTool.Views
             await _itemWindowViewModel.GetCityItemPricesAsync();
             _itemWindowViewModel.GetMainPriceStats();
             _itemWindowViewModel.SetQualityPriceStatsOnListView();
-            _itemWindowViewModel.SetHistoryChartAsync();
+            _itemWindowViewModel.SetHistoryChartPricesAsync();
             _itemWindowViewModel.GetItemPricesInRealMoney();
         }
     }

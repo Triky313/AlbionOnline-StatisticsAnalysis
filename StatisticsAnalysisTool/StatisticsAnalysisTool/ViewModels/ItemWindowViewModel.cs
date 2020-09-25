@@ -1,5 +1,7 @@
 ﻿using FontAwesome.WPF;
+using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
@@ -57,8 +59,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private List<MarketResponse> _currentCityPrices;
         private Visibility _informationLoadingImageVisibility;
 
-        public enum Error { NoPrices, NoItemInfo, GeneralError }
-        
+        public enum Error { NoPrices, NoItemInfo, GeneralError, ToManyRequests }
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
             _mainWindow = mainWindow;
@@ -88,7 +91,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (item == null)
             {
-                SetNoDataValues(Error.NoItemInfo);
+                SetErrorValues(Error.NoItemInfo);
                 return;
             }
 
@@ -103,7 +106,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (_mainWindow.Dispatcher == null)
             {
-                SetNoDataValues(Error.GeneralError);
+                SetErrorValues(Error.GeneralError);
                 return;
             }
 
@@ -129,7 +132,7 @@ namespace StatisticsAnalysisTool.ViewModels
             InformationLoadingImageVisibility = Visibility.Hidden;
         }
 
-        private void SetNoDataValues(Error error)
+        private void SetErrorValues(Error error)
         {
             switch (error)
             {
@@ -153,12 +156,24 @@ namespace StatisticsAnalysisTool.ViewModels
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                     return;
 
+                case Error.ToManyRequests:
+                    SetLoadingImageToError();
+                    SetErrorBar(Visibility.Visible, LanguageController.Translation("TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT"));
+                    return;
+
                 default:
                     SetLoadingImageToError();
                     HasItemPrices = false;
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                     return;
             }
+        }
+
+        private void ErrorBarReset()
+        {
+            LoadingImageSpin = true;
+            HasItemPrices = true;
+            SetErrorBar(Visibility.Hidden, string.Empty);
         }
 
         private void SetLoadingImageToError()
@@ -198,8 +213,19 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public async Task GetCityItemPricesAsync()
         {
-            _currentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName,
-                Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)), GetQualities());
+            try
+            {
+                var locations = Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true));
+                _currentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, locations, GetQualities()).ConfigureAwait(false);
+                ErrorBarReset();
+            }
+            catch (TooManyRequestsException e)
+            {
+                _currentCityPrices = null;
+                HasItemPrices = false;
+                SetErrorValues(Error.ToManyRequests);
+                Log.Warn(nameof(GetCityItemPricesAsync), e);
+            }
         }
 
         private List<int> GetQualities()
@@ -224,17 +250,31 @@ namespace StatisticsAnalysisTool.ViewModels
             return qualities;
         }
 
-        public async void SetHistoryChartAsync()
+        public async void SetHistoryChartPricesAsync()
         {
-            var historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName,
-            Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)),
-                DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
+            List<MarketHistoriesResponse> historyItemPrices;
 
-            if (historyItemPrices == null)
+            try
             {
+                var locations = Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true));
+                historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
+
+                if (historyItemPrices == null)
+                {
+                    return;
+                }
+            }
+            catch (TooManyRequestsException)
+            {
+                SetErrorValues(Error.ToManyRequests);
                 return;
             }
 
+            SetHistoryChart(historyItemPrices);
+        }
+
+        private void SetHistoryChart(List<MarketHistoriesResponse> historyItemPrices)
+        {
             var date = new List<string>();
             var seriesCollectionHistory = new SeriesCollection();
 

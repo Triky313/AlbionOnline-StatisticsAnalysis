@@ -304,4 +304,5 @@
   <translation name="ITEM_POWER">Item Power</translation>
   <translation name="DURABILITY">Durability</translation>
   <translation name="REAL_MONEY_PRICE">Real money price</translation>
+  <translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Too many requests, close a few windows or wait a few minutes.</translation>
 </translations>

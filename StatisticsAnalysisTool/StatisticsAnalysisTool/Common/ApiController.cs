@@ -1,17 +1,20 @@
-﻿using System.Linq;
-using System.Net;
-using System.Net.Http;
-
-namespace StatisticsAnalysisTool.Common
+﻿namespace StatisticsAnalysisTool.Common
 {
+    using Exceptions;
+    using log4net;
     using Models;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
 
     public static class ApiController
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(string uniqueName)
         {
             var url = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
@@ -49,8 +52,9 @@ namespace StatisticsAnalysisTool.Common
                         }
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Log.Error(nameof(GetItemInfoFromJsonAsync), e);
                     return null;
                 }
             }
@@ -58,6 +62,10 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item) => await GetItemInfoFromJsonAsync(item.UniqueName);
 
+        /// <summary>
+        /// Returns city item prices bye uniqueName, locations and qualities.
+        /// </summary>
+        /// <exception cref="TooManyRequestsException"></exception>
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
         {
             if (locations?.Count < 1)
@@ -78,19 +86,30 @@ namespace StatisticsAnalysisTool.Common
 
             using (var client = new HttpClient())
             {
-                client.Timeout = TimeSpan.FromSeconds(30);
                 try
                 {
+                    client.Timeout = TimeSpan.FromSeconds(30);
+
                     using (var response = await client.GetAsync(url))
                     {
+                        if (response.StatusCode == (HttpStatusCode) 429)
+                        {
+                            throw new TooManyRequestsException();
+                        }
+
                         using (var content = response.Content)
                         {
                             return JsonConvert.DeserializeObject<List<MarketResponse>>(await content.ReadAsStringAsync());
                         }
                     }
                 }
-                catch
+                catch (TooManyRequestsException)
                 {
+                    throw new TooManyRequestsException();
+                }
+                catch(Exception e)
+                {
+                    Log.Error(nameof(GetCityItemPricesFromJsonAsync), e);
                     return null;
                 }
             }
@@ -123,12 +142,22 @@ namespace StatisticsAnalysisTool.Common
                     {
                         using (var content = response.Content)
                         {
+                            if (response.StatusCode == (HttpStatusCode)429)
+                            {
+                                throw new TooManyRequestsException();
+                            }
+
                             return JsonConvert.DeserializeObject<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
                         }
                     }
                 }
-                catch
+                catch (TooManyRequestsException)
                 {
+                    throw new TooManyRequestsException();
+                }
+                catch(Exception e)
+                {
+                    Log.Error(nameof(GetHistoryItemPricesFromJsonAsync), e);
                     return null;
                 }
             }
@@ -152,8 +181,9 @@ namespace StatisticsAnalysisTool.Common
                         }
                     }
                 }
-                catch
+                catch(Exception e)
                 {
+                    Log.Error(nameof(GetGameInfoSearchFromJsonAsync), e);
                     return gameInfoSearchResponse;
                 }
             }
@@ -177,8 +207,9 @@ namespace StatisticsAnalysisTool.Common
                         }
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Log.Error(nameof(GetGameInfoPlayersFromJsonAsync), e);
                     return gameInfoPlayerResponse;
                 }
             }
@@ -201,8 +232,9 @@ namespace StatisticsAnalysisTool.Common
                         }
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Log.Error(nameof(GetGameInfoGuildsFromJsonAsync), e);
                     return null;
                 }
             }
@@ -229,8 +261,9 @@ namespace StatisticsAnalysisTool.Common
                         }
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Log.Error(nameof(GetGoldPricesFromJsonAsync), e);
                     return new List<GoldResponseModel>();
                 }
             }
