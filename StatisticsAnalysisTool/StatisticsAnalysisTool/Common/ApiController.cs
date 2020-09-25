@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using StatisticsAnalysisTool.Exceptions;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 
@@ -58,6 +59,10 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item) => await GetItemInfoFromJsonAsync(item.UniqueName);
 
+        /// <summary>
+        /// Returns city item prices bye uniqueName, locations and qualities.
+        /// </summary>
+        /// <exception cref="TooManyRequestsException"></exception>
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
         {
             if (locations?.Count < 1)
@@ -78,16 +83,26 @@ namespace StatisticsAnalysisTool.Common
 
             using (var client = new HttpClient())
             {
-                client.Timeout = TimeSpan.FromSeconds(30);
                 try
                 {
+                    client.Timeout = TimeSpan.FromSeconds(30);
+
                     using (var response = await client.GetAsync(url))
                     {
+                        if (response.StatusCode == (HttpStatusCode) 429)
+                        {
+                            throw new TooManyRequestsException();
+                        }
+
                         using (var content = response.Content)
                         {
                             return JsonConvert.DeserializeObject<List<MarketResponse>>(await content.ReadAsStringAsync());
                         }
                     }
+                }
+                catch (TooManyRequestsException)
+                {
+                    throw new TooManyRequestsException();
                 }
                 catch
                 {

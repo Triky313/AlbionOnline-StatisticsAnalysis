@@ -1,5 +1,6 @@
 ﻿using FontAwesome.WPF;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
@@ -57,7 +58,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private List<MarketResponse> _currentCityPrices;
         private Visibility _informationLoadingImageVisibility;
 
-        public enum Error { NoPrices, NoItemInfo, GeneralError }
+        public enum Error { NoPrices, NoItemInfo, GeneralError, ToManyRequests }
         
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
@@ -88,7 +89,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (item == null)
             {
-                SetNoDataValues(Error.NoItemInfo);
+                SetErrorValues(Error.NoItemInfo);
                 return;
             }
 
@@ -103,7 +104,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (_mainWindow.Dispatcher == null)
             {
-                SetNoDataValues(Error.GeneralError);
+                SetErrorValues(Error.GeneralError);
                 return;
             }
 
@@ -129,7 +130,7 @@ namespace StatisticsAnalysisTool.ViewModels
             InformationLoadingImageVisibility = Visibility.Hidden;
         }
 
-        private void SetNoDataValues(Error error)
+        private void SetErrorValues(Error error)
         {
             switch (error)
             {
@@ -153,12 +154,25 @@ namespace StatisticsAnalysisTool.ViewModels
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                     return;
 
+                case Error.ToManyRequests:
+                    SetLoadingImageToError();
+                    HasItemPrices = false;
+                    SetErrorBar(Visibility.Visible, LanguageController.Translation("TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT"));
+                    return;
+
                 default:
                     SetLoadingImageToError();
                     HasItemPrices = false;
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                     return;
             }
+        }
+
+        private void ErrorBarReset()
+        {
+            LoadingImageSpin = true;
+            HasItemPrices = true;
+            SetErrorBar(Visibility.Hidden, string.Empty);
         }
 
         private void SetLoadingImageToError()
@@ -198,8 +212,17 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public async Task GetCityItemPricesAsync()
         {
-            _currentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName,
-                Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true)), GetQualities());
+            try
+            {
+                var locations = Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true));
+                _currentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, locations, GetQualities());
+                ErrorBarReset();
+            }
+            catch (TooManyRequestsException)
+            {
+                _currentCityPrices = null;
+                SetErrorValues(Error.ToManyRequests);
+            }
         }
 
         private List<int> GetQualities()
