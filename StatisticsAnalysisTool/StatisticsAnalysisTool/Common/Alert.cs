@@ -1,4 +1,6 @@
 ﻿using FontAwesome.WPF;
+using log4net;
+using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,7 @@ namespace StatisticsAnalysisTool.Common
             Item = item;
         }
 
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public ImageAwesome ImageAwesome { get; set; }
         public Item Item { get; set; }
 
@@ -46,18 +49,26 @@ namespace StatisticsAnalysisTool.Common
         {
             while (_isEventActive)
             {
-                var cityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, null, null);
-
-                foreach (var price in cityPrices ?? new List<MarketResponse>())
+                try
                 {
-                    if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5) && price.SellPriceMin <= (ulong)Item.AlertModeMinSellPriceIsUndercutPrice)
-                    {
-                        Debug.Print($"{Item.UniqueName} Preis unterboten!");
-                        StopEvent();
-                    }
-                }
+                    var cityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, null, null);
 
-                await Task.Delay(20000);
+                    foreach (var price in cityPrices ?? new List<MarketResponse>())
+                    {
+                        if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5) && price.SellPriceMin <= (ulong)Item.AlertModeMinSellPriceIsUndercutPrice)
+                        {
+                            Debug.Print($"{Item.UniqueName} Preis unterboten!");
+                            StopEvent();
+                        }
+                    }
+
+                    await Task.Delay(25000);
+                }
+                catch (TooManyRequestsException e)
+                {
+                    Log.Warn(nameof(AlertEvent), e);
+                    return;
+                }
             }
         }
     }

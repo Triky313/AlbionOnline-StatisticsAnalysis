@@ -14,9 +14,11 @@ namespace StatisticsAnalysisTool.Common
         private readonly ObservableCollection<Alert> _alerts = new ObservableCollection<Alert>();
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        private readonly int _maxAlertsAtSameTime = 10;
+
         private void Add(ref ImageAwesome imageAwesome, ref Item item)
         {
-            if (IsAlertInCollection(item.UniqueName))
+            if (IsAlertInCollection(item.UniqueName) || !IsSpaceInAlertsCollection())
             {
                 return;
             }
@@ -78,5 +80,7 @@ namespace StatisticsAnalysisTool.Common
         {
             return _alerts.FirstOrDefault(alert => alert.Item.UniqueName == uniqueName);
         }
+
+        private bool IsSpaceInAlertsCollection() => _alerts.Count < _maxAlertsAtSameTime;
     }
 }
