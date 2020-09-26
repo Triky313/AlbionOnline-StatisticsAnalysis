@@ -35,7 +35,7 @@ namespace StatisticsAnalysisTool.Common
             ImageAwesome.Icon = FontAwesomeIcon.ToggleOn;
             ImageAwesome.Foreground = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
             _isEventActive = true;
-            AlertEvent();
+            AlertEventAsync();
         }
 
         public void StopEvent()
@@ -45,13 +45,13 @@ namespace StatisticsAnalysisTool.Common
             _isEventActive = false;
         }
 
-        private async void AlertEvent()
+        private async void AlertEventAsync()
         {
             while (_isEventActive)
             {
                 try
                 {
-                    var cityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, null, null);
+                    var cityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, null, null).ConfigureAwait(false);
 
                     foreach (var price in cityPrices ?? new List<MarketResponse>())
                     {
@@ -66,7 +66,7 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (TooManyRequestsException e)
                 {
-                    Log.Warn(nameof(AlertEvent), e);
+                    Log.Warn(nameof(AlertEventAsync), e);
                     return;
                 }
             }
