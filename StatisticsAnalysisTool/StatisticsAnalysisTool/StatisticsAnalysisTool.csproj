@@ -102,7 +102,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\AlertController.cs" />
     <Compile Include="Exceptions\TooManyRequestsException.cs" />
+    <Compile Include="Common\Alert.cs" />
     <Compile Include="Models\CategoryComboboxObject.cs" />
     <Compile Include="Common\Formatting.cs" />
     <Compile Include="Common\FrequentlyValues.cs" />

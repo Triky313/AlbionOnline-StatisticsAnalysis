@@ -1,4 +1,5 @@
-﻿using LiveCharts;
+﻿using FontAwesome.WPF;
+using LiveCharts;
 using log4net;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
@@ -68,9 +69,11 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _loadIconVisibility;
         private string _loadFullItemInfoProBarCounter;
         private bool _isFullItemInfoLoading;
+        public AlertController AlertManager;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        private string _alertModeMinSellPriceIsUndercutPrice;
+        
         public enum ViewMode
         {
             Normal,
@@ -88,7 +91,13 @@ namespace StatisticsAnalysisTool.ViewModels
             if (!LanguageController.InitializeLanguage())
                 _mainWindow.Close();
 
+            InitAlerts();
             InitMainWindowData();
+        }
+
+        private void InitAlerts()
+        {
+            AlertManager = new AlertController();
         }
 
         private void UpgradeSettings()
@@ -407,7 +416,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Gold (Gold Mode)
-
+        
         private void ShowInfoWindow()
         {
             if (Settings.Default.ShowInfoWindowOnStartChecked)
@@ -441,6 +450,26 @@ namespace StatisticsAnalysisTool.ViewModels
                 Log.Error(nameof(OpenItemWindow), e);
                 var catchItemWindow = new ItemWindow(item);
                 catchItemWindow.Show();
+            }
+        }
+
+        public void ToggleAlertSender(ref object sender)
+        {
+            try
+            {
+                var imageAwesome = (ImageAwesome)sender;
+                var item = (Item)imageAwesome.DataContext;
+                
+                if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
+                {
+                    return;
+                }
+
+                AlertManager.ToggleAlert(ref imageAwesome, ref item);
+            }
+            catch (Exception e)
+            {
+                Log.Error(nameof(ToggleAlertSender), e);
             }
         }
 
@@ -764,7 +793,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public MainWindowTranslation Translation {
             get => _translation;
             set {

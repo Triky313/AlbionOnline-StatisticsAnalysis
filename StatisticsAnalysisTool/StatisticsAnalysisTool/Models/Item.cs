@@ -24,5 +24,6 @@ namespace StatisticsAnalysisTool.Models
 
         public BitmapImage ExistFullItemInformationLocal => ItemController.ExistFullItemInformationLocal(UniqueName);
         public ItemInformation FullItemInformation { get; set; }
+        public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.Views
     public partial class MainWindow
     {
         private readonly MainWindowViewModel _mainWindowViewModel;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -205,6 +205,16 @@ namespace StatisticsAnalysisTool.Views
         private void LoadFullItemInfoButton_Click(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel.LoadAllFullItemInformationFromWeb();
+        }
+
+        private void AlertModeAlertActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (sender == null)
+            {
+                return;
+            }
+
+            _mainWindowViewModel.ToggleAlertSender(ref sender);
         }
     }
 }

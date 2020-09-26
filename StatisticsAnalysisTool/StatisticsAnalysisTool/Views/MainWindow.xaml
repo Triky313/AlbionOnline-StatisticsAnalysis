@@ -49,7 +49,7 @@
             </StackPanel>
             <Label Content="{Binding ItemCounterString, FallbackValue=0/0}" Height="26" Margin="0,7,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="75" />
 
-            <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemListViewItemsSource}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,64,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
+            <ListView x:Name="ItemListView" SnapsToDevicePixels="True" ItemsSource="{Binding ItemListViewItemsSource}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,64,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="{Binding Translation.Icon, FallbackValue=ICON}" Width="80">
@@ -78,17 +78,17 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid Height="24" Width="24">
-                                        <fa:ImageAwesome Visibility="Visible" Icon="{Binding AlertModeAlertActiveToggleIcon, FallbackValue=ToggleOff}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                                        <fa:ImageAwesome Visibility="Visible" Icon="ToggleOff"  Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="AlertModeAlertActiveToggle_MouseUp" />
                                     </Grid>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="{Binding Translation.MinSellPriceIsUndercutPrice, FallbackValue=MIN_SELL_PRICE_IS_UNDERCUT_PRICE}" Width="100">
+                        <GridViewColumn Header="{Binding Translation.MinSellPriceIsUndercutPrice, FallbackValue=MIN_SELL_PRICE_IS_UNDERCUT_PRICE}" Width="80">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <TextBox Text="{Binding TextBoxAlertModeMinSellPriceIsUndercutPrice}" MaxLength="12" Width="50" PreviewTextInput="TxtBoxMinSellPriceIsUndercutPrice_OnPreviewTextInput"></TextBox>
+                                        <TextBox Text="{Binding (models:Item.AlertModeMinSellPriceIsUndercutPrice)}" MaxLength="12" Height="24" Width="65" PreviewTextInput="TxtBoxMinSellPriceIsUndercutPrice_OnPreviewTextInput"></TextBox>
                                     </Grid>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
