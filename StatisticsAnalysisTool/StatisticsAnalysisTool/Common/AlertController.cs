@@ -1,6 +1,7 @@
 ﻿using FontAwesome.WPF;
 using log4net;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -16,7 +17,7 @@ namespace StatisticsAnalysisTool.Common
 
         private readonly int _maxAlertsAtSameTime = 10;
 
-        private void Add(ref ImageAwesome imageAwesome, ref Item item)
+        private void Add(ref MainWindow mainWindow, ref ImageAwesome imageAwesome, ref Item item)
         {
             if (IsAlertInCollection(item.UniqueName) || !IsSpaceInAlertsCollection())
             {
@@ -30,12 +31,13 @@ namespace StatisticsAnalysisTool.Common
                 }
             };
 
-            var alert = new Alert(ref imageAwesome, ref item);
+            var alertController = this;
+            var alert = new Alert(ref alertController, ref mainWindow, ref imageAwesome, ref item);
             alert.StartEvent();
             _alerts.Add(alert);
         }
 
-        private void Remove(ref Item item)
+        public void Remove(Item item)
         {
             _alerts.CollectionChanged += delegate (object sender, NotifyCollectionChangedEventArgs e)
             {
@@ -52,18 +54,18 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public bool ToggleAlert(ref ImageAwesome imageAwesome, ref Item item)
+        public bool ToggleAlert(ref MainWindow mainWindow, ref ImageAwesome imageAwesome, ref Item item)
         {
             try
             {
                 if (IsAlertInCollection(item.UniqueName))
                 {
-                    Remove(ref item);
+                    Remove(item);
                     return false;
                 }
                 else
                 {
-                    Add(ref imageAwesome, ref item);
+                    Add(ref mainWindow, ref imageAwesome, ref item);
                     return true;
                 }
             }

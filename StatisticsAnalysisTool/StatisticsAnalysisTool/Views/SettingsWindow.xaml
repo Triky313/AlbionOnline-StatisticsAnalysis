@@ -24,6 +24,7 @@
             <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,18,0,0" VerticalAlignment="Top" />
             <Label Content="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top" />
             <Label Content="{Binding Translation.FullItemInformationUpdateCycleDays, FallbackValue=FULL__ITEM__INFO__UPDATE__CYCLE__DAYS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top" />
+            <Label Content="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top" />
         </StackPanel>
         <StackPanel Margin="265,75,0,39">
             <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" Margin="0,5,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200" />
@@ -33,6 +34,7 @@
             <CheckBox IsChecked="{Binding IsOpenItemWindowInNewWindowChecked}" Height="21" VerticalContentAlignment="Center" Margin="0,8,10,0" />
             <CheckBox IsChecked="{Binding ShowInfoWindowOnStartChecked}" Height="21" VerticalContentAlignment="Center" Margin="0,10,10,0" />
             <TextBox Text="{Binding FullItemInformationUpdateCycleDays, FallbackValue=90}" Height="26" Margin="0,6,10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="FileName" SelectedValuePath="FileInformation" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="200" Height="26" />
         </StackPanel>
         <Button Style="{StaticResource ButtonStyle}" Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click" />
     </Grid>

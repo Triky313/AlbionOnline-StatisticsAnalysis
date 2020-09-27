@@ -103,6 +103,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\AlertController.cs" />
+    <Compile Include="Common\SoundController.cs" />
     <Compile Include="Exceptions\TooManyRequestsException.cs" />
     <Compile Include="Common\Alert.cs" />
     <Compile Include="Models\CategoryComboboxObject.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Common\ItemController.cs" />
     <Compile Include="Common\CategoryController.cs" />
     <Compile Include="Models\CategoryObject.cs" />
+    <Compile Include="Models\FileInformation.cs" />
     <Compile Include="Models\GoldModels.cs" />
     <Compile Include="Models\ItemJsonObject.cs" />
     <Compile Include="Models\ItemCategoryTree.cs" />
@@ -193,6 +195,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Sounds\alert1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

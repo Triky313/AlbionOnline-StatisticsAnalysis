@@ -72,7 +72,6 @@ namespace StatisticsAnalysisTool.ViewModels
         public AlertController AlertManager;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private string _alertModeMinSellPriceIsUndercutPrice;
         
         public enum ViewMode
         {
@@ -97,6 +96,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void InitAlerts()
         {
+            SoundController.InitializeSoundFilesFromDirectory();
             AlertManager = new AlertController();
         }
 
@@ -465,7 +465,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     return;
                 }
 
-                AlertManager.ToggleAlert(ref imageAwesome, ref item);
+                AlertManager.ToggleAlert(ref _mainWindow, ref imageAwesome, ref item);
             }
             catch (Exception e)
             {

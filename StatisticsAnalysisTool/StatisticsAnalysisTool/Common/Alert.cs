@@ -2,9 +2,10 @@
 using log4net;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -13,13 +14,17 @@ namespace StatisticsAnalysisTool.Common
 {
     public class Alert
     {
-        public Alert(ref ImageAwesome imageAwesome, ref Item item)
+        public Alert(ref AlertController alertController, ref MainWindow mainWindow, ref ImageAwesome imageAwesome, ref Item item)
         {
+            AlertController = alertController;
+            MainWindow = mainWindow;
             ImageAwesome = imageAwesome;
             Item = item;
         }
 
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private AlertController AlertController { get; }
+        private MainWindow MainWindow { get; }
         public ImageAwesome ImageAwesome { get; set; }
         public Item Item { get; set; }
 
@@ -32,16 +37,23 @@ namespace StatisticsAnalysisTool.Common
                 return;
             }
 
-            ImageAwesome.Icon = FontAwesomeIcon.ToggleOn;
-            ImageAwesome.Foreground = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
+            MainWindow.Dispatcher?.Invoke(() =>
+            {
+                ImageAwesome.Icon = FontAwesomeIcon.ToggleOn;
+                ImageAwesome.Foreground = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
+            });
+
             _isEventActive = true;
             AlertEventAsync();
         }
 
         public void StopEvent()
         {
-            ImageAwesome.Icon = FontAwesomeIcon.ToggleOff;
-            ImageAwesome.Foreground = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+            MainWindow.Dispatcher?.Invoke(() =>
+            {
+                ImageAwesome.Icon = FontAwesomeIcon.ToggleOff;
+                ImageAwesome.Foreground = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+            });
             _isEventActive = false;
         }
 
@@ -57,12 +69,17 @@ namespace StatisticsAnalysisTool.Common
                     {
                         if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5) && price.SellPriceMin <= (ulong)Item.AlertModeMinSellPriceIsUndercutPrice)
                         {
-                            Debug.Print($"{Item.UniqueName} Preis unterboten!");
+                            SoundController.PlayAlertSound();
                             StopEvent();
+                            AlertController.Remove(Item);
                         }
                     }
 
                     await Task.Delay(25000);
+                }
+                catch (FileNotFoundException e)
+                {
+                    Log.Error(nameof(AlertEventAsync), e);
                 }
                 catch (TooManyRequestsException e)
                 {
