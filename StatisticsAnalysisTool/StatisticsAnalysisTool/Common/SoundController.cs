@@ -56,7 +56,7 @@ namespace StatisticsAnalysisTool.Common
                 player.Play();
                 player.Dispose();
             }
-            catch (Exception e) when (e is InvalidOperationException || e is UriFormatException || e is FileNotFoundException)
+            catch (Exception e) when (e is InvalidOperationException || e is UriFormatException || e is FileNotFoundException || e is ArgumentException)
             {
                 Log.Error(nameof(PlayAlertSound), e);
             }
@@ -64,8 +64,16 @@ namespace StatisticsAnalysisTool.Common
 
         private static string GetCurrentSound()
         {
-            var currentSound = AlertSounds.FirstOrDefault(s => s.FileName == Settings.Default.SelectedAlertSound);
-            return currentSound?.FilePath ?? string.Empty;
+            try
+            {
+                var currentSound = AlertSounds.FirstOrDefault(s => s.FileName == Settings.Default.SelectedAlertSound);
+                return currentSound?.FilePath ?? string.Empty;
+            }
+            catch (Exception e) when (e is ArgumentException)
+            {
+                Log.Error(nameof(GetCurrentSound), e);
+                return string.Empty;
+            }
         }
     }
 }
