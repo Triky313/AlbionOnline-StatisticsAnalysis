@@ -54,8 +54,9 @@ namespace StatisticsAnalysisTool.Common
                 var player = new SoundPlayer(GetCurrentSound());
                 player.Load();
                 player.Play();
+                player.Dispose();
             }
-            catch (Exception e) when (e is InvalidOperationException || e is UriFormatException)
+            catch (Exception e) when (e is InvalidOperationException || e is UriFormatException || e is FileNotFoundException)
             {
                 Log.Error(nameof(PlayAlertSound), e);
             }
