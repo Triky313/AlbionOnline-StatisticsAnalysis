@@ -1,4 +1,4 @@
-﻿using FontAwesome.WPF;
+using FontAwesome.WPF;
 using log4net;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
@@ -67,7 +67,7 @@ namespace StatisticsAnalysisTool.Common
 
                     foreach (var price in cityPrices ?? new List<MarketResponse>())
                     {
-                        if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5) && price.SellPriceMin <= (ulong)Item.AlertModeMinSellPriceIsUndercutPrice)
+                        if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5) && price.SellPriceMin <= (ulong)Item.AlertModeMinSellPriceIsUndercutPrice && Item.AlertModeMinSellPriceIsUndercutPrice > 0)
                         {
                             SoundController.PlayAlertSound();
                             StopEvent();
