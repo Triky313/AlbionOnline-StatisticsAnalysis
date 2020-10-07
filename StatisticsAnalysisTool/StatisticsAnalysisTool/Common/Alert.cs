@@ -52,7 +52,7 @@ namespace StatisticsAnalysisTool.Common
 
                     foreach (var price in cityPrices ?? new List<MarketResponse>())
                     {
-                        if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-500) && price.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice && AlertModeMinSellPriceIsUndercutPrice > 0)
+                        if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5) && price.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice && AlertModeMinSellPriceIsUndercutPrice > 0)
                         {
                             SoundController.PlayAlertSound();
                             StopEvent();

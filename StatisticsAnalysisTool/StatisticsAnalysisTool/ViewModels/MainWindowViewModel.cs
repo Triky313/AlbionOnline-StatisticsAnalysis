@@ -73,7 +73,8 @@ namespace StatisticsAnalysisTool.ViewModels
         public AlertController AlertManager;
         
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
+        private bool _isShowOnlyItemsWithAlertOnActive;
+
         public enum ViewMode
         {
             Normal,
@@ -436,7 +437,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 Log.Error(nameof(ToggleAlertSender), e);
             }
         }
-
+        
         #region Item View Filters
 
         private void ItemsViewFilter()
@@ -451,12 +452,26 @@ namespace StatisticsAnalysisTool.ViewModels
                 ItemsView.Filter = i =>
                 {
                     var item = i as Item;
-                    return item?.FullItemInformation != null &&
-                           item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
-                           && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
-                           && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
-                           && ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                           && ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
+                    if (IsShowOnlyItemsWithAlertOnActive)
+                    {
+                        // TODO: Noch zu verbessern!
+                        return item?.FullItemInformation != null &&
+                               item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
+                               && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
+                               && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                               && ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                               && ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
+                               && item.IsAlertActive;
+                    }
+                    else
+                    {
+                        return item?.FullItemInformation != null &&
+                               item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
+                               && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
+                               && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                               && ((ItemTier) item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                               && ((ItemLevel) item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
+                    }
                 };
             }
             else
@@ -464,7 +479,15 @@ namespace StatisticsAnalysisTool.ViewModels
                 ItemsView.Filter = i =>
                 {
                     var item = i as Item;
-                    return item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false;
+
+                    if (IsShowOnlyItemsWithAlertOnActive)
+                    {
+                        return (item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false) && item.IsAlertActive;
+                    }
+                    else
+                    {
+                        return item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false;
+                    }
                 };
             }
 
@@ -511,6 +534,16 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
         
+        public bool IsShowOnlyItemsWithAlertOnActive {
+            get => _isShowOnlyItemsWithAlertOnActive;
+            set {
+                _isShowOnlyItemsWithAlertOnActive = value;
+                ItemsViewFilter();
+                ItemsView?.Refresh();
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsFullItemInfoLoading {
             get => _isFullItemInfoLoading;
             set {

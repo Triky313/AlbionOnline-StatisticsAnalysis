@@ -78,7 +78,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid Height="24" Width="24">
-                                        <fa:ImageAwesome Visibility="Visible" Icon="{Binding (models:Item.AlertToggle)}"  Foreground="{Binding (models:Item.AlertToggleColor)}" MouseUp="AlertModeAlertActiveToggle_MouseUp" />
+                                        <fa:ImageAwesome Visibility="Visible" Icon="{Binding (models:Item.AlertToggle)}" Foreground="{Binding (models:Item.AlertToggleColor)}" MouseUp="AlertModeAlertActiveToggle_MouseUp" />
                                     </Grid>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -111,6 +111,7 @@
                 </TextBlock>
             </Grid>
             <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearchActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="200" />
+            <CheckBox Content="{Binding Translation.ShowOnlyItemsWithAlertOn, FallbackValue=SHOW__ONLY__ITEMS__WITH__ALERT__ON}" IsChecked="{Binding IsShowOnlyItemsWithAlertOnActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="395,38,0,0" VerticalAlignment="Top" Width="300" />
             <Grid Visibility="{Binding LoadFullItemInfoProBarGridVisibility, FallbackValue=Hidden}">
                 <ProgressBar Minimum="{Binding LoadFullItemInfoProBarMin, IsAsync=True, FallbackValue=0}" Maximum="{Binding LoadFullItemInfoProBarMax, IsAsync=True, FallbackValue=0}" Value="{Binding LoadFullItemInfoProBarValue, IsAsync=True, FallbackValue=0}" Height="22" Margin="0,38,36,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150" />
                 <Label Content="{Binding LoadFullItemInfoProBarCounter, FallbackValue=0/0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="24" Margin="0,36,36,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150"></Label>
