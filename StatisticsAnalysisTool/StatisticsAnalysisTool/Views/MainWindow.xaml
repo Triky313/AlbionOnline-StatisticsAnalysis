@@ -78,7 +78,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid Height="24" Width="24">
-                                        <fa:ImageAwesome Visibility="Visible" Icon="ToggleOff"  Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="AlertModeAlertActiveToggle_MouseUp" />
+                                        <fa:ImageAwesome Visibility="Visible" Icon="{Binding (models:Item.AlertToggle)}"  Foreground="{Binding (models:Item.AlertToggleColor)}" MouseUp="AlertModeAlertActiveToggle_MouseUp" />
                                     </Grid>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>

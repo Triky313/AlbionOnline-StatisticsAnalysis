@@ -91,14 +91,13 @@ namespace StatisticsAnalysisTool.ViewModels
             if (!LanguageController.InitializeLanguage())
                 _mainWindow.Close();
 
-            InitAlerts();
             InitMainWindowData();
         }
 
         private void InitAlerts()
         {
             SoundController.InitializeSoundFilesFromDirectory();
-            AlertManager = new AlertController();
+            AlertManager = new AlertController(_mainWindow, ItemsView);
         }
 
         private void UpgradeSettings()
@@ -151,6 +150,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsFullItemInformationCompleteCheck();
 
                 ItemsView = new ListCollectionView(ItemController.Items);
+                InitAlerts();
 
                 LoadIconVisibility = Visibility.Hidden;
                 IsTxtSearchEnabled = true;
@@ -411,19 +411,25 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public void ToggleAlertSender(ref object sender)
+        public void ToggleAlertSender(object sender)
         {
+            if (sender == null)
+            {
+                return;
+            }
+
             try
             {
                 var imageAwesome = (ImageAwesome)sender;
                 var item = (Item)imageAwesome.DataContext;
-                
+
                 if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
                 {
                     return;
                 }
 
-                AlertManager.ToggleAlert(ref _mainWindow, ref imageAwesome, ref item);
+                item.IsAlertActive = AlertManager.ToggleAlert(ref item);
+                ItemsView.Refresh();
             }
             catch (Exception e)
             {
@@ -432,7 +438,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #region Item View Filters
-        
+
         private void ItemsViewFilter()
         {
             if (ItemsView == null)

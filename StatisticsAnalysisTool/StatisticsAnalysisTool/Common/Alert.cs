@@ -1,34 +1,30 @@
-using FontAwesome.WPF;
 using log4net;
+using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.Common
 {
     public class Alert
     {
-        public Alert(ref AlertController alertController, ref MainWindow mainWindow, ref ImageAwesome imageAwesome, ref Item item)
-        {
-            AlertController = alertController;
-            MainWindow = mainWindow;
-            ImageAwesome = imageAwesome;
-            Item = item;
-        }
-
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private AlertController AlertController { get; }
-        private MainWindow MainWindow { get; }
-        public ImageAwesome ImageAwesome { get; set; }
-        public Item Item { get; set; }
-
+        private string _uniqueName;
+        private int _alertModeMinSellPriceIsUndercutPrice;
         private bool _isEventActive;
+
+        public Alert(AlertController alertController, string uniqueName, int alertModeMinSellPriceIsUndercutPrice)
+        {
+            AlertController = alertController;
+            UniqueName = uniqueName;
+            AlertModeMinSellPriceIsUndercutPrice = alertModeMinSellPriceIsUndercutPrice;
+        }
 
         public void StartEvent()
         {
@@ -36,42 +32,31 @@ namespace StatisticsAnalysisTool.Common
             {
                 return;
             }
-
-            MainWindow.Dispatcher?.Invoke(() =>
-            {
-                ImageAwesome.Icon = FontAwesomeIcon.ToggleOn;
-                ImageAwesome.Foreground = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
-            });
-
+            
             _isEventActive = true;
-            AlertEventAsync();
+            AlertEventAsync(UniqueName);
         }
 
         public void StopEvent()
         {
-            MainWindow.Dispatcher?.Invoke(() =>
-            {
-                ImageAwesome.Icon = FontAwesomeIcon.ToggleOff;
-                ImageAwesome.Foreground = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
-            });
             _isEventActive = false;
         }
 
-        private async void AlertEventAsync()
+        private async void AlertEventAsync(string uniqueName)
         {
             while (_isEventActive)
             {
                 try
                 {
-                    var cityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, null, null).ConfigureAwait(false);
+                    var cityPrices = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, null, null).ConfigureAwait(false);
 
                     foreach (var price in cityPrices ?? new List<MarketResponse>())
                     {
-                        if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5) && price.SellPriceMin <= (ulong)Item.AlertModeMinSellPriceIsUndercutPrice && Item.AlertModeMinSellPriceIsUndercutPrice > 0)
+                        if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-500) && price.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice && AlertModeMinSellPriceIsUndercutPrice > 0)
                         {
                             SoundController.PlayAlertSound();
                             StopEvent();
-                            AlertController.Remove(Item);
+                            AlertController.Remove(uniqueName);
                         }
                     }
 
@@ -87,6 +72,30 @@ namespace StatisticsAnalysisTool.Common
                     return;
                 }
             }
+        }
+
+        public string UniqueName {
+            get => _uniqueName;
+            set {
+                _uniqueName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int AlertModeMinSellPriceIsUndercutPrice {
+            get => _alertModeMinSellPriceIsUndercutPrice;
+            set {
+                _alertModeMinSellPriceIsUndercutPrice = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

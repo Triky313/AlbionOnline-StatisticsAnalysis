@@ -7,7 +7,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -15,6 +14,8 @@ namespace StatisticsAnalysisTool.Common
     using System;
     using System.Linq;
     using System.Text;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
 
     public class ItemController
     {
@@ -269,6 +270,10 @@ namespace StatisticsAnalysisTool.Common
 
             return min;
         }
+
+        public static readonly Brush AlertToggleOnColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
+
+        public static readonly Brush AlertToggleOffColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
 
         #region ItemInformation
 

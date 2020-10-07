@@ -176,7 +176,9 @@ namespace StatisticsAnalysisTool.Views
         private async void TxtBoxPlayerModeUsername_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter)
+            {
                 return;
+            }
 
             await _mainWindowViewModel.SetComparedPlayerModeInfoValues();
         }
@@ -209,12 +211,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void AlertModeAlertActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (sender == null)
-            {
-                return;
-            }
-
-            _mainWindowViewModel.ToggleAlertSender(ref sender);
+            _mainWindowViewModel.ToggleAlertSender(sender);
         }
     }
 }

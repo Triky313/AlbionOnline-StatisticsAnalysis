@@ -1,4 +1,6 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using FontAwesome.WPF;
+using StatisticsAnalysisTool.Common;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models
@@ -24,6 +26,10 @@ namespace StatisticsAnalysisTool.Models
 
         public BitmapImage ExistFullItemInformationLocal => ItemController.ExistFullItemInformationLocal(UniqueName);
         public ItemInformation FullItemInformation { get; set; }
+
         public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
+        public bool IsAlertActive { get; set; }
+        public FontAwesomeIcon AlertToggle => (IsAlertActive) ? FontAwesomeIcon.ToggleOn : FontAwesomeIcon.ToggleOff;
+        public Brush AlertToggleColor => (IsAlertActive) ? ItemController.AlertToggleOnColor : ItemController.AlertToggleOffColor;
     }
 }
