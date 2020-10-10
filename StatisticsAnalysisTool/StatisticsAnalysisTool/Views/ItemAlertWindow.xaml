@@ -1,0 +1,29 @@
+﻿<Window x:Class="StatisticsAnalysisTool.Views.ItemAlertWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StatisticsAnalysisTool.Views"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d"
+        Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="250" Width="550" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False">
+    <Grid>
+        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
+        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}">
+        </Border>
+        <Grid ZIndex="1" Height="33" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.Second}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <fa:ImageAwesome Icon="Flag" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+            </Grid>
+            <Label Content="{Binding Translation.Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold" />
+            <Separator Margin="10,30,10,0" VerticalAlignment="Top" />
+            <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
+            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
+        </Grid>
+        <Grid Margin="0,33,0,0">
+            <TextBlock Text="TEXT" FontSize="20" Foreground="{StaticResource Solid.Color.Text.Gold}" TextAlignment="Center" Margin="10,10,10,17" TextWrapping="Wrap" />
+        </Grid>
+    </Grid>
+</Window>

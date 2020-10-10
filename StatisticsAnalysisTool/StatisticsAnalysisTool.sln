@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool", "S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6FA208BE-5EAF-4C1B-BE23-07B79BA85B9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.UnitTests", "StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests.csproj", "{00AF1C3A-E926-405F-93E5-B8394E10B85D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatisticsAnalysisTool.UnitTests", "StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests.csproj", "{00AF1C3A-E926-405F-93E5-B8394E10B85D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.IntegrationTests", "StatisitcsAnalysisTool.IntegrationTests\StatisticsAnalysisTool.IntegrationTests.csproj", "{0BD75570-9FC4-4CE0-A831-70443588AFF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatisticsAnalysisTool.IntegrationTests", "StatisitcsAnalysisTool.IntegrationTests\StatisticsAnalysisTool.IntegrationTests.csproj", "{0BD75570-9FC4-4CE0-A831-70443588AFF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

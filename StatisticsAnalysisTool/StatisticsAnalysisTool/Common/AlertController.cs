@@ -25,9 +25,9 @@ namespace StatisticsAnalysisTool.Common
             _itemsView = itemsView;
         }
 
-        private void Add(string uniqueName, int alertModeMinSellPriceIsUndercutPrice)
+        private void Add(Item item, int alertModeMinSellPriceIsUndercutPrice)
         {
-            if (IsAlertInCollection(uniqueName) || !IsSpaceInAlertsCollection())
+            if (IsAlertInCollection(item.UniqueName) || !IsSpaceInAlertsCollection())
             {
                 return;
             }
@@ -40,7 +40,7 @@ namespace StatisticsAnalysisTool.Common
             };
 
             var alertController = this;
-            var alert = new Alert(_mainWindow, alertController, uniqueName, alertModeMinSellPriceIsUndercutPrice);
+            var alert = new Alert(_mainWindow, alertController, item, alertModeMinSellPriceIsUndercutPrice);
             alert.StartEvent();
             _alerts.Add(alert);
         }
@@ -74,7 +74,7 @@ namespace StatisticsAnalysisTool.Common
                 }
                 else
                 {
-                    Add(item.UniqueName, item.AlertModeMinSellPriceIsUndercutPrice);
+                    Add(item, item.AlertModeMinSellPriceIsUndercutPrice);
                     return true;
                 }
             }
@@ -91,7 +91,6 @@ namespace StatisticsAnalysisTool.Common
             {
                 var itemCollection = (ObservableCollection<Item>)_itemsView.SourceCollection;
                 var item = itemCollection.FirstOrDefault(i => i.UniqueName == uniqueName);
-
 
                 if (item == null)
                 {
@@ -111,11 +110,11 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        private bool IsAlertInCollection(string uniqueName) => _alerts.Any(alert => alert.UniqueName == uniqueName);
+        private bool IsAlertInCollection(string uniqueName) => _alerts.Any(alert => alert.Item.UniqueName == uniqueName);
 
         private Alert GetAlertByUniqueName(string uniqueName)
         {
-            return _alerts.FirstOrDefault(alert => alert.UniqueName == uniqueName);
+            return _alerts.FirstOrDefault(alert => alert.Item.UniqueName == uniqueName);
         }
 
         private bool IsSpaceInAlertsCollection() => _alerts.Count < _maxAlertsAtSameTime;

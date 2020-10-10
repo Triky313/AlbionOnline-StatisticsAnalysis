@@ -305,4 +305,5 @@
   <translation name="DURABILITY">Durability</translation>
   <translation name="REAL_MONEY_PRICE">Real money price</translation>
   <translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Too many requests, close a few windows or wait a few minutes.</translation>
+  <translation name="ITEM_PRICE_UNDERCUT_FOR">Item price undercut for</translation>
 </translations>

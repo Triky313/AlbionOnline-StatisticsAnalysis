@@ -18,6 +18,8 @@ namespace StatisticsAnalysisTool.Models
                 ? ItemController.LocalizedName(LocalizedNames, null, UniqueName)
                 : $"{ItemController.LocalizedName(LocalizedNames, null, UniqueName)}\n{ItemController.LocalizedName(LocalizedNames, "EN-US", string.Empty)}";
 
+        public string LocalizedName => ItemController.LocalizedName(LocalizedNames, null, UniqueName);
+
         public int Level => ItemController.GetItemLevel(UniqueName);
         public int Tier => ItemController.GetItemTier(this);
 

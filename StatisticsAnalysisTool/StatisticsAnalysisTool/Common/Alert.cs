@@ -17,15 +17,15 @@ namespace StatisticsAnalysisTool.Common
         private readonly MainWindow _mainWindow;
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private AlertController AlertController { get; }
-        private string _uniqueName;
+        private Item _item;
         private int _alertModeMinSellPriceIsUndercutPrice;
         private bool _isEventActive;
 
-        public Alert(MainWindow mainWindow, AlertController alertController, string uniqueName, int alertModeMinSellPriceIsUndercutPrice)
+        public Alert(MainWindow mainWindow, AlertController alertController, Item item, int alertModeMinSellPriceIsUndercutPrice)
         {
             _mainWindow = mainWindow;
             AlertController = alertController;
-            UniqueName = uniqueName;
+            Item = item;
             AlertModeMinSellPriceIsUndercutPrice = alertModeMinSellPriceIsUndercutPrice;
         }
 
@@ -37,7 +37,7 @@ namespace StatisticsAnalysisTool.Common
             }
             
             _isEventActive = true;
-            AlertEventAsync(UniqueName);
+            AlertEventAsync(_item.UniqueName);
         }
 
         public void StopEvent()
@@ -54,13 +54,21 @@ namespace StatisticsAnalysisTool.Common
                 {
                     var cityPrices = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, null, null).ConfigureAwait(false);
 
-                    foreach (var price in cityPrices ?? new List<MarketResponse>())
+                    foreach (var marketResponse in cityPrices ?? new List<MarketResponse>())
                     {
-                        if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5000) && price.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice && AlertModeMinSellPriceIsUndercutPrice > 0)
+                        if (marketResponse.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5000) && marketResponse.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice && AlertModeMinSellPriceIsUndercutPrice > 0)
                         {
                             SoundController.PlayAlertSound();
                             StopEvent();
                             AlertController.Remove(uniqueName);
+
+                            _mainWindow.Dispatcher.Invoke(() =>
+                            {
+                                var itemAlertWindow = new ItemAlertWindow(new AlertInfos(_item, marketResponse));
+                                itemAlertWindow.Show();
+                            });
+
+                            break;
                         }
                     }
 
@@ -78,10 +86,10 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public string UniqueName {
-            get => _uniqueName;
+        public Item Item {
+            get => _item;
             set {
-                _uniqueName = value;
+                _item = value;
                 OnPropertyChanged();
             }
         }
