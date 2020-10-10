@@ -2,6 +2,7 @@ using log4net;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,14 +14,16 @@ namespace StatisticsAnalysisTool.Common
 {
     public class Alert
     {
+        private readonly MainWindow _mainWindow;
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private AlertController AlertController { get; }
         private string _uniqueName;
         private int _alertModeMinSellPriceIsUndercutPrice;
         private bool _isEventActive;
 
-        public Alert(AlertController alertController, string uniqueName, int alertModeMinSellPriceIsUndercutPrice)
+        public Alert(MainWindow mainWindow, AlertController alertController, string uniqueName, int alertModeMinSellPriceIsUndercutPrice)
         {
+            _mainWindow = mainWindow;
             AlertController = alertController;
             UniqueName = uniqueName;
             AlertModeMinSellPriceIsUndercutPrice = alertModeMinSellPriceIsUndercutPrice;
@@ -40,6 +43,7 @@ namespace StatisticsAnalysisTool.Common
         public void StopEvent()
         {
             _isEventActive = false;
+            _mainWindow.FlashWindow(12);
         }
 
         private async void AlertEventAsync(string uniqueName)
@@ -52,7 +56,7 @@ namespace StatisticsAnalysisTool.Common
 
                     foreach (var price in cityPrices ?? new List<MarketResponse>())
                     {
-                        if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5) && price.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice && AlertModeMinSellPriceIsUndercutPrice > 0)
+                        if (price.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5000) && price.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice && AlertModeMinSellPriceIsUndercutPrice > 0)
                         {
                             SoundController.PlayAlertSound();
                             StopEvent();

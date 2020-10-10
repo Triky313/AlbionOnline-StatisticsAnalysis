@@ -40,7 +40,7 @@ namespace StatisticsAnalysisTool.Common
             };
 
             var alertController = this;
-            var alert = new Alert(alertController, uniqueName, alertModeMinSellPriceIsUndercutPrice);
+            var alert = new Alert(_mainWindow, alertController, uniqueName, alertModeMinSellPriceIsUndercutPrice);
             alert.StartEvent();
             _alerts.Add(alert);
         }

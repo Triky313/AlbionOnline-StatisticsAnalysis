@@ -454,7 +454,6 @@ namespace StatisticsAnalysisTool.ViewModels
                     var item = i as Item;
                     if (IsShowOnlyItemsWithAlertOnActive)
                     {
-                        // TODO: Noch zu verbessern!
                         return item?.FullItemInformation != null &&
                                item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
                                && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
