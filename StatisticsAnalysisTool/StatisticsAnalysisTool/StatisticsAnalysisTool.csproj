@@ -102,7 +102,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\AlertController.cs" />
+    <Compile Include="Common\SoundController.cs" />
     <Compile Include="Exceptions\TooManyRequestsException.cs" />
+    <Compile Include="Common\Alert.cs" />
     <Compile Include="Models\CategoryComboboxObject.cs" />
     <Compile Include="Common\Formatting.cs" />
     <Compile Include="Common\FrequentlyValues.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="Common\ItemController.cs" />
     <Compile Include="Common\CategoryController.cs" />
     <Compile Include="Models\CategoryObject.cs" />
+    <Compile Include="Models\FileInformation.cs" />
     <Compile Include="Models\GoldModels.cs" />
     <Compile Include="Models\ItemJsonObject.cs" />
     <Compile Include="Models\ItemCategoryTree.cs" />
@@ -135,11 +139,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\InfoWindowViewModel.cs" />
+    <Compile Include="Models\ItemAlertWindowTranslation.cs" />
     <Compile Include="ViewModels\ItemWindowViewModel.cs" />
     <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
+    <Compile Include="Models\AlertInfos.cs" />
     <Compile Include="Views\InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ItemAlertWindow.xaml.cs">
+      <DependentUpon>ItemAlertWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ItemAlertWindowViewModel.cs" />
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -152,6 +162,10 @@
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="Views\InfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ItemAlertWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -191,6 +205,21 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\alert_window_background.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Sounds\alert1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\alert2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\alert3.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\alert4.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

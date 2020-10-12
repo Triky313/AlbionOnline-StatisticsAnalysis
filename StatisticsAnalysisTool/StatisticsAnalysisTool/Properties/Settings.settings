@@ -74,5 +74,11 @@
     <Setting Name="FullItemInformationUpdateCycleDays" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">90</Value>
     </Setting>
+    <Setting Name="SoundDirectoryName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds</Value>
+    </Setting>
+    <Setting Name="SelectedAlertSound" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

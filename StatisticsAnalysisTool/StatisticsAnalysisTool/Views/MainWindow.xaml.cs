@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.Views
     public partial class MainWindow
     {
         private readonly MainWindowViewModel _mainWindowViewModel;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -176,12 +176,19 @@ namespace StatisticsAnalysisTool.Views
         private async void TxtBoxPlayerModeUsername_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter)
+            {
                 return;
+            }
 
             await _mainWindowViewModel.SetComparedPlayerModeInfoValues();
         }
 
         private void TxtBoxGoldModeAmountValues_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
+        }
+
+        private void TxtBoxMinSellPriceIsUndercutPrice_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
         }
@@ -200,6 +207,11 @@ namespace StatisticsAnalysisTool.Views
         private void LoadFullItemInfoButton_Click(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel.LoadAllFullItemInformationFromWeb();
+        }
+
+        private void AlertModeAlertActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _mainWindowViewModel.ToggleAlertSender(sender);
         }
     }
 }

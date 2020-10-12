@@ -1,4 +1,6 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using FontAwesome.WPF;
+using StatisticsAnalysisTool.Common;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models
@@ -16,6 +18,8 @@ namespace StatisticsAnalysisTool.Models
                 ? ItemController.LocalizedName(LocalizedNames, null, UniqueName)
                 : $"{ItemController.LocalizedName(LocalizedNames, null, UniqueName)}\n{ItemController.LocalizedName(LocalizedNames, "EN-US", string.Empty)}";
 
+        public string LocalizedName => ItemController.LocalizedName(LocalizedNames, null, UniqueName);
+
         public int Level => ItemController.GetItemLevel(UniqueName);
         public int Tier => ItemController.GetItemTier(this);
 
@@ -24,5 +28,10 @@ namespace StatisticsAnalysisTool.Models
 
         public BitmapImage ExistFullItemInformationLocal => ItemController.ExistFullItemInformationLocal(UniqueName);
         public ItemInformation FullItemInformation { get; set; }
+
+        public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
+        public bool IsAlertActive { get; set; }
+        public FontAwesomeIcon AlertToggle => (IsAlertActive) ? FontAwesomeIcon.ToggleOn : FontAwesomeIcon.ToggleOff;
+        public Brush AlertToggleColor => (IsAlertActive) ? ItemController.AlertToggleOnColor : ItemController.AlertToggleOffColor;
     }
 }

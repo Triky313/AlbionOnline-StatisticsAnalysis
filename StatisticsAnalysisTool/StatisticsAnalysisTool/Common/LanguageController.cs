@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Properties;
+﻿using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,6 +12,8 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class LanguageController
     {
+        public static List<FileInformation> LanguageFiles { get; set; }
+
         private static Dictionary<string, string> _translations;
         private static CultureInfo _currentCultureInfo;
 
@@ -67,17 +70,17 @@ namespace StatisticsAnalysisTool.Common
                 if (LanguageFiles == null)
                     throw new FileNotFoundException();
 
-                var fileInfo = (from file in LanguageFiles
+                var fileInfos = (from file in LanguageFiles
                                 where file.FileName.ToUpper() == CurrentCultureInfo.TextInfo.CultureName.ToUpper()
-                                select new FileInfo(file.FileName, file.FilePath)).FirstOrDefault();
+                                select new FileInformation(file.FileName, file.FilePath)).FirstOrDefault();
 
-                if (fileInfo == null)
+                if (fileInfos == null)
                     return false;
 
-                if (!ReadAndAddLanguageFile(fileInfo.FilePath))
+                if (!ReadAndAddLanguageFile(fileInfos.FilePath))
                     return false;
 
-                CurrentCultureInfo = new CultureInfo(fileInfo.FileName);
+                CurrentCultureInfo = new CultureInfo(fileInfos.FileName);
                 return true;
             }
             catch (ArgumentNullException ex)
@@ -145,33 +148,13 @@ namespace StatisticsAnalysisTool.Common
                 return;
 
             if (LanguageFiles == null)
-                LanguageFiles = new List<FileInfo>();
+                LanguageFiles = new List<FileInformation>();
 
             foreach (var file in files)
             {
-                var fileNameWithoutExtension = new FileInfo(Path.GetFileNameWithoutExtension(file), file);
-                LanguageFiles.Add(fileNameWithoutExtension);
+                var fileInfo = new FileInformation(Path.GetFileNameWithoutExtension(file), file);
+                LanguageFiles.Add(fileInfo);
             }
-        }
-
-        public static List<FileInfo> LanguageFiles { get; set; }
-
-        public class FileInfo
-        {
-            public FileInfo()
-            {
-            }
-
-            public FileInfo(string fileName, string filePath)
-            {
-                FileName = fileName;
-                FilePath = filePath;
-            }
-
-            public string FileName { get; set; }
-            public string FilePath { get; set; }
-            public string EnglishName => CultureInfo.CreateSpecificCulture(FileName).EnglishName;
-            public string NativeName => CultureInfo.CreateSpecificCulture(FileName).NativeName;
         }
     }
 }

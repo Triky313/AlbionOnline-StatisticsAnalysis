@@ -79,7 +79,7 @@
             url = (locations ?? new List<string>()).Aggregate(url, (current, location) => current + $"{location},");
             url += "&qualities=";
 
-            if (qualities.Count >= 1)
+            if (qualities?.Count >= 1)
             {
                 url = qualities.Aggregate(url, (current, quality) => current + $"{quality},");
             }
