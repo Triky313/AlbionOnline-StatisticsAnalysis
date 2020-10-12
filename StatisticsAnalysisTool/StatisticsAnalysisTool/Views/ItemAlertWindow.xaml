@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StatisticsAnalysisTool.Views"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="250" Width="400" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False" ResizeMode="NoResize">
     <Grid>
+        <Image Source="/Resources/alert_window_background.jpg" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.1" />
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
         <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
@@ -35,9 +35,9 @@
                         <Setter Property="Background">
                             <Setter.Value>
                                 <LinearGradientBrush EndPoint="0,0.5" MappingMode="RelativeToBoundingBox" StartPoint="1,0.5">
-                                    <GradientStop Color="{StaticResource Background.Second}" Offset="0"/>
+                                    <GradientStop Color="#00000000" Offset="0"/>
                                     <GradientStop Color="{Binding CityColor, FallbackValue={StaticResource Color.City.Default}}" Offset="0.5" />
-                                    <GradientStop Color="{StaticResource Background.Second}" Offset="1"/>
+                                    <GradientStop Color="#00000000" Offset="1"/>
                                 </LinearGradientBrush>
                             </Setter.Value>
                         </Setter>

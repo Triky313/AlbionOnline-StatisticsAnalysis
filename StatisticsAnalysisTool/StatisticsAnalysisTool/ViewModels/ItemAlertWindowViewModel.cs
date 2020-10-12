@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void Init()
         {
-            Translation = new ItemAlertWindowTranslation(_alertInfos.Item);
+            Translation = new ItemAlertWindowTranslation();
             ItemName = _alertInfos.Item.LocalizedName;
             CityName = _alertInfos.MarketResponse.City;
             Icon = _alertInfos.Item.Icon;
