@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:StatisticsAnalysisTool.Views"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="250" Width="550" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False">
+        Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="250" Width="400" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False" ResizeMode="NoResize">
     <Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
@@ -23,7 +23,28 @@
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
         </Grid>
         <Grid Margin="0,33,0,0">
-            <TextBlock Text="TEXT" FontSize="20" Foreground="{StaticResource Solid.Color.Text.Gold}" TextAlignment="Center" Margin="10,10,10,17" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding Translation.ThePriceOf, FallbackValue=THE_PRICE_OF}" FontSize="15" Foreground="{StaticResource Solid.Color.Text.Normal}" TextAlignment="Center" Margin="10,10,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
+            <TextBlock Text="{Binding ItemName, FallbackValue=ITEM_NAME}" FontSize="15" FontWeight="Bold" Foreground="{StaticResource Solid.Color.Text.Gold}" TextAlignment="Center" Margin="10,35,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
+
+            <Image Source="{Binding Icon}" Height="50" Width="50" Margin="174,65,174,0" VerticalAlignment="Top" />
+
+            <TextBlock Text="{Binding Translation.In, FallbackValue=IN}" FontSize="15" Foreground="{StaticResource Solid.Color.Text.Normal}" TextAlignment="Center" Margin="10,115,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
+            <TextBlock Text="{Binding CityName, FallbackValue=CITY_NAME}" FontSize="20" FontWeight="Bold" Foreground="{StaticResource Solid.Color.Text.Normal}" TextAlignment="Center" Margin="10,140,10,0" TextWrapping="Wrap" Height="30" VerticalAlignment="Top">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0,0.5" MappingMode="RelativeToBoundingBox" StartPoint="1,0.5">
+                                    <GradientStop Color="{StaticResource Background.Second}" Offset="0"/>
+                                    <GradientStop Color="{Binding CityColor, FallbackValue={StaticResource Color.City.Default}}" Offset="0.5" />
+                                    <GradientStop Color="{StaticResource Background.Second}" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Text="{Binding Translation.HasBeenUndercut, FallbackValue=HAS_BEEN_UNDERCUT}" FontSize="15" Foreground="{StaticResource Solid.Color.Text.Normal}" TextAlignment="Center" Margin="10,170,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
         </Grid>
     </Grid>
 </Window>

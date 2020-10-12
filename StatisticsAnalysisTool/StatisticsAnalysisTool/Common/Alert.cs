@@ -56,7 +56,10 @@ namespace StatisticsAnalysisTool.Common
 
                     foreach (var marketResponse in cityPrices ?? new List<MarketResponse>())
                     {
-                        if (marketResponse.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5000) && marketResponse.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice && AlertModeMinSellPriceIsUndercutPrice > 0)
+                        if (Locations.GetName(marketResponse.City) != Location.BlackMarket  
+                            && marketResponse.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5) 
+                            && marketResponse.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice 
+                            && AlertModeMinSellPriceIsUndercutPrice > 0)
                         {
                             SoundController.PlayAlertSound();
                             StopEvent();

@@ -72,11 +72,9 @@ namespace StatisticsAnalysisTool.Common
                     Remove(item.UniqueName);
                     return false;
                 }
-                else
-                {
-                    Add(item, item.AlertModeMinSellPriceIsUndercutPrice);
-                    return true;
-                }
+
+                Add(item, item.AlertModeMinSellPriceIsUndercutPrice);
+                return true;
             }
             catch (Exception e)
             {

@@ -12,5 +12,8 @@ namespace StatisticsAnalysisTool.Models
         public string Icon => LanguageController.Translation("ICON");
         public string Name => LanguageController.Translation("NAME");
         public string LoadFullItemInfo => LanguageController.Translation("LOAD_FULL_ITEM_INFO");
+        public string ShowOnlyItemsWithAlertOn => LanguageController.Translation("SHOW_ONLY_ITEMS_WITH_ALERT_ON");
+        public string IsAlertActive => LanguageController.Translation("IS_ALERT_ACTIVATE");
+        public string UndercuttingPrice => LanguageController.Translation("UNDERCUTTING_PRICE");
     }
 }

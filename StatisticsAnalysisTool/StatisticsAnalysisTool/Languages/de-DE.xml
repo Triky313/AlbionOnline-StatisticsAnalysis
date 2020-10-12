@@ -304,5 +304,13 @@
   <translation name="DURABILITY">Haltrbarkeit</translation>
   <translation name="REAL_MONEY_PRICE">Echtgeld Preis</translation>
   <translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Zu viele Anfragen, schließe einige Fenster oder warte ein paar Minuten.</translation>
+
+  <translation name="ALARM_SOUND_USED">Verwendeter Alarm Sound</translation>
   <translation name="ITEM_PRICE_UNDERCUT_FOR">Item Preis unterboten für</translation>
+  <translation name="THE_PRICE_OF">Der Preis von</translation>
+  <translation name="IN">in</translation>
+  <translation name="SHOW_ONLY_ITEMS_WITH_ALERT_ON">Show only items with alert on</translation>
+  <translation name="HAS_BEEN_UNDERCUT">ist unterboten worden</translation>
+  <translation name="IS_ALERT_ACTIVATE">Ist alarm aktiv</translation>
+  <translation name="UNDERCUTTING_PRICE">Zu unterbietender Preis</translation>
 </translations>

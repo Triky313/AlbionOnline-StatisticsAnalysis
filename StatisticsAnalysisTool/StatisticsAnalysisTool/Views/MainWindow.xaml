@@ -84,7 +84,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="{Binding Translation.MinSellPriceIsUndercutPrice, FallbackValue=MIN_SELL_PRICE_IS_UNDERCUT_PRICE}" Width="80">
+                        <GridViewColumn Header="{Binding Translation.UndercuttingPrice, FallbackValue=UNDERCUTTING_PRICE}" Width="80">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>

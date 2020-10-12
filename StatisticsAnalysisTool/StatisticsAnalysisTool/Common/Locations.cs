@@ -51,7 +51,7 @@ namespace StatisticsAnalysisTool.Common
         public static string GetParameterName(Location location) => ParameterNames.TryGetValue(location, out var name) ? name : null;
 
         public static Location GetName(string location) => ParameterNames.FirstOrDefault(x => x.Value == location).Key;
-
+        
         public static List<string> GetLocationsListByArea(IsLocationAreaActive isLocationAreaActive)
         {
             var locationAreas = new List<LocationArea>();
@@ -115,6 +115,18 @@ namespace StatisticsAnalysisTool.Common
             catch
             {
                 return (Brush)Application.Current.Resources["SolidColorBrush.City.Default.Transparent"];
+            }
+        }
+
+        public static Color GetLocationColor(Location location)
+        {
+            try
+            {
+                return (Color)Application.Current.Resources[$"Color.City.{location}"];
+            }
+            catch
+            {
+                return (Color)Application.Current.Resources["Color.City.Default"];
             }
         }
     }
