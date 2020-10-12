@@ -4,9 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
-- Item Alerts
-- Home screen info for the first opening of the app
 - User macros
+
+## [2.3.0] - 2020-10-12
+
+### Added
+- Alert mode for item prices added.
+- Error log added.
+- New translations added.
+
+### Changed
+- Performance improvements.
+- Added loading image to Full Item Info tab.
 
 ## [2.2.3] - 2020-09-17
 
@@ -188,7 +197,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.3...HEAD
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.3.0...HEAD
+[2.3.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.3...2.3.0
 [2.2.3]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.2...2.2.3
 [2.2.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.1...2.2.2
 [2.2.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.0...2.2.1
