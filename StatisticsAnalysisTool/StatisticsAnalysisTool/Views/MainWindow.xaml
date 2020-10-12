@@ -106,8 +106,8 @@
                 </Grid>
                 <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="34,0,0,0" VerticalAlignment="Top" Height="35" Width="106" />
                 <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center"
-                           FontSize="14" Margin="140,0,0,0" FontWeight="Bold" HorizontalAlignment="Left" Width="66" Height="28" VerticalAlignment="Bottom">
-                    (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="Donate" /></Hyperlink>)
+                           FontSize="14" Margin="140,0,0,0" FontWeight="Bold" HorizontalAlignment="Left" Width="110" Height="28" VerticalAlignment="Bottom">
+                    (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="PayPal Donate" /></Hyperlink>)
                 </TextBlock>
             </Grid>
             <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearchActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="200" />
