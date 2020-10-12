@@ -67,6 +67,11 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
+                if (!IsAlertInCollection(item.UniqueName) && !IsSpaceInAlertsCollection())
+                {
+                    return false;
+                }
+
                 if (IsAlertInCollection(item.UniqueName))
                 {
                     Remove(item.UniqueName);
@@ -115,6 +120,6 @@ namespace StatisticsAnalysisTool.Common
             return _alerts.FirstOrDefault(alert => alert.Item.UniqueName == uniqueName);
         }
 
-        private bool IsSpaceInAlertsCollection() => _alerts.Count < _maxAlertsAtSameTime;
+        public bool IsSpaceInAlertsCollection() => _alerts.Count < _maxAlertsAtSameTime;
     }
 }
