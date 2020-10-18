@@ -61,6 +61,9 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Albion.Network, Version=4.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Albion.Network.4.6.0\lib\netstandard2.0\Albion.Network.dll</HintPath>
+    </Reference>
     <Reference Include="AutoUpdater.NET, Version=1.6.3.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
       <HintPath>..\packages\Autoupdater.NET.Official.1.6.3\lib\net45\AutoUpdater.NET.dll</HintPath>
     </Reference>
@@ -79,10 +82,47 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PacketDotNet, Version=1.1.1.0, Culture=neutral, PublicKeyToken=451414c7667b2a58, processorArchitecture=MSIL">
+      <HintPath>..\packages\PacketDotNet.1.1.1\lib\net45\PacketDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Base, Version=0.10.0.20588, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
+      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Core, Version=0.10.0.20632, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=x86">
+      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Core.Extensions, Version=0.10.0.20638, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
+      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Core.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Packets, Version=0.10.0.20603, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
+      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Packets.dll</HintPath>
+    </Reference>
+    <Reference Include="PhotonPackageParser, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PhotonPackageParser.4.1.0\lib\netstandard2.0\PhotonPackageParser.dll</HintPath>
+    </Reference>
+    <Reference Include="Protocol16, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PhotonPackageParser.4.1.0\lib\netstandard2.0\Protocol16.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpPcap, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpPcap.5.3.0\lib\netstandard2.0\SharpPcap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -104,6 +144,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\AlertController.cs" />
+    <Compile Include="Network\MoveEvent.cs" />
     <Compile Include="Common\SoundController.cs" />
     <Compile Include="Exceptions\TooManyRequestsException.cs" />
     <Compile Include="Common\Alert.cs" />
@@ -133,6 +174,12 @@
     <Compile Include="Models\MarketOrder.cs" />
     <Compile Include="Models\MarketStats.cs" />
     <Compile Include="Models\WeaponCategories.cs" />
+    <Compile Include="Network\MoveEventHandler.cs" />
+    <Compile Include="Network\MoveOperation.cs" />
+    <Compile Include="Network\MoveRequestHandler.cs" />
+    <Compile Include="Network\NetworkController.cs" />
+    <Compile Include="Network\NewCharacterEvent.cs" />
+    <Compile Include="Network\NewCharacterEventHandler.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -328,6 +375,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Network\Events\" />
+    <Folder Include="Network\Handler\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

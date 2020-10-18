@@ -4,6 +4,7 @@ using log4net;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -93,6 +94,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Close();
 
             InitMainWindowData();
+
+            NetworkController.StartNetworkCapture();
         }
 
         private void InitAlerts()
