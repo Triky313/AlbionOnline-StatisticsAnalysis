@@ -1,5 +1,7 @@
-﻿using StatisticsAnalysisTool.Models;
+﻿using log4net;
+using StatisticsAnalysisTool.Models;
 using System.Globalization;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -28,6 +30,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private int _fullItemInformationUpdateCycleDays;
         private ObservableCollection<FileInformation> _alertSounds = new ObservableCollection<FileInformation>();
         private FileInformation _alertSoundSelection;
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public SettingsWindowViewModel(SettingsWindow settingsWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -56,7 +59,19 @@ namespace StatisticsAnalysisTool.ViewModels
             Languages.Clear();
             foreach (var langInfo in LanguageController.LanguageFiles)
             {
-                Languages.Add(new FileInformation() { FileName = langInfo.FileName });
+                try
+                {
+                    var cultureInfo = CultureInfo.CreateSpecificCulture(langInfo.FileName);
+                    Languages.Add(new FileInformation(langInfo.FileName, string.Empty)
+                    {
+                        EnglishName = cultureInfo.EnglishName,
+                        NativeName = cultureInfo.NativeName
+                    });
+                }
+                catch (CultureNotFoundException e)
+                {
+                    Log.Error(nameof(InitializeSettings), e);
+                }
             }
 
             LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.TextInfo.CultureName);
@@ -85,7 +100,7 @@ namespace StatisticsAnalysisTool.ViewModels
             AlertSounds.Clear();
             foreach (var sound in SoundController.AlertSounds)
             {
-                AlertSounds.Add(new FileInformation() { FileName = sound.FileName, FilePath = sound.FilePath });
+                AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
             }
             AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.FileName == Settings.Default.SelectedAlertSound);
 
