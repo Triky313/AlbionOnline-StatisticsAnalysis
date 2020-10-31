@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 - User macros
 
+## [2.3.1] - 2020-10-31
+
+### Fixed
+- Better error handling on language files with culture info
+- Fixed a bug that did not display the Chinese names of the items
+
 ## [2.3.0] - 2020-10-12
 
 ### Added
@@ -27,7 +33,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Fixed
 - Fixed a bug that did not output the correct UTF8 texts
-
 
 ## [2.2.1] - 2020-09-15
 
@@ -197,7 +202,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.3.0...HEAD
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.3.1...HEAD
+[2.3.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.3...2.3.0
 [2.2.3]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.2...2.2.3
 [2.2.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.1...2.2.2
