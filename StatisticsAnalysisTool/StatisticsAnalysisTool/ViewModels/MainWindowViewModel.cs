@@ -263,8 +263,17 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
-            LoadFullItemInfoButtonVisibility = Visibility.Visible;
-            IsLoadFullItemInfoButtonEnabled = true;
+
+            if (ItemController.IsFullItemInformationComplete)
+            {
+                LoadFullItemInfoButtonVisibility = Visibility.Hidden;
+                IsLoadFullItemInfoButtonEnabled = false;
+            }
+            else
+            {
+                LoadFullItemInfoButtonVisibility = Visibility.Visible;
+                IsLoadFullItemInfoButtonEnabled = true;
+            }
         }
 
         #region Item list (Normal Mode)
