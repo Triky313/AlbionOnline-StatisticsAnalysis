@@ -72,6 +72,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             ItemInformation = null;
             ErrorBarVisibility = Visibility.Hidden;
+            SetDefaultQualityIfNoOneChecked();
 
             Item = item;
 
@@ -216,7 +217,6 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 CurrentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName).ConfigureAwait(false);
-
                 ErrorBarReset();
             }
             catch (TooManyRequestsException e)
@@ -248,6 +248,14 @@ namespace StatisticsAnalysisTool.ViewModels
                 qualities.Add(5);
 
             return qualities;
+        }
+
+        private void SetDefaultQualityIfNoOneChecked()
+        {
+            if (!NormalQualityChecked && !GoodQualityChecked && !OutstandingQualityChecked && !ExcellentQualityChecked && !MasterpieceQualityChecked)
+            {
+                NormalQualityChecked = true;
+            }
         }
 
         public async void SetHistoryChartPricesAsync()
@@ -461,7 +469,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             return CurrentCityPrices?.Where(x =>
                 Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket)
-                    .Contains(x.City) && GetQualities().Contains(x.QualityLevel)).ToList() ?? null;
+                    .Contains(x.City) && GetQualities().Contains(x.QualityLevel)).ToList();
         }
 
         public void GetMainPriceStats()
