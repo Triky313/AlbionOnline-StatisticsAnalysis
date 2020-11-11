@@ -52,18 +52,21 @@ namespace StatisticsAnalysisTool.Common
 
         public static Location GetName(string location) => ParameterNames.FirstOrDefault(x => x.Value == location).Key;
         
-        public static List<string> GetLocationsListByArea(IsLocationAreaActive isLocationAreaActive)
+        public static List<string> GetLocationsListByArea(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket)
         {
             var locationAreas = new List<LocationArea>();
 
-            if (isLocationAreaActive.Villages)
+            if (villages)
                 locationAreas.Add(LocationArea.Villages);
 
-            if (isLocationAreaActive.BlackZoneOutposts)
+            if (blackZoneOutposts)
                 locationAreas.Add(LocationArea.BlackZone);
 
-            if (isLocationAreaActive.Cities)
+            if (cities)
                 locationAreas.Add(LocationArea.Cities);
+
+            if (blackMarket)
+                locationAreas.Add(LocationArea.BlackMarket);
 
             var locations = new List<string>();
 
@@ -71,6 +74,10 @@ namespace StatisticsAnalysisTool.Common
             {
                 switch (area)
                 {
+                    case LocationArea.BlackMarket:
+                        locations.Add(GetParameterName(Location.BlackMarket));
+                        break;
+
                     case LocationArea.BlackZone:
                         locations.Add(GetParameterName(Location.ArthursRest));
                         locations.Add(GetParameterName(Location.MerlynsRest));
@@ -89,7 +96,6 @@ namespace StatisticsAnalysisTool.Common
                         locations.Add(GetParameterName(Location.Thetford));
                         locations.Add(GetParameterName(Location.Lymhurst));
                         locations.Add(GetParameterName(Location.Bridgewatch));
-                        locations.Add(GetParameterName(Location.BlackMarket));
                         locations.Add(GetParameterName(Location.Martlock));
                         locations.Add(GetParameterName(Location.FortSterling));
                         locations.Add(GetParameterName(Location.Caerleon));
@@ -154,20 +160,7 @@ namespace StatisticsAnalysisTool.Common
     {
         BlackZone,
         Villages,
-        Cities
-    }
-
-    public class IsLocationAreaActive
-    {
-        public IsLocationAreaActive(bool blackZoneOutposts, bool villages, bool cities)
-        {
-            BlackZoneOutposts = blackZoneOutposts;
-            Villages = villages;
-            Cities = cities;
-        }
-
-        public bool BlackZoneOutposts { get; set; }
-        public bool Villages { get; set; }
-        public bool Cities { get; set; }
+        Cities,
+        BlackMarket
     }
 }

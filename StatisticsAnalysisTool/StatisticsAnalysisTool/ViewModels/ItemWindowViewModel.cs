@@ -200,8 +200,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
                     if (Item.UniqueName != null)
                     {
-                        await GetCityItemPricesAsync();
-                        GetItemPricesInRealMoney();
+                        await GetCityItemPricesAsync().ConfigureAwait(false);
+                        GetItemPricesInRealMoneyAsync();
                     }
 
                     GetMainPriceStats();
@@ -215,13 +215,13 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             try
             {
-                var locations = Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true));
-                _currentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, locations, GetQualities()).ConfigureAwait(false);
+                CurrentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName).ConfigureAwait(false);
+
                 ErrorBarReset();
             }
             catch (TooManyRequestsException e)
             {
-                _currentCityPrices = null;
+                CurrentCityPrices = null;
                 HasItemPrices = false;
                 SetErrorValues(Error.ToManyRequests);
                 Log.Warn(nameof(GetCityItemPricesAsync), e);
@@ -256,7 +256,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                var locations = Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true));
+                var locations = Locations.GetLocationsListByArea(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
                 historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
                 if (historyItemPrices == null)
@@ -306,24 +306,25 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Prices
 
-        public void GetItemPricesInRealMoney()
+        public async void GetItemPricesInRealMoneyAsync()
         {
-            if (_currentCityPrices == null)
+            if (CurrentCityPrices == null)
                 return;
 
             var realMoneyMarketObject = new List<MarketQualityObject>();
 
-            foreach (var stat in _currentCityPrices)
+            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
+            foreach (var stat in filteredCityPrices)
             {
                 if (realMoneyMarketObject.Exists(x => x.Location == stat.City))
                 {
                     var marketQualityObject = realMoneyMarketObject.Find(x => x.LocationName == stat.City);
-                    SetRealMoneyQualityStat(stat, ref marketQualityObject);
+                    await SetRealMoneyQualityStat(stat, marketQualityObject);
                 }
                 else
                 {
                     var marketQualityObject = new MarketQualityObject { Location = stat.City };
-                    SetRealMoneyQualityStat(stat, ref marketQualityObject);
+                    await SetRealMoneyQualityStat(stat, marketQualityObject);
                     realMoneyMarketObject.Add(marketQualityObject);
                 }
             }
@@ -332,12 +333,13 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void SetQualityPriceStatsOnListView()
         {
-            if (_currentCityPrices == null)
+            if (CurrentCityPrices == null)
                 return;
 
+            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
             var marketQualityObjectList = new List<MarketQualityObject>();
 
-            foreach (var stat in _currentCityPrices)
+            foreach (var stat in filteredCityPrices)
             {
                 if (marketQualityObjectList.Exists(x => x.Location == stat.City))
                 {
@@ -354,22 +356,17 @@ namespace StatisticsAnalysisTool.ViewModels
             AllQualityPricesList = marketQualityObjectList;
         }
 
-        private void SetRealMoneyQualityStat(MarketResponse marketResponse, ref MarketQualityObject marketQualityObject)
+        private async Task SetRealMoneyQualityStat(MarketResponse marketResponse, MarketQualityObject marketQualityObject)
         {
             if (marketQualityObject == null)
                 return;
 
             if (_currentGoldPrice == null)
             {
-                var getGoldPricesObjectList = ApiController.GetGoldPricesFromJsonAsync(null, 1).Result;
+                var getGoldPricesObjectList = await ApiController.GetGoldPricesFromJsonAsync(null, 1);
                 _currentGoldPrice = getGoldPricesObjectList?.FirstOrDefault();
             }
-
-            if (_currentGoldPrice?.Price == 0)
-            {
-                return;
-            }
-
+            
             switch (ItemController.GetQuality(marketResponse.QualityLevel))
             {
                 case ItemQuality.Normal:
@@ -460,12 +457,20 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket)
+        {
+            return CurrentCityPrices?.Where(x =>
+                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket)
+                    .Contains(x.City) && GetQualities().Contains(x.QualityLevel)).ToList() ?? null;
+        }
+
         public void GetMainPriceStats()
         {
-            if (_currentCityPrices == null)
+            if (CurrentCityPrices == null)
                 return;
 
-            var statsPricesTotalList = PriceUpdate(_currentCityPrices);
+            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
+            var statsPricesTotalList = PriceUpdate(filteredCityPrices);
 
             FindBestPrice(ref statsPricesTotalList);
 
@@ -655,6 +660,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _icon;
             set {
                 _icon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<MarketResponse> CurrentCityPrices {
+            get => _currentCityPrices;
+            set {
+                _currentCityPrices = value;
                 OnPropertyChanged();
             }
         }
