@@ -378,59 +378,32 @@ namespace StatisticsAnalysisTool.ViewModels
             switch (ItemController.GetQuality(marketResponse.QualityLevel))
             {
                 case ItemQuality.Normal:
-                    marketQualityObject.SellPriceMinNormalStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinNormalStringInRalMoney = Converter.GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Good:
-                    marketQualityObject.SellPriceMinGoodStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinGoodStringInRalMoney = Converter.GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Outstanding:
-                    marketQualityObject.SellPriceMinOutstandingStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinOutstandingStringInRalMoney = Converter.GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Excellent:
-                    marketQualityObject.SellPriceMinExcellentStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinExcellentStringInRalMoney = Converter.GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Masterpiece:
-                    marketQualityObject.SellPriceMinMasterpieceStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinMasterpieceStringInRalMoney = Converter.GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
                     return;
             }
         }
-
-        private static string GoldToDollarConverter(ulong itemSilverPrice, int currentGoldPrice)
-        {
-            if (itemSilverPrice == 0 || currentGoldPrice == 0)
-            {
-                return 0.ToString();
-            }
-
-            // 750 Gold - 4,95 USD
-            // 21.000 Gold - 99,95 USD
-
-            double minReceivedGold = 750;
-            double maxReceivedGold = 21000;
-
-            double minGoldPriceInCent = 4.95;
-            double maxGoldPriceInCent = 99.95;
-
-            double minOneGoldInCent = minGoldPriceInCent / minReceivedGold;
-            double maxOneGoldInCent = maxGoldPriceInCent / maxReceivedGold;
-
-            var itemPriceInGold = itemSilverPrice / (ulong)currentGoldPrice;
-
-            var maxPrice = minOneGoldInCent * itemPriceInGold;
-            var minPrice = maxOneGoldInCent * itemPriceInGold;
-
-            return $"{minPrice:0.00} - {maxPrice:0.00} $";
-        }
-
+        
         private static void SetQualityStat(MarketResponse marketResponse, ref MarketQualityObject marketQualityObject)
         {
             if (marketQualityObject == null)

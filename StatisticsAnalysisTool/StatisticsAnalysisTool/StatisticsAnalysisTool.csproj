@@ -104,6 +104,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\AlertController.cs" />
+    <Compile Include="Common\Converter.cs" />
     <Compile Include="Common\SoundController.cs" />
     <Compile Include="Exceptions\TooManyRequestsException.cs" />
     <Compile Include="Common\Alert.cs" />
