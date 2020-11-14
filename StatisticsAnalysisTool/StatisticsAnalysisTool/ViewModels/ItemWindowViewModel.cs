@@ -321,7 +321,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var realMoneyMarketObject = new List<MarketQualityObject>();
 
-            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
+            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
             foreach (var stat in filteredCityPrices)
             {
                 if (realMoneyMarketObject.Exists(x => x.Location == stat.City))
@@ -465,11 +465,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket)
+        private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool getAllQualities = false)
         {
             return CurrentCityPrices?.Where(x =>
-                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket)
-                    .Contains(x.City) && GetQualities().Contains(x.QualityLevel)).ToList();
+                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket).Contains(x.City) 
+                && (GetQualities().Contains(x.QualityLevel) || getAllQualities)).ToList();
         }
 
         public void GetMainPriceStats()
