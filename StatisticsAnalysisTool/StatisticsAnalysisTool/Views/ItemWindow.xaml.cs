@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace StatisticsAnalysisTool.Views
+﻿namespace StatisticsAnalysisTool.Views
 {
     using Models;
     using System.Diagnostics;
@@ -39,14 +37,14 @@ namespace StatisticsAnalysisTool.Views
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
-        private async void ShowVillagesPrices_Click(object sender, RoutedEventArgs e)
+        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e)
         {
-            await UpdatePriceValues();
+            FilterItemPriceValues();
         }
 
-        private async void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e)
+        private void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e)
         {
-            await UpdatePriceValues();
+            FilterItemPriceValues();
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -70,25 +68,25 @@ namespace StatisticsAnalysisTool.Views
             _itemWindowViewModel.ErrorBarVisibility = Visibility.Hidden;
         }
 
-        private async void CbNormalQuality_Click(object sender, RoutedEventArgs e)
+        private void CbNormalQuality_Click(object sender, RoutedEventArgs e)
         {
-            await UpdatePriceValues();
+            FilterItemPriceValues();
         }
-        private async void CbGoodQuality_Click(object sender, RoutedEventArgs e)
+        private void CbGoodQuality_Click(object sender, RoutedEventArgs e)
         {
-            await UpdatePriceValues();
+            FilterItemPriceValues();
         }
-        private async void CbCbOutstandingQuality_Click(object sender, RoutedEventArgs e)
+        private void CbCbOutstandingQuality_Click(object sender, RoutedEventArgs e)
         {
-            await UpdatePriceValues();
+            FilterItemPriceValues();
         }
-        private async void CbExcellentQuality_Click(object sender, RoutedEventArgs e)
+        private void CbExcellentQuality_Click(object sender, RoutedEventArgs e)
         {
-            await UpdatePriceValues();
+            FilterItemPriceValues();
         }
-        private async void CbMasterpieceQuality_Click(object sender, RoutedEventArgs e)
+        private void CbMasterpieceQuality_Click(object sender, RoutedEventArgs e)
         {
-            await UpdatePriceValues();
+            FilterItemPriceValues();
         }
         
         private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
@@ -97,13 +95,12 @@ namespace StatisticsAnalysisTool.Views
             _itemWindowViewModel.RefreshSpin = _itemWindowViewModel.IsAutoUpdateActive;
         }
 
-        private async Task UpdatePriceValues()
+        private void FilterItemPriceValues()
         {
-            await _itemWindowViewModel.GetCityItemPricesAsync();
             _itemWindowViewModel.GetMainPriceStats();
             _itemWindowViewModel.SetQualityPriceStatsOnListView();
             _itemWindowViewModel.SetHistoryChartPricesAsync();
-            _itemWindowViewModel.GetItemPricesInRealMoney();
+            _itemWindowViewModel.GetItemPricesInRealMoneyAsync();
         }
     }
 }

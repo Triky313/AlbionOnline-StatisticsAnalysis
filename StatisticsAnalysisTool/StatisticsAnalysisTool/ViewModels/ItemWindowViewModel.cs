@@ -72,6 +72,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             ItemInformation = null;
             ErrorBarVisibility = Visibility.Hidden;
+            SetDefaultQualityIfNoOneChecked();
 
             Item = item;
 
@@ -200,8 +201,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
                     if (Item.UniqueName != null)
                     {
-                        await GetCityItemPricesAsync();
-                        GetItemPricesInRealMoney();
+                        await GetCityItemPricesAsync().ConfigureAwait(false);
+                        GetItemPricesInRealMoneyAsync();
                     }
 
                     GetMainPriceStats();
@@ -215,13 +216,12 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             try
             {
-                var locations = Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true));
-                _currentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName, locations, GetQualities()).ConfigureAwait(false);
+                CurrentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName).ConfigureAwait(false);
                 ErrorBarReset();
             }
             catch (TooManyRequestsException e)
             {
-                _currentCityPrices = null;
+                CurrentCityPrices = null;
                 HasItemPrices = false;
                 SetErrorValues(Error.ToManyRequests);
                 Log.Warn(nameof(GetCityItemPricesAsync), e);
@@ -250,13 +250,21 @@ namespace StatisticsAnalysisTool.ViewModels
             return qualities;
         }
 
+        private void SetDefaultQualityIfNoOneChecked()
+        {
+            if (!NormalQualityChecked && !GoodQualityChecked && !OutstandingQualityChecked && !ExcellentQualityChecked && !MasterpieceQualityChecked)
+            {
+                NormalQualityChecked = true;
+            }
+        }
+
         public async void SetHistoryChartPricesAsync()
         {
             List<MarketHistoriesResponse> historyItemPrices;
 
             try
             {
-                var locations = Locations.GetLocationsListByArea(new IsLocationAreaActive(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true));
+                var locations = Locations.GetLocationsListByArea(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
                 historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
                 if (historyItemPrices == null)
@@ -306,24 +314,25 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Prices
 
-        public void GetItemPricesInRealMoney()
+        public async void GetItemPricesInRealMoneyAsync()
         {
-            if (_currentCityPrices == null)
+            if (CurrentCityPrices == null)
                 return;
 
             var realMoneyMarketObject = new List<MarketQualityObject>();
 
-            foreach (var stat in _currentCityPrices)
+            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
+            foreach (var stat in filteredCityPrices)
             {
                 if (realMoneyMarketObject.Exists(x => x.Location == stat.City))
                 {
                     var marketQualityObject = realMoneyMarketObject.Find(x => x.LocationName == stat.City);
-                    SetRealMoneyQualityStat(stat, ref marketQualityObject);
+                    await SetRealMoneyQualityStat(stat, marketQualityObject);
                 }
                 else
                 {
                     var marketQualityObject = new MarketQualityObject { Location = stat.City };
-                    SetRealMoneyQualityStat(stat, ref marketQualityObject);
+                    await SetRealMoneyQualityStat(stat, marketQualityObject);
                     realMoneyMarketObject.Add(marketQualityObject);
                 }
             }
@@ -332,12 +341,13 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void SetQualityPriceStatsOnListView()
         {
-            if (_currentCityPrices == null)
+            if (CurrentCityPrices == null)
                 return;
 
+            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
             var marketQualityObjectList = new List<MarketQualityObject>();
 
-            foreach (var stat in _currentCityPrices)
+            foreach (var stat in filteredCityPrices)
             {
                 if (marketQualityObjectList.Exists(x => x.Location == stat.City))
                 {
@@ -354,78 +364,46 @@ namespace StatisticsAnalysisTool.ViewModels
             AllQualityPricesList = marketQualityObjectList;
         }
 
-        private void SetRealMoneyQualityStat(MarketResponse marketResponse, ref MarketQualityObject marketQualityObject)
+        private async Task SetRealMoneyQualityStat(MarketResponse marketResponse, MarketQualityObject marketQualityObject)
         {
             if (marketQualityObject == null)
                 return;
 
             if (_currentGoldPrice == null)
             {
-                var getGoldPricesObjectList = ApiController.GetGoldPricesFromJsonAsync(null, 1).Result;
+                var getGoldPricesObjectList = await ApiController.GetGoldPricesFromJsonAsync(null, 1);
                 _currentGoldPrice = getGoldPricesObjectList?.FirstOrDefault();
             }
-
-            if (_currentGoldPrice?.Price == 0)
-            {
-                return;
-            }
-
+            
             switch (ItemController.GetQuality(marketResponse.QualityLevel))
             {
                 case ItemQuality.Normal:
-                    marketQualityObject.SellPriceMinNormalStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinNormalStringInRalMoney = Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Good:
-                    marketQualityObject.SellPriceMinGoodStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinGoodStringInRalMoney = Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Outstanding:
-                    marketQualityObject.SellPriceMinOutstandingStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinOutstandingStringInRalMoney = Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Excellent:
-                    marketQualityObject.SellPriceMinExcellentStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinExcellentStringInRalMoney = Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Masterpiece:
-                    marketQualityObject.SellPriceMinMasterpieceStringInRalMoney = GoldToDollarConverter(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinMasterpieceStringInRalMoney = Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
                     return;
             }
         }
-
-        private static string GoldToDollarConverter(ulong itemSilverPrice, int currentGoldPrice)
-        {
-            if (itemSilverPrice == 0 || currentGoldPrice == 0)
-            {
-                return 0.ToString();
-            }
-
-            // 750 Gold - 4,95 USD
-            // 21.000 Gold - 99,95 USD
-
-            double minReceivedGold = 750;
-            double maxReceivedGold = 21000;
-
-            double minGoldPriceInCent = 4.95;
-            double maxGoldPriceInCent = 99.95;
-
-            double minOneGoldInCent = minGoldPriceInCent / minReceivedGold;
-            double maxOneGoldInCent = maxGoldPriceInCent / maxReceivedGold;
-
-            var itemPriceInGold = itemSilverPrice / (ulong)currentGoldPrice;
-
-            var maxPrice = minOneGoldInCent * itemPriceInGold;
-            var minPrice = maxOneGoldInCent * itemPriceInGold;
-
-            return $"{minPrice:0.00} - {maxPrice:0.00} $";
-        }
-
+        
         private static void SetQualityStat(MarketResponse marketResponse, ref MarketQualityObject marketQualityObject)
         {
             if (marketQualityObject == null)
@@ -460,12 +438,20 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool getAllQualities = false)
+        {
+            return CurrentCityPrices?.Where(x =>
+                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket).Contains(x.City) 
+                && (GetQualities().Contains(x.QualityLevel) || getAllQualities)).ToList();
+        }
+
         public void GetMainPriceStats()
         {
-            if (_currentCityPrices == null)
+            if (CurrentCityPrices == null)
                 return;
 
-            var statsPricesTotalList = PriceUpdate(_currentCityPrices);
+            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
+            var statsPricesTotalList = PriceUpdate(filteredCityPrices);
 
             FindBestPrice(ref statsPricesTotalList);
 
@@ -655,6 +641,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _icon;
             set {
                 _icon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<MarketResponse> CurrentCityPrices {
+            get => _currentCityPrices;
+            set {
+                _currentCityPrices = value;
                 OnPropertyChanged();
             }
         }

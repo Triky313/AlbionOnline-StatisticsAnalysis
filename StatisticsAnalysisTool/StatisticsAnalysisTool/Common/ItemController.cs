@@ -288,7 +288,7 @@ namespace StatisticsAnalysisTool.Common
                 return itemInformation;
             }
 
-            if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !IsItemInformationUpToDate(itemInformation.LastUpdate) || itemInformation.CategoryObject?.ParentCategory == null)
+            if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !IsItemInformationUpToDate(itemInformation.LastUpdate))
             {
                 itemInformation = SetEssentialItemInformation(await ApiController.GetItemInfoFromJsonAsync(item?.UniqueName), item?.UniqueName);
                 AddItemInformationToLocal(itemInformation);
