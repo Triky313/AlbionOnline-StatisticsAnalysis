@@ -344,7 +344,7 @@ namespace StatisticsAnalysisTool.ViewModels
             if (CurrentCityPrices == null)
                 return;
 
-            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
+            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
             var marketQualityObjectList = new List<MarketQualityObject>();
 
             foreach (var stat in filteredCityPrices)
