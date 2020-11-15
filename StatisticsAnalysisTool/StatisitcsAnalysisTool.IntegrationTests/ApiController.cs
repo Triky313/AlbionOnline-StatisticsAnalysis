@@ -63,7 +63,7 @@ namespace StatisticsAnalysisTool.IntegrationTests
 
             var result = Common.ApiController.GetCityItemPricesFromJsonAsync(
                 uniqueName,
-                Locations.GetLocationsListByArea(new IsLocationAreaActive(true, true, true)),
+                Locations.GetLocationsListByArea(true, true, true, true),
                 new List<int>()).GetAwaiter().GetResult();
 
             foreach (var marketResponse in result)
@@ -81,7 +81,7 @@ namespace StatisticsAnalysisTool.IntegrationTests
 
             var result = Common.ApiController.GetCityItemPricesFromJsonAsync(
                 uniqueName,
-                Locations.GetLocationsListByArea(new IsLocationAreaActive(true, true, true)),
+                Locations.GetLocationsListByArea(true, true, true, true),
                 new List<int>()).GetAwaiter().GetResult();
 
             foreach (var marketResponse in result)
