@@ -8,7 +8,7 @@ using System.Net;
 namespace StatisticsAnalysisTool.IntegrationTests
 {
     [TestClass]
-    public class ApiController
+    public class ApiControllerTests
     {
         [TestMethod]
         public void GetItemInfoFromJsonAsync_WithValidValues_ItemInformation()
