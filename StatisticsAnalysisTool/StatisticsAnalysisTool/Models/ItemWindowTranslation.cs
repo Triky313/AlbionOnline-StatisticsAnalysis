@@ -42,5 +42,7 @@ namespace StatisticsAnalysisTool.Models
         public string ItemPower => LanguageController.Translation("ITEM_POWER");
         public string Durability => LanguageController.Translation("DURABILITY");
         public string RealMoneyPrice => LanguageController.Translation("REAL_MONEY_PRICE");
+        public string AveragePrices => LanguageController.Translation("AVERAGE_PRICES");
+        public string AveragePricesTooltip => LanguageController.Translation("AVERAGE_PRICES_TOOLTIP");
     }
 }
