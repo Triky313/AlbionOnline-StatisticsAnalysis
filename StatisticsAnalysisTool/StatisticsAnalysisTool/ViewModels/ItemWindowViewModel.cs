@@ -53,7 +53,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _loadingImageVisibility;
         private FontAwesomeIcon _loadingImageIcon;
         private bool _loadingImageSpin;
-        private string _differentCalculation;
+        private string _averagePrices;
         private List<MarketQualityObject> _realMoneyPriceList;
         private GoldResponseModel _currentGoldPrice;
         private List<MarketResponse> _currentCityPrices;
@@ -463,7 +463,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             MarketCurrentPricesItemList = marketCurrentPricesItemList;
-            SetDifferenceCalculationText(statsPricesTotalList);
+            SetAveragePricesString();
 
             HasItemPrices = true;
             RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {Formatting.CurrentDateTimeFormat(DateTime.Now)}";
@@ -583,22 +583,47 @@ namespace StatisticsAnalysisTool.ViewModels
             return min;
         }
 
-        private void SetDifferenceCalculationText(List<MarketResponseTotal> statsPricesTotalList)
+        private void SetAveragePricesString()
         {
-            ulong? bestBuyMaxPrice = 0UL;
-            ulong? bestSellMinPrice = 0UL;
+            var cityPrices = GetFilteredCityPrices(false, false, true, false, false);
 
-            if (statsPricesTotalList?.Count > 0)
+            var sellPriceMin = new List<ulong>();
+            var sellPriceMax = new List<ulong>();
+            var buyPriceMin = new List<ulong>();
+            var buyPriceMax = new List<ulong>();
+
+            foreach (var price in cityPrices)
             {
-                bestBuyMaxPrice = statsPricesTotalList.FirstOrDefault(s => s.BestBuyMaxPrice)?.BuyPriceMax ?? 0UL;
-                bestSellMinPrice = statsPricesTotalList.FirstOrDefault(s => s.BestSellMinPrice)?.SellPriceMin ?? 0UL;
+                if (price.SellPriceMin != 0)
+                {
+                    sellPriceMin.Add(price.SellPriceMin);
+                }
+
+                if (price.SellPriceMax != 0)
+                {
+                    sellPriceMax.Add(price.SellPriceMax);
+                }
+
+                if (price.BuyPriceMin != 0)
+                {
+                    buyPriceMin.Add(price.BuyPriceMin);
+                }
+
+                if (price.BuyPriceMax != 0)
+                {
+                    buyPriceMax.Add(price.BuyPriceMax);
+                }
             }
+            
+            var sellPriceMinAverage = Average(sellPriceMin.ToArray());
+            var sellPriceMaxAverage = Average(sellPriceMax.ToArray());
+            var buyPriceMinAverage = Average(buyPriceMin.ToArray());
+            var buyPriceMaxAverage = Average(buyPriceMax.ToArray());
 
-            var diffPrice = (int)bestBuyMaxPrice - (int)bestSellMinPrice;
-
-            DifferentCalculation = $"{LanguageController.Translation("BOUGHT_FOR")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", bestSellMinPrice)} | " +
-                                           $"{LanguageController.Translation("SELL_FOR")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", bestBuyMaxPrice)} | " +
-                                           $"{LanguageController.Translation("PROFIT")} {string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", diffPrice)}";
+            AveragePrices = $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", sellPriceMinAverage)}  |  " +
+                            $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", sellPriceMaxAverage)}  |  " +
+                            $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", buyPriceMinAverage)}  |  " +
+                            $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", buyPriceMaxAverage)}";
         }
 
         #endregion Prices
@@ -653,10 +678,10 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string DifferentCalculation {
-            get => _differentCalculation;
+        public string AveragePrices {
+            get => _averagePrices;
             set {
-                _differentCalculation = value;
+                _averagePrices = value;
                 OnPropertyChanged();
             }
         }
@@ -869,5 +894,26 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Bindings
+
+        #region Helper
+
+        public ulong Sum(params ulong[] values)
+        {
+            return values.Aggregate(0UL, (current, t) => current + t);
+        }
+
+        public ulong Average(params ulong[] values)
+        {
+            if (values.Length == 0)
+            {
+                return 0;
+            }
+
+            var sum = Sum(values);
+            var result = sum / (ulong) values.Length;
+            return result;
+        }
+
+        #endregion
     }
 }
