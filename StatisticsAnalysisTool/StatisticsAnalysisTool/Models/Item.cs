@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Models
         public string UniqueName { get; set; }
 
         public string LocalizedNameAndEnglish => LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper() == "EN-US"
-            ? ItemController.LocalizedName(LocalizedNames, null, UniqueName)
+            ? $"{ItemController.LocalizedName(LocalizedNames, null, UniqueName)}{GetUniqueNameIfDebug()}"
             : $"{ItemController.LocalizedName(LocalizedNames, null, UniqueName)}\n{ItemController.LocalizedName(LocalizedNames, "EN-US", string.Empty)}{GetUniqueNameIfDebug()}";
 
         private string GetUniqueNameIfDebug()

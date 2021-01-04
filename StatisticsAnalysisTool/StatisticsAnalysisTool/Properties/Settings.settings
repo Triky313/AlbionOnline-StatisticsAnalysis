@@ -80,5 +80,8 @@
     <Setting Name="SelectedAlertSound" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ActiveAlertsFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ActiveAlerts.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
