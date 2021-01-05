@@ -1,6 +1,7 @@
 ﻿using FontAwesome.WPF;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
@@ -54,6 +55,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            NetworkController.StopNetworkCapture();
             Application.Current.Shutdown();
         }
 
