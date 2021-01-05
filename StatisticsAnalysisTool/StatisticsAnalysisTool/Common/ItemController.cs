@@ -126,6 +126,8 @@ namespace StatisticsAnalysisTool.Common
 
         #endregion Item list
 
+        public static Item GetItemByUniqueName(string uniqueName) => Items.FirstOrDefault(i => i.UniqueName == uniqueName);
+
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {
             if (localizedNames == null)
@@ -288,7 +290,7 @@ namespace StatisticsAnalysisTool.Common
                 return itemInformation;
             }
 
-            if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !IsItemInformationUpToDate(itemInformation.LastUpdate) || itemInformation.CategoryObject?.ParentCategory == null)
+            if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !IsItemInformationUpToDate(itemInformation.LastUpdate))
             {
                 itemInformation = SetEssentialItemInformation(await ApiController.GetItemInfoFromJsonAsync(item?.UniqueName), item?.UniqueName);
                 AddItemInformationToLocal(itemInformation);

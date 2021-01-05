@@ -314,4 +314,6 @@
   <translation name="HAS_BEEN_UNDERCUT">has been undercut</translation>
   <translation name="IS_ALERT_ACTIVATE">Is alert activate</translation>
   <translation name="UNDERCUTTING_PRICE">Undercutting price</translation>
+  <translation name="AVERAGE_PRICES">Average prices</translation>
+  <translation name="AVERAGE_PRICES_TOOLTIP">Sell price min | Sell price max | Buy price min | Buy price max</translation>
 </translations>

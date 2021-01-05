@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace StatisticsAnalysisTool.Models
+﻿namespace StatisticsAnalysisTool.Models
 {
     public class FileInformation
     {
@@ -16,7 +14,7 @@ namespace StatisticsAnalysisTool.Models
 
         public string FileName { get; set; }
         public string FilePath { get; set; }
-        public string EnglishName => CultureInfo.CreateSpecificCulture(FileName).EnglishName;
-        public string NativeName => CultureInfo.CreateSpecificCulture(FileName).NativeName;
+        public string EnglishName { get; set; }
+        public string NativeName { get; set; }
     }
 }

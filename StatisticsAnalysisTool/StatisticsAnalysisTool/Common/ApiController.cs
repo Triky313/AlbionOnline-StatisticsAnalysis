@@ -63,24 +63,33 @@
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item) => await GetItemInfoFromJsonAsync(item.UniqueName);
 
         /// <summary>
+        /// Returns all city item prices bye uniqueName, locations and qualities.
+        /// </summary>
+        /// <exception cref="TooManyRequestsException"></exception>
+        public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName)
+        {
+            var locations = Locations.GetLocationsListByArea(true, true, true, true);
+            return await GetCityItemPricesFromJsonAsync(uniqueName, locations, new List<int>() { 1,2,3,4,5 } );
+        }
+
+        /// <summary>
         /// Returns city item prices bye uniqueName, locations and qualities.
         /// </summary>
         /// <exception cref="TooManyRequestsException"></exception>
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
         {
-            if (locations?.Count < 1)
-            {
-                return new List<MarketResponse>();
-            }
-
             var url = "https://www.albion-online-data.com/api/v2/stats/prices/";
             url += uniqueName;
-            url += "?locations=";
-            url = (locations ?? new List<string>()).Aggregate(url, (current, location) => current + $"{location},");
-            url += "&qualities=";
+
+            if (locations?.Count >= 1)
+            {
+                url += "?locations=";
+                url = (locations).Aggregate(url, (current, location) => current + $"{location},");
+            }
 
             if (qualities?.Count >= 1)
             {
+                url += "&qualities=";
                 url = qualities.Aggregate(url, (current, quality) => current + $"{quality},");
             }
 
@@ -240,7 +249,7 @@
             }
         }
 
-        public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count)
+        public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count, int timeout = 30)
         {
             var checkedDateTime = (dateTime != null) ? dateTime.ToString() : string.Empty;
 
@@ -250,7 +259,7 @@
 
             using (var client = new HttpClient())
             {
-                client.Timeout = TimeSpan.FromSeconds(30);
+                client.Timeout = TimeSpan.FromSeconds(timeout);
                 try
                 {
                     using (var response = await client.GetAsync(url))

@@ -63,7 +63,7 @@ namespace StatisticsAnalysisTool.Common
                         {
                             SoundController.PlayAlertSound();
                             StopEvent();
-                            AlertController.Remove(uniqueName);
+                            AlertController.DeactivateAlert(uniqueName);
 
                             _mainWindow.Dispatcher.Invoke(() =>
                             {

@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 - User macros
 
+## [2.4.0] - 2021-01-01
+
+### Changed
+- Average prices added at the bottom of the item window
+- Difference calculation for item prices removed from the item window
+- Performance improvements
+- Button redesigned
+
+## [2.3.1] - 2020-10-31
+
+### Fixed
+- Better error handling on language files with culture info
+- Fixed a bug that did not display the Chinese names of the items
+
 ## [2.3.0] - 2020-10-12
 
 ### Added
@@ -14,8 +28,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - New translations added.
 
 ### Changed
-- Performance improvements.
-- Added loading image to Full Item Info tab.
+- Performance improvements
+- Added loading image to Full Item Info tab
 
 ## [2.2.3] - 2020-09-17
 
@@ -27,7 +41,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Fixed
 - Fixed a bug that did not output the correct UTF8 texts
-
 
 ## [2.2.1] - 2020-09-15
 
@@ -197,7 +210,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.3.0...HEAD
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.4.0...HEAD
+[2.4.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.3.1...2.4.0
+[2.3.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.3...2.3.0
 [2.2.3]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.2...2.2.3
 [2.2.2]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.1...2.2.2
