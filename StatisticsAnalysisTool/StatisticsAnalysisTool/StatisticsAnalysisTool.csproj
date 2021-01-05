@@ -61,8 +61,8 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Albion.Network, Version=4.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Albion.Network.4.6.0\lib\netstandard2.0\Albion.Network.dll</HintPath>
+    <Reference Include="Albion.Network, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Albion.Network.5.0.0\lib\netstandard2.0\Albion.Network.dll</HintPath>
     </Reference>
     <Reference Include="AutoUpdater.NET, Version=1.6.3.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
       <HintPath>..\packages\Autoupdater.NET.Official.1.6.3\lib\net45\AutoUpdater.NET.dll</HintPath>
@@ -144,6 +144,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\AlertController.cs" />
+    <Compile Include="Models\NetworkModel\Container.cs" />
+    <Compile Include="Models\NetworkModel\Loot.cs" />
     <Compile Include="Network\MoveEvent.cs" />
     <Compile Include="Common\SoundController.cs" />
     <Compile Include="Exceptions\TooManyRequestsException.cs" />
@@ -178,7 +180,13 @@
     <Compile Include="Network\MoveOperation.cs" />
     <Compile Include="Network\MoveRequestHandler.cs" />
     <Compile Include="Network\NetworkController.cs" />
+    <Compile Include="Network\NewLootChestEvent.cs" />
+    <Compile Include="Network\TakeSilverEvent.cs" />
+    <Compile Include="Network\NewLootEvent.cs" />
     <Compile Include="Network\NewCharacterEvent.cs" />
+    <Compile Include="Network\NewLootChestEventHandler.cs" />
+    <Compile Include="Network\TakeSilverEventHandler.cs" />
+    <Compile Include="Network\NewLootEventHandler.cs" />
     <Compile Include="Network\NewCharacterEventHandler.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

@@ -13,9 +13,12 @@ namespace StatisticsAnalysisTool.Network
         {
             var builder = ReceiverBuilder.Create();
 
-            builder.AddRequestHandler(new MoveRequestHandler());
-            builder.AddEventHandler(new MoveEventHandler());
-            builder.AddEventHandler(new NewCharacterEventHandler());
+            //builder.AddRequestHandler(new MoveRequestHandler());
+            //builder.AddEventHandler(new MoveEventHandler());
+            //builder.AddEventHandler(new NewCharacterEventHandler());
+            builder.AddEventHandler(new TakeSilverEventHandler());
+            //builder.AddEventHandler(new NewLootEventHandler());
+            //builder.AddEventHandler(new NewLootChestEventHandler());
 
             _receiver = builder.Build();
             
