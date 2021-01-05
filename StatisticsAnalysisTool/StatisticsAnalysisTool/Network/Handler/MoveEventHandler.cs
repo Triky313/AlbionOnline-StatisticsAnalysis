@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network
+namespace StatisticsAnalysisTool.Network.Handler
 {
     public class MoveEventHandler : EventPacketHandler<MoveEvent>
     {

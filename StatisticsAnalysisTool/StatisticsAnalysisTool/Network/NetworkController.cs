@@ -1,6 +1,7 @@
 ﻿using Albion.Network;
 using PacketDotNet;
 using SharpPcap;
+using StatisticsAnalysisTool.Network.Handler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,11 +17,13 @@ namespace StatisticsAnalysisTool.Network
         {
             var builder = ReceiverBuilder.Create();
 
-            //builder.AddRequestHandler(new MoveRequestHandler());
+            //builder.AddRequestHandler(new GuildVaultInfoHandler());
             //builder.AddEventHandler(new MoveEventHandler());
             //builder.AddEventHandler(new NewCharacterEventHandler());
-
+            
             builder.AddEventHandler(new TakeSilverEventHandler());
+            builder.AddEventHandler(new PartySilverGainedEventHandler());
+            builder.AddEventHandler(new GuildVaultInfoHandler());
 
             //builder.AddEventHandler(new NewLootEventHandler());
             //builder.AddEventHandler(new NewLootChestEventHandler());

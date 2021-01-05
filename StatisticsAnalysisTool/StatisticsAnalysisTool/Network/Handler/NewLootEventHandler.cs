@@ -1,8 +1,9 @@
 ﻿using Albion.Network;
+using StatisticsAnalysisTool.Network.Events;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network
+namespace StatisticsAnalysisTool.Network.Handler
 {
     public class NewLootEventHandler : EventPacketHandler<NewLootEvent>
     {

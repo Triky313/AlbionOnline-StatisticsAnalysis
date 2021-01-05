@@ -3,7 +3,7 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace StatisticsAnalysisTool.Network
+namespace StatisticsAnalysisTool.Network.Events
 {
     public class NewLootEvent : BaseEvent
     {

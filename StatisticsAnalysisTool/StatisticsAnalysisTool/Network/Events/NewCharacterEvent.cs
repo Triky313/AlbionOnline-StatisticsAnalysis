@@ -1,7 +1,7 @@
 ﻿using Albion.Network;
 using System.Collections.Generic;
 
-namespace StatisticsAnalysisTool.Network
+namespace StatisticsAnalysisTool.Network.Events
 {
     public class NewCharacterEvent : BaseEvent
     {

@@ -147,7 +147,8 @@
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Models\NetworkModel\Container.cs" />
     <Compile Include="Models\NetworkModel\Loot.cs" />
-    <Compile Include="Network\MoveEvent.cs" />
+    <Compile Include="Network\EventCodes.cs" />
+    <Compile Include="Network\Events\MoveEvent.cs" />
     <Compile Include="Common\SoundController.cs" />
     <Compile Include="Exceptions\TooManyRequestsException.cs" />
     <Compile Include="Common\Alert.cs" />
@@ -177,18 +178,21 @@
     <Compile Include="Models\MarketOrder.cs" />
     <Compile Include="Models\MarketStats.cs" />
     <Compile Include="Models\WeaponCategories.cs" />
-    <Compile Include="Network\MoveEventHandler.cs" />
-    <Compile Include="Network\MoveOperation.cs" />
-    <Compile Include="Network\MoveRequestHandler.cs" />
+    <Compile Include="Network\Events\GuildVaultInfoEvent.cs" />
+    <Compile Include="Network\Handler\MoveEventHandler.cs" />
+    <Compile Include="Network\Operations\MoveOperation.cs" />
+    <Compile Include="Network\Handler\GuildVaultInfoHandler.cs" />
     <Compile Include="Network\NetworkController.cs" />
-    <Compile Include="Network\NewLootChestEvent.cs" />
-    <Compile Include="Network\TakeSilverEvent.cs" />
-    <Compile Include="Network\NewLootEvent.cs" />
-    <Compile Include="Network\NewCharacterEvent.cs" />
-    <Compile Include="Network\NewLootChestEventHandler.cs" />
-    <Compile Include="Network\TakeSilverEventHandler.cs" />
-    <Compile Include="Network\NewLootEventHandler.cs" />
-    <Compile Include="Network\NewCharacterEventHandler.cs" />
+    <Compile Include="Network\Events\NewLootChestEvent.cs" />
+    <Compile Include="Network\Events\PartySilverGainedEvent.cs" />
+    <Compile Include="Network\Events\TakeSilverEvent.cs" />
+    <Compile Include="Network\Events\NewLootEvent.cs" />
+    <Compile Include="Network\Events\NewCharacterEvent.cs" />
+    <Compile Include="Network\Handler\NewLootChestEventHandler.cs" />
+    <Compile Include="Network\Handler\PartySilverGainedEventHandler.cs" />
+    <Compile Include="Network\Handler\TakeSilverEventHandler.cs" />
+    <Compile Include="Network\Handler\NewLootEventHandler.cs" />
+    <Compile Include="Network\Handler\NewCharacterEventHandler.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -384,9 +388,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Network\Events\" />
-    <Folder Include="Network\Handler\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

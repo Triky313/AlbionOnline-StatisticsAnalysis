@@ -1,12 +1,13 @@
 ﻿using Albion.Network;
+using StatisticsAnalysisTool.Network.Events;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network
+namespace StatisticsAnalysisTool.Network.Handler
 {
     public class NewLootChestEventHandler : EventPacketHandler<NewLootChestEvent>
     {
-        public NewLootChestEventHandler() : base(34) { }
+        public NewLootChestEventHandler() : base(EventCodes.NewLootChest) { }
 
         protected override async Task OnActionAsync(NewLootChestEvent value)
         {
