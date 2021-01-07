@@ -178,10 +178,10 @@
     <Compile Include="Models\MarketOrder.cs" />
     <Compile Include="Models\MarketStats.cs" />
     <Compile Include="Models\WeaponCategories.cs" />
-    <Compile Include="Network\Events\GuildVaultInfoEvent.cs" />
+    <Compile Include="Network\Events\UserInformationEvent.cs" />
     <Compile Include="Network\Handler\MoveEventHandler.cs" />
     <Compile Include="Network\Operations\MoveOperation.cs" />
-    <Compile Include="Network\Handler\GuildVaultInfoHandler.cs" />
+    <Compile Include="Network\Handler\UserInformationHandler.cs" />
     <Compile Include="Network\NetworkController.cs" />
     <Compile Include="Network\Events\NewLootChestEvent.cs" />
     <Compile Include="Network\Events\PartySilverGainedEvent.cs" />

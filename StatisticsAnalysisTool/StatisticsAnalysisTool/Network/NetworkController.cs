@@ -17,16 +17,18 @@ namespace StatisticsAnalysisTool.Network
         {
             var builder = ReceiverBuilder.Create();
 
-            //builder.AddRequestHandler(new GuildVaultInfoHandler());
+            //builder.AddRequestHandler(new UserInformationHandler());
             //builder.AddEventHandler(new MoveEventHandler());
             //builder.AddEventHandler(new NewCharacterEventHandler());
-            
-            builder.AddEventHandler(new TakeSilverEventHandler());
-            builder.AddEventHandler(new PartySilverGainedEventHandler());
-            builder.AddEventHandler(new GuildVaultInfoHandler());
 
+            //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
+
+            //builder.AddEventHandler(new PartySilverGainedEventHandler());
+            
             //builder.AddEventHandler(new NewLootEventHandler());
             //builder.AddEventHandler(new NewLootChestEventHandler());
+
+            builder.AddResponseHandler(new UserInformationHandler());
 
             _receiver = builder.Build();
 

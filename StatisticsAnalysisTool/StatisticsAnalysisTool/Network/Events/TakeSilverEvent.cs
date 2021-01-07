@@ -16,11 +16,12 @@ namespace StatisticsAnalysisTool.Network.Handler
                     Debug.Print($"{parameter}");
                 }
 
-                if (parameters.ContainsKey(0))
-                {
-                    long.TryParse(parameters[0].ToString(), out long userId);
-                    UserId = userId;
-                }
+                // Ist keine UserID
+                //if (parameters.ContainsKey(0))
+                //{
+                //    long.TryParse(parameters[0].ToString(), out long userId);
+                //    Username = userId;
+                //}
 
                 if (parameters.ContainsKey(3))
                 {
