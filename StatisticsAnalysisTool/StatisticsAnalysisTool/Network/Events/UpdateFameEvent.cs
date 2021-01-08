@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                 //{
                 //    Debug.Print($"{parameter}");
                 //}
-                
+
                 if (parameters.ContainsKey(1) && long.TryParse(parameters[1].ToString(), out long totalFame))
                 {
                     TotalFame = totalFame / 10000d;

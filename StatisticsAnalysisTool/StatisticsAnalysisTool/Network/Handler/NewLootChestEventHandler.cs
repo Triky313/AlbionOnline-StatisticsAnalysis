@@ -12,6 +12,8 @@ namespace StatisticsAnalysisTool.Network.Handler
         protected override async Task OnActionAsync(NewLootChestEvent value)
         {
             Debug.Print($"NewSilverObject");
+
+            await Task.CompletedTask;
         }
     }
 }

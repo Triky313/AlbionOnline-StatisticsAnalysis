@@ -21,6 +21,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             //Debug.Print($"ZoneFame: {value.ZoneFame}");
             
             EventCounter(value.FameWithZoneAndPremium);
+            await Task.CompletedTask;
         }
 
         private double eventCounter;

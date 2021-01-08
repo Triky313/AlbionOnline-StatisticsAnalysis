@@ -15,6 +15,8 @@ namespace StatisticsAnalysisTool.Network.Handler
             //Debug.Print($"Total Collected Silver: {value.TotalCollectedSilver}");
             //Debug.Print($"Guild Tax: {value.GuildTax}");
             //Debug.Print($"Earned Silver: {value.EarnedSilver}");
+
+            await Task.CompletedTask;
         }
     }
 }

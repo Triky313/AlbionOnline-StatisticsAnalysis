@@ -12,6 +12,8 @@ namespace StatisticsAnalysisTool.Network.Handler
         protected override async Task OnActionAsync(NewCharacterEvent value)
         {
             Debug.Print($"New ch Name: {value.Name}");
+
+            await Task.CompletedTask;
         }
     }
 }

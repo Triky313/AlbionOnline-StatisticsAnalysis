@@ -17,6 +17,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             Debug.Print($"Earned Silver: {value.EarnedSilver}");
 
             EventCounter();
+            await Task.CompletedTask;
         }
 
         private long eventCounter;

@@ -11,6 +11,8 @@ namespace StatisticsAnalysisTool.Network.Handler
         protected override async Task OnActionAsync(MoveEvent value)
         {
             Debug.Print($"Id: {value.Id} x: {value.Position[0]} y: {value.Position[1]}");
+
+            await Task.CompletedTask;
         }
     }
 }

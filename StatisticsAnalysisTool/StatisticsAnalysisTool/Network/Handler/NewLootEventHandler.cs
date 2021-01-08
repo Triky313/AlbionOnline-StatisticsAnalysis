@@ -12,6 +12,8 @@ namespace StatisticsAnalysisTool.Network.Handler
         protected override async Task OnActionAsync(NewLootEvent value)
         {
             Debug.Print($"NewLoot");
+
+            await Task.CompletedTask;
         }
     }
 }

@@ -9,6 +9,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(UserInformationEvent value)
         {
+
+            await Task.CompletedTask;
         }
     }
 }
