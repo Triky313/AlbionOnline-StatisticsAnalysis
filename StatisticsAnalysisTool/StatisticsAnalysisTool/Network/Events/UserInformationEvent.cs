@@ -11,24 +11,25 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             try
             {
-                //Debug.Print($"Response");
+                Debug.Print($"-----------------------------------------");
+                Debug.Print($"Response");
 
-                //foreach (var parameter in parameters)
-                //{
-                //    Debug.Print($"{parameter}");
-                //}
+                foreach (var parameter in parameters)
+                {
+                    Debug.Print($"{parameter}");
+                }
 
                 if (parameters.ContainsKey(2))
                 {
                     Username = parameters[2].ToString();
                 }
 
-                if (parameters.ContainsKey(23) && long.TryParse(parameters.ContainsKey(23).ToString(), out long currentFocusPoints))
+                if (parameters.ContainsKey(23) && long.TryParse(parameters[23].ToString(), out long currentFocusPoints))
                 {
                     CurrentFocusPoints = currentFocusPoints;
                 }
 
-                if (parameters.ContainsKey(24) && long.TryParse(parameters.ContainsKey(24).ToString(), out long maxCurrentFocusPoints))
+                if (parameters.ContainsKey(24) && long.TryParse(parameters[24].ToString(), out long maxCurrentFocusPoints))
                 {
                     MaxCurrentFocusPoints = maxCurrentFocusPoints;
                 }

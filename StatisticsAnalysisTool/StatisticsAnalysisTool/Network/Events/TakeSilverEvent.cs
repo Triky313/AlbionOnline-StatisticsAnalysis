@@ -11,6 +11,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             try
             {
+                Debug.Print($"-----------------------------------------");
                 foreach (var parameter in parameters)
                 {
                     Debug.Print($"{parameter}");

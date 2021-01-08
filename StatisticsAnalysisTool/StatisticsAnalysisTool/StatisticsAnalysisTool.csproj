@@ -178,8 +178,10 @@
     <Compile Include="Models\MarketOrder.cs" />
     <Compile Include="Models\MarketStats.cs" />
     <Compile Include="Models\WeaponCategories.cs" />
+    <Compile Include="Network\Events\UpdateFameEvent.cs" />
     <Compile Include="Network\Events\UserInformationEvent.cs" />
     <Compile Include="Network\Handler\MoveEventHandler.cs" />
+    <Compile Include="Network\Handler\UpdateFameEventHandler.cs" />
     <Compile Include="Network\Operations\MoveOperation.cs" />
     <Compile Include="Network\Handler\UserInformationHandler.cs" />
     <Compile Include="Network\NetworkController.cs" />

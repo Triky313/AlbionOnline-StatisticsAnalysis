@@ -22,13 +22,14 @@ namespace StatisticsAnalysisTool.Network
             //builder.AddEventHandler(new NewCharacterEventHandler());
 
             //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
+            builder.AddEventHandler(new UpdateFameEventHandler());
 
             //builder.AddEventHandler(new PartySilverGainedEventHandler());
             
             //builder.AddEventHandler(new NewLootEventHandler());
             //builder.AddEventHandler(new NewLootChestEventHandler());
 
-            builder.AddResponseHandler(new UserInformationHandler());
+            //builder.AddResponseHandler(new UserInformationHandler()); // GEHT
 
             _receiver = builder.Build();
 
