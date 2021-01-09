@@ -4,6 +4,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+        xmlns:networkModels="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="800" Closing="Window_Closing">
     <Grid>
@@ -122,10 +123,36 @@
             <Button Style="{StaticResource ButtonStyle}" Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
         </Grid>
         <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Visible">
-
             <Label Content="Tracking" HorizontalAlignment="Left" Margin="10,10,0,0" Width="61" VerticalAlignment="Top"></Label>
             <Grid Margin="71,14,0,0" HorizontalAlignment="Left" Height="24" Width="24" VerticalAlignment="Top">
                 <fa:ImageAwesome Visibility="Visible" Icon="{Binding TrackerActivationToggle, FallbackValue=ToggleOff}" Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" MouseUp="TrackingModeActiveToggle_MouseUp" />
+            </Grid>
+
+
+
+            <ListView ItemsSource="{Binding TrackingMainView}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,38,10,35">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Text" Width="400" DisplayMemberBinding="{Binding Text}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+
+
+            <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,30,0">
+                <Grid ZIndex="20" Margin="5,0,0,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+                    <TextBlock>
+                        <Hyperlink NavigateUri="{Binding Path=GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                            <fa:ImageAwesome Icon="Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                        </Hyperlink>
+                    </TextBlock>
+                </Grid>
+                <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="34,0,0,0" VerticalAlignment="Top" Height="35" Width="106" />
+                <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center"
+                           FontSize="14" Margin="140,0,0,0" FontWeight="Bold" HorizontalAlignment="Left" Width="110" Height="28" VerticalAlignment="Bottom">
+                    (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="PayPal Donate" /></Hyperlink>)
+                </TextBlock>
             </Grid>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">

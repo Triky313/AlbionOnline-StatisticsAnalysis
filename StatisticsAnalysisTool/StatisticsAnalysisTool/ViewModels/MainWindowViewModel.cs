@@ -72,6 +72,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _loadFullItemInfoProBarCounter;
         private bool _isFullItemInfoLoading;
         private ICollectionView _itemsView;
+        private ICollectionView _trackingMainView;
         public AlertController AlertManager;
         
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -93,8 +94,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Close();
 
             InitMainWindowData();
-
-            NetworkController.StartNetworkCapture();
         }
 
         #region Inits
@@ -215,7 +214,7 @@ namespace StatisticsAnalysisTool.ViewModels
             ShowInfoWindow();
             TextBoxGoldModeNumberOfValues = "10";
         }
-
+        
         #endregion
 
         public void IsFullItemInformationCompleteCheck()
@@ -438,11 +437,24 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion Gold (Gold Mode)
 
-        #region MyRegion
+        #region Tracking Mode
 
         public void TrackerActivationToggle()
         {
             IsTrackingActive = !IsTrackingActive;
+
+            if (IsTrackingActive)
+            {
+                NetworkController.StartNetworkCapture();
+                if (TrackingMainView == null)
+                {
+                    TrackingMainView = new ListCollectionView(NetworkController.TrackingNotifications);
+                }
+            }
+            else
+            {
+                NetworkController.StopNetworkCapture();
+            }
         }
 
         #endregion
@@ -600,6 +612,15 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _itemsView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICollectionView TrackingMainView {
+            get => _trackingMainView;
+            set
+            {
+                _trackingMainView = value;
                 OnPropertyChanged();
             }
         }

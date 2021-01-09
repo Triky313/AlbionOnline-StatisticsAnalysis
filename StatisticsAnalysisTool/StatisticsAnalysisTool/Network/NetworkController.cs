@@ -1,18 +1,21 @@
 ﻿using Albion.Network;
 using PacketDotNet;
 using SharpPcap;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Handler;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network
 {
-    public class NetworkController
+    public static class NetworkController
     {
         private static IPhotonReceiver _receiver;
         private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
-
+        public static ObservableCollection<TrackingNotification> TrackingNotifications = new ObservableCollection<TrackingNotification>();
+        
         public static void StartNetworkCapture()
         {
             var builder = ReceiverBuilder.Create();
@@ -22,7 +25,8 @@ namespace StatisticsAnalysisTool.Network
             //builder.AddEventHandler(new NewCharacterEventHandler());
 
             //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
-            //builder.AddEventHandler(new UpdateFameEventHandler()); // GEHT
+            builder.AddEventHandler(new UpdateFameEventHandler(TrackingNotifications)); // GEHT
+
             builder.AddEventHandler(new NewRandomDungeonExitEventHandler());
 
             //builder.AddEventHandler(new PartySilverGainedEventHandler());
@@ -58,8 +62,10 @@ namespace StatisticsAnalysisTool.Network
                 Task.Run(() =>
                 {
                     device.StopCapture();
+                    device.Close();
                 });
             }
+            _capturedDevices.Clear();
         }
 
         private static void PacketHandler(object sender, CaptureEventArgs e)

@@ -1,12 +1,20 @@
 ﻿using Albion.Network;
+using StatisticsAnalysisTool.Models.NetworkModel;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UpdateFameEventHandler : EventPacketHandler<UpdateFameEvent>
     {
-        public UpdateFameEventHandler() : base(EventCodes.UpdateFame) { }
+        private readonly ObservableCollection<TrackingNotification> _trackingNotifications;
+
+        public UpdateFameEventHandler(ObservableCollection<TrackingNotification> trackingNotifications) : base(EventCodes.UpdateFame)
+        {
+            _trackingNotifications = trackingNotifications;
+        }
 
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
@@ -19,7 +27,12 @@ namespace StatisticsAnalysisTool.Network.Handler
             //Debug.Print($"FameWithZoneAndPremium: {value.FameWithZoneAndPremium}");
             //Debug.Print($"PremiumFame: {value.PremiumFame}");
             //Debug.Print($"ZoneFame: {value.ZoneFame}");
-            
+
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                _trackingNotifications.Add(new TrackingNotification($"FameWithZoneAndPremium {value.FameWithZoneAndPremium}"));
+            });
+
             EventCounter(value.FameWithZoneAndPremium);
             await Task.CompletedTask;
         }
