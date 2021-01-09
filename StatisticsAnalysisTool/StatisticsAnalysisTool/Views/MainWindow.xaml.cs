@@ -117,32 +117,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void CbMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var mode = _mainWindowViewModel.ModeSelection;
-
-            switch (mode.ViewMode)
-            {
-                case MainWindowViewModel.ViewMode.Normal:
-                    HideAllGrids();
-                    GridNormalMode.Visibility = Visibility.Visible;
-                    TxtSearch.Focus();
-                    return;
-                case MainWindowViewModel.ViewMode.Player:
-                    HideAllGrids();
-                    GridPlayerMode.Visibility = Visibility.Visible;
-                    TxtBoxPlayerModeUsername.Focus();
-                    return;
-                case MainWindowViewModel.ViewMode.Gold:
-                    HideAllGrids();
-                    GridGoldMode.Visibility = Visibility.Visible;
-                    return;
-            }
-        }
-
-        private void HideAllGrids()
-        {
-            GridNormalMode.Visibility = Visibility.Hidden;
-            GridPlayerMode.Visibility = Visibility.Hidden;
-            GridGoldMode.Visibility = Visibility.Hidden;
+            _mainWindowViewModel.SelectViewModeGrid();
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -214,6 +189,11 @@ namespace StatisticsAnalysisTool.Views
         private void AlertModeAlertActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
         {
             _mainWindowViewModel.ToggleAlertSender(sender);
+        }
+
+        private void TrackingModeActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _mainWindowViewModel.TrackerActivationToggle();
         }
     }
 }

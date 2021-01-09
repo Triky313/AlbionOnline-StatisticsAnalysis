@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.ViewModels
@@ -75,17 +76,15 @@ namespace StatisticsAnalysisTool.ViewModels
         
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool _isShowOnlyItemsWithAlertOnActive;
-
-        public enum ViewMode
-        {
-            Normal,
-            Player,
-            Gold
-        }
+        private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
+        private bool _isTrackingActive;
+        private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
+        private Brush _trackerActivationToggleColor;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
+            InitViewModeGrids();
             UpgradeSettings();
             InitWindowSettings();
             Utilities.AutoUpdate();
@@ -98,6 +97,54 @@ namespace StatisticsAnalysisTool.ViewModels
             NetworkController.StartNetworkCapture();
         }
 
+        #region Inits
+
+        #region View mode init
+
+        private void InitViewModeGrids()
+        {
+            viewModeGrid.Add(ViewMode.Normal, _mainWindow.GridNormalMode);
+            viewModeGrid.Add(ViewMode.Tracking, _mainWindow.GridTrackingMode);
+            viewModeGrid.Add(ViewMode.Player, _mainWindow.GridPlayerMode);
+            viewModeGrid.Add(ViewMode.Gold, _mainWindow.GridGoldMode);
+        }
+
+        public void SelectViewModeGrid()
+        {
+            HideAllGrids();
+            var grid = viewModeGrid.FirstOrDefault(g => g.Key == ModeSelection.ViewMode);
+
+            if (grid.Value == null)
+            {
+                Log.Warn($"SelectViewModeGrid: Grid for [{ModeSelection.ViewMode}] is not existing");
+
+                if (viewModeGrid.FirstOrDefault().Value != null)
+                {
+                    viewModeGrid.FirstOrDefault().Value.Visibility = Visibility.Visible;
+                }
+
+                return;
+            }
+
+            grid.Value.Visibility = Visibility.Visible;
+            _mainWindow.TxtSearch.Focus();
+        }
+
+        private void HideAllGrids()
+        {
+            if (viewModeGrid == null)
+            {
+                return;
+            }
+
+            foreach (var grid in viewModeGrid)
+            {
+                grid.Value.Visibility = Visibility.Hidden;
+            }
+        }
+
+        #endregion
+        
         private void InitAlerts()
         {
             SoundController.InitializeSoundFilesFromDirectory();
@@ -168,7 +215,9 @@ namespace StatisticsAnalysisTool.ViewModels
             ShowInfoWindow();
             TextBoxGoldModeNumberOfValues = "10";
         }
-        
+
+        #endregion
+
         public void IsFullItemInformationCompleteCheck()
         {
             if (ItemController.IsFullItemInformationComplete)
@@ -190,6 +239,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             Modes.Clear();
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal });
+            Modes.Add(new ModeStruct { Name = LanguageController.Translation("TRACKING"), ViewMode = ViewMode.Tracking });
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player });
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold });
             ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
@@ -387,7 +437,16 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Gold (Gold Mode)
-        
+
+        #region MyRegion
+
+        public void TrackerActivationToggle()
+        {
+            IsTrackingActive = !IsTrackingActive;
+        }
+
+        #endregion
+
         private void ShowInfoWindow()
         {
             if (Settings.Default.ShowInfoWindowOnStartChecked)
@@ -541,6 +600,38 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _itemsView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingActive {
+            get => _isTrackingActive;
+            set {
+                _isTrackingActive = value;
+
+                TrackerActivationToggleIcon = _isTrackingActive ? FontAwesomeIcon.ToggleOn : FontAwesomeIcon.ToggleOff;
+
+                var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
+                var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+                TrackerActivationToggleColor = _isTrackingActive ? colorOn : colorOff;
+                OnPropertyChanged();
+            }
+        }
+
+        public FontAwesomeIcon TrackerActivationToggleIcon {
+            get => _trackerActivationToggleIcon;
+            set
+            {
+                _trackerActivationToggleIcon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Brush TrackerActivationToggleColor {
+            get => _trackerActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+            set
+            {
+                _trackerActivationToggleColor = value;
                 OnPropertyChanged();
             }
         }
@@ -898,5 +989,13 @@ namespace StatisticsAnalysisTool.ViewModels
             public string Name { get; set; }
             public ViewMode ViewMode { get; set; }
         }
+    }
+
+    public enum ViewMode
+    {
+        Normal,
+        Tracking,
+        Player,
+        Gold
     }
 }

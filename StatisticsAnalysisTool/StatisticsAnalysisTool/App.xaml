@@ -131,7 +131,13 @@
         <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Button" Color="{StaticResource Color.Red.3}"/>
 
         <!-- ######################################################################################### -->
-        
+
+        <Style TargetType="Label">
+            <Setter Property="Height" Value="28" />
+            <Setter Property="MinWidth" Value="20" />
+            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+        </Style>
+
         <!-- City Styles -->
         <Style TargetType="Label" x:Key="CaerleonStyle">
             <Setter Property="Height" Value="28" />

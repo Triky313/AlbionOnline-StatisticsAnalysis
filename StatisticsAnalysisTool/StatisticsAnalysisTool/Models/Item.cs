@@ -40,6 +40,6 @@ namespace StatisticsAnalysisTool.Models
         public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
         public bool IsAlertActive { get; set; }
         public FontAwesomeIcon AlertToggle => (IsAlertActive) ? FontAwesomeIcon.ToggleOn : FontAwesomeIcon.ToggleOff;
-        public Brush AlertToggleColor => (IsAlertActive) ? ItemController.AlertToggleOnColor : ItemController.AlertToggleOffColor;
+        public Brush AlertToggleColor => (IsAlertActive) ? ItemController.ToggleOnColor : ItemController.ToggleOffColor;
     }
 }
