@@ -148,7 +148,7 @@
     <Compile Include="Models\NetworkModel\Container.cs" />
     <Compile Include="Models\NetworkModel\Loot.cs" />
     <Compile Include="Network\EventCodes.cs" />
-    <Compile Include="Network\Events\MoveEvent.cs" />
+    <Compile Include="Network\Events\NewRandomDungeonExitEvent.cs" />
     <Compile Include="Common\SoundController.cs" />
     <Compile Include="Exceptions\TooManyRequestsException.cs" />
     <Compile Include="Common\Alert.cs" />
@@ -180,7 +180,7 @@
     <Compile Include="Models\WeaponCategories.cs" />
     <Compile Include="Network\Events\UpdateFameEvent.cs" />
     <Compile Include="Network\Events\UserInformationEvent.cs" />
-    <Compile Include="Network\Handler\MoveEventHandler.cs" />
+    <Compile Include="Network\Handler\NewRandomDungeonExitEventHandler.cs" />
     <Compile Include="Network\Handler\UpdateFameEventHandler.cs" />
     <Compile Include="Network\Operations\MoveOperation.cs" />
     <Compile Include="Network\Handler\UserInformationHandler.cs" />

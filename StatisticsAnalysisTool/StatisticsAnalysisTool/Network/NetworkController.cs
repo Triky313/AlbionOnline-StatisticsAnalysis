@@ -18,11 +18,12 @@ namespace StatisticsAnalysisTool.Network
             var builder = ReceiverBuilder.Create();
 
             //builder.AddRequestHandler(new UserInformationHandler());
-            //builder.AddEventHandler(new MoveEventHandler());
+            //builder.AddEventHandler(new NewRandomDungeonExitEventHandler());
             //builder.AddEventHandler(new NewCharacterEventHandler());
 
             //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
-            builder.AddEventHandler(new UpdateFameEventHandler());
+            //builder.AddEventHandler(new UpdateFameEventHandler()); // GEHT
+            builder.AddEventHandler(new NewRandomDungeonExitEventHandler());
 
             //builder.AddEventHandler(new PartySilverGainedEventHandler());
             
