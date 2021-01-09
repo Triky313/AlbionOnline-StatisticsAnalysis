@@ -11,10 +11,10 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             try
             {
-                //foreach (var parameter in parameters)
-                //{
-                //    Debug.Print($"{parameter}");
-                //}
+                foreach (var parameter in parameters)
+                {
+                    Debug.Print($"{parameter}");
+                }
 
                 if (parameters.ContainsKey(1) && long.TryParse(parameters[1].ToString(), out long totalFame))
                 {
@@ -36,6 +36,15 @@ namespace StatisticsAnalysisTool.Network.Handler
                     if (zoneMultiplierUnrounded >= 1)
                     {
                         ZoneMultiplier = zoneMultiplierUnrounded / 10000d;
+                    }
+                }
+
+                if (parameters.ContainsKey(9) && long.TryParse(parameters[9].ToString(), out var satchelFameUnrounded))
+                {
+                    SatchelFame = 0;
+                    if (satchelFameUnrounded >= 1)
+                    {
+                        SatchelFame = satchelFameUnrounded / 10000d;
                     }
                 }
 
@@ -72,5 +81,6 @@ namespace StatisticsAnalysisTool.Network.Handler
         public double FameWithZoneAndPremium { get; }
         public double PremiumFame { get; }
         public double ZoneFame { get; }
+        public double SatchelFame { get; }
     }
 }
