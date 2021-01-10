@@ -1,10 +1,9 @@
 ﻿using Albion.Network;
 using PacketDotNet;
 using SharpPcap;
-using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Handler;
+using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,9 +13,8 @@ namespace StatisticsAnalysisTool.Network
     {
         private static IPhotonReceiver _receiver;
         private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
-        public static ObservableCollection<TrackingNotification> TrackingNotifications = new ObservableCollection<TrackingNotification>();
-        
-        public static void StartNetworkCapture()
+
+        public static void StartNetworkCapture(MainWindowViewModel mainWindowViewModel)
         {
             var builder = ReceiverBuilder.Create();
 
@@ -25,7 +23,7 @@ namespace StatisticsAnalysisTool.Network
             //builder.AddEventHandler(new NewCharacterEventHandler());
 
             //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
-            builder.AddEventHandler(new UpdateFameEventHandler(TrackingNotifications)); // GEHT
+            builder.AddEventHandler(new UpdateFameEventHandler(mainWindowViewModel)); // GEHT
 
             builder.AddEventHandler(new NewRandomDungeonExitEventHandler());
 
@@ -41,7 +39,7 @@ namespace StatisticsAnalysisTool.Network
             _capturedDevices.AddRange(CaptureDeviceList.Instance);
             StartDeviceCapture();
         }
-
+        
         private static void StartDeviceCapture()
         {
             foreach (var device in _capturedDevices)

@@ -1,27 +1,29 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Models.NetworkModel;
-using System.Collections.ObjectModel;
+using StatisticsAnalysisTool.ViewModels;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UpdateFameEventHandler : EventPacketHandler<UpdateFameEvent>
     {
-        private readonly ObservableCollection<TrackingNotification> _trackingNotifications;
+        private readonly MainWindowViewModel _mainWindowViewModel;
 
-        public UpdateFameEventHandler(ObservableCollection<TrackingNotification> trackingNotifications) : base(EventCodes.UpdateFame)
+        public UpdateFameEventHandler(MainWindowViewModel mainWindowViewModel) : base(EventCodes.UpdateFame)
         {
-            _trackingNotifications = trackingNotifications;
+            _mainWindowViewModel = mainWindowViewModel;
         }
 
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                _trackingNotifications.Add(new TrackingNotification($"Gained Fame: {value.TotalGainedFame} ({value.NormalFame} Normal, {value.ZoneFame} Zone, {value.PremiumFame}Premium, {value.SatchelFame} Satchel)"));
-            });
+            _mainWindowViewModel.AddTrackingNotification(new TrackingNotification(
+                $"Gained Fame: {value.TotalGainedFame} ({value.NormalFame} Normal, {value.ZoneFame} Zone, {value.PremiumFame}Premium, {value.SatchelFame} Satchel)"));
+
+            //_mainWindow.Dispatcher.Invoke(delegate
+            //{
+            //    _trackingNotifications.Add(new TrackingNotification($"Gained Fame: {value.TotalGainedFame} ({value.NormalFame} Normal, {value.ZoneFame} Zone, {value.PremiumFame}Premium, {value.SatchelFame} Satchel)"));
+            //});
 
             EventCounter(value.TotalGainedFame);
             await Task.CompletedTask;

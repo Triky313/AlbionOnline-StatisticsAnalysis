@@ -4,6 +4,7 @@ using log4net;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
@@ -74,13 +75,15 @@ namespace StatisticsAnalysisTool.ViewModels
         private ICollectionView _itemsView;
         private ICollectionView _trackingMainView;
         public AlertController AlertManager;
-        
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool _isShowOnlyItemsWithAlertOnActive;
-        private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
         private bool _isTrackingActive;
-        private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
         private Brush _trackerActivationToggleColor;
+        private ObservableCollection<TrackingNotification> _trackingNotifications;
+
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
+        private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
+        private readonly object _stocksLock = new object();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -95,7 +98,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             InitMainWindowData();
         }
-
+        
         #region Inits
 
         #region View mode init
@@ -445,15 +448,41 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (IsTrackingActive)
             {
-                NetworkController.StartNetworkCapture();
+                if (TrackingNotifications == null)
+                {
+                    TrackingNotifications = new ObservableCollection<TrackingNotification>();
+                }
+
                 if (TrackingMainView == null)
                 {
-                    TrackingMainView = new ListCollectionView(NetworkController.TrackingNotifications);
+                    TrackingMainView = new ListCollectionView(TrackingNotifications);
                 }
+
+                BindingOperations.EnableCollectionSynchronization(TrackingNotifications, _stocksLock);
+
+                NetworkController.StartNetworkCapture(this);
+                TrackingMainView.Refresh();
             }
             else
             {
                 NetworkController.StopNetworkCapture();
+            }
+        }
+
+        public void AddTrackingNotification(TrackingNotification trackingNotification)
+        {
+            if (_mainWindow.Dispatcher.CheckAccess())
+            {
+                TrackingNotifications.Add(trackingNotification);
+                TrackingMainView.Refresh();
+            }
+            else
+            {
+                _mainWindow.Dispatcher.Invoke(delegate
+                {
+                    TrackingNotifications.Add(trackingNotification);
+                    TrackingMainView.Refresh();
+                });
             }
         }
 
@@ -624,7 +653,16 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
+        public ObservableCollection<TrackingNotification> TrackingNotifications {
+            get => _trackingNotifications;
+            set
+            {
+                _trackingNotifications = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public bool IsTrackingActive {
             get => _isTrackingActive;
             set {
