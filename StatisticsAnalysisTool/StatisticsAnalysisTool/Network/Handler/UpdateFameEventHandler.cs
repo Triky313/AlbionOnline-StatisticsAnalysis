@@ -18,22 +18,12 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
-            //Debug.Print($"-----------------------------------------");
-            //Debug.Print($"UpdateFame");
-            //Debug.Print($"TotalFame: {value.TotalFame}");
-            //Debug.Print($"FameWithZoneAndWithoutPremium: {value.FameWithZoneAndWithoutPremium}");
-            //Debug.Print($"ZoneMultiplier: {value.ZoneMultiplier}");
-            //Debug.Print($"NormalFame: {value.NormalFame}");
-            //Debug.Print($"FameWithZoneAndPremium: {value.FameWithZoneAndPremium}");
-            //Debug.Print($"PremiumFame: {value.PremiumFame}");
-            //Debug.Print($"ZoneFame: {value.ZoneFame}");
-
             Application.Current.Dispatcher.Invoke(delegate
             {
-                _trackingNotifications.Add(new TrackingNotification($"FameWithZoneAndPremium {value.FameWithZoneAndPremium}"));
+                _trackingNotifications.Add(new TrackingNotification($"Gained Fame: {value.TotalGainedFame} ({value.NormalFame} Normal, {value.ZoneFame} Zone, {value.PremiumFame}Premium, {value.SatchelFame} Satchel)"));
             });
 
-            EventCounter(value.FameWithZoneAndPremium);
+            EventCounter(value.TotalGainedFame);
             await Task.CompletedTask;
         }
 
