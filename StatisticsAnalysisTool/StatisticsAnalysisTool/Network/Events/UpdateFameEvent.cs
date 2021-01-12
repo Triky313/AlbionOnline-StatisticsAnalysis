@@ -7,8 +7,6 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UpdateFameEvent : BaseEvent
     {
-        private readonly double _fameWithZoneAndPremium = 0;
-
         public UpdateFameEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
             try
@@ -56,15 +54,16 @@ namespace StatisticsAnalysisTool.Network.Handler
                     NormalFame = FameWithZoneAndWithoutPremium / ZoneMultiplier;
                 }
 
+                double fameWithZoneAndPremium = 0;
                 if (FameWithZoneAndWithoutPremium > 0)
                 {
-                    _fameWithZoneAndPremium = FameWithZoneAndWithoutPremium * 1.5f;
+                    fameWithZoneAndPremium = FameWithZoneAndWithoutPremium * 1.5f;
                 }
 
                 PremiumFame = 0;
-                if (_fameWithZoneAndPremium > 0 && FameWithZoneAndWithoutPremium > 0)
+                if (fameWithZoneAndPremium > 0 && FameWithZoneAndWithoutPremium > 0)
                 {
-                    PremiumFame = _fameWithZoneAndPremium - FameWithZoneAndWithoutPremium;
+                    PremiumFame = fameWithZoneAndPremium - FameWithZoneAndWithoutPremium;
                 }
 
                 ZoneFame = 0;

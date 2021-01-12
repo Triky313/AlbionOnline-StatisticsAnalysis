@@ -128,16 +128,11 @@
                 <fa:ImageAwesome Visibility="Visible" Icon="{Binding TrackerActivationToggle, FallbackValue=ToggleOff}" Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" MouseUp="TrackingModeActiveToggle_MouseUp" />
             </Grid>
 
-
-
-            <ListView ItemsSource="{Binding TrackingMainView}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,38,10,35">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Text" Width="400" DisplayMemberBinding="{Binding Text}" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
-
+            <Grid Margin="10,38,10,35">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding TrackingNotifications}" />
+                </ScrollViewer>
+            </Grid>
 
 
             <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,30,0">

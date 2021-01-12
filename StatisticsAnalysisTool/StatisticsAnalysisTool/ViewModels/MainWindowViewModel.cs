@@ -4,8 +4,8 @@ using log4net;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network;
+using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -73,17 +73,15 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _loadFullItemInfoProBarCounter;
         private bool _isFullItemInfoLoading;
         private ICollectionView _itemsView;
-        private ICollectionView _trackingMainView;
         public AlertController AlertManager;
         private bool _isShowOnlyItemsWithAlertOnActive;
         private bool _isTrackingActive;
         private Brush _trackerActivationToggleColor;
-        private ObservableCollection<TrackingNotification> _trackingNotifications;
+        private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
         private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
-        private readonly object _stocksLock = new object();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -453,15 +451,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingNotifications = new ObservableCollection<TrackingNotification>();
                 }
 
-                if (TrackingMainView == null)
-                {
-                    TrackingMainView = new ListCollectionView(TrackingNotifications);
-                }
-
-                BindingOperations.EnableCollectionSynchronization(TrackingNotifications, _stocksLock);
-
                 NetworkController.StartNetworkCapture(this);
-                TrackingMainView.Refresh();
             }
             else
             {
@@ -474,14 +464,12 @@ namespace StatisticsAnalysisTool.ViewModels
             if (_mainWindow.Dispatcher.CheckAccess())
             {
                 TrackingNotifications.Add(trackingNotification);
-                TrackingMainView.Refresh();
             }
             else
             {
                 _mainWindow.Dispatcher.Invoke(delegate
                 {
                     TrackingNotifications.Add(trackingNotification);
-                    TrackingMainView.Refresh();
                 });
             }
         }
@@ -641,15 +629,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _itemsView = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ICollectionView TrackingMainView {
-            get => _trackingMainView;
-            set
-            {
-                _trackingMainView = value;
                 OnPropertyChanged();
             }
         }

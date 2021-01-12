@@ -147,7 +147,7 @@
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Models\NetworkModel\Container.cs" />
     <Compile Include="Models\NetworkModel\Loot.cs" />
-    <Compile Include="Models\NetworkModel\TrackingNotification.cs" />
+    <Compile Include="Network\Notification\TrackingNotification.cs" />
     <Compile Include="Network\EventCodes.cs" />
     <Compile Include="Network\Events\NewRandomDungeonExitEvent.cs" />
     <Compile Include="Common\SoundController.cs" />
@@ -183,6 +183,11 @@
     <Compile Include="Network\Events\UserInformationEvent.cs" />
     <Compile Include="Network\Handler\NewRandomDungeonExitEventHandler.cs" />
     <Compile Include="Network\Handler\UpdateFameEventHandler.cs" />
+    <Compile Include="Network\Notification\FameNotificationFragment.cs" />
+    <Compile Include="Network\Notification\AttributeStatOperator.cs" />
+    <Compile Include="Network\Notification\FameStatFragment.cs" />
+    <Compile Include="Network\Notification\LineFragment.cs" />
+    <Compile Include="Network\Notification\TextFragment.cs" />
     <Compile Include="Network\Operations\MoveOperation.cs" />
     <Compile Include="Network\Handler\UserInformationHandler.cs" />
     <Compile Include="Network\NetworkController.cs" />
@@ -270,6 +275,18 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Resource Include="Resources\alert_window_background.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\fame.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\zone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\crown.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\satchel.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="Sounds\alert1.wav">

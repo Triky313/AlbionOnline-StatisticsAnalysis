@@ -1,6 +1,8 @@
 ﻿using Albion.Network;
-using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -17,13 +19,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
-            _mainWindowViewModel.AddTrackingNotification(new TrackingNotification(
-                $"Gained Fame: {value.TotalGainedFame} ({value.NormalFame} Normal, {value.ZoneFame} Zone, {value.PremiumFame}Premium, {value.SatchelFame} Satchel)"));
-
-            //_mainWindow.Dispatcher.Invoke(delegate
-            //{
-            //    _trackingNotifications.Add(new TrackingNotification($"Gained Fame: {value.TotalGainedFame} ({value.NormalFame} Normal, {value.ZoneFame} Zone, {value.PremiumFame}Premium, {value.SatchelFame} Satchel)"));
-            //});
+            _mainWindowViewModel.AddTrackingNotification(SetNotification(value.TotalPlayerFame, value.TotalGainedFame, value.ZoneFame, value.PremiumFame, value.SatchelFame));
 
             EventCounter(value.TotalGainedFame);
             await Task.CompletedTask;
@@ -33,8 +29,22 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         private void EventCounter(double fame)
         {
+            // TODO: Fame counter debug test
             eventCounter += fame;
             Debug.Print($"Fame counter: {eventCounter:N}");
+        }
+
+        private TrackingNotification SetNotification(double totalPlayerFame, double totalGainedFame, double zoneFame, double premiumFame, double satchelFame)
+        {
+            var test = new TrackingNotification(DateTime.Now, new List<LineFragment>
+            {
+                new FameNotificationFragment("Du hast", AttributeStatOperator.Plus, totalPlayerFame, totalGainedFame, "Ruhm", zoneFame, premiumFame, satchelFame, "erhalten."),
+                //new TextFragment("Du hast"),
+                //new TotalFameStatFragment("Ruhm", AttributeStatOperator.Plus, totalFame),
+                //new FameStatFragment(zoneFame, premiumFame, satchelFame),
+                //new TextFragment("erhalten.")
+            });
+            return test;
         }
     }
 }

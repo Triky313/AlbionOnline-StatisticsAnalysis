@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:StatisticsAnalysisTool.Network.Notification"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <!-- Base font size -->
@@ -1183,6 +1184,67 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- Notification tracking styles -->
+        <Style x:Key="LineFragmentImageStyle" TargetType="{x:Type Image}">
+            <Setter Property="Width" Value="16" />
+            <Setter Property="Height" Value="16" />
+            <Setter Property="Margin" Value="2" />
+        </Style>
+
+        <Style x:Key="OperatorTextBlockStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+            <Setter Property="Text" Value="+ " />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding}" Value="{x:Static local:AttributeStatOperator.Minus}">
+                    <Setter Property="Text" Value="- " />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <DataTemplate DataType="{x:Type local:TextFragment}">
+            <TextBlock Text="{Binding Text, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:TrackingNotification}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Margin="3" Text="{Binding DateTime, StringFormat=[hh:mm:ss]}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+                <ItemsControl Grid.Column="1" Margin="3" ItemsSource="{Binding Fragments}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:FameNotificationFragment}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
+                <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
+                <TextBlock Text="{Binding TotalGainedFame, StringFormat='{} {0:N0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                <TextBlock Text="{Binding FameText, StringFormat='{} {0} ('}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+
+                <Image Source="../Resources/zone.png" Style="{StaticResource LineFragmentImageStyle}" />
+                <TextBlock Text="{Binding Zone, StringFormat='{} {0:N0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+
+                <Image Source="../Resources/crown.png" Style="{StaticResource LineFragmentImageStyle}" />
+                <TextBlock Text="{Binding Premium, StringFormat='{}{0:N0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+
+                <Image Source="../Resources/satchel.png" Style="{StaticResource LineFragmentImageStyle}" />
+                <TextBlock Text="{Binding Satchel, StringFormat='{}{0:N0}) '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+                <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+            </StackPanel>
+        </DataTemplate>
+
+
+        <!--FameNotificationFragment-->
 
     </Application.Resources>
 </Application>
