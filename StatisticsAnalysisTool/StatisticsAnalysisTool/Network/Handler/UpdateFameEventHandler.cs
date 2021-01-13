@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Formatting = StatisticsAnalysisTool.Common.Formatting;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -21,8 +22,9 @@ namespace StatisticsAnalysisTool.Network.Handler
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
             _mainWindowViewModel.AddTrackingNotification(SetPveFameNotification(value.TotalPlayerFame, value.TotalGainedFame, value.ZoneFame, value.PremiumFame, value.SatchelFame, value.IsMobFame));
-
             _fameCountUpTimer.AddFame(value.TotalGainedFame);
+
+            _mainWindowViewModel.TotalPlayerFame = Formatting.ToStringShort(value.TotalPlayerFame);
             await Task.CompletedTask;
         }
         

@@ -77,12 +77,14 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isShowOnlyItemsWithAlertOnActive;
         private bool _isTrackingActive;
         private Brush _trackerActivationToggleColor;
-        private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
+        private FameCountUpTimer _fameCountUpTimer;
+        private string _famePerHour = "0";
+        private string _totalPlayerFame = "0";
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
         private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
-        private string _famePerHour = "0";
+        private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -441,7 +443,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Tracking Mode
 
-        private FameCountUpTimer _fameCountUpTimer;
         public void TrackerActivationToggle()
         {
             IsTrackingActive = !IsTrackingActive;
@@ -482,7 +483,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 });
             }
         }
-
+        
         #endregion
 
         private void ShowInfoWindow()
@@ -646,6 +647,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _famePerHour;
             set {
                 _famePerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TotalPlayerFame {
+            get => _totalPlayerFame;
+            set {
+                _totalPlayerFame = value;
                 OnPropertyChanged();
             }
         }

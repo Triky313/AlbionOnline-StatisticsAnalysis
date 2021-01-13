@@ -133,7 +133,7 @@
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Image Style="{StaticResource Icon.Fame}"/>
                         </Grid>
-                        <Label Content="{Binding Path=TotalPlayerFame, FallbackValue=999.999.999}" ContentStringFormat="{}{0:N0} Total Player Fame"  Width="Auto" Height="30" FontWeight="Bold" FontSize="18" Margin="0,-6, 0,0" HorizontalAlignment="Left"></Label>
+                        <Label Content="{Binding Path=TotalPlayerFame, FallbackValue=9.999k}" ContentStringFormat="{}{0} Total Player Fame"  Width="Auto" Height="30" FontWeight="Bold" FontSize="18" Margin="0,-6, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
                     <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
