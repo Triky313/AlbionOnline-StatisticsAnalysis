@@ -145,8 +145,10 @@
     </ApplicationDefinition>
     <Compile Include="Common\AlertController.cs" />
     <Compile Include="Common\Converter.cs" />
+    <Compile Include="Network\FameCountUpTimer.cs" />
     <Compile Include="Models\NetworkModel\Container.cs" />
     <Compile Include="Models\NetworkModel\Loot.cs" />
+    <Compile Include="Network\Notification\FameTypeOperator.cs" />
     <Compile Include="Network\Notification\TrackingNotification.cs" />
     <Compile Include="Network\EventCodes.cs" />
     <Compile Include="Network\Events\NewRandomDungeonExitEvent.cs" />
@@ -185,7 +187,6 @@
     <Compile Include="Network\Handler\UpdateFameEventHandler.cs" />
     <Compile Include="Network\Notification\FameNotificationFragment.cs" />
     <Compile Include="Network\Notification\AttributeStatOperator.cs" />
-    <Compile Include="Network\Notification\FameStatFragment.cs" />
     <Compile Include="Network\Notification\LineFragment.cs" />
     <Compile Include="Network\Notification\TextFragment.cs" />
     <Compile Include="Network\Operations\MoveOperation.cs" />
