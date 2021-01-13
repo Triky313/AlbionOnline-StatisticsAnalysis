@@ -73,7 +73,7 @@ namespace StatisticsAnalysisTool.Network
                 while (_isCurrentTimerUpdateActive)
                 {
                     SetCurrentIntervalTimeForFame();
-                    await Task.Delay(500);
+                    await Task.Delay(1000);
                 }
             });
             _taskId = task.Id;
