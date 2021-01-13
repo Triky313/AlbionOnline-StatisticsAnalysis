@@ -20,32 +20,19 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
-            if (value.ZoneMultiplier <= 1)
-            {
-                _mainWindowViewModel.AddTrackingNotification(SetPvpFameNotification(value.TotalPlayerFame, value.TotalGainedFame, value.ZoneFame, value.PremiumFame, value.SatchelFame));
-            }
-            else
-            {
-                _mainWindowViewModel.AddTrackingNotification(SetPveFameNotification(value.TotalPlayerFame, value.TotalGainedFame, value.ZoneFame, value.PremiumFame, value.SatchelFame));
-            }
+            _mainWindowViewModel.AddTrackingNotification(SetPveFameNotification(value.TotalPlayerFame, value.TotalGainedFame, value.ZoneFame, value.PremiumFame, value.SatchelFame, value.IsMobFame));
 
             _fameCountUpTimer.AddFame(value.TotalGainedFame);
             await Task.CompletedTask;
         }
         
-        private TrackingNotification SetPvpFameNotification(double totalPlayerFame, double totalGainedFame, double zoneFame, double premiumFame, double satchelFame)
+        private TrackingNotification SetPveFameNotification(double totalPlayerFame, double totalGainedFame, double zoneFame, double premiumFame, double satchelFame, bool isMobFame)
         {
-            return new TrackingNotification(DateTime.Now, new List<LineFragment>
-            {
-                new FameNotificationFragment("Du hast", AttributeStatOperator.Plus, totalPlayerFame, totalGainedFame, "PvP Ruhm", FameTypeOperator.Pvp, zoneFame, premiumFame, satchelFame, "erhalten."),
-            });
-        }
+            var fameText = isMobFame ? "Mob Fame" : "Tome Fame";
 
-        private TrackingNotification SetPveFameNotification(double totalPlayerFame, double totalGainedFame, double zoneFame, double premiumFame, double satchelFame)
-        {
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
-                new FameNotificationFragment("Du hast", AttributeStatOperator.Plus, totalPlayerFame, totalGainedFame, "PvE Ruhm", FameTypeOperator.Pve, zoneFame, premiumFame, satchelFame, "erhalten."),
+                new FameNotificationFragment("Du hast", AttributeStatOperator.Plus, totalPlayerFame, totalGainedFame, fameText, FameTypeOperator.Pve, zoneFame, premiumFame, satchelFame, "erhalten."),
             });
         }
     }

@@ -123,28 +123,32 @@
             <Button Style="{StaticResource ButtonStyle}" Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
         </Grid>
         <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Visible">
-            <Grid Margin="10,10,10,0" Height="70" VerticalAlignment="Top">
+            <Grid Margin="10,10,10,0" Height="90" VerticalAlignment="Top">
                 <Label Content="Tracking" HorizontalAlignment="Left" Width="54" VerticalAlignment="Top"/>
                 <Grid Margin="58,0,0,0" HorizontalAlignment="Left" Height="26" Width="26" VerticalAlignment="Top">
                     <fa:ImageAwesome Visibility="Visible" Icon="{Binding TrackerActivationToggle, FallbackValue=ToggleOff}" Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" MouseUp="TrackingModeActiveToggle_MouseUp" />
                 </Grid>
-               
-                <DockPanel Margin="0,33,0,0" Height="30" VerticalAlignment="Top">
-                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Image Style="{StaticResource Icon.Fame}"/>
-                    </Grid>
-                    <Label Content="{Binding Path=FamePerHour, FallbackValue=9999}" ContentStringFormat="{}{0:N0}/h"  Width="Auto" Height="30" FontWeight="Bold" FontSize="18" Margin="0,-6, 0,0" HorizontalAlignment="Left"></Label>
-                </DockPanel>
-                <Separator Margin="0,55,0,0" VerticalAlignment="Bottom"/>
+                <StackPanel Margin="0,28,0,0">
+                    <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Style="{StaticResource Icon.Fame}"/>
+                        </Grid>
+                        <Label Content="{Binding Path=TotalPlayerFame, FallbackValue=999.999.999}" ContentStringFormat="{}{0:N0} Total Player Fame"  Width="Auto" Height="30" FontWeight="Bold" FontSize="18" Margin="0,-6, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Style="{StaticResource Icon.Fame}"/>
+                        </Grid>
+                        <Label Content="{Binding Path=FamePerHour, FallbackValue=9.999k}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="30" FontWeight="Bold" FontSize="18" Margin="0,-6, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                    <Separator Margin="0,0,0,0" VerticalAlignment="Bottom"/>
+                </StackPanel>
             </Grid>
-
-            <Grid Margin="10,85,10,35">
+            <Grid Margin="10,105,10,35">
                 <ScrollViewer>
                     <ItemsControl ItemsSource="{Binding TrackingNotifications}" />
                 </ScrollViewer>
             </Grid>
-
-
             <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,30,0">
                 <Grid ZIndex="20" Margin="5,0,0,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
                     <TextBlock>

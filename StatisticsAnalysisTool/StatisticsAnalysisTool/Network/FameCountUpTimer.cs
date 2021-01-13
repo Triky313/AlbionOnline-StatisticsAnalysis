@@ -1,4 +1,5 @@
 ﻿using log4net;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -58,7 +59,7 @@ namespace StatisticsAnalysisTool.Network
         public void Reset()
         {
             _startTime = DateTime.Now;
-            _mainWindowViewModel.FamePerHour = 0;
+            _mainWindowViewModel.FamePerHour = "0";
             _totalGainedFame = 0;
             CurrentTimerUpdate();
         }
@@ -98,7 +99,7 @@ namespace StatisticsAnalysisTool.Network
         private void SetCurrentIntervalTimeForFame()
         {
             _currentTime = DateTime.Now - _startTime;
-            _mainWindowViewModel.FamePerHour = _totalGainedFame / (_currentTime.TotalSeconds / 60 / 60);
+            _mainWindowViewModel.FamePerHour = Formatting.ToStringShort(_totalGainedFame / (_currentTime.TotalSeconds / 60 / 60));
         }
 
         public struct FamePerHourStruct

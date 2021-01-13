@@ -82,7 +82,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
         private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
-        private double _famePerHour;
+        private string _famePerHour = "0";
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -642,7 +642,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public double FamePerHour {
+        public string FamePerHour {
             get => _famePerHour;
             set {
                 _famePerHour = value;
@@ -664,7 +664,7 @@ namespace StatisticsAnalysisTool.ViewModels
             set {
                 _isTrackingActive = value;
 
-                TrackerActivationToggleIcon = _isTrackingActive ? FontAwesomeIcon.ToggleOn : FontAwesomeIcon.ToggleOff;
+                TrackerActivationToggleIcon = (_isTrackingActive) ? FontAwesomeIcon.ToggleOn : FontAwesomeIcon.ToggleOff;
 
                 var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
                 var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
@@ -673,7 +673,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public FontAwesomeIcon TrackerActivationToggleIcon {
+        public FontAwesomeIcon TrackerActivationToggleIcon
+        {
             get => _trackerActivationToggleIcon;
             set
             {
@@ -682,7 +683,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Brush TrackerActivationToggleColor {
+        public Brush TrackerActivationToggleColor 
+        {
             get => _trackerActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
             set
             {

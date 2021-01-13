@@ -39,6 +39,15 @@ namespace StatisticsAnalysisTool.Network.Handler
                     }
                 }
 
+                if (parameters.ContainsKey(5))
+                {
+                    IsMobFame = bool.TryParse(parameters[5].ToString(), out var isMobFame) && isMobFame;
+                }
+                else
+                {
+                    IsMobFame = false;
+                }
+
                 SatchelFame = 0;
                 if (parameters.ContainsKey(9) && long.TryParse(parameters[9].ToString(), out var satchelFameUnrounded))
                 {
@@ -57,7 +66,14 @@ namespace StatisticsAnalysisTool.Network.Handler
                 double fameWithZoneAndPremium = 0;
                 if (FameWithZoneAndWithoutPremium > 0)
                 {
-                    fameWithZoneAndPremium = FameWithZoneAndWithoutPremium * 1.5f;
+                    if (IsMobFame)
+                    {
+                        fameWithZoneAndPremium = FameWithZoneAndWithoutPremium * 1.5f;
+                    }
+                    else
+                    {
+                        fameWithZoneAndPremium = FameWithZoneAndWithoutPremium;
+                    }
                 }
 
                 PremiumFame = 0;
@@ -88,5 +104,6 @@ namespace StatisticsAnalysisTool.Network.Handler
         public double ZoneFame { get; }
         public double SatchelFame { get; }
         public double TotalGainedFame { get; }
+        public bool IsMobFame { get; }
     }
 }
