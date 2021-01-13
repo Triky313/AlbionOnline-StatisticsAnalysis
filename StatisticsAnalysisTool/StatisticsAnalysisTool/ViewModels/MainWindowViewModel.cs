@@ -80,6 +80,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private FameCountUpTimer _fameCountUpTimer;
         private string _famePerHour = "0";
         private string _totalPlayerFame = "0";
+        private IOrderedEnumerable<TrackingNotification> _trackingNotificationsSorted;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
@@ -469,21 +470,63 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public void AddTrackingNotification(TrackingNotification trackingNotification)
+        public void AddTrackingNotification(TrackingNotification item)
         {
-            if (_mainWindow.Dispatcher.CheckAccess())
+            var index = -1;
+
+            var MostRecentDate = GetMostRecentDate(TrackingNotifications);
+            try
             {
-                TrackingNotifications.Add(trackingNotification);
+                var bigger = TrackingNotifications.First(x => x.DateTime == MostRecentDate);
+                index = TrackingNotifications.IndexOf(bigger);
             }
-            else
+            catch
             {
-                _mainWindow.Dispatcher.Invoke(delegate
+                index = TrackingNotifications.Count;
+            }
+            finally
+            {
+                if (index != -1)
                 {
-                    TrackingNotifications.Add(trackingNotification);
-                });
+                    if (_mainWindow.Dispatcher.CheckAccess())
+                    {
+                        TrackingNotifications.Insert(index, item);
+                    }
+                    else
+                    {
+                        _mainWindow.Dispatcher.Invoke(delegate
+                        {
+                            TrackingNotifications.Insert(index, item);
+                        });
+                    }
+                }
+                else
+                {
+                    if (_mainWindow.Dispatcher.CheckAccess())
+                    {
+                        TrackingNotifications.Add(item);
+                    }
+                    else
+                    {
+                        _mainWindow.Dispatcher.Invoke(delegate
+                        {
+                            TrackingNotifications.Add(item);
+                        });
+                    }
+                }
             }
         }
         
+        private DateTime GetMostRecentDate(ObservableCollection<TrackingNotification> items)
+        {
+            var max = DateTime.MinValue;
+            foreach (var item in items)
+            {
+                if (item.DateTime > max) max = item.DateTime;
+            }
+            return max;
+        }
+
         #endregion
 
         private void ShowInfoWindow()
