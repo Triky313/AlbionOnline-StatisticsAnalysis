@@ -133,7 +133,7 @@
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image Style="{StaticResource Icon.Fame}"/>
                     </Grid>
-                    <Label Content="{Binding Path=FamePerHour, FallbackValue=9999/h}" ContentStringFormat="{}{0:N0}/h"  Width="Auto" Height="30" FontWeight="Bold" FontSize="18" Margin="0,-6, 0,0" HorizontalAlignment="Left"></Label>
+                    <Label Content="{Binding Path=FamePerHour, FallbackValue=9999}" ContentStringFormat="{}{0:N0}/h"  Width="Auto" Height="30" FontWeight="Bold" FontSize="18" Margin="0,-6, 0,0" HorizontalAlignment="Left"></Label>
                 </DockPanel>
                 <Separator Margin="0,55,0,0" VerticalAlignment="Bottom"/>
             </Grid>
