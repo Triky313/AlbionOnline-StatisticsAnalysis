@@ -13,17 +13,19 @@ namespace StatisticsAnalysisTool.Network
     {
         private static IPhotonReceiver _receiver;
         private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
+        public static ReceiverBuilder builder;
 
-        public static void StartNetworkCapture(MainWindowViewModel mainWindowViewModel)
+        public static void StartNetworkCapture(MainWindowViewModel mainWindowViewModel, FameCountUpTimer fameCountUpTimer)
         {
-            var builder = ReceiverBuilder.Create();
+            builder = ReceiverBuilder.Create();
+
 
             //builder.AddRequestHandler(new UserInformationHandler());
             //builder.AddEventHandler(new NewRandomDungeonExitEventHandler());
             //builder.AddEventHandler(new NewCharacterEventHandler());
 
             //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
-            builder.AddEventHandler(new UpdateFameEventHandler(mainWindowViewModel)); // GEHT
+            builder.AddEventHandler(new UpdateFameEventHandler(mainWindowViewModel, fameCountUpTimer)); // GEHT
 
             builder.AddEventHandler(new NewRandomDungeonExitEventHandler());
 
@@ -39,7 +41,7 @@ namespace StatisticsAnalysisTool.Network
             _capturedDevices.AddRange(CaptureDeviceList.Instance);
             StartDeviceCapture();
         }
-        
+
         private static void StartDeviceCapture()
         {
             foreach (var device in _capturedDevices)
@@ -61,6 +63,7 @@ namespace StatisticsAnalysisTool.Network
                 {
                     device.StopCapture();
                     device.Close();
+                    builder = null;
                 });
             }
             _capturedDevices.Clear();

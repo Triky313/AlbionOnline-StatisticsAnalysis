@@ -82,6 +82,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
         private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
+        private double _famePerHour;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -440,6 +441,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Tracking Mode
 
+        private FameCountUpTimer _fameCountUpTimer;
         public void TrackerActivationToggle()
         {
             IsTrackingActive = !IsTrackingActive;
@@ -451,10 +453,17 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingNotifications = new ObservableCollection<TrackingNotification>();
                 }
 
-                NetworkController.StartNetworkCapture(this);
+                if (_fameCountUpTimer == null)
+                {
+                    _fameCountUpTimer = new FameCountUpTimer(this);
+                }
+
+                _fameCountUpTimer.Start();
+                NetworkController.StartNetworkCapture(this, _fameCountUpTimer);
             }
             else
             {
+                _fameCountUpTimer.Stop();
                 NetworkController.StopNetworkCapture();
             }
         }
@@ -632,7 +641,15 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
+        public double FamePerHour {
+            get => _famePerHour;
+            set {
+                _famePerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<TrackingNotification> TrackingNotifications {
             get => _trackingNotifications;
             set
