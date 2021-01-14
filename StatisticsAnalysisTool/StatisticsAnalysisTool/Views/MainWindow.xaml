@@ -125,7 +125,7 @@
             <Grid Margin="10,10,10,0" Height="90" VerticalAlignment="Top">
                 <Label Content="Tracking" HorizontalAlignment="Left" Width="54" VerticalAlignment="Top"/>
                 <Grid Margin="58,0,0,0" HorizontalAlignment="Left" Height="26" Width="26" VerticalAlignment="Top">
-                    <fa:ImageAwesome Visibility="Visible" Icon="{Binding TrackerActivationToggle, FallbackValue=ToggleOff}" Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" MouseUp="TrackingModeActiveToggle_MouseUp" />
+                    <fa:ImageAwesome Visibility="Visible" Icon="{Binding TrackerActivationToggleIcon, FallbackValue=ToggleOff}" Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" MouseUp="TrackingModeActiveToggle_MouseUp" />
                 </Grid>
                 <StackPanel Margin="0,28,0,0">
                     <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
