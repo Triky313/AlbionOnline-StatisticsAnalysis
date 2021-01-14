@@ -145,6 +145,7 @@
     </ApplicationDefinition>
     <Compile Include="Common\AlertController.cs" />
     <Compile Include="Common\Converter.cs" />
+    <Compile Include="Common\TrackingController.cs" />
     <Compile Include="Network\FameCountUpTimer.cs" />
     <Compile Include="Models\NetworkModel\Container.cs" />
     <Compile Include="Models\NetworkModel\Loot.cs" />

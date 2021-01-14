@@ -1,30 +1,32 @@
 ﻿using Albion.Network;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Formatting = StatisticsAnalysisTool.Common.Formatting;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UpdateFameEventHandler : EventPacketHandler<UpdateFameEvent>
     {
         private readonly MainWindowViewModel _mainWindowViewModel;
+        private readonly TrackingController _trackingController;
         private readonly FameCountUpTimer _fameCountUpTimer;
 
-        public UpdateFameEventHandler(MainWindowViewModel mainWindowViewModel, FameCountUpTimer fameCountUpTimer) : base(EventCodes.UpdateFame)
+        public UpdateFameEventHandler(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, FameCountUpTimer fameCountUpTimer) : base(EventCodes.UpdateFame)
         {
             _mainWindowViewModel = mainWindowViewModel;
+            _trackingController = trackingController;
             _fameCountUpTimer = fameCountUpTimer;
         }
 
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
-            _mainWindowViewModel.AddTrackingNotification(SetPveFameNotification(value.TotalPlayerFame, value.TotalGainedFame, value.ZoneFame, value.PremiumFame, value.SatchelFame, value.IsMobFame));
+            _trackingController.AddNotification(SetPveFameNotification(value.TotalPlayerFame, value.TotalGainedFame, value.ZoneFame, value.PremiumFame, value.SatchelFame, value.IsMobFame));
             _fameCountUpTimer.AddFame(value.TotalGainedFame);
 
-            _mainWindowViewModel.TotalPlayerFame = Formatting.ToStringShort(value.TotalPlayerFame);
+            _trackingController.SetTotalPlayerFame(Formatting.ToStringShort(value.TotalPlayerFame));
             await Task.CompletedTask;
         }
         

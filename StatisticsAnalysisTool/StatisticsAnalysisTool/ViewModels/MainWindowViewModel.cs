@@ -80,8 +80,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private FameCountUpTimer _fameCountUpTimer;
         private string _famePerHour = "0";
         private string _totalPlayerFame = "0";
-        private IOrderedEnumerable<TrackingNotification> _trackingNotificationsSorted;
-
+        private TrackingController _trackingController;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
         private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
@@ -221,22 +220,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
         
         #endregion
-
-        public void IsFullItemInformationCompleteCheck()
-        {
-            if (ItemController.IsFullItemInformationComplete)
-            {
-                LoadFullItemInfoButtonVisibility = Visibility.Hidden;
-                IsLoadFullItemInfoButtonEnabled = false;
-                LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
-            }
-            else
-            {
-                LoadFullItemInfoButtonVisibility = Visibility.Visible;
-                IsLoadFullItemInfoButtonEnabled = true;
-            }
-        }
-
+        
         public async void SetUiElements()
         {
             #region Set Modes to combobox
@@ -287,6 +271,8 @@ namespace StatisticsAnalysisTool.ViewModels
             #endregion Player information
         }
 
+        #region Ui utility methods
+
         public void CenterWindowOnScreen()
         {
             var screenWidth = SystemParameters.PrimaryScreenWidth;
@@ -295,6 +281,62 @@ namespace StatisticsAnalysisTool.ViewModels
             var windowHeight = _mainWindow.Height;
             _mainWindow.Left = (screenWidth / 2) - (windowWidth / 2);
             _mainWindow.Top = (screenHeight / 2) - (windowHeight / 2);
+        }
+
+        private void ShowInfoWindow()
+        {
+            if (Settings.Default.ShowInfoWindowOnStartChecked)
+            {
+                var infoWindow = new InfoWindow();
+                infoWindow.Show();
+            }
+        }
+
+        public static void OpenItemWindow(Item item)
+        {
+            if (string.IsNullOrEmpty(item?.UniqueName))
+                return;
+
+            try
+            {
+                if (!Settings.Default.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
+                {
+                    var existItemWindow = Application.Current.Windows.OfType<ItemWindow>().FirstOrDefault();
+                    existItemWindow?.InitializeItemWindow(item);
+                    existItemWindow?.Activate();
+                }
+                else
+                {
+                    var itemWindow = new ItemWindow(item);
+                    itemWindow.Show();
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                Log.Error(nameof(OpenItemWindow), e);
+                var catchItemWindow = new ItemWindow(item);
+                catchItemWindow.Show();
+            }
+        }
+
+
+        #endregion
+
+        #region Full Item Information
+
+        public void IsFullItemInformationCompleteCheck()
+        {
+            if (ItemController.IsFullItemInformationComplete)
+            {
+                LoadFullItemInfoButtonVisibility = Visibility.Hidden;
+                IsLoadFullItemInfoButtonEnabled = false;
+                LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
+            }
+            else
+            {
+                LoadFullItemInfoButtonVisibility = Visibility.Visible;
+                IsLoadFullItemInfoButtonEnabled = true;
+            }
         }
 
         public async void LoadAllFullItemInformationFromWeb()
@@ -332,6 +374,38 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsLoadFullItemInfoButtonEnabled = true;
             }
         }
+
+        #endregion
+
+        #region Alert
+
+        public void ToggleAlertSender(object sender)
+        {
+            if (sender == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var imageAwesome = (ImageAwesome)sender;
+                var item = (Item)imageAwesome.DataContext;
+
+                if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
+                {
+                    return;
+                }
+
+                item.IsAlertActive = AlertManager.ToggleAlert(ref item);
+                ItemsView.Refresh();
+            }
+            catch (Exception e)
+            {
+                Log.Error(nameof(ToggleAlertSender), e);
+            }
+        }
+
+        #endregion
 
         #region Item list (Normal Mode)
 
@@ -450,9 +524,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (IsTrackingActive)
             {
-                if (TrackingNotifications == null)
+                if (_trackingController == null)
                 {
-                    TrackingNotifications = new ObservableCollection<TrackingNotification>();
+                    _trackingController = new TrackingController(this, _mainWindow);
                 }
 
                 if (_fameCountUpTimer == null)
@@ -461,7 +535,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 _fameCountUpTimer.Start();
-                NetworkController.StartNetworkCapture(this, _fameCountUpTimer);
+                NetworkController.StartNetworkCapture(this, _trackingController, _fameCountUpTimer);
             }
             else
             {
@@ -470,127 +544,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public void AddTrackingNotification(TrackingNotification item)
-        {
-            var index = -1;
-
-            var MostRecentDate = GetMostRecentDate(TrackingNotifications);
-            try
-            {
-                var bigger = TrackingNotifications.First(x => x.DateTime == MostRecentDate);
-                index = TrackingNotifications.IndexOf(bigger);
-            }
-            catch
-            {
-                index = TrackingNotifications.Count;
-            }
-            finally
-            {
-                if (index != -1)
-                {
-                    if (_mainWindow.Dispatcher.CheckAccess())
-                    {
-                        TrackingNotifications.Insert(index, item);
-                    }
-                    else
-                    {
-                        _mainWindow.Dispatcher.Invoke(delegate
-                        {
-                            TrackingNotifications.Insert(index, item);
-                        });
-                    }
-                }
-                else
-                {
-                    if (_mainWindow.Dispatcher.CheckAccess())
-                    {
-                        TrackingNotifications.Add(item);
-                    }
-                    else
-                    {
-                        _mainWindow.Dispatcher.Invoke(delegate
-                        {
-                            TrackingNotifications.Add(item);
-                        });
-                    }
-                }
-            }
-        }
-        
-        private DateTime GetMostRecentDate(ObservableCollection<TrackingNotification> items)
-        {
-            var max = DateTime.MinValue;
-            foreach (var item in items)
-            {
-                if (item.DateTime > max) max = item.DateTime;
-            }
-            return max;
-        }
-
         #endregion
 
-        private void ShowInfoWindow()
-        {
-            if (Settings.Default.ShowInfoWindowOnStartChecked)
-            {
-                var infoWindow = new InfoWindow();
-                infoWindow.Show();
-            }
-        }
-
-        public static void OpenItemWindow(Item item)
-        {
-            if (string.IsNullOrEmpty(item?.UniqueName))
-                return;
-
-            try
-            {
-                if (!Settings.Default.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
-                {
-                    var existItemWindow = Application.Current.Windows.OfType<ItemWindow>().FirstOrDefault();
-                    existItemWindow?.InitializeItemWindow(item);
-                    existItemWindow?.Activate();
-                }
-                else
-                {
-                    var itemWindow = new ItemWindow(item);
-                    itemWindow.Show();
-                }
-            }
-            catch (ArgumentNullException e)
-            {
-                Log.Error(nameof(OpenItemWindow), e);
-                var catchItemWindow = new ItemWindow(item);
-                catchItemWindow.Show();
-            }
-        }
-
-        public void ToggleAlertSender(object sender)
-        {
-            if (sender == null)
-            {
-                return;
-            }
-
-            try
-            {
-                var imageAwesome = (ImageAwesome)sender;
-                var item = (Item)imageAwesome.DataContext;
-
-                if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
-                {
-                    return;
-                }
-
-                item.IsAlertActive = AlertManager.ToggleAlert(ref item);
-                ItemsView.Refresh();
-            }
-            catch (Exception e)
-            {
-                Log.Error(nameof(ToggleAlertSender), e);
-            }
-        }
-        
         #region Item View Filters
 
         private void ItemsViewFilter()
@@ -704,13 +659,12 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public ObservableCollection<TrackingNotification> TrackingNotifications {
             get => _trackingNotifications;
-            set
-            {
+            set {
                 _trackingNotifications = value;
                 OnPropertyChanged();
             }
         }
-        
+
         public bool IsTrackingActive {
             get => _isTrackingActive;
             set {
@@ -1099,7 +1053,7 @@ namespace StatisticsAnalysisTool.ViewModels
             public ViewMode ViewMode { get; set; }
         }
     }
-
+    
     public enum ViewMode
     {
         Normal,

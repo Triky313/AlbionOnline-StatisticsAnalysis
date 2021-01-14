@@ -12,12 +12,12 @@ namespace StatisticsAnalysisTool.Network
 {
     public class FameCountUpTimer
     {
+        private readonly MainWindowViewModel _mainWindowViewModel;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool _isCurrentTimerUpdateActive;
         private DateTime _startTime;
         private TimeSpan _currentTime;
         private double _totalGainedFame = 0;
-        private readonly MainWindowViewModel _mainWindowViewModel;
         private int? _taskId;
 
         private readonly List<FamePerHourStruct> _famePerHourList = new List<FamePerHourStruct>();
@@ -88,7 +88,10 @@ namespace StatisticsAnalysisTool.Network
 
             try
             {
-                Process.GetProcessById((int)taskId).Kill();
+                if (Process.GetProcesses().Any(x => x.Id == (int)taskId))
+                {
+                    Process.GetProcessById((int)taskId).Kill();
+                }
             }
             catch (Exception e)
             {

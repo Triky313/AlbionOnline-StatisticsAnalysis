@@ -1,6 +1,7 @@
 ﻿using Albion.Network;
 using PacketDotNet;
 using SharpPcap;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace StatisticsAnalysisTool.Network
         private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
         public static ReceiverBuilder builder;
 
-        public static void StartNetworkCapture(MainWindowViewModel mainWindowViewModel, FameCountUpTimer fameCountUpTimer)
+        public static void StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, FameCountUpTimer fameCountUpTimer)
         {
             builder = ReceiverBuilder.Create();
 
@@ -25,7 +26,7 @@ namespace StatisticsAnalysisTool.Network
             //builder.AddEventHandler(new NewCharacterEventHandler());
 
             //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
-            builder.AddEventHandler(new UpdateFameEventHandler(mainWindowViewModel, fameCountUpTimer)); // GEHT
+            builder.AddEventHandler(new UpdateFameEventHandler(mainWindowViewModel, trackingController, fameCountUpTimer)); // GEHT
 
             builder.AddEventHandler(new NewRandomDungeonExitEventHandler());
 
