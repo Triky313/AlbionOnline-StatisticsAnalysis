@@ -19,15 +19,18 @@
         </Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" Margin="0,40,0,0">
             <ComboBox ItemsSource="{Binding Modes}" SelectedItem="{Binding ModeSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="ViewMode" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="170" Height="23" SelectionChanged="CbMode_SelectionChanged" />
-            <Grid x:Name="BtnSettings" Margin="0,10,10,0" HorizontalAlignment="Right" Width="24" Height="24" VerticalAlignment="Top">
-                <fa:ImageAwesome Icon="Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
-            </Grid>
             <Grid HorizontalAlignment="Left" Height="24" Margin="185,7,0,0" VerticalAlignment="Top" Width="24">
                 <fa:ImageAwesome Visibility="{Binding LoadIconVisibility}" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
             <Grid Height="40" VerticalAlignment="Top" HorizontalAlignment="Center" Width="120">
                 <Image Style="{StaticResource Image.Gold}" Width="24" Height="24" Margin="10,8,0,8" HorizontalAlignment="Left" />
                 <Label Content="{Binding CurrentGoldPrice, FallbackValue=0, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding CurrentGoldPriceTimestamp}" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Gold}" Height="26" Margin="35,5,10,9" FontWeight="Bold" />
+            </Grid>
+            <Grid Margin="0,7,40,0" HorizontalAlignment="Right" Width="28" Height="28" VerticalAlignment="Top" ToolTip="{Binding Translation.IsTrackingActive}">
+                <fa:ImageAwesome Icon="Wifi" Foreground="{Binding TrackingIconColor}" />
+            </Grid>
+            <Grid Margin="0,10,10,0" HorizontalAlignment="Right" Width="24" Height="24" VerticalAlignment="Top">
+                <fa:ImageAwesome Icon="Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
             </Grid>
         </Grid>
         <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">

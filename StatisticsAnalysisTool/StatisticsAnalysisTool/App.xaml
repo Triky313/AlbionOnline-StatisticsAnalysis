@@ -79,6 +79,11 @@
         <Color x:Key="Text.Color.Pvp">#ffe05761</Color>
         <Color x:Key="Text.Color.Pve">#ff57b6e0</Color>
 
+        <!-- Tracking colors -->
+        <Color x:Key="Tracking.On">#FF1F9E6E</Color>
+        <Color x:Key="Tracking.Off">#FF616172</Color>
+
+
         <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pvp" Color="{StaticResource Text.Color.Pvp}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pve" Color="{StaticResource Text.Color.Pve}"/>
 

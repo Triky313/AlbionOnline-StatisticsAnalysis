@@ -568,6 +568,18 @@ namespace StatisticsAnalysisTool.ViewModels
             return false;
         }
 
+        public void SetTrackingIconColor()
+        {
+            if (IsTrackingActive)
+            {
+                TrackingIconColor = new SolidColorBrush((Color)Application.Current.Resources["Tracking.On"]);
+            }
+            else
+            {
+                TrackingIconColor = new SolidColorBrush((Color)Application.Current.Resources["Tracking.Off"]);
+            }
+        }
+
         #endregion
 
         #region Item View Filters
@@ -716,6 +728,15 @@ namespace StatisticsAnalysisTool.ViewModels
         public Brush TrackerActivationToggleColor 
         {
             get => _trackerActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+            set
+            {
+                _trackerActivationToggleColor = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public Brush TrackingIconColor {
+            get => _trackerActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Tracking.Off"]);
             set
             {
                 _trackerActivationToggleColor = value;

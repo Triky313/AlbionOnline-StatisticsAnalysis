@@ -15,5 +15,6 @@ namespace StatisticsAnalysisTool.Models
         public string ShowOnlyItemsWithAlertOn => LanguageController.Translation("SHOW_ONLY_ITEMS_WITH_ALERT_ON");
         public string IsAlertActive => LanguageController.Translation("IS_ALERT_ACTIVATE");
         public string UndercuttingPrice => LanguageController.Translation("UNDERCUTTING_PRICE");
+        public string IsTrackingActive => LanguageController.Translation("IS_TRACKING_ACTIVE");
     }
 }

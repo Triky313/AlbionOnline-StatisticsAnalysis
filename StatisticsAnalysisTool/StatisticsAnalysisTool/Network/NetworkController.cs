@@ -15,9 +15,11 @@ namespace StatisticsAnalysisTool.Network
         private static IPhotonReceiver _receiver;
         private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
         public static ReceiverBuilder builder;
+        private static MainWindowViewModel _mainWindowViewModel;
 
         public static void StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, FameCountUpTimer fameCountUpTimer)
         {
+            _mainWindowViewModel = mainWindowViewModel;
             builder = ReceiverBuilder.Create();
 
 
@@ -26,7 +28,7 @@ namespace StatisticsAnalysisTool.Network
             //builder.AddEventHandler(new NewCharacterEventHandler());
 
             //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
-            builder.AddEventHandler(new UpdateFameEventHandler(mainWindowViewModel, trackingController, fameCountUpTimer)); // GEHT
+            builder.AddEventHandler(new UpdateFameEventHandler(_mainWindowViewModel, trackingController, fameCountUpTimer)); // GEHT
 
             builder.AddEventHandler(new NewRandomDungeonExitEventHandler());
 
@@ -57,6 +59,8 @@ namespace StatisticsAnalysisTool.Network
                     }
                 });
             }
+
+            _mainWindowViewModel?.SetTrackingIconColor();
         }
 
         public static void StopNetworkCapture()
@@ -71,6 +75,7 @@ namespace StatisticsAnalysisTool.Network
                 });
             }
             _capturedDevices.Clear();
+            _mainWindowViewModel?.SetTrackingIconColor();
         }
 
         public static bool IsNetworkCaptureRunning => _capturedDevices.Where(device => device.Started).Any(device => device.Started);
