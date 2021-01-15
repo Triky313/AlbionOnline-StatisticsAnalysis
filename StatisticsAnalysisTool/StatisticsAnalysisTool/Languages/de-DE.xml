@@ -318,4 +318,8 @@
 
   <translation name="TRACKING">Tracking</translation>
   <translation name="IS_TRACKING_ACTIVE">Ist tracken aktiv? (Grün - AN | Grau - AUS)</translation>
+  <translation name="USERNAME">USERNAME</translation>
+  <translation name="GUILD">GILDE</translation>
+  <translation name="ALLIANCE">ALLIANZ</translation>
+  <translation name="RESET_FAME_COUNTER">Fame Zähler zurücksetzen</translation>
 </translations>

@@ -16,5 +16,9 @@ namespace StatisticsAnalysisTool.Models
         public string IsAlertActive => LanguageController.Translation("IS_ALERT_ACTIVATE");
         public string UndercuttingPrice => LanguageController.Translation("UNDERCUTTING_PRICE");
         public string IsTrackingActive => LanguageController.Translation("IS_TRACKING_ACTIVE");
+        public string Username => LanguageController.Translation("USERNAME");
+        public string Guild => LanguageController.Translation("GUILD");
+        public string Alliance => LanguageController.Translation("ALLIANCE");
+        public string ResetFameCounter => LanguageController.Translation("RESET_FAME_COUNTER");
     }
 }
