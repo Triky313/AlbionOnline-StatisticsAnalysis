@@ -49,9 +49,12 @@ namespace StatisticsAnalysisTool.Network
             {
                 Task.Run(() =>
                 {
-                    device.OnPacketArrival += PacketHandler;
-                    device.Open(DeviceMode.Promiscuous, 1000);
-                    device.StartCapture();
+                    if (!device.Started)
+                    {
+                        device.OnPacketArrival += PacketHandler;
+                        device.Open(DeviceMode.Promiscuous, 1000);
+                        device.StartCapture();
+                    }
                 });
             }
         }
@@ -69,6 +72,8 @@ namespace StatisticsAnalysisTool.Network
             }
             _capturedDevices.Clear();
         }
+
+        public static bool IsNetworkCaptureRunning => _capturedDevices.Where(device => device.Started).Any(device => device.Started);
 
         private static void PacketHandler(object sender, CaptureEventArgs e)
         {

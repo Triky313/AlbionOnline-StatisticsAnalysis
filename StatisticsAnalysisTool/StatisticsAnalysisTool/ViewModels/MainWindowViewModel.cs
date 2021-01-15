@@ -520,10 +520,20 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void TrackerActivationToggle()
         {
+            if (!IsReadyToTracking())
+            {
+                return;
+            }
+
             IsTrackingActive = !IsTrackingActive;
 
             if (IsTrackingActive)
             {
+                if (NetworkController.IsNetworkCaptureRunning)
+                {
+                    return;
+                }
+
                 if (_trackingController == null)
                 {
                     _trackingController = new TrackingController(this, _mainWindow);
@@ -539,9 +549,23 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             else
             {
-                _fameCountUpTimer.Stop();
+                _fameCountUpTimer?.Stop();
                 NetworkController.StopNetworkCapture();
             }
+        }
+
+        private DateTime? activateWaitTimer;
+
+        private bool IsReadyToTracking()
+        {
+            var waitTime = activateWaitTimer?.AddSeconds(1);
+            if (waitTime < DateTime.Now || waitTime == null)
+            {
+                activateWaitTimer = DateTime.Now;
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
