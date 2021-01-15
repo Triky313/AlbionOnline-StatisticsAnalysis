@@ -89,6 +89,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _trackingUsername;
         private string _trackingGuildName;
         private string _trackingAllianceName;
+        private string _errorBarText;
+        private Visibility _errorBarVisibility;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -236,6 +238,12 @@ namespace StatisticsAnalysisTool.ViewModels
         
         public async void SetUiElements()
         {
+            #region Error bar
+
+            ErrorBarVisibility = Visibility.Hidden;
+
+            #endregion
+
             #region Set Modes to combobox
 
             Modes.Clear();
@@ -552,6 +560,13 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StartTracking()
         {
+            if (!Utilities.IsSoftwareInstalled("WinPcap"))
+            {
+                IsTrackingActive = false;
+                SetErrorBar(Visibility.Visible, Translation.MakeSureYouHaveInstalledWinPcap);
+                return;
+            }
+
             if (NetworkController.IsNetworkCaptureRunning)
             {
                 return;
@@ -668,6 +683,16 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+
+        #endregion
+
+        #region Helper methods
+
+        public void SetErrorBar(Visibility visibility, string errorMessage)
+        {
+            ErrorBarText = errorMessage;
+            ErrorBarVisibility = visibility;
+        }
 
         #endregion
 
@@ -1104,6 +1129,22 @@ namespace StatisticsAnalysisTool.ViewModels
             set {
                 _savedPlayerInformationName = value;
                 Settings.Default.SavedPlayerInformationName = _savedPlayerInformationName;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ErrorBarText {
+            get => _errorBarText;
+            set {
+                _errorBarText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ErrorBarVisibility {
+            get => _errorBarVisibility;
+            set {
+                _errorBarVisibility = value;
                 OnPropertyChanged();
             }
         }

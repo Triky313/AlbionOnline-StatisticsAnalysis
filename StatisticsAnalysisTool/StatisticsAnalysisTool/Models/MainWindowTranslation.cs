@@ -20,5 +20,6 @@ namespace StatisticsAnalysisTool.Models
         public string Guild => LanguageController.Translation("GUILD");
         public string Alliance => LanguageController.Translation("ALLIANCE");
         public string ResetFameCounter => LanguageController.Translation("RESET_FAME_COUNTER");
+        public string MakeSureYouHaveInstalledWinPcap => LanguageController.Translation("MAKE_SURE_YOU_HAVE_INSTALLED_WINPCAP");
     }
 }

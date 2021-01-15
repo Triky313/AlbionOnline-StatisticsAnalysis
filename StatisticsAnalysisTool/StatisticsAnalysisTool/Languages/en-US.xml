@@ -323,4 +323,5 @@
   <translation name="GUILD">GUILD</translation>
   <translation name="ALLIANCE">ALLIANCE</translation>
   <translation name="RESET_FAME_COUNTER">Reset fame counter</translation>
+  <translation name="MAKE_SURE_YOU_HAVE_INSTALLED_WINPCAP">Make sure you have installed WinPcap. https://www.winpcap.org</translation>
 </translations>

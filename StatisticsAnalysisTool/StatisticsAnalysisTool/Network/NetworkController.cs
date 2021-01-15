@@ -19,6 +19,11 @@ namespace StatisticsAnalysisTool.Network
 
         public static void StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, FameCountUpTimer fameCountUpTimer)
         {
+            if (!Utilities.IsSoftwareInstalled("WinPcap"))
+            {
+                return;
+            }
+
             _mainWindowViewModel = mainWindowViewModel;
             builder = ReceiverBuilder.Create();
 
