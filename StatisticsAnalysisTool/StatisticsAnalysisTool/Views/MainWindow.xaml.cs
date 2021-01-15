@@ -206,5 +206,10 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.TrackerActivationToggle();
         }
+
+        private void BtnFameReset_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel.ResetFameCounter();
+        }
     }
 }

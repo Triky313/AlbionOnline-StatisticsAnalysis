@@ -604,7 +604,7 @@
         </Style>
 
         <!-- Normal Button Style -->
-        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+        <Style TargetType="{x:Type Button}">
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
@@ -664,18 +664,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <!-- Separator 
-        <Style TargetType="Separator">
-            <Setter Property="Background">
-                <Setter.Value>
-                    <RadialGradientBrush>
-                        <GradientStop Color="{StaticResource Color.Blue.1}" Offset="0"/>
-                        <GradientStop Color="{StaticResource Color.Blue.3}" Offset="1"/>
-                    </RadialGradientBrush>
-                </Setter.Value>
-            </Setter>
-        </Style> -->
 
         <!-- PlayerMode label value last -->
         <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Last">
@@ -1278,6 +1266,37 @@
             <Setter Property="Source" Value="Resources/fame.png"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="Width" Value="20"/>
+        </Style>
+
+        <!-- Tracking Information styles -->
+        <Style x:Key="Tracking.Information.Border" TargetType="{x:Type Border}">
+            <Setter Property="CornerRadius" Value="10"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}"></Setter>
+        </Style>
+
+        <Style x:Key="Tracking.Information.StackPanel" TargetType="{x:Type StackPanel}">
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="Orientation" Value="Vertical"></Setter>
+            <Setter Property="Width" Value="auto"></Setter>
+            <Setter Property="Margin" Value="5 0 5 0"></Setter>
+        </Style>
+
+        <Style x:Key="Tracking.Information.Title" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}"></Setter>
+            <Setter Property="FontSize" Value="12"></Setter>
+            <Setter Property="FontWeight" Value="Light"></Setter>
+            <Setter Property="Height" Value="18"></Setter>
+            <Setter Property="Padding" Value="0 3 0 0"></Setter>
+        </Style>
+
+        <Style x:Key="Tracking.Information.Value" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}"></Setter>
+            <Setter Property="FontSize" Value="12"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="Height" Value="20"></Setter>
+            <Setter Property="Padding" Value="0"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
         </Style>
 
     </Application.Resources>

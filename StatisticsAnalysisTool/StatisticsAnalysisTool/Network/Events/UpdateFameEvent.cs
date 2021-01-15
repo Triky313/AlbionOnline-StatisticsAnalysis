@@ -9,6 +9,7 @@ namespace StatisticsAnalysisTool.Network.Handler
     {
         public UpdateFameEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            // Array[10] exist only by Crafting...
             try
             {
                 foreach (var parameter in parameters)

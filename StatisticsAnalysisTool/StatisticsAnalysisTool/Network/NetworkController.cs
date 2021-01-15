@@ -37,7 +37,7 @@ namespace StatisticsAnalysisTool.Network
             //builder.AddEventHandler(new NewLootEventHandler());
             //builder.AddEventHandler(new NewLootChestEventHandler());
 
-            //builder.AddResponseHandler(new UserInformationHandler()); // GEHT
+            builder.AddResponseHandler(new UserInformationHandler(_mainWindowViewModel)); // GEHT
 
             _receiver = builder.Build();
 

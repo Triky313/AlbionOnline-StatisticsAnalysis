@@ -86,6 +86,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
         private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
+        private string _trackingUsername;
+        private string _trackingGuildName;
+        private string _trackingAllianceName;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -590,6 +593,11 @@ namespace StatisticsAnalysisTool.ViewModels
             return false;
         }
 
+        public void ResetFameCounter()
+        {
+            _fameCountUpTimer?.Reset();
+        }
+
         #endregion
 
         #region Item View Filters
@@ -691,6 +699,30 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _famePerHour;
             set {
                 _famePerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TrackingUsername {
+            get => _trackingUsername;
+            set {
+                _trackingUsername = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TrackingGuildName {
+            get => _trackingGuildName;
+            set {
+                _trackingGuildName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TrackingAllianceName {
+            get => _trackingAllianceName;
+            set {
+                _trackingAllianceName = value;
                 OnPropertyChanged();
             }
         }
