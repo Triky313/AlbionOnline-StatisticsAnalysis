@@ -81,6 +81,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _famePerHour = "0";
         private string _totalPlayerFame = "0";
         private TrackingController _trackingController;
+        private DateTime? activateWaitTimer;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
         private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
@@ -98,6 +99,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Close();
 
             InitMainWindowData();
+            SetTracking();
         }
         
         #region Inits
@@ -218,7 +220,15 @@ namespace StatisticsAnalysisTool.ViewModels
             ShowInfoWindow();
             TextBoxGoldModeNumberOfValues = "10";
         }
-        
+
+        private void SetTracking()
+        {
+            if (Settings.Default.IsTrackingActiveAtToolStart)
+            {
+                StartTracking();
+            }
+        }
+
         #endregion
         
         public async void SetUiElements()
@@ -529,32 +539,44 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (IsTrackingActive)
             {
-                if (NetworkController.IsNetworkCaptureRunning)
-                {
-                    return;
-                }
-
-                if (_trackingController == null)
-                {
-                    _trackingController = new TrackingController(this, _mainWindow);
-                }
-
-                if (_fameCountUpTimer == null)
-                {
-                    _fameCountUpTimer = new FameCountUpTimer(this);
-                }
-
-                _fameCountUpTimer.Start();
-                NetworkController.StartNetworkCapture(this, _trackingController, _fameCountUpTimer);
+                StartTracking();
             }
             else
             {
-                _fameCountUpTimer?.Stop();
-                NetworkController.StopNetworkCapture();
+                StopTracking();
             }
         }
 
-        private DateTime? activateWaitTimer;
+        public void StartTracking()
+        {
+            if (NetworkController.IsNetworkCaptureRunning)
+            {
+                return;
+            }
+
+            if (_trackingController == null)
+            {
+                _trackingController = new TrackingController(this, _mainWindow);
+            }
+
+            if (_fameCountUpTimer == null)
+            {
+                _fameCountUpTimer = new FameCountUpTimer(this);
+            }
+
+            _fameCountUpTimer.Start();
+            NetworkController.StartNetworkCapture(this, _trackingController, _fameCountUpTimer);
+
+            IsTrackingActive = true;
+        }
+
+        public void StopTracking()
+        {
+            _fameCountUpTimer?.Stop();
+            NetworkController.StopNetworkCapture();
+
+            IsTrackingActive = false;
+        }
 
         private bool IsReadyToTracking()
         {
@@ -566,18 +588,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             return false;
-        }
-
-        public void SetTrackingIconColor()
-        {
-            if (IsTrackingActive)
-            {
-                TrackingIconColor = new SolidColorBrush((Color)Application.Current.Resources["Tracking.On"]);
-            }
-            else
-            {
-                TrackingIconColor = new SolidColorBrush((Color)Application.Current.Resources["Tracking.Off"]);
-            }
         }
 
         #endregion
@@ -711,6 +721,10 @@ namespace StatisticsAnalysisTool.ViewModels
                 var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
                 var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
                 TrackerActivationToggleColor = _isTrackingActive ? colorOn : colorOff;
+
+                var trackingIconColorOn = new SolidColorBrush((Color)Application.Current.Resources["Tracking.On"]);
+                var trackingIconColorOff = new SolidColorBrush((Color)Application.Current.Resources["Tracking.Off"]);
+                TrackingIconColor = _isTrackingActive ? trackingIconColorOn : trackingIconColorOff;
                 OnPropertyChanged();
             }
         }

@@ -127,6 +127,17 @@ namespace StatisticsAnalysisTool.Views
         
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            #region Tracking
+
+            Settings.Default.IsTrackingActiveAtToolStart = _mainWindowViewModel.IsTrackingActive;
+
+            if (_mainWindowViewModel.IsTrackingActive)
+            {
+                _mainWindowViewModel.StopTracking();
+            }
+
+            #endregion
+
             if (WindowState == WindowState.Maximized)
             {
                 Settings.Default.MainWindowHeight = RestoreBounds.Height;

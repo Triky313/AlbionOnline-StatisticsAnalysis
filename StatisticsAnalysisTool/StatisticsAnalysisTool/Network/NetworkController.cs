@@ -59,8 +59,6 @@ namespace StatisticsAnalysisTool.Network
                     }
                 });
             }
-
-            _mainWindowViewModel?.SetTrackingIconColor();
         }
 
         public static void StopNetworkCapture()
@@ -75,7 +73,6 @@ namespace StatisticsAnalysisTool.Network
                 });
             }
             _capturedDevices.Clear();
-            _mainWindowViewModel?.SetTrackingIconColor();
         }
 
         public static bool IsNetworkCaptureRunning => _capturedDevices.Where(device => device.Started).Any(device => device.Started);
