@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Network
         private bool _isCurrentTimerUpdateActive;
         private DateTime _startTime;
         private TimeSpan _currentTime;
-        private double _totalGainedFame = 0;
+        private double _totalGainedFame;
         private int? _taskId;
 
         private readonly List<FamePerHourStruct> _famePerHourList = new List<FamePerHourStruct>();
