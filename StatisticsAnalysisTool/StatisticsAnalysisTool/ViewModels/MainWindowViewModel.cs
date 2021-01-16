@@ -583,9 +583,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             _fameCountUpTimer.Start();
-            NetworkController.StartNetworkCapture(this, _trackingController, _fameCountUpTimer);
 
-            IsTrackingActive = true;
+            IsTrackingActive = NetworkController.StartNetworkCapture(this, _trackingController, _fameCountUpTimer);
         }
 
         public void StopTracking()

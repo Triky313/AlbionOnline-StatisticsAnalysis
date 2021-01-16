@@ -1,27 +1,32 @@
 ﻿using Albion.Network;
+using log4net;
 using PacketDotNet;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Network
 {
     public static class NetworkController
     {
         private static IPhotonReceiver _receiver;
-        private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
         public static ReceiverBuilder builder;
         private static MainWindowViewModel _mainWindowViewModel;
+        private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static void StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, FameCountUpTimer fameCountUpTimer)
+        public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, FameCountUpTimer fameCountUpTimer)
         {
             if (!Utilities.IsSoftwareInstalled("WinPcap"))
             {
-                return;
+                return false;
             }
 
             _mainWindowViewModel = mainWindowViewModel;
@@ -33,7 +38,7 @@ namespace StatisticsAnalysisTool.Network
             //builder.AddEventHandler(new NewCharacterEventHandler());
 
             //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
-            builder.AddEventHandler(new UpdateFameEventHandler(_mainWindowViewModel, trackingController, fameCountUpTimer)); // GEHT
+            builder.AddEventHandler(new UpdateFameEventHandler(trackingController, fameCountUpTimer)); // GEHT
 
             builder.AddEventHandler(new NewRandomDungeonExitEventHandler());
 
@@ -47,11 +52,16 @@ namespace StatisticsAnalysisTool.Network
             _receiver = builder.Build();
 
             _capturedDevices.AddRange(CaptureDeviceList.Instance);
-            StartDeviceCapture();
+            return StartDeviceCapture();
         }
 
-        private static void StartDeviceCapture()
+        private static bool StartDeviceCapture()
         {
+            if (_capturedDevices.Count <= 0)
+            {
+                return false;
+            }
+
             foreach (var device in _capturedDevices)
             {
                 Task.Run(() =>
@@ -64,6 +74,7 @@ namespace StatisticsAnalysisTool.Network
                     }
                 });
             }
+            return true;
         }
 
         public static void StopNetworkCapture()
@@ -84,10 +95,19 @@ namespace StatisticsAnalysisTool.Network
 
         private static void PacketHandler(object sender, CaptureEventArgs e)
         {
-            var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data).Extract<UdpPacket>();
-            if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
+            try
             {
-                _receiver.ReceivePacket(packet.PayloadData);
+                var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data).Extract<UdpPacket>();
+                if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
+                {
+                    _receiver.ReceivePacket(packet.PayloadData);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(nameof(PacketHandler), ex);
+                _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
+                _mainWindowViewModel.StopTracking();
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Notification;
-using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,13 +9,11 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UpdateFameEventHandler : EventPacketHandler<UpdateFameEvent>
     {
-        private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly TrackingController _trackingController;
         private readonly FameCountUpTimer _fameCountUpTimer;
 
-        public UpdateFameEventHandler(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, FameCountUpTimer fameCountUpTimer) : base(EventCodes.UpdateFame)
+        public UpdateFameEventHandler(TrackingController trackingController, FameCountUpTimer fameCountUpTimer) : base(EventCodes.UpdateFame)
         {
-            _mainWindowViewModel = mainWindowViewModel;
             _trackingController = trackingController;
             _fameCountUpTimer = fameCountUpTimer;
         }
