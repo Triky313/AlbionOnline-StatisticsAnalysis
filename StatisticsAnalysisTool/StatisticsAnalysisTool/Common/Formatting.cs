@@ -18,23 +18,23 @@ namespace StatisticsAnalysisTool.Common
             if (num < 10000)
             {
                 num /= 10;
-                return (num / 100f).ToString("#'K'", CultureInfo.CurrentCulture);
+                return (num / 100f).ToString("#.0'K'", CultureInfo.CurrentCulture);
             }
 
             if (num < 1000000)
             {
                 num /= 100;
-                return (num / 10f).ToString("#'K'", CultureInfo.CurrentCulture);
+                return (num / 10f).ToString("#.0'K'", CultureInfo.CurrentCulture);
             }
 
             if (num < 10000000)
             {
                 num /= 10000;
-                return (num / 100f).ToString("#'M'", CultureInfo.CurrentCulture);
+                return (num / 100f).ToString("#.0'M'", CultureInfo.CurrentCulture);
             }
 
             num /= 100000;
-            return (num / 10f).ToString("#'M'", CultureInfo.CurrentCulture);
+            return (num / 10f).ToString("#.0'M'", CultureInfo.CurrentCulture);
         }
     }
 }
