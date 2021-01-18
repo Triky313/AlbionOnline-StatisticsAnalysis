@@ -328,4 +328,5 @@
   <translation name="FAME">Ruhm</translation>
   <translation name="GAINED">erhalten.</translation>
   <translation name="FAME_RESET_BY_MAP_CHANGE">Ruhm reset bei Map-Wechsel</translation>
+  <translation name="TOTAL_PLAYER_FAME">Gesammter Spieler Ruhm</translation>
 </translations>

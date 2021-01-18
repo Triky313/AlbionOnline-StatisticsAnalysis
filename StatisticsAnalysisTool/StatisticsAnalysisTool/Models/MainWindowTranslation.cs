@@ -22,5 +22,6 @@ namespace StatisticsAnalysisTool.Models
         public string ResetFameCounter => LanguageController.Translation("RESET_FAME_COUNTER");
         public string MakeSureYouHaveInstalledWinPcap => LanguageController.Translation("MAKE_SURE_YOU_HAVE_INSTALLED_WINPCAP");
         public string FameResetByMapChange => LanguageController.Translation("FAME_RESET_BY_MAP_CHANGE");
+        public string TotalPlayerFame => LanguageController.Translation("TOTAL_PLAYER_FAME");
     }
 }

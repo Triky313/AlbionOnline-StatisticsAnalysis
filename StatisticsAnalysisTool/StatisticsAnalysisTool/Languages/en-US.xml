@@ -329,4 +329,5 @@
   <translation name="FAME">Fame</translation>
   <translation name="GAINED">gained.</translation>
   <translation name="FAME_RESET_BY_MAP_CHANGE">Fame reset by map change</translation>
+  <translation name="TOTAL_PLAYER_FAME">Total Player Fame</translation>
 </translations>
