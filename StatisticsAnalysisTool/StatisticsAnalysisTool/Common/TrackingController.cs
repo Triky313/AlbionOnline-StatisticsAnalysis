@@ -29,6 +29,11 @@ namespace StatisticsAnalysisTool.Common
             _mainWindowViewModel.TotalPlayerFame = value;
         }
 
+        public void SetTotalPlayerSilver(string value)
+        {
+            _mainWindowViewModel.TotalPlayerSilver = value;
+        }
+
         public void AddNotification(TrackingNotification item)
         {
             if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null)

@@ -12,10 +12,10 @@ namespace StatisticsAnalysisTool.Network.Handler
             // Array[10] exist only by Crafting...
             try
             {
-                foreach (var parameter in parameters)
-                {
-                    Debug.Print($"{parameter}");
-                }
+                //foreach (var parameter in parameters)
+                //{
+                //    Debug.Print($"{parameter}");
+                //}
 
                 if (parameters.ContainsKey(1) && long.TryParse(parameters[1].ToString(), out long totalFame))
                 {

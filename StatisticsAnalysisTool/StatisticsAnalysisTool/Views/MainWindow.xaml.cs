@@ -210,7 +210,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void BtnFameReset_Click(object sender, RoutedEventArgs e)
         {
-            _mainWindowViewModel.ResetFameCounter();
+            _mainWindowViewModel.ResetCounters(true, true);
         }
 
         private void BtnErrorBar_Click(object sender, RoutedEventArgs e)

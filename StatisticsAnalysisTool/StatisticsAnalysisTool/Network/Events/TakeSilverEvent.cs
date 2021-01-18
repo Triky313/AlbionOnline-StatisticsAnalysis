@@ -17,13 +17,6 @@ namespace StatisticsAnalysisTool.Network.Handler
                     Debug.Print($"{parameter}");
                 }
 
-                // Ist keine UserID
-                //if (parameters.ContainsKey(0))
-                //{
-                //    long.TryParse(parameters[0].ToString(), out long userId);
-                //    Username = userId;
-                //}
-
                 if (parameters.ContainsKey(3))
                 {
                     TotalCollectedSilver = int.Parse(parameters[3].ToString().Remove(parameters[3].ToString().Length - 4));

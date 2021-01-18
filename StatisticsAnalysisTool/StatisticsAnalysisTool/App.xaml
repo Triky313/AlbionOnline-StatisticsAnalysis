@@ -1268,6 +1268,13 @@
             <Setter Property="Width" Value="20"/>
         </Style>
 
+        <!-- Silver icon -->
+        <Style TargetType="Image" x:Key="Icon.Silver" >
+            <Setter Property="Source" Value="Resources/silver.png"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="20"/>
+        </Style>
+
         <!-- Tracking Information styles -->
         <Style x:Key="Tracking.Information.Border" TargetType="{x:Type Border}">
             <Setter Property="CornerRadius" Value="10"></Setter>

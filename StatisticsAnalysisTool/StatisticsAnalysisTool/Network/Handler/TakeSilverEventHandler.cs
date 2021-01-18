@@ -11,7 +11,6 @@ namespace StatisticsAnalysisTool.Network.Handler
         protected override async Task OnActionAsync(TakeSilverEvent value)
         {
             Debug.Print($"TakeSilver");
-            Debug.Print($"Username: {value.UserId}");
             Debug.Print($"Total Collected Silver: {value.TotalCollectedSilver}");
             Debug.Print($"Guild Tax: {value.GuildTax}");
             Debug.Print($"Earned Silver: {value.EarnedSilver}");

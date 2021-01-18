@@ -22,7 +22,7 @@ namespace StatisticsAnalysisTool.Network
         private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, FameCountUpTimer fameCountUpTimer)
+        public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, FameCountUpTimer fameCountUpTimer, SilverCountUpTimer silverCountUpTimer)
         {
             if (!Utilities.IsSoftwareInstalled("WinPcap"))
             {
@@ -34,13 +34,13 @@ namespace StatisticsAnalysisTool.Network
 
 
             //builder.AddRequestHandler(new UserInformationHandler());
-            //builder.AddEventHandler(new NewRandomDungeonExitEventHandler());
+            //builder.AddEventHandler(new UpdateMoneyEventHandler());
             //builder.AddEventHandler(new NewCharacterEventHandler());
 
-            //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
+            builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
             builder.AddEventHandler(new UpdateFameEventHandler(trackingController, fameCountUpTimer)); // GEHT
 
-            builder.AddEventHandler(new NewRandomDungeonExitEventHandler());
+            builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController, silverCountUpTimer));
 
             //builder.AddEventHandler(new PartySilverGainedEventHandler());
             

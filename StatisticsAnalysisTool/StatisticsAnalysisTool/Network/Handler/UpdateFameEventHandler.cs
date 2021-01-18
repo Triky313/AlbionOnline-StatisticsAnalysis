@@ -21,7 +21,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
             _trackingController.AddNotification(SetPveFameNotification(value.TotalPlayerFame, value.TotalGainedFame, value.ZoneFame, value.PremiumFame, value.SatchelFame, value.IsMobFame));
-            _fameCountUpTimer.AddFame(value.TotalGainedFame);
+            _fameCountUpTimer.Add(value.TotalGainedFame);
 
             _trackingController.SetTotalPlayerFame(Formatting.ToStringShort(value.TotalPlayerFame));
             await Task.CompletedTask;

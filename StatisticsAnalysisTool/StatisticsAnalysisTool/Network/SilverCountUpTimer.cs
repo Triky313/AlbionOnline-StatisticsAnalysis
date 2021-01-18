@@ -11,29 +11,45 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network
 {
-    public class FameCountUpTimer : ICountUpTimer
+    public class SilverCountUpTimer : ICountUpTimer
     {
         private readonly MainWindowViewModel _mainWindowViewModel;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool _isCurrentTimerUpdateActive;
         private DateTime _startTime;
         private TimeSpan _currentTime;
-        private double _totalGainedFame;
+        private double _totalGainedSilver;
         private int? _taskId;
+        private double? _lastValue;
 
-        private readonly List<ValuePerHour> _famePerHourList = new List<ValuePerHour>();
+        private readonly List<ValuePerHour> _silverPerHourList = new List<ValuePerHour>();
 
-        public FameCountUpTimer(MainWindowViewModel mainWindowViewModel)
+        public SilverCountUpTimer(MainWindowViewModel mainWindowViewModel)
         {
             _mainWindowViewModel = mainWindowViewModel;
         }
 
         public void Add(double value)
         {
-            _famePerHourList.Add(new ValuePerHour() { DateTime = DateTime.Now, Value = value });
-            _famePerHourList.RemoveAll(x => x.DateTime < DateTime.Now.AddHours(-1));
+            if (_lastValue == null)
+            {
+                _lastValue = value;
+                return;
+            }
 
-            _totalGainedFame = _famePerHourList.Sum(x => x.Value);
+            var newSilverValue = (double)(value - _lastValue);
+
+            if (newSilverValue == 0)
+            {
+                return;
+            }
+
+            _lastValue = value;
+
+            _silverPerHourList.Add(new ValuePerHour() { DateTime = DateTime.Now, Value = newSilverValue });
+            _silverPerHourList.RemoveAll(x => x.DateTime < DateTime.Now.AddHours(-1));
+
+            _totalGainedSilver = _silverPerHourList.Sum(x => x.Value);
             Start();
         }
 
@@ -60,11 +76,11 @@ namespace StatisticsAnalysisTool.Network
         public void Reset()
         {
             _startTime = DateTime.Now;
-            _mainWindowViewModel.FamePerHour = "0";
-            _totalGainedFame = 0;
+            _mainWindowViewModel.SilverPerHour = "0";
+            _totalGainedSilver = 0;
             CurrentTimerUpdate();
         }
-
+        
         private void CurrentTimerUpdate()
         {
             _isCurrentTimerUpdateActive = true;
@@ -73,7 +89,7 @@ namespace StatisticsAnalysisTool.Network
             {
                 while (_isCurrentTimerUpdateActive)
                 {
-                    SetCurrentIntervalTimeForFame();
+                    SetCurrentIntervalTimeForSilver();
                     await Task.Delay(1000);
                 }
             });
@@ -100,10 +116,10 @@ namespace StatisticsAnalysisTool.Network
             }
         }
 
-        private void SetCurrentIntervalTimeForFame()
+        private void SetCurrentIntervalTimeForSilver()
         {
             _currentTime = DateTime.Now - _startTime;
-            _mainWindowViewModel.FamePerHour = Formatting.ToStringShort(_totalGainedFame / (_currentTime.TotalSeconds / 60 / 60));
+            _mainWindowViewModel.SilverPerHour = Formatting.ToStringShort(_totalGainedSilver / (_currentTime.TotalSeconds / 60 / 60));
         }
     }
 }

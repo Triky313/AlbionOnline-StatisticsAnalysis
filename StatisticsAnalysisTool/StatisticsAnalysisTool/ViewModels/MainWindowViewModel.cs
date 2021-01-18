@@ -78,6 +78,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingActive;
         private Brush _trackerActivationToggleColor;
         private FameCountUpTimer _fameCountUpTimer;
+        private SilverCountUpTimer _silverCountUpTimer;
         private string _famePerHour = "0";
         private string _totalPlayerFame = "0";
         private TrackingController _trackingController;
@@ -95,6 +96,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _guildInformationVisibility;
         private Visibility _allianceInformationVisibility;
         private bool _isFameResetByMapChangeActive;
+        private string _silverPerHour;
+        private string _totalPlayerSilver;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -596,14 +599,21 @@ namespace StatisticsAnalysisTool.ViewModels
                 _fameCountUpTimer = new FameCountUpTimer(this);
             }
 
-            _fameCountUpTimer.Start();
+            if (_silverCountUpTimer == null)
+            {
+                _silverCountUpTimer = new SilverCountUpTimer(this);
+            }
 
-            IsTrackingActive = NetworkController.StartNetworkCapture(this, _trackingController, _fameCountUpTimer);
+            _fameCountUpTimer.Start();
+            _silverCountUpTimer.Start();
+
+            IsTrackingActive = NetworkController.StartNetworkCapture(this, _trackingController, _fameCountUpTimer, _silverCountUpTimer);
         }
 
         public void StopTracking()
         {
             _fameCountUpTimer?.Stop();
+            _silverCountUpTimer?.Stop();
             NetworkController.StopNetworkCapture();
 
             IsTrackingActive = false;
@@ -621,9 +631,17 @@ namespace StatisticsAnalysisTool.ViewModels
             return false;
         }
 
-        public void ResetFameCounter()
+        public void ResetCounters(bool fame, bool silver)
         {
-            _fameCountUpTimer?.Reset();
+            if (fame)
+            {
+                _fameCountUpTimer?.Reset();
+            }
+
+            if (silver)
+            {
+                _silverCountUpTimer?.Reset();
+            }
         }
 
         #endregion
@@ -756,15 +774,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public string FamePerHour {
-            get => _famePerHour;
-            set {
-                _famePerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public string TrackingUsername {
             get => _trackingUsername;
             set {
@@ -795,10 +805,34 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public string FamePerHour {
+            get => _famePerHour;
+            set {
+                _famePerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SilverPerHour {
+            get => _silverPerHour;
+            set {
+                _silverPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string TotalPlayerFame {
             get => _totalPlayerFame;
             set {
                 _totalPlayerFame = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TotalPlayerSilver {
+            get => _totalPlayerSilver;
+            set {
+                _totalPlayerSilver = value;
                 OnPropertyChanged();
             }
         }
