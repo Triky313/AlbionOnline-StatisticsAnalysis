@@ -766,7 +766,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _trackingUsername;
             set {
                 _trackingUsername = value;
-                UsernameInformationVisibility = !string.IsNullOrEmpty(TrackingUsername) ? Visibility.Visible : Visibility.Hidden;
+                UsernameInformationVisibility = !string.IsNullOrEmpty(_trackingUsername) ? Visibility.Visible : Visibility.Hidden;
 
                 OnPropertyChanged();
             }
@@ -776,7 +776,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _trackingGuildName;
             set {
                 _trackingGuildName = value;
-                GuildInformationVisibility = !string.IsNullOrEmpty(TrackingUsername) ? Visibility.Visible : Visibility.Hidden;
+                GuildInformationVisibility = !string.IsNullOrEmpty(_trackingGuildName) ? Visibility.Visible : Visibility.Hidden;
 
                 OnPropertyChanged();
             }
@@ -786,13 +786,7 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _trackingAllianceName;
             set {
                 _trackingAllianceName = value;
-
-                if (!string.IsNullOrEmpty(TrackingUsername))
-                {
-                    AllianceInformationVisibility = Visibility.Visible;
-                }
-
-                AllianceInformationVisibility = !string.IsNullOrEmpty(TrackingUsername) ? Visibility.Visible : Visibility.Hidden;
+                AllianceInformationVisibility = !string.IsNullOrEmpty(_trackingAllianceName) ? Visibility.Visible : Visibility.Hidden;
 
                 OnPropertyChanged();
             }
