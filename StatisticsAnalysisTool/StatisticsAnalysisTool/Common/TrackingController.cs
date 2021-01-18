@@ -16,6 +16,8 @@ namespace StatisticsAnalysisTool.Common
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly MainWindow _mainWindow;
 
+        private const int _maxNotifications = 50;
+
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
             _mainWindowViewModel = mainWindowViewModel;
@@ -93,7 +95,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 while (true)
                 {
-                    if (_mainWindowViewModel.TrackingNotifications?.Count <= 20)
+                    if (_mainWindowViewModel.TrackingNotifications?.Count <= _maxNotifications)
                     {
                         break;
                     }
