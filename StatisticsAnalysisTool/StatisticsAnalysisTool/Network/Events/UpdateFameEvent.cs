@@ -40,6 +40,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                     }
                 }
 
+                // TODO: Is not isMobFame. Maybe Aggressive or not Aggressive mobs
                 if (parameters.ContainsKey(5))
                 {
                     IsMobFame = bool.TryParse(parameters[5].ToString(), out var isMobFame) && isMobFame;

@@ -94,6 +94,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _usernameInformationVisibility;
         private Visibility _guildInformationVisibility;
         private Visibility _allianceInformationVisibility;
+        private bool _isFameResetByMapChangeActive;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -796,6 +797,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _totalPlayerFame;
             set {
                 _totalPlayerFame = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsFameResetByMapChangeActive {
+            get => _isFameResetByMapChangeActive;
+            set {
+                _isFameResetByMapChangeActive = value;
                 OnPropertyChanged();
             }
         }

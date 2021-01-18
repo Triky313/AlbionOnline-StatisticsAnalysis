@@ -125,7 +125,7 @@
             <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
         </Grid>
         <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Visible">
-            <Grid Margin="10,10,160,0" Height="45" VerticalAlignment="Top">
+            <Grid Margin="10,10,215,0" Height="45" VerticalAlignment="Top">
                 <DockPanel Margin="0,0,0,0" Height="Auto" VerticalAlignment="Top">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Height="auto" Width="50">
                         <Grid Margin="0,0,0,0" HorizontalAlignment="Left" Height="auto" Width="40" VerticalAlignment="Center">
@@ -153,10 +153,11 @@
                     <Grid></Grid>
                 </DockPanel>
             </Grid>
-            <StackPanel IsEnabled="{Binding IsTrackingActive}" Margin="0,10,10,0" HorizontalAlignment="Right" Width="145" Height="110" VerticalAlignment="Top">
+            <StackPanel IsEnabled="{Binding IsTrackingActive}" Margin="0,10,10,0" HorizontalAlignment="Right" Width="200" Height="110" VerticalAlignment="Top">
                 <Button Content="{Binding Translation.ResetFameCounter, FallbackValue=RESET__FAME__COUNTER}" Height="26" VerticalAlignment="Top" Click="BtnFameReset_Click" />
+                <CheckBox IsChecked="{Binding IsFameResetByMapChangeActive}" Content="{Binding Translation.FameResetByMapChange, FallbackValue=FAME_RESET_BY_MAP_CHANGE}"></CheckBox>
             </StackPanel>
-            <Grid Margin="10,55,165,0" Height="60" VerticalAlignment="Top">
+            <Grid Margin="10,55,215,0" Height="60" VerticalAlignment="Top">
                 <StackPanel Margin="0,0,0,0">
                     <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">

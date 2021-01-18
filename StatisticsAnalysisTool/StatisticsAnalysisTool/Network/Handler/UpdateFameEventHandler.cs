@@ -29,11 +29,11 @@ namespace StatisticsAnalysisTool.Network.Handler
         
         private TrackingNotification SetPveFameNotification(double totalPlayerFame, double totalGainedFame, double zoneFame, double premiumFame, double satchelFame, bool isMobFame)
         {
-            var fameText = isMobFame ? "Mob Fame" : "Tome Fame";
+            //var fameText = isMobFame ? "Mob Fame" : "Tome Fame";
 
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
-                new FameNotificationFragment("Du hast", AttributeStatOperator.Plus, totalPlayerFame, totalGainedFame, fameText, FameTypeOperator.Pve, zoneFame, premiumFame, satchelFame, "erhalten."),
+                new FameNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, totalPlayerFame, totalGainedFame, LanguageController.Translation("FAME"), FameTypeOperator.Pve, zoneFame, premiumFame, satchelFame, LanguageController.Translation("GAINED")),
             });
         }
     }

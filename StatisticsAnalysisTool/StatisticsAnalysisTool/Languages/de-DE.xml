@@ -324,4 +324,8 @@
   <translation name="RESET_FAME_COUNTER">Fame Zähler zurücksetzen</translation>
   <translation name="MAKE_SURE_YOU_HAVE_INSTALLED_WINPCAP">Geh sicher, dass du WinPcap installiert hast. https://www.winpcap.org</translation>
   <translation name="PACKET_HANDLER_ERROR_MESSAGE">Ein Fehler ist aufgetreten, das tracking muss neugestartet werden.</translation>
+  <translation name="YOU_HAVE">Du hast</translation>
+  <translation name="FAME">Ruhm</translation>
+  <translation name="GAINED">erhalten.</translation>
+  <translation name="FAME_RESET_BY_MAP_CHANGE">Ruhm reset bei Map-Wechsel</translation>
 </translations>
