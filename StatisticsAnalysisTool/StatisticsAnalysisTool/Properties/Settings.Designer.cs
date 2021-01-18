@@ -353,5 +353,17 @@ namespace StatisticsAnalysisTool.Properties {
                 this["IsTrackingActiveAtToolStart"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsFameResetByMapChangeActive {
+            get {
+                return ((bool)(this["IsFameResetByMapChangeActive"]));
+            }
+            set {
+                this["IsFameResetByMapChangeActive"] = value;
+            }
+        }
     }
 }

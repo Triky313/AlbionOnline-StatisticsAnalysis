@@ -301,6 +301,8 @@ namespace StatisticsAnalysisTool.ViewModels
             GuildInformationVisibility = Visibility.Hidden;
             AllianceInformationVisibility = Visibility.Hidden;
 
+            IsFameResetByMapChangeActive = Settings.Default.IsFameResetByMapChangeActive;
+
             #endregion
         }
 
