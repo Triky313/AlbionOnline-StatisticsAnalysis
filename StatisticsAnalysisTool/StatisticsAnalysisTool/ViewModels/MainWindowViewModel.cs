@@ -96,8 +96,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _guildInformationVisibility;
         private Visibility _allianceInformationVisibility;
         private bool _isFameResetByMapChangeActive;
-        private string _silverPerHour;
-        private string _totalPlayerSilver;
+        private string _silverPerHour = "0";
+        private string _totalPlayerSilver = "0";
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
