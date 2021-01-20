@@ -16,7 +16,7 @@ A tool for easy reading of auction house data for the game AlbionOnline
 Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click.
 
 #### Requires
-Minimal .Net Framework 4.7.2, you can download it [here](https://dotnet.microsoft.com/download).
+Minimal .Net Framework 4.8, you can download it [here](https://dotnet.microsoft.com/download).
 
 
 ## [CHANGELOG](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/blob/master/CHANGELOG.md)
