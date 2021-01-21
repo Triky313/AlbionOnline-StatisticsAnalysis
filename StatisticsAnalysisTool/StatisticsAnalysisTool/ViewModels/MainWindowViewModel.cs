@@ -77,10 +77,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isShowOnlyItemsWithAlertOnActive;
         private bool _isTrackingActive;
         private Brush _trackerActivationToggleColor;
-        private FameCountUpTimer _fameCountUpTimer;
-        private SilverCountUpTimer _silverCountUpTimer;
         private string _famePerHour = "0";
         private string _totalPlayerFame = "0";
+        private string _reSpecPointsPerHour = "0";
         private TrackingController _trackingController;
         private DateTime? activateWaitTimer;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -98,6 +97,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isFameResetByMapChangeActive;
         private string _silverPerHour = "0";
         private string _totalPlayerSilver = "0";
+        private string _totalPlayerReSpecPoints = "0";
+        private ValueCountUpTimer _valueCountUpTimer;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -594,26 +595,33 @@ namespace StatisticsAnalysisTool.ViewModels
                 _trackingController = new TrackingController(this, _mainWindow);
             }
 
-            if (_fameCountUpTimer == null)
+            _valueCountUpTimer = new ValueCountUpTimer();
+
+            if (_valueCountUpTimer?.FameCountUpTimer == null)
             {
-                _fameCountUpTimer = new FameCountUpTimer(this);
+                _valueCountUpTimer.FameCountUpTimer = new FameCountUpTimer(this);
             }
 
-            if (_silverCountUpTimer == null)
+            if (_valueCountUpTimer?.SilverCountUpTimer == null)
             {
-                _silverCountUpTimer = new SilverCountUpTimer(this);
+                _valueCountUpTimer.SilverCountUpTimer = new SilverCountUpTimer(this);
             }
 
-            _fameCountUpTimer.Start();
-            _silverCountUpTimer.Start();
+            if (_valueCountUpTimer?.ReSpecPointsCountUpTimer == null)
+            {
+                _valueCountUpTimer.ReSpecPointsCountUpTimer = new ReSpecPointsCountUpTimer(this);
+            }
 
-            IsTrackingActive = NetworkController.StartNetworkCapture(this, _trackingController, _fameCountUpTimer, _silverCountUpTimer);
+            _valueCountUpTimer?.FameCountUpTimer.Start();
+            _valueCountUpTimer?.SilverCountUpTimer.Start();
+
+            IsTrackingActive = NetworkController.StartNetworkCapture(this, _trackingController, _valueCountUpTimer);
         }
 
         public void StopTracking()
         {
-            _fameCountUpTimer?.Stop();
-            _silverCountUpTimer?.Stop();
+            _valueCountUpTimer?.FameCountUpTimer?.Stop();
+            _valueCountUpTimer?.SilverCountUpTimer?.Stop();
             NetworkController.StopNetworkCapture();
 
             IsTrackingActive = false;
@@ -631,16 +639,21 @@ namespace StatisticsAnalysisTool.ViewModels
             return false;
         }
 
-        public void ResetCounters(bool fame, bool silver)
+        public void ResetCounters(bool fame, bool silver, bool reSpec)
         {
             if (fame)
             {
-                _fameCountUpTimer?.Reset();
+                _valueCountUpTimer?.FameCountUpTimer?.Reset();
             }
 
             if (silver)
             {
-                _silverCountUpTimer?.Reset();
+                _valueCountUpTimer?.SilverCountUpTimer?.Reset();
+            }
+
+            if (reSpec)
+            {
+                _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Reset();
             }
         }
 
@@ -821,6 +834,14 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public string ReSpecPointsPerHour {
+            get => _reSpecPointsPerHour;
+            set {
+                _reSpecPointsPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string TotalPlayerFame {
             get => _totalPlayerFame;
             set {
@@ -833,6 +854,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _totalPlayerSilver;
             set {
                 _totalPlayerSilver = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TotalPlayerReSpecPoints {
+            get => _totalPlayerReSpecPoints;
+            set {
+                _totalPlayerReSpecPoints = value;
                 OnPropertyChanged();
             }
         }

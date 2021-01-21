@@ -22,7 +22,7 @@ namespace StatisticsAnalysisTool.Network
         private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, FameCountUpTimer fameCountUpTimer, SilverCountUpTimer silverCountUpTimer)
+        public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, ValueCountUpTimer valueCountUpTimerTimer)
         {
             if (!Utilities.IsSoftwareInstalled("WinPcap"))
             {
@@ -37,15 +37,14 @@ namespace StatisticsAnalysisTool.Network
             //builder.AddEventHandler(new UpdateMoneyEventHandler());
             //builder.AddEventHandler(new NewCharacterEventHandler());
 
-            builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
-            builder.AddEventHandler(new UpdateFameEventHandler(trackingController, fameCountUpTimer)); // GEHT
-
-            builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController, silverCountUpTimer));
+            //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
+            builder.AddEventHandler(new UpdateFameEventHandler(trackingController, valueCountUpTimerTimer.FameCountUpTimer));
+            builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController, valueCountUpTimerTimer.SilverCountUpTimer));
+            builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController, valueCountUpTimerTimer.ReSpecPointsCountUpTimer));
 
             //builder.AddEventHandler(new PartySilverGainedEventHandler());
-            
+
             //builder.AddEventHandler(new NewLootEventHandler());
-            //builder.AddEventHandler(new NewLootChestEventHandler());
 
             builder.AddResponseHandler(new UserInformationHandler(_mainWindowViewModel)); // GEHT
 

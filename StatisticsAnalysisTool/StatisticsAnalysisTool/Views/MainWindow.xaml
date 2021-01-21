@@ -157,40 +157,55 @@
                 <Button Content="{Binding Translation.ResetFameCounter, FallbackValue=RESET__FAME__COUNTER}" Height="26" VerticalAlignment="Top" Click="BtnFameReset_Click" />
                 <CheckBox IsChecked="{Binding IsFameResetByMapChangeActive}" Content="{Binding Translation.FameResetByMapChange, FallbackValue=FAME_RESET_BY_MAP_CHANGE}"></CheckBox>
             </StackPanel>
-            <Grid Margin="10,55,0,0" Height="60" VerticalAlignment="Top" HorizontalAlignment="Left" Width="350">
-                <StackPanel Margin="0,0,0,0">
-                    <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+            <Grid Margin="10,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel>
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalFame, FallbackValue='TOTAL__FAME'}">
                             <Image Style="{StaticResource Icon.Fame}"/>
                         </Grid>
-                        <Label Content="{Binding TotalPlayerFame, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="30" FontWeight="Bold" FontSize="18" Margin="0,-6, 0,0" HorizontalAlignment="Left"></Label>
+                        <Label Content="{Binding TotalPlayerFame, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
-                    <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Image Style="{StaticResource Icon.Fame}"/>
                         </Grid>
-                        <Label Content="{Binding FamePerHour, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="30" FontWeight="Bold" FontSize="18" Margin="0,-6, 0,0" HorizontalAlignment="Left"></Label>
+                        <Label Content="{Binding FamePerHour, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
                 </StackPanel>
             </Grid>
-            <Grid Margin="365,55,0,0" Height="60" VerticalAlignment="Top" HorizontalAlignment="Left" Width="350">
+            <Grid Margin="160,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
                 <StackPanel Margin="0,0,0,0">
-                    <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalReSpec, FallbackValue='TOTAL__RESPEC'}">
+                            <Image Style="{StaticResource Icon.ReSpec}"/>
+                        </Grid>
+                        <Label Content="{Binding TotalPlayerReSpecPoints, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Style="{StaticResource Icon.ReSpec}"/>
+                        </Grid>
+                        <Label Content="{Binding ReSpecPointsPerHour, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                </StackPanel>
+            </Grid>
+            <Grid Margin="320,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel Margin="0,0,0,0">
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalSilver, FallbackValue='TOTAL__SILVER'}">
                             <Image Style="{StaticResource Icon.Silver}"/>
                         </Grid>
-                        <Label Content="{Binding TotalPlayerSilver, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="30" FontWeight="Bold" FontSize="18" Margin="0,-6, 0,0" HorizontalAlignment="Left"></Label>
+                        <Label Content="{Binding TotalPlayerSilver, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
-                    <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Image Style="{StaticResource Icon.Silver}"/>
                         </Grid>
-                        <Label Content="{Binding SilverPerHour, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="30" FontWeight="Bold" FontSize="18" Margin="0,-6, 0,0" HorizontalAlignment="Left"></Label>
+                        <Label Content="{Binding SilverPerHour, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
                 </StackPanel>
             </Grid>
-            <!--<Separator Background="{StaticResource SolidColorBrush.Blue.2}" VerticalAlignment="Top" Margin="10,114,10,0"/>-->
-            <TabControl IsEnabled="{Binding IsTrackingActive, FallbackValue=true}" Margin="10,115,10,35" BorderThickness="0 1 0 0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}">
+            <TabControl IsEnabled="{Binding IsTrackingActive, FallbackValue=true}" Margin="10,106,10,35" BorderThickness="0 1 0 0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}">
                 <TabItem Header="{Binding Translation.Tracking, FallbackValue=TRACKING}">
                     <Grid>
                         <ScrollViewer>

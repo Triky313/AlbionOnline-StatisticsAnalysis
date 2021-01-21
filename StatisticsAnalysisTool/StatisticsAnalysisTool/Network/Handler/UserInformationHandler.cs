@@ -27,7 +27,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (_mainWindowViewModel.IsFameResetByMapChangeActive)
             {
-                _mainWindowViewModel.ResetCounters(true, true);
+                _mainWindowViewModel.ResetCounters(true, true, true);
             }
         }
     }

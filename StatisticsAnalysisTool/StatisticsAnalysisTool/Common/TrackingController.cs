@@ -34,6 +34,11 @@ namespace StatisticsAnalysisTool.Common
             _mainWindowViewModel.TotalPlayerSilver = value;
         }
 
+        public void SetTotalPlayerReSpecPoints(string value)
+        {
+            _mainWindowViewModel.TotalPlayerReSpecPoints = value;
+        }
+
         public void AddNotification(TrackingNotification item)
         {
             if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null)

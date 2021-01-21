@@ -11,13 +11,13 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             try
             {
-                Debug.Print($"-----------------------------------------");
-                Debug.Print($"Response");
+                //Debug.Print($"-----------------------------------------");
+                //Debug.Print($"Response");
 
-                foreach (var parameter in parameters)
-                {
-                    Debug.Print($"{parameter}");
-                }
+                //foreach (var parameter in parameters)
+                //{
+                //    Debug.Print($"{parameter}");
+                //}
 
                 if (parameters.ContainsKey(2))
                 {

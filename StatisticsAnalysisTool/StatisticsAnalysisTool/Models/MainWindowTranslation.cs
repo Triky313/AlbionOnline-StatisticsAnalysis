@@ -24,5 +24,6 @@ namespace StatisticsAnalysisTool.Models
         public string FameResetByMapChange => LanguageController.Translation("FAME_RESET_BY_MAP_CHANGE");
         public string TotalFame => LanguageController.Translation("TOTAL_FAME");
         public string TotalSilver => LanguageController.Translation("TOTAL_SILVER");
+        public string TotalReSpec => LanguageController.Translation("TOTAL_RESPEC");
     }
 }

@@ -163,6 +163,16 @@ namespace StatisticsAnalysisTool.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap respec {
+            get {
+                object obj = ResourceManager.GetObject("respec", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap satchel {
             get {
                 object obj = ResourceManager.GetObject("satchel", resourceCulture);

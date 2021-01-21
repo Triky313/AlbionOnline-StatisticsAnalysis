@@ -212,6 +212,7 @@
     <Compile Include="Common\TrackingController.cs" />
     <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
     <Compile Include="Network\ICountUpTimer.cs" />
+    <Compile Include="Network\ReSpecPointsCountUpTimer.cs" />
     <Compile Include="Network\SilverCountUpTimer.cs" />
     <Compile Include="Network\FameCountUpTimer.cs" />
     <Compile Include="Models\NetworkModel\Container.cs" />
@@ -260,16 +261,17 @@
     <Compile Include="Network\Operations\MoveOperation.cs" />
     <Compile Include="Network\Handler\UserInformationHandler.cs" />
     <Compile Include="Network\NetworkController.cs" />
-    <Compile Include="Network\Events\NewLootChestEvent.cs" />
+    <Compile Include="Network\Events\UpdateReSpecPointsEvent.cs" />
     <Compile Include="Network\Events\PartySilverGainedEvent.cs" />
     <Compile Include="Network\Events\TakeSilverEvent.cs" />
     <Compile Include="Network\Events\NewLootEvent.cs" />
     <Compile Include="Network\Events\NewCharacterEvent.cs" />
-    <Compile Include="Network\Handler\NewLootChestEventHandler.cs" />
+    <Compile Include="Network\Handler\UpdateReSpecPointsEventHandler.cs" />
     <Compile Include="Network\Handler\PartySilverGainedEventHandler.cs" />
     <Compile Include="Network\Handler\TakeSilverEventHandler.cs" />
     <Compile Include="Network\Handler\NewLootEventHandler.cs" />
     <Compile Include="Network\Handler\NewCharacterEventHandler.cs" />
+    <Compile Include="Network\ValueCountUpTimer.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -357,6 +359,9 @@
     </Resource>
     <Resource Include="Resources\satchel.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\respec.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Content Include="Sounds\alert1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
