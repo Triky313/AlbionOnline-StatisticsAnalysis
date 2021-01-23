@@ -51,7 +51,7 @@ namespace StatisticsAnalysisTool.IntegrationTests
                 UniqueName = "T20_LEATHER"
             };
 
-            var itemInformation = Common.ApiController.GetItemInfoFromJsonAsync(item).GetAwaiter().GetResult();
+            var itemInformation = ApiController.GetItemInfoFromJsonAsync(item).GetAwaiter().GetResult();
 
             Assert.AreEqual(HttpStatusCode.NotFound, itemInformation.HttpStatus);
         }
@@ -61,7 +61,7 @@ namespace StatisticsAnalysisTool.IntegrationTests
         {
             var uniqueName = "T4_LEATHER";
 
-            var result = Common.ApiController.GetCityItemPricesFromJsonAsync(
+            var result = ApiController.GetCityItemPricesFromJsonAsync(
                 uniqueName,
                 Locations.GetLocationsListByArea(true, true, true, true),
                 new List<int>()).GetAwaiter().GetResult();
@@ -79,7 +79,7 @@ namespace StatisticsAnalysisTool.IntegrationTests
         {
             var uniqueName = "T20_LEATHER";
 
-            var result = Common.ApiController.GetCityItemPricesFromJsonAsync(
+            var result = ApiController.GetCityItemPricesFromJsonAsync(
                 uniqueName,
                 Locations.GetLocationsListByArea(true, true, true, true),
                 new List<int>()).GetAwaiter().GetResult();
@@ -93,6 +93,22 @@ namespace StatisticsAnalysisTool.IntegrationTests
                 Assert.AreEqual(0UL, marketResponse.BuyPriceMax);
                 Assert.AreEqual(Convert.ChangeType("0001-01-01T00:00:00", typeof(DateTime)), marketResponse.SellPriceMinDate);
                 Assert.AreEqual(uniqueName, marketResponse.ItemTypeId);
+            }
+        }
+
+        [TestMethod]
+        public void GetGoldPricesFromJsonAsync_WithValidValues_GoldResponse()
+        {
+            var result = ApiController.GetGoldPricesFromJsonAsync(
+                null,
+                1).GetAwaiter().GetResult();
+            
+            Assert.IsTrue(result.Count > 0);
+
+            foreach (var goldResponse in result)
+            {
+                Assert.IsNotNull(goldResponse.Timestamp);
+                Assert.IsNotNull(goldResponse.Price);
             }
         }
     }
