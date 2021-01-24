@@ -25,9 +25,9 @@ namespace StatisticsAnalysisTool.Common
             _mainWindow = mainWindow;
         }
 
-        public void SetTotalPlayerFame(string value)
+        public void SetTotalPlayerFame(double value)
         {
-            _mainWindowViewModel.TotalPlayerFame = value;
+            _mainWindowViewModel.TotalPlayerFame = value.ToString("N0", CultureInfo.CurrentCulture);
         }
 
         public void SetTotalPlayerSilver(double value)
