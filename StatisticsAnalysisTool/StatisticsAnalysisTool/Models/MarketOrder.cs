@@ -105,18 +105,22 @@ namespace StatisticsAnalysisTool.Models
         public string SellPriceMinString => Utilities.UlongMarketPriceToString(SellPriceMin);
         public DateTime SellPriceMinDate { get; set; }
         public string SellPriceMinDateString => Utilities.MarketPriceDateToString(SellPriceMinDate);
+        public string SellPriceMinDateLastUpdateTime => Common.Formatting.DateTimeToLastUpdateTime(SellPriceMinDate);
         public ulong SellPriceMax { get; set; }
         public string SellPriceMaxString => Utilities.UlongMarketPriceToString(SellPriceMax);
         public DateTime SellPriceMaxDate { get; set; }
         public string SellPriceMaxDateString => Utilities.MarketPriceDateToString(SellPriceMaxDate);
+        public string SellPriceMaxDateLastUpdateTime => Common.Formatting.DateTimeToLastUpdateTime(SellPriceMaxDate);
         public ulong BuyPriceMin { get; set; }
         public string BuyPriceMinString => Utilities.UlongMarketPriceToString(BuyPriceMin);
         public DateTime BuyPriceMinDate { get; set; }
         public string BuyPriceMinDateString => Utilities.MarketPriceDateToString(BuyPriceMinDate);
+        public string BuyPriceMinDateLastUpdateTime => Common.Formatting.DateTimeToLastUpdateTime(BuyPriceMinDate);
         public ulong BuyPriceMax { get; set; }
         public string BuyPriceMaxString => Utilities.UlongMarketPriceToString(BuyPriceMax);
         public DateTime BuyPriceMaxDate { get; set; }
         public string BuyPriceMaxDateString => Utilities.MarketPriceDateToString(BuyPriceMaxDate);
+        public string BuyPriceMaxDateLastUpdateTime => Common.Formatting.DateTimeToLastUpdateTime(BuyPriceMaxDate);
         public bool BestSellMinPrice { get; set; }
         public bool BestSellMaxPrice { get; set; }
         public bool BestBuyMinPrice { get; set; }

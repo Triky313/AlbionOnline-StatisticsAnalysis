@@ -36,6 +36,6 @@
             <TextBox Text="{Binding FullItemInformationUpdateCycleDays, FallbackValue=90}" Height="26" Margin="0,6,10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
             <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="FileName" SelectedValuePath="FileInformation" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="200" Height="26" />
         </StackPanel>
-        <Button Style="{StaticResource ButtonStyle}" Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click" />
+        <Button Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click" />
     </Grid>
 </Window>

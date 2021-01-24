@@ -1,9 +1,12 @@
 ﻿using FontAwesome.WPF;
 using LiveCharts;
 using log4net;
+using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Network;
+using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -16,6 +19,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace StatisticsAnalysisTool.ViewModels
@@ -71,20 +75,37 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isFullItemInfoLoading;
         private ICollectionView _itemsView;
         public AlertController AlertManager;
-        
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool _isShowOnlyItemsWithAlertOnActive;
-
-        public enum ViewMode
-        {
-            Normal,
-            Player,
-            Gold
-        }
+        private bool _isTrackingActive;
+        private Brush _trackerActivationToggleColor;
+        private string _famePerHour = "0";
+        private string _totalPlayerFame = "0";
+        private string _reSpecPointsPerHour = "0";
+        private TrackingController _trackingController;
+        private DateTime? activateWaitTimer;
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
+        private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
+        private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
+        private string _trackingUsername;
+        private string _trackingGuildName;
+        private string _trackingAllianceName;
+        private string _errorBarText;
+        private Visibility _errorBarVisibility;
+        private Visibility _usernameInformationVisibility;
+        private Visibility _guildInformationVisibility;
+        private Visibility _allianceInformationVisibility;
+        private bool _isFameResetByMapChangeActive;
+        private string _silverPerHour = "0";
+        private string _totalPlayerSilver = "0";
+        private string _totalPlayerReSpecPoints = "0";
+        private ValueCountUpTimer _valueCountUpTimer;
+        private Visibility _goldPriceVisibility;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
+            InitViewModeGrids();
             UpgradeSettings();
             InitWindowSettings();
             Utilities.AutoUpdate();
@@ -93,8 +114,57 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Close();
 
             InitMainWindowData();
+            SetTracking();
+        }
+        
+        #region Inits
+
+        #region View mode init
+
+        private void InitViewModeGrids()
+        {
+            viewModeGrid.Add(ViewMode.Normal, _mainWindow.GridNormalMode);
+            viewModeGrid.Add(ViewMode.Tracking, _mainWindow.GridTrackingMode);
+            viewModeGrid.Add(ViewMode.Player, _mainWindow.GridPlayerMode);
+            viewModeGrid.Add(ViewMode.Gold, _mainWindow.GridGoldMode);
         }
 
+        public void SelectViewModeGrid()
+        {
+            HideAllGrids();
+            var grid = viewModeGrid.FirstOrDefault(g => g.Key == ModeSelection.ViewMode);
+
+            if (grid.Value == null)
+            {
+                Log.Warn($"SelectViewModeGrid: Grid for [{ModeSelection.ViewMode}] is not existing");
+
+                if (viewModeGrid.FirstOrDefault().Value != null)
+                {
+                    viewModeGrid.FirstOrDefault().Value.Visibility = Visibility.Visible;
+                }
+
+                return;
+            }
+
+            grid.Value.Visibility = Visibility.Visible;
+            _mainWindow.TxtSearch.Focus();
+        }
+
+        private void HideAllGrids()
+        {
+            if (viewModeGrid == null)
+            {
+                return;
+            }
+
+            foreach (var grid in viewModeGrid)
+            {
+                grid.Value.Visibility = Visibility.Hidden;
+            }
+        }
+
+        #endregion
+        
         private void InitAlerts()
         {
             SoundController.InitializeSoundFilesFromDirectory();
@@ -165,28 +235,30 @@ namespace StatisticsAnalysisTool.ViewModels
             ShowInfoWindow();
             TextBoxGoldModeNumberOfValues = "10";
         }
-        
-        public void IsFullItemInformationCompleteCheck()
+
+        private void SetTracking()
         {
-            if (ItemController.IsFullItemInformationComplete)
+            if (Settings.Default.IsTrackingActiveAtToolStart)
             {
-                LoadFullItemInfoButtonVisibility = Visibility.Hidden;
-                IsLoadFullItemInfoButtonEnabled = false;
-                LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
-            }
-            else
-            {
-                LoadFullItemInfoButtonVisibility = Visibility.Visible;
-                IsLoadFullItemInfoButtonEnabled = true;
+                StartTracking();
             }
         }
 
+        #endregion
+        
         public async void SetUiElements()
         {
+            #region Error bar
+
+            ErrorBarVisibility = Visibility.Hidden;
+
+            #endregion
+
             #region Set Modes to combobox
 
             Modes.Clear();
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal });
+            Modes.Add(new ModeStruct { Name = LanguageController.Translation("TRACKING"), ViewMode = ViewMode.Tracking });
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player });
             Modes.Add(new ModeStruct { Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold });
             ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
@@ -219,7 +291,15 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
-            CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
+            if (!currentGoldPrice.IsNullOrEmpty())
+            {
+                CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
+                GoldPriceVisibility = Visibility.Visible;
+            }
+            else
+            {
+                GoldPriceVisibility = Visibility.Hidden;
+            }
 
             #endregion Gold price
 
@@ -228,7 +308,19 @@ namespace StatisticsAnalysisTool.ViewModels
             SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
 
             #endregion Player information
+
+            #region Tracking
+
+            UsernameInformationVisibility = Visibility.Hidden;
+            GuildInformationVisibility = Visibility.Hidden;
+            AllianceInformationVisibility = Visibility.Hidden;
+
+            IsFameResetByMapChangeActive = Settings.Default.IsFameResetByMapChangeActive;
+
+            #endregion
         }
+
+        #region Ui utility methods
 
         public void CenterWindowOnScreen()
         {
@@ -238,6 +330,62 @@ namespace StatisticsAnalysisTool.ViewModels
             var windowHeight = _mainWindow.Height;
             _mainWindow.Left = (screenWidth / 2) - (windowWidth / 2);
             _mainWindow.Top = (screenHeight / 2) - (windowHeight / 2);
+        }
+
+        private void ShowInfoWindow()
+        {
+            if (Settings.Default.ShowInfoWindowOnStartChecked)
+            {
+                var infoWindow = new InfoWindow();
+                infoWindow.Show();
+            }
+        }
+
+        public static void OpenItemWindow(Item item)
+        {
+            if (string.IsNullOrEmpty(item?.UniqueName))
+                return;
+
+            try
+            {
+                if (!Settings.Default.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
+                {
+                    var existItemWindow = Application.Current.Windows.OfType<ItemWindow>().FirstOrDefault();
+                    existItemWindow?.InitializeItemWindow(item);
+                    existItemWindow?.Activate();
+                }
+                else
+                {
+                    var itemWindow = new ItemWindow(item);
+                    itemWindow.Show();
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+                Log.Error(nameof(OpenItemWindow), e);
+                var catchItemWindow = new ItemWindow(item);
+                catchItemWindow.Show();
+            }
+        }
+
+
+        #endregion
+
+        #region Full Item Information
+
+        public void IsFullItemInformationCompleteCheck()
+        {
+            if (ItemController.IsFullItemInformationComplete)
+            {
+                LoadFullItemInfoButtonVisibility = Visibility.Hidden;
+                IsLoadFullItemInfoButtonEnabled = false;
+                LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
+            }
+            else
+            {
+                LoadFullItemInfoButtonVisibility = Visibility.Visible;
+                IsLoadFullItemInfoButtonEnabled = true;
+            }
         }
 
         public async void LoadAllFullItemInformationFromWeb()
@@ -275,6 +423,38 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsLoadFullItemInfoButtonEnabled = true;
             }
         }
+
+        #endregion
+
+        #region Alert
+
+        public void ToggleAlertSender(object sender)
+        {
+            if (sender == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var imageAwesome = (ImageAwesome)sender;
+                var item = (Item)imageAwesome.DataContext;
+
+                if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
+                {
+                    return;
+                }
+
+                item.IsAlertActive = AlertManager.ToggleAlert(ref item);
+                ItemsView.Refresh();
+            }
+            catch (Exception e)
+            {
+                Log.Error(nameof(ToggleAlertSender), e);
+            }
+        }
+
+        #endregion
 
         #region Item list (Normal Mode)
 
@@ -384,69 +564,111 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Gold (Gold Mode)
-        
-        private void ShowInfoWindow()
-        {
-            if (Settings.Default.ShowInfoWindowOnStartChecked)
-            {
-                var infoWindow = new InfoWindow();
-                infoWindow.Show();
-            }
-        }
 
-        public static void OpenItemWindow(Item item)
-        {
-            if (string.IsNullOrEmpty(item?.UniqueName))
-                return;
+        #region Tracking Mode
 
-            try
-            {
-                if (!Settings.Default.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
-                {
-                    var existItemWindow = Application.Current.Windows.OfType<ItemWindow>().FirstOrDefault();
-                    existItemWindow?.InitializeItemWindow(item);
-                    existItemWindow?.Activate();
-                }
-                else
-                {
-                    var itemWindow = new ItemWindow(item);
-                    itemWindow.Show();
-                }
-            }
-            catch (ArgumentNullException e)
-            {
-                Log.Error(nameof(OpenItemWindow), e);
-                var catchItemWindow = new ItemWindow(item);
-                catchItemWindow.Show();
-            }
-        }
-
-        public void ToggleAlertSender(object sender)
+        public void TrackerActivationToggle()
         {
-            if (sender == null)
+            if (!IsReadyToTracking())
             {
                 return;
             }
 
-            try
+            IsTrackingActive = !IsTrackingActive;
+
+            if (IsTrackingActive)
             {
-                var imageAwesome = (ImageAwesome)sender;
-                var item = (Item)imageAwesome.DataContext;
-
-                if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
-                {
-                    return;
-                }
-
-                item.IsAlertActive = AlertManager.ToggleAlert(ref item);
-                ItemsView.Refresh();
+                StartTracking();
             }
-            catch (Exception e)
+            else
             {
-                Log.Error(nameof(ToggleAlertSender), e);
+                StopTracking();
             }
         }
-        
+
+        public void StartTracking()
+        {
+            if (!Utilities.IsSoftwareInstalled("WinPcap"))
+            {
+                IsTrackingActive = false;
+                SetErrorBar(Visibility.Visible, Translation.MakeSureYouHaveInstalledWinPcap);
+                return;
+            }
+
+            if (NetworkController.IsNetworkCaptureRunning)
+            {
+                return;
+            }
+
+            if (_trackingController == null)
+            {
+                _trackingController = new TrackingController(this, _mainWindow);
+            }
+
+            _valueCountUpTimer = new ValueCountUpTimer();
+
+            if (_valueCountUpTimer?.FameCountUpTimer == null)
+            {
+                _valueCountUpTimer.FameCountUpTimer = new FameCountUpTimer(this);
+            }
+
+            if (_valueCountUpTimer?.SilverCountUpTimer == null)
+            {
+                _valueCountUpTimer.SilverCountUpTimer = new SilverCountUpTimer(this);
+            }
+
+            if (_valueCountUpTimer?.ReSpecPointsCountUpTimer == null)
+            {
+                _valueCountUpTimer.ReSpecPointsCountUpTimer = new ReSpecPointsCountUpTimer(this);
+            }
+
+            _valueCountUpTimer?.FameCountUpTimer.Start();
+            _valueCountUpTimer?.SilverCountUpTimer.Start();
+
+            IsTrackingActive = NetworkController.StartNetworkCapture(this, _trackingController, _valueCountUpTimer);
+        }
+
+        public void StopTracking()
+        {
+            _valueCountUpTimer?.FameCountUpTimer?.Stop();
+            _valueCountUpTimer?.SilverCountUpTimer?.Stop();
+            NetworkController.StopNetworkCapture();
+
+            IsTrackingActive = false;
+        }
+
+        private bool IsReadyToTracking()
+        {
+            var waitTime = activateWaitTimer?.AddSeconds(1);
+            if (waitTime < DateTime.Now || waitTime == null)
+            {
+                activateWaitTimer = DateTime.Now;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void ResetCounters(bool fame, bool silver, bool reSpec)
+        {
+            if (fame)
+            {
+                _valueCountUpTimer?.FameCountUpTimer?.Reset();
+            }
+
+            if (silver)
+            {
+                _valueCountUpTimer?.SilverCountUpTimer?.Reset();
+            }
+
+            if (reSpec)
+            {
+                _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Reset();
+            }
+        }
+
+        #endregion
+
         #region Item View Filters
 
         private void ItemsViewFilter()
@@ -518,6 +740,16 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion
 
+        #region Helper methods
+
+        public void SetErrorBar(Visibility visibility, string errorMessage)
+        {
+            ErrorBarText = errorMessage;
+            ErrorBarVisibility = visibility;
+        }
+
+        #endregion
+
         #region Bindings
 
         public string SearchText {
@@ -538,6 +770,179 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _itemsView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility UsernameInformationVisibility {
+            get => _usernameInformationVisibility;
+            set {
+                _usernameInformationVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility GuildInformationVisibility {
+            get => _guildInformationVisibility;
+            set {
+                _guildInformationVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility AllianceInformationVisibility {
+            get => _allianceInformationVisibility;
+            set {
+                _allianceInformationVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public Visibility GoldPriceVisibility {
+            get => _goldPriceVisibility;
+            set {
+                _goldPriceVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TrackingUsername {
+            get => _trackingUsername;
+            set {
+                _trackingUsername = value;
+                UsernameInformationVisibility = !string.IsNullOrEmpty(_trackingUsername) ? Visibility.Visible : Visibility.Hidden;
+
+                OnPropertyChanged();
+            }
+        }
+
+        public string TrackingGuildName {
+            get => _trackingGuildName;
+            set {
+                _trackingGuildName = value;
+                GuildInformationVisibility = !string.IsNullOrEmpty(_trackingGuildName) ? Visibility.Visible : Visibility.Hidden;
+
+                OnPropertyChanged();
+            }
+        }
+
+        public string TrackingAllianceName {
+            get => _trackingAllianceName;
+            set {
+                _trackingAllianceName = value;
+                AllianceInformationVisibility = !string.IsNullOrEmpty(_trackingAllianceName) ? Visibility.Visible : Visibility.Hidden;
+
+                OnPropertyChanged();
+            }
+        }
+
+        public string FamePerHour {
+            get => _famePerHour;
+            set {
+                _famePerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SilverPerHour {
+            get => _silverPerHour;
+            set {
+                _silverPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ReSpecPointsPerHour {
+            get => _reSpecPointsPerHour;
+            set {
+                _reSpecPointsPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TotalPlayerFame {
+            get => _totalPlayerFame;
+            set {
+                _totalPlayerFame = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TotalPlayerSilver {
+            get => _totalPlayerSilver;
+            set {
+                _totalPlayerSilver = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TotalPlayerReSpecPoints {
+            get => _totalPlayerReSpecPoints;
+            set {
+                _totalPlayerReSpecPoints = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsFameResetByMapChangeActive {
+            get => _isFameResetByMapChangeActive;
+            set {
+                _isFameResetByMapChangeActive = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<TrackingNotification> TrackingNotifications {
+            get => _trackingNotifications;
+            set {
+                _trackingNotifications = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingActive {
+            get => _isTrackingActive;
+            set {
+                _isTrackingActive = value;
+
+                TrackerActivationToggleIcon = (_isTrackingActive) ? FontAwesomeIcon.ToggleOn : FontAwesomeIcon.ToggleOff;
+
+                var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
+                var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+                TrackerActivationToggleColor = _isTrackingActive ? colorOn : colorOff;
+
+                var trackingIconColorOn = new SolidColorBrush((Color)Application.Current.Resources["Tracking.On"]);
+                var trackingIconColorOff = new SolidColorBrush((Color)Application.Current.Resources["Tracking.Off"]);
+                TrackingIconColor = _isTrackingActive ? trackingIconColorOn : trackingIconColorOff;
+                OnPropertyChanged();
+            }
+        }
+
+        public FontAwesomeIcon TrackerActivationToggleIcon
+        {
+            get => _trackerActivationToggleIcon;
+            set
+            {
+                _trackerActivationToggleIcon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Brush TrackerActivationToggleColor 
+        {
+            get => _trackerActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+            set
+            {
+                _trackerActivationToggleColor = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public Brush TrackingIconColor {
+            get => _trackerActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Tracking.Off"]);
+            set
+            {
+                _trackerActivationToggleColor = value;
                 OnPropertyChanged();
             }
         }
@@ -860,6 +1265,22 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public string ErrorBarText {
+            get => _errorBarText;
+            set {
+                _errorBarText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ErrorBarVisibility {
+            get => _errorBarVisibility;
+            set {
+                _errorBarVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string UpdateTranslation {
             get => _updateTranslation;
             set {
@@ -895,5 +1316,13 @@ namespace StatisticsAnalysisTool.ViewModels
             public string Name { get; set; }
             public ViewMode ViewMode { get; set; }
         }
+    }
+    
+    public enum ViewMode
+    {
+        Normal,
+        Tracking,
+        Player,
+        Gold
     }
 }

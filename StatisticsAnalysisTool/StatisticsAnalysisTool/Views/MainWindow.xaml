@@ -5,6 +5,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+        xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
         Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="800" Closing="Window_Closing">
     <Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
@@ -19,18 +20,21 @@
         </Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" Margin="0,40,0,0">
             <ComboBox ItemsSource="{Binding Modes}" SelectedItem="{Binding ModeSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="ViewMode" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="170" Height="23" SelectionChanged="CbMode_SelectionChanged" />
-            <Grid x:Name="BtnSettings" Margin="0,10,10,0" HorizontalAlignment="Right" Width="24" Height="24" VerticalAlignment="Top">
-                <fa:ImageAwesome Icon="Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
-            </Grid>
             <Grid HorizontalAlignment="Left" Height="24" Margin="185,7,0,0" VerticalAlignment="Top" Width="24">
                 <fa:ImageAwesome Visibility="{Binding LoadIconVisibility}" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
-            <Grid Height="40" VerticalAlignment="Top" HorizontalAlignment="Center" Width="120">
+            <Grid Visibility="{Binding GoldPriceVisibility, FallbackValue=Visible}" Height="40" VerticalAlignment="Top" HorizontalAlignment="Center" Width="120">
                 <Image Style="{StaticResource Image.Gold}" Width="24" Height="24" Margin="10,8,0,8" HorizontalAlignment="Left" />
                 <Label Content="{Binding CurrentGoldPrice, FallbackValue=0, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding CurrentGoldPriceTimestamp}" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Gold}" Height="26" Margin="35,5,10,9" FontWeight="Bold" />
             </Grid>
+            <Grid Margin="0,7,40,0" HorizontalAlignment="Right" Width="28" Height="28" VerticalAlignment="Top" ToolTip="{Binding Translation.IsTrackingActive}">
+                <fa:ImageAwesome Icon="Wifi" Foreground="{Binding TrackingIconColor}" />
+            </Grid>
+            <Grid Margin="0,10,10,0" HorizontalAlignment="Right" Width="24" Height="24" VerticalAlignment="Top">
+                <fa:ImageAwesome Icon="Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
+            </Grid>
         </Grid>
-        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
+        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtSearch" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="22" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" />
             <Grid Margin="215,11,0,0" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left">
                 <fa:ImageAwesome Icon="Repeat" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="FilterReset_MouseUp" />
@@ -48,7 +52,7 @@
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" HorizontalContentAlignment="Center" />
             </StackPanel>
             <Label Content="{Binding ItemCounterString, FallbackValue=0/0}" Height="26" Margin="0,7,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="75" />
-            
+
             <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemsView}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,64,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
@@ -119,11 +123,130 @@
                     <fa:ImageAwesome Icon="StopCircle" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="StopLoadFullItemInfo_MouseUp" />
                 </Grid>
             </Grid>
-            <Button Style="{StaticResource ButtonStyle}" Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
+            <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
+        </Grid>
+        <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Visible">
+            <Label Content="ALPHA TEST" Height="60" FontSize="40" FontWeight="Bold" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" Margin="420,21,0,0" VerticalAlignment="Top" Opacity="0.35" Foreground="{StaticResource SolidColorBrush.Blue.2}">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="10"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Grid Margin="10,10,215,0" Height="45" VerticalAlignment="Top">
+                <DockPanel Margin="0,0,0,0" Height="Auto" VerticalAlignment="Top">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Height="auto" Width="50">
+                        <Grid Margin="0,0,0,0" HorizontalAlignment="Left" Height="auto" Width="40" VerticalAlignment="Center">
+                            <fa:ImageAwesome Visibility="Visible" Icon="{Binding TrackerActivationToggleIcon, FallbackValue=ToggleOff}" Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" MouseUp="TrackingModeActiveToggle_MouseUp" />
+                        </Grid>
+                    </StackPanel>
+                    <Border Visibility="{Binding UsernameInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
+                        <StackPanel Style="{StaticResource Tracking.Information.StackPanel}" Height="40">
+                            <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding Translation.Username, FallbackValue=USERNAME}"></Label>
+                            <Label Style="{StaticResource Tracking.Information.Value}" Content="{Binding TrackingUsername, FallbackValue=USERNAME}"></Label>
+                        </StackPanel>
+                    </Border>
+                    <Border Visibility="{Binding GuildInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
+                        <StackPanel Style="{StaticResource Tracking.Information.StackPanel}" Height="40">
+                            <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding Translation.Guild, FallbackValue=GUILD}"></Label>
+                            <Label Style="{StaticResource Tracking.Information.Value}" Content="{Binding TrackingGuildName, FallbackValue=GUILD}"></Label>
+                        </StackPanel>
+                    </Border>
+                    <Border Visibility="{Binding AllianceInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
+                        <StackPanel Style="{StaticResource Tracking.Information.StackPanel}" Height="40">
+                            <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding Translation.Alliance, FallbackValue=ALLIANCE}"></Label>
+                            <Label Style="{StaticResource Tracking.Information.Value}" Content="{Binding TrackingAllianceName, FallbackValue=ALLIANCE}"></Label>
+                        </StackPanel>
+                    </Border>
+                    <Grid></Grid>
+                </DockPanel>
+            </Grid>
+            <StackPanel IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Margin="0,10,10,0" HorizontalAlignment="Right" Width="200" Height="110" VerticalAlignment="Top">
+                <Button Content="{Binding Translation.ResetFameCounter, FallbackValue=RESET__FAME__COUNTER}" Height="26" VerticalAlignment="Top" Click="BtnFameReset_Click" />
+                <CheckBox IsChecked="{Binding IsFameResetByMapChangeActive}" Content="{Binding Translation.FameResetByMapChange, FallbackValue=FAME_RESET_BY_MAP_CHANGE}"></CheckBox>
+            </StackPanel>
+            <Grid Margin="10,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel>
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalFame, FallbackValue='TOTAL__FAME'}">
+                            <Image Style="{StaticResource Icon.Fame}"/>
+                        </Grid>
+                        <Label Content="{Binding TotalPlayerFame, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Style="{StaticResource Icon.Fame}"/>
+                        </Grid>
+                        <Label Content="{Binding FamePerHour, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                </StackPanel>
+            </Grid>
+            <Grid Margin="160,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel Margin="0,0,0,0">
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalReSpec, FallbackValue='TOTAL__RESPEC'}">
+                            <Image Style="{StaticResource Icon.ReSpec}"/>
+                        </Grid>
+                        <Label Content="{Binding TotalPlayerReSpecPoints, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Style="{StaticResource Icon.ReSpec}"/>
+                        </Grid>
+                        <Label Content="{Binding ReSpecPointsPerHour, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                </StackPanel>
+            </Grid>
+            <Grid Margin="320,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel Margin="0,0,0,0">
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalSilver, FallbackValue='TOTAL__SILVER'}">
+                            <Image Style="{StaticResource Icon.Silver}"/>
+                        </Grid>
+                        <Label Content="{Binding TotalPlayerSilver, FallbackValue='0'}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Style="{StaticResource Icon.Silver}"/>
+                        </Grid>
+                        <Label Content="{Binding SilverPerHour, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                </StackPanel>
+            </Grid>
+            <TabControl IsEnabled="{Binding IsTrackingActive, FallbackValue=true}" Margin="10,106,10,35" BorderThickness="0 1 0 0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}">
+                <TabItem Header="{Binding Translation.Tracking, FallbackValue=TRACKING}">
+                    <Grid>
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{Binding TrackingNotifications}" />
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+                <!--<TabItem Header="TabItem">
+                    <Grid Margin="0">
+                    </Grid>
+                </TabItem>-->
+            </TabControl>
+            <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,30,0">
+                <Grid ZIndex="20" Margin="5,0,0,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+                    <TextBlock>
+                        <Hyperlink NavigateUri="{Binding Path=GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                            <fa:ImageAwesome Icon="Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                        </Hyperlink>
+                    </TextBlock>
+                </Grid>
+                <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="34,0,0,0" VerticalAlignment="Top" Height="35" Width="106" />
+                <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center"
+                           FontSize="14" Margin="140,0,0,0" FontWeight="Bold" HorizontalAlignment="Left" Width="110" Height="28" VerticalAlignment="Bottom">
+                    (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="PayPal Donate" /></Hyperlink>)
+                </TextBlock>
+            </Grid>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding SavedPlayerInformationName}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown" />
-            <Button x:Name="BtnPlayerModeSave" Content="{Binding Path=Translation.Load, FallbackValue=LOAD}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="110" Height="25" Click="BtnPlayerModeSave_Click" />
+            <Button x:Name="BtnPlayerModeSave" Content="{Binding Path=Translation.Load, FallbackValue=LOAD}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="110" Height="25" Click="BtnPlayerModeSave_Click" />
             <ScrollViewer  Margin="0,40,0,20" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Margin="10,5,10,10">
                     <StackPanel Margin="0,0,0,20">
@@ -370,7 +493,7 @@
             </ScrollViewer>
         </Grid>
         <Grid x:Name="GridGoldMode" Margin="0,80,0,0" Visibility="Hidden">
-            <Button Style="{StaticResource ButtonStyle}" Content="{Binding Translation.Update, FallbackValue=UPDATE}" HorizontalAlignment="Left" Margin="10,10,0,0" Width="110" Height="24" VerticalAlignment="Top" Click="Button_Click" />
+            <Button Content="{Binding Translation.Update, FallbackValue=UPDATE}" HorizontalAlignment="Left" Margin="10,10,0,0" Width="110" Height="24" VerticalAlignment="Top" Click="Button_Click" />
             <TextBox Text="{Binding TextBoxGoldModeNumberOfValues}" ToolTip="{Binding Translation.NumberOfValues, FallbackValue=NUMBER__OF__VALUES}" MaxLength="5" Margin="125,10,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" PreviewTextInput="TxtBoxGoldModeAmountValues_OnPreviewTextInput" />
             <Grid Margin="10,34,10,10">
                 <lvc:CartesianChart Series="{Binding SeriesCollection, UpdateSourceTrigger=PropertyChanged}">
@@ -379,6 +502,14 @@
                     </lvc:CartesianChart.AxisX>
                 </lvc:CartesianChart>
             </Grid>
+        </Grid>
+        <Grid ZIndex="2" Style="{StaticResource Grid.Error.Bar}" Visibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}">
+            <Button Style="{StaticResource Window.Error.Bar.Button.Style}" Content="r" Margin="0,0,7,0" Click="BtnErrorBar_Click" />
+            <Label Style="{StaticResource Grid.Error.Bar.Label}" Content="{Binding ErrorBarText}"></Label>
+            <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
+            <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
+            <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
+            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
         </Grid>
     </Grid>
 </Window>

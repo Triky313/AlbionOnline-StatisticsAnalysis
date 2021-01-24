@@ -83,5 +83,11 @@
     <Setting Name="ActiveAlertsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">ActiveAlerts.json</Value>
     </Setting>
+    <Setting Name="IsTrackingActiveAtToolStart" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="IsFameResetByMapChangeActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

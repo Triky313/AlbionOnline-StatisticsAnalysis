@@ -585,7 +585,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void SetAveragePricesString()
         {
-            var cityPrices = GetFilteredCityPrices(false, false, true, false, false);
+            var cityPrices = GetFilteredCityPrices(false, false, true, false);
 
             var sellPriceMin = new List<ulong>();
             var sellPriceMax = new List<ulong>();

@@ -76,7 +76,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding SellPriceMinDateStyle}" Content="{Binding SellPriceMinDateString}" />
+                                            <Label Style="{Binding SellPriceMinDateStyle}" Content="{Binding SellPriceMinDateLastUpdateTime}" ToolTip="{Binding SellPriceMinDateString}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -86,7 +86,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMaxString}" />
+                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMaxString}" ToolTip="{Binding SellPriceMaxDateString}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -99,7 +99,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding SellPriceMaxDateStyle}" Content="{Binding SellPriceMaxDateString}" />
+                                            <Label Style="{Binding SellPriceMaxDateStyle}" Content="{Binding SellPriceMaxDateLastUpdateTime}" ToolTip="{Binding SellPriceMaxDateString}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -122,7 +122,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding BuyPriceMinDateStyle}" Content="{Binding BuyPriceMinDateString}" />
+                                            <Label Style="{Binding BuyPriceMinDateStyle}" Content="{Binding BuyPriceMinDateLastUpdateTime}" ToolTip="{Binding BuyPriceMinDateString}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -145,7 +145,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding BuyPriceMaxDateStyle}" Content="{Binding BuyPriceMaxDateString}" />
+                                            <Label Style="{Binding BuyPriceMaxDateStyle}" Content="{Binding BuyPriceMaxDateLastUpdateTime}" ToolTip="{Binding BuyPriceMaxDateString}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>

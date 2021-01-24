@@ -66,6 +66,7 @@
         private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
         {
             _itemWindowViewModel.ErrorBarVisibility = Visibility.Hidden;
+            _itemWindowViewModel.ErrorBarText = string.Empty;
         }
 
         private void CbNormalQuality_Click(object sender, RoutedEventArgs e)

@@ -273,9 +273,9 @@ namespace StatisticsAnalysisTool.Common
             return min;
         }
 
-        public static readonly Brush AlertToggleOnColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
+        public static readonly Brush ToggleOnColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
 
-        public static readonly Brush AlertToggleOffColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+        public static readonly Brush ToggleOffColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
 
         #region ItemInformation
 
