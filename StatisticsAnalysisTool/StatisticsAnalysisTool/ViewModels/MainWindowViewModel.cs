@@ -1,6 +1,7 @@
 ﻿using FontAwesome.WPF;
 using LiveCharts;
 using log4net;
+using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
@@ -99,6 +100,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _totalPlayerSilver = "0";
         private string _totalPlayerReSpecPoints = "0";
         private ValueCountUpTimer _valueCountUpTimer;
+        private Visibility _goldPriceVisibility;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -289,9 +291,14 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
-            if (CurrentGoldPrice > 0)
+            if (!currentGoldPrice.IsNullOrEmpty())
             {
                 CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
+                GoldPriceVisibility = Visibility.Visible;
+            }
+            else
+            {
+                GoldPriceVisibility = Visibility.Hidden;
             }
 
             #endregion Gold price
@@ -791,6 +798,14 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
         
+        public Visibility GoldPriceVisibility {
+            get => _goldPriceVisibility;
+            set {
+                _goldPriceVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string TrackingUsername {
             get => _trackingUsername;
             set {
