@@ -99,6 +99,8 @@ namespace StatisticsAnalysisTool.Network
                 var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data).Extract<UdpPacket>();
                 if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
                 {
+                    // TODO: System.ArgumentException: "DependencySource" 
+                    // https://stackoverflow.com/questions/26361020/error-must-create-dependencysource-on-same-thread-as-the-dependencyobject-even
                     _receiver.ReceivePacket(packet.PayloadData);
                 }
             }

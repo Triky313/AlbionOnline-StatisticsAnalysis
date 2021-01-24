@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             _silverCountUpTimer.Add(value.CurrentPlayerSilver);
 
-            _trackingController.SetTotalPlayerSilver(Formatting.ToStringShort(value.CurrentPlayerSilver));
+            _trackingController.SetTotalPlayerSilver(value.CurrentPlayerSilver);
             await Task.CompletedTask;
         }
     }

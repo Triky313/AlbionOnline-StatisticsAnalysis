@@ -20,7 +20,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             _reSpecPointsCountUpTimer.Add(value.CurrentReSpecPoints);
 
-            _trackingController.SetTotalPlayerReSpecPoints(Formatting.ToStringShort(value.CurrentReSpecPoints));
+            _trackingController.SetTotalPlayerReSpecPoints(value.CurrentReSpecPoints);
             await Task.CompletedTask;
         }
     }

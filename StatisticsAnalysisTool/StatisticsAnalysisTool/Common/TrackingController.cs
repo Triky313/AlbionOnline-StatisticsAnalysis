@@ -5,6 +5,7 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -29,14 +30,14 @@ namespace StatisticsAnalysisTool.Common
             _mainWindowViewModel.TotalPlayerFame = value;
         }
 
-        public void SetTotalPlayerSilver(string value)
+        public void SetTotalPlayerSilver(double value)
         {
-            _mainWindowViewModel.TotalPlayerSilver = value;
+            _mainWindowViewModel.TotalPlayerSilver = value.ToString("N0", CultureInfo.CurrentCulture);
         }
 
-        public void SetTotalPlayerReSpecPoints(string value)
+        public void SetTotalPlayerReSpecPoints(double value)
         {
-            _mainWindowViewModel.TotalPlayerReSpecPoints = value;
+            _mainWindowViewModel.TotalPlayerReSpecPoints = value.ToString("N0", CultureInfo.CurrentCulture);
         }
 
         public void AddNotification(TrackingNotification item)
