@@ -331,4 +331,9 @@
   <translation name="TOTAL_FAME">Gesammter Ruhm</translation>
   <translation name="TOTAL_SILVER">Gesammtes Silber</translation>
   <translation name="TOTAL_RESPEC">Total ReSpec</translation>
+
+  <translation name="MINUTES">Minuten</translation>
+  <translation name="HOURS">Stunden</translation>
+  <translation name="DAYS">Tage</translation>
+  <translation name="OVER_A_YEAR">Über ein Jahr</translation>
 </translations>

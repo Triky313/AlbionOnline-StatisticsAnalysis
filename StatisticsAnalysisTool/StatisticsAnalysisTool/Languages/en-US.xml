@@ -332,4 +332,9 @@
   <translation name="TOTAL_FAME">Total Fame</translation>
   <translation name="TOTAL_SILVER">Total Silver</translation>
   <translation name="TOTAL_RESPEC">Total ReSpec</translation>
+
+  <translation name="MINUTES">Minutes</translation>
+  <translation name="HOURS">Hours</translation>
+  <translation name="DAYS">Days</translation>
+  <translation name="OVER_A_YEAR">Over a Year</translation>
 </translations>
