@@ -126,12 +126,12 @@
             <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
         </Grid>
         <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Visible">
-            <Label Content="ALPHA TEST" Height="60" FontSize="40" FontWeight="Light" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" Margin="420,21,0,0" VerticalAlignment="Top" Opacity="0.2" Foreground="{StaticResource SolidColorBrush.Blue.2}">
+            <Label Content="ALPHA TEST" Height="60" FontSize="40" FontWeight="Bold" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" Margin="420,21,0,0" VerticalAlignment="Top" Opacity="0.35" Foreground="{StaticResource SolidColorBrush.Blue.2}">
                 <Label.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
                         <SkewTransform/>
-                        <RotateTransform Angle="20"/>
+                        <RotateTransform Angle="10"/>
                         <TranslateTransform/>
                     </TransformGroup>
                 </Label.RenderTransform>
