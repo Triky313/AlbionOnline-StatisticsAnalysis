@@ -144,8 +144,16 @@ namespace StatisticsAnalysisTool.Common
                 return null;
             }
 
-            var highestDate = items.Select(p => (p.DateTime, p)).Max().Item2;
-            return highestDate.DateTime;
+            try
+            {
+                var highestDate = items.Select(p => (p.DateTime, p)).Max().Item2;
+                return highestDate.DateTime;
+            }
+            catch (ArgumentNullException e)
+            {
+                Log.Error(nameof(GetHighestDate), e);
+                return null;
+            }
         }
 
         public static DateTime? GetLowestDate(ObservableCollection<TrackingNotification> items)
