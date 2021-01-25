@@ -101,6 +101,12 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _totalPlayerReSpecPoints = "0";
         private ValueCountUpTimer _valueCountUpTimer;
         private Visibility _goldPriceVisibility;
+        private Visibility _currentMapInformationVisibility;
+        private string _trackingCurrentMapName;
+        private double _usernameInfoWidth;
+        private double _guildInfoWidth;
+        private double _allianceInfoWidth;
+        private double _currentMapInfoWidth;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -114,7 +120,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Close();
 
             InitMainWindowData();
-            SetTracking();
+            InitTracking();
         }
         
         #region Inits
@@ -236,8 +242,10 @@ namespace StatisticsAnalysisTool.ViewModels
             TextBoxGoldModeNumberOfValues = "10";
         }
 
-        private void SetTracking()
+        private async void InitTracking()
         {
+            await WorldController.GetDataListFromJsonAsync();
+
             if (Settings.Default.IsTrackingActiveAtToolStart)
             {
                 StartTracking();
@@ -314,6 +322,7 @@ namespace StatisticsAnalysisTool.ViewModels
             UsernameInformationVisibility = Visibility.Hidden;
             GuildInformationVisibility = Visibility.Hidden;
             AllianceInformationVisibility = Visibility.Hidden;
+            CurrentMapInformationVisibility = Visibility.Hidden;
 
             IsFameResetByMapChangeActive = Settings.Default.IsFameResetByMapChangeActive;
 
@@ -798,6 +807,14 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
         
+        public Visibility CurrentMapInformationVisibility {
+            get => _currentMapInformationVisibility;
+            set {
+                _currentMapInformationVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public Visibility GoldPriceVisibility {
             get => _goldPriceVisibility;
             set {
@@ -811,7 +828,7 @@ namespace StatisticsAnalysisTool.ViewModels
             set {
                 _trackingUsername = value;
                 UsernameInformationVisibility = !string.IsNullOrEmpty(_trackingUsername) ? Visibility.Visible : Visibility.Hidden;
-
+                UsernameInfoWidth = (string.IsNullOrEmpty(_trackingUsername)) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
@@ -821,7 +838,7 @@ namespace StatisticsAnalysisTool.ViewModels
             set {
                 _trackingGuildName = value;
                 GuildInformationVisibility = !string.IsNullOrEmpty(_trackingGuildName) ? Visibility.Visible : Visibility.Hidden;
-
+                GuildInfoWidth = (string.IsNullOrEmpty(_trackingGuildName)) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
@@ -831,7 +848,49 @@ namespace StatisticsAnalysisTool.ViewModels
             set {
                 _trackingAllianceName = value;
                 AllianceInformationVisibility = !string.IsNullOrEmpty(_trackingAllianceName) ? Visibility.Visible : Visibility.Hidden;
+                AllianceInfoWidth = (string.IsNullOrEmpty(_trackingAllianceName)) ? 0 : double.NaN;
+                OnPropertyChanged();
+            }
+        }
 
+        public string TrackingCurrentMapName {
+            get => _trackingCurrentMapName;
+            set {
+                _trackingCurrentMapName = value;
+                CurrentMapInformationVisibility = !string.IsNullOrEmpty(_trackingCurrentMapName) ? Visibility.Visible : Visibility.Hidden;
+                CurrentMapInfoWidth = (string.IsNullOrEmpty(_trackingCurrentMapName)) ? 0 : double.NaN;
+                OnPropertyChanged();
+            }
+        }
+
+        public double UsernameInfoWidth {
+            get => _usernameInfoWidth;
+            set {
+                _usernameInfoWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double GuildInfoWidth {
+            get => _guildInfoWidth;
+            set {
+                _guildInfoWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double AllianceInfoWidth {
+            get => _allianceInfoWidth;
+            set {
+                _allianceInfoWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double CurrentMapInfoWidth {
+            get => _currentMapInfoWidth;
+            set {
+                _currentMapInfoWidth = value;
                 OnPropertyChanged();
             }
         }

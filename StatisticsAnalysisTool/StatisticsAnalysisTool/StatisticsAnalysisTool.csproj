@@ -209,7 +209,10 @@
     </ApplicationDefinition>
     <Compile Include="Common\AlertController.cs" />
     <Compile Include="Common\Converter.cs" />
+    <Compile Include="Common\WorldController.cs" />
     <Compile Include="Common\TrackingController.cs" />
+    <Compile Include="Models\MapData.cs" />
+    <Compile Include="Models\WorldJsonObject.cs" />
     <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
     <Compile Include="Network\ICountUpTimer.cs" />
     <Compile Include="Network\ReSpecPointsCountUpTimer.cs" />
@@ -345,6 +348,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="world.json" />
     <Resource Include="Resources\alert_window_background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -393,7 +397,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Albion-Api-Doku.txt" />
+    <Resource Include="Albion-Api-Doku-And-Useful-Things.txt" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\silver.png">

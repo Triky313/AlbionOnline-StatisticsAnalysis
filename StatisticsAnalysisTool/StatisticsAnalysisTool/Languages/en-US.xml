@@ -101,7 +101,7 @@
   <translation name="SHOW_NOT_AGAIN">Show not again</translation>
   <translation name="SHOW_INFO_WINDOW_ON_START">Show info window on start</translation>
   <translation name="NEW_FEATURE">New Feature</translation>
-  <translation name="FEATURE_DESCRIPTION">NEW FEATURE - ALERT &#x0a; - Item alert when an entered price has been undercut.</translation>
+  <translation name="FEATURE_DESCRIPTION">NEW FEATURE - TRACKING &#x0a;Current Fame, Respec or Silver values can now be seen. Additionally also per hour. (WinPcap required)(ALPHA) &#x0a;Notifications for Fame added</translation>
   <translation name="EQUIPABLE">Equipable</translation>
   <translation name="STACKABLE">Stackable</translation>
   <translation name="SHOW_IN_MARKET_PLACE">Show in market place</translation>
@@ -332,4 +332,10 @@
   <translation name="TOTAL_FAME">Total Fame</translation>
   <translation name="TOTAL_SILVER">Total Silver</translation>
   <translation name="TOTAL_RESPEC">Total ReSpec</translation>
+
+  <translation name="MINUTES">Minutes</translation>
+  <translation name="HOURS">Hours</translation>
+  <translation name="DAYS">Days</translation>
+  <translation name="OVER_A_YEAR">Over a Year</translation>
+  <translation name="CURRENT_MAP">CURRENT MAP</translation>
 </translations>

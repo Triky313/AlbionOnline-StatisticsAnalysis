@@ -1,4 +1,5 @@
 ﻿using Albion.Network;
+using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,6 +23,13 @@ namespace StatisticsAnalysisTool.Network.Handler
                 if (parameters.ContainsKey(2))
                 {
                     Username = parameters[2].ToString();
+                }
+
+                if (parameters.ContainsKey(8))
+                {
+                    MapIndex = parameters[8].ToString();
+                    UniqueMapName = WorldController.GetUniqueNameNameOrDefault(MapIndex);
+                    MapType = WorldController.GetMapType(MapIndex);
                 }
 
                 if (parameters.ContainsKey(23) && long.TryParse(parameters[23].ToString(), out long currentFocusPoints))
@@ -91,6 +99,9 @@ namespace StatisticsAnalysisTool.Network.Handler
         }
 
         public string Username { get; }
+        public string MapIndex { get; }
+        public string UniqueMapName { get; }
+        public MapType MapType { get; }
         public long CurrentFocusPoints { get; }
         public long MaxCurrentFocusPoints { get; }
         public int LearningPoints { get; }

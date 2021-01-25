@@ -1284,7 +1284,7 @@
 
         <!-- Tracking Information styles -->
         <Style x:Key="Tracking.Information.Border" TargetType="{x:Type Border}">
-            <Setter Property="CornerRadius" Value="10"></Setter>
+            <Setter Property="CornerRadius" Value="7"></Setter>
             <Setter Property="BorderThickness" Value="1"></Setter>
             <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}"></Setter>
         </Style>
@@ -1312,7 +1312,6 @@
             <Setter Property="Padding" Value="0"></Setter>
             <Setter Property="Margin" Value="0"></Setter>
         </Style>
-
     </Application.Resources>
 </Application>
 

@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 - User macros
 
+## [3.0.0] - 2021-01-24
+
+### Added
+- Tracking: Current Fame, Respec or Silver values can now be seen. Additionally also per hour. (WinPcap required)(ALPHA)
+- Tracking: Notifications for Fame added
+- Alerts are now saved and automatically reactivated after restart
+- New Translations added
+
+### Changed
+- Now you need .net 4.8 or higher for the tool
+- Item price The date is now displayed in a simplified manner in minutes, hours, days or years
+
+### Fixed
+- A bug has been fixed where the tool crashes if a Gold Price cannot be loaded
+- Perfortmance improvement
+- Lots of small improvements and adjustments
+
 ## [2.4.0] - 2021-01-01
 
 ### Changed
@@ -210,7 +227,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Remove
 - Remove ini settings
 
-[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.4.0...HEAD
+[Unreleased]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.4.0...3.0.0
 [2.4.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.3.1...2.4.0
 [2.3.1]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/compare/2.2.3...2.3.0
