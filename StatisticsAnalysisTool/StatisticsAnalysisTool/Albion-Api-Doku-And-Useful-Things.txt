@@ -31,3 +31,8 @@ https://render.albiononline.com/v1/item/T4_OFF_SHIELD@1.png
 
 Spell icon
 https://gameinfo.albiononline.com/api/gameinfo/spells/{spell_id}
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+albiondata-bin-dumper
+https://github.com/broderickhyman/albiondata-bin-dumper
