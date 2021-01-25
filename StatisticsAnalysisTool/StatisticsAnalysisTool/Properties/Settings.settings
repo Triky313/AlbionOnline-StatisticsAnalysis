@@ -89,5 +89,14 @@
     <Setting Name="IsFameResetByMapChangeActive" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="WorldDataFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">world.json</Value>
+    </Setting>
+    <Setting Name="WorldDataSourceUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master/StatisticsAnalysisTool/StatisticsAnalysisTool/world.json</Value>
+    </Setting>
+    <Setting Name="UpdateWorldDataByDays" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">7</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

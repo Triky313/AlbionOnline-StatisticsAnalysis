@@ -365,5 +365,42 @@ namespace StatisticsAnalysisTool.Properties {
                 this["IsFameResetByMapChangeActive"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("world.json")]
+        public string WorldDataFileName {
+            get {
+                return ((string)(this["WorldDataFileName"]));
+            }
+            set {
+                this["WorldDataFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master" +
+            "/StatisticsAnalysisTool/StatisticsAnalysisTool/world.json")]
+        public string WorldDataSourceUrl {
+            get {
+                return ((string)(this["WorldDataSourceUrl"]));
+            }
+            set {
+                this["WorldDataSourceUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        public int UpdateWorldDataByDays {
+            get {
+                return ((int)(this["UpdateWorldDataByDays"]));
+            }
+            set {
+                this["UpdateWorldDataByDays"] = value;
+            }
+        }
     }
 }

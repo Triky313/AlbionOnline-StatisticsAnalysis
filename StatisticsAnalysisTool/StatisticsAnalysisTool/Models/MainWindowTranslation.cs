@@ -25,5 +25,6 @@ namespace StatisticsAnalysisTool.Models
         public string TotalFame => LanguageController.Translation("TOTAL_FAME");
         public string TotalSilver => LanguageController.Translation("TOTAL_SILVER");
         public string TotalReSpec => LanguageController.Translation("TOTAL_RESPEC");
+        public string CurrentMap => LanguageController.Translation("CURRENT_MAP");
     }
 }

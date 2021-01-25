@@ -17,6 +17,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             _mainWindowViewModel.TrackingUsername = value.Username;
             _mainWindowViewModel.TrackingGuildName = value.GuildName;
             _mainWindowViewModel.TrackingAllianceName = value.AllianceName;
+            _mainWindowViewModel.TrackingCurrentMapName = value.UniqueMapName;
 
             ResetFameCounterByMapChangeIfActive();
 
