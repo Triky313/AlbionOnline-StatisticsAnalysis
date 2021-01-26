@@ -143,25 +143,25 @@
                             <fa:ImageAwesome Visibility="Visible" Icon="{Binding TrackerActivationToggleIcon, FallbackValue=ToggleOff}" Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" MouseUp="TrackingModeActiveToggle_MouseUp" />
                         </Grid>
                     </StackPanel>
-                    <Border Width="{Binding UsernameInfoWidth, FallbackValue=auto}" Visibility="{Binding UsernameInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
+                    <Border Width="{Binding UsernameInfoWidth, FallbackValue=NaN}" Visibility="{Binding UsernameInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
                         <StackPanel Style="{StaticResource Tracking.Information.StackPanel}" Height="40">
                             <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding Translation.Username, FallbackValue=USERNAME}"></Label>
                             <Label Style="{StaticResource Tracking.Information.Value}" Content="{Binding TrackingUsername, FallbackValue=USERNAME}"></Label>
                         </StackPanel>
                     </Border>
-                    <Border Width="{Binding GuildInfoWidth, FallbackValue=auto}" Visibility="{Binding GuildInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
+                    <Border Width="{Binding GuildInfoWidth, FallbackValue=NaN}" Visibility="{Binding GuildInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
                         <StackPanel Style="{StaticResource Tracking.Information.StackPanel}" Height="40">
                             <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding Translation.Guild, FallbackValue=GUILD}"></Label>
                             <Label Style="{StaticResource Tracking.Information.Value}" Content="{Binding TrackingGuildName, FallbackValue=GUILD}"></Label>
                         </StackPanel>
                     </Border>
-                    <Border Width="{Binding AllianceInfoWidth, FallbackValue=auto}" Visibility="{Binding AllianceInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
+                    <Border Width="{Binding AllianceInfoWidth, FallbackValue=NaN}" Visibility="{Binding AllianceInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
                         <StackPanel Style="{StaticResource Tracking.Information.StackPanel}" Height="40">
                             <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding Translation.Alliance, FallbackValue=ALLIANCE}"></Label>
                             <Label Style="{StaticResource Tracking.Information.Value}" Content="{Binding TrackingAllianceName, FallbackValue=ALLIANCE}"></Label>
                         </StackPanel>
                     </Border>
-                    <Border Width="{Binding CurrentMapInfoWidth, FallbackValue=auto}" Visibility="{Binding CurrentMapInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
+                    <Border Width="{Binding CurrentMapInfoWidth, FallbackValue=NaN}" Visibility="{Binding CurrentMapInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
                         <StackPanel Style="{StaticResource Tracking.Information.StackPanel}" Height="40">
                             <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding Translation.CurrentMap, FallbackValue=CURRENT__MAP}"></Label>
                             <Label Style="{StaticResource Tracking.Information.Value}" Content="{Binding TrackingCurrentMapName, FallbackValue=CURRENT__MAP__NAME}"></Label>

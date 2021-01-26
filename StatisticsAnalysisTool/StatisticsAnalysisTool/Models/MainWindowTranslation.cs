@@ -26,5 +26,6 @@ namespace StatisticsAnalysisTool.Models
         public string TotalSilver => LanguageController.Translation("TOTAL_SILVER");
         public string TotalReSpec => LanguageController.Translation("TOTAL_RESPEC");
         public string CurrentMap => LanguageController.Translation("CURRENT_MAP");
+        public string Tracking => LanguageController.Translation("TRACKING");
     }
 }
