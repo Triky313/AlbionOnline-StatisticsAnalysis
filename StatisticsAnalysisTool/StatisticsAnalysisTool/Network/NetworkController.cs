@@ -104,12 +104,19 @@ namespace StatisticsAnalysisTool.Network
 
         private static void PacketHandler(object sender, CaptureEventArgs e)
         {
-            var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data).Extract<UdpPacket>();
-            if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
+            try
             {
-                // TODO: System.ArgumentException: "DependencySource" 
-                // https://stackoverflow.com/questions/26361020/error-must-create-dependencysource-on-same-thread-as-the-dependencyobject-even
-                _receiver.ReceivePacket(packet.PayloadData);
+                var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data).Extract<UdpPacket>();
+                if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
+                {
+                    _receiver.ReceivePacket(packet.PayloadData);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(nameof(StartDeviceCapture), ex);
+                _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
+                _mainWindowViewModel.StopTracking();
             }
         }
     }
