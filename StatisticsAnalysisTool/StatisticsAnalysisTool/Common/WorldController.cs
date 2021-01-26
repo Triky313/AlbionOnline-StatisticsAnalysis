@@ -19,22 +19,17 @@ namespace StatisticsAnalysisTool.Common
         public static ObservableCollection<MapData> MapData;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static string GetUniqueNameNameOrDefault(string index)
+        public static string GetUniqueNameOrDefault(string index)
         {
-            if (MapData.Any(x => x.Index == index))
+            var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;
+            var splitName = name.Split(new[] { "@" }, StringSplitOptions.None);
+
+            if (splitName.Length > 0 && name.ToLower().Contains('@'))
             {
-                var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;
-                var splitName = name.Split(new [] { "@" }, StringSplitOptions.None);
-
-                if (splitName.Length > 0 && name.ToLower().Contains('@'))
-                {
-                    return GetMapNameByMapType(GetMapType(splitName[0]));
-                }
-
-                return name;
+                return GetMapNameByMapType(GetMapType(splitName[1]));
             }
-            
-            return index;
+
+            return name;
         }
 
         private static string GetMapNameByMapType(MapType mapType)
@@ -56,22 +51,22 @@ namespace StatisticsAnalysisTool.Common
 
         public static MapType GetMapType(string index)
         {
-            if (index.ToUpper().Contains("@HELLCLUSTER"))
+            if (index.ToUpper().Contains("HELLCLUSTER"))
             {
                 return MapType.HellGate;
             }
 
-            if (index.ToUpper().Contains("@RANDOMDUNGEON"))
+            if (index.ToUpper().Contains("RANDOMDUNGEON"))
             {
                 return MapType.RandomDungeon;
             }
 
-            if (index.ToUpper().Contains("@CORRUPTEDDUNGEON"))
+            if (index.ToUpper().Contains("CORRUPTEDDUNGEON"))
             {
                 return MapType.CorruptedDungeon;
             }
 
-            if (index.ToUpper().Contains("@ISLAND"))
+            if (index.ToUpper().Contains("ISLAND"))
             {
                 return MapType.Island;
             }
