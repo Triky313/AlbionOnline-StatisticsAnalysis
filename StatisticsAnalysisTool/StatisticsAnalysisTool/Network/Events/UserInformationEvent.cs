@@ -28,7 +28,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                 if (parameters.ContainsKey(8))
                 {
                     MapIndex = parameters[8].ToString();
-                    UniqueMapName = WorldController.GetUniqueNameNameOrDefault(MapIndex);
+                    UniqueMapName = WorldController.GetUniqueNameOrDefault(MapIndex);
                     MapType = WorldController.GetMapType(MapIndex);
                 }
 
