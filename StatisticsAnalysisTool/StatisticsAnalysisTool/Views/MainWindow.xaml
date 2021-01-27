@@ -171,8 +171,8 @@
                 </DockPanel>
             </Grid>
             <StackPanel IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Margin="0,10,10,0" HorizontalAlignment="Right" Width="200" Height="110" VerticalAlignment="Top">
-                <Button Content="{Binding Translation.ResetFameCounter, FallbackValue=RESET__FAME__COUNTER}" Height="26" VerticalAlignment="Top" Click="BtnFameReset_Click" />
-                <CheckBox IsChecked="{Binding IsFameResetByMapChangeActive}" Content="{Binding Translation.FameResetByMapChange, FallbackValue=FAME_RESET_BY_MAP_CHANGE}"></CheckBox>
+                <Button Content="{Binding Translation.ResetTrackingCounter, FallbackValue=RESET__TRACKING__COUNTER}" Height="26" VerticalAlignment="Top" Click="BtnTrackingReset_Click" />
+                <CheckBox IsChecked="{Binding IsTrackingResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}"></CheckBox>
             </StackPanel>
             <Grid Margin="10,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
                 <StackPanel>

@@ -95,7 +95,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _usernameInformationVisibility;
         private Visibility _guildInformationVisibility;
         private Visibility _allianceInformationVisibility;
-        private bool _isFameResetByMapChangeActive;
+        private bool _isTrackingResetByMapChangeActive;
         private string _silverPerHour = "0";
         private string _totalPlayerSilver = "0";
         private string _totalPlayerReSpecPoints = "0";
@@ -324,7 +324,7 @@ namespace StatisticsAnalysisTool.ViewModels
             AllianceInformationVisibility = Visibility.Hidden;
             CurrentMapInformationVisibility = Visibility.Hidden;
 
-            IsFameResetByMapChangeActive = Settings.Default.IsFameResetByMapChangeActive;
+            IsTrackingResetByMapChangeActive = Settings.Default.IsFameResetByMapChangeActive;
 
             #endregion
         }
@@ -943,10 +943,10 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsFameResetByMapChangeActive {
-            get => _isFameResetByMapChangeActive;
+        public bool IsTrackingResetByMapChangeActive {
+            get => _isTrackingResetByMapChangeActive;
             set {
-                _isFameResetByMapChangeActive = value;
+                _isTrackingResetByMapChangeActive = value;
                 OnPropertyChanged();
             }
         }

@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         private void ResetFameCounterByMapChangeIfActive()
         {
-            if (_mainWindowViewModel.IsFameResetByMapChangeActive)
+            if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
             {
                 _mainWindowViewModel.ResetCounters(true, true, true);
             }

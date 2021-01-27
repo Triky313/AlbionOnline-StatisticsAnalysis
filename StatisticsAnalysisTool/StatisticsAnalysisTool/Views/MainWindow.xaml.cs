@@ -129,7 +129,7 @@ namespace StatisticsAnalysisTool.Views
         {
             #region Tracking
 
-            Settings.Default.IsFameResetByMapChangeActive = _mainWindowViewModel.IsFameResetByMapChangeActive;
+            Settings.Default.IsFameResetByMapChangeActive = _mainWindowViewModel.IsTrackingResetByMapChangeActive;
             Settings.Default.IsTrackingActiveAtToolStart = _mainWindowViewModel.IsTrackingActive;
 
             if (_mainWindowViewModel.IsTrackingActive)
@@ -208,7 +208,7 @@ namespace StatisticsAnalysisTool.Views
             _mainWindowViewModel.TrackerActivationToggle();
         }
 
-        private void BtnFameReset_Click(object sender, RoutedEventArgs e)
+        private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel.ResetCounters(true, true, true);
         }

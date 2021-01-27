@@ -359,10 +359,10 @@ namespace StatisticsAnalysisTool.Properties {
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool IsFameResetByMapChangeActive {
             get {
-                return ((bool)(this["IsFameResetByMapChangeActive"]));
+                return ((bool)(this["IsTrackingResetByMapChangeActive"]));
             }
             set {
-                this["IsFameResetByMapChangeActive"] = value;
+                this["IsTrackingResetByMapChangeActive"] = value;
             }
         }
         
