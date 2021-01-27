@@ -20,7 +20,8 @@ namespace StatisticsAnalysisTool.Views
     public partial class MainWindow
     {
         private readonly MainWindowViewModel _mainWindowViewModel;
-        
+        private static bool _isWindowMaximized;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -81,35 +82,32 @@ namespace StatisticsAnalysisTool.Views
             if (e.ClickCount == 2 && WindowState == WindowState.Normal)
             {
                 WindowState = WindowState.Maximized;
+                MaximizedButton.Content = 2;
+                _isWindowMaximized = true;
                 return;
             }
 
-            if (e.ClickCount == 2 && WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
+            if (e.ClickCount == 2 && WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+                _mainWindowViewModel.CenterWindowOnScreen();
+                MaximizedButton.Content = 1;
+                _isWindowMaximized = false;
+            }
         }
-
-        private static Rect _storedSize;
-        private static bool _isWindowMaximized;
 
         private void MaximizedButton_Click(object sender, RoutedEventArgs e)
         {
             if (_isWindowMaximized)
             {
-                Left = _storedSize.Left;
-                Top = _storedSize.Top;
-                Height = _storedSize.Height;
-                Width = _storedSize.Width;
+                WindowState = WindowState.Normal;
                 _mainWindowViewModel.CenterWindowOnScreen();
                 MaximizedButton.Content = 1;
                 _isWindowMaximized = false;
             }
             else
             {
-                _storedSize.Width = Width;
-                _storedSize.Height = Height;
-                Left = SystemParameters.WorkArea.Left;
-                Top = SystemParameters.WorkArea.Top;
-                Height = SystemParameters.WorkArea.Height;
-                Width = SystemParameters.WorkArea.Width;
+                WindowState = WindowState.Maximized;
                 MaximizedButton.Content = 2;
                 _isWindowMaximized = true;
             }
