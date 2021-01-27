@@ -324,7 +324,7 @@ namespace StatisticsAnalysisTool.ViewModels
             AllianceInformationVisibility = Visibility.Hidden;
             CurrentMapInformationVisibility = Visibility.Hidden;
 
-            IsTrackingResetByMapChangeActive = Settings.Default.IsFameResetByMapChangeActive;
+            IsTrackingResetByMapChangeActive = Settings.Default.IsTrackingResetByMapChangeActive;
 
             #endregion
         }

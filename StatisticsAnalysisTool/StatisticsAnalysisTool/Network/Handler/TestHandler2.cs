@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class TestHandler : EventPacketHandler<TestEvent>
+    public class TestHandler2 : EventPacketHandler<TestEvent>
     {
-        public TestHandler() : base(280) { }
+        public TestHandler2() : base(71) { }
 
         protected override async Task OnActionAsync(TestEvent value)
         {
-            Debug.Print($"----- TestHandler");
+            Debug.Print($"----- TestHandler 2");
             await Task.CompletedTask;
         }
     }

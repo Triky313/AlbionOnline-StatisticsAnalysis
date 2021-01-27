@@ -129,7 +129,7 @@ namespace StatisticsAnalysisTool.Views
         {
             #region Tracking
 
-            Settings.Default.IsFameResetByMapChangeActive = _mainWindowViewModel.IsTrackingResetByMapChangeActive;
+            Settings.Default.IsTrackingResetByMapChangeActive = _mainWindowViewModel.IsTrackingResetByMapChangeActive;
             Settings.Default.IsTrackingActiveAtToolStart = _mainWindowViewModel.IsTrackingActive;
 
             if (_mainWindowViewModel.IsTrackingActive)
