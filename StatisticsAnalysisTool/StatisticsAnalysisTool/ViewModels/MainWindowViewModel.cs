@@ -107,6 +107,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _guildInfoWidth;
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
+        private string _currentDungeonFame = "0";
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -939,6 +940,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _totalPlayerReSpecPoints;
             set {
                 _totalPlayerReSpecPoints = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string CurrentDungeonFame {
+            get => _currentDungeonFame;
+            set {
+                _currentDungeonFame = value;
                 OnPropertyChanged();
             }
         }

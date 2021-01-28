@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public Dungeon(Guid firstMap)
         {
             FirstMap = firstMap;
-            MapsGuid.Add(firstMap);
+            MapsGuid = new List<Guid> { firstMap };
             FirstJoin = DateTime.UtcNow;
         }
 

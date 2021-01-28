@@ -7,7 +7,6 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -34,20 +33,24 @@ namespace StatisticsAnalysisTool.Common
 
         public void SetTotalPlayerFame(double value)
         {
-            _mainWindowViewModel.TotalPlayerFame = value.ToString("N0", CultureInfo.CurrentCulture);
+            _mainWindowViewModel.TotalPlayerFame = value.ToString("N0", LanguageController.CurrentCultureInfo);
         }
 
         public void SetTotalPlayerSilver(double value)
         {
-            _mainWindowViewModel.TotalPlayerSilver = value.ToString("N0", CultureInfo.CurrentCulture);
+            _mainWindowViewModel.TotalPlayerSilver = value.ToString("N0", LanguageController.CurrentCultureInfo);
         }
 
         public void SetTotalPlayerReSpecPoints(double value)
         {
-            _mainWindowViewModel.TotalPlayerReSpecPoints = value.ToString("N0", CultureInfo.CurrentCulture);
+            _mainWindowViewModel.TotalPlayerReSpecPoints = value.ToString("N0", LanguageController.CurrentCultureInfo);
         }
 
-
+        public void SetFameOfCurrentDungeon(double value)
+        {
+            _mainWindowViewModel.CurrentDungeonFame = value.ToString("N0", LanguageController.CurrentCultureInfo);
+        }
+        
         #endregion
 
         #region Notifications
@@ -220,7 +223,10 @@ namespace StatisticsAnalysisTool.Common
                     _dungeons.Add(new Dungeon((Guid)_currentGuid));
 
                     _lastGuid = mapGuid;
+                    return;
                 }
+
+                _lastGuid = _currentGuid;
             }
             catch
             {
@@ -228,29 +234,20 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        private double? _lastFameValue;
-
         public void AddFame(double value)
         {
-            if (_lastFameValue == null || _currentGuid == null)
-            {
-                _lastFameValue = value;
-                return;
-            }
-
-            var newValue = (double)(value - _lastFameValue);
-
-            if (newValue == 0)
+            if (_currentGuid == null)
             {
                 return;
             }
 
             try
             {
-                var dun = _dungeons?.FirstOrDefault(x => x.MapsGuid.Contains((Guid)_currentGuid));
+                var dun = _dungeons?.FirstOrDefault(x => x.MapsGuid.Contains((Guid) _currentGuid));
                 if (dun != null)
                 {
-                    dun.Fame += newValue;
+                    dun.Fame += value;
+                    SetFameOfCurrentDungeon(dun.Fame);
                 }
             }
             catch
@@ -258,7 +255,7 @@ namespace StatisticsAnalysisTool.Common
                 // ignored
             }
         }
-
+        
         #endregion
 
         private bool IsMainWindowNull()
