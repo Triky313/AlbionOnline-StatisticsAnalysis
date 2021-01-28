@@ -212,6 +212,7 @@
     <Compile Include="Common\WorldController.cs" />
     <Compile Include="Common\TrackingController.cs" />
     <Compile Include="Models\MapData.cs" />
+    <Compile Include="Models\NetworkModel\Dungeon.cs" />
     <Compile Include="Models\WorldJsonObject.cs" />
     <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
     <Compile Include="Network\Events\TestEvent.cs" />

@@ -42,7 +42,7 @@ namespace StatisticsAnalysisTool.Network
             builder.AddEventHandler(new TestHandler());
             builder.AddEventHandler(new TestHandler());
 
-            builder.AddResponseHandler(new UserInformationHandler(_mainWindowViewModel)); // GEHT
+            builder.AddResponseHandler(new UserInformationHandler(trackingController, _mainWindowViewModel)); // GEHT
 
             _receiver = builder.Build();
 

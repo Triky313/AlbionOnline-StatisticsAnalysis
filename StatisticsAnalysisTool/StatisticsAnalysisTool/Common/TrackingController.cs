@@ -1,9 +1,11 @@
 ﻿using log4net;
 using PcapDotNet.Base;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -16,6 +18,9 @@ namespace StatisticsAnalysisTool.Common
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly MainWindow _mainWindow;
+        private readonly List<Dungeon> _dungeons = new List<Dungeon>();
+        private Guid? _lastGuid;
+        private Guid? _currentGuid;
 
         private const int _maxNotifications = 50;
 
@@ -24,6 +29,8 @@ namespace StatisticsAnalysisTool.Common
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
         }
+
+        #region Set values
 
         public void SetTotalPlayerFame(double value)
         {
@@ -39,6 +46,11 @@ namespace StatisticsAnalysisTool.Common
         {
             _mainWindowViewModel.TotalPlayerReSpecPoints = value.ToString("N0", CultureInfo.CurrentCulture);
         }
+
+
+        #endregion
+
+        #region Notifications
 
         public void AddNotification(TrackingNotification item)
         {
@@ -175,6 +187,79 @@ namespace StatisticsAnalysisTool.Common
                 return null;
             }
         }
+
+
+        #endregion
+
+        #region Dungeon
+
+        public void AddDungeon(MapType mapType, Guid? mapGuid)
+        {
+            if (mapType != MapType.RandomDungeon || mapGuid == null)
+            {
+                _currentGuid = null;
+                _lastGuid = null;
+                return;
+            }
+
+            try
+            {
+                _currentGuid = (Guid)mapGuid;
+
+                if (_lastGuid != null && !_dungeons.Any(x => x.MapsGuid.Contains((Guid)_currentGuid)))
+                {
+                    var dun = _dungeons?.First(x => x.MapsGuid.Contains((Guid)_lastGuid));
+                    dun.MapsGuid.Add((Guid)_currentGuid);
+
+                    _lastGuid = _currentGuid;
+                    return;
+                }
+
+                if (_lastGuid == null && !_dungeons.Any(x => x.MapsGuid.Contains((Guid) mapGuid)))
+                {
+                    _dungeons.Add(new Dungeon((Guid)_currentGuid));
+
+                    _lastGuid = mapGuid;
+                }
+            }
+            catch
+            {
+                _currentGuid = null;
+            }
+        }
+
+        private double? _lastFameValue;
+
+        public void AddFame(double value)
+        {
+            if (_lastFameValue == null || _currentGuid == null)
+            {
+                _lastFameValue = value;
+                return;
+            }
+
+            var newValue = (double)(value - _lastFameValue);
+
+            if (newValue == 0)
+            {
+                return;
+            }
+
+            try
+            {
+                var dun = _dungeons?.FirstOrDefault(x => x.MapsGuid.Contains((Guid)_currentGuid));
+                if (dun != null)
+                {
+                    dun.Fame += newValue;
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
+        #endregion
 
         private bool IsMainWindowNull()
         {

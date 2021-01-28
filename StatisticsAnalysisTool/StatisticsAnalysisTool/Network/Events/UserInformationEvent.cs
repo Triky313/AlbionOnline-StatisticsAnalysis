@@ -30,6 +30,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                     MapIndex = parameters[8].ToString();
                     UniqueMapName = WorldController.GetUniqueNameOrDefault(MapIndex);
                     MapType = WorldController.GetMapType(MapIndex);
+                    DungeonGuid = WorldController.GetDungeonGuid(MapIndex);
                 }
 
                 if (parameters.ContainsKey(23) && long.TryParse(parameters[23].ToString(), out long currentFocusPoints))
@@ -67,7 +68,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                     var array = (long[])parameters[38];
                     if (array != null && array.Length > 1)
                     {
-                        RespecPoints = array[1];
+                        ReSpecPoints = array[1];
                     }
                 }
 
@@ -101,12 +102,13 @@ namespace StatisticsAnalysisTool.Network.Handler
         public string Username { get; }
         public string MapIndex { get; }
         public string UniqueMapName { get; }
+        public Guid? DungeonGuid { get; }
         public MapType MapType { get; }
         public long CurrentFocusPoints { get; }
         public long MaxCurrentFocusPoints { get; }
         public int LearningPoints { get; }
         public int Reputation { get; }
-        public long RespecPoints { get; }
+        public long ReSpecPoints { get; }
         public long Silver { get; }
         public long Gold { get; }
         public string GuildName { get; }
