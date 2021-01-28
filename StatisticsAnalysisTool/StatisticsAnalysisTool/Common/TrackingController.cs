@@ -147,9 +147,8 @@ namespace StatisticsAnalysisTool.Common
 
             try
             {
-                // TODO: System.ArgumentException | Mindestens ein Objekt muss IComparable implementieren.
-                var highestDate = items.Select(p => (p.DateTime, p)).Max().Item2;
-                return highestDate.DateTime;
+                var highestDate = items.Select(x => x.DateTime).Max();
+                return highestDate;
             }
             catch (ArgumentNullException e)
             {
@@ -165,8 +164,16 @@ namespace StatisticsAnalysisTool.Common
                 return null;
             }
 
-            var lowestDate = items.Select(p => (p.DateTime, p)).Min().Item2;
-            return lowestDate.DateTime;
+            try
+            {
+                var lowestDate = items.Select(x => x.DateTime).Min();
+                return lowestDate;
+            }
+            catch (ArgumentNullException e)
+            {
+                Log.Error(nameof(GetHighestDate), e);
+                return null;
+            }
         }
 
         private bool IsMainWindowNull()

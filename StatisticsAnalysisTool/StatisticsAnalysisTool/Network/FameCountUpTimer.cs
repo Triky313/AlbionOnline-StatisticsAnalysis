@@ -67,6 +67,11 @@ namespace StatisticsAnalysisTool.Network
 
         private void CurrentTimerUpdate()
         {
+            if (_isCurrentTimerUpdateActive)
+            {
+                return;
+            }
+
             _isCurrentTimerUpdateActive = true;
 
             var task = Task.Run(async () =>
