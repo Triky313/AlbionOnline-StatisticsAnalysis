@@ -20,9 +20,6 @@ namespace StatisticsAnalysisTool.Network.Events
             {
                 if (parameters.ContainsKey(0))
                 {
-                    // Todo: Exception thrown: 'System.InvalidCastException' in StatisticsAnalysisTool.exe
-                    // An exception of type 'System.InvalidCastException' occurred in StatisticsAnalysisTool.exe but was not handled in user code
-                    // Das Objekt des Typs "System.Int32[]" kann nicht in Typ "System.Int64[]" umgewandelt werden.
                     var reSpecPointsArray = ((long[])parameters[0]).ToDictionary();
 
                     if (!reSpecPointsArray.IsNullOrEmpty() && reSpecPointsArray.ContainsKey(1) && long.TryParse(reSpecPointsArray[1].ToString(), out long currentReSpecPoints))
@@ -32,6 +29,11 @@ namespace StatisticsAnalysisTool.Network.Events
                 }
             }
             catch(ArgumentNullException e)
+            {
+                Log.Error(nameof(UpdateReSpecPointsEvent), e);
+                Debug.Print(e.Message);
+            }
+            catch(InvalidCastException e)
             {
                 Log.Error(nameof(UpdateReSpecPointsEvent), e);
                 Debug.Print(e.Message);
