@@ -63,9 +63,9 @@ namespace StatisticsAnalysisTool.Network.Handler
                     Reputation = newReputation;
                 }
 
-                if (parameters.ContainsKey(38))
+                if (parameters.ContainsKey(38) && parameters[38].GetType().IsArrayOf<int>())
                 {
-                    var array = (long[])parameters[38];
+                    var array = (int[])parameters[38];
                     if (array != null && array.Length > 1)
                     {
                         ReSpecPoints = array[1] / 10000d;

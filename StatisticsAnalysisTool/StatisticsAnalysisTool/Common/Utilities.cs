@@ -82,6 +82,11 @@ namespace StatisticsAnalysisTool.Common
                 .ToDictionary(o => o.Key, o => o.Value);
         }
 
+        public static bool IsArrayOf<T>(this Type type)
+        {
+            return type == typeof(T[]);
+        }
+
         #region Window Flash
 
         private const uint FlashwStop = 0; //Stop flashing. The system restores the window to its original state.
