@@ -43,11 +43,6 @@ namespace StatisticsAnalysisTool.Common
             _mainWindowViewModel.TotalPlayerReSpecPoints = value.ToString("N0", LanguageController.CurrentCultureInfo);
         }
 
-        public void SetFameOfCurrentDungeon(double value)
-        {
-            _mainWindowViewModel.CurrentDungeonFame = value.ToString("N0", LanguageController.CurrentCultureInfo);
-        }
-        
         #endregion
 
         #region Notifications
@@ -157,21 +152,10 @@ namespace StatisticsAnalysisTool.Common
 
                 if (_lastGuid != null && !_mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid)_currentGuid)))
                 {
-                    if (_mainWindow.Dispatcher.CheckAccess())
-                    {
-                        var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains((Guid)_lastGuid));
-                        dun.MapsGuid.Add((Guid)_currentGuid);
-                    }
-                    else
-                    {
-                        _mainWindow.Dispatcher.Invoke(delegate
-                        {
-                            var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains((Guid)_lastGuid));
-                            dun.MapsGuid.Add((Guid)_currentGuid);
-                        });
-                    }
+                    AddMapToExistDungeon((Guid)_currentGuid, (Guid)_lastGuid);
 
                     _lastGuid = _currentGuid;
+                    _mainWindowViewModel.EnteredDungeon = _mainWindowViewModel.TrackingDungeons.Count;
                     return;
                 }
 
@@ -190,6 +174,7 @@ namespace StatisticsAnalysisTool.Common
                     }
 
                     _lastGuid = mapGuid;
+                    _mainWindowViewModel.EnteredDungeon = _mainWindowViewModel.TrackingDungeons.Count;
                     return;
                 }
 
@@ -198,6 +183,23 @@ namespace StatisticsAnalysisTool.Common
             catch
             {
                 _currentGuid = null;
+            }
+        }
+
+        private void AddMapToExistDungeon(Guid currentGuid, Guid lastGuid)
+        {
+            if (_mainWindow.Dispatcher.CheckAccess())
+            {
+                var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(lastGuid));
+                dun?.MapsGuid.Add(currentGuid);
+            }
+            else
+            {
+                _mainWindow.Dispatcher.Invoke(delegate
+                {
+                    var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(lastGuid));
+                    dun?.MapsGuid.Add(currentGuid);
+                });
             }
         }
 
@@ -225,7 +227,6 @@ namespace StatisticsAnalysisTool.Common
                     if (dun != null)
                     {
                         dun.Fame += value;
-                        SetFameOfCurrentDungeon(dun.Fame);
                     }
                 }
                 else
@@ -236,7 +237,6 @@ namespace StatisticsAnalysisTool.Common
                         if (dun != null)
                         {
                             dun.Fame += value;
-                            SetFameOfCurrentDungeon(dun.Fame);
                         }
                     });
                 }

@@ -232,13 +232,13 @@
                 </TabItem>
                 <TabItem Header="{Binding Translation.Dungeon, FallbackValue=DUNGEON}">
                     <Grid Margin="0,0,0,0">
-                        <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
                             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Image Style="{StaticResource Icon.Fame}"/>
+                                <Image Style="{StaticResource Icon.Dungeon}"/>
                             </Grid>
-                            <Label Content="{Binding CurrentDungeonFame, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                            <Label Content="{Binding EnteredDungeon, FallbackValue='0'}" ContentStringFormat="{}{0}" ToolTip="{Binding Translation.EnteredDungeon}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                         </DockPanel>
-                        <ScrollViewer Margin="0,29,0,0">
+                        <ScrollViewer Margin="0,35,0,0">
                             <ItemsControl ItemsSource="{Binding TrackingDungeons}" />
                         </ScrollViewer>
                     </Grid>

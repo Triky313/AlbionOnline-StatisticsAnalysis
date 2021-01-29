@@ -109,6 +109,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _currentMapInfoWidth;
         private string _currentDungeonFame = "0";
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
+        private int _enteredDungeon;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -945,10 +946,10 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string CurrentDungeonFame {
-            get => _currentDungeonFame;
+        public int EnteredDungeon {
+            get => _enteredDungeon;
             set {
-                _currentDungeonFame = value;
+                _enteredDungeon = value;
                 OnPropertyChanged();
             }
         }
