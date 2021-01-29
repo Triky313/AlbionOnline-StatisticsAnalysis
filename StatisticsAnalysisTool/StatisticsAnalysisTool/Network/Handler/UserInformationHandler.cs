@@ -1,4 +1,5 @@
 ﻿using Albion.Network;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using System.Threading.Tasks;
 
@@ -6,9 +7,11 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UserInformationHandler : ResponsePacketHandler<UserInformationEvent>
     {
+        private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
-        public UserInformationHandler(MainWindowViewModel mainWindowViewModel) : base(2)
+        public UserInformationHandler(TrackingController trackingController, MainWindowViewModel mainWindowViewModel) : base(2)
         {
+            _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
         }
 
@@ -18,6 +21,12 @@ namespace StatisticsAnalysisTool.Network.Handler
             _mainWindowViewModel.TrackingGuildName = value.GuildName;
             _mainWindowViewModel.TrackingAllianceName = value.AllianceName;
             _mainWindowViewModel.TrackingCurrentMapName = value.UniqueMapName;
+
+            _trackingController.SetTotalPlayerSilver(value.Silver);
+            _trackingController.SetTotalPlayerReSpecPoints(value.ReSpecPoints);
+
+            _trackingController.SetTotalPlayerReSpecPoints(value.ReSpecPoints);
+            _trackingController.AddDungeon(value.MapType, value.DungeonGuid);
 
             ResetFameCounterByMapChangeIfActive();
 

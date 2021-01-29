@@ -107,6 +107,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _guildInfoWidth;
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
+        private string _currentDungeonFame = "0";
+        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -943,6 +945,14 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public string CurrentDungeonFame {
+            get => _currentDungeonFame;
+            set {
+                _currentDungeonFame = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsTrackingResetByMapChangeActive {
             get => _isTrackingResetByMapChangeActive;
             set {
@@ -955,6 +965,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _trackingNotifications;
             set {
                 _trackingNotifications = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<DungeonNotificationFragment> TrackingDungeons {
+            get => _trackingDungeons;
+            set {
+                _trackingDungeons = value;
                 OnPropertyChanged();
             }
         }

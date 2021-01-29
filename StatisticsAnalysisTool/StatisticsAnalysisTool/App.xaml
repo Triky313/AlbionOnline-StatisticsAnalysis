@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:StatisticsAnalysisTool.Network.Notification"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <!-- Base font size -->
@@ -1258,6 +1259,27 @@
                 <Image Source="Resources/satchel.png" Style="{StaticResource LineFragmentImageStyle}" />
                 <TextBlock Text="{Binding Satchel, StringFormat='{}{0:N0}) '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
                 <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:DungeonNotificationFragment}">
+            <StackPanel Orientation="Horizontal" Height="30" Margin="10 10 0 10">
+                <StackPanel.Background>
+                    <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
+                        <GradientStop Color="{StaticResource Color.Blue.4}"/>
+                        <GradientStop Offset="0.90" Color="#FF36363F"/>
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+                <Label Content="{Binding DungeonCounter, FallbackValue=0}" ContentStringFormat="{}[{0}]" VerticalAlignment="Center" Margin="0 0 0 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                <Label Content="{Binding DungeonStart, FallbackValue=22.01.2021 - 22:26}" ContentStringFormat="{}[{0}]" VerticalAlignment="Center" Margin="0 0 10 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
+                    <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
+                </Grid>
+                <Label Content="{Binding Fame, FallbackValue=999.999.999}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="0 0 10 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__TIME}">
+                    <fa:ImageAwesome Icon="ClockOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                </Grid>
+                <Label Content="{Binding RunTimeString, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="0 0 10 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
             </StackPanel>
         </DataTemplate>
 

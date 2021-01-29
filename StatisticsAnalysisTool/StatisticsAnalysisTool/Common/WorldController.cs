@@ -32,6 +32,30 @@ namespace StatisticsAnalysisTool.Common
             return name;
         }
 
+        public static Guid? GetDungeonGuid(string index)
+        {
+            try
+            {
+                var splitName = index.Split(new[] { "@" }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (splitName.Length > 1 && index.ToLower().Contains('@'))
+                {
+                    var mapType = GetMapType(splitName[0]);
+                    if (mapType == MapType.RandomDungeon && !string.IsNullOrEmpty(splitName[1]))
+                    {
+                        var mapGuid = new Guid(splitName[1]);
+                        return mapGuid;
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
+
+            return null;
+        }
+
         private static string GetMapNameByMapType(MapType mapType)
         {
             switch (mapType)
