@@ -17,7 +17,7 @@ Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click
 
 ## Installation
  - General -> Minimal .Net Framework 4.8, you can download it [here](https://dotnet.microsoft.com/download).
- - For Tracking -> WinPcap: https://www.winpcap.org/install/default.htm
+ - For Tracking -> NPcap: https://nmap.org/npcap/
  
 ## Is This Allowed
 https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Software-and-Network-Traffic-aka-do-not-cheat-Update-16-45-U/
