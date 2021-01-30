@@ -17,6 +17,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _runTimeString;
         private DateTime _enterDungeon;
         private readonly List<DungeonRun> _dungeonRuns = new List<DungeonRun>();
+        private bool _isActiveDungeon;
 
         public DungeonNotificationFragment(Guid firstMap, int count)
         {
@@ -101,6 +102,15 @@ namespace StatisticsAnalysisTool.Network.Notification
             get => _silver;
             set {
                 _silver = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsActiveDungeon
+        {
+            get => _isActiveDungeon;
+            set {
+                _isActiveDungeon = value;
                 OnPropertyChanged();
             }
         }

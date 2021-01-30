@@ -141,6 +141,11 @@ namespace StatisticsAnalysisTool.Common
 
             if (mapType != MapType.RandomDungeon || mapGuid == null)
             {
+                if (_lastGuid != null)
+                {
+                    SetCurrentDungeonActive((Guid)_lastGuid, true);
+                }
+
                 _currentGuid = null;
                 _lastGuid = null;
                 return;
@@ -150,7 +155,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 _currentGuid = (Guid)mapGuid;
                 var currentGuid = (Guid)_currentGuid;
-                
+
                 AddDungeonRunIfNextMap(currentGuid);
                 SetNewStartTimeWhenOneMoreTimeEnter(currentGuid);
 
@@ -160,6 +165,8 @@ namespace StatisticsAnalysisTool.Common
 
                     _lastGuid = currentGuid;
                     _mainWindowViewModel.EnteredDungeon = _mainWindowViewModel.TrackingDungeons.Count;
+
+                    SetCurrentDungeonActive(currentGuid);
                     return;
                 }
 
@@ -179,14 +186,49 @@ namespace StatisticsAnalysisTool.Common
 
                     _lastGuid = mapGuid;
                     _mainWindowViewModel.EnteredDungeon = _mainWindowViewModel.TrackingDungeons.Count;
+
+                    SetCurrentDungeonActive(currentGuid);
                     return;
                 }
 
+                SetCurrentDungeonActive(currentGuid);
                 _lastGuid = currentGuid;
             }
             catch
             {
                 _currentGuid = null;
+            }
+        }
+
+        private void SetCurrentDungeonActive(Guid guid, bool allToFalse = false)
+        {
+            if (_mainWindowViewModel.TrackingDungeons.Count <= 0)
+            {
+                return;
+            }
+
+            if (_mainWindow.Dispatcher.CheckAccess())
+            {
+                _mainWindowViewModel.TrackingDungeons.Where(x => x.IsActiveDungeon).ToList().ForEach(x => x.IsActiveDungeon = false); ;
+
+                var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(guid));
+                if (!allToFalse)
+                {
+                    dun.IsActiveDungeon = true;
+                }
+            }
+            else
+            {
+                _mainWindow.Dispatcher.Invoke(delegate
+                {
+                    _mainWindowViewModel.TrackingDungeons.Where(x => x.IsActiveDungeon).ToList().ForEach(x => x.IsActiveDungeon = false); ;
+
+                    var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(guid));
+                    if (!allToFalse)
+                    {
+                        dun.IsActiveDungeon = true;
+                    }
+                });
             }
         }
 

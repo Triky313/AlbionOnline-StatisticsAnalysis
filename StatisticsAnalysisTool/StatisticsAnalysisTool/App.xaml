@@ -1264,12 +1264,34 @@
 
         <DataTemplate DataType="{x:Type local:DungeonNotificationFragment}">
             <StackPanel Orientation="Horizontal" Height="30" Margin="0 1 0 1">
-                <StackPanel.Background>
-                    <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
-                        <GradientStop Color="{StaticResource Color.Blue.4}"/>
-                        <GradientStop Offset="0.90" Color="#FF36363F"/>
-                    </LinearGradientBrush>
-                </StackPanel.Background>
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsActiveDungeon}" Value="true">
+                                <Setter Property="Height" Value="45" />
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
+                                            <GradientStop Color="{StaticResource Color.Gold.1}"/>
+                                            <GradientStop Offset="0.90" Color="#FF36363F"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsActiveDungeon}" Value="false">
+                                <Setter Property="Height" Value="30" />
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
+                                            <GradientStop Color="{StaticResource Color.Blue.4}"/>
+                                            <GradientStop Offset="0.90" Color="#FF36363F"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
                 <Label Content="{Binding DungeonCounter, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="40" VerticalAlignment="Center" Margin="0 0 0 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                 <Label Content="{Binding StartDungeon, FallbackValue=00.00.0000 - 00:00}" ContentStringFormat="{}[{0}]" MinWidth="140" VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
