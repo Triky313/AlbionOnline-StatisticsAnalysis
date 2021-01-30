@@ -15,13 +15,17 @@ A tool for easy reading of auction house data for the game AlbionOnline
 
 Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click.
 
-#### Requires
-Minimal .Net Framework 4.8, you can download it [here](https://dotnet.microsoft.com/download).
+## Installation
+ - General -> Minimal .Net Framework 4.8, you can download it [here](https://dotnet.microsoft.com/download).
+ - For Tracking -> WinPcap: https://www.winpcap.org/install/default.htm
+ 
+## Is This Allowed
+https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Software-and-Network-Traffic-aka-do-not-cheat-Update-16-45-U/
 
-
-## [CHANGELOG](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/blob/master/CHANGELOG.md)
-You can find changes to the app [here](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/blob/master/CHANGELOG.md).
-
+- [x] Only monitors
+- [x] Does not modify our game client
+- [x] Does not track players that are not within the player's view
+- [x] Does not have an overlay to the game
 
 ## SETTINGS 
 
