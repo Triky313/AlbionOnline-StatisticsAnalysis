@@ -599,13 +599,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StartTracking()
         {
-            if (!Utilities.IsSoftwareInstalled("WinPcap"))
-            {
-                IsTrackingActive = false;
-                SetErrorBar(Visibility.Visible, Translation.MakeSureYouHaveInstalledWinPcap);
-                return;
-            }
-
             if (NetworkController.IsNetworkCaptureRunning)
             {
                 return;

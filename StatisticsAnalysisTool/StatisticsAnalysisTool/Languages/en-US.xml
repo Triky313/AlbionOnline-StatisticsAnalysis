@@ -323,7 +323,7 @@
   <translation name="GUILD">GUILD</translation>
   <translation name="ALLIANCE">ALLIANCE</translation>
   <translation name="RESET_TRACKING_COUNTER">Reset tracking counter</translation>
-  <translation name="MAKE_SURE_YOU_HAVE_INSTALLED_WINPCAP">Make sure you have installed WinPcap. https://www.winpcap.org</translation>
+  <translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Make sure you have installed NPcap. https://nmap.org/npcap</translation>
   <translation name="PACKET_HANDLER_ERROR_MESSAGE">An error has occurred, the tracking has to be restarted.</translation>
   <translation name="YOU_HAVE">You have</translation>
   <translation name="FAME">Fame</translation>

@@ -20,7 +20,7 @@ namespace StatisticsAnalysisTool.Models
         public string Guild => LanguageController.Translation("GUILD");
         public string Alliance => LanguageController.Translation("ALLIANCE");
         public string ResetTrackingCounter => LanguageController.Translation("RESET_TRACKING_COUNTER");
-        public string MakeSureYouHaveInstalledWinPcap => LanguageController.Translation("MAKE_SURE_YOU_HAVE_INSTALLED_WINPCAP");
+        public string MakeSureYouHaveInstalledNPcap => LanguageController.Translation("MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP");
         public string MapChangeReset => LanguageController.Translation("MAP_CHANGE_RESET");
         public string TotalFame => LanguageController.Translation("TOTAL_FAME");
         public string TotalSilver => LanguageController.Translation("TOTAL_SILVER");
