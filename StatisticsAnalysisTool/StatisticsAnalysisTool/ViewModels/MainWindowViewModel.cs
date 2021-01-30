@@ -107,7 +107,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _guildInfoWidth;
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
-        private string _currentDungeonFame = "0";
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
         private int _enteredDungeon;
 

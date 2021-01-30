@@ -10,19 +10,20 @@ namespace StatisticsAnalysisTool.Network.Notification
     public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
     {
         private int _dungeonCounter;
-        private DateTime? _dungeonEnd;
         private List<Guid> _mapsGuid;
         private double _fame;
         private double _reSpec;
         private double _silver;
-        private TimeSpan _runTime;
         private string _runTimeString;
+        private DateTime _enterDungeon;
+        private readonly List<DungeonRun> _dungeonRuns = new List<DungeonRun>();
 
         public DungeonNotificationFragment(Guid firstMap, int count)
         {
             FirstMap = firstMap;
             MapsGuid = new List<Guid> { firstMap };
-            DungeonStart = DateTime.UtcNow;
+            StartDungeon = DateTime.UtcNow;
+            EnterDungeon = DateTime.UtcNow;
             DungeonCounter = count;
         }
 
@@ -34,27 +35,27 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public DateTime DungeonStart { get; }
+        public DateTime StartDungeon { get; }
 
-        public DateTime? DungeonEnd {
-            get => _dungeonEnd;
+        public DateTime EnterDungeon {
+            get => _enterDungeon;
             set {
-                _dungeonEnd = value;
-
-                if (value != null)
-                {
-                    AddDungeonTime((DateTime)value);
-                }
-
+                _enterDungeon = value;
                 OnPropertyChanged();
             }
         }
 
-        private void AddDungeonTime(DateTime dungeonEnd)
+        public void AddDungeonRun(DateTime dungeonEnd)
         {
-            var runTime = dungeonEnd.Subtract(DungeonStart);
-            _runTime = _runTime.Add(runTime);
-            RunTimeString = (DungeonEnd == null) ? null : $"{_runTime.Hours}:{_runTime.Minutes}:{_runTime.Seconds}";
+            _dungeonRuns.Add(new DungeonRun() { Start = EnterDungeon, End = dungeonEnd });
+
+            var totalTime = new TimeSpan();
+            foreach (var dunRun in _dungeonRuns)
+            {
+                totalTime = totalTime.Add(dunRun.Run);
+            }
+            
+            RunTimeString = (totalTime.Ticks <= 0) ? "00:00:00" : $"{totalTime.Hours:D2}:{totalTime.Minutes:D2}:{totalTime.Seconds:D2}";
         }
 
         public string RunTimeString
@@ -114,6 +115,13 @@ namespace StatisticsAnalysisTool.Network.Notification
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private struct DungeonRun
+        {
+            public DateTime Start { get; set; }
+            public DateTime End { get; set; }
+            public TimeSpan Run => End.Subtract(Start);
         }
     }
 }

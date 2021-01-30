@@ -149,27 +149,31 @@ namespace StatisticsAnalysisTool.Common
             try
             {
                 _currentGuid = (Guid)mapGuid;
+                var currentGuid = (Guid)_currentGuid;
+                
+                AddDungeonRunIfNextMap(currentGuid);
+                SetNewStartTimeWhenOneMoreTimeEnter(currentGuid);
 
-                if (_lastGuid != null && !_mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid)_currentGuid)))
+                if (_lastGuid != null && !_mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains(currentGuid)))
                 {
-                    AddMapToExistDungeon((Guid)_currentGuid, (Guid)_lastGuid);
+                    AddMapToExistDungeon(currentGuid, (Guid)_lastGuid);
 
-                    _lastGuid = _currentGuid;
+                    _lastGuid = currentGuid;
                     _mainWindowViewModel.EnteredDungeon = _mainWindowViewModel.TrackingDungeons.Count;
                     return;
                 }
 
-                if (_lastGuid == null && !_mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid) mapGuid)))
+                if (_lastGuid == null && !_mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid)mapGuid)))
                 {
                     if (_mainWindow.Dispatcher.CheckAccess())
                     {
-                        _mainWindowViewModel.TrackingDungeons.Insert(0, new DungeonNotificationFragment((Guid)_currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1));
+                        _mainWindowViewModel.TrackingDungeons.Insert(0, new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1));
                     }
                     else
                     {
                         _mainWindow.Dispatcher.Invoke(delegate
                         {
-                            _mainWindowViewModel.TrackingDungeons.Insert(0, new DungeonNotificationFragment((Guid)_currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1));
+                            _mainWindowViewModel.TrackingDungeons.Insert(0, new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1));
                         });
                     }
 
@@ -178,7 +182,7 @@ namespace StatisticsAnalysisTool.Common
                     return;
                 }
 
-                _lastGuid = _currentGuid;
+                _lastGuid = currentGuid;
             }
             catch
             {
@@ -186,6 +190,35 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
+        private void AddDungeonRunIfNextMap(Guid currentGuid)
+        {
+            if (_lastGuid != null && _mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains(currentGuid) && x.MapsGuid.Contains((Guid)_lastGuid)))
+            {
+                var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(currentGuid));
+                dun.AddDungeonRun(DateTime.UtcNow);
+            }
+        }
+        
+        private void SetNewStartTimeWhenOneMoreTimeEnter(Guid currentGuid)
+        {
+            if (_mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains(currentGuid)))
+            {
+                if (_mainWindow.Dispatcher.CheckAccess())
+                {
+                    var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(currentGuid));
+                    dun.EnterDungeon = DateTime.UtcNow;
+                }
+                else
+                {
+                    _mainWindow.Dispatcher.Invoke(delegate
+                    {
+                        var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(currentGuid));
+                        dun.EnterDungeon = DateTime.UtcNow;
+                    });
+                }
+            }
+        }
+        
         private void AddMapToExistDungeon(Guid currentGuid, Guid lastGuid)
         {
             if (_mainWindow.Dispatcher.CheckAccess())
@@ -208,7 +241,7 @@ namespace StatisticsAnalysisTool.Common
             if (_lastGuid != null && _mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid)_lastGuid)) && mapType != MapType.RandomDungeon)
             {
                 var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains((Guid)_lastGuid));
-                dun.DungeonEnd = DateTime.UtcNow;
+                dun.AddDungeonRun(DateTime.UtcNow);
             }
         }
 
