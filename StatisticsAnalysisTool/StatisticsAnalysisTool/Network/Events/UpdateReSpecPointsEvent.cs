@@ -18,9 +18,9 @@ namespace StatisticsAnalysisTool.Network.Events
         {
             try
             {
-                if (parameters.ContainsKey(0) && parameters[0].GetType().IsArrayOf<int>())
+                if (parameters.ContainsKey(0) && parameters[0] != null)
                 {
-                    var reSpecPointsArray = ((int[])parameters[0]).ToDictionary();
+                    var reSpecPointsArray = ((long[])parameters[0]).ToDictionary();
 
                     if (!reSpecPointsArray.IsNullOrEmpty() && reSpecPointsArray.ContainsKey(1) && long.TryParse(reSpecPointsArray[1].ToString(), out long currentReSpecPoints))
                     {

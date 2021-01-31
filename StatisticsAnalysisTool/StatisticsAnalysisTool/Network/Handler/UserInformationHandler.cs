@@ -23,9 +23,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             _mainWindowViewModel.TrackingCurrentMapName = value.UniqueMapName;
 
             _trackingController.SetTotalPlayerSilver(value.Silver);
-            _trackingController.SetTotalPlayerReSpecPoints(value.ReSpecPoints);
 
-            _trackingController.SetTotalPlayerReSpecPoints(value.ReSpecPoints);
             _trackingController.AddDungeon(value.MapType, value.DungeonGuid);
 
             ResetFameCounterByMapChangeIfActive();
