@@ -62,6 +62,7 @@ namespace StatisticsAnalysisTool.Network
             _startTime = DateTime.Now;
             _mainWindowViewModel.FamePerHour = "0";
             _totalGainedFame = 0;
+            _famePerHourList.Clear();
             CurrentTimerUpdate();
         }
 

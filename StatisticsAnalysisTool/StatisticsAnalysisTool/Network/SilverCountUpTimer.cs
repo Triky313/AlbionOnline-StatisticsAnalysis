@@ -78,6 +78,7 @@ namespace StatisticsAnalysisTool.Network
             _startTime = DateTime.Now;
             _mainWindowViewModel.SilverPerHour = "0";
             _totalGainedSilver = 0;
+            _silverPerHourList.Clear();
             CurrentTimerUpdate();
         }
         
