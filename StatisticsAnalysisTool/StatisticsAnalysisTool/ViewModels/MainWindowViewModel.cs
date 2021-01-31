@@ -609,6 +609,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 _trackingController = new TrackingController(this, _mainWindow);
             }
 
+            TrackingDungeons = _trackingController?.LoadDungeonFromFile();
+
             _valueCountUpTimer = new ValueCountUpTimer();
 
             if (_valueCountUpTimer?.FameCountUpTimer == null)
@@ -634,6 +636,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StopTracking()
         {
+            _trackingController?.SaveDungeonsInFile(TrackingDungeons);
             _valueCountUpTimer?.FameCountUpTimer?.Stop();
             _valueCountUpTimer?.SilverCountUpTimer?.Stop();
             NetworkController.StopNetworkCapture();

@@ -86,9 +86,6 @@
     <Setting Name="IsTrackingActiveAtToolStart" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="IsFameResetByMapChangeActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="WorldDataFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">world.json</Value>
     </Setting>
@@ -97,6 +94,12 @@
     </Setting>
     <Setting Name="UpdateWorldDataByDays" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">7</Value>
+    </Setting>
+    <Setting Name="IsTrackingResetByMapChangeActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DungeonRunsFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DungeonRuns.json</Value>
     </Setting>
   </Settings>
 </SettingsFile>

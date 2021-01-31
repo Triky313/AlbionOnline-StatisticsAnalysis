@@ -8,10 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StatisticsAnalysisTool.Properties
-{
-
-
+namespace StatisticsAnalysisTool.Properties {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
@@ -357,18 +356,6 @@ namespace StatisticsAnalysisTool.Properties
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsTrackingResetByMapChangeActive {
-            get {
-                return ((bool)(this["IsTrackingResetByMapChangeActive"]));
-            }
-            set {
-                this["IsTrackingResetByMapChangeActive"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("world.json")]
         public string WorldDataFileName {
             get {
@@ -401,6 +388,30 @@ namespace StatisticsAnalysisTool.Properties
             }
             set {
                 this["UpdateWorldDataByDays"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsTrackingResetByMapChangeActive {
+            get {
+                return ((bool)(this["IsTrackingResetByMapChangeActive"]));
+            }
+            set {
+                this["IsTrackingResetByMapChangeActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DungeonRuns.json")]
+        public string DungeonRunsFileName {
+            get {
+                return ((string)(this["DungeonRunsFileName"]));
+            }
+            set {
+                this["DungeonRunsFileName"] = value;
             }
         }
     }

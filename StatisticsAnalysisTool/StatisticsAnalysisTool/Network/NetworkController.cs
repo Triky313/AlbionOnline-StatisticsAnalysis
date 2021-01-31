@@ -28,21 +28,18 @@ namespace StatisticsAnalysisTool.Network
             builder = ReceiverBuilder.Create();
 
             //builder.AddRequestHandler(new UserInformationHandler());
-            //builder.AddEventHandler(new UpdateMoneyEventHandler());
-            //builder.AddEventHandler(new NewCharacterEventHandler());
-
             //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
             builder.AddEventHandler(new UpdateFameEventHandler(trackingController, valueCountUpTimerTimer.FameCountUpTimer));
             builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController, valueCountUpTimerTimer.SilverCountUpTimer));
             builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController, valueCountUpTimerTimer.ReSpecPointsCountUpTimer));
 
             //builder.AddEventHandler(new PartySilverGainedEventHandler());
-
             //builder.AddEventHandler(new NewLootEventHandler());
+
             builder.AddEventHandler(new TestHandler());
             builder.AddEventHandler(new TestHandler());
 
-            builder.AddResponseHandler(new UserInformationHandler(trackingController, _mainWindowViewModel)); // GEHT
+            builder.AddResponseHandler(new UserInformationHandler(trackingController, _mainWindowViewModel));
 
             _receiver = builder.Build();
 

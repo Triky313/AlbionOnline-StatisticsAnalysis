@@ -1,12 +1,16 @@
 ﻿using log4net;
+using Newtonsoft.Json;
 using PcapDotNet.Base;
 using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -134,6 +138,45 @@ namespace StatisticsAnalysisTool.Common
         #endregion
 
         #region Dungeon
+
+        public void SaveDungeonsInFile(ObservableCollection<DungeonNotificationFragment> dungeons)
+        {
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}";
+
+            try
+            {
+                var toSaveDungeons = dungeons.Where(x => x != null && x.DungeonStatus == DungeonStatus.Done && x.TotalTime.Ticks > 0);
+                var fileString = JsonConvert.SerializeObject(toSaveDungeons);
+                File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
+            }
+            catch (Exception e)
+            {
+                Log.Error(nameof(SaveDungeonsInFile), e);
+            }
+        }
+
+        public ObservableCollection<DungeonNotificationFragment> LoadDungeonFromFile()
+        {
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}";
+
+            if (File.Exists(localFilePath))
+            {
+                try
+                {
+                    var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
+                    return JsonConvert.DeserializeObject<ObservableCollection<DungeonNotificationFragment>>(localItemString);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(nameof(LoadDungeonFromFile), e);
+                    return new ObservableCollection<DungeonNotificationFragment>();
+                }
+            }
+            else
+            {
+                return new ObservableCollection<DungeonNotificationFragment>();
+            }
+        }
 
         public void AddDungeon(MapType mapType, Guid? mapGuid)
         {
@@ -266,8 +309,8 @@ namespace StatisticsAnalysisTool.Common
             if (_mainWindow.Dispatcher.CheckAccess())
             {
                 _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestFame == true).ToList().ForEach(x => x.IsBestFame = false);
-                var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.IsBestFame).Max();
-                var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.IsBestFame == highest);
+                var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.Fame).Max() ?? -1;
+                var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.Fame.CompareTo(highest) == 0);
                 if (bestDungeonFame != null)
                 {
                     bestDungeonFame.IsBestFame = true;
@@ -278,8 +321,8 @@ namespace StatisticsAnalysisTool.Common
                 _mainWindow.Dispatcher.Invoke(delegate
                 {
                     _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestFame == true).ToList().ForEach(x => x.IsBestFame = false);
-                    var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.IsBestFame).Max();
-                    var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.IsBestFame == highest);
+                    var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.Fame).Max();
+                    var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.Fame.CompareTo(highest) == 0);
                     if (bestDungeonFame != null)
                     {
                         bestDungeonFame.IsBestFame = true;
