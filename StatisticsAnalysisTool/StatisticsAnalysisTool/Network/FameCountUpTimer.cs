@@ -17,7 +17,6 @@ namespace StatisticsAnalysisTool.Network
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool _isCurrentTimerUpdateActive;
         private DateTime _startTime;
-        private TimeSpan _currentTime;
         private double _totalGainedFame;
         private int? _taskId;
 
@@ -79,7 +78,7 @@ namespace StatisticsAnalysisTool.Network
             {
                 while (_isCurrentTimerUpdateActive)
                 {
-                    SetCurrentIntervalTimeForFame();
+                    _mainWindowViewModel.FamePerHour = Utilities.GetValuePerHour(_totalGainedFame, DateTime.Now - _startTime);
                     await Task.Delay(1000);
                 }
             });
@@ -104,12 +103,6 @@ namespace StatisticsAnalysisTool.Network
             {
                 Log.Error(nameof(KillTimerTask), e);
             }
-        }
-
-        private void SetCurrentIntervalTimeForFame()
-        {
-            _currentTime = DateTime.Now - _startTime;
-            _mainWindowViewModel.FamePerHour = Formatting.ToStringShort(_totalGainedFame / (_currentTime.TotalSeconds / 60 / 60));
         }
     }
 }

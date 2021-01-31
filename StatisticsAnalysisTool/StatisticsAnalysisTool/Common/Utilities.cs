@@ -82,10 +82,7 @@ namespace StatisticsAnalysisTool.Common
                 .ToDictionary(o => o.Key, o => o.Value);
         }
 
-        public static bool IsArrayOf<T>(this Type type)
-        {
-            return type == typeof(T[]);
-        }
+        public static string GetValuePerHour(double value, TimeSpan time) => Formatting.ToStringShort(value / (time.TotalSeconds / 60 / 60));
 
         #region Window Flash
 
