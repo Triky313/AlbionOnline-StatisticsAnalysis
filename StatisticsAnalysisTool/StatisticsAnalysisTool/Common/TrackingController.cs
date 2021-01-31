@@ -139,6 +139,7 @@ namespace StatisticsAnalysisTool.Common
         {
             LeaveDungeonCheck(mapType);
             SetBestDungeonTime();
+            SetBestDungeonFame();
 
             if (mapType != MapType.RandomDungeon || mapGuid == null)
             {
@@ -262,7 +263,29 @@ namespace StatisticsAnalysisTool.Common
 
         private void SetBestDungeonFame()
         {
-
+            if (_mainWindow.Dispatcher.CheckAccess())
+            {
+                _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestFame == true).ToList().ForEach(x => x.IsBestFame = false);
+                var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.IsBestFame).Max();
+                var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.IsBestFame == highest);
+                if (bestDungeonFame != null)
+                {
+                    bestDungeonFame.IsBestFame = true;
+                }
+            }
+            else
+            {
+                _mainWindow.Dispatcher.Invoke(delegate
+                {
+                    _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestFame == true).ToList().ForEach(x => x.IsBestFame = false);
+                    var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.IsBestFame).Max();
+                    var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.IsBestFame == highest);
+                    if (bestDungeonFame != null)
+                    {
+                        bestDungeonFame.IsBestFame = true;
+                    }
+                });
+            }
         }
 
         private void AddDungeonRunIfNextMap(Guid currentGuid)

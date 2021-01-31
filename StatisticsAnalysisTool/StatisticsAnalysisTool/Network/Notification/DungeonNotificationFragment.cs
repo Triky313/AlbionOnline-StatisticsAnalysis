@@ -12,8 +12,6 @@ namespace StatisticsAnalysisTool.Network.Notification
         private int _dungeonCounter;
         private List<Guid> _mapsGuid;
         private double _fame;
-        private double _reSpec;
-        private double _silver;
         private string _runTimeString;
         private DateTime _enterDungeon;
         private readonly List<DungeonRun> _dungeonRuns = new List<DungeonRun>();
