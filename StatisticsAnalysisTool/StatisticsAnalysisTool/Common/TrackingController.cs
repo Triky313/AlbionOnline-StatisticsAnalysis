@@ -217,13 +217,13 @@ namespace StatisticsAnalysisTool.Common
                 {
                     if (_mainWindow.Dispatcher.CheckAccess())
                     {
-                        _mainWindowViewModel.TrackingDungeons.Insert(0, new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1));
+                        _mainWindowViewModel.TrackingDungeons.Insert(0, new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, _mainWindowViewModel));
                     }
                     else
                     {
                         _mainWindow.Dispatcher.Invoke(delegate
                         {
-                            _mainWindowViewModel.TrackingDungeons.Insert(0, new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1));
+                            _mainWindowViewModel.TrackingDungeons.Insert(0, new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, _mainWindowViewModel));
                         });
                     }
 

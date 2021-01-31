@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 {
     public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
     {
+        private readonly MainWindowViewModel _mainWindowViewModel;
         private int _dungeonCounter;
         private List<Guid> _mapsGuid;
         private double _fame;
@@ -20,8 +22,9 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isBestFame;
         private TimeSpan _totalTime;
 
-        public DungeonNotificationFragment(Guid firstMap, int count)
+        public DungeonNotificationFragment(Guid firstMap, int count, MainWindowViewModel mainWindowViewModel)
         {
+            _mainWindowViewModel = mainWindowViewModel;
             FirstMap = firstMap;
             MapsGuid = new List<Guid> { firstMap };
             StartDungeon = DateTime.UtcNow;
