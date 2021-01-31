@@ -172,10 +172,8 @@ namespace StatisticsAnalysisTool.Common
                     return new ObservableCollection<DungeonNotificationFragment>();
                 }
             }
-            else
-            {
-                return new ObservableCollection<DungeonNotificationFragment>();
-            }
+
+            return new ObservableCollection<DungeonNotificationFragment>();
         }
 
         public void AddDungeon(MapType mapType, Guid? mapGuid)
