@@ -164,7 +164,9 @@ namespace StatisticsAnalysisTool.Common
                 try
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                    return JsonConvert.DeserializeObject<ObservableCollection<DungeonNotificationFragment>>(localItemString);
+                    var dungeons = JsonConvert.DeserializeObject<ObservableCollection<DungeonNotificationFragment>>(localItemString);
+                    _mainWindowViewModel.EnteredDungeon = dungeons.Count;
+                    return dungeons;
                 }
                 catch (Exception e)
                 {
@@ -172,7 +174,6 @@ namespace StatisticsAnalysisTool.Common
                     return new ObservableCollection<DungeonNotificationFragment>();
                 }
             }
-
             return new ObservableCollection<DungeonNotificationFragment>();
         }
 
