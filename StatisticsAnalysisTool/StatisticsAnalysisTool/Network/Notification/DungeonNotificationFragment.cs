@@ -17,7 +17,10 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _runTimeString;
         private DateTime _enterDungeon;
         private readonly List<DungeonRun> _dungeonRuns = new List<DungeonRun>();
-        private bool _isActiveDungeon;
+        private DungeonStatus _dungeonStatus;
+        private bool _isBestTime;
+        private bool _isBestFame;
+        private TimeSpan _totalTime;
 
         public DungeonNotificationFragment(Guid firstMap, int count)
         {
@@ -50,13 +53,13 @@ namespace StatisticsAnalysisTool.Network.Notification
         {
             _dungeonRuns.Add(new DungeonRun() { Start = EnterDungeon, End = dungeonEnd });
 
-            var totalTime = new TimeSpan();
+            TotalTime = new TimeSpan();
             foreach (var dunRun in _dungeonRuns)
             {
-                totalTime = totalTime.Add(dunRun.Run);
+                TotalTime = TotalTime.Add(dunRun.Run);
             }
             
-            RunTimeString = (totalTime.Ticks <= 0) ? "00:00:00" : $"{totalTime.Hours:D2}:{totalTime.Minutes:D2}:{totalTime.Seconds:D2}";
+            RunTimeString = (TotalTime.Ticks <= 0) ? "00:00:00" : $"{TotalTime.Hours:D2}:{TotalTime.Minutes:D2}:{TotalTime.Seconds:D2}";
         }
 
         public string RunTimeString
@@ -64,6 +67,14 @@ namespace StatisticsAnalysisTool.Network.Notification
             get => _runTimeString;
             set {
                 _runTimeString = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public TimeSpan TotalTime {
+            get => _totalTime;
+            set {
+                _totalTime = value;
                 OnPropertyChanged();
             }
         }
@@ -88,29 +99,26 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public double ReSpec
-        {
-            get => _reSpec;
+        public DungeonStatus DungeonStatus {
+            get => _dungeonStatus;
             set {
-                _reSpec = value;
+                _dungeonStatus = value;
                 OnPropertyChanged();
             }
         }
 
-        public double Silver
-        {
-            get => _silver;
+        public bool IsBestTime {
+            get => _isBestTime;
             set {
-                _silver = value;
+                _isBestTime = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsActiveDungeon
-        {
-            get => _isActiveDungeon;
+        public bool IsBestFame {
+            get => _isBestFame;
             set {
-                _isActiveDungeon = value;
+                _isBestFame = value;
                 OnPropertyChanged();
             }
         }

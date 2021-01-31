@@ -1267,8 +1267,7 @@
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsActiveDungeon}" Value="true">
-                                <Setter Property="Height" Value="45" />
+                            <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static local:DungeonStatus.Best}">
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
@@ -1278,8 +1277,17 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsActiveDungeon}" Value="false">
-                                <Setter Property="Height" Value="30" />
+                            <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static local:DungeonStatus.Active}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
+                                            <GradientStop Color="{StaticResource Color.Text.Normal}"/>
+                                            <GradientStop Offset="0.90" Color="#FF36363F"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static local:DungeonStatus.Done}">
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
@@ -1297,11 +1305,47 @@
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
                     <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                 </Grid>
-                <Label Content="{Binding Fame, FallbackValue=999.999.999}" ContentStringFormat="{}{0:N0}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                <Label Content="{Binding Fame, FallbackValue=999.999.999}" ContentStringFormat="{}{0:N0}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsBestFame}" Value="true">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Gold.2}"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsBestFame}" Value="false">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
                 <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__TIME}">
                     <fa:ImageAwesome Icon="ClockOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                 </Grid>
-                <Label Content="{Binding RunTimeString, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="55" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                <Label Content="{Binding RunTimeString, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="55">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsBestTime}" Value="true">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Gold.2}"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsBestTime}" Value="false">
+                                    <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
             </StackPanel>
         </DataTemplate>
 

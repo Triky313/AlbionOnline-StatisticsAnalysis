@@ -219,6 +219,7 @@
     <Compile Include="Network\Handler\TestHandler.cs" />
     <Compile Include="Network\ICountUpTimer.cs" />
     <Compile Include="Network\Notification\DungeonNotificationFragment.cs" />
+    <Compile Include="Network\Notification\DungeonStatus.cs" />
     <Compile Include="Network\ReSpecPointsCountUpTimer.cs" />
     <Compile Include="Network\SilverCountUpTimer.cs" />
     <Compile Include="Network\FameCountUpTimer.cs" />

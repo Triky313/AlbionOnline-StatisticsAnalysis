@@ -138,6 +138,7 @@ namespace StatisticsAnalysisTool.Common
         public void AddDungeon(MapType mapType, Guid? mapGuid)
         {
             LeaveDungeonCheck(mapType);
+            SetBestDungeonTime();
 
             if (mapType != MapType.RandomDungeon || mapGuid == null)
             {
@@ -209,27 +210,59 @@ namespace StatisticsAnalysisTool.Common
 
             if (_mainWindow.Dispatcher.CheckAccess())
             {
-                _mainWindowViewModel.TrackingDungeons.Where(x => x.IsActiveDungeon).ToList().ForEach(x => x.IsActiveDungeon = false); ;
+                _mainWindowViewModel.TrackingDungeons.Where(x => x.DungeonStatus != DungeonStatus.Done).ToList().ForEach(x => x.DungeonStatus = DungeonStatus.Done);
 
                 var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(guid));
                 if (!allToFalse)
                 {
-                    dun.IsActiveDungeon = true;
+                    dun.DungeonStatus = DungeonStatus.Active;
                 }
             }
             else
             {
                 _mainWindow.Dispatcher.Invoke(delegate
                 {
-                    _mainWindowViewModel.TrackingDungeons.Where(x => x.IsActiveDungeon).ToList().ForEach(x => x.IsActiveDungeon = false); ;
+                    _mainWindowViewModel.TrackingDungeons.Where(x => x.DungeonStatus != DungeonStatus.Done).ToList().ForEach(x => x.DungeonStatus = DungeonStatus.Done);
 
                     var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(guid));
                     if (!allToFalse)
                     {
-                        dun.IsActiveDungeon = true;
+                        dun.DungeonStatus = DungeonStatus.Active;
                     }
                 });
             }
+        }
+
+        private void SetBestDungeonTime()
+        {
+            if (_mainWindow.Dispatcher.CheckAccess())
+            {
+                _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
+                var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.TotalTime).Min();
+                var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == highest);
+                if (bestTimeDungeon != null)
+                {
+                    bestTimeDungeon.IsBestTime = true;
+                }
+            }
+            else
+            {
+                _mainWindow.Dispatcher.Invoke(delegate
+                {
+                    _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
+                    var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.TotalTime).Min();
+                    var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == highest);
+                    if (bestTimeDungeon != null)
+                    {
+                        bestTimeDungeon.IsBestTime = true;
+                    }
+                });
+            }
+        }
+
+        private void SetBestDungeonFame()
+        {
+
         }
 
         private void AddDungeonRunIfNextMap(Guid currentGuid)
