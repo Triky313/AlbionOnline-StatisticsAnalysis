@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class TestEvent : BaseEvent
+    public class TestEvent : BaseOperation
     {
         public TestEvent(Dictionary<byte, object> parameters) : base(parameters)
         {

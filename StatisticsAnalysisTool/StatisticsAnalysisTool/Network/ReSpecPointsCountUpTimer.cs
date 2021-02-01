@@ -95,7 +95,7 @@ namespace StatisticsAnalysisTool.Network
             {
                 while (_isCurrentTimerUpdateActive)
                 {
-                    _mainWindowViewModel.FamePerHour = Utilities.GetValuePerHour(_totalGained, DateTime.Now - _startTime);
+                    _mainWindowViewModel.ReSpecPointsPerHour = Utilities.GetValuePerHour(_totalGained, DateTime.Now - _startTime);
                     await Task.Delay(1000);
                 }
             });

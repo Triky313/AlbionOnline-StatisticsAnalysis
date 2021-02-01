@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class TestHandler2 : EventPacketHandler<TestEvent>
+    public class TestHandler2 : RequestPacketHandler<TestEvent>
     {
-        public TestHandler2() : base(71) { }
+        public TestHandler2() : base(170) { }
 
         protected override async Task OnActionAsync(TestEvent value)
         {

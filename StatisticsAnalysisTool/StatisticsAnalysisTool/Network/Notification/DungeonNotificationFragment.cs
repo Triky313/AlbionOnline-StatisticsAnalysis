@@ -15,22 +15,25 @@ namespace StatisticsAnalysisTool.Network.Notification
         private List<Guid> _mapsGuid;
         private double _fame;
         private string _runTimeString;
-        private DateTime _enterDungeon;
+        private DateTime _enterDungeonMap;
         private readonly List<DungeonRun> _dungeonRuns = new List<DungeonRun>();
         private DungeonStatus _dungeonStatus;
         private bool _isBestTime;
         private bool _isBestFame;
         private TimeSpan _totalTime;
 
-        public DungeonNotificationFragment(Guid firstMap, int count, MainWindowViewModel mainWindowViewModel)
+        public DungeonNotificationFragment(Guid firstMap, int count, string mapNameBeforeDungeon, DateTime startDungeon, MainWindowViewModel mainWindowViewModel)
         {
+            MainEntranceMap = mapNameBeforeDungeon;
             _mainWindowViewModel = mainWindowViewModel;
             FirstMap = firstMap;
             MapsGuid = new List<Guid> { firstMap };
-            StartDungeon = DateTime.UtcNow;
-            EnterDungeon = DateTime.UtcNow;
+            StartDungeon = startDungeon;
+            EnterDungeonMap = DateTime.UtcNow;
             DungeonCounter = count;
         }
+
+        public string MainEntranceMap { get; }
 
         public int DungeonCounter {
             get => _dungeonCounter;
@@ -42,17 +45,17 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public DateTime StartDungeon { get; }
 
-        public DateTime EnterDungeon {
-            get => _enterDungeon;
+        public DateTime EnterDungeonMap {
+            get => _enterDungeonMap;
             set {
-                _enterDungeon = value;
+                _enterDungeonMap = value;
                 OnPropertyChanged();
             }
         }
 
         public void AddDungeonRun(DateTime dungeonEnd)
         {
-            _dungeonRuns.Add(new DungeonRun() { Start = EnterDungeon, End = dungeonEnd });
+            _dungeonRuns.Add(new DungeonRun() { Start = EnterDungeonMap, End = dungeonEnd });
 
             TotalTime = new TimeSpan();
             foreach (var dunRun in _dungeonRuns)

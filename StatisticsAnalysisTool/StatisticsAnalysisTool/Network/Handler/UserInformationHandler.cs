@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             _trackingController.SetTotalPlayerSilver(value.Silver);
 
-            _trackingController.AddDungeon(value.MapType, value.DungeonGuid);
+            _trackingController.AddDungeon(value.MapType, value.DungeonGuid, value.UniqueMapName);
 
             ResetFameCounterByMapChangeIfActive();
 

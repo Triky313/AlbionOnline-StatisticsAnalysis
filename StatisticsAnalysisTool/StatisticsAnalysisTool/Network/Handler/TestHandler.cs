@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class TestHandler : EventPacketHandler<TestEvent>
+    public class TestHandler : ResponsePacketHandler<TestEvent>
     {
         public TestHandler() : base(280) { }
 

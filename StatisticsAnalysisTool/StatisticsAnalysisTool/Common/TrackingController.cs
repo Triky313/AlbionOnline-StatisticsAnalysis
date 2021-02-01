@@ -21,8 +21,10 @@ namespace StatisticsAnalysisTool.Common
         private readonly MainWindow _mainWindow;
         private Guid? _lastGuid;
         private Guid? _currentGuid;
+        private string _lastMapNameBeforeDungeon;
 
         private const int _maxNotifications = 50;
+        private const int _maxDungeons = 500;
 
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
@@ -177,11 +179,12 @@ namespace StatisticsAnalysisTool.Common
             return new ObservableCollection<DungeonNotificationFragment>();
         }
 
-        public void AddDungeon(MapType mapType, Guid? mapGuid)
+        public void AddDungeon(MapType mapType, Guid? mapGuid, string uniqueMapName)
         {
             LeaveDungeonCheck(mapType);
             SetBestDungeonTime();
             SetBestDungeonFame();
+            SetLastMapNameBeforeDungeon(mapType, uniqueMapName);
 
             if (mapType != MapType.RandomDungeon || mapGuid == null)
             {
@@ -210,6 +213,7 @@ namespace StatisticsAnalysisTool.Common
                     _lastGuid = currentGuid;
                     _mainWindowViewModel.EnteredDungeon = _mainWindowViewModel.TrackingDungeons.Count;
 
+                    RemoveDungeonsAfterCertainNumber(_maxDungeons);
                     SetCurrentDungeonActive(currentGuid);
                     return;
                 }
@@ -218,19 +222,24 @@ namespace StatisticsAnalysisTool.Common
                 {
                     if (_mainWindow.Dispatcher.CheckAccess())
                     {
-                        _mainWindowViewModel.TrackingDungeons.Insert(0, new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, _mainWindowViewModel));
+                        _mainWindowViewModel.TrackingDungeons.Insert(
+                            0, 
+                            new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, _lastMapNameBeforeDungeon, DateTime.UtcNow, _mainWindowViewModel));
                     }
                     else
                     {
                         _mainWindow.Dispatcher.Invoke(delegate
                         {
-                            _mainWindowViewModel.TrackingDungeons.Insert(0, new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, _mainWindowViewModel));
+                            _mainWindowViewModel.TrackingDungeons.Insert(
+                                0, 
+                                new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, _lastMapNameBeforeDungeon, DateTime.UtcNow, _mainWindowViewModel));
                         });
                     }
 
                     _lastGuid = mapGuid;
                     _mainWindowViewModel.EnteredDungeon = _mainWindowViewModel.TrackingDungeons.Count;
 
+                    RemoveDungeonsAfterCertainNumber(_maxDungeons);
                     SetCurrentDungeonActive(currentGuid);
                     return;
                 }
@@ -241,6 +250,82 @@ namespace StatisticsAnalysisTool.Common
             catch
             {
                 _currentGuid = null;
+            }
+        }
+
+        enum FameCountMode
+        {
+            Hour,
+            Day,
+            Week,
+            Total
+        }
+
+        private double TotalFameByTime(FameCountMode mode)
+        {
+            switch (mode)
+            {
+                case FameCountMode.Hour:
+                    return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddHours(-1)).Sum(x => x.Fame);
+                case FameCountMode.Day:
+                    return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-1)).Sum(x => x.Fame);
+                case FameCountMode.Week:
+                    return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-7)).Sum(x => x.Fame);
+                case FameCountMode.Total:
+                    return _mainWindowViewModel.TrackingDungeons.Where(x => true).Sum(x => x.Fame);
+                default:
+                    return 0;
+            }
+        }
+
+        private void RemoveDungeonsAfterCertainNumber(int amount)
+        {
+            if (IsMainWindowNull() || _mainWindowViewModel.TrackingDungeons == null)
+            {
+                return;
+            }
+
+            try
+            {
+                while (true)
+                {
+                    if (_mainWindowViewModel.TrackingNotifications?.Count <= amount)
+                    {
+                        break;
+                    }
+
+                    var dateTime = GetLowestDate(_mainWindowViewModel.TrackingDungeons);
+                    if (dateTime != null)
+                    {
+                        var removableItem = _mainWindowViewModel.TrackingDungeons?.FirstOrDefault(x => x.StartDungeon == dateTime);
+                        if (removableItem != null)
+                        {
+                            if (_mainWindow.Dispatcher.CheckAccess())
+                            {
+                                _mainWindowViewModel.TrackingDungeons.Remove(removableItem);
+                            }
+                            else
+                            {
+                                _mainWindow.Dispatcher.Invoke(delegate
+                                {
+                                    _mainWindowViewModel.TrackingDungeons.Remove(removableItem);
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(nameof(RemoveDungeonsAfterCertainNumber), e);
+            }
+        }
+
+        private void SetLastMapNameBeforeDungeon(MapType mapType, string uniqueMapName)
+        {
+            if (mapType != MapType.HellGate && mapType != MapType.Island && mapType != MapType.CorruptedDungeon && mapType != MapType.RandomDungeon)
+            {
+                _lastMapNameBeforeDungeon = uniqueMapName;
             }
         }
 
@@ -346,14 +431,14 @@ namespace StatisticsAnalysisTool.Common
                 if (_mainWindow.Dispatcher.CheckAccess())
                 {
                     var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(currentGuid));
-                    dun.EnterDungeon = DateTime.UtcNow;
+                    dun.EnterDungeonMap = DateTime.UtcNow;
                 }
                 else
                 {
                     _mainWindow.Dispatcher.Invoke(delegate
                     {
                         var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(currentGuid));
-                        dun.EnterDungeon = DateTime.UtcNow;
+                        dun.EnterDungeonMap = DateTime.UtcNow;
                     });
                 }
             }
@@ -417,6 +502,24 @@ namespace StatisticsAnalysisTool.Common
             catch
             {
                 // ignored
+            }
+        }
+
+        public static DateTime? GetLowestDate(ObservableCollection<DungeonNotificationFragment> items)
+        {
+            if (items.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            try
+            {
+                return items.Select(x => x.StartDungeon).Min();
+            }
+            catch (ArgumentNullException e)
+            {
+                Log.Error(nameof(GetLowestDate), e);
+                return null;
             }
         }
 
