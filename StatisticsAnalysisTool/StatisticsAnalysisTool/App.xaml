@@ -1302,7 +1302,7 @@
                             </Style.Triggers>
                         </Style>
                     </StackPanel.Style>
-                    <Label Content="{Binding DungeonCounter, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="40" VerticalAlignment="Center" Margin="0 0 0 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                    <Label Content="{Binding DungeonCounter, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="35" VerticalAlignment="Center" Margin="0 0 0 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                     <Label Content="{Binding MainEntranceMap, FallbackValue=UNKNOWN}" ContentStringFormat="{}{0}" MinWidth="110" VerticalAlignment="Center" Margin="0 0 0 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                     <Label Content="{Binding StartDungeon, FallbackValue=00.00.0000 - 00:00, StringFormat='{}[{0}]', ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}" MinWidth="140" VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">

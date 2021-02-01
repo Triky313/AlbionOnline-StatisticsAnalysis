@@ -21,6 +21,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isBestTime;
         private bool _isBestFame;
         private TimeSpan _totalTime;
+        private string _mainEntranceMap;
 
         public DungeonNotificationFragment(Guid firstMap, int count, string mapNameBeforeDungeon, DateTime startDungeon, MainWindowViewModel mainWindowViewModel)
         {
@@ -33,7 +34,14 @@ namespace StatisticsAnalysisTool.Network.Notification
             DungeonCounter = count;
         }
 
-        public string MainEntranceMap { get; }
+        public string MainEntranceMap
+        {
+            get => _mainEntranceMap;
+            set {
+                _mainEntranceMap = value;
+                OnPropertyChanged();
+            }
+        }
 
         public int DungeonCounter {
             get => _dungeonCounter;
