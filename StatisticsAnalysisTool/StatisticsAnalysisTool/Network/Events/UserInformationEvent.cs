@@ -77,6 +77,11 @@ namespace StatisticsAnalysisTool.Network.Handler
                     GuildName = string.IsNullOrEmpty(parameters[51].ToString()) ? string.Empty : parameters[51].ToString();
                 }
 
+                if (parameters.ContainsKey(61))
+                {
+                    // Maybe Playtime in seconds
+                }
+
                 if (parameters.ContainsKey(69))
                 {
                     AllianceName = string.IsNullOrEmpty(parameters[69].ToString()) ? string.Empty : parameters[69].ToString();

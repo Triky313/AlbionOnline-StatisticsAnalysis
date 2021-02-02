@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Common
         private string _lastMapNameBeforeDungeon;
 
         private const int _maxNotifications = 50;
-        private const int _maxDungeons = 500;
+        private const int _maxDungeons = 999;
 
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
@@ -253,12 +253,19 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        enum FameCountMode
+        public void SetDiedIfInDungeon()
         {
-            Hour,
-            Day,
-            Week,
-            Total
+            if (_currentGuid != null)
+            {
+                try
+                {
+                    _mainWindowViewModel.TrackingDungeons.First(x => x.MapsGuid.Contains((Guid)_currentGuid) && x.StartDungeon > DateTime.UtcNow.AddDays(-1)).DiedInDungeon = true;
+                }
+                catch (Exception e)
+                {
+                    Log.Error(nameof(SetDiedIfInDungeon), e);
+                }
+            }
         }
 
         private double TotalFameByTime(FameCountMode mode)
@@ -521,6 +528,14 @@ namespace StatisticsAnalysisTool.Common
                 Log.Error(nameof(GetLowestDate), e);
                 return null;
             }
+        }
+
+        enum FameCountMode
+        {
+            Hour,
+            Day,
+            Week,
+            Total
         }
 
         #endregion

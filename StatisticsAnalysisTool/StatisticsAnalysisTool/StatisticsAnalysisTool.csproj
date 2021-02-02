@@ -214,9 +214,11 @@
     <Compile Include="Models\MapData.cs" />
     <Compile Include="Models\WorldJsonObject.cs" />
     <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
+    <Compile Include="Network\Events\DiedEvent.cs" />
     <Compile Include="Network\Events\TestEvent.cs" />
     <Compile Include="Network\Handler\TestHandler2.cs" />
     <Compile Include="Network\Handler\TestHandler.cs" />
+    <Compile Include="Network\Handler\DiedEventHandler.cs" />
     <Compile Include="Network\ICountUpTimer.cs" />
     <Compile Include="Network\Notification\DungeonNotificationFragment.cs" />
     <Compile Include="Network\Notification\DungeonStatus.cs" />
@@ -370,13 +372,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\respec.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\dungeon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Network\Codes\events.txt" />
     <Resource Include="Network\Codes\operations.txt" />
+    <Resource Include="Resources\skull.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Sounds\alert1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -411,7 +416,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\silver.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup>

@@ -22,6 +22,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isBestFame;
         private TimeSpan _totalTime;
         private string _mainEntranceMap;
+        private bool _diedInDungeon;
 
         public DungeonNotificationFragment(Guid firstMap, int count, string mapNameBeforeDungeon, DateTime startDungeon, MainWindowViewModel mainWindowViewModel)
         {
@@ -47,6 +48,14 @@ namespace StatisticsAnalysisTool.Network.Notification
             get => _dungeonCounter;
             set {
                 _dungeonCounter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool DiedInDungeon {
+            get => _diedInDungeon;
+            set {
+                _diedInDungeon = value;
                 OnPropertyChanged();
             }
         }
@@ -137,6 +146,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
         public string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
+        public string YouDiedInTheDungeon => LanguageController.Translation("YOU_DIED_IN_THE_DUNGEON");
 
 
         public event PropertyChangedEventHandler PropertyChanged;

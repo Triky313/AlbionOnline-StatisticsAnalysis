@@ -249,7 +249,7 @@ SiegeCampClaimStart
 SiegeCampClaimCancel
 TreasureChestUsingStart
 TreasureChestUsingCancel
-UseLootChest
+UseLootChest <- LootLogger: https://github.com/EmeraldKnight79/AO-DU-LootLogger/blob/b1ab099e0d82bdee0a87c153f4bbae324295656e/LootLogger/PacketHandler.cs#L68
 UseShrine
 LaborerStartJob
 LaborerTakeJobLoot

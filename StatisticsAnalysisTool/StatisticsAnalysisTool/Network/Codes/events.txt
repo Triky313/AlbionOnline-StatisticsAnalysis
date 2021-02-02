@@ -1,6 +1,6 @@
 ﻿Unused = 0
 Leave
-JoinFinished
+JoinFinished <- UserInfo
 Move
 Teleport
 ChangeEquipment

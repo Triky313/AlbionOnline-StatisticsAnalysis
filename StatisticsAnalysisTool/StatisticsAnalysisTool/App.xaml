@@ -1269,16 +1269,6 @@
                     <StackPanel.Style>
                         <Style TargetType="StackPanel">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static local:DungeonStatus.Best}">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
-                                                <GradientStop Color="{StaticResource Color.Gold.1}"/>
-                                                <GradientStop Offset="0.90" Color="#FF36363F"/>
-                                            </LinearGradientBrush>
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
                                 <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static local:DungeonStatus.Active}">
                                     <Setter Property="Background">
                                         <Setter.Value>
@@ -1303,10 +1293,30 @@
                         </Style>
                     </StackPanel.Style>
                     <Label Content="{Binding DungeonCounter, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="35" VerticalAlignment="Center" Margin="0 0 0 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
-                    <Label Content="{Binding MainEntranceMap, FallbackValue=UNKNOWN}" ContentStringFormat="{}{0}" MinWidth="110" VerticalAlignment="Center" Margin="0 0 0 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
-                    <Label Content="{Binding StartDungeon, FallbackValue=00.00.0000 - 00:00, StringFormat='{}[{0}]', ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}" MinWidth="140" VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                    <Label Content="{Binding StartDungeon, FallbackValue=00.00.0000 - 00:00, StringFormat='{}[{0}]', ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}" MinWidth="95" 
+                           VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                    <Label Content="{Binding MainEntranceMap, FallbackValue=UNKNOWN}" ContentStringFormat="{}{0}" MinWidth="120" VerticalAlignment="Center" Margin="0 0 0 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
                         <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-40 0 0 0" ToolTip="{Binding YouDiedInTheDungeon, FallbackValue=YOU_DIED_IN_THE_DUNGEON}">
+                        <Image Source="Resources/skull.png">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Width" Value="16" />
+                                    <Setter Property="Height" Value="16" />
+                                    <Setter Property="Margin" Value="2" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DiedInDungeon}" Value="false">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding DiedInDungeon}" Value="true">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
                     </Grid>
                     <Label Content="{Binding Fame, FallbackValue=999.999.999}" ContentStringFormat="{}{0:N0}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75">
                         <Label.Style>
