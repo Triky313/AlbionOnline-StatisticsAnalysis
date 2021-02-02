@@ -50,7 +50,7 @@ namespace StatisticsAnalysisTool.Common
             _mainWindowViewModel.TotalPlayerReSpecPoints = value.ToString("N0", LanguageController.CurrentCultureInfo);
         }
 
-        public string CurrendPlayerUsername { get; set; }
+        public string CurrentPlayerUsername { get; set; }
 
         #endregion
 
@@ -258,7 +258,7 @@ namespace StatisticsAnalysisTool.Common
 
         public void SetDiedIfInDungeon(DiedObject dieObject)
         {
-            if (_currentGuid != null && CurrendPlayerUsername != null && dieObject.DiedName == CurrendPlayerUsername)
+            if (_currentGuid != null && CurrentPlayerUsername != null && dieObject.DiedName == CurrentPlayerUsername)
             {
                 try
                 {
