@@ -101,7 +101,7 @@
   <translation name="SHOW_NOT_AGAIN">Show not again</translation>
   <translation name="SHOW_INFO_WINDOW_ON_START">Show info window on start</translation>
   <translation name="NEW_FEATURE">New Feature</translation>
-  <translation name="FEATURE_DESCRIPTION">NEW FEATURE - TRACKING &#x0a;Current Fame, Respec or Silver values can now be seen. Additionally also per hour. (WinPcap required)(ALPHA) &#x0a;Notifications for Fame added</translation>
+  <translation name="FEATURE_DESCRIPTION">NEW FEATURE - DUNGEON TRACKING &#x0a;Current Fame, Respec or Silver values can now be seen. Additionally also per hour. (Npcap required)(ALPHA) &#x0a; https://nmap.org/npcap/ </translation>
   <translation name="EQUIPABLE">Equipable</translation>
   <translation name="STACKABLE">Stackable</translation>
   <translation name="SHOW_IN_MARKET_PLACE">Show in market place</translation>

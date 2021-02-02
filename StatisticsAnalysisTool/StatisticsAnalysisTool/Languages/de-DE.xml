@@ -101,7 +101,7 @@
   <translation name="SHOW_NOT_AGAIN">Nicht wieder anzeigen</translation>
   <translation name="SHOW_INFO_WINDOW_ON_START">Zeige Info Fenster bei Programmstart</translation>
   <translation name="NEW_FEATURE">Neue Funktion</translation>
-  <translation name="FEATURE_DESCRIPTION">NEUE FUNKTION - TRACKING &#x0a;Aktuelle Ruhm, Respec oder Silber Werte können gesehen werden. Außerdem werden aktuelle Werte pro Stunde angezeigt. (WinPcap benötigt)(ALPHA) &#x0a;Benachrichtigungen für Fame hinzugefügt</translation>
+  <translation name="FEATURE_DESCRIPTION">NEUE FUNKTION - DUNGEON TRACKING &#x0a;Aktuelle Ruhm, Respec oder Silber Werte können gesehen werden. Außerdem werden aktuelle Werte pro Stunde angezeigt. (Npcap benötigt)(ALPHA) &#x0a; https://nmap.org/npcap/ </translation>
   <translation name="EQUIPABLE">Ausrüstbar</translation>
   <translation name="STACKABLE">Stapelbar</translation>
   <translation name="SHOW_IN_MARKET_PLACE">Wird im Auktionshaus angezeigt</translation>
