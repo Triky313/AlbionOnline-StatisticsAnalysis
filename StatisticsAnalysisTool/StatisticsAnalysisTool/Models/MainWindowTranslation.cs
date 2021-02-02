@@ -27,5 +27,6 @@ namespace StatisticsAnalysisTool.Models
         public string TotalReSpec => LanguageController.Translation("TOTAL_RESPEC");
         public string CurrentMap => LanguageController.Translation("CURRENT_MAP");
         public string Tracking => LanguageController.Translation("TRACKING");
+        public string Dungeon => LanguageController.Translation("DUNGEON");
     }
 }

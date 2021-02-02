@@ -1299,7 +1299,7 @@
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
                         <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                     </Grid>
-                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-40 0 0 0" ToolTip="{Binding YouDiedInTheDungeon, FallbackValue=YOU_DIED_IN_THE_DUNGEON}">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-40 0 0 0" ToolTip="{Binding DiedMessage}">
                         <Image Source="Resources/skull.png">
                             <Image.Style>
                                 <Style TargetType="Image">

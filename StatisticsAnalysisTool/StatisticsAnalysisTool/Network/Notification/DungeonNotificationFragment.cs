@@ -23,6 +23,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private TimeSpan _totalTime;
         private string _mainEntranceMap;
         private bool _diedInDungeon;
+        private string _diedMessage;
 
         public DungeonNotificationFragment(Guid firstMap, int count, string mapNameBeforeDungeon, DateTime startDungeon, MainWindowViewModel mainWindowViewModel)
         {
@@ -56,6 +57,14 @@ namespace StatisticsAnalysisTool.Network.Notification
             get => _diedInDungeon;
             set {
                 _diedInDungeon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DiedMessage {
+            get => _diedMessage;
+            set {
+                _diedMessage = value;
                 OnPropertyChanged();
             }
         }

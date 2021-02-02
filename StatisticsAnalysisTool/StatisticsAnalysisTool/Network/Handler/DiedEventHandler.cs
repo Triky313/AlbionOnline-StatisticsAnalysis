@@ -1,5 +1,6 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Events;
 using System.Threading.Tasks;
 
@@ -9,14 +10,14 @@ namespace StatisticsAnalysisTool.Network.Handler
     {
         private readonly TrackingController _trackingController;
 
-        public DiedEventHandler(TrackingController trackingController) : base(EventCodes.UpdateFame)
+        public DiedEventHandler(TrackingController trackingController) : base(153)
         {
             _trackingController = trackingController;
         }
 
         protected override async Task OnActionAsync(DiedEvent value)
         {
-            _trackingController.SetDiedIfInDungeon();
+            _trackingController.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
             await Task.CompletedTask;
         }
     }

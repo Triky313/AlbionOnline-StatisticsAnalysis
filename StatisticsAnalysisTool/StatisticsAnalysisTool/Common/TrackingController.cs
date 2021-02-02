@@ -1,6 +1,7 @@
 ﻿using log4net;
 using Newtonsoft.Json;
 using PcapDotNet.Base;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
@@ -48,6 +49,8 @@ namespace StatisticsAnalysisTool.Common
         {
             _mainWindowViewModel.TotalPlayerReSpecPoints = value.ToString("N0", LanguageController.CurrentCultureInfo);
         }
+
+        public string CurrendPlayerUsername { get; set; }
 
         #endregion
 
@@ -253,13 +256,15 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public void SetDiedIfInDungeon()
+        public void SetDiedIfInDungeon(DiedObject dieObject)
         {
-            if (_currentGuid != null)
+            if (_currentGuid != null && CurrendPlayerUsername != null && dieObject.DiedName == CurrendPlayerUsername)
             {
                 try
                 {
-                    _mainWindowViewModel.TrackingDungeons.First(x => x.MapsGuid.Contains((Guid)_currentGuid) && x.StartDungeon > DateTime.UtcNow.AddDays(-1)).DiedInDungeon = true;
+                    var item = _mainWindowViewModel.TrackingDungeons.First(x => x.MapsGuid.Contains((Guid)_currentGuid) && x.StartDungeon > DateTime.UtcNow.AddDays(-1));
+                    item.DiedMessage = $"{dieObject.DiedName} {LanguageController.Translation("KILLED_BY")} {dieObject.KilledBy}";
+                    item.DiedInDungeon = true;
                 }
                 catch (Exception e)
                 {
