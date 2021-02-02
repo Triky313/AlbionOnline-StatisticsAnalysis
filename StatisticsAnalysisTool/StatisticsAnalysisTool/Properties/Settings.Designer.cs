@@ -356,18 +356,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsFameResetByMapChangeActive {
-            get {
-                return ((bool)(this["IsFameResetByMapChangeActive"]));
-            }
-            set {
-                this["IsFameResetByMapChangeActive"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("world.json")]
         public string WorldDataFileName {
             get {
@@ -400,6 +388,30 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["UpdateWorldDataByDays"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsTrackingResetByMapChangeActive {
+            get {
+                return ((bool)(this["IsTrackingResetByMapChangeActive"]));
+            }
+            set {
+                this["IsTrackingResetByMapChangeActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DungeonRuns.json")]
+        public string DungeonRunsFileName {
+            get {
+                return ((string)(this["DungeonRunsFileName"]));
+            }
+            set {
+                this["DungeonRunsFileName"] = value;
             }
         }
     }

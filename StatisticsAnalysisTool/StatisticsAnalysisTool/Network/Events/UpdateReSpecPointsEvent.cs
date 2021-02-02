@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Network.Events
         {
             try
             {
-                if (parameters.ContainsKey(0))
+                if (parameters.ContainsKey(0) && parameters[0] != null)
                 {
                     var reSpecPointsArray = ((long[])parameters[0]).ToDictionary();
 
@@ -29,6 +29,11 @@ namespace StatisticsAnalysisTool.Network.Events
                 }
             }
             catch(ArgumentNullException e)
+            {
+                Log.Error(nameof(UpdateReSpecPointsEvent), e);
+                Debug.Print(e.Message);
+            }
+            catch(InvalidCastException e)
             {
                 Log.Error(nameof(UpdateReSpecPointsEvent), e);
                 Debug.Print(e.Message);

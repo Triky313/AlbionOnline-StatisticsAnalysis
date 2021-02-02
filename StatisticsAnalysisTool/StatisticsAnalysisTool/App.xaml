@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:StatisticsAnalysisTool.Network.Notification"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <!-- Base font size -->
@@ -1260,6 +1262,114 @@
                 <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
             </StackPanel>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:DungeonNotificationFragment}">
+            <Grid Height="32" Margin="0 1 0 1">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static local:DungeonStatus.Active}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
+                                                <GradientStop Color="{StaticResource Color.Text.Normal}"/>
+                                                <GradientStop Offset="0.90" Color="#FF36363F"/>
+                                            </LinearGradientBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static local:DungeonStatus.Done}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
+                                                <GradientStop Color="{StaticResource Color.Blue.4}"/>
+                                                <GradientStop Offset="0.90" Color="#FF36363F"/>
+                                            </LinearGradientBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <Label Content="{Binding DungeonCounter, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="35" VerticalAlignment="Center" Margin="0 0 0 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                    <Label Content="{Binding StartDungeon, FallbackValue=00.00.0000 - 00:00, StringFormat='{}[{0}]', ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}" MinWidth="95" 
+                           VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                    <Label Content="{Binding MainEntranceMap, FallbackValue=UNKNOWN}" ContentStringFormat="{}{0}" MinWidth="120" VerticalAlignment="Center" Margin="0 0 0 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
+                        <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
+                    </Grid>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-40 0 0 0" ToolTip="{Binding DiedMessage}">
+                        <Image Source="Resources/skull.png">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Width" Value="16" />
+                                    <Setter Property="Height" Value="16" />
+                                    <Setter Property="Margin" Value="2" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DiedInDungeon}" Value="false">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding DiedInDungeon}" Value="true">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Grid>
+                    <Label Content="{Binding Fame, FallbackValue=999.999.999}" ContentStringFormat="{}{0:N0}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75">
+                        <Label.Style>
+                            <Style TargetType="Label">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsBestFame}" Value="true">
+                                        <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Gold.2}"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsBestFame}" Value="false">
+                                        <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__TIME}">
+                        <fa:ImageAwesome Icon="ClockOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                    </Grid>
+                    <Label Content="{Binding RunTimeString, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="55">
+                        <Label.Style>
+                            <Style TargetType="Label">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsBestTime}" Value="true">
+                                        <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Gold.2}"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsBestTime}" Value="false">
+                                        <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                </StackPanel>
+                <!--<Button Content="Delete" Margin="0 2 20 2" MinWidth="75" HorizontalAlignment="Right" Command="{Binding Remove}" CommandParameter="true"></Button>-->
+            </Grid>
+        </DataTemplate>
+
+        <!-- Dungeon icon -->
+        <Style TargetType="Image" x:Key="Icon.Dungeon" >
+            <Setter Property="Source" Value="Resources/dungeon.png"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="30"/>
+        </Style>
 
         <!-- Fame icon -->
         <Style TargetType="Image" x:Key="Icon.Fame" >

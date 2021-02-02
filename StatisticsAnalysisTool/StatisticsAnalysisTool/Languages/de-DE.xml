@@ -101,7 +101,7 @@
   <translation name="SHOW_NOT_AGAIN">Nicht wieder anzeigen</translation>
   <translation name="SHOW_INFO_WINDOW_ON_START">Zeige Info Fenster bei Programmstart</translation>
   <translation name="NEW_FEATURE">Neue Funktion</translation>
-  <translation name="FEATURE_DESCRIPTION">NEUE FUNKTION - TRACKING &#x0a;Aktuelle Ruhm, Respec oder Silber Werte können gesehen werden. Außerdem werden aktuelle Werte pro Stunde angezeigt. (WinPcap benötigt)(ALPHA) &#x0a;Benachrichtigungen für Fame hinzugefügt</translation>
+  <translation name="FEATURE_DESCRIPTION">NEUE FUNKTION - DUNGEON TRACKING &#x0a;Aktuelle Ruhm, Respec oder Silber Werte können gesehen werden. Außerdem werden aktuelle Werte pro Stunde angezeigt. (Npcap benötigt)(ALPHA) &#x0a; https://nmap.org/npcap/ </translation>
   <translation name="EQUIPABLE">Ausrüstbar</translation>
   <translation name="STACKABLE">Stapelbar</translation>
   <translation name="SHOW_IN_MARKET_PLACE">Wird im Auktionshaus angezeigt</translation>
@@ -321,13 +321,13 @@
   <translation name="USERNAME">USERNAME</translation>
   <translation name="GUILD">GILDE</translation>
   <translation name="ALLIANCE">ALLIANZ</translation>
-  <translation name="RESET_FAME_COUNTER">Fame Zähler zurücksetzen</translation>
-  <translation name="MAKE_SURE_YOU_HAVE_INSTALLED_WINPCAP">Geh sicher, dass du WinPcap installiert hast. https://www.winpcap.org</translation>
+  <translation name="RESET_TRACKING_COUNTER">Tracking zurücksetzen</translation>
+  <translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Geh sicher, dass du NPcap installiert hast. https://nmap.org/npcap</translation>
   <translation name="PACKET_HANDLER_ERROR_MESSAGE">Ein Fehler ist aufgetreten, das tracking muss neugestartet werden.</translation>
   <translation name="YOU_HAVE">Du hast</translation>
   <translation name="FAME">Ruhm</translation>
   <translation name="GAINED">erhalten.</translation>
-  <translation name="FAME_RESET_BY_MAP_CHANGE">Ruhm reset bei Map-Wechsel</translation>
+  <translation name="MAP_CHANGE_RESET">Map-Wechsel reset</translation>
   <translation name="TOTAL_FAME">Gesammter Ruhm</translation>
   <translation name="TOTAL_SILVER">Gesammtes Silber</translation>
   <translation name="TOTAL_RESPEC">Total ReSpec</translation>
@@ -337,4 +337,6 @@
   <translation name="DAYS">Tage</translation>
   <translation name="OVER_A_YEAR">Über ein Jahr</translation>
   <translation name="CURRENT_MAP">AKTUELLE MAP</translation>
+  <translation name="KILLDED_BY">getötet von</translation>
+  <translation name="DUNGEON">Dungeon</translation>
 </translations>

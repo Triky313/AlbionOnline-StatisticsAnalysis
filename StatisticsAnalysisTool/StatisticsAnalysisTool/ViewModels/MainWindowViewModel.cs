@@ -95,7 +95,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _usernameInformationVisibility;
         private Visibility _guildInformationVisibility;
         private Visibility _allianceInformationVisibility;
-        private bool _isFameResetByMapChangeActive;
+        private bool _isTrackingResetByMapChangeActive;
         private string _silverPerHour = "0";
         private string _totalPlayerSilver = "0";
         private string _totalPlayerReSpecPoints = "0";
@@ -107,6 +107,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _guildInfoWidth;
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
+        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
+        private int _enteredDungeon;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -324,7 +326,7 @@ namespace StatisticsAnalysisTool.ViewModels
             AllianceInformationVisibility = Visibility.Hidden;
             CurrentMapInformationVisibility = Visibility.Hidden;
 
-            IsFameResetByMapChangeActive = Settings.Default.IsFameResetByMapChangeActive;
+            IsTrackingResetByMapChangeActive = Settings.Default.IsTrackingResetByMapChangeActive;
 
             #endregion
         }
@@ -597,13 +599,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StartTracking()
         {
-            if (!Utilities.IsSoftwareInstalled("WinPcap"))
-            {
-                IsTrackingActive = false;
-                SetErrorBar(Visibility.Visible, Translation.MakeSureYouHaveInstalledWinPcap);
-                return;
-            }
-
             if (NetworkController.IsNetworkCaptureRunning)
             {
                 return;
@@ -613,6 +608,8 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _trackingController = new TrackingController(this, _mainWindow);
             }
+
+            TrackingDungeons = _trackingController?.LoadDungeonFromFile();
 
             _valueCountUpTimer = new ValueCountUpTimer();
 
@@ -639,6 +636,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StopTracking()
         {
+            _trackingController?.SaveDungeonsInFile(TrackingDungeons);
             _valueCountUpTimer?.FameCountUpTimer?.Stop();
             _valueCountUpTimer?.SilverCountUpTimer?.Stop();
             NetworkController.StopNetworkCapture();
@@ -943,10 +941,18 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsFameResetByMapChangeActive {
-            get => _isFameResetByMapChangeActive;
+        public int EnteredDungeon {
+            get => _enteredDungeon;
             set {
-                _isFameResetByMapChangeActive = value;
+                _enteredDungeon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingResetByMapChangeActive {
+            get => _isTrackingResetByMapChangeActive;
+            set {
+                _isTrackingResetByMapChangeActive = value;
                 OnPropertyChanged();
             }
         }
@@ -955,6 +961,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _trackingNotifications;
             set {
                 _trackingNotifications = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<DungeonNotificationFragment> TrackingDungeons {
+            get => _trackingDungeons;
+            set {
+                _trackingDungeons = value;
                 OnPropertyChanged();
             }
         }

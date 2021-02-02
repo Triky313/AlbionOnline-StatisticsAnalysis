@@ -28,8 +28,9 @@ namespace StatisticsAnalysisTool.Network.Handler
                 if (parameters.ContainsKey(8))
                 {
                     MapIndex = parameters[8].ToString();
-                    UniqueMapName = WorldController.GetUniqueNameNameOrDefault(MapIndex);
+                    UniqueMapName = WorldController.GetUniqueNameOrDefault(MapIndex);
                     MapType = WorldController.GetMapType(MapIndex);
+                    DungeonGuid = WorldController.GetDungeonGuid(MapIndex);
                 }
 
                 if (parameters.ContainsKey(23) && long.TryParse(parameters[23].ToString(), out long currentFocusPoints))
@@ -44,36 +45,41 @@ namespace StatisticsAnalysisTool.Network.Handler
 
                 if (parameters.ContainsKey(28))
                 {
-                    Silver = parameters.ContainsKey(28) ? long.Parse(parameters[28].ToString().Remove(parameters[28].ToString().Length - 4)) : 0;
+                    Silver = (long)parameters[28] / 10000d;
                 }
 
                 if (parameters.ContainsKey(29))
                 {
-                    Gold = parameters.ContainsKey(29) ? long.Parse(parameters[29].ToString().Remove(parameters[29].ToString().Length - 4)) : 0;
+                    Gold = (int)parameters[29] / 10000d;
                 }
 
                 if (parameters.ContainsKey(32))
                 {
-                    LearningPoints = parameters.ContainsKey(32) ? int.Parse(parameters[32].ToString().Remove(parameters[32].ToString().Length - 4)) : 0;
+                    LearningPoints = (int)parameters[32] / 10000d;
                 }
 
-                if (parameters.ContainsKey(36))
+                if (parameters.ContainsKey(36) && Converter.ParseToDouble(parameters[36].ToString(), out double newReputation))
                 {
-                    Reputation = parameters.ContainsKey(36) ? int.Parse(parameters[36].ToString().Remove(parameters[36].ToString().Length - 4)) : 0;
+                    Reputation = newReputation;
                 }
 
-                if (parameters.ContainsKey(38))
+                if (parameters.ContainsKey(38) && parameters[38] != null)
                 {
                     var array = (long[])parameters[38];
                     if (array != null && array.Length > 1)
                     {
-                        RespecPoints = array[1];
+                        ReSpecPoints = array[1] / 10000d;
                     }
                 }
 
                 if (parameters.ContainsKey(51))
                 {
                     GuildName = string.IsNullOrEmpty(parameters[51].ToString()) ? string.Empty : parameters[51].ToString();
+                }
+
+                if (parameters.ContainsKey(61))
+                {
+                    // Maybe Playtime in seconds
                 }
 
                 if (parameters.ContainsKey(69))
@@ -97,18 +103,19 @@ namespace StatisticsAnalysisTool.Network.Handler
                 Debug.Print(e.Message);
             }
         }
-
+        
         public string Username { get; }
         public string MapIndex { get; }
         public string UniqueMapName { get; }
+        public Guid? DungeonGuid { get; }
         public MapType MapType { get; }
         public long CurrentFocusPoints { get; }
         public long MaxCurrentFocusPoints { get; }
-        public int LearningPoints { get; }
-        public int Reputation { get; }
-        public long RespecPoints { get; }
-        public long Silver { get; }
-        public long Gold { get; }
+        public double LearningPoints { get; }
+        public double Reputation { get; }
+        public double ReSpecPoints { get; }
+        public double Silver { get; }
+        public double Gold { get; }
         public string GuildName { get; }
         public string AllianceName { get; }
         public string Test { get; }

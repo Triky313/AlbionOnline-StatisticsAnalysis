@@ -17,7 +17,6 @@ namespace StatisticsAnalysisTool.Network
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool _isCurrentTimerUpdateActive;
         private DateTime _startTime;
-        private TimeSpan _currentTime;
         private double _totalGainedSilver;
         private int? _taskId;
         private double? _lastValue;
@@ -78,18 +77,24 @@ namespace StatisticsAnalysisTool.Network
             _startTime = DateTime.Now;
             _mainWindowViewModel.SilverPerHour = "0";
             _totalGainedSilver = 0;
+            _silverPerHourList.Clear();
             CurrentTimerUpdate();
         }
         
         private void CurrentTimerUpdate()
         {
+            if (_isCurrentTimerUpdateActive)
+            {
+                return;
+            }
+
             _isCurrentTimerUpdateActive = true;
 
             var task = Task.Run(async () =>
             {
                 while (_isCurrentTimerUpdateActive)
                 {
-                    SetCurrentIntervalTimeForSilver();
+                    _mainWindowViewModel.SilverPerHour = Utilities.GetValuePerHour(_totalGainedSilver, DateTime.Now - _startTime);
                     await Task.Delay(1000);
                 }
             });
@@ -114,12 +119,6 @@ namespace StatisticsAnalysisTool.Network
             {
                 Log.Error(nameof(KillTimerTask), e);
             }
-        }
-
-        private void SetCurrentIntervalTimeForSilver()
-        {
-            _currentTime = DateTime.Now - _startTime;
-            _mainWindowViewModel.SilverPerHour = Formatting.ToStringShort(_totalGainedSilver / (_currentTime.TotalSeconds / 60 / 60));
         }
     }
 }

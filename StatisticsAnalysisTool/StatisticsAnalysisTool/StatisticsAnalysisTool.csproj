@@ -146,8 +146,8 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PacketDotNet, Version=1.1.1.0, Culture=neutral, PublicKeyToken=451414c7667b2a58, processorArchitecture=MSIL">
-      <HintPath>..\packages\PacketDotNet.1.1.1\lib\net45\PacketDotNet.dll</HintPath>
+    <Reference Include="PacketDotNet, Version=1.1.2.0, Culture=neutral, PublicKeyToken=451414c7667b2a58, processorArchitecture=MSIL">
+      <HintPath>..\packages\PacketDotNet.1.1.2\lib\net45\PacketDotNet.dll</HintPath>
     </Reference>
     <Reference Include="PcapDotNet.Base, Version=0.10.0.20588, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
       <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Base.dll</HintPath>
@@ -167,8 +167,8 @@
     <Reference Include="Protocol16, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PhotonPackageParser.4.1.0\lib\netstandard2.0\Protocol16.dll</HintPath>
     </Reference>
-    <Reference Include="SharpPcap, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpPcap.5.3.0\lib\netstandard2.0\SharpPcap.dll</HintPath>
+    <Reference Include="SharpPcap, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpPcap.5.4.0\lib\netstandard2.0\SharpPcap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -212,9 +212,17 @@
     <Compile Include="Common\WorldController.cs" />
     <Compile Include="Common\TrackingController.cs" />
     <Compile Include="Models\MapData.cs" />
+    <Compile Include="Models\NetworkModel\DiedObject.cs" />
     <Compile Include="Models\WorldJsonObject.cs" />
     <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
+    <Compile Include="Network\Events\DiedEvent.cs" />
+    <Compile Include="Network\Events\TestEvent.cs" />
+    <Compile Include="Network\Handler\TestHandler2.cs" />
+    <Compile Include="Network\Handler\TestHandler.cs" />
+    <Compile Include="Network\Handler\DiedEventHandler.cs" />
     <Compile Include="Network\ICountUpTimer.cs" />
+    <Compile Include="Network\Notification\DungeonNotificationFragment.cs" />
+    <Compile Include="Network\Notification\DungeonStatus.cs" />
     <Compile Include="Network\ReSpecPointsCountUpTimer.cs" />
     <Compile Include="Network\SilverCountUpTimer.cs" />
     <Compile Include="Network\FameCountUpTimer.cs" />
@@ -365,7 +373,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\respec.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\dungeon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Network\Codes\events.txt" />
+    <Resource Include="Network\Codes\operations.txt" />
+    <Resource Include="Resources\skull.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="Sounds\alert1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -401,7 +417,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\silver.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup>

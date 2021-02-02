@@ -101,7 +101,7 @@
   <translation name="SHOW_NOT_AGAIN">Show not again</translation>
   <translation name="SHOW_INFO_WINDOW_ON_START">Show info window on start</translation>
   <translation name="NEW_FEATURE">New Feature</translation>
-  <translation name="FEATURE_DESCRIPTION">NEW FEATURE - TRACKING &#x0a;Current Fame, Respec or Silver values can now be seen. Additionally also per hour. (WinPcap required)(ALPHA) &#x0a;Notifications for Fame added</translation>
+  <translation name="FEATURE_DESCRIPTION">NEW FEATURE - DUNGEON TRACKING &#x0a;Current Fame, Respec or Silver values can now be seen. Additionally also per hour. (Npcap required)(ALPHA) &#x0a; https://nmap.org/npcap/ </translation>
   <translation name="EQUIPABLE">Equipable</translation>
   <translation name="STACKABLE">Stackable</translation>
   <translation name="SHOW_IN_MARKET_PLACE">Show in market place</translation>
@@ -322,13 +322,13 @@
   <translation name="USERNAME">USERNAME</translation>
   <translation name="GUILD">GUILD</translation>
   <translation name="ALLIANCE">ALLIANCE</translation>
-  <translation name="RESET_FAME_COUNTER">Reset fame counter</translation>
-  <translation name="MAKE_SURE_YOU_HAVE_INSTALLED_WINPCAP">Make sure you have installed WinPcap. https://www.winpcap.org</translation>
+  <translation name="RESET_TRACKING_COUNTER">Reset tracking counter</translation>
+  <translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Make sure you have installed NPcap. https://nmap.org/npcap</translation>
   <translation name="PACKET_HANDLER_ERROR_MESSAGE">An error has occurred, the tracking has to be restarted.</translation>
   <translation name="YOU_HAVE">You have</translation>
   <translation name="FAME">Fame</translation>
   <translation name="GAINED">gained.</translation>
-  <translation name="FAME_RESET_BY_MAP_CHANGE">Fame reset by map change</translation>
+  <translation name="MAP_CHANGE_RESET">Map change reset</translation>
   <translation name="TOTAL_FAME">Total Fame</translation>
   <translation name="TOTAL_SILVER">Total Silver</translation>
   <translation name="TOTAL_RESPEC">Total ReSpec</translation>
@@ -338,4 +338,6 @@
   <translation name="DAYS">Days</translation>
   <translation name="OVER_A_YEAR">Over a Year</translation>
   <translation name="CURRENT_MAP">CURRENT MAP</translation>
+  <translation name="KILLDED_BY">killed by</translation>
+  <translation name="DUNGEON">Dungeon</translation>
 </translations>

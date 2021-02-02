@@ -24,29 +24,24 @@ namespace StatisticsAnalysisTool.Network
 
         public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, ValueCountUpTimer valueCountUpTimerTimer)
         {
-            if (!Utilities.IsSoftwareInstalled("WinPcap"))
-            {
-                return false;
-            }
-
             _mainWindowViewModel = mainWindowViewModel;
             builder = ReceiverBuilder.Create();
 
-
             //builder.AddRequestHandler(new UserInformationHandler());
-            //builder.AddEventHandler(new UpdateMoneyEventHandler());
-            //builder.AddEventHandler(new NewCharacterEventHandler());
-
             //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
             builder.AddEventHandler(new UpdateFameEventHandler(trackingController, valueCountUpTimerTimer.FameCountUpTimer));
             builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController, valueCountUpTimerTimer.SilverCountUpTimer));
             builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController, valueCountUpTimerTimer.ReSpecPointsCountUpTimer));
 
-            //builder.AddEventHandler(new PartySilverGainedEventHandler());
+            builder.AddEventHandler(new DiedEventHandler(trackingController));
 
+            //builder.AddEventHandler(new PartySilverGainedEventHandler());
             //builder.AddEventHandler(new NewLootEventHandler());
 
-            builder.AddResponseHandler(new UserInformationHandler(_mainWindowViewModel)); // GEHT
+            //builder.AddEventHandler(new TestHandler());
+            //builder.AddRequestHandler(new TestHandler2());
+
+            builder.AddResponseHandler(new UserInformationHandler(trackingController, _mainWindowViewModel));
 
             _receiver = builder.Build();
 
@@ -61,18 +56,21 @@ namespace StatisticsAnalysisTool.Network
                 return false;
             }
 
-            foreach (var device in _capturedDevices)
+            try
             {
-                Task.Run(() =>
+                foreach (var device in _capturedDevices)
                 {
-                    if (!device.Started)
-                    {
-                        device.OnPacketArrival += PacketHandler;
-                        device.Open(DeviceMode.Promiscuous, 1000);
-                        device.StartCapture();
-                    }
-                });
+                    PacketEvent(device);
+                }
             }
+            catch (Exception e)
+            {
+                Log.Error(nameof(StartDeviceCapture), e);
+                _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
+                _mainWindowViewModel.StopTracking();
+                return false;
+            }
+            
             return true;
         }
 
@@ -90,6 +88,19 @@ namespace StatisticsAnalysisTool.Network
             _capturedDevices.Clear();
         }
 
+        private static async void PacketEvent(ICaptureDevice device)
+        {
+            await Task.Run(() =>
+            {
+                if (!device.Started)
+                {
+                    device.OnPacketArrival += PacketHandler;
+                    device.Open(DeviceMode.Promiscuous, 1000);
+                    device.StartCapture();
+                }
+            });
+        }
+
         public static bool IsNetworkCaptureRunning => _capturedDevices.Where(device => device.Started).Any(device => device.Started);
 
         private static void PacketHandler(object sender, CaptureEventArgs e)
@@ -99,14 +110,12 @@ namespace StatisticsAnalysisTool.Network
                 var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data).Extract<UdpPacket>();
                 if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
                 {
-                    // TODO: System.ArgumentException: "DependencySource" 
-                    // https://stackoverflow.com/questions/26361020/error-must-create-dependencysource-on-same-thread-as-the-dependencyobject-even
                     _receiver.ReceivePacket(packet.PayloadData);
                 }
             }
             catch (Exception ex)
             {
-                Log.Error(nameof(PacketHandler), ex);
+                Log.Error(nameof(StartDeviceCapture), ex);
                 _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
                 _mainWindowViewModel.StopTracking();
             }
