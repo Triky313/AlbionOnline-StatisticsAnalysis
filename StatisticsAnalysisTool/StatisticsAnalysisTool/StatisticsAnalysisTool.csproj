@@ -262,7 +262,7 @@
     <Compile Include="Models\MarketStats.cs" />
     <Compile Include="Models\WeaponCategories.cs" />
     <Compile Include="Network\Events\UpdateFameEvent.cs" />
-    <Compile Include="Network\Events\UserInformationEvent.cs" />
+    <Compile Include="Network\Operations\UserInformationEvent.cs" />
     <Compile Include="Network\Handler\UpdateMoneyEventHandler.cs" />
     <Compile Include="Network\Handler\UpdateFameEventHandler.cs" />
     <Compile Include="Network\Notification\FameNotificationFragment.cs" />

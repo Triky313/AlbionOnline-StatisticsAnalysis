@@ -17,17 +17,19 @@ namespace StatisticsAnalysisTool.Network.Handler
                     Debug.Print($"{parameter}");
                 }
 
-                if (parameters.ContainsKey(3))
+                if (parameters.ContainsKey(3) && long.TryParse(parameters[3].ToString(), out long totalCollectedSilver))
                 {
-                    TotalCollectedSilver = int.Parse(parameters[3].ToString().Remove(parameters[3].ToString().Length - 4));
-                    GuildTax = parameters.ContainsKey(5) ? int.Parse(parameters[5].ToString().Remove(parameters[5].ToString().Length - 4)) : 0;
-                    EarnedSilver = TotalCollectedSilver - GuildTax;
+                    TotalCollectedSilver = totalCollectedSilver / 10000d;
                 }
-                else
+
+                if (parameters.ContainsKey(5) && long.TryParse(parameters[5].ToString(), out long guildTax))
                 {
-                    TotalCollectedSilver = 0;
-                    GuildTax = 0;
-                    EarnedSilver = 0;
+                    GuildTax = guildTax / 10000d;
+                }
+
+                if (!double.IsNaN(TotalCollectedSilver) && !double.IsNaN(GuildTax) && TotalCollectedSilver != 0 && GuildTax != 0)
+                {
+                    EarnedSilver = TotalCollectedSilver - GuildTax;
                 }
             }
             catch(Exception e)
@@ -36,9 +38,8 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
         }
 
-        public long UserId { get; }
-        public int TotalCollectedSilver { get; }
-        public int GuildTax { get; }
-        public int EarnedSilver { get; }
+        public double TotalCollectedSilver { get; }
+        public double GuildTax { get; }
+        public double EarnedSilver { get; }
     }
 }
