@@ -61,15 +61,17 @@ namespace StatisticsAnalysisTool.Common
             switch (mapType)
             {
                 case MapType.HellGate:
-                    return "Hell gate";
+                    return LanguageController.Translation("HELLGATE");
                 case MapType.RandomDungeon:
-                    return "Dungeon";
+                    return LanguageController.Translation("DUNGEON");
                 case MapType.CorruptedDungeon:
-                    return "Corrupted Lair";
+                    return LanguageController.Translation("CORRUPTED_LAIR");
                 case MapType.Island:
-                    return "Island";
+                    return LanguageController.Translation("ISLAND");
+                case MapType.Hideout:
+                    return LanguageController.Translation("HIDEOUT");
                 default:
-                    return "Unknown";
+                    return LanguageController.Translation("UNKNOWN");
             }
         }
 
@@ -93,6 +95,11 @@ namespace StatisticsAnalysisTool.Common
             if (index.ToUpper().Contains("ISLAND"))
             {
                 return MapType.Island;
+            }
+
+            if (index.ToUpper().Contains("HIDEOUT"))
+            {
+                return MapType.Hideout;
             }
 
             return MapType.Unknown;
@@ -192,6 +199,7 @@ namespace StatisticsAnalysisTool.Common
         HellGate,
         CorruptedDungeon,
         Island,
+        Hideout,
         Unknown
     }
 }
