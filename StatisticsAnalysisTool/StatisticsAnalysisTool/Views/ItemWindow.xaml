@@ -54,7 +54,7 @@
                             <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}" />
+                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}" MouseDoubleClick="MarketListCityLabel_MouseDoubleClick" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -63,7 +63,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}" />
+                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}" MouseDoubleClick="MarketListSellPriceMinLabel_MouseDoubleClick" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -86,7 +86,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMaxString}" ToolTip="{Binding SellPriceMaxDateString}" />
+                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMaxString}" ToolTip="{Binding SellPriceMaxDateString}" MouseDoubleClick="MarketListSellPriceMaxLabel_MouseDoubleClick" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -109,7 +109,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding BuyPriceMinString}" />
+                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding BuyPriceMinString}" MouseDoubleClick="MarketListBuyPriceMinLabel_MouseDoubleClick" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -132,7 +132,7 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding BuyPriceMaxStyle}" Content="{Binding BuyPriceMaxString}" />
+                                                <Label Style="{Binding BuyPriceMaxStyle}" Content="{Binding BuyPriceMaxString}" MouseDoubleClick="MarketListBuyPriceMaxLabel_MouseDoubleClick" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
