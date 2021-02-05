@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
@@ -627,6 +628,28 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Prices
+
+        #region MyRegion
+
+        public void CopyTextToClipboard(object sender)
+        {
+            if (sender == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var label = (Label)sender;
+                Clipboard.SetText(label.Content.ToString());
+            }
+            catch (Exception ex)
+            {
+                Log.Error(nameof(CopyTextToClipboard), ex);
+            }
+        }
+
+        #endregion
 
         #region Bindings
 
