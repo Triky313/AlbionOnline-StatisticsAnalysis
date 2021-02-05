@@ -9,8 +9,6 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public NewLootChestEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Debug.Print($"----- NewLootChestEvent -----");
-
             try
             {
                 foreach (var parameter in parameters)

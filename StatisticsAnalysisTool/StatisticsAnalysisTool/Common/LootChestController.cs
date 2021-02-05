@@ -7,7 +7,6 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -19,6 +18,21 @@ namespace StatisticsAnalysisTool.Common
     {
         public static IEnumerable<LootChest> LootChestData;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static ChestType GetChestType(string value)
+        {
+            if (value.Contains("BOOKCHEST"))
+            {
+                return ChestType.BookChest;
+            }
+
+            if (value.Contains("CHEST"))
+            {
+                return ChestType.Chest;
+            }
+
+            return ChestType.Unknown;
+        }
 
         public static DungeonMode GetDungeonMode(string value)
         {
@@ -42,30 +56,30 @@ namespace StatisticsAnalysisTool.Common
 
         public static ChestRarity GetChestRarity(string value)
         {
-            var valuesArray = value.Split(new[] { "_" }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (valuesArray.Contains("BOOKCHEST_STANDARD") || valuesArray.Contains("CHEST_STANDARD"))
+            if (value.Contains("BOOKCHEST_STANDARD") || value.Contains("CHEST_STANDARD"))
             {
                 return ChestRarity.Standard;
             }
             
-            if (valuesArray.Contains("BOOKCHEST_UNCOMMON") || valuesArray.Contains("CHEST_UNCOMMON"))
+            if (value.Contains("BOOKCHEST_UNCOMMON") || value.Contains("CHEST_UNCOMMON") || value.Contains("CHEST_BOSS_UNCOMMON"))
             {
                 return ChestRarity.Uncommon;
             }
 
-            if (valuesArray.Contains("BOOKCHEST_RARE") || valuesArray.Contains("CHEST_RARE"))
+            if (value.Contains("BOOKCHEST_RARE") || value.Contains("CHEST_RARE") || value.Contains("CHEST_BOSS_RARE"))
             {
                 return ChestRarity.Rare;
             }
 
-            if (valuesArray.Contains("BOOKCHEST_LEGENDARY") || valuesArray.Contains("CHEST_LEGENDARY"))
+            if (value.Contains("BOOKCHEST_LEGENDARY") || value.Contains("CHEST_LEGENDARY") || value.Contains("CHEST_BOSS_LEGENDARY"))
             {
                 return ChestRarity.Legendary;
             }
 
             return ChestRarity.Unknown;
         }
+
+        public static bool IsBossChest(string value) => value.Contains("CHEST_BOSS");
 
         public static Faction GetFaction(string value)
         {

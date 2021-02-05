@@ -257,6 +257,44 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
+        public void SetDungeonChestInformation(int id, string uniqueName)
+        {
+            if (_currentGuid != null && uniqueName != null)
+            {
+                try
+                {
+                    var dun = GetCurrentDungeon((Guid)_currentGuid);
+
+                    if (dun == null || _currentGuid == null)
+                    {
+                        return;
+                    }
+
+                    var dunChest = new DungeonChest
+                    {
+                        UniqueName = uniqueName, 
+                        Discovered = DateTime.UtcNow,
+                        IsBossChest = LootChestController.IsBossChest(uniqueName), 
+                        IsChestOpen = false, 
+                        Id = id
+                    };
+
+                    dun.DungeonChests.Add(dunChest);
+                    dun.Faction = LootChestController.GetFaction(uniqueName);
+                    dun.Mode = LootChestController.GetDungeonMode(uniqueName);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(nameof(SetDungeonChestInformation), e);
+                }
+            }
+        }
+
+        private DungeonNotificationFragment GetCurrentDungeon(Guid guid)
+        {
+            return _mainWindowViewModel.TrackingDungeons.FirstOrDefault(x => x.MapsGuid.Contains(guid));
+        }
+
         public void SetDiedIfInDungeon(DiedObject dieObject)
         {
             if (_currentGuid != null && CurrentPlayerUsername != null && dieObject.DiedName == CurrentPlayerUsername)

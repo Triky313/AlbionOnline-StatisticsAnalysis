@@ -3,6 +3,7 @@
     public enum ChestType
     {
         Chest,
-        BookChest
+        BookChest,
+        Unknown
     }
 }

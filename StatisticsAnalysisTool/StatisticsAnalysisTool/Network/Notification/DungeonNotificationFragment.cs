@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _mainEntranceMap;
         private bool _diedInDungeon;
         private string _diedMessage;
-        private IEnumerable<DungeonChest> _dungeonChests;
+        private List<DungeonChest> _dungeonChests = new List<DungeonChest>();
         private DungeonMode _mode;
         private Faction _faction;
 
@@ -41,7 +41,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             DungeonCounter = count;
         }
 
-        public IEnumerable<DungeonChest> DungeonChests
+        public List<DungeonChest> DungeonChests
         {
             get => _dungeonChests;
             set {
