@@ -30,6 +30,7 @@ namespace StatisticsAnalysisTool.ViewModels
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private static MainWindow _mainWindow;
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
@@ -83,7 +84,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _reSpecPointsPerHour = "0";
         private TrackingController _trackingController;
         private DateTime? activateWaitTimer;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
         private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
