@@ -214,6 +214,8 @@
     <Compile Include="Common\TrackingController.cs" />
     <Compile Include="Enumerations\ChestType.cs" />
     <Compile Include="Enumerations\AttributeStatOperator.cs" />
+    <Compile Include="Models\LootChest.cs" />
+    <Compile Include="Models\LootChestRoot.cs" />
     <Compile Include="Models\LootChests.cs" />
     <Compile Include="Models\MapData.cs" />
     <Compile Include="Models\NetworkModel\DiedObject.cs" />

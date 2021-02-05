@@ -1,9 +1,7 @@
 ﻿using Albion.Network;
-using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -20,10 +18,20 @@ namespace StatisticsAnalysisTool.Network.Events
                     Debug.Print($"{parameter}");
                 }
 
+                if (parameters.ContainsKey(0) && int.TryParse(parameters[0].ToString(), out var id))
+                {
+                    Id = id;
+                }
+
                 if (parameters.ContainsKey(3))
                 {
-                    Died = string.IsNullOrEmpty(parameters[3].ToString()) ? string.Empty : parameters[3].ToString();
+                    UniqueName = string.IsNullOrEmpty(parameters[3].ToString()) ? string.Empty : parameters[3].ToString();
                 }
+
+                //if (parameters.ContainsKey(4))
+                //{
+                //    UniqueNameArea? = string.IsNullOrEmpty(parameters[4].ToString()) ? string.Empty : parameters[4].ToString();
+                //}
             }
             catch(Exception e)
             {
@@ -31,50 +39,8 @@ namespace StatisticsAnalysisTool.Network.Events
             }
         }
 
-        private DungeonMode GetDungeonMode(string value)
-        {
-            var valuesArray = value.Split(new[] { "_" }, StringSplitOptions.RemoveEmptyEntries);
+        public int Id { get; set; }
 
-            if (valuesArray.Contains("SOLO"))
-            {
-                return DungeonMode.Solo;
-            } 
-            
-            if(valuesArray.Contains("STANDARD"))
-            {
-                return DungeonMode.Standard;
-            }
-            
-            if(valuesArray.Contains("AVALON"))
-            {
-                return DungeonMode.Avalon;
-            }
-
-            return DungeonMode.Unknown;
-        }
-
-        private DungeonMode GetChestRarity(string value)
-        {
-            var valuesArray = value.Split(new[] { "_" }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (valuesArray.Contains("SOLO"))
-            {
-                return DungeonMode.Solo;
-            } 
-            
-            if(valuesArray.Contains("BOOKCHEST_STANDARD"))
-            {
-                return DungeonMode.Standard;
-            }
-            
-            if(valuesArray.Contains("AVALON"))
-            {
-                return DungeonMode.Avalon;
-            }
-
-            return DungeonMode.Unknown;
-        }
-
-        public string Died { get; set; }
+        public string UniqueName { get; set; }
     }
 }

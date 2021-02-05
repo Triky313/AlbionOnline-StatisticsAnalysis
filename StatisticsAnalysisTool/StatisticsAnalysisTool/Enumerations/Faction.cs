@@ -6,6 +6,7 @@
         Undead,
         Morgana,
         Heretic,
-        Avalon
+        Avalon,
+        Unknown
     }
 }
