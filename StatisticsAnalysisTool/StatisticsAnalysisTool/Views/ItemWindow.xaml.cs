@@ -1,4 +1,7 @@
-﻿namespace StatisticsAnalysisTool.Views
+﻿using log4net;
+using System.Reflection;
+
+namespace StatisticsAnalysisTool.Views
 {
     using Models;
     using System.Diagnostics;
@@ -13,6 +16,7 @@
     {
 
         private readonly ItemWindowViewModel _itemWindowViewModel;
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public ItemWindow(Item item)
         {
@@ -102,6 +106,31 @@
             _itemWindowViewModel.SetQualityPriceStatsOnListView();
             _itemWindowViewModel.SetHistoryChartPricesAsync();
             _itemWindowViewModel.GetItemPricesInRealMoneyAsync();
+        }
+
+        private void MarketListCityLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _itemWindowViewModel.CopyTextToClipboard(sender);
+        }
+
+        private void MarketListSellPriceMinLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _itemWindowViewModel.CopyTextToClipboard(sender);
+        }
+
+        private void MarketListSellPriceMaxLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _itemWindowViewModel.CopyTextToClipboard(sender);
+        }
+
+        private void MarketListBuyPriceMinLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _itemWindowViewModel.CopyTextToClipboard(sender);
+        }
+
+        private void MarketListBuyPriceMaxLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _itemWindowViewModel.CopyTextToClipboard(sender);
         }
     }
 }
