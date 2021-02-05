@@ -209,26 +209,41 @@
     </ApplicationDefinition>
     <Compile Include="Common\AlertController.cs" />
     <Compile Include="Common\Converter.cs" />
+    <Compile Include="Common\LootChestController.cs" />
     <Compile Include="Common\WorldController.cs" />
     <Compile Include="Common\TrackingController.cs" />
+    <Compile Include="Enumerations\ChestType.cs" />
+    <Compile Include="Enumerations\AttributeStatOperator.cs" />
+    <Compile Include="Models\LootChests.cs" />
     <Compile Include="Models\MapData.cs" />
     <Compile Include="Models\NetworkModel\DiedObject.cs" />
     <Compile Include="Models\WorldJsonObject.cs" />
     <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
     <Compile Include="Network\Events\DiedEvent.cs" />
+    <Compile Include="Network\Events\NewLootChestEvent.cs" />
+    <Compile Include="Network\Events\LootChestOpenedEvent.cs" />
+    <Compile Include="Network\Events\TestEvent3.cs" />
+    <Compile Include="Network\Events\TestEvent2.cs" />
     <Compile Include="Network\Events\TestEvent.cs" />
+    <Compile Include="Network\Handler\NewLootChestEventHandler.cs" />
+    <Compile Include="Network\Handler\LootChestOpenedEventHandler.cs" />
+    <Compile Include="Network\Handler\TestHandler3.cs" />
     <Compile Include="Network\Handler\TestHandler2.cs" />
     <Compile Include="Network\Handler\TestHandler.cs" />
     <Compile Include="Network\Handler\DiedEventHandler.cs" />
     <Compile Include="Network\ICountUpTimer.cs" />
+    <Compile Include="Models\NetworkModel\DungeonChest.cs" />
     <Compile Include="Network\Notification\DungeonNotificationFragment.cs" />
-    <Compile Include="Network\Notification\DungeonStatus.cs" />
+    <Compile Include="Enumerations\DungeonStatus.cs" />
+    <Compile Include="Enumerations\ChestRarity.cs" />
+    <Compile Include="Enumerations\DungeonMode.cs" />
+    <Compile Include="Enumerations\Faction.cs" />
     <Compile Include="Network\ReSpecPointsCountUpTimer.cs" />
     <Compile Include="Network\SilverCountUpTimer.cs" />
     <Compile Include="Network\FameCountUpTimer.cs" />
     <Compile Include="Models\NetworkModel\Container.cs" />
     <Compile Include="Models\NetworkModel\Loot.cs" />
-    <Compile Include="Network\Notification\FameTypeOperator.cs" />
+    <Compile Include="Enumerations\FameTypeOperator.cs" />
     <Compile Include="Network\Notification\TrackingNotification.cs" />
     <Compile Include="Network\EventCodes.cs" />
     <Compile Include="Network\Events\UpdateMoneyEvent.cs" />
@@ -266,7 +281,6 @@
     <Compile Include="Network\Handler\UpdateMoneyEventHandler.cs" />
     <Compile Include="Network\Handler\UpdateFameEventHandler.cs" />
     <Compile Include="Network\Notification\FameNotificationFragment.cs" />
-    <Compile Include="Network\Notification\AttributeStatOperator.cs" />
     <Compile Include="Network\Notification\LineFragment.cs" />
     <Compile Include="Network\Notification\TextFragment.cs" />
     <Compile Include="Network\Operations\MoveOperation.cs" />
@@ -356,7 +370,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="world.json" />
+    <None Include="GameFiles\lootchests.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GameFiles\world.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Resource Include="Resources\alert_window_background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

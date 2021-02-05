@@ -1,6 +1,7 @@
 ﻿using log4net;
 using Newtonsoft.Json;
 using PcapDotNet.Base;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;

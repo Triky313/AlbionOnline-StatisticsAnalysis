@@ -5,11 +5,12 @@ using System.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class TestEvent : BaseOperation
+    public class LootChestOpenedEvent : BaseEvent
     {
-        public TestEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public LootChestOpenedEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Debug.Print($"----- GetClusterMapInfo -----");
+            Debug.Print($"----- LootChestOpened -----");
+
             try
             {
                 foreach (var parameter in parameters)

@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Network.Notification
+﻿namespace StatisticsAnalysisTool.Enumerations
 {
     public enum FameTypeOperator
     {

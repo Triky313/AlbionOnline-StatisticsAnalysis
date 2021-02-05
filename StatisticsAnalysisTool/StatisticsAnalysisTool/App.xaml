@@ -2,9 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:local="clr-namespace:StatisticsAnalysisTool.Network.Notification"
+             xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
+             xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <!-- Base font size -->
@@ -1198,17 +1199,17 @@
             <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
             <Setter Property="Text" Value="+ " />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding}" Value="{x:Static local:AttributeStatOperator.Minus}">
+                <DataTrigger Binding="{Binding}" Value="{x:Static enumerations:AttributeStatOperator.Minus}">
                     <Setter Property="Text" Value="- " />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <DataTemplate DataType="{x:Type local:TextFragment}">
+        <DataTemplate DataType="{x:Type notification:TextFragment}">
             <TextBlock Text="{Binding Text, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local:TrackingNotification}">
+        <DataTemplate DataType="{x:Type notification:TrackingNotification}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -1225,7 +1226,7 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local:FameNotificationFragment}">
+        <DataTemplate DataType="{x:Type notification:FameNotificationFragment}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                 <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -1239,10 +1240,10 @@
                             <Setter Property="Text" Value="{Binding FameText, StringFormat='{} {0} '}"/>
                             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding FameTypeOperator}" Value="{x:Static local:FameTypeOperator.Pve}">
+                                <DataTrigger Binding="{Binding FameTypeOperator}" Value="{x:Static enumerations:FameTypeOperator.Pve}">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding FameTypeOperator}" Value="{x:Static local:FameTypeOperator.Pvp}">
+                                <DataTrigger Binding="{Binding FameTypeOperator}" Value="{x:Static enumerations:FameTypeOperator.Pvp}">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pvp}" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -1263,13 +1264,13 @@
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local:DungeonNotificationFragment}">
+        <DataTemplate DataType="{x:Type notification:DungeonNotificationFragment}">
             <Grid Height="32" Margin="0 1 0 1">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Style>
                         <Style TargetType="StackPanel">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static local:DungeonStatus.Active}">
+                                <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static enumerations:DungeonStatus.Active}">
                                     <Setter Property="Background">
                                         <Setter.Value>
                                             <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
@@ -1279,7 +1280,7 @@
                                         </Setter.Value>
                                     </Setter>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static local:DungeonStatus.Done}">
+                                <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static enumerations:DungeonStatus.Done}">
                                     <Setter Property="Background">
                                         <Setter.Value>
                                             <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">

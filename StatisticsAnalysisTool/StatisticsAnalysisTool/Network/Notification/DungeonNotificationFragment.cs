@@ -1,5 +1,7 @@
 ﻿using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,9 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _mainEntranceMap;
         private bool _diedInDungeon;
         private string _diedMessage;
+        private IEnumerable<DungeonChest> _dungeonChests;
+        private DungeonMode _mode;
+        private Faction _faction;
 
         public DungeonNotificationFragment(Guid firstMap, int count, string mapNameBeforeDungeon, DateTime startDungeon, MainWindowViewModel mainWindowViewModel)
         {
@@ -34,6 +39,33 @@ namespace StatisticsAnalysisTool.Network.Notification
             StartDungeon = startDungeon;
             EnterDungeonMap = DateTime.UtcNow;
             DungeonCounter = count;
+        }
+
+        public IEnumerable<DungeonChest> DungeonChests
+        {
+            get => _dungeonChests;
+            set {
+                _dungeonChests = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Faction Faction
+        {
+            get => _faction;
+            set {
+                _faction = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DungeonMode Mode
+        {
+            get => _mode;
+            set {
+                _mode = value;
+                OnPropertyChanged();
+            }
         }
 
         public string MainEntranceMap

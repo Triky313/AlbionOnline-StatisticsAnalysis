@@ -247,6 +247,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private async void InitTracking()
         {
             await WorldController.GetDataListFromJsonAsync();
+            await LootChestController.GetDataListFromJsonAsync();
 
             if (Settings.Default.IsTrackingActiveAtToolStart)
             {

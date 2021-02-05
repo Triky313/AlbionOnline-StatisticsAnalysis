@@ -1,5 +1,6 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Collections.Generic;
