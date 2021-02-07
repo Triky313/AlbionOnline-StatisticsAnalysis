@@ -1362,7 +1362,7 @@
                     </Label>
                     <Grid Margin="1 0 1 0">
                         <StackPanel Orientation="Horizontal" MinWidth="125">
-                            <ItemsControl ItemsSource="{Binding DungeonChestFragments}">
+                            <ItemsControl ItemsSource="{Binding DungeonChests}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <UniformGrid Rows="1"/>
@@ -1454,6 +1454,47 @@
                 </Image>
             </Grid>
         </DataTemplate>
+
+        <!-- Chest icons -->
+        <Style TargetType="Image" x:Key="Icon.Chest.Standard.Close" >
+            <Setter Property="Source" Value="Resources/chest_close_standard.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+        
+        <Style TargetType="Image" x:Key="Icon.Chest.Standard.Open" >
+            <Setter Property="Source" Value="Resources/chest_open_standard.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Uncommon.Close" >
+            <Setter Property="Source" Value="Resources/chest_close_uncommon.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Uncommon.Open" >
+            <Setter Property="Source" Value="Resources/chest_open_uncommon.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Rare.Close" >
+            <Setter Property="Source" Value="Resources/chest_close_rare.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Rare.Open" >
+            <Setter Property="Source" Value="Resources/chest_open_rare.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Legendary.Close" >
+            <Setter Property="Source" Value="Resources/chest_close_legendary.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Legendary.Open" >
+            <Setter Property="Source" Value="Resources/chest_open_legendary.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
 
         <!-- Dungeon icon -->
         <Style TargetType="Image" x:Key="Icon.Dungeon" >

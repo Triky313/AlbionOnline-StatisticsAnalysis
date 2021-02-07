@@ -306,6 +306,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Models\DungeonStats.cs" />
     <Compile Include="ViewModels\InfoWindowViewModel.cs" />
     <Compile Include="Models\ItemAlertWindowTranslation.cs" />
     <Compile Include="ViewModels\ItemWindowViewModel.cs" />

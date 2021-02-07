@@ -108,7 +108,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
-        private int _enteredDungeon;
+        private DungeonStats _dungeonStatsDay = new DungeonStats();
+        private DungeonStats _dungeonStatsTotal = new DungeonStats();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -611,6 +612,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             TrackingDungeons = _trackingController?.LoadDungeonFromFile();
+            _trackingController?.SetDungeonStatsDay();
+            _trackingController?.SetDungeonStatsTotal();
+            DungeonStatsDay.EnteredDungeon = _trackingController.GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
+            DungeonStatsTotal.EnteredDungeon = _trackingController.GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
+
 
             _valueCountUpTimer = new ValueCountUpTimer();
 
@@ -657,7 +663,7 @@ namespace StatisticsAnalysisTool.ViewModels
             return false;
         }
 
-        public void ResetCounters(bool fame, bool silver, bool reSpec)
+        public void ResetMainCounters(bool fame, bool silver, bool reSpec)
         {
             if (fame)
             {
@@ -673,6 +679,21 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Reset();
             }
+        }
+
+        public void ResetDungeonCounters()
+        {
+            DungeonStatsTotal.EnteredDungeon = 0;
+            DungeonStatsTotal.OpenedStandardChests = 0;
+            DungeonStatsTotal.OpenedUncommonChests = 0;
+            DungeonStatsTotal.OpenedRareChests = 0;
+            DungeonStatsTotal.OpenedLegendaryChests = 0;
+
+            DungeonStatsDay.EnteredDungeon = 0;
+            DungeonStatsDay.OpenedStandardChests = 0;
+            DungeonStatsDay.OpenedUncommonChests = 0;
+            DungeonStatsDay.OpenedRareChests = 0;
+            DungeonStatsDay.OpenedLegendaryChests = 0;
         }
 
         #endregion
@@ -822,6 +843,22 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public DungeonStats DungeonStatsDay {
+            get => _dungeonStatsDay;
+            set {
+                _dungeonStatsDay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DungeonStats DungeonStatsTotal {
+            get => _dungeonStatsTotal;
+            set {
+                _dungeonStatsTotal = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string TrackingUsername {
             get => _trackingUsername;
             set {
@@ -938,14 +975,6 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _totalPlayerReSpecPoints;
             set {
                 _totalPlayerReSpecPoints = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int EnteredDungeon {
-            get => _enteredDungeon;
-            set {
-                _enteredDungeon = value;
                 OnPropertyChanged();
             }
         }
@@ -1391,7 +1420,7 @@ namespace StatisticsAnalysisTool.ViewModels
             public ViewMode ViewMode { get; set; }
         }
     }
-    
+
     public enum ViewMode
     {
         Normal,

@@ -342,4 +342,6 @@
   <translation name="CORRUPTED_LAIR">Korrumpierte Dungeon</translation>
   <translation name="ISLAND">Insel</translation>
   <translation name="HIDEOUT">Unterschlupf</translation>
+  <translation name="DAY">Tag</translation>
+  <translation name="RESET_DUNGEON_TRACKING">Dungeon tracking zurücksetzen</translation>
 </translations>

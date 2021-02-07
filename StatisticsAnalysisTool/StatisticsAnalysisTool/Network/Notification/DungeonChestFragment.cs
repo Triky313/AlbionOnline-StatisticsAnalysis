@@ -10,7 +10,7 @@ namespace StatisticsAnalysisTool.Network.Notification
     public class DungeonChestFragment : INotifyPropertyChanged
     {
         private int _id;
-        private DateTime _discovered;
+        private DateTime _opened;
         private string _uniqueName;
         private ChestType _type;
         private ChestRarity _rarity;
@@ -26,10 +26,10 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public DateTime Discovered {
-            get => _discovered;
+        public DateTime Opened {
+            get => _opened;
             set {
-                _discovered = value;
+                _opened = value;
                 OnPropertyChanged();
             }
         }
