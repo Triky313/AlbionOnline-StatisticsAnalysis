@@ -241,19 +241,19 @@
                                         </Grid>
                                         <Label Content="{Binding DungeonStatsDay.EnteredDungeon, FallbackValue='0'}" ContentStringFormat="{}{0}" ToolTip="{Binding Translation.EnteredDungeon}" MinWidth="40" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Image Style="{StaticResource Icon.Chest.Standard.Open}"/>
+                                            <Image Style="{StaticResource Icon.Chest.Standard.Close}"/>
                                         </Grid>
                                         <Label Content="{Binding DungeonStatsDay.OpenedStandardChests, FallbackValue='0'}" ContentStringFormat="{}{0}" ToolTip="{Binding Translation.EnteredDungeon}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Image Style="{StaticResource Icon.Chest.Uncommon.Open}"/>
+                                            <Image Style="{StaticResource Icon.Chest.Uncommon.Close}"/>
                                         </Grid>
                                         <Label Content="{Binding DungeonStatsDay.OpenedUncommonChests, FallbackValue='0'}" ContentStringFormat="{}{0}" ToolTip="{Binding Translation.EnteredDungeon}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Image Style="{StaticResource Icon.Chest.Rare.Open}"/>
+                                            <Image Style="{StaticResource Icon.Chest.Rare.Close}"/>
                                         </Grid>
                                         <Label Content="{Binding DungeonStatsDay.OpenedRareChests, FallbackValue='0'}" ContentStringFormat="{}{0}" ToolTip="{Binding Translation.EnteredDungeon}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Image Style="{StaticResource Icon.Chest.Legendary.Open}"/>
+                                            <Image Style="{StaticResource Icon.Chest.Legendary.Close}"/>
                                         </Grid>
                                         <Label Content="{Binding DungeonStatsDay.OpenedLegendaryChests, FallbackValue='0'}" ContentStringFormat="{}{0}" ToolTip="{Binding Translation.EnteredDungeon}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                                     </DockPanel>
@@ -268,19 +268,19 @@
                                         </Grid>
                                         <Label Content="{Binding DungeonStatsTotal.EnteredDungeon, FallbackValue='0'}" ContentStringFormat="{}{0}" ToolTip="{Binding Translation.EnteredDungeon}" MinWidth="40" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Image Style="{StaticResource Icon.Chest.Standard.Open}"/>
+                                            <Image Style="{StaticResource Icon.Chest.Standard.Close}"/>
                                         </Grid>
                                         <Label Content="{Binding DungeonStatsTotal.OpenedStandardChests, FallbackValue='0'}" ContentStringFormat="{}{0}" ToolTip="{Binding Translation.EnteredDungeon}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Image Style="{StaticResource Icon.Chest.Uncommon.Open}"/>
+                                            <Image Style="{StaticResource Icon.Chest.Uncommon.Close}"/>
                                         </Grid>
                                         <Label Content="{Binding DungeonStatsTotal.OpenedUncommonChests, FallbackValue='0'}" ContentStringFormat="{}{0}" ToolTip="{Binding Translation.EnteredDungeon}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Image Style="{StaticResource Icon.Chest.Rare.Open}"/>
+                                            <Image Style="{StaticResource Icon.Chest.Rare.Close}"/>
                                         </Grid>
                                         <Label Content="{Binding DungeonStatsTotal.OpenedRareChests, FallbackValue='0'}" ContentStringFormat="{}{0}" ToolTip="{Binding Translation.EnteredDungeon}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Image Style="{StaticResource Icon.Chest.Legendary.Open}"/>
+                                            <Image Style="{StaticResource Icon.Chest.Legendary.Close}"/>
                                         </Grid>
                                         <Label Content="{Binding DungeonStatsTotal.OpenedLegendaryChests, FallbackValue='0'}" ContentStringFormat="{}{0}" ToolTip="{Binding Translation.EnteredDungeon}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                                     </DockPanel>

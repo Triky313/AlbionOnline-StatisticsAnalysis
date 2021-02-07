@@ -1360,8 +1360,8 @@
                             </Style>
                         </Label.Style>
                     </Label>
-                    <Grid Margin="1 0 1 0">
-                        <StackPanel Orientation="Horizontal" MinWidth="125">
+                    <Grid Margin="5 0 10 0">
+                        <StackPanel Orientation="Horizontal" MinWidth="195">
                             <ItemsControl ItemsSource="{Binding DungeonChests}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
