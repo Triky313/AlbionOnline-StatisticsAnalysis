@@ -344,4 +344,9 @@
   <translation name="HIDEOUT">Hideout</translation>
   <translation name="DAY">Day</translation>
   <translation name="RESET_DUNGEON_TRACKING">Reset dungeon tracking</translation>
+  
+  <translation name="STANDARD">Standard</translation>
+  <translation name="UNCOMMON">Uncommon</translation>
+  <translation name="RARE">Rare</translation>
+  <translation name="LEGENDARY">Legendary</translation>
 </translations>

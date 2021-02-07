@@ -40,8 +40,8 @@ namespace StatisticsAnalysisTool.Network
             //builder.AddEventHandler(new PartySilverGainedEventHandler());
             //builder.AddEventHandler(new NewLootEventHandler());
 
-            builder.AddResponseHandler(new TestHandler());
-            builder.AddEventHandler(new TestHandler2());
+            //builder.AddResponseHandler(new TestHandler());
+            //builder.AddEventHandler(new TestHandler2());
             //builder.AddEventHandler(new TestHandler3());
 
             builder.AddResponseHandler(new UserInformationHandler(trackingController, _mainWindowViewModel));

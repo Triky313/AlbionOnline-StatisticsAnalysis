@@ -1406,35 +1406,35 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.StandardChestClose}">
                                     <Setter Property="Source" Value="Resources/chest_close_standard.png" />
-                                    <Setter Property="ToolTip" Value="Standard" />
+                                    <Setter Property="ToolTip" Value="{Binding Standard}" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.StandardChestOpen}">
                                     <Setter Property="Source" Value="Resources/chest_open_standard.png" />
-                                    <Setter Property="ToolTip" Value="Standard" />
+                                    <Setter Property="ToolTip" Value="{Binding Standard}" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.UncommonChestClose}">
                                     <Setter Property="Source" Value="Resources/chest_close_uncommon.png" />
-                                    <Setter Property="ToolTip" Value="Uncommon" />
+                                    <Setter Property="ToolTip" Value="{Binding Uncommon}" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.UncommonChestOpen}">
                                     <Setter Property="Source" Value="Resources/chest_open_uncommon.png" />
-                                    <Setter Property="ToolTip" Value="Uncommon" />
+                                    <Setter Property="ToolTip" Value="{Binding Uncommon}" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.RareChestClose}">
                                     <Setter Property="Source" Value="Resources/chest_close_rare.png" />
-                                    <Setter Property="ToolTip" Value="Rare" />
+                                    <Setter Property="ToolTip" Value="{Binding Rare}" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.RareChestOpen}">
                                     <Setter Property="Source" Value="Resources/chest_open_rare.png" />
-                                    <Setter Property="ToolTip" Value="Rare" />
+                                    <Setter Property="ToolTip" Value="{Binding Rare}" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.LegendaryChestClose}">
                                     <Setter Property="Source" Value="Resources/chest_close_legendary.png" />
-                                    <Setter Property="ToolTip" Value="Legendary" />
+                                    <Setter Property="ToolTip" Value="{Binding Legendary}" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.LegendaryChestOpen}">
                                     <Setter Property="Source" Value="Resources/chest_open_legendary.png" />
-                                    <Setter Property="ToolTip" Value="Legendary" />
+                                    <Setter Property="ToolTip" Value="{Binding Legendary}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

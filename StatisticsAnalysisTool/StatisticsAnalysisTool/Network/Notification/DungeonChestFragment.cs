@@ -86,6 +86,11 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        public string Standard => LanguageController.Translation("STANDARD");
+        public string Uncommon => LanguageController.Translation("UNCOMMON");
+        public string Rare => LanguageController.Translation("RARE");
+        public string Legendary => LanguageController.Translation("LEGENDARY");
+
         private ChestStatus SetStatus()
         {
             if (IsChestOpen)
