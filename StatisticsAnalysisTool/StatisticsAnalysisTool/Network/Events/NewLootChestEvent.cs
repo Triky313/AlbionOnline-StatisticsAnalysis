@@ -11,11 +11,6 @@ namespace StatisticsAnalysisTool.Network.Events
         {
             try
             {
-                foreach (var parameter in parameters)
-                {
-                    Debug.Print($"{parameter}");
-                }
-
                 if (parameters.ContainsKey(0) && int.TryParse(parameters[0].ToString(), out var id))
                 {
                     Id = id;

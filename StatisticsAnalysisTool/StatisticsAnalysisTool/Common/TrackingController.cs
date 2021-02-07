@@ -257,6 +257,30 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
+        public void SetDungeonChestOpen(int id)
+        {
+            if (_currentGuid != null)
+            {
+                try
+                {
+                    var dun = GetCurrentDungeon((Guid)_currentGuid);
+                    var chest = dun?.DungeonChestFragments?.FirstOrDefault(x => x.Id == id);
+
+                    if (chest == null)
+                    {
+                        return;
+                    }
+
+                    chest.IsChestOpen = true;
+
+                }
+                catch (Exception e)
+                {
+                    Log.Error(nameof(SetDungeonChestOpen), e);
+                }
+            }
+        }
+
         public void SetDungeonChestInformation(int id, string uniqueName)
         {
             if (_currentGuid != null && uniqueName != null)
@@ -265,12 +289,12 @@ namespace StatisticsAnalysisTool.Common
                 {
                     var dun = GetCurrentDungeon((Guid)_currentGuid);
 
-                    if (dun == null || _currentGuid == null)
+                    if (dun == null || _currentGuid == null || dun.DungeonChestFragments?.Any(x => x.Id == id) == true)
                     {
                         return;
                     }
 
-                    var dunChest = new DungeonChest
+                    var dunChest = new DungeonChestFragment
                     {
                         UniqueName = uniqueName, 
                         Discovered = DateTime.UtcNow,
@@ -279,7 +303,18 @@ namespace StatisticsAnalysisTool.Common
                         Id = id
                     };
 
-                    dun.DungeonChests.Add(dunChest);
+                    if (_mainWindow.Dispatcher.CheckAccess())
+                    {
+                        dun.DungeonChestFragments.Add(dunChest);
+                    }
+                    else
+                    {
+                        _mainWindow.Dispatcher.Invoke(delegate
+                        {
+                            dun.DungeonChestFragments.Add(dunChest);
+                        });
+                    }
+
                     dun.Faction = LootChestController.GetFaction(uniqueName);
                     dun.Mode = LootChestController.GetDungeonMode(uniqueName);
                 }

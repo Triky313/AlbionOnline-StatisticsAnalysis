@@ -9,16 +9,8 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public LootChestOpenedEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Debug.Print($"----- LootChestOpened -----");
-
             try
             {
-                foreach (var parameter in parameters)
-                {
-                    Debug.Print($"{parameter}");
-                }
-
-
                 if (parameters.ContainsKey(0) && int.TryParse(parameters[0].ToString(), out var id))
                 {
                     Id = id;

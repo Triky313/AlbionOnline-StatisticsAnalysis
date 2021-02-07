@@ -1,10 +1,10 @@
 ﻿using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _mainEntranceMap;
         private bool _diedInDungeon;
         private string _diedMessage;
-        private List<DungeonChest> _dungeonChests = new List<DungeonChest>();
+        private ObservableCollection<DungeonChestFragment> _dungeonChestFragments = new ObservableCollection<DungeonChestFragment>();
         private DungeonMode _mode;
         private Faction _faction;
 
@@ -41,11 +41,11 @@ namespace StatisticsAnalysisTool.Network.Notification
             DungeonCounter = count;
         }
 
-        public List<DungeonChest> DungeonChests
+        public ObservableCollection<DungeonChestFragment> DungeonChestFragments
         {
-            get => _dungeonChests;
+            get => _dungeonChestFragments;
             set {
-                _dungeonChests = value;
+                _dungeonChestFragments = value;
                 OnPropertyChanged();
             }
         }

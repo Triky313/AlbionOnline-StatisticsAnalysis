@@ -7,10 +7,15 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class LootChestOpenedEventHandler : EventPacketHandler<LootChestOpenedEvent>
     {
-        public LootChestOpenedEventHandler(TrackingController trackingController) : base(365) { }
+        private readonly TrackingController _trackingController;
+        public LootChestOpenedEventHandler(TrackingController trackingController) : base(365)
+        {
+            _trackingController = trackingController;
+        }
 
         protected override async Task OnActionAsync(LootChestOpenedEvent value)
         {
+            _trackingController.SetDungeonChestOpen(value.Id);
             await Task.CompletedTask;
         }
     }
