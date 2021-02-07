@@ -151,7 +151,7 @@ namespace StatisticsAnalysisTool.Common
 
             try
             {
-                var toSaveDungeons = dungeons.Where(x => x != null && x.DungeonStatus == DungeonStatus.Done && x.TotalTime.Ticks > 0);
+                var toSaveDungeons = dungeons.Where(x => x != null && x.Status == DungeonStatus.Done && x.TotalTime.Ticks > 0);
                 var fileString = JsonConvert.SerializeObject(toSaveDungeons);
                 File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
             }
@@ -424,24 +424,24 @@ namespace StatisticsAnalysisTool.Common
 
             if (_mainWindow.Dispatcher.CheckAccess())
             {
-                _mainWindowViewModel.TrackingDungeons.Where(x => x.DungeonStatus != DungeonStatus.Done).ToList().ForEach(x => x.DungeonStatus = DungeonStatus.Done);
+                _mainWindowViewModel.TrackingDungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
                 var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(guid));
                 if (!allToFalse)
                 {
-                    dun.DungeonStatus = DungeonStatus.Active;
+                    dun.Status = DungeonStatus.Active;
                 }
             }
             else
             {
                 _mainWindow.Dispatcher.Invoke(delegate
                 {
-                    _mainWindowViewModel.TrackingDungeons.Where(x => x.DungeonStatus != DungeonStatus.Done).ToList().ForEach(x => x.DungeonStatus = DungeonStatus.Done);
+                    _mainWindowViewModel.TrackingDungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
                     var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(guid));
                     if (!allToFalse)
                     {
-                        dun.DungeonStatus = DungeonStatus.Active;
+                        dun.Status = DungeonStatus.Active;
                     }
                 });
             }

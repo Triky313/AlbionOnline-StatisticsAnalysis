@@ -64,6 +64,8 @@
         <Color x:Key="Color.Green.3">#FF1F9E6E</Color>
         <Color x:Key="Color.Green.4">#FF19845A</Color>
 
+        <Color x:Key="Color.Avalon.1">#fff2d490</Color>
+
         <!-- Text colors -->
         <Color x:Key="Color.Text.Normal">#FFDEDEEA</Color>
         <Color x:Key="Color.Text.ToOldFirst">#FF8C8CA5</Color>
@@ -1270,21 +1272,41 @@
                     <StackPanel.Style>
                         <Style TargetType="StackPanel">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static enumerations:DungeonStatus.Active}">
+                                <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Solo}">
                                     <Setter Property="Background">
                                         <Setter.Value>
                                             <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
-                                                <GradientStop Color="{StaticResource Color.Text.Normal}"/>
+                                                <GradientStop Color="{StaticResource Color.Green.4}"/>
                                                 <GradientStop Offset="0.90" Color="#FF36363F"/>
                                             </LinearGradientBrush>
                                         </Setter.Value>
                                     </Setter>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static enumerations:DungeonStatus.Done}">
+                                <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Standard}">
                                     <Setter Property="Background">
                                         <Setter.Value>
                                             <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
                                                 <GradientStop Color="{StaticResource Color.Blue.4}"/>
+                                                <GradientStop Offset="0.90" Color="#FF36363F"/>
+                                            </LinearGradientBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Avalon}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
+                                                <GradientStop Color="{StaticResource Color.Avalon.1}"/>
+                                                <GradientStop Offset="0.90" Color="#FF36363F"/>
+                                            </LinearGradientBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Unknown}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
+                                                <GradientStop Color="{StaticResource Color.Text.NoValue}"/>
                                                 <GradientStop Offset="0.90" Color="#FF36363F"/>
                                             </LinearGradientBrush>
                                         </Setter.Value>

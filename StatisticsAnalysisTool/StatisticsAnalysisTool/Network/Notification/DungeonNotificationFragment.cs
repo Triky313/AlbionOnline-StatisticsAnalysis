@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _runTimeString;
         private DateTime _enterDungeonMap;
         private readonly List<DungeonRun> _dungeonRuns = new List<DungeonRun>();
-        private DungeonStatus _dungeonStatus;
+        private DungeonStatus _status;
         private bool _isBestTime;
         private bool _isBestFame;
         private TimeSpan _totalTime;
@@ -161,10 +161,10 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public DungeonStatus DungeonStatus {
-            get => _dungeonStatus;
+        public DungeonStatus Status {
+            get => _status;
             set {
-                _dungeonStatus = value;
+                _status = value;
                 OnPropertyChanged();
             }
         }
