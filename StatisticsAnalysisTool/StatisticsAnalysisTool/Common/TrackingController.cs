@@ -374,22 +374,22 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        private double TotalFameByTime(FameCountMode mode)
-        {
-            switch (mode)
-            {
-                case FameCountMode.Hour:
-                    return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddHours(-1)).Sum(x => x.Fame);
-                case FameCountMode.Day:
-                    return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-1)).Sum(x => x.Fame);
-                case FameCountMode.Week:
-                    return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-7)).Sum(x => x.Fame);
-                case FameCountMode.Total:
-                    return _mainWindowViewModel.TrackingDungeons.Where(x => true).Sum(x => x.Fame);
-                default:
-                    return 0;
-            }
-        }
+        //private double TotalFameByTime(FameCountMode mode)
+        //{
+        //    switch (mode)
+        //    {
+        //        case FameCountMode.Hour:
+        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddHours(-1)).Sum(x => x.Fame);
+        //        case FameCountMode.Day:
+        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-1)).Sum(x => x.Fame);
+        //        case FameCountMode.Week:
+        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-7)).Sum(x => x.Fame);
+        //        case FameCountMode.Total:
+        //            return _mainWindowViewModel.TrackingDungeons.Where(x => true).Sum(x => x.Fame);
+        //        default:
+        //            return 0;
+        //    }
+        //}
 
         private void RemoveDungeonsAfterCertainNumber(int amount)
         {
@@ -478,8 +478,10 @@ namespace StatisticsAnalysisTool.Common
         {
             if (_mainWindow.Dispatcher.CheckAccess())
             {
+                var minTime = new TimeSpan(0, 0, 2, 0);
+
                 _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
-                var min = _mainWindowViewModel.TrackingDungeons.Select(x => x?.TotalTime).Min();
+                var min = _mainWindowViewModel.TrackingDungeons.Where(x => x?.TotalTime.Ticks > minTime.Ticks).Select(x => x.TotalTime).Min();
                 var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == min);
                 if (bestTimeDungeon != null)
                 {
@@ -636,13 +638,13 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        enum FameCountMode
-        {
-            Hour,
-            Day,
-            Week,
-            Total
-        }
+        //enum FameCountMode
+        //{
+        //    Hour,
+        //    Day,
+        //    Week,
+        //    Total
+        //}
 
         #endregion
 

@@ -1280,56 +1280,57 @@
             <Grid Height="30" Margin="0 1 0 1">
                 <Grid.Style>
                     <Style TargetType="Grid">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Heretic}">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <ImageBrush Stretch="None" ImageSource="Resources/faction_heretic_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Undead}">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <ImageBrush Stretch="None" ImageSource="Resources/faction_undead_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Keeper}">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <ImageBrush Stretch="None" ImageSource="Resources/faction_keeper_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.40"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Morgana}">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <ImageBrush Stretch="None" ImageSource="Resources/faction_morgana_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Avalon}">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <ImageBrush Stretch="None" ImageSource="Resources/faction_avalon_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        </Style.Triggers>
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="{StaticResource Background.Second}" Offset="0.0"/>
+                                    <GradientStop Color="{StaticResource Background.First}" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Opacity" Value="1"/>
                     </Style>
                 </Grid.Style>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Style>
                         <Style TargetType="StackPanel">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.25">
-                                        <GradientStop Color="{StaticResource Background.Third}" Offset="0.0" />
-                                        <GradientStop Color="{StaticResource Background.First}" Offset="0.9" />
-                                    </LinearGradientBrush>
-                                </Setter.Value>
-                            </Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Heretic}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <ImageBrush Stretch="None" ImageSource="Resources/faction_heretic_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Undead}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <ImageBrush Stretch="None" ImageSource="Resources/faction_undead_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Keeper}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <ImageBrush Stretch="None" ImageSource="Resources/faction_keeper_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.40"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Morgana}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <ImageBrush Stretch="None" ImageSource="Resources/faction_morgana_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Avalon}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <ImageBrush Stretch="None" ImageSource="Resources/faction_avalon_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
                         </Style>
                     </StackPanel.Style>
                     <Grid Width="8">
