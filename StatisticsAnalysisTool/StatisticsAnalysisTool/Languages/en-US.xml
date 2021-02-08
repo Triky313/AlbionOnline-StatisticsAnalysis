@@ -344,6 +344,10 @@
   <translation name="HIDEOUT">Hideout</translation>
   <translation name="DAY">Day</translation>
   <translation name="RESET_DUNGEON_TRACKING">Reset dungeon tracking</translation>
+  <translation name="SOLO">Solo</translation>
+  <translation name="KILLED_BY">killed by</translation>
+  <translation name="DUNGEON_FAME">Dungeon Fame</translation>
+  <translation name="DUNGEON_RUN_TIME">Dungeon run Time</translation>
   
   <translation name="STANDARD">Standard</translation>
   <translation name="UNCOMMON">Uncommon</translation>

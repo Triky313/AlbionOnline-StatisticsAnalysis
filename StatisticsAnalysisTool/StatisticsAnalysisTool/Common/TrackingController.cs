@@ -479,8 +479,8 @@ namespace StatisticsAnalysisTool.Common
             if (_mainWindow.Dispatcher.CheckAccess())
             {
                 _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
-                var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.TotalTime).Min();
-                var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == highest);
+                var min = _mainWindowViewModel.TrackingDungeons.Select(x => x?.TotalTime).Min();
+                var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == min);
                 if (bestTimeDungeon != null)
                 {
                     bestTimeDungeon.IsBestTime = true;

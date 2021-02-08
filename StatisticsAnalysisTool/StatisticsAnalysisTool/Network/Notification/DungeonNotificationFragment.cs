@@ -188,6 +188,10 @@ namespace StatisticsAnalysisTool.Network.Notification
         public string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
         public string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
         public string YouDiedInTheDungeon => LanguageController.Translation("YOU_DIED_IN_THE_DUNGEON");
+        public string TranslationSolo => LanguageController.Translation("SOLO");
+        public string TranslationStandard => LanguageController.Translation("STANDARD");
+        public string TranslationAvalon => LanguageController.Translation("AVALON");
+        public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
 
 
         public event PropertyChangedEventHandler PropertyChanged;
