@@ -209,26 +209,44 @@
     </ApplicationDefinition>
     <Compile Include="Common\AlertController.cs" />
     <Compile Include="Common\Converter.cs" />
+    <Compile Include="Common\LootChestController.cs" />
     <Compile Include="Common\WorldController.cs" />
     <Compile Include="Common\TrackingController.cs" />
+    <Compile Include="Enumerations\ChestStatus.cs" />
+    <Compile Include="Enumerations\ChestType.cs" />
+    <Compile Include="Enumerations\AttributeStatOperator.cs" />
+    <Compile Include="Models\LootChest.cs" />
+    <Compile Include="Models\LootChestRoot.cs" />
+    <Compile Include="Models\LootChests.cs" />
     <Compile Include="Models\MapData.cs" />
     <Compile Include="Models\NetworkModel\DiedObject.cs" />
     <Compile Include="Models\WorldJsonObject.cs" />
     <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
     <Compile Include="Network\Events\DiedEvent.cs" />
+    <Compile Include="Network\Events\NewLootChestEvent.cs" />
+    <Compile Include="Network\Events\LootChestOpenedEvent.cs" />
+    <Compile Include="Network\Events\TestEvent3.cs" />
+    <Compile Include="Network\Events\TestEvent2.cs" />
     <Compile Include="Network\Events\TestEvent.cs" />
+    <Compile Include="Network\Handler\NewLootChestEventHandler.cs" />
+    <Compile Include="Network\Handler\LootChestOpenedEventHandler.cs" />
+    <Compile Include="Network\Handler\TestHandler3.cs" />
     <Compile Include="Network\Handler\TestHandler2.cs" />
     <Compile Include="Network\Handler\TestHandler.cs" />
     <Compile Include="Network\Handler\DiedEventHandler.cs" />
     <Compile Include="Network\ICountUpTimer.cs" />
+    <Compile Include="Network\Notification\DungeonChestFragment.cs" />
     <Compile Include="Network\Notification\DungeonNotificationFragment.cs" />
-    <Compile Include="Network\Notification\DungeonStatus.cs" />
+    <Compile Include="Enumerations\DungeonStatus.cs" />
+    <Compile Include="Enumerations\ChestRarity.cs" />
+    <Compile Include="Enumerations\DungeonMode.cs" />
+    <Compile Include="Enumerations\Faction.cs" />
     <Compile Include="Network\ReSpecPointsCountUpTimer.cs" />
     <Compile Include="Network\SilverCountUpTimer.cs" />
     <Compile Include="Network\FameCountUpTimer.cs" />
     <Compile Include="Models\NetworkModel\Container.cs" />
     <Compile Include="Models\NetworkModel\Loot.cs" />
-    <Compile Include="Network\Notification\FameTypeOperator.cs" />
+    <Compile Include="Enumerations\FameTypeOperator.cs" />
     <Compile Include="Network\Notification\TrackingNotification.cs" />
     <Compile Include="Network\EventCodes.cs" />
     <Compile Include="Network\Events\UpdateMoneyEvent.cs" />
@@ -266,7 +284,6 @@
     <Compile Include="Network\Handler\UpdateMoneyEventHandler.cs" />
     <Compile Include="Network\Handler\UpdateFameEventHandler.cs" />
     <Compile Include="Network\Notification\FameNotificationFragment.cs" />
-    <Compile Include="Network\Notification\AttributeStatOperator.cs" />
     <Compile Include="Network\Notification\LineFragment.cs" />
     <Compile Include="Network\Notification\TextFragment.cs" />
     <Compile Include="Network\Operations\MoveOperation.cs" />
@@ -289,6 +306,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Models\DungeonStats.cs" />
     <Compile Include="ViewModels\InfoWindowViewModel.cs" />
     <Compile Include="Models\ItemAlertWindowTranslation.cs" />
     <Compile Include="ViewModels\ItemWindowViewModel.cs" />
@@ -356,7 +374,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="world.json" />
+    <None Include="GameFiles\lootchests.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GameFiles\world.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Resource Include="Resources\alert_window_background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -364,7 +387,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\zone.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\crown.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -381,6 +404,48 @@
     <Resource Include="Network\Codes\events.txt" />
     <Resource Include="Network\Codes\operations.txt" />
     <Resource Include="Resources\skull.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\boss.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\chest_close_legendary.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\chest_close_rare.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\chest_close_standard.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\chest_close_uncommon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\chest_open_legendary.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\chest_open_rare.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\chest_open_standard.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\chest_open_uncommon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\faction_avalon_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\faction_heretic_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\faction_keeper_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\faction_morgana_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\faction_undead_banner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="Sounds\alert1.wav">
@@ -446,7 +511,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Trash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="ao-update-check.xml" />
     <Content Include="Languages\en-GB.xml">
@@ -478,28 +543,28 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\t8.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\t7.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\t6.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\t5.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\t4.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\t3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\t2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\t1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup />

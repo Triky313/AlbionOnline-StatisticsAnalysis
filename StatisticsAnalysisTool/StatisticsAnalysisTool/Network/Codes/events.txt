@@ -362,7 +362,7 @@ TutorialUpdate
 TriggerHintBox
 RandomDungeonPositionInfo
 NewLootChest
-UpdateLootChest
+UpdateLootChest <- Mob Info: MOB_KEEPER_UNPROVEN_MALE_VETERAN ... and more
 LootChestOpened
 NewShrine
 UpdateShrine

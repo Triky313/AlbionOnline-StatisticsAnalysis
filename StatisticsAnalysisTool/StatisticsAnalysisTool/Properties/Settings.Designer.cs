@@ -369,7 +369,7 @@ namespace StatisticsAnalysisTool.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master" +
-            "/StatisticsAnalysisTool/StatisticsAnalysisTool/world.json")]
+            "/StatisticsAnalysisTool/StatisticsAnalysisTool/GameFiles/world.json")]
         public string WorldDataSourceUrl {
             get {
                 return ((string)(this["WorldDataSourceUrl"]));
@@ -412,6 +412,31 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["DungeonRunsFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("lootchests.json")]
+        public string LootChestDataFileName {
+            get {
+                return ((string)(this["LootChestDataFileName"]));
+            }
+            set {
+                this["LootChestDataFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master" +
+            "/StatisticsAnalysisTool/StatisticsAnalysisTool/GameFiles/lootchest.json")]
+        public string LootChestDataSourceUrl {
+            get {
+                return ((string)(this["LootChestDataSourceUrl"]));
+            }
+            set {
+                this["LootChestDataSourceUrl"] = value;
             }
         }
     }

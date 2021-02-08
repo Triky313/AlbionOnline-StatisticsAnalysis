@@ -1,8 +1,10 @@
 ﻿using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -17,13 +19,16 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _runTimeString;
         private DateTime _enterDungeonMap;
         private readonly List<DungeonRun> _dungeonRuns = new List<DungeonRun>();
-        private DungeonStatus _dungeonStatus;
+        private DungeonStatus _status;
         private bool _isBestTime;
         private bool _isBestFame;
         private TimeSpan _totalTime;
         private string _mainEntranceMap;
         private bool _diedInDungeon;
         private string _diedMessage;
+        private ObservableCollection<DungeonChestFragment> _dungeonChests = new ObservableCollection<DungeonChestFragment>();
+        private DungeonMode _mode = DungeonMode.Unknown;
+        private Faction _faction;
 
         public DungeonNotificationFragment(Guid firstMap, int count, string mapNameBeforeDungeon, DateTime startDungeon, MainWindowViewModel mainWindowViewModel)
         {
@@ -34,6 +39,33 @@ namespace StatisticsAnalysisTool.Network.Notification
             StartDungeon = startDungeon;
             EnterDungeonMap = DateTime.UtcNow;
             DungeonCounter = count;
+        }
+
+        public ObservableCollection<DungeonChestFragment> DungeonChests
+        {
+            get => _dungeonChests;
+            set {
+                _dungeonChests = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Faction Faction
+        {
+            get => _faction;
+            set {
+                _faction = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DungeonMode Mode
+        {
+            get => _mode;
+            set {
+                _mode = value;
+                OnPropertyChanged();
+            }
         }
 
         public string MainEntranceMap
@@ -129,10 +161,10 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public DungeonStatus DungeonStatus {
-            get => _dungeonStatus;
+        public DungeonStatus Status {
+            get => _status;
             set {
-                _dungeonStatus = value;
+                _status = value;
                 OnPropertyChanged();
             }
         }
@@ -156,6 +188,10 @@ namespace StatisticsAnalysisTool.Network.Notification
         public string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
         public string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
         public string YouDiedInTheDungeon => LanguageController.Translation("YOU_DIED_IN_THE_DUNGEON");
+        public string TranslationSolo => LanguageController.Translation("SOLO");
+        public string TranslationStandard => LanguageController.Translation("STANDARD");
+        public string TranslationAvalon => LanguageController.Translation("AVALON");
+        public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
 
 
         public event PropertyChangedEventHandler PropertyChanged;

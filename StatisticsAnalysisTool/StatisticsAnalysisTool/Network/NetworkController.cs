@@ -34,12 +34,15 @@ namespace StatisticsAnalysisTool.Network
             builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController, valueCountUpTimerTimer.ReSpecPointsCountUpTimer));
 
             builder.AddEventHandler(new DiedEventHandler(trackingController));
+            builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
+            builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
 
             //builder.AddEventHandler(new PartySilverGainedEventHandler());
             //builder.AddEventHandler(new NewLootEventHandler());
 
-            //builder.AddEventHandler(new TestHandler());
-            //builder.AddRequestHandler(new TestHandler2());
+            //builder.AddResponseHandler(new TestHandler());
+            //builder.AddEventHandler(new TestHandler2());
+            //builder.AddEventHandler(new TestHandler3());
 
             builder.AddResponseHandler(new UserInformationHandler(trackingController, _mainWindowViewModel));
 

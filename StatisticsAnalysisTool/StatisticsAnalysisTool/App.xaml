@@ -2,9 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:local="clr-namespace:StatisticsAnalysisTool.Network.Notification"
+             xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
+             xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <!-- Base font size -->
@@ -63,6 +64,8 @@
         <Color x:Key="Color.Green.3">#FF1F9E6E</Color>
         <Color x:Key="Color.Green.4">#FF19845A</Color>
 
+        <Color x:Key="Color.Avalon.1">#fff2d490</Color>
+
         <!-- Text colors -->
         <Color x:Key="Color.Text.Normal">#FFDEDEEA</Color>
         <Color x:Key="Color.Text.ToOldFirst">#FF8C8CA5</Color>
@@ -85,6 +88,16 @@
         <Color x:Key="Tracking.On">#FF1F9E6E</Color>
         <Color x:Key="Tracking.Off">#FF616172</Color>
 
+        <!-- Faction colors -->
+        <Color x:Key="Dungeon.Mode.Solo.1">#ff37d266</Color>
+        <Color x:Key="Dungeon.Mode.Solo.2">#ff1f8a41</Color>
+        <Color x:Key="Dungeon.Mode.Standard.1">#ff09a9f6</Color>
+        <Color x:Key="Dungeon.Mode.Standard.2">#ff0e6fa2</Color>
+        <Color x:Key="Dungeon.Mode.Avalon.1">#fffffaeb</Color>
+        <Color x:Key="Dungeon.Mode.Avalon.2">#ffeddaa7</Color>
+        <Color x:Key="Dungeon.Mode.Unknown">#ff252525</Color>
+
+        <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Unknown" Color="{StaticResource Dungeon.Mode.Unknown}"/>
 
         <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pvp" Color="{StaticResource Text.Color.Pvp}"/>
         <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pve" Color="{StaticResource Text.Color.Pve}"/>
@@ -1198,17 +1211,17 @@
             <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
             <Setter Property="Text" Value="+ " />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding}" Value="{x:Static local:AttributeStatOperator.Minus}">
+                <DataTrigger Binding="{Binding}" Value="{x:Static enumerations:AttributeStatOperator.Minus}">
                     <Setter Property="Text" Value="- " />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <DataTemplate DataType="{x:Type local:TextFragment}">
+        <DataTemplate DataType="{x:Type notification:TextFragment}">
             <TextBlock Text="{Binding Text, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local:TrackingNotification}">
+        <DataTemplate DataType="{x:Type notification:TrackingNotification}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -1225,7 +1238,7 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local:FameNotificationFragment}">
+        <DataTemplate DataType="{x:Type notification:FameNotificationFragment}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                 <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
@@ -1239,10 +1252,10 @@
                             <Setter Property="Text" Value="{Binding FameText, StringFormat='{} {0} '}"/>
                             <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding FameTypeOperator}" Value="{x:Static local:FameTypeOperator.Pve}">
+                                <DataTrigger Binding="{Binding FameTypeOperator}" Value="{x:Static enumerations:FameTypeOperator.Pve}">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding FameTypeOperator}" Value="{x:Static local:FameTypeOperator.Pvp}">
+                                <DataTrigger Binding="{Binding FameTypeOperator}" Value="{x:Static enumerations:FameTypeOperator.Pvp}">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pvp}" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -1263,35 +1276,108 @@
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type local:DungeonNotificationFragment}">
-            <Grid Height="32" Margin="0 1 0 1">
+        <DataTemplate DataType="{x:Type notification:DungeonNotificationFragment}">
+            <Grid Height="30" Margin="0 1 0 1">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="{StaticResource Background.Second}" Offset="0.0"/>
+                                    <GradientStop Color="{StaticResource Background.First}" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Opacity" Value="1"/>
+                    </Style>
+                </Grid.Style>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Style>
                         <Style TargetType="StackPanel">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static local:DungeonStatus.Active}">
+                                <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Heretic}">
                                     <Setter Property="Background">
                                         <Setter.Value>
-                                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
-                                                <GradientStop Color="{StaticResource Color.Text.Normal}"/>
-                                                <GradientStop Offset="0.90" Color="#FF36363F"/>
-                                            </LinearGradientBrush>
+                                            <ImageBrush Stretch="None" ImageSource="Resources/faction_heretic_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
                                         </Setter.Value>
                                     </Setter>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding DungeonStatus}" Value="{x:Static local:DungeonStatus.Done}">
+                                <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Undead}">
                                     <Setter Property="Background">
                                         <Setter.Value>
-                                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0" Opacity="0.5">
-                                                <GradientStop Color="{StaticResource Color.Blue.4}"/>
-                                                <GradientStop Offset="0.90" Color="#FF36363F"/>
-                                            </LinearGradientBrush>
+                                            <ImageBrush Stretch="None" ImageSource="Resources/faction_undead_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Keeper}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <ImageBrush Stretch="None" ImageSource="Resources/faction_keeper_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.40"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Morgana}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <ImageBrush Stretch="None" ImageSource="Resources/faction_morgana_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Avalon}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <ImageBrush Stretch="None" ImageSource="Resources/faction_avalon_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
                                         </Setter.Value>
                                     </Setter>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </StackPanel.Style>
+                    <Grid Width="8">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Solo}">
+                                        <Setter Property="ToolTip" Value="{Binding TranslationSolo}"></Setter>
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="{StaticResource Dungeon.Mode.Solo.1}" Offset="0.0" />
+                                                    <GradientStop Color="{StaticResource Dungeon.Mode.Solo.2}" Offset="1.0" />
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Standard}">
+                                        <Setter Property="ToolTip" Value="{Binding TranslationStandard}"></Setter>
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="{StaticResource Dungeon.Mode.Standard.1}" Offset="0.0" />
+                                                    <GradientStop Color="{StaticResource Dungeon.Mode.Standard.2}" Offset="1.0" />
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Avalon}">
+                                        <Setter Property="ToolTip" Value="{Binding TranslationAvalon}"></Setter>
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="{StaticResource Dungeon.Mode.Avalon.1}" Offset="0.0" />
+                                                    <GradientStop Color="{StaticResource Dungeon.Mode.Avalon.2}" Offset="1.0" />
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Unknown}">
+                                        <Setter Property="ToolTip" Value="{Binding TranslationUnknown}"></Setter>
+                                        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Unknown}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                    </Grid>
                     <Label Content="{Binding DungeonCounter, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="35" VerticalAlignment="Center" Margin="0 0 0 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                     <Label Content="{Binding StartDungeon, FallbackValue=00.00.0000 - 00:00, StringFormat='{}[{0}]', ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}" MinWidth="95" 
                            VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
@@ -1337,6 +1423,17 @@
                             </Style>
                         </Label.Style>
                     </Label>
+                    <Grid Margin="5 0 10 0">
+                        <StackPanel Orientation="Horizontal" MinWidth="200">
+                            <ItemsControl ItemsSource="{Binding DungeonChests}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="1"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Grid>
                     <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__TIME}">
                         <fa:ImageAwesome Icon="ClockOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                     </Grid>
@@ -1363,6 +1460,104 @@
                 <!--<Button Content="Delete" Margin="0 2 20 2" MinWidth="75" HorizontalAlignment="Right" Command="{Binding Remove}" CommandParameter="true"></Button>-->
             </Grid>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type notification:DungeonChestFragment}">
+            <Grid Width="18" Margin="0 0 0 0">
+                <Image>
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.StandardChestClose}">
+                                    <Setter Property="Source" Value="Resources/chest_close_standard.png" />
+                                    <Setter Property="ToolTip" Value="{Binding Standard}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.StandardChestOpen}">
+                                    <Setter Property="Source" Value="Resources/chest_open_standard.png" />
+                                    <Setter Property="ToolTip" Value="{Binding Standard}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.UncommonChestClose}">
+                                    <Setter Property="Source" Value="Resources/chest_close_uncommon.png" />
+                                    <Setter Property="ToolTip" Value="{Binding Uncommon}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.UncommonChestOpen}">
+                                    <Setter Property="Source" Value="Resources/chest_open_uncommon.png" />
+                                    <Setter Property="ToolTip" Value="{Binding Uncommon}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.RareChestClose}">
+                                    <Setter Property="Source" Value="Resources/chest_close_rare.png" />
+                                    <Setter Property="ToolTip" Value="{Binding Rare}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.RareChestOpen}">
+                                    <Setter Property="Source" Value="Resources/chest_open_rare.png" />
+                                    <Setter Property="ToolTip" Value="{Binding Rare}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.LegendaryChestClose}">
+                                    <Setter Property="Source" Value="Resources/chest_close_legendary.png" />
+                                    <Setter Property="ToolTip" Value="{Binding Legendary}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.LegendaryChestOpen}">
+                                    <Setter Property="Source" Value="Resources/chest_open_legendary.png" />
+                                    <Setter Property="ToolTip" Value="{Binding Legendary}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <Image Margin="0 -12 0 0" Opacity="0.85">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsBossChest}" Value="true">
+                                    <Setter Property="Source" Value="Resources/boss.png"/>
+                                    <Setter Property="ToolTip" Value="Boss-Chest"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Grid>
+        </DataTemplate>
+
+        <!-- Chest icons -->
+        <Style TargetType="Image" x:Key="Icon.Chest.Standard.Close" >
+            <Setter Property="Source" Value="Resources/chest_close_standard.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+        
+        <Style TargetType="Image" x:Key="Icon.Chest.Standard.Open" >
+            <Setter Property="Source" Value="Resources/chest_open_standard.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Uncommon.Close" >
+            <Setter Property="Source" Value="Resources/chest_close_uncommon.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Uncommon.Open" >
+            <Setter Property="Source" Value="Resources/chest_open_uncommon.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Rare.Close" >
+            <Setter Property="Source" Value="Resources/chest_close_rare.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Rare.Open" >
+            <Setter Property="Source" Value="Resources/chest_open_rare.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Legendary.Close" >
+            <Setter Property="Source" Value="Resources/chest_close_legendary.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Icon.Chest.Legendary.Open" >
+            <Setter Property="Source" Value="Resources/chest_open_legendary.png"/>
+            <Setter Property="Width" Value="18"/>
+        </Style>
 
         <!-- Dungeon icon -->
         <Style TargetType="Image" x:Key="Icon.Dungeon" >

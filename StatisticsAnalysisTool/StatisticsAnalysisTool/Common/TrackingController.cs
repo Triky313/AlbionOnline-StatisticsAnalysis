@@ -1,6 +1,7 @@
 ﻿using log4net;
 using Newtonsoft.Json;
 using PcapDotNet.Base;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
@@ -150,7 +151,7 @@ namespace StatisticsAnalysisTool.Common
 
             try
             {
-                var toSaveDungeons = dungeons.Where(x => x != null && x.DungeonStatus == DungeonStatus.Done && x.TotalTime.Ticks > 0);
+                var toSaveDungeons = dungeons.Where(x => x != null && x.Status == DungeonStatus.Done && x.TotalTime.Ticks > 0);
                 var fileString = JsonConvert.SerializeObject(toSaveDungeons);
                 File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
             }
@@ -169,9 +170,7 @@ namespace StatisticsAnalysisTool.Common
                 try
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                    var dungeons = JsonConvert.DeserializeObject<ObservableCollection<DungeonNotificationFragment>>(localItemString);
-                    _mainWindowViewModel.EnteredDungeon = dungeons.Count;
-                    return dungeons;
+                    return JsonConvert.DeserializeObject<ObservableCollection<DungeonNotificationFragment>>(localItemString);
                 }
                 catch (Exception e)
                 {
@@ -214,7 +213,8 @@ namespace StatisticsAnalysisTool.Common
                     AddMapToExistDungeon(currentGuid, (Guid)_lastGuid);
 
                     _lastGuid = currentGuid;
-                    _mainWindowViewModel.EnteredDungeon = _mainWindowViewModel.TrackingDungeons.Count;
+                    _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
+                    _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
                     RemoveDungeonsAfterCertainNumber(_maxDungeons);
                     SetCurrentDungeonActive(currentGuid);
@@ -240,7 +240,8 @@ namespace StatisticsAnalysisTool.Common
                     }
 
                     _lastGuid = mapGuid;
-                    _mainWindowViewModel.EnteredDungeon = _mainWindowViewModel.TrackingDungeons.Count;
+                    _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
+                    _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
                     RemoveDungeonsAfterCertainNumber(_maxDungeons);
                     SetCurrentDungeonActive(currentGuid);
@@ -254,6 +255,106 @@ namespace StatisticsAnalysisTool.Common
             {
                 _currentGuid = null;
             }
+        }
+
+        public void SetDungeonChestOpen(int id)
+        {
+            if (_currentGuid != null)
+            {
+                try
+                {
+                    var dun = GetCurrentDungeon((Guid)_currentGuid);
+                    var chest = dun?.DungeonChests?.FirstOrDefault(x => x.Id == id);
+
+                    if (chest == null)
+                    {
+                        return;
+                    }
+
+                    chest.IsChestOpen = true;
+                    chest.Opened = DateTime.UtcNow;
+
+                }
+                catch (Exception e)
+                {
+                    Log.Error(nameof(SetDungeonChestOpen), e);
+                }
+            }
+
+            SetDungeonStatsDay();
+            SetDungeonStatsTotal();
+        }
+
+        public void SetDungeonChestInformation(int id, string uniqueName)
+        {
+            if (_currentGuid != null && uniqueName != null)
+            {
+                try
+                {
+                    var dun = GetCurrentDungeon((Guid)_currentGuid);
+
+                    if (dun == null || _currentGuid == null || dun.DungeonChests?.Any(x => x.Id == id) == true)
+                    {
+                        return;
+                    }
+
+                    var dunChest = new DungeonChestFragment
+                    {
+                        UniqueName = uniqueName,
+                        IsBossChest = LootChestController.IsBossChest(uniqueName), 
+                        IsChestOpen = false, 
+                        Id = id
+                    };
+
+                    if (_mainWindow.Dispatcher.CheckAccess())
+                    {
+                        dun.DungeonChests?.Add(dunChest);
+                    }
+                    else
+                    {
+                        _mainWindow.Dispatcher.Invoke(delegate
+                        {
+                            dun.DungeonChests?.Add(dunChest);
+                        });
+                    }
+
+                    dun.Faction = LootChestController.GetFaction(uniqueName);
+                    dun.Mode = LootChestController.GetDungeonMode(uniqueName);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(nameof(SetDungeonChestInformation), e);
+                }
+            }
+        }
+
+        private DungeonNotificationFragment GetCurrentDungeon(Guid guid)
+        {
+            return _mainWindowViewModel.TrackingDungeons.FirstOrDefault(x => x.MapsGuid.Contains(guid));
+        }
+
+        private int GetChests(DateTime chestIsNewerAsDateTime, ChestRarity rarity)
+        {
+            var dungeons = _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > chestIsNewerAsDateTime);
+            return dungeons.Select(dun => dun.DungeonChests.Where(x => x.Rarity == rarity)).Select(filteredChests => filteredChests.Count()).Sum();
+        }
+
+        public int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime) => _mainWindowViewModel.TrackingDungeons.Count(x => x.StartDungeon > dungeonIsNewerAsDateTime);
+
+        public void SetDungeonStatsDay()
+        {
+            _mainWindowViewModel.DungeonStatsDay.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Standard);
+            _mainWindowViewModel.DungeonStatsDay.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Uncommon);
+            _mainWindowViewModel.DungeonStatsDay.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Rare);
+            _mainWindowViewModel.DungeonStatsDay.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Legendary);
+        }
+
+        public void SetDungeonStatsTotal()
+        {
+            _mainWindowViewModel.DungeonStatsTotal.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Standard);
+            _mainWindowViewModel.DungeonStatsTotal.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Uncommon);
+            _mainWindowViewModel.DungeonStatsTotal.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Rare);
+            _mainWindowViewModel.DungeonStatsTotal.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Legendary);
         }
 
         public void SetDiedIfInDungeon(DiedObject dieObject)
@@ -273,22 +374,22 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        private double TotalFameByTime(FameCountMode mode)
-        {
-            switch (mode)
-            {
-                case FameCountMode.Hour:
-                    return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddHours(-1)).Sum(x => x.Fame);
-                case FameCountMode.Day:
-                    return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-1)).Sum(x => x.Fame);
-                case FameCountMode.Week:
-                    return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-7)).Sum(x => x.Fame);
-                case FameCountMode.Total:
-                    return _mainWindowViewModel.TrackingDungeons.Where(x => true).Sum(x => x.Fame);
-                default:
-                    return 0;
-            }
-        }
+        //private double TotalFameByTime(FameCountMode mode)
+        //{
+        //    switch (mode)
+        //    {
+        //        case FameCountMode.Hour:
+        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddHours(-1)).Sum(x => x.Fame);
+        //        case FameCountMode.Day:
+        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-1)).Sum(x => x.Fame);
+        //        case FameCountMode.Week:
+        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-7)).Sum(x => x.Fame);
+        //        case FameCountMode.Total:
+        //            return _mainWindowViewModel.TrackingDungeons.Where(x => true).Sum(x => x.Fame);
+        //        default:
+        //            return 0;
+        //    }
+        //}
 
         private void RemoveDungeonsAfterCertainNumber(int amount)
         {
@@ -350,24 +451,24 @@ namespace StatisticsAnalysisTool.Common
 
             if (_mainWindow.Dispatcher.CheckAccess())
             {
-                _mainWindowViewModel.TrackingDungeons.Where(x => x.DungeonStatus != DungeonStatus.Done).ToList().ForEach(x => x.DungeonStatus = DungeonStatus.Done);
+                _mainWindowViewModel.TrackingDungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
                 var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(guid));
                 if (!allToFalse)
                 {
-                    dun.DungeonStatus = DungeonStatus.Active;
+                    dun.Status = DungeonStatus.Active;
                 }
             }
             else
             {
                 _mainWindow.Dispatcher.Invoke(delegate
                 {
-                    _mainWindowViewModel.TrackingDungeons.Where(x => x.DungeonStatus != DungeonStatus.Done).ToList().ForEach(x => x.DungeonStatus = DungeonStatus.Done);
+                    _mainWindowViewModel.TrackingDungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
                     var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(guid));
                     if (!allToFalse)
                     {
-                        dun.DungeonStatus = DungeonStatus.Active;
+                        dun.Status = DungeonStatus.Active;
                     }
                 });
             }
@@ -377,9 +478,11 @@ namespace StatisticsAnalysisTool.Common
         {
             if (_mainWindow.Dispatcher.CheckAccess())
             {
+                var minTime = new TimeSpan(0, 0, 2, 0);
+
                 _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
-                var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.TotalTime).Min();
-                var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == highest);
+                var min = _mainWindowViewModel.TrackingDungeons.Where(x => x?.TotalTime.Ticks > minTime.Ticks).Select(x => x.TotalTime).Min();
+                var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == min);
                 if (bestTimeDungeon != null)
                 {
                     bestTimeDungeon.IsBestTime = true;
@@ -535,13 +638,13 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        enum FameCountMode
-        {
-            Hour,
-            Day,
-            Week,
-            Total
-        }
+        //enum FameCountMode
+        //{
+        //    Hour,
+        //    Day,
+        //    Week,
+        //    Total
+        //}
 
         #endregion
 

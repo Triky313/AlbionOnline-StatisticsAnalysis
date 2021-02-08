@@ -83,7 +83,7 @@ namespace StatisticsAnalysisTool.Common
         }
 
         public static string GetValuePerHour(double value, TimeSpan time) => Formatting.ToStringShort(value / (time.TotalSeconds / 60 / 60));
-
+        
         #region Window Flash
 
         private const uint FlashwStop = 0; //Stop flashing. The system restores the window to its original state.

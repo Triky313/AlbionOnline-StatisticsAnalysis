@@ -1,4 +1,6 @@
-﻿namespace StatisticsAnalysisTool.Network.Notification
+﻿using StatisticsAnalysisTool.Enumerations;
+
+namespace StatisticsAnalysisTool.Network.Notification
 {
     public class FameNotificationFragment : LineFragment
     {

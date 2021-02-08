@@ -208,7 +208,13 @@ namespace StatisticsAnalysisTool.Views
 
         private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
         {
-            _mainWindowViewModel.ResetCounters(true, true, true);
+            _mainWindowViewModel.ResetMainCounters(true, true, true);
+        }
+
+        private void BtnDungeonTrackingReset_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel.ResetDungeonCounters();
+            _mainWindowViewModel.TrackingDungeons.Clear();
         }
 
         private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
