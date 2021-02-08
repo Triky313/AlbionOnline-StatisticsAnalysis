@@ -22,8 +22,8 @@
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
         </Grid>
         <Grid Margin="0,33">
-            <TextBlock Text="{Binding Translation.FeatureDescription, FallbackValue=FEATURE_DESCRIPTION}" FontSize="20" Foreground="{StaticResource Solid.Color.Text.Gold}" TextAlignment="Center" Margin="10,10,10,205" TextWrapping="Wrap" />
-            <Image Style="{StaticResource Image.GoldChest}" Margin="0,115,0,-5" />
+            <TextBlock Text="{Binding Translation.FeatureDescription, FallbackValue=FEATURE_DESCRIPTION}" FontSize="20" Foreground="{StaticResource Solid.Color.Text.Gold}" TextAlignment="Center" Margin="10,10,10,272" TextWrapping="Wrap" />
+            <Image Source="../Resources/feature_image.png" Margin="0,115,0,-5" />
         </Grid>
         <Grid Height="33" VerticalAlignment="Bottom">
             <CheckBox Content="{Binding Translation.ShowNotAgainContent, FallbackValue=SHOW__NOT__AGAIN}" IsChecked="{Binding ShowNotAgainChecked, FallbackValue=false}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="Auto" />

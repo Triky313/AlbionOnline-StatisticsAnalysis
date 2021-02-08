@@ -105,7 +105,7 @@
       <Value Profile="(Default)">lootchests.json</Value>
     </Setting>
     <Setting Name="LootChestDataSourceUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master/StatisticsAnalysisTool/StatisticsAnalysisTool/GameFiles/lootchest.json</Value>
+      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master/StatisticsAnalysisTool/StatisticsAnalysisTool/GameFiles/lootchests.json</Value>
     </Setting>
   </Settings>
 </SettingsFile>

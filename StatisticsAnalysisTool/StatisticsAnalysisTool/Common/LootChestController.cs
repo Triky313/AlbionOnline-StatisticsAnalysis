@@ -113,9 +113,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<bool> GetDataListFromJsonAsync()
         {
-            //var url = Settings.Default.LootChestDataSourceUrl;
-            // TODO: Add normal path
-            var url = "https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/%2321-ViewOpenedChestsInaDungeon/StatisticsAnalysisTool/StatisticsAnalysisTool/GameFiles/lootchests.json";
+            var url = Settings.Default.LootChestDataSourceUrl;
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.LootChestDataFileName}";
 
             if (string.IsNullOrEmpty(url))

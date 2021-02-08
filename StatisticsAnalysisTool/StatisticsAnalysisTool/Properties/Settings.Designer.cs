@@ -430,7 +430,7 @@ namespace StatisticsAnalysisTool.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master" +
-            "/StatisticsAnalysisTool/StatisticsAnalysisTool/GameFiles/lootchest.json")]
+            "/StatisticsAnalysisTool/StatisticsAnalysisTool/GameFiles/lootchests.json")]
         public string LootChestDataSourceUrl {
             get {
                 return ((string)(this["LootChestDataSourceUrl"]));
