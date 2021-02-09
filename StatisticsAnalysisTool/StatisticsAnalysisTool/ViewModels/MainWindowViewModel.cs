@@ -120,7 +120,9 @@ namespace StatisticsAnalysisTool.ViewModels
             Utilities.AutoUpdate();
 
             if (!LanguageController.InitializeLanguage())
+            {
                 _mainWindow.Close();
+            }
 
             InitMainWindowData();
             InitTracking();

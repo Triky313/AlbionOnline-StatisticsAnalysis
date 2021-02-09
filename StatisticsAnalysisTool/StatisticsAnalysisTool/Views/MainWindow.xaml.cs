@@ -127,12 +127,15 @@ namespace StatisticsAnalysisTool.Views
         {
             #region Tracking
 
-            Settings.Default.IsTrackingResetByMapChangeActive = _mainWindowViewModel.IsTrackingResetByMapChangeActive;
-            Settings.Default.IsTrackingActiveAtToolStart = _mainWindowViewModel.IsTrackingActive;
-
-            if (_mainWindowViewModel.IsTrackingActive)
+            if (_mainWindowViewModel != null)
             {
-                _mainWindowViewModel.StopTracking();
+                Settings.Default.IsTrackingResetByMapChangeActive = _mainWindowViewModel.IsTrackingResetByMapChangeActive;
+                Settings.Default.IsTrackingActiveAtToolStart = _mainWindowViewModel.IsTrackingActive;
+
+                if (_mainWindowViewModel.IsTrackingActive)
+                {
+                    _mainWindowViewModel.StopTracking();
+                }
             }
 
             #endregion
