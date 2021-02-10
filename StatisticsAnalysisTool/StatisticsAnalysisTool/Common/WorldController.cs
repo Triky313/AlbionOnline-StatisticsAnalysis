@@ -149,8 +149,9 @@ namespace StatisticsAnalysisTool.Common
                 var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.WorldDataFileName}", Encoding.UTF8);
                 return ConvertItemJsonObjectToMapData(JsonConvert.DeserializeObject<ObservableCollection<WorldJsonObject>>(localItemString));
             }
-            catch
+            catch(Exception e)
             {
+                Log.Error(nameof(GetWorldDataFromLocal), e);
                 return new ObservableCollection<MapData>();
             }
         }
