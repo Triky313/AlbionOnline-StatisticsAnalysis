@@ -1,13 +1,17 @@
 ﻿using Albion.Network;
+using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations
 {
     public class UserInformationEvent : BaseOperation
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public UserInformationEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
             try
@@ -100,6 +104,7 @@ namespace StatisticsAnalysisTool.Network.Operations
             }
             catch (Exception e)
             {
+                Log.Warn(nameof(UserInformationEvent), e);
                 Debug.Print(e.Message);
             }
         }
