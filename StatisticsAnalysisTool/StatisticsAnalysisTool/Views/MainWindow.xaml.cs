@@ -25,7 +25,6 @@ namespace StatisticsAnalysisTool.Views
         public MainWindow()
         {
             InitializeComponent();
-            log4net.Config.XmlConfigurator.Configure();
             _mainWindowViewModel = new MainWindowViewModel(this);
             DataContext = _mainWindowViewModel;
         }

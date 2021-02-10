@@ -8,6 +8,7 @@
              xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
+
         <!-- Base font size -->
         <system:Double x:Key="BaseFontSize">12</system:Double>
 
