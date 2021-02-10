@@ -53,6 +53,12 @@ namespace StatisticsAnalysisTool.Common
                     return true;
                 }
 
+                CurrentCultureInfo = new CultureInfo(Settings.Default.DefaultLanguageCultureName);
+                if (SetLanguage())
+                {
+                    return true;
+                }
+
                 throw new CultureNotFoundException();
             }
             catch (CultureNotFoundException)
