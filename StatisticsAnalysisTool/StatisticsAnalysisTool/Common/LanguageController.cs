@@ -34,13 +34,17 @@ namespace StatisticsAnalysisTool.Common
             {
                 if (CurrentCultureInfo == null)
                 {
-                    if (Settings.Default.CurrentLanguageCultureName != null)
+                    if (!string.IsNullOrEmpty(Settings.Default.CurrentLanguageCultureName))
                     {
                         CurrentCultureInfo = new CultureInfo(Settings.Default.CurrentLanguageCultureName);
                     } 
-                    else if (Settings.Default.DefaultLanguageCultureName != null)
+                    else if (!string.IsNullOrEmpty(Settings.Default.DefaultLanguageCultureName))
                     {
                         CurrentCultureInfo = new CultureInfo(Settings.Default.DefaultLanguageCultureName);
+                    }
+                    else
+                    {
+                        throw new CultureNotFoundException();
                     }
                 }
 
