@@ -24,17 +24,18 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isBestTime;
         private bool _isBestFame;
         private TimeSpan _totalTime;
-        private string _mainEntranceMap;
+        private string _mainMapIndex;
         private bool _diedInDungeon;
         private ObservableCollection<DungeonChestFragment> _dungeonChests = new ObservableCollection<DungeonChestFragment>();
         private DungeonMode _mode = DungeonMode.Unknown;
         private Faction _faction;
         private string _diedName;
         private string _killedBy;
+        private string _mainMapName;
 
-        public DungeonNotificationFragment(Guid firstMap, int count, string mapNameBeforeDungeon, DateTime startDungeon, MainWindowViewModel mainWindowViewModel)
+        public DungeonNotificationFragment(Guid firstMap, int count, string mainMapIndex, DateTime startDungeon, MainWindowViewModel mainWindowViewModel)
         {
-            MainEntranceMap = mapNameBeforeDungeon;
+            MainMapIndex = mainMapIndex;
             _mainWindowViewModel = mainWindowViewModel;
             FirstMap = firstMap;
             MapsGuid = new List<Guid> { firstMap };
@@ -71,11 +72,21 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public string MainEntranceMap
+        public string MainMapIndex
         {
-            get => _mainEntranceMap;
+            get => _mainMapIndex;
             set {
-                _mainEntranceMap = value;
+                _mainMapIndex = value;
+                MainMapName = WorldController.GetUniqueNameOrDefault(value);
+                OnPropertyChanged();
+            }
+        }
+
+        public string MainMapName
+        {
+            get => _mainMapName;
+            set {
+                _mainMapName = value;
                 OnPropertyChanged();
             }
         }

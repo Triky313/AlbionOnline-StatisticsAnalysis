@@ -23,7 +23,6 @@ namespace StatisticsAnalysisTool.Common
         private readonly MainWindow _mainWindow;
         private Guid? _lastGuid;
         private Guid? _currentGuid;
-        private string _lastMapNameBeforeDungeon;
 
         private const int _maxNotifications = 50;
         private const int _maxDungeons = 999;
@@ -181,12 +180,11 @@ namespace StatisticsAnalysisTool.Common
             return new ObservableCollection<DungeonNotificationFragment>();
         }
 
-        public void AddDungeon(MapType mapType, Guid? mapGuid, string uniqueMapName)
+        public void AddDungeon(MapType mapType, Guid? mapGuid, string mainMapIndex)
         {
             LeaveDungeonCheck(mapType);
             SetBestDungeonTime();
             SetBestDungeonFame();
-            SetLastMapNameBeforeDungeon(mapType, uniqueMapName);
 
             if (mapType != MapType.RandomDungeon || mapGuid == null)
             {
@@ -227,7 +225,7 @@ namespace StatisticsAnalysisTool.Common
                     {
                         _mainWindowViewModel.TrackingDungeons.Insert(
                             0, 
-                            new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, _lastMapNameBeforeDungeon, DateTime.UtcNow, _mainWindowViewModel));
+                            new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow, _mainWindowViewModel));
                     }
                     else
                     {
@@ -235,7 +233,7 @@ namespace StatisticsAnalysisTool.Common
                         {
                             _mainWindowViewModel.TrackingDungeons.Insert(
                                 0, 
-                                new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, _lastMapNameBeforeDungeon, DateTime.UtcNow, _mainWindowViewModel));
+                                new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow, _mainWindowViewModel));
                         });
                     }
 
@@ -432,14 +430,6 @@ namespace StatisticsAnalysisTool.Common
             catch (Exception e)
             {
                 Log.Error(nameof(RemoveDungeonsAfterCertainNumber), e);
-            }
-        }
-
-        private void SetLastMapNameBeforeDungeon(MapType mapType, string uniqueMapName)
-        {
-            if (mapType != MapType.HellGate && mapType != MapType.Island && mapType != MapType.CorruptedDungeon && mapType != MapType.RandomDungeon)
-            {
-                _lastMapNameBeforeDungeon = uniqueMapName;
             }
         }
 

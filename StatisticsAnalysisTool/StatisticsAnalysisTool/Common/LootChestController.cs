@@ -36,12 +36,14 @@ namespace StatisticsAnalysisTool.Common
 
         public static DungeonMode GetDungeonMode(string value)
         {
-            if (value.Contains("MORGANA_SOLO_CHEST") || value.Contains("KEEPER_SOLO_CHEST") || value.Contains("HERETIC_SOLO_CHEST") || value.Contains("UNDEAD_SOLO_CHEST"))
+            if (value.Contains("MORGANA_SOLO_CHEST") || value.Contains("KEEPER_SOLO_CHEST") || value.Contains("HERETIC_SOLO_CHEST") || value.Contains("UNDEAD_SOLO_CHEST") 
+                || value.Contains("MORGANA_SOLO_BOOKCHEST") || value.Contains("KEEPER_SOLO_BOOKCHEST") || value.Contains("HERETIC_SOLO_BOOKCHEST") || value.Contains("UNDEAD_SOLO_BOOKCHEST"))
             {
                 return DungeonMode.Solo;
             }
 
-            if (value.Contains("MORGANA_CHEST") || value.Contains("KEEPER_CHEST") || value.Contains("HERETIC_CHEST") || value.Contains("UNDEAD_CHEST"))
+            if (value.Contains("MORGANA_CHEST") || value.Contains("KEEPER_CHEST") || value.Contains("HERETIC_CHEST") || value.Contains("UNDEAD_CHEST") 
+                || value.Contains("MORGANA_BOOKCHEST") || value.Contains("KEEPER_BOOKCHEST") || value.Contains("HERETIC_BOOKCHEST") || value.Contains("UNDEAD_BOOKCHEST"))
             {
                 return DungeonMode.Standard;
             }

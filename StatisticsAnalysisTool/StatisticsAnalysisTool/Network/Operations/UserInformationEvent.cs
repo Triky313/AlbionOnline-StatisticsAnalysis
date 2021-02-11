@@ -1,4 +1,4 @@
-﻿using Albion.Network;
+using Albion.Network;
 using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
@@ -81,6 +81,11 @@ namespace StatisticsAnalysisTool.Network.Operations
                     GuildName = string.IsNullOrEmpty(parameters[51].ToString()) ? string.Empty : parameters[51].ToString();
                 }
 
+                if (parameters.ContainsKey(58))
+                {
+                    MainMapIndex = string.IsNullOrEmpty(parameters[58].ToString()) ? string.Empty : parameters[58].ToString();
+                }
+
                 if (parameters.ContainsKey(61))
                 {
                     // Maybe Playtime in seconds
@@ -108,7 +113,7 @@ namespace StatisticsAnalysisTool.Network.Operations
                 Debug.Print(e.Message);
             }
         }
-        
+
         public string Username { get; }
         public string MapIndex { get; }
         public string UniqueMapName { get; }
@@ -122,6 +127,7 @@ namespace StatisticsAnalysisTool.Network.Operations
         public double Silver { get; }
         public double Gold { get; }
         public string GuildName { get; }
+        public string MainMapIndex { get; set; }
         public string AllianceName { get; }
         public string Test { get; }
         public long CurrentDailyBonusPoints { get; }

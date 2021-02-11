@@ -364,7 +364,7 @@ RandomDungeonPositionInfo
 NewLootChest
 UpdateLootChest <- Mob Info: MOB_KEEPER_UNPROVEN_MALE_VETERAN ... and more
 LootChestOpened
-NewShrine
+NewShrine <- Min the small shirnes in the solo, mybe also the big?
 UpdateShrine
 MutePlayerUpdate
 ShopTileUpdate
