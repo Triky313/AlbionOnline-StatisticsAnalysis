@@ -333,9 +333,9 @@ namespace StatisticsAnalysisTool.Common
             return _mainWindowViewModel.TrackingDungeons.FirstOrDefault(x => x.MapsGuid.Contains(guid));
         }
 
-        private int GetChests(DateTime chestIsNewerAsDateTime, ChestRarity rarity)
+        private int GetChests(DateTime? chestIsNewerAsDateTime, ChestRarity rarity)
         {
-            var dungeons = _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > chestIsNewerAsDateTime);
+            var dungeons = _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null);
             return dungeons.Select(dun => dun.DungeonChests.Where(x => x.Rarity == rarity)).Select(filteredChests => filteredChests.Count()).Sum();
         }
 
@@ -351,10 +351,10 @@ namespace StatisticsAnalysisTool.Common
 
         public void SetDungeonStatsTotal()
         {
-            _mainWindowViewModel.DungeonStatsTotal.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Standard);
-            _mainWindowViewModel.DungeonStatsTotal.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Uncommon);
-            _mainWindowViewModel.DungeonStatsTotal.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Rare);
-            _mainWindowViewModel.DungeonStatsTotal.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Legendary);
+            _mainWindowViewModel.DungeonStatsTotal.OpenedStandardChests = GetChests(null, ChestRarity.Standard);
+            _mainWindowViewModel.DungeonStatsTotal.OpenedUncommonChests = GetChests(null, ChestRarity.Uncommon);
+            _mainWindowViewModel.DungeonStatsTotal.OpenedRareChests = GetChests(null, ChestRarity.Rare);
+            _mainWindowViewModel.DungeonStatsTotal.OpenedLegendaryChests = GetChests(null, ChestRarity.Legendary);
         }
 
         public void SetDiedIfInDungeon(DiedObject dieObject)
