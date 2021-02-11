@@ -353,4 +353,7 @@
   <translation name="UNCOMMON">Ungewöhnlich</translation>
   <translation name="RARE">Selten</translation>
   <translation name="LEGENDARY">Legendär</translation>
+
+  <translation name="BOSS_CHEST">Boss-Truhe</translation>
+  <translation name="BOOK_CHEST">Buch-Truhe</translation>
 </translations>

@@ -95,6 +95,10 @@ namespace StatisticsAnalysisTool.Network.Notification
         public string TranslationRare => LanguageController.Translation("RARE");
         [JsonIgnore]
         public string TranslationLegendary => LanguageController.Translation("LEGENDARY");
+        [JsonIgnore]
+        public string TranslationBossChest => LanguageController.Translation("BOSS_CHEST");
+        [JsonIgnore]
+        public string TranslationBookChest => LanguageController.Translation("BOOK_CHEST");
 
         private ChestStatus SetStatus()
         {

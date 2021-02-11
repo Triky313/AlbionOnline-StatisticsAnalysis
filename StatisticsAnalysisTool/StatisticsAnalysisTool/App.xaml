@@ -1513,7 +1513,19 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsBossChest}" Value="true">
                                     <Setter Property="Source" Value="Resources/boss.png"/>
-                                    <Setter Property="ToolTip" Value="Boss-Chest"/>
+                                    <Setter Property="ToolTip" Value="{Binding TranslationBossChest}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <Image Margin="0 -12 0 0" Opacity="0.85">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:ChestType.BookChest}">
+                                    <Setter Property="Source" Value="Resources/book.png"/>
+                                    <Setter Property="ToolTip" Value="{Binding TranslationBookChest}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

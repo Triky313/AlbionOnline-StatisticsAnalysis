@@ -26,7 +26,6 @@ namespace StatisticsAnalysisTool.Network.Notification
         private TimeSpan _totalTime;
         private string _mainEntranceMap;
         private bool _diedInDungeon;
-        private string _diedMessage;
         private ObservableCollection<DungeonChestFragment> _dungeonChests = new ObservableCollection<DungeonChestFragment>();
         private DungeonMode _mode = DungeonMode.Unknown;
         private Faction _faction;
