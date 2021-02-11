@@ -1,4 +1,4 @@
-using Albion.Network;
+﻿using Albion.Network;
 using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
@@ -16,8 +16,7 @@ namespace StatisticsAnalysisTool.Network.Operations
         {
             try
             {
-                //Debug.Print($"-----------------------------------------");
-                //Debug.Print($"Response");
+                //Debug.Print($"---------- Response ----------");
 
                 //foreach (var parameter in parameters)
                 //{
@@ -88,7 +87,7 @@ namespace StatisticsAnalysisTool.Network.Operations
 
                 if (parameters.ContainsKey(61))
                 {
-                    // Maybe Playtime in seconds
+                    PlayTimeInSeconds = (int)parameters[61] / 10000d;
                 }
 
                 if (parameters.ContainsKey(69))
@@ -128,6 +127,7 @@ namespace StatisticsAnalysisTool.Network.Operations
         public double Gold { get; }
         public string GuildName { get; }
         public string MainMapIndex { get; set; }
+        public double PlayTimeInSeconds { get; set; }
         public string AllianceName { get; }
         public string Test { get; }
         public long CurrentDailyBonusPoints { get; }
