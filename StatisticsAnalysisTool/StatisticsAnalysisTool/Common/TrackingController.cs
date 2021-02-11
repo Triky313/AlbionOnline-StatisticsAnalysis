@@ -364,7 +364,8 @@ namespace StatisticsAnalysisTool.Common
                 try
                 {
                     var item = _mainWindowViewModel.TrackingDungeons.First(x => x.MapsGuid.Contains((Guid)_currentGuid) && x.StartDungeon > DateTime.UtcNow.AddDays(-1));
-                    item.DiedMessage = $"{dieObject.DiedName} {LanguageController.Translation("KILLED_BY")} {dieObject.KilledBy}";
+                    item.DiedName = dieObject.DiedName;
+                    item.KilledBy = dieObject.KilledBy;
                     item.DiedInDungeon = true;
                 }
                 catch (Exception e)

@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Annotations;
+﻿using Newtonsoft.Json;
+using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.ViewModels;
@@ -29,6 +30,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         private ObservableCollection<DungeonChestFragment> _dungeonChests = new ObservableCollection<DungeonChestFragment>();
         private DungeonMode _mode = DungeonMode.Unknown;
         private Faction _faction;
+        private string _diedName;
+        private string _killedBy;
 
         public DungeonNotificationFragment(Guid firstMap, int count, string mapNameBeforeDungeon, DateTime startDungeon, MainWindowViewModel mainWindowViewModel)
         {
@@ -93,10 +96,21 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public string DiedMessage {
-            get => _diedMessage;
+        [JsonIgnore]
+        public string DiedMessage => $"{DiedName} {LanguageController.Translation("KILLED_BY")} {KilledBy}";
+
+        public string DiedName {
+            get => _diedName;
             set {
-                _diedMessage = value;
+                _diedName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string KilledBy {
+            get => _killedBy;
+            set {
+                _killedBy = value;
                 OnPropertyChanged();
             }
         }
@@ -185,14 +199,18 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonIgnore]
         public string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
+        [JsonIgnore]
         public string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
-        public string YouDiedInTheDungeon => LanguageController.Translation("YOU_DIED_IN_THE_DUNGEON");
+        [JsonIgnore]
         public string TranslationSolo => LanguageController.Translation("SOLO");
+        [JsonIgnore]
         public string TranslationStandard => LanguageController.Translation("STANDARD");
+        [JsonIgnore]
         public string TranslationAvalon => LanguageController.Translation("AVALON");
+        [JsonIgnore]
         public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Annotations;
+﻿using Newtonsoft.Json;
+using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System;
@@ -86,10 +87,14 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public string Standard => LanguageController.Translation("STANDARD");
-        public string Uncommon => LanguageController.Translation("UNCOMMON");
-        public string Rare => LanguageController.Translation("RARE");
-        public string Legendary => LanguageController.Translation("LEGENDARY");
+        [JsonIgnore]
+        public string TranslationStandard => LanguageController.Translation("STANDARD");
+        [JsonIgnore]
+        public string TranslationUncommon => LanguageController.Translation("UNCOMMON");
+        [JsonIgnore]
+        public string TranslationRare => LanguageController.Translation("RARE");
+        [JsonIgnore]
+        public string TranslationLegendary => LanguageController.Translation("LEGENDARY");
 
         private ChestStatus SetStatus()
         {
