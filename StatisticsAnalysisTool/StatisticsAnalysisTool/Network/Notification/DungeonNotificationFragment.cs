@@ -41,6 +41,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             StartDungeon = startDungeon;
             EnterDungeonMap = DateTime.UtcNow;
             DungeonCounter = count;
+            Faction = Faction.Unknown;
         }
 
         public ObservableCollection<DungeonChestFragment> DungeonChests
