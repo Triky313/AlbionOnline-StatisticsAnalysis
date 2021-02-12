@@ -215,6 +215,7 @@
     <Compile Include="Enumerations\ChestStatus.cs" />
     <Compile Include="Enumerations\ChestType.cs" />
     <Compile Include="Enumerations\AttributeStatOperator.cs" />
+    <Compile Include="Enumerations\ValueType.cs" />
     <Compile Include="Models\LootChest.cs" />
     <Compile Include="Models\LootChestRoot.cs" />
     <Compile Include="Models\LootChests.cs" />
@@ -330,6 +331,14 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Page Include="Tracking.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Main.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\InfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -452,6 +461,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\book.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\faction_unknown_banner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="Sounds\alert1.wav">

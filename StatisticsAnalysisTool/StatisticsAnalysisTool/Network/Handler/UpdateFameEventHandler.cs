@@ -5,6 +5,7 @@ using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -23,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             _trackingController.AddNotification(SetPveFameNotification(value.TotalPlayerFame, value.TotalGainedFame, value.ZoneFame, value.PremiumFame, value.SatchelFame, value.IsMobFame));
             _fameCountUpTimer.Add(value.TotalGainedFame);
-            _trackingController.AddFame(value.TotalGainedFame);
+            _trackingController.AddValueToDungeon(value.TotalGainedFame, ValueType.Fame);
 
             _trackingController.SetTotalPlayerFame(value.TotalPlayerFame);
             await Task.CompletedTask;

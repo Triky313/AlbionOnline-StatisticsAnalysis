@@ -1,5 +1,6 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -20,6 +21,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             _silverCountUpTimer.Add(value.CurrentPlayerSilver);
 
             _trackingController.SetTotalPlayerSilver(value.CurrentPlayerSilver);
+            _trackingController.AddValueToDungeon(value.CurrentPlayerSilver, ValueType.Silver);
             await Task.CompletedTask;
         }
     }

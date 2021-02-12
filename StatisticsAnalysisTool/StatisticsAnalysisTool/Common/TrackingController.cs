@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -494,6 +495,7 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
+        //TODO: Best Respec and Silver implement...
         private void SetBestDungeonFame()
         {
             if (_mainWindow.Dispatcher.CheckAccess())
@@ -511,8 +513,8 @@ namespace StatisticsAnalysisTool.Common
                 _mainWindow.Dispatcher.Invoke(delegate
                 {
                     _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestFame == true).ToList().ForEach(x => x.IsBestFame = false);
-                    var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.Fame).Max();
-                    var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.Fame.CompareTo(highest) == 0);
+                    var highest = _mainWindowViewModel?.TrackingDungeons?.Select(x => x?.Fame).Max();
+                    var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x?.Fame.CompareTo(highest) == 0 && highest != 0);
                     if (bestDungeonFame != null)
                     {
                         bestDungeonFame.IsBestFame = true;
@@ -576,7 +578,7 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public void AddFame(double value)
+        public void AddValueToDungeon(double value, ValueType valueType)
         {
             if (_currentGuid == null)
             {
@@ -587,21 +589,15 @@ namespace StatisticsAnalysisTool.Common
             {
                 if (_mainWindow.Dispatcher.CheckAccess())
                 {
-                    var dun = _mainWindowViewModel.TrackingDungeons?.FirstOrDefault(x => x.MapsGuid.Contains((Guid)_currentGuid));
-                    if (dun != null)
-                    {
-                        dun.Fame += value;
-                    }
+                    var dun = _mainWindowViewModel.TrackingDungeons?.FirstOrDefault(x => x.MapsGuid.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
+                    dun?.Add(value, valueType);
                 }
                 else
                 {
                     _mainWindow.Dispatcher.Invoke(delegate
                     {
-                        var dun = _mainWindowViewModel.TrackingDungeons?.FirstOrDefault(x => x.MapsGuid.Contains((Guid)_currentGuid));
-                        if (dun != null)
-                        {
-                            dun.Fame += value;
-                        }
+                        var dun = _mainWindowViewModel.TrackingDungeons?.FirstOrDefault(x => x.MapsGuid.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
+                        dun?.Add(value, valueType);
                     });
                 }
             }
@@ -628,14 +624,6 @@ namespace StatisticsAnalysisTool.Common
                 return null;
             }
         }
-
-        //enum FameCountMode
-        //{
-        //    Hour,
-        //    Day,
-        //    Week,
-        //    Total
-        //}
 
         #endregion
 
