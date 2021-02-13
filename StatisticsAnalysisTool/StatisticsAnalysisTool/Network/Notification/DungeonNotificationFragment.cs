@@ -105,6 +105,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public bool DiedInDungeon {
             get => _diedInDungeon;
             set {
@@ -116,6 +117,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonIgnore]
         public string DiedMessage => $"{DiedName} {LanguageController.Translation("KILLED_BY")} {KilledBy}";
 
+        [JsonProperty]
         public string DiedName {
             get => _diedName;
             set {
@@ -124,6 +126,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public string KilledBy {
             get => _killedBy;
             set {
@@ -132,10 +135,13 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public DateTime StartDungeon { get; }
 
+        [JsonProperty]
         private TimeSpan RunTimeInSeconds => TotalTime.TotalSeconds <= 0 ? (DateTime.UtcNow - StartDungeon) : TotalTime;
 
+        [JsonProperty]
         public DateTime EnterDungeonMap {
             get => _enterDungeonMap;
             set {
@@ -166,6 +172,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public TimeSpan TotalTime {
             get => _totalTime;
             set {
@@ -174,6 +181,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public List<Guid> MapsGuid
         {
             get => _mapsGuid;
@@ -183,8 +191,10 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public Guid FirstMap { get; }
 
+        [JsonProperty]
         public double Fame
         {
             get => _fame;
@@ -195,6 +205,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public double ReSpec
         {
             get => _reSpec;
@@ -205,6 +216,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public double Silver
         {
             get => _silver;
@@ -215,6 +227,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public double FamePerHour
         {
             get => _famePerHour;
@@ -224,6 +237,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public double ReSpecPerHour
         {
             get => _reSpecPerHour;
@@ -233,6 +247,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public double SilverPerHour
         {
             get => _silverPerHour;
@@ -287,6 +302,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             return newSilverValue;
         }
 
+        [JsonProperty]
         public DungeonStatus Status {
             get => _status;
             set {
@@ -295,6 +311,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public bool IsBestTime {
             get => _isBestTime;
             set {
@@ -303,6 +320,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public bool IsBestFame {
             get => _isBestFame;
             set {
@@ -311,6 +329,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public bool IsBestReSpec {
             get => _isBestReSpec;
             set {
@@ -319,6 +338,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public bool IsBestSilver {
             get => _isBestSilver;
             set {
@@ -327,6 +347,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public bool IsBestFamePerHour {
             get => _isBestFamePerHour;
             set {
@@ -335,6 +356,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public bool IsBestReSpecPerHour {
             get => _isBestReSpecPerHour;
             set {
@@ -343,6 +365,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        [JsonProperty]
         public bool IsBestSilverPerHour {
             get => _isBestSilverPerHour;
             set {
