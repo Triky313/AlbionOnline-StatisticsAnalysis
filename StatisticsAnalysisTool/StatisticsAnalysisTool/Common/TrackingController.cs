@@ -185,7 +185,7 @@ namespace StatisticsAnalysisTool.Common
         {
             LeaveDungeonCheck(mapType);
             SetBestDungeonTime();
-            SetBestDungeonFame();
+            SetBestDungeonValuesWithDispatcher();
 
             if (mapType != MapType.RandomDungeon || mapGuid == null)
             {
@@ -374,23 +374,6 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        //private double TotalFameByTime(FameCountMode mode)
-        //{
-        //    switch (mode)
-        //    {
-        //        case FameCountMode.Hour:
-        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddHours(-1)).Sum(x => x.Fame);
-        //        case FameCountMode.Day:
-        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-1)).Sum(x => x.Fame);
-        //        case FameCountMode.Week:
-        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-7)).Sum(x => x.Fame);
-        //        case FameCountMode.Total:
-        //            return _mainWindowViewModel.TrackingDungeons.Where(x => true).Sum(x => x.Fame);
-        //        default:
-        //            return 0;
-        //    }
-        //}
-
         private void RemoveDungeonsAfterCertainNumber(int amount)
         {
             if (IsMainWindowNull() || _mainWindowViewModel.TrackingDungeons == null)
@@ -473,7 +456,7 @@ namespace StatisticsAnalysisTool.Common
                 var minTime = new TimeSpan(0, 0, 2, 0);
 
                 _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
-                var min = _mainWindowViewModel.TrackingDungeons.Where(x => x?.TotalTime.Ticks > minTime.Ticks).Select(x => x.TotalTime).Min();
+                var min = _mainWindowViewModel?.TrackingDungeons.Where(x => x?.TotalTime.Ticks > minTime.Ticks).Select(x => x.TotalTime).Min();
                 var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == min);
                 if (bestTimeDungeon != null)
                 {
@@ -485,7 +468,7 @@ namespace StatisticsAnalysisTool.Common
                 _mainWindow.Dispatcher.Invoke(delegate
                 {
                     _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
-                    var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.TotalTime).Min();
+                    var highest = _mainWindowViewModel?.TrackingDungeons.Where(x => x.Status == DungeonStatus.Done).Select(x => x.TotalTime).Min();
                     var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == highest);
                     if (bestTimeDungeon != null)
                     {
@@ -495,31 +478,90 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        //TODO: Best Respec and Silver implement...
-        private void SetBestDungeonFame()
+        private void SetBestDungeonValuesWithDispatcher()
         {
             if (_mainWindow.Dispatcher.CheckAccess())
             {
-                _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestFame == true).ToList().ForEach(x => x.IsBestFame = false);
-                var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.Fame).Max() ?? -1;
-                var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.Fame.CompareTo(highest) == 0);
+                CalculateBestDungeonValues();
+            }
+            else
+            {
+                _mainWindow.Dispatcher.Invoke(CalculateBestDungeonValues);
+            }
+        }
+
+        private void CalculateBestDungeonValues()
+        {
+            try
+            {
+                _mainWindowViewModel.TrackingDungeons.Where(x =>
+                    x?.IsBestFame == true ||
+                    x?.IsBestReSpec == true ||
+                    x?.IsBestSilver == true ||
+                    x?.IsBestFamePerHour == true ||
+                    x?.IsBestReSpecPerHour == true ||
+                    x?.IsBestSilverPerHour == true
+                ).ToList().ForEach(x =>
+                {
+                    x.IsBestFame = false;
+                    x.IsBestReSpec = false;
+                    x.IsBestSilver = false;
+                    x.IsBestFamePerHour = false; 
+                    x.IsBestReSpecPerHour = false;
+                    x.IsBestSilverPerHour = false;
+                });
+
+                var highestFame = _mainWindowViewModel?.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.Fame > 0).Select(x => x.Fame).Max();
+                var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.Fame.CompareTo(highestFame) == 0);
+
                 if (bestDungeonFame != null)
                 {
                     bestDungeonFame.IsBestFame = true;
                 }
-            }
-            else
-            {
-                _mainWindow.Dispatcher.Invoke(delegate
+
+                var highestReSpec = _mainWindowViewModel?.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpec > 0).Select(x => x.ReSpec).Max();
+                var bestDungeonReSpec = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.ReSpec.CompareTo(highestReSpec) == 0);
+
+                if (bestDungeonReSpec != null)
                 {
-                    _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestFame == true).ToList().ForEach(x => x.IsBestFame = false);
-                    var highest = _mainWindowViewModel?.TrackingDungeons?.Select(x => x?.Fame).Max();
-                    var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x?.Fame.CompareTo(highest) == 0 && highest != 0);
-                    if (bestDungeonFame != null)
-                    {
-                        bestDungeonFame.IsBestFame = true;
-                    }
-                });
+                    bestDungeonReSpec.IsBestReSpec = true;
+                }
+
+                var highestSilver = _mainWindowViewModel?.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.Silver > 0).Select(x => x.Silver).Max();
+                var bestDungeonSilver = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.Silver.CompareTo(highestSilver) == 0);
+
+                if (bestDungeonSilver != null)
+                {
+                    bestDungeonSilver.IsBestSilver = true;
+                }
+            
+                var highestFamePerHour = _mainWindowViewModel?.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0).Select(x => x.FamePerHour).Max();
+                var bestDungeonFamePerHour = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.FamePerHour.CompareTo(highestFamePerHour) == 0);
+
+                if (bestDungeonFamePerHour != null)
+                {
+                    bestDungeonFamePerHour.IsBestFamePerHour = true;
+                }
+
+                var highestReSpecPerHour = _mainWindowViewModel?.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpecPerHour > 0).Select(x => x.ReSpecPerHour).Max();
+                var bestDungeonReSpecPerHour = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.ReSpecPerHour.CompareTo(highestReSpecPerHour) == 0);
+
+                if (bestDungeonReSpecPerHour != null)
+                {
+                    bestDungeonReSpecPerHour.IsBestReSpecPerHour = true;
+                }
+
+                var highestSilverPerHour = _mainWindowViewModel?.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.SilverPerHour > 0).Select(x => x.SilverPerHour).Max();
+                var bestDungeonSilverPerHour = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.SilverPerHour.CompareTo(highestSilverPerHour) == 0);
+
+                if (bestDungeonSilverPerHour != null)
+                {
+                    bestDungeonSilverPerHour.IsBestSilverPerHour = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(nameof(CalculateBestDungeonValues), e);
             }
         }
 

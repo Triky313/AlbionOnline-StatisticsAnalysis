@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
@@ -32,6 +33,11 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _diedName;
         private string _killedBy;
         private string _mainMapName;
+        private double _reSpec;
+        private double _silver;
+        private double _famePerHour;
+        private double _reSpecPerHour;
+        private double _silverPerHour;
 
         public DungeonNotificationFragment(Guid firstMap, int count, string mainMapIndex, DateTime startDungeon, MainWindowViewModel mainWindowViewModel)
         {
@@ -128,6 +134,8 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public DateTime StartDungeon { get; }
 
+        private TimeSpan RunTimeInSeconds => TotalTime.TotalSeconds <= 0 ? (DateTime.UtcNow - StartDungeon) : TotalTime;
+
         public DateTime EnterDungeonMap {
             get => _enterDungeonMap;
             set {
@@ -180,10 +188,103 @@ namespace StatisticsAnalysisTool.Network.Notification
         public double Fame
         {
             get => _fame;
-            set {
+            private set {
                 _fame = value;
+                FamePerHour = Utilities.GetValuePerHourToDouble(value, RunTimeInSeconds);
                 OnPropertyChanged();
             }
+        }
+
+        public double ReSpec
+        {
+            get => _reSpec;
+            private set {
+                _reSpec = value;
+                ReSpecPerHour = Utilities.GetValuePerHourToDouble(value, RunTimeInSeconds);
+                OnPropertyChanged();
+            }
+        }
+
+        public double Silver
+        {
+            get => _silver;
+            private set {
+                _silver = value;
+                SilverPerHour = Utilities.GetValuePerHourToDouble(value, RunTimeInSeconds);
+                OnPropertyChanged();
+            }
+        }
+
+        public double FamePerHour
+        {
+            get => _famePerHour;
+            private set {
+                _famePerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double ReSpecPerHour
+        {
+            get => _reSpecPerHour;
+            private set {
+                _reSpecPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double SilverPerHour
+        {
+            get => _silverPerHour;
+            private set {
+                _silverPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double? _lastReSpecValue;
+        private double? _lastSilverValue;
+        private bool _isBestReSpec;
+        private bool _isBestFamePerHour;
+        private bool _isBestSilver;
+        private bool _isBestReSpecPerHour;
+        private bool _isBestSilverPerHour;
+
+        public void Add(double value, ValueType type)
+        {
+            switch (type)
+            {
+                case ValueType.Fame:
+                    Fame += value;
+                    return;
+                case ValueType.ReSpec:
+                    ReSpec += AddValue(value, _lastReSpecValue, out _lastReSpecValue);
+                    return;
+                case ValueType.Silver:
+                    Silver += AddValue(value, _lastSilverValue, out _lastSilverValue);
+                    return;
+            }
+        }
+
+        private double AddValue(double value, double? lastValue, out double? newLastValue)
+        {
+            if (lastValue == null)
+            {
+                newLastValue = value;
+                return 0;
+            }
+
+            var newSilverValue = (double)(value - lastValue);
+
+            if (newSilverValue == 0)
+            {
+                newLastValue = value;
+                return 0;
+            }
+
+            newLastValue = value;
+
+            return newSilverValue;
         }
 
         public DungeonStatus Status {
@@ -206,6 +307,46 @@ namespace StatisticsAnalysisTool.Network.Notification
             get => _isBestFame;
             set {
                 _isBestFame = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestReSpec {
+            get => _isBestReSpec;
+            set {
+                _isBestReSpec = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestSilver {
+            get => _isBestSilver;
+            set {
+                _isBestSilver = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestFamePerHour {
+            get => _isBestFamePerHour;
+            set {
+                _isBestFamePerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestReSpecPerHour {
+            get => _isBestReSpecPerHour;
+            set {
+                _isBestReSpecPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestSilverPerHour {
+            get => _isBestSilverPerHour;
+            set {
+                _isBestSilverPerHour = value;
                 OnPropertyChanged();
             }
         }
