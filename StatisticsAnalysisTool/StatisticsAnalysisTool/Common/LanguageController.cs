@@ -25,6 +25,14 @@ namespace StatisticsAnalysisTool.Common
             set {
                 _currentCultureInfo = value;
                 Settings.Default.CurrentLanguageCultureName = value.TextInfo.CultureName;
+                try
+                {
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = value;
+                }
+                catch (Exception e)
+                {
+                    Log.Error(nameof(CultureInfo), e);
+                }
             }
         }
 
