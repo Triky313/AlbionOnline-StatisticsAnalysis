@@ -281,7 +281,7 @@
     </Style>
 
     <DataTemplate DataType="{x:Type notification:DungeonNotificationFragment}">
-        <Grid Height="60" Margin="0 1 0 1">
+        <Grid Height="48" Margin="0 1 0 1">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Background">
@@ -296,8 +296,8 @@
             </Grid.Style>
             <StackPanel Orientation="Vertical" Style="{StaticResource DungeonNotificationFragment.Fraction}">
                 <DockPanel>
-                    <Grid Width="5" Height="60" HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
-                    <Grid Height="60">
+                    <Grid Width="5" HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
+                    <Grid Height="50">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                             <Label Content="{Binding DungeonCounter, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="35" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                             <Label Content="{Binding StartDungeon, FallbackValue=00.00.0000 - 00:00, StringFormat='{}[{0}]', ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}" MinWidth="95" 
