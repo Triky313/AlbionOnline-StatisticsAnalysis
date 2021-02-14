@@ -223,6 +223,16 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+// TODO: Haytor Name ist zu weit unten
+    <Style x:Key="DungeonNotificationFragment.MainMapName" TargetType="Label">
+        <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Blue.2}"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
 
     <Style x:Key="DungeonNotificationFragment.Image.Skull" TargetType="Image">
         <Setter Property="Width" Value="16" />
@@ -299,12 +309,21 @@
                     <Grid Width="5" HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
                     <Grid Height="50">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                            <Label Content="{Binding DungeonCounter, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="35" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
-                            <Label Content="{Binding StartDungeon, FallbackValue=00.00.0000 - 00:00, StringFormat='{}[{0}]', ConverterCulture={x:Static com:LanguageController.CurrentCultureInfo}}" MinWidth="95" 
-                                   VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
-                            <Label Content="{Binding MainMapName, FallbackValue=UNKNOWN}" ContentStringFormat="{}{0}" MinWidth="170" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                            <Label Content="{Binding DungeonCounter, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="38" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                            <Label MinWidth="115" VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}">
+                                <Label.Content>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                                <Binding Path="StartDungeon" FallbackValue="00.00.0000 00:00:00" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Label.Content>
+                            </Label>
+                            <Label Content="{Binding MainMapName, FallbackValue=UNKNOWN}" Style="{StaticResource DungeonNotificationFragment.MainMapName}" MinWidth="160" />
                             <Grid Margin="5 0 20 0">
-                                <StackPanel Orientation="Horizontal" MinWidth="222">
+                                <StackPanel Orientation="Horizontal" MinWidth="210">
                                     <ItemsControl ItemsSource="{Binding DungeonChests}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
