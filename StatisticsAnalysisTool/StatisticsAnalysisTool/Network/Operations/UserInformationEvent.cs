@@ -1,19 +1,22 @@
 ﻿using Albion.Network;
+using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations
 {
     public class UserInformationEvent : BaseOperation
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public UserInformationEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
             try
             {
-                //Debug.Print($"-----------------------------------------");
-                //Debug.Print($"Response");
+                //Debug.Print($"---------- Response ----------");
 
                 //foreach (var parameter in parameters)
                 //{
@@ -77,9 +80,14 @@ namespace StatisticsAnalysisTool.Network.Operations
                     GuildName = string.IsNullOrEmpty(parameters[51].ToString()) ? string.Empty : parameters[51].ToString();
                 }
 
+                if (parameters.ContainsKey(58))
+                {
+                    MainMapIndex = string.IsNullOrEmpty(parameters[58].ToString()) ? string.Empty : parameters[58].ToString();
+                }
+
                 if (parameters.ContainsKey(61))
                 {
-                    // Maybe Playtime in seconds
+                    PlayTimeInSeconds = (int)parameters[61] / 10000d;
                 }
 
                 if (parameters.ContainsKey(69))
@@ -100,10 +108,11 @@ namespace StatisticsAnalysisTool.Network.Operations
             }
             catch (Exception e)
             {
+                Log.Warn(nameof(UserInformationEvent), e);
                 Debug.Print(e.Message);
             }
         }
-        
+
         public string Username { get; }
         public string MapIndex { get; }
         public string UniqueMapName { get; }
@@ -117,6 +126,8 @@ namespace StatisticsAnalysisTool.Network.Operations
         public double Silver { get; }
         public double Gold { get; }
         public string GuildName { get; }
+        public string MainMapIndex { get; set; }
+        public double PlayTimeInSeconds { get; set; }
         public string AllianceName { get; }
         public string Test { get; }
         public long CurrentDailyBonusPoints { get; }

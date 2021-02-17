@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -23,7 +24,6 @@ namespace StatisticsAnalysisTool.Common
         private readonly MainWindow _mainWindow;
         private Guid? _lastGuid;
         private Guid? _currentGuid;
-        private string _lastMapNameBeforeDungeon;
 
         private const int _maxNotifications = 50;
         private const int _maxDungeons = 999;
@@ -181,12 +181,12 @@ namespace StatisticsAnalysisTool.Common
             return new ObservableCollection<DungeonNotificationFragment>();
         }
 
-        public void AddDungeon(MapType mapType, Guid? mapGuid, string uniqueMapName)
+        public void AddDungeon(MapType mapType, Guid? mapGuid, string mainMapIndex)
         {
             LeaveDungeonCheck(mapType);
+            IsDungeonDoneCheck(mapType);
             SetBestDungeonTime();
-            SetBestDungeonFame();
-            SetLastMapNameBeforeDungeon(mapType, uniqueMapName);
+            SetBestDungeonValuesWithDispatcher();
 
             if (mapType != MapType.RandomDungeon || mapGuid == null)
             {
@@ -227,7 +227,7 @@ namespace StatisticsAnalysisTool.Common
                     {
                         _mainWindowViewModel.TrackingDungeons.Insert(
                             0, 
-                            new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, _lastMapNameBeforeDungeon, DateTime.UtcNow, _mainWindowViewModel));
+                            new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow, _mainWindowViewModel));
                     }
                     else
                     {
@@ -235,7 +235,7 @@ namespace StatisticsAnalysisTool.Common
                         {
                             _mainWindowViewModel.TrackingDungeons.Insert(
                                 0, 
-                                new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, _lastMapNameBeforeDungeon, DateTime.UtcNow, _mainWindowViewModel));
+                                new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow, _mainWindowViewModel));
                         });
                     }
 
@@ -333,9 +333,9 @@ namespace StatisticsAnalysisTool.Common
             return _mainWindowViewModel.TrackingDungeons.FirstOrDefault(x => x.MapsGuid.Contains(guid));
         }
 
-        private int GetChests(DateTime chestIsNewerAsDateTime, ChestRarity rarity)
+        private int GetChests(DateTime? chestIsNewerAsDateTime, ChestRarity rarity)
         {
-            var dungeons = _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > chestIsNewerAsDateTime);
+            var dungeons = _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null);
             return dungeons.Select(dun => dun.DungeonChests.Where(x => x.Rarity == rarity)).Select(filteredChests => filteredChests.Count()).Sum();
         }
 
@@ -351,10 +351,10 @@ namespace StatisticsAnalysisTool.Common
 
         public void SetDungeonStatsTotal()
         {
-            _mainWindowViewModel.DungeonStatsTotal.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Standard);
-            _mainWindowViewModel.DungeonStatsTotal.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Uncommon);
-            _mainWindowViewModel.DungeonStatsTotal.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Rare);
-            _mainWindowViewModel.DungeonStatsTotal.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Legendary);
+            _mainWindowViewModel.DungeonStatsTotal.OpenedStandardChests = GetChests(null, ChestRarity.Standard);
+            _mainWindowViewModel.DungeonStatsTotal.OpenedUncommonChests = GetChests(null, ChestRarity.Uncommon);
+            _mainWindowViewModel.DungeonStatsTotal.OpenedRareChests = GetChests(null, ChestRarity.Rare);
+            _mainWindowViewModel.DungeonStatsTotal.OpenedLegendaryChests = GetChests(null, ChestRarity.Legendary);
         }
 
         public void SetDiedIfInDungeon(DiedObject dieObject)
@@ -364,7 +364,8 @@ namespace StatisticsAnalysisTool.Common
                 try
                 {
                     var item = _mainWindowViewModel.TrackingDungeons.First(x => x.MapsGuid.Contains((Guid)_currentGuid) && x.StartDungeon > DateTime.UtcNow.AddDays(-1));
-                    item.DiedMessage = $"{dieObject.DiedName} {LanguageController.Translation("KILLED_BY")} {dieObject.KilledBy}";
+                    item.DiedName = dieObject.DiedName;
+                    item.KilledBy = dieObject.KilledBy;
                     item.DiedInDungeon = true;
                 }
                 catch (Exception e)
@@ -373,23 +374,6 @@ namespace StatisticsAnalysisTool.Common
                 }
             }
         }
-
-        //private double TotalFameByTime(FameCountMode mode)
-        //{
-        //    switch (mode)
-        //    {
-        //        case FameCountMode.Hour:
-        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddHours(-1)).Sum(x => x.Fame);
-        //        case FameCountMode.Day:
-        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-1)).Sum(x => x.Fame);
-        //        case FameCountMode.Week:
-        //            return _mainWindowViewModel.TrackingDungeons.Where(x => x.StartDungeon > DateTime.UtcNow.AddDays(-7)).Sum(x => x.Fame);
-        //        case FameCountMode.Total:
-        //            return _mainWindowViewModel.TrackingDungeons.Where(x => true).Sum(x => x.Fame);
-        //        default:
-        //            return 0;
-        //    }
-        //}
 
         private void RemoveDungeonsAfterCertainNumber(int amount)
         {
@@ -434,14 +418,6 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        private void SetLastMapNameBeforeDungeon(MapType mapType, string uniqueMapName)
-        {
-            if (mapType != MapType.HellGate && mapType != MapType.Island && mapType != MapType.CorruptedDungeon && mapType != MapType.RandomDungeon)
-            {
-                _lastMapNameBeforeDungeon = uniqueMapName;
-            }
-        }
-
         private void SetCurrentDungeonActive(Guid guid, bool allToFalse = false)
         {
             if (_mainWindowViewModel.TrackingDungeons.Count <= 0)
@@ -481,7 +457,7 @@ namespace StatisticsAnalysisTool.Common
                 var minTime = new TimeSpan(0, 0, 2, 0);
 
                 _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
-                var min = _mainWindowViewModel.TrackingDungeons.Where(x => x?.TotalTime.Ticks > minTime.Ticks).Select(x => x.TotalTime).Min();
+                var min = _mainWindowViewModel?.TrackingDungeons.Where(x => x?.TotalTime.Ticks > minTime.Ticks).Select(x => x.TotalTime).Min();
                 var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == min);
                 if (bestTimeDungeon != null)
                 {
@@ -493,7 +469,7 @@ namespace StatisticsAnalysisTool.Common
                 _mainWindow.Dispatcher.Invoke(delegate
                 {
                     _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
-                    var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.TotalTime).Min();
+                    var highest = _mainWindowViewModel?.TrackingDungeons.Where(x => x.Status == DungeonStatus.Done).Select(x => x.TotalTime).Min();
                     var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == highest);
                     if (bestTimeDungeon != null)
                     {
@@ -503,30 +479,108 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        private void SetBestDungeonFame()
+        private void SetBestDungeonValuesWithDispatcher()
         {
             if (_mainWindow.Dispatcher.CheckAccess())
             {
-                _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestFame == true).ToList().ForEach(x => x.IsBestFame = false);
-                var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.Fame).Max() ?? -1;
-                var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.Fame.CompareTo(highest) == 0);
-                if (bestDungeonFame != null)
-                {
-                    bestDungeonFame.IsBestFame = true;
-                }
+                CalculateBestDungeonValues();
             }
             else
             {
-                _mainWindow.Dispatcher.Invoke(delegate
+                _mainWindow.Dispatcher.Invoke(CalculateBestDungeonValues);
+            }
+        }
+
+        private void CalculateBestDungeonValues()
+        {
+            try
+            {
+                _mainWindowViewModel.TrackingDungeons.Where(x =>
+                    x?.IsBestFame == true ||
+                    x?.IsBestReSpec == true ||
+                    x?.IsBestSilver == true ||
+                    x?.IsBestFamePerHour == true ||
+                    x?.IsBestReSpecPerHour == true ||
+                    x?.IsBestSilverPerHour == true
+                ).ToList().ForEach(x =>
                 {
-                    _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestFame == true).ToList().ForEach(x => x.IsBestFame = false);
-                    var highest = _mainWindowViewModel.TrackingDungeons.Select(x => x?.Fame).Max();
-                    var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.Fame.CompareTo(highest) == 0);
+                    x.IsBestFame = false;
+                    x.IsBestReSpec = false;
+                    x.IsBestSilver = false;
+                    x.IsBestFamePerHour = false; 
+                    x.IsBestReSpecPerHour = false;
+                    x.IsBestSilverPerHour = false;
+                });
+
+                if (_mainWindowViewModel?.TrackingDungeons?.Any(x => x?.Status == DungeonStatus.Done && x.Fame > 0) == true)
+                {
+                    var highestFame = _mainWindowViewModel.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.Fame > 0).Select(x => x.Fame).Max();
+                    var bestDungeonFame = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.Fame.CompareTo(highestFame) == 0);
+
                     if (bestDungeonFame != null)
                     {
                         bestDungeonFame.IsBestFame = true;
                     }
-                });
+                }
+
+                if (_mainWindowViewModel?.TrackingDungeons?.Any(x => x?.Status == DungeonStatus.Done && x.ReSpec > 0) == true)
+                {
+                    var highestReSpec = _mainWindowViewModel.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpec > 0).Select(x => x.ReSpec).Max();
+                    var bestDungeonReSpec = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.ReSpec.CompareTo(highestReSpec) == 0);
+
+                    if (bestDungeonReSpec != null)
+                    {
+                        bestDungeonReSpec.IsBestReSpec = true;
+                    }
+                }
+
+                if (_mainWindowViewModel?.TrackingDungeons?.Any(x => x?.Status == DungeonStatus.Done && x.Silver > 0) ==  true)
+                {
+                    var highestSilver = _mainWindowViewModel.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.Silver > 0).Select(x => x.Silver).Max();
+                    var bestDungeonSilver = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.Silver.CompareTo(highestSilver) == 0);
+
+                    if (bestDungeonSilver != null)
+                    {
+                        bestDungeonSilver.IsBestSilver = true;
+                    }
+                }
+
+                if (_mainWindowViewModel?.TrackingDungeons?.Any(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0) == true)
+                {
+                    var highestFamePerHour = _mainWindowViewModel.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0).Select(x => x.FamePerHour).Max();
+                    var bestDungeonFamePerHour = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.FamePerHour.CompareTo(highestFamePerHour) == 0);
+
+                    if (bestDungeonFamePerHour != null)
+                    {
+                        bestDungeonFamePerHour.IsBestFamePerHour = true;
+                    }
+                }
+
+                if (_mainWindowViewModel?.TrackingDungeons?.Any(x => x?.Status == DungeonStatus.Done && x.ReSpecPerHour > 0) == true)
+                {
+                    var highestReSpecPerHour = _mainWindowViewModel.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpecPerHour > 0).Select(x => x.ReSpecPerHour).Max();
+                    var bestDungeonReSpecPerHour = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.ReSpecPerHour.CompareTo(highestReSpecPerHour) == 0);
+
+                    if (bestDungeonReSpecPerHour != null)
+                    {
+                        bestDungeonReSpecPerHour.IsBestReSpecPerHour = true;
+                    }
+                }
+
+                if (_mainWindowViewModel?.TrackingDungeons?.Any(x => x?.Status == DungeonStatus.Done && x.SilverPerHour > 0) == true)
+                {
+                    var highestSilverPerHour = _mainWindowViewModel.TrackingDungeons.Where(x => x?.Status == DungeonStatus.Done && x.SilverPerHour > 0).Select(x => x.SilverPerHour).Max();
+                    var bestDungeonSilverPerHour = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.SilverPerHour.CompareTo(highestSilverPerHour) == 0);
+
+                    if (bestDungeonSilverPerHour != null)
+                    {
+                        bestDungeonSilverPerHour.IsBestSilverPerHour = true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(nameof(CalculateBestDungeonValues), e);
             }
         }
 
@@ -585,7 +639,20 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public void AddFame(double value)
+        private void IsDungeonDoneCheck(MapType mapType)
+        {
+            if (_lastGuid != null && _mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid)_lastGuid)) && mapType != MapType.RandomDungeon)
+            {
+                var dun = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => 
+                    x.MapsGuid.Contains((Guid)_lastGuid) && x.DungeonChests.Any(y => y.IsBossChest));
+                if (dun != null)
+                {
+                    dun.Status = DungeonStatus.Done;
+                }
+            }
+        }
+
+        public void AddValueToDungeon(double value, ValueType valueType)
         {
             if (_currentGuid == null)
             {
@@ -596,21 +663,15 @@ namespace StatisticsAnalysisTool.Common
             {
                 if (_mainWindow.Dispatcher.CheckAccess())
                 {
-                    var dun = _mainWindowViewModel.TrackingDungeons?.FirstOrDefault(x => x.MapsGuid.Contains((Guid)_currentGuid));
-                    if (dun != null)
-                    {
-                        dun.Fame += value;
-                    }
+                    var dun = _mainWindowViewModel.TrackingDungeons?.FirstOrDefault(x => x.MapsGuid.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
+                    dun?.Add(value, valueType);
                 }
                 else
                 {
                     _mainWindow.Dispatcher.Invoke(delegate
                     {
-                        var dun = _mainWindowViewModel.TrackingDungeons?.FirstOrDefault(x => x.MapsGuid.Contains((Guid)_currentGuid));
-                        if (dun != null)
-                        {
-                            dun.Fame += value;
-                        }
+                        var dun = _mainWindowViewModel.TrackingDungeons?.FirstOrDefault(x => x.MapsGuid.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
+                        dun?.Add(value, valueType);
                     });
                 }
             }
@@ -637,14 +698,6 @@ namespace StatisticsAnalysisTool.Common
                 return null;
             }
         }
-
-        //enum FameCountMode
-        //{
-        //    Hour,
-        //    Day,
-        //    Week,
-        //    Total
-        //}
 
         #endregion
 

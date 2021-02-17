@@ -179,10 +179,6 @@ namespace StatisticsAnalysisTool.Common
                 {
                     Log.Error(nameof(SetActiveAlertsFromLocalFile), e);
                 }
-            } 
-            else
-            {
-                Log.Info($"{nameof(SetActiveAlertsFromLocalFile)}: No active alerts.");
             }
         }
 

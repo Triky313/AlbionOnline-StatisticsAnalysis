@@ -22,9 +22,9 @@ namespace StatisticsAnalysisTool.Common
         public static string GetUniqueNameOrDefault(string index)
         {
             var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;
-            var splitName = name.Split(new[] { "@" }, StringSplitOptions.None);
+            var splitName = name?.Split(new[] { "@" }, StringSplitOptions.None);
 
-            if (splitName.Length > 0 && name.ToLower().Contains('@'))
+            if (splitName != null && splitName.Length > 0 && name.ToLower().Contains('@'))
             {
                 return GetMapNameByMapType(GetMapType(splitName[1]));
             }
@@ -149,8 +149,9 @@ namespace StatisticsAnalysisTool.Common
                 var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.WorldDataFileName}", Encoding.UTF8);
                 return ConvertItemJsonObjectToMapData(JsonConvert.DeserializeObject<ObservableCollection<WorldJsonObject>>(localItemString));
             }
-            catch
+            catch(Exception e)
             {
+                Log.Error(nameof(GetWorldDataFromLocal), e);
                 return new ObservableCollection<MapData>();
             }
         }
