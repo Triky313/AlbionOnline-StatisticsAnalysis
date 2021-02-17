@@ -223,15 +223,16 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-// TODO: Haytor Name ist zu weit unten
+
     <Style x:Key="DungeonNotificationFragment.MainMapName" TargetType="Label">
         <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
-        <Setter Property="Effect">
+        <!--<Setter Property="Effect">
             <Setter.Value>
                 <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Blue.2}"/>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0 -2 0 0" />
     </Style>
 
     <Style x:Key="DungeonNotificationFragment.Image.Skull" TargetType="Image">
