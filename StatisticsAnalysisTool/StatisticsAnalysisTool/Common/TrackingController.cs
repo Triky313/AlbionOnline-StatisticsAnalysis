@@ -454,14 +454,15 @@ namespace StatisticsAnalysisTool.Common
         {
             if (_mainWindow.Dispatcher.CheckAccess())
             {
-                var minTime = new TimeSpan(0, 0, 2, 0);
-
-                _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
-                var min = _mainWindowViewModel?.TrackingDungeons.Where(x => x?.TotalTime.Ticks > minTime.Ticks).Select(x => x.TotalTime).Min();
-                var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == min);
-                if (bestTimeDungeon != null)
+                if (_mainWindowViewModel?.TrackingDungeons?.Any(x => x?.Status == DungeonStatus.Done && x.DungeonChests.Any(y => y?.IsBossChest == true)) == true)
                 {
-                    bestTimeDungeon.IsBestTime = true;
+                    _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
+                    var min = _mainWindowViewModel?.TrackingDungeons?.Where(x => x?.DungeonChests.Any(y => y.IsBossChest) == true).Select(x => x.TotalTime).Min();
+                    var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == min);
+                    if (bestTimeDungeon != null)
+                    {
+                        bestTimeDungeon.IsBestTime = true;
+                    }
                 }
             }
             else
@@ -469,11 +470,16 @@ namespace StatisticsAnalysisTool.Common
                 _mainWindow.Dispatcher.Invoke(delegate
                 {
                     _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
-                    var highest = _mainWindowViewModel?.TrackingDungeons.Where(x => x.Status == DungeonStatus.Done).Select(x => x.TotalTime).Min();
-                    var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == highest);
-                    if (bestTimeDungeon != null)
+
+                    if (_mainWindowViewModel?.TrackingDungeons?.Any(x => x?.Status == DungeonStatus.Done && x.DungeonChests.Any(y => y?.IsBossChest == true)) == true)
                     {
-                        bestTimeDungeon.IsBestTime = true;
+                        _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
+                        var min = _mainWindowViewModel?.TrackingDungeons?.Where(x => x?.DungeonChests.Any(y => y.IsBossChest) == true).Select(x => x.TotalTime).Min();
+                        var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == min);
+                        if (bestTimeDungeon != null)
+                        {
+                            bestTimeDungeon.IsBestTime = true;
+                        }
                     }
                 });
             }
