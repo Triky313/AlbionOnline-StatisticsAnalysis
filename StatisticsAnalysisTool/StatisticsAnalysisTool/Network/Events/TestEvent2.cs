@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public TestEvent2(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Debug.Print($"----- NewLoot -----");
+            Debug.Print($"----- NewMob (Events) -----");
 
             try
             {

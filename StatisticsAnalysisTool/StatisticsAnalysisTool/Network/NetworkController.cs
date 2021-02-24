@@ -1,4 +1,4 @@
-using Albion.Network;
+﻿using Albion.Network;
 using log4net;
 using PacketDotNet;
 using SharpPcap;
@@ -43,9 +43,9 @@ namespace StatisticsAnalysisTool.Network
                 //builder.AddEventHandler(new PartySilverGainedEventHandler());
                 //builder.AddEventHandler(new NewLootEventHandler());
 
-                //builder.AddResponseHandler(new TestHandler());
+                builder.AddResponseHandler(new TestHandler());
                 //builder.AddEventHandler(new TestHandler2());
-                //builder.AddEventHandler(new TestHandler3());
+                //builder.AddRequestHandler(new TestHandler3());
 
                 builder.AddResponseHandler(new UserInformationHandler(trackingController, _mainWindowViewModel));
 
