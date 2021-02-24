@@ -1,6 +1,7 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Network.Responses;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.ViewModels;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace StatisticsAnalysisTool.Network.Handler
     {
         private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
-        public UserInformationHandler(TrackingController trackingController, MainWindowViewModel mainWindowViewModel) : base(2)
+        public UserInformationHandler(TrackingController trackingController, MainWindowViewModel mainWindowViewModel) : base((int)OperationCodes.Join)
         {
             _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;

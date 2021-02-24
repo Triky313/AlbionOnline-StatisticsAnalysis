@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace StatisticsAnalysisTool.Network.Responses
+namespace StatisticsAnalysisTool.Network.Operations.Responses
 {
     public class ChangeClusterResponse : BaseOperation
     {

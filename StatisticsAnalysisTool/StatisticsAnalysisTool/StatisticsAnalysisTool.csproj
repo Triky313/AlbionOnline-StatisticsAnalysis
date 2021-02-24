@@ -246,7 +246,7 @@
     <Compile Include="Enumerations\DungeonMode.cs" />
     <Compile Include="Enumerations\Faction.cs" />
     <Compile Include="Network\ReSpecPointsCountUpTimer.cs" />
-    <Compile Include="Network\Responses\ChangeClusterResponse.cs" />
+    <Compile Include="Network\Operations\Responses\ChangeClusterResponse.cs" />
     <Compile Include="Network\SilverCountUpTimer.cs" />
     <Compile Include="Network\FameCountUpTimer.cs" />
     <Compile Include="Models\NetworkModel\Container.cs" />
@@ -285,7 +285,7 @@
     <Compile Include="Models\MarketStats.cs" />
     <Compile Include="Models\WeaponCategories.cs" />
     <Compile Include="Network\Events\UpdateFameEvent.cs" />
-    <Compile Include="Network\Responses\UserInformationResponse.cs" />
+    <Compile Include="Network\Operations\Responses\UserInformationResponse.cs" />
     <Compile Include="Network\Handler\UpdateMoneyEventHandler.cs" />
     <Compile Include="Network\Handler\UpdateFameEventHandler.cs" />
     <Compile Include="Network\Notification\FameNotificationFragment.cs" />
