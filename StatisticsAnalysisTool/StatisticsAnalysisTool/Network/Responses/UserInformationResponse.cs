@@ -7,11 +7,11 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Responses
 {
-    public class UserInformationEvent : BaseOperation
+    public class UserInformationResponse : BaseOperation
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public UserInformationEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public UserInformationResponse(Dictionary<byte, object> parameters) : base(parameters)
         {
             try
             {
@@ -93,13 +93,7 @@ namespace StatisticsAnalysisTool.Network.Responses
                 {
                     AllianceName = string.IsNullOrEmpty(parameters[69].ToString()) ? string.Empty : parameters[69].ToString();
                 }
-
-                // Test
-                if (parameters.ContainsKey(71))
-                {
-                    Test = string.IsNullOrEmpty(parameters[71].ToString()) ? string.Empty : parameters[71].ToString();
-                }
-
+                
                 if (parameters.ContainsKey(92))
                 {
                     CurrentDailyBonusPoints = parameters.ContainsKey(92) ? long.Parse(parameters[92].ToString().Remove(parameters[92].ToString().Length - 4)) : 0;
@@ -107,7 +101,7 @@ namespace StatisticsAnalysisTool.Network.Responses
             }
             catch (Exception e)
             {
-                Log.Debug(nameof(UserInformationEvent), e);
+                Log.Debug(nameof(UserInformationResponse), e);
             }
         }
 
@@ -127,7 +121,6 @@ namespace StatisticsAnalysisTool.Network.Responses
         public string MainMapIndex { get; set; }
         public double PlayTimeInSeconds { get; set; }
         public string AllianceName { get; }
-        public string Test { get; }
         public long CurrentDailyBonusPoints { get; }
     }
 }

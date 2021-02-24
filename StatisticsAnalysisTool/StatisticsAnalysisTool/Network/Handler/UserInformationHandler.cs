@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class UserInformationHandler : ResponsePacketHandler<UserInformationEvent>
+    public class UserInformationHandler : ResponsePacketHandler<UserInformationResponse>
     {
         private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
@@ -16,7 +16,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             _mainWindowViewModel = mainWindowViewModel;
         }
 
-        protected override async Task OnActionAsync(UserInformationEvent value)
+        protected override async Task OnActionAsync(UserInformationResponse value)
         {
             _mainWindowViewModel.TrackingUsername = value.Username;
             _mainWindowViewModel.TrackingGuildName = value.GuildName;
