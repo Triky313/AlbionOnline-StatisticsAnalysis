@@ -1,6 +1,6 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Responses;
+using StatisticsAnalysisTool.Network.Operations.Responses;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
