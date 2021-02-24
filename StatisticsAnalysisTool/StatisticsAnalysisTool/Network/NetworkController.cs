@@ -29,7 +29,7 @@ namespace StatisticsAnalysisTool.Network
                 _mainWindowViewModel = mainWindowViewModel;
                 builder = ReceiverBuilder.Create();
 
-                //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
+                builder.AddEventHandler(new TakeSilverEventHandler());
                 builder.AddEventHandler(new UpdateFameEventHandler(trackingController, valueCountUpTimerTimer.FameCountUpTimer));
                 builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController, valueCountUpTimerTimer.SilverCountUpTimer));
                 builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController, valueCountUpTimerTimer.ReSpecPointsCountUpTimer));

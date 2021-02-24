@@ -6,7 +6,7 @@ namespace StatisticsAnalysisTool.Common
     {
         public const long InternalFactor = 10000L;
         public static readonly FixPoint One = new FixPoint(InternalFactor);
-        public double FloatValue => (double)InternalValue / InternalFactor;
+        public double DoubleValue => (double)InternalValue / InternalFactor;
         public long IntegerValue => InternalValue / InternalFactor;
 
         public long InternalValue {
@@ -31,7 +31,7 @@ namespace StatisticsAnalysisTool.Common
 
         public override string ToString()
         {
-            return FloatValue.ToString(CultureInfo.InvariantCulture);
+            return DoubleValue.ToString(CultureInfo.InvariantCulture);
         }
 
         public static FixPoint operator +(FixPoint a, FixPoint b)
