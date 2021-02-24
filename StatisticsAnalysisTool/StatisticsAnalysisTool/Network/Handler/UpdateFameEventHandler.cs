@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         private readonly TrackingController _trackingController;
         private readonly FameCountUpTimer _fameCountUpTimer;
 
-        public UpdateFameEventHandler(TrackingController trackingController, FameCountUpTimer fameCountUpTimer) : base(EventCodes.UpdateFame)
+        public UpdateFameEventHandler(TrackingController trackingController, FameCountUpTimer fameCountUpTimer) : base((int) EventCodes.UpdateFame)
         {
             _trackingController = trackingController;
             _fameCountUpTimer = fameCountUpTimer;

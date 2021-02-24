@@ -7,7 +7,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class TestHandler : ResponsePacketHandler<TestEvent>
     {
-        public TestHandler() : base((int) OperationCodes.ChangeCluster) { }
+        public TestHandler() : base((int) OperationCodes.Join) { }
 
         protected override async Task OnActionAsync(TestEvent testEvent)
         {

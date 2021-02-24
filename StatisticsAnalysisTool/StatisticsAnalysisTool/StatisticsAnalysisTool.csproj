@@ -253,7 +253,6 @@
     <Compile Include="Models\NetworkModel\Loot.cs" />
     <Compile Include="Enumerations\FameTypeOperator.cs" />
     <Compile Include="Network\Notification\TrackingNotification.cs" />
-    <Compile Include="Network\EventCodes.cs" />
     <Compile Include="Network\Events\UpdateMoneyEvent.cs" />
     <Compile Include="Common\SoundController.cs" />
     <Compile Include="Exceptions\TooManyRequestsException.cs" />
