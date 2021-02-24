@@ -22,11 +22,11 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
-            _trackingController.AddNotification(SetPveFameNotification(value.TotalPlayerFame, value.TotalGainedFame, value.ZoneFame, value.PremiumFame, value.SatchelFame, value.IsMobFame));
-            _fameCountUpTimer.Add(value.TotalGainedFame);
-            _trackingController.AddValueToDungeon(value.TotalGainedFame, ValueType.Fame);
+            _trackingController.AddNotification(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame.DoubleValue, value.ZoneFame.DoubleValue, value.PremiumFame.DoubleValue, value.SatchelFame.DoubleValue, value.IsPremiumBonus));
+            _fameCountUpTimer.Add(value.TotalGainedFame.DoubleValue);
+            _trackingController.AddValueToDungeon(value.TotalGainedFame.DoubleValue, ValueType.Fame);
 
-            _trackingController.SetTotalPlayerFame(value.TotalPlayerFame);
+            _trackingController.SetTotalPlayerFame(value.TotalPlayerFame.DoubleValue);
             await Task.CompletedTask;
         }
         
