@@ -65,13 +65,9 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                     Reputation = newReputation;
                 }
 
-                if (parameters.ContainsKey(38) && parameters[38] != null)
+                if (parameters.ContainsKey(38) && parameters[38] != null && parameters[38] is long[] reSpecArray && reSpecArray.Length > 1)
                 {
-                    var array = (long[])parameters[38];
-                    if (array != null && array.Length > 1)
-                    {
-                        ReSpecPoints = array[1] / 10000d;
-                    }
+                    ReSpecPoints = reSpecArray[1] / 10000d;
                 }
 
                 if (parameters.ContainsKey(51))
