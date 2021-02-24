@@ -1,6 +1,6 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Network.Operations;
+using StatisticsAnalysisTool.Network.Responses;
 using StatisticsAnalysisTool.ViewModels;
 using System.Threading.Tasks;
 
