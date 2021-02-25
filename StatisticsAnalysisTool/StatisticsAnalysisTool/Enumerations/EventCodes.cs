@@ -8,7 +8,7 @@
         Move,
         Teleport,
         ChangeEquipment,
-        HealthUpdate, // <- 2: minus hp number | 3: current hp
+        HealthUpdate,
         EnergyUpdate,
         DamageShieldUpdate,
         CraftingFocusUpdate,

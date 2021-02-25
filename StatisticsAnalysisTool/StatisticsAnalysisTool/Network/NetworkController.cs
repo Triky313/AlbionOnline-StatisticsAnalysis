@@ -1,4 +1,4 @@
-﻿using Albion.Network;
+using Albion.Network;
 using log4net;
 using PacketDotNet;
 using SharpPcap;
@@ -38,8 +38,11 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
                 builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
                 builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
+                builder.AddEventHandler(new NewShrineEventHandler(trackingController));
 
                 builder.AddResponseHandler(new ChangeClusterResponseHandler());
+
+                builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
 
                 //builder.AddEventHandler(new PartySilverGainedEventHandler());
                 //builder.AddEventHandler(new NewLootEventHandler());
@@ -48,7 +51,7 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new TestHandler2());
                 //builder.AddRequestHandler(new TestHandler3());
 
-                builder.AddResponseHandler(new UserInformationHandler(trackingController, _mainWindowViewModel));
+                builder.AddResponseHandler(new JoinHandler(trackingController, _mainWindowViewModel));
 
                 _receiver = builder.Build();
 

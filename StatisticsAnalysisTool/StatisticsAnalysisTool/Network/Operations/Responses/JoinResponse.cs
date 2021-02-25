@@ -8,20 +8,25 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses
 {
-    public class UserInformationResponse : BaseOperation
+    public class JoinResponse : BaseOperation
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public UserInformationResponse(Dictionary<byte, object> parameters) : base(parameters)
+        public JoinResponse(Dictionary<byte, object> parameters) : base(parameters)
         {
             try
             {
-                //Debug.Print($"---------- Response ----------");
-
+                //Debug.Print($"---------- UserInformation (Response) ----------");
                 //foreach (var parameter in parameters)
                 //{
                 //    Debug.Print($"{parameter}");
                 //}
+
+                UserObjectId = null;
+                if (parameters.ContainsKey(0))
+                {
+                    UserObjectId = parameters[0].ObjectToLong();
+                }
 
                 if (parameters.ContainsKey(2))
                 {
@@ -36,39 +41,39 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                     DungeonGuid = WorldData.GetDungeonGuid(MapIndex);
                 }
 
-                if (parameters.ContainsKey(23) && long.TryParse(parameters[23].ToString(), out long currentFocusPoints))
+                if (parameters.ContainsKey(23))
                 {
-                    CurrentFocusPoints = currentFocusPoints;
+                    CurrentFocusPoints = parameters[23].ObjectToDouble();
                 }
 
-                if (parameters.ContainsKey(24) && long.TryParse(parameters[24].ToString(), out long maxCurrentFocusPoints))
+                if (parameters.ContainsKey(24))
                 {
-                    MaxCurrentFocusPoints = maxCurrentFocusPoints;
+                    MaxCurrentFocusPoints = parameters[24].ObjectToDouble();
                 }
 
                 if (parameters.ContainsKey(28))
                 {
-                    Silver = (long)parameters[28] / 10000d;
+                    Silver = FixPoint.FromInternalValue(parameters[28].ObjectToLong());
                 }
 
                 if (parameters.ContainsKey(29))
                 {
-                    Gold = (int)parameters[29] / 10000d;
+                    Gold = FixPoint.FromInternalValue(parameters[29].ObjectToLong());
                 }
 
                 if (parameters.ContainsKey(32))
                 {
-                    LearningPoints = (int)parameters[32] / 10000d;
+                    LearningPoints = FixPoint.FromInternalValue(parameters[32].ObjectToLong());
                 }
 
-                if (parameters.ContainsKey(36) && Converter.ParseToDouble(parameters[36].ToString(), out double newReputation))
+                if (parameters.ContainsKey(36))
                 {
-                    Reputation = newReputation;
+                    Reputation = parameters[36].ObjectToDouble();
                 }
 
                 if (parameters.ContainsKey(38) && parameters[38] != null && parameters[38] is long[] reSpecArray && reSpecArray.Length > 1)
                 {
-                    ReSpecPoints = reSpecArray[1] / 10000d;
+                    ReSpecPoints = FixPoint.FromInternalValue(reSpecArray[1]);
                 }
 
                 if (parameters.ContainsKey(51))
@@ -83,7 +88,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
                 if (parameters.ContainsKey(61))
                 {
-                    PlayTimeInSeconds = (int)parameters[61] / 10000d;
+                    PlayTimeInSeconds = parameters[61].ObjectToInt();
                 }
 
                 if (parameters.ContainsKey(69))
@@ -93,30 +98,31 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 
                 if (parameters.ContainsKey(92))
                 {
-                    CurrentDailyBonusPoints = parameters.ContainsKey(92) ? long.Parse(parameters[92].ToString().Remove(parameters[92].ToString().Length - 4)) : 0;
+                    CurrentDailyBonusPoints = parameters[92].ObjectToLong();
                 }
             }
             catch (Exception e)
             {
-                Log.Debug(nameof(UserInformationResponse), e);
+                Log.Debug(nameof(JoinResponse), e);
             }
         }
 
+        public long? UserObjectId;
         public string Username { get; }
         public string MapIndex { get; }
         public string UniqueMapName { get; }
         public Guid? DungeonGuid { get; }
         public MapType MapType { get; }
-        public long CurrentFocusPoints { get; }
-        public long MaxCurrentFocusPoints { get; }
-        public double LearningPoints { get; }
+        public double CurrentFocusPoints { get; }
+        public double MaxCurrentFocusPoints { get; }
+        public FixPoint LearningPoints { get; }
         public double Reputation { get; }
-        public double ReSpecPoints { get; }
-        public double Silver { get; }
-        public double Gold { get; }
+        public FixPoint ReSpecPoints { get; }
+        public FixPoint Silver { get; }
+        public FixPoint Gold { get; }
         public string GuildName { get; }
         public string MainMapIndex { get; set; }
-        public double PlayTimeInSeconds { get; set; }
+        public int PlayTimeInSeconds { get; set; }
         public string AllianceName { get; }
         public long CurrentDailyBonusPoints { get; }
     }
