@@ -27,8 +27,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                 
                 if (parameters.ContainsKey(2))
                 {
-                    var change = parameters[2] as int? ?? 0;
-                    Change = FixPoint.FromInternalValue(change);
+                    Change = FixPoint.FromInternalValue(parameters[2].ObjectToLong() ?? 0);
                 }
 
                 if (parameters.ContainsKey(3))
@@ -38,8 +37,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
                 if (parameters.ContainsKey(4))
                 {
-                    var multiplier = parameters[4] as short? ?? 0;
-                    Multiplier = FixPoint.FromInternalValue(multiplier);
+                    Multiplier = FixPoint.FromInternalValue(parameters[4].ObjectToLong() ?? 0);
                 }
 
                 if (parameters.ContainsKey(5))
@@ -54,13 +52,12 @@ namespace StatisticsAnalysisTool.Network.Handler
 
                 if (parameters.ContainsKey(9))
                 {
-                    var satchelFame = parameters[9] as long? ?? 0;
-                    SatchelFame = FixPoint.FromInternalValue(satchelFame);
+                    SatchelFame = FixPoint.FromInternalValue(parameters[9].ObjectToLong() ?? 0);
                 }
 
                 if (parameters.ContainsKey(252))
                 {
-                    UsedItemType = parameters[252] as short? ?? 0;
+                    UsedItemType = parameters[252].ObjectToInt();
                 }
 
                 if (Change.DoubleValue > 0 && Multiplier.DoubleValue > 0)

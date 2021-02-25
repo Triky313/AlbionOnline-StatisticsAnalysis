@@ -30,7 +30,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
                 if (parameters.ContainsKey(1))
                 {
-                    TimeStamp = new GameTimeStamp(parameters[1].ObjectToLong());
+                    TimeStamp = new GameTimeStamp(parameters[1].ObjectToLong() ?? 0);
                 }
 
                 if (parameters.ContainsKey(2))
@@ -79,13 +79,13 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
         }
 
-        public long ObjectId;
+        public long? ObjectId;
         public GameTimeStamp TimeStamp;
         public double HealthChange;
         public double NewHealthValue;
         public EffectType EffectType;
         public EffectOrigin EffectOrigin;
-        public long CauserId;
+        public long? CauserId;
         public int CausingSpellType;
     }
 }

@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.GameData;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses
@@ -26,6 +27,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(0))
                 {
                     UserObjectId = parameters[0].ObjectToLong();
+                    Debug.Print($"UserObjectId: {parameters[0].ObjectToLong()}");
                 }
 
                 if (parameters.ContainsKey(2))
@@ -53,17 +55,17 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
                 if (parameters.ContainsKey(28))
                 {
-                    Silver = FixPoint.FromInternalValue(parameters[28].ObjectToLong());
+                    Silver = FixPoint.FromInternalValue(parameters[28].ObjectToLong() ?? 0);
                 }
 
                 if (parameters.ContainsKey(29))
                 {
-                    Gold = FixPoint.FromInternalValue(parameters[29].ObjectToLong());
+                    Gold = FixPoint.FromInternalValue(parameters[29].ObjectToLong() ?? 0);
                 }
 
                 if (parameters.ContainsKey(32))
                 {
-                    LearningPoints = FixPoint.FromInternalValue(parameters[32].ObjectToLong());
+                    LearningPoints = FixPoint.FromInternalValue(parameters[32].ObjectToLong() ?? 0);
                 }
 
                 if (parameters.ContainsKey(36))
@@ -124,6 +126,6 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
         public string MainMapIndex { get; set; }
         public int PlayTimeInSeconds { get; set; }
         public string AllianceName { get; }
-        public long CurrentDailyBonusPoints { get; }
+        public long? CurrentDailyBonusPoints { get; }
     }
 }

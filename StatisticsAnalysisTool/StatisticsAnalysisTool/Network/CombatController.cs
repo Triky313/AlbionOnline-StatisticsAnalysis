@@ -17,9 +17,9 @@ namespace StatisticsAnalysisTool.Network
             _trackingController = trackingController;
         }
 
-        public void AddDamage(long causerId, long targetId, double damage)
+        public void AddDamage(long? causerId, long? targetId, double damage)
         {
-            if (_trackingController.UserObjectId != causerId && _trackingController.UserObjectId != targetId)
+            if (causerId == null || (_trackingController.UserObjectId != causerId && _trackingController.UserObjectId != targetId))
             {
                 return;
             }

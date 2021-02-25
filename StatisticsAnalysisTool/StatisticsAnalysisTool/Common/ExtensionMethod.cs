@@ -5,19 +5,19 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class ExtensionMethod
     {
-        public static long ObjectToLong(this object value)
+        public static long? ObjectToLong(this object value)
         {
-            return value as short? ?? value as int? ?? value as long? ?? 0;
+            return value as byte? ?? value as short? ?? value as int? ?? value as long?;
         }
 
         public static int ObjectToInt(this object value)
         {
-            return value as short? ?? value as int? ?? 0;
+            return value as byte? ?? value as short? ?? value as int? ?? 0;
         }
 
         public static short ObjectToShort(this object value)
         {
-            return value as short? ?? 0;
+            return value as byte? ?? value as short? ?? 0;
         }
 
         public static double ObjectToDouble(this object value)

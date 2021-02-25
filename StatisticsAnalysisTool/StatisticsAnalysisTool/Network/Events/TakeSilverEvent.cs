@@ -14,30 +14,30 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 if (parameters.ContainsKey(1))
                 {
-                    TimeStamp = parameters[1] as long? ?? default;
+                    TimeStamp = parameters[1].ObjectToLong() ?? 0;
                 }
 
-                if (parameters.ContainsKey(2) && int.TryParse(parameters[2].ToString(), out int targetEntityId))
+                if (parameters.ContainsKey(2))
                 {
-                    TargetEntityId = targetEntityId;
+                    TargetEntityId = parameters[2].ObjectToLong();
                 }
 
                 if (parameters.ContainsKey(3))
                 {
-                    var yieldPreTax = parameters[3] as int? ?? 0;
-                    YieldPreTax = FixPoint.FromInternalValue(yieldPreTax);
+                    var yieldPreTax = parameters[3].ObjectToLong();
+                    YieldPreTax = FixPoint.FromInternalValue(yieldPreTax ?? 0);
                 }
 
                 if (parameters.ContainsKey(5))
                 {
-                    var guildTax = parameters[5] as short? ?? 0;
-                    GuildTax = FixPoint.FromInternalValue(guildTax);
+                    var guildTax = parameters[5].ObjectToLong();
+                    GuildTax = FixPoint.FromInternalValue(guildTax ?? 0);
                 }
 
                 if (parameters.ContainsKey(6))
                 {
-                    var clusterTax = parameters[6] as short? ?? 0;
-                    ClusterTax = FixPoint.FromInternalValue(clusterTax);
+                    var clusterTax = parameters[6].ObjectToLong();
+                    ClusterTax = FixPoint.FromInternalValue(clusterTax ?? 0);
                 }
 
                 if (parameters.ContainsKey(7))
@@ -47,8 +47,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
                 if (parameters.ContainsKey(8))
                 {
-                    var multiplier = parameters[8] as short? ?? 0;
-                    Multiplier = FixPoint.FromInternalValue(multiplier);
+                    var multiplier = parameters[8].ObjectToLong();
+                    Multiplier = FixPoint.FromInternalValue(multiplier ?? 0);
                 }
 
                 YieldAfterTax = YieldPreTax - GuildTax;
@@ -60,7 +60,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         }
         
         public long TimeStamp;
-        public long TargetEntityId;
+        public long? TargetEntityId;
         public FixPoint YieldPreTax;
         public FixPoint GuildTax;
         public FixPoint ClusterTax;
