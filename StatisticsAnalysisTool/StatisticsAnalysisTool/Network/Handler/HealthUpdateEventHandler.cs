@@ -15,6 +15,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(HealthUpdateEvent value)
         {
+            _trackingController.combatController.AddDamage(value.CauserId, value.ObjectId, value.HealthChange.ToPositive());
             await Task.CompletedTask;
         }
     }

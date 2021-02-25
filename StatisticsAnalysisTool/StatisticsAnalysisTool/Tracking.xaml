@@ -80,6 +80,14 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type notification:CombatNotificationFragment}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding CauserName, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock Text="{Binding Damage, StringFormat='{}{0:N0} '}" Foreground="{StaticResource SolidColorBrush.Blue.2}"/>
+            <TextBlock Text="{Binding TargetName, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+        </StackPanel>
+    </DataTemplate>
+
     <Style x:Key="DungeonNotificationFragment.Fraction" TargetType="StackPanel">
         <Setter Property="VerticalAlignment" Value="Top"></Setter>
         <Style.Triggers>

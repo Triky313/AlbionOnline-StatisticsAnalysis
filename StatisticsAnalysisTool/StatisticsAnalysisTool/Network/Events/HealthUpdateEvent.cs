@@ -1,5 +1,6 @@
 ﻿using Albion.Network;
 using log4net;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Time;
 using System;
@@ -24,22 +25,22 @@ namespace StatisticsAnalysisTool.Network.Handler
 
                 if (parameters.ContainsKey(0))
                 {
-                    ObjectId = parameters[0] as long? ?? 0;
+                    ObjectId = parameters[0].ObjectToLong();
                 }
 
                 if (parameters.ContainsKey(1))
                 {
-                    TimeStamp = new GameTimeStamp(parameters[1] as long? ?? 0);
+                    TimeStamp = new GameTimeStamp(parameters[1].ObjectToLong());
                 }
 
                 if (parameters.ContainsKey(2))
                 {
-                    HealthChange = parameters[2] as float? ?? 0;
+                    HealthChange = parameters[2].ObjectToDouble();
                 }
 
                 if (parameters.ContainsKey(3))
                 {
-                    NewHealthValue = parameters[3] as float? ?? 0;
+                    NewHealthValue = parameters[3].ObjectToDouble();
                 }
 
                 if (parameters.ContainsKey(4))
@@ -54,12 +55,12 @@ namespace StatisticsAnalysisTool.Network.Handler
 
                 if (parameters.ContainsKey(6))
                 {
-                    CauserId = parameters[6] as short? ?? 0;
+                    CauserId = parameters[6].ObjectToLong();
                 }
 
                 if (parameters.ContainsKey(7))
                 {
-                    CausingSpellType = parameters[7] as short? ?? 0;
+                    CausingSpellType = parameters[7].ObjectToShort();
                 }
 
                 //Debug.Print($"---------------------------");
@@ -80,8 +81,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public long ObjectId;
         public GameTimeStamp TimeStamp;
-        public float HealthChange;
-        public float NewHealthValue;
+        public double HealthChange;
+        public double NewHealthValue;
         public EffectType EffectType;
         public EffectOrigin EffectOrigin;
         public long CauserId;

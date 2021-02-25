@@ -48,7 +48,7 @@ namespace StatisticsAnalysisTool.Network
                 //builder.AddEventHandler(new NewLootEventHandler());
 
                 //builder.AddResponseHandler(new TestHandler());
-                builder.AddEventHandler(new TestHandler2());
+                //builder.AddEventHandler(new TestHandler2());
                 //builder.AddRequestHandler(new TestHandler3());
 
                 builder.AddResponseHandler(new JoinHandler(trackingController, _mainWindowViewModel));

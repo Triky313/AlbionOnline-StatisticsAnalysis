@@ -213,12 +213,14 @@
     <Compile Include="Common\FixPoint.cs" />
     <Compile Include="Enumerations\EffectOrigin.cs" />
     <Compile Include="Enumerations\EffectType.cs" />
+    <Compile Include="Network\CombatController.cs" />
     <Compile Include="Network\Events\HealthUpdateEvent.cs" />
     <Compile Include="Network\Events\NewShrineEvent.cs" />
     <Compile Include="Network\Events\InCombatStateUpdateEvent.cs" />
     <Compile Include="Network\Handler\HealthUpdateEventHandler.cs" />
     <Compile Include="Network\Handler\NewShrineEventHandler.cs" />
     <Compile Include="Network\Handler\InCombatStateUpdateEventHandler.cs" />
+    <Compile Include="Network\Notification\CombatNotificationFragment.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
     <Compile Include="GameData\LootChestData.cs" />
     <Compile Include="GameData\WorldData.cs" />

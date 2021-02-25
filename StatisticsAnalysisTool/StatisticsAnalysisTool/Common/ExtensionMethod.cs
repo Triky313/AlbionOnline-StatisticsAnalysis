@@ -25,6 +25,11 @@ namespace StatisticsAnalysisTool.Common
             return value as float? ?? value as double? ?? 0;
         }
 
+        public static double ToPositive(this double value)
+        {
+            return value > 0 ? value : -value;
+        }
+
         public static Dictionary<int, T> ToDictionary<T>(this IEnumerable<T> array)
         {
             return array
