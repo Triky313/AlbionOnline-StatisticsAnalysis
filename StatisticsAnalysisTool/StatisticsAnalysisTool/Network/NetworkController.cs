@@ -37,14 +37,15 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new DiedEventHandler(trackingController));
                 builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
                 builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
+                builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
 
                 builder.AddResponseHandler(new ChangeClusterResponseHandler());
 
                 //builder.AddEventHandler(new PartySilverGainedEventHandler());
                 //builder.AddEventHandler(new NewLootEventHandler());
 
-                builder.AddResponseHandler(new TestHandler());
-                //builder.AddEventHandler(new TestHandler2());
+                //builder.AddResponseHandler(new TestHandler());
+                builder.AddEventHandler(new TestHandler2());
                 //builder.AddRequestHandler(new TestHandler3());
 
                 builder.AddResponseHandler(new UserInformationHandler(trackingController, _mainWindowViewModel));

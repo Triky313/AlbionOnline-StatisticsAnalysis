@@ -210,6 +210,8 @@
     <Compile Include="Common\AlertController.cs" />
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Common\FixPoint.cs" />
+    <Compile Include="Network\Events\InCombatStateUpdateEvent.cs" />
+    <Compile Include="Network\Handler\InCombatStateUpdateEventHandler.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
     <Compile Include="GameData\LootChestData.cs" />
     <Compile Include="GameData\WorldData.cs" />
