@@ -248,6 +248,7 @@
         GoldMarketCreateBuyOrder,
         GoldMarketGetInfos,
         GoldMarketCancelOrder,
+        Unknown246,
         GoldMarketGetAverageInfo,
         SiegeCampClaimStart,
         SiegeCampClaimCancel,
