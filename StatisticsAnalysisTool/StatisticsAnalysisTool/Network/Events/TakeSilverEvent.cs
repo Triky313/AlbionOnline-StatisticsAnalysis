@@ -20,7 +20,6 @@ namespace StatisticsAnalysisTool.Network.Handler
                 if (parameters.ContainsKey(2) && int.TryParse(parameters[2].ToString(), out int targetEntityId))
                 {
                     TargetEntityId = targetEntityId;
-                    Debug.Print("TargetEntityId " + TargetEntityId);
                 }
 
                 if (parameters.ContainsKey(3))
