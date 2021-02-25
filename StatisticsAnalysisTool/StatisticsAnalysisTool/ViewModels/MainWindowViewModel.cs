@@ -4,6 +4,7 @@ using log4net;
 using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Notification;
@@ -175,7 +176,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-        
+
         private void InitAlerts()
         {
             SoundController.InitializeSoundFilesFromDirectory();
@@ -249,8 +250,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async void InitTracking()
         {
-            await WorldController.GetDataListFromJsonAsync();
-            await LootChestController.GetDataListFromJsonAsync();
+            await WorldData.GetDataListFromJsonAsync();
+            await LootChestData.GetDataListFromJsonAsync();
 
             if (Settings.Default.IsTrackingActiveAtToolStart)
             {

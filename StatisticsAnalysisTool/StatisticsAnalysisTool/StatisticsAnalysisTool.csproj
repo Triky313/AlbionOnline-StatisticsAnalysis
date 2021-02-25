@@ -211,8 +211,8 @@
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Common\FixPoint.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
-    <Compile Include="Common\LootChestController.cs" />
-    <Compile Include="Common\WorldController.cs" />
+    <Compile Include="GameData\LootChestData.cs" />
+    <Compile Include="GameData\WorldData.cs" />
     <Compile Include="Common\TrackingController.cs" />
     <Compile Include="Enumerations\ChestStatus.cs" />
     <Compile Include="Enumerations\ChestType.cs" />

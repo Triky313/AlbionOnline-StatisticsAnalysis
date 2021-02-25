@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using PcapDotNet.Base;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
@@ -301,7 +302,7 @@ namespace StatisticsAnalysisTool.Common
                     var dunChest = new DungeonChestFragment
                     {
                         UniqueName = uniqueName,
-                        IsBossChest = LootChestController.IsBossChest(uniqueName), 
+                        IsBossChest = LootChestData.IsBossChest(uniqueName), 
                         IsChestOpen = false, 
                         Id = id
                     };
@@ -318,8 +319,8 @@ namespace StatisticsAnalysisTool.Common
                         });
                     }
 
-                    dun.Faction = LootChestController.GetFaction(uniqueName);
-                    dun.Mode = LootChestController.GetDungeonMode(uniqueName);
+                    dun.Faction = LootChestData.GetFaction(uniqueName);
+                    dun.Mode = LootChestData.GetDungeonMode(uniqueName);
                 }
                 catch (Exception e)
                 {

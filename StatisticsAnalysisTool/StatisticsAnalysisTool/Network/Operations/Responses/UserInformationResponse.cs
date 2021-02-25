@@ -1,6 +1,7 @@
 ﻿using Albion.Network;
 using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.GameData;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -30,9 +31,9 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(8))
                 {
                     MapIndex = parameters[8].ToString();
-                    UniqueMapName = WorldController.GetUniqueNameOrDefault(MapIndex);
-                    MapType = WorldController.GetMapType(MapIndex);
-                    DungeonGuid = WorldController.GetDungeonGuid(MapIndex);
+                    UniqueMapName = WorldData.GetUniqueNameOrDefault(MapIndex);
+                    MapType = WorldData.GetMapType(MapIndex);
+                    DungeonGuid = WorldData.GetDungeonGuid(MapIndex);
                 }
 
                 if (parameters.ContainsKey(23) && long.TryParse(parameters[23].ToString(), out long currentFocusPoints))

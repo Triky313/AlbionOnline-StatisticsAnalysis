@@ -1,6 +1,6 @@
 ﻿namespace StatisticsAnalysisTool.Enumerations
 {
-    public enum OperationCodes : int
+    public enum OperationCodes
     {
         Unused = 0,
         Ping,

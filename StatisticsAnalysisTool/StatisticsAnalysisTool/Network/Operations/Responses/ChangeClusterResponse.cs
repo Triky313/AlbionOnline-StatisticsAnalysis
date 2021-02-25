@@ -1,6 +1,6 @@
 ﻿using Albion.Network;
 using log4net;
-using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.GameData;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(0))
                 {
                     ClusterMapIndex = string.IsNullOrEmpty(parameters[0].ToString()) ? string.Empty : parameters[0].ToString();
-                    UniqueClusterMapName = WorldController.GetUniqueNameOrDefault(ClusterMapIndex);
+                    UniqueClusterMapName = WorldData.GetUniqueNameOrDefault(ClusterMapIndex);
                 }
 
                 if (parameters.ContainsKey(255))

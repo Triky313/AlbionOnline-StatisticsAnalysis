@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -83,7 +84,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             get => _mainMapIndex;
             set {
                 _mainMapIndex = value;
-                MainMapName = WorldController.GetUniqueNameOrDefault(value);
+                MainMapName = WorldData.GetUniqueNameOrDefault(value);
                 OnPropertyChanged();
             }
         }

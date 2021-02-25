@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -39,8 +40,8 @@ namespace StatisticsAnalysisTool.Network.Notification
             get => _uniqueName;
             set {
                 _uniqueName = value;
-                Type = LootChestController.GetChestType(_uniqueName);
-                Rarity = LootChestController.GetChestRarity(UniqueName);
+                Type = LootChestData.GetChestType(_uniqueName);
+                Rarity = LootChestData.GetChestRarity(UniqueName);
                 OnPropertyChanged();
             }
         }

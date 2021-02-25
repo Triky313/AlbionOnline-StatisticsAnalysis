@@ -1,6 +1,6 @@
 ﻿namespace StatisticsAnalysisTool.Enumerations
 {
-    public enum EventCodes : int
+    public enum EventCodes
     {
         Unused = 0,
         Leave,
