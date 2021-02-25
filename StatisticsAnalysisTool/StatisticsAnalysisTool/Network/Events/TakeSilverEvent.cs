@@ -1,6 +1,5 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Network.Time;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,12 +14,13 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 if (parameters.ContainsKey(1))
                 {
-                    TimeStamp = new GameTimeStamp(parameters[1] as int? ?? 0);
+                    TimeStamp = parameters[1] as long? ?? default;
                 }
 
                 if (parameters.ContainsKey(2) && int.TryParse(parameters[2].ToString(), out int targetEntityId))
                 {
                     TargetEntityId = targetEntityId;
+                    Debug.Print("TargetEntityId " + TargetEntityId);
                 }
 
                 if (parameters.ContainsKey(3))
@@ -60,7 +60,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
         }
         
-        public GameTimeStamp TimeStamp;
+        public long TimeStamp;
         public long TargetEntityId;
         public FixPoint YieldPreTax;
         public FixPoint GuildTax;
