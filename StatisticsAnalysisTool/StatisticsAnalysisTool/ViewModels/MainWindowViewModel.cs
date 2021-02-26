@@ -4,8 +4,10 @@ using log4net;
 using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network;
+using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
@@ -175,7 +177,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-        
+
         private void InitAlerts()
         {
             SoundController.InitializeSoundFilesFromDirectory();
@@ -249,8 +251,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async void InitTracking()
         {
-            await WorldController.GetDataListFromJsonAsync();
-            await LootChestController.GetDataListFromJsonAsync();
+            await WorldData.GetDataListFromJsonAsync();
+            await LootChestData.GetDataListFromJsonAsync();
 
             if (Settings.Default.IsTrackingActiveAtToolStart)
             {
@@ -603,7 +605,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StartTracking()
         {
-            if (NetworkController.IsNetworkCaptureRunning)
+            if (NetworkManager.IsNetworkCaptureRunning)
             {
                 return;
             }
@@ -640,7 +642,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _valueCountUpTimer?.FameCountUpTimer.Start();
             _valueCountUpTimer?.SilverCountUpTimer.Start();
 
-            IsTrackingActive = NetworkController.StartNetworkCapture(this, _trackingController, _valueCountUpTimer);
+            IsTrackingActive = NetworkManager.StartNetworkCapture(this, _trackingController, _valueCountUpTimer);
         }
 
         public void StopTracking()
@@ -648,7 +650,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _trackingController?.SaveDungeonsInFile(TrackingDungeons);
             _valueCountUpTimer?.FameCountUpTimer?.Stop();
             _valueCountUpTimer?.SilverCountUpTimer?.Stop();
-            NetworkController.StopNetworkCapture();
+            NetworkManager.StopNetworkCapture();
 
             IsTrackingActive = false;
         }

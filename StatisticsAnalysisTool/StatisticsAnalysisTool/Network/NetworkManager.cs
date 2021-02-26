@@ -1,8 +1,9 @@
-﻿using Albion.Network;
+using Albion.Network;
 using log4net;
 using PacketDotNet;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -14,7 +15,7 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Network
 {
-    public static class NetworkController
+    public static class NetworkManager
     {
         private static IPhotonReceiver _receiver;
         public static ReceiverBuilder builder;
@@ -29,24 +30,31 @@ namespace StatisticsAnalysisTool.Network
                 _mainWindowViewModel = mainWindowViewModel;
                 builder = ReceiverBuilder.Create();
 
-                //builder.AddRequestHandler(new UserInformationHandler());
-                //builder.AddEventHandler(new TakeSilverEventHandler()); // GEHT
+                builder.AddEventHandler(new TakeSilverEventHandler());
                 builder.AddEventHandler(new UpdateFameEventHandler(trackingController, valueCountUpTimerTimer.FameCountUpTimer));
                 builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController, valueCountUpTimerTimer.SilverCountUpTimer));
                 builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController, valueCountUpTimerTimer.ReSpecPointsCountUpTimer));
 
                 builder.AddEventHandler(new DiedEventHandler(trackingController));
+
                 builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
                 builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
+                builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
+                builder.AddEventHandler(new NewShrineEventHandler(trackingController));
 
-                //builder.AddEventHandler(new PartySilverGainedEventHandler());
+                builder.AddResponseHandler(new ChangeClusterResponseHandler());
+                builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
+                builder.AddEventHandler(new PartyDisbandedEventHandler());
+                builder.AddEventHandler(new NewCharacterEventHandler());
+
+                builder.AddEventHandler(new PartySilverGainedEventHandler());
                 //builder.AddEventHandler(new NewLootEventHandler());
 
                 //builder.AddResponseHandler(new TestHandler());
                 //builder.AddEventHandler(new TestHandler2());
-                //builder.AddEventHandler(new TestHandler3());
+                //builder.AddRequestHandler(new TestHandler3());
 
-                builder.AddResponseHandler(new UserInformationHandler(trackingController, _mainWindowViewModel));
+                builder.AddResponseHandler(new JoinResponseHandler(trackingController, _mainWindowViewModel));
 
                 _receiver = builder.Build();
 

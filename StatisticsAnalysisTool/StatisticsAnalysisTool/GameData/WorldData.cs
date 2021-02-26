@@ -1,20 +1,21 @@
 using log4net;
 using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Common
+namespace StatisticsAnalysisTool.GameData
 {
-    using Models;
-    using System;
-    using System.Linq;
-    using System.Text;
 
-    public static class WorldController
+    public static class WorldData
     {
         public static ObservableCollection<MapData> MapData;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

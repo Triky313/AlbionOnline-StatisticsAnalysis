@@ -55,7 +55,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            NetworkController.StopNetworkCapture();
+            NetworkManager.StopNetworkCapture();
             Application.Current.Shutdown();
         }
 

@@ -28,17 +28,5 @@
 
             return $"{minPrice:0.00} - {maxPrice:0.00} $";
         }
-
-        public static bool ParseToDouble(string value, out double outValue)
-        {
-            if (double.TryParse(value, out double newValue))
-            {
-                outValue = newValue / 10000;
-                return true;
-            }
-
-            outValue = 0;
-            return false;
-        }
     }
 }

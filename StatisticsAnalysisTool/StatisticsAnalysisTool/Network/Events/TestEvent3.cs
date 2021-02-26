@@ -5,11 +5,11 @@ using System.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class TestEvent3 : BaseEvent
+    public class TestEvent3 : BaseOperation
     {
         public TestEvent3(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Debug.Print($"----- LootChestOpened -----");
+            Debug.Print($"----- Join (Operations) -----");
 
             try
             {

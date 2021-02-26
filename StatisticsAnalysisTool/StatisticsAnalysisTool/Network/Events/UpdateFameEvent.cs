@@ -1,4 +1,5 @@
 ﻿using Albion.Network;
+using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,82 +13,81 @@ namespace StatisticsAnalysisTool.Network.Handler
             // Array[10] exist only by Crafting...
             try
             {
+                //Debug.Print($"----- UpdateFame (Events) -----");
                 //foreach (var parameter in parameters)
                 //{
                 //    Debug.Print($"{parameter}");
                 //}
 
-                if (parameters.ContainsKey(1) && long.TryParse(parameters[1].ToString(), out long totalFame))
+                if (parameters.ContainsKey(1))
                 {
-                    TotalPlayerFame = totalFame / 10000d;
+                    var totalPlayerFame = parameters[1] as long? ?? 0;
+                    TotalPlayerFame = FixPoint.FromInternalValue(totalPlayerFame);
+                }
+                
+                if (parameters.ContainsKey(2))
+                {
+                    Change = FixPoint.FromInternalValue(parameters[2].ObjectToLong() ?? 0);
                 }
 
-                if (parameters.ContainsKey(2) && long.TryParse(parameters[2].ToString(), out var fameWithZoneAndWithoutPremiumUnrounded))
+                if (parameters.ContainsKey(3))
                 {
-                    FameWithZoneAndWithoutPremium = 0;
-                    if (fameWithZoneAndWithoutPremiumUnrounded > 0)
-                    {
-                        FameWithZoneAndWithoutPremium = fameWithZoneAndWithoutPremiumUnrounded / 10000d;
-                    }
+                    GroupSize = parameters[3] as byte? ?? 0;
                 }
 
-                if (parameters.ContainsKey(4) && long.TryParse(parameters[4].ToString(), out var zoneMultiplierUnrounded))
+                if (parameters.ContainsKey(4))
                 {
-                    ZoneMultiplier = 1;
-                    if (zoneMultiplierUnrounded >= 1)
-                    {
-                        ZoneMultiplier = zoneMultiplierUnrounded / 10000d;
-                    }
+                    Multiplier = FixPoint.FromInternalValue(parameters[4].ObjectToLong() ?? 0);
                 }
 
-                // Is not isMobFame. Maybe Aggressive or not Aggressive mobs
                 if (parameters.ContainsKey(5))
                 {
-                    IsMobFame = bool.TryParse(parameters[5].ToString(), out var isMobFame) && isMobFame;
-                }
-                else
-                {
-                    IsMobFame = false;
+                    IsPremiumBonus = parameters[5] as bool? ?? false;
                 }
 
-                SatchelFame = 0;
-                if (parameters.ContainsKey(9) && long.TryParse(parameters[9].ToString(), out var satchelFameUnrounded))
+                if (parameters.ContainsKey(6))
                 {
-                    if (satchelFameUnrounded >= 1)
-                    {
-                        SatchelFame = satchelFameUnrounded / 10000d;
-                    }
+                    BonusFactor = parameters[6] as float? ?? 0;
                 }
 
-                NormalFame = 0;
-                if (FameWithZoneAndWithoutPremium > 0 && ZoneMultiplier >= 1)
+                if (parameters.ContainsKey(9))
                 {
-                    NormalFame = FameWithZoneAndWithoutPremium / ZoneMultiplier;
+                    SatchelFame = FixPoint.FromInternalValue(parameters[9].ObjectToLong() ?? 0);
+                }
+
+                if (parameters.ContainsKey(252))
+                {
+                    UsedItemType = parameters[252].ObjectToInt();
+                }
+
+                if (Change.DoubleValue > 0 && Multiplier.DoubleValue > 0)
+                {
+                    var newNormalFame = Change.DoubleValue / Multiplier.DoubleValue;
+                    NormalFame = FixPoint.FromFloatingPointValue(newNormalFame);
                 }
 
                 double fameWithZoneAndPremium = 0;
-                if (FameWithZoneAndWithoutPremium > 0)
+                if (Change.DoubleValue > 0)
                 {
-                    if (IsMobFame)
+                    if (IsPremiumBonus)
                     {
-                        fameWithZoneAndPremium = FameWithZoneAndWithoutPremium * 1.5f;
+                        fameWithZoneAndPremium = Change.DoubleValue * 1.5f;
                     }
                     else
                     {
-                        fameWithZoneAndPremium = FameWithZoneAndWithoutPremium;
+                        fameWithZoneAndPremium = Change.DoubleValue;
                     }
                 }
 
-                PremiumFame = 0;
-                if (fameWithZoneAndPremium > 0 && FameWithZoneAndWithoutPremium > 0)
+                if (fameWithZoneAndPremium > 0 && Change.DoubleValue > 0)
                 {
-                    PremiumFame = fameWithZoneAndPremium - FameWithZoneAndWithoutPremium;
+                    var newPremiumFame = fameWithZoneAndPremium - Change.DoubleValue;
+                    PremiumFame = FixPoint.FromFloatingPointValue(newPremiumFame);
                 }
 
-                ZoneFame = 0;
-                if (FameWithZoneAndWithoutPremium >= NormalFame)
+                if (Change.InternalValue >= NormalFame.InternalValue)
                 {
-                    ZoneFame = FameWithZoneAndWithoutPremium - NormalFame;
+                    ZoneFame = FixPoint.FromInternalValue(Change.InternalValue - NormalFame.InternalValue);
                 }
 
                 TotalGainedFame = NormalFame + ZoneFame + PremiumFame + SatchelFame;
@@ -98,14 +98,18 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
         }
 
-        public double TotalPlayerFame { get; }
-        public double FameWithZoneAndWithoutPremium { get; }
-        public double ZoneMultiplier { get; }
-        public double NormalFame { get; }
-        public double PremiumFame { get; }
-        public double ZoneFame { get; }
-        public double SatchelFame { get; }
-        public double TotalGainedFame { get; }
-        public bool IsMobFame { get; }
+        public FixPoint TotalPlayerFame { get; }
+        public FixPoint Change; // Fame with Zone Multiplier and without Premium
+        public byte GroupSize;
+        public FixPoint Multiplier { get; }
+        public bool IsPremiumBonus;
+        public float BonusFactor;
+        public FixPoint SatchelFame;
+        public int UsedItemType;
+
+        public FixPoint NormalFame { get; }
+        public FixPoint PremiumFame { get; }
+        public FixPoint ZoneFame { get; }
+        public FixPoint TotalGainedFame { get; }
     }
 }

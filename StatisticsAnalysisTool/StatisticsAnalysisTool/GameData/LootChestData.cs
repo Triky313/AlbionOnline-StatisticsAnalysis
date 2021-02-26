@@ -12,11 +12,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Common
+namespace StatisticsAnalysisTool.GameData
 {
-    public class LootChestController
+    public static class LootChestData
     {
-        public static IEnumerable<LootChest> LootChestData;
+        public static IEnumerable<LootChest> LootChests;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static ChestType GetChestType(string value)
@@ -132,20 +132,20 @@ namespace StatisticsAnalysisTool.Common
                 {
                     if (await GetLootChestListFromWebAsync(url))
                     {
-                        LootChestData = GetLootChestDataFromLocal();
+                        LootChests = GetLootChestDataFromLocal();
                     }
-                    return LootChestData != null && !LootChestData.IsNullOrEmpty();
+                    return LootChests != null && !LootChests.IsNullOrEmpty();
                 }
 
-                LootChestData = GetLootChestDataFromLocal();
-                return LootChestData != null && !LootChestData.IsNullOrEmpty();
+                LootChests = GetLootChestDataFromLocal();
+                return LootChests != null && !LootChests.IsNullOrEmpty();
             }
 
             if (await GetLootChestListFromWebAsync(url))
             {
-                LootChestData = GetLootChestDataFromLocal();
+                LootChests = GetLootChestDataFromLocal();
             }
-            return LootChestData != null && !LootChestData.IsNullOrEmpty();
+            return LootChests != null && !LootChests.IsNullOrEmpty();
         }
 
         #region Helper methods

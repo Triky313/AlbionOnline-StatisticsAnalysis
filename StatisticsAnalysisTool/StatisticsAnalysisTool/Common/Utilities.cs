@@ -2,7 +2,6 @@
 using Microsoft.Win32;
 using StatisticsAnalysisTool.Properties;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -73,13 +72,6 @@ namespace StatisticsAnalysisTool.Common
                 key.Close();
             }
             return false;
-        }
-
-        public static Dictionary<int, T> ToDictionary<T>(this IEnumerable<T> array)
-        {
-            return array
-                .Select((v, i) => new { Key = i, Value = v })
-                .ToDictionary(o => o.Key, o => o.Value);
         }
 
         public static string GetValuePerHour(double value, TimeSpan time) => Formatting.ToStringShort(value / (time.TotalSeconds / 60 / 60));

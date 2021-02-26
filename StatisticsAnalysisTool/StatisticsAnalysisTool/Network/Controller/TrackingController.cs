@@ -1,7 +1,9 @@
 ﻿using log4net;
 using Newtonsoft.Json;
 using PcapDotNet.Base;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
@@ -15,15 +17,20 @@ using System.Reflection;
 using System.Text;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
-namespace StatisticsAnalysisTool.Common
+namespace StatisticsAnalysisTool.Network.Controller
 {
     public class TrackingController
     {
+        public CombatController combatController;
+
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly MainWindow _mainWindow;
         private Guid? _lastGuid;
         private Guid? _currentGuid;
+
+        public long? UserObjectId { get; set; }
+        public string Username { get; set; }
 
         private const int _maxNotifications = 50;
         private const int _maxDungeons = 999;
@@ -32,9 +39,11 @@ namespace StatisticsAnalysisTool.Common
         {
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
+            combatController = new CombatController(this);
+            combatController = new CombatController(this);
         }
 
-        #region Set values
+        #region Set Main Window values
 
         public void SetTotalPlayerFame(double value)
         {
@@ -54,7 +63,7 @@ namespace StatisticsAnalysisTool.Common
         public string CurrentPlayerUsername { get; set; }
 
         #endregion
-
+        
         #region Notifications
 
         public void AddNotification(TrackingNotification item)
@@ -122,7 +131,7 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static DateTime? GetLowestDate(ObservableCollection<TrackingNotification> items)
+        private static DateTime? GetLowestDate(ObservableCollection<TrackingNotification> items)
         {
             if (items.IsNullOrEmpty())
             {
@@ -301,7 +310,7 @@ namespace StatisticsAnalysisTool.Common
                     var dunChest = new DungeonChestFragment
                     {
                         UniqueName = uniqueName,
-                        IsBossChest = LootChestController.IsBossChest(uniqueName), 
+                        IsBossChest = LootChestData.IsBossChest(uniqueName), 
                         IsChestOpen = false, 
                         Id = id
                     };
@@ -318,8 +327,8 @@ namespace StatisticsAnalysisTool.Common
                         });
                     }
 
-                    dun.Faction = LootChestController.GetFaction(uniqueName);
-                    dun.Mode = LootChestController.GetDungeonMode(uniqueName);
+                    dun.Faction = LootChestData.GetFaction(uniqueName);
+                    dun.Mode = LootChestData.GetDungeonMode(uniqueName);
                 }
                 catch (Exception e)
                 {
