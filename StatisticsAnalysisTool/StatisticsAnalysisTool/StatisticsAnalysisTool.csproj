@@ -215,6 +215,8 @@
     <Compile Include="Enumerations\EffectType.cs" />
     <Compile Include="Models\NetworkModel\NewCharacterObject.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
+    <Compile Include="Network\Controller\CharacterController.cs" />
+    <Compile Include="Network\Controller\PartyController.cs" />
     <Compile Include="Network\Events\HealthUpdateEvent.cs" />
     <Compile Include="Network\Events\NewShrineEvent.cs" />
     <Compile Include="Network\Events\InCombatStateUpdateEvent.cs" />

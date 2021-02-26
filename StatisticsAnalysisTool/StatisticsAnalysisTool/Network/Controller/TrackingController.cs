@@ -10,6 +10,7 @@ using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace StatisticsAnalysisTool.Network.Controller
     public class TrackingController
     {
         public CombatController combatController;
+        public CharacterController characterController;
+        public PartyController partyController;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
@@ -31,6 +34,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public long? UserObjectId { get; set; }
         public string Username { get; set; }
+        public List<NewCharacterObject> PartyList { get; } = new List<NewCharacterObject>();
 
         private const int _maxNotifications = 50;
         private const int _maxDungeons = 999;
@@ -40,7 +44,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
             combatController = new CombatController(this);
-            combatController = new CombatController(this);
+            characterController = new CharacterController(this);
+            partyController = new PartyController(this);
         }
 
         #region Set Main Window values
