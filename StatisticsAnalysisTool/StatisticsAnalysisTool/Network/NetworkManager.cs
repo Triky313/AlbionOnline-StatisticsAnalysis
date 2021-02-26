@@ -3,6 +3,7 @@ using log4net;
 using PacketDotNet;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.ViewModels;
 using System;
@@ -14,7 +15,7 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Network
 {
-    public static class NetworkController
+    public static class NetworkManager
     {
         private static IPhotonReceiver _receiver;
         public static ReceiverBuilder builder;
@@ -35,23 +36,25 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController, valueCountUpTimerTimer.ReSpecPointsCountUpTimer));
 
                 builder.AddEventHandler(new DiedEventHandler(trackingController));
+
                 builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
                 builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
                 builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
                 builder.AddEventHandler(new NewShrineEventHandler(trackingController));
 
                 builder.AddResponseHandler(new ChangeClusterResponseHandler());
-
                 builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
+                builder.AddEventHandler(new PartyDisbandedEventHandler());
+                builder.AddEventHandler(new NewCharacterEventHandler());
 
-                //builder.AddEventHandler(new PartySilverGainedEventHandler());
+                builder.AddEventHandler(new PartySilverGainedEventHandler());
                 //builder.AddEventHandler(new NewLootEventHandler());
 
                 //builder.AddResponseHandler(new TestHandler());
                 //builder.AddEventHandler(new TestHandler2());
                 //builder.AddRequestHandler(new TestHandler3());
 
-                builder.AddResponseHandler(new JoinHandler(trackingController, _mainWindowViewModel));
+                builder.AddResponseHandler(new JoinResponseHandler(trackingController, _mainWindowViewModel));
 
                 _receiver = builder.Build();
 

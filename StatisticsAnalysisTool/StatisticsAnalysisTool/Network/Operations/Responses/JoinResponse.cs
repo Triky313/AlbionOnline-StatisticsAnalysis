@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
         {
             try
             {
-                //Debug.Print($"---------- UserInformation (Response) ----------");
+                Debug.Print($"---------- UserInformation (Response) ----------");
                 //foreach (var parameter in parameters)
                 //{
                 //    Debug.Print($"{parameter}");

@@ -13,6 +13,7 @@ namespace StatisticsAnalysisTool.Network.Events
         {
             try
             {
+                Debug.Print($"--- PartySilverGained (Event) ---");
                 foreach (var parameter in parameters)
                 {
                     Debug.Print($"{parameter}");

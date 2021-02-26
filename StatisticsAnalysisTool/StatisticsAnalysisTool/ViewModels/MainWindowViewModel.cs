@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network;
+using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
@@ -604,7 +605,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StartTracking()
         {
-            if (NetworkController.IsNetworkCaptureRunning)
+            if (NetworkManager.IsNetworkCaptureRunning)
             {
                 return;
             }
@@ -641,7 +642,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _valueCountUpTimer?.FameCountUpTimer.Start();
             _valueCountUpTimer?.SilverCountUpTimer.Start();
 
-            IsTrackingActive = NetworkController.StartNetworkCapture(this, _trackingController, _valueCountUpTimer);
+            IsTrackingActive = NetworkManager.StartNetworkCapture(this, _trackingController, _valueCountUpTimer);
         }
 
         public void StopTracking()
@@ -649,7 +650,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _trackingController?.SaveDungeonsInFile(TrackingDungeons);
             _valueCountUpTimer?.FameCountUpTimer?.Stop();
             _valueCountUpTimer?.SilverCountUpTimer?.Stop();
-            NetworkController.StopNetworkCapture();
+            NetworkManager.StopNetworkCapture();
 
             IsTrackingActive = false;
         }

@@ -1,10 +1,10 @@
 ﻿using log4net;
 using Newtonsoft.Json;
 using PcapDotNet.Base;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
@@ -17,7 +17,7 @@ using System.Reflection;
 using System.Text;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
-namespace StatisticsAnalysisTool.Common
+namespace StatisticsAnalysisTool.Network.Controller
 {
     public class TrackingController
     {
@@ -39,6 +39,7 @@ namespace StatisticsAnalysisTool.Common
         {
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
+            combatController = new CombatController(this);
             combatController = new CombatController(this);
         }
 
