@@ -24,8 +24,11 @@ namespace StatisticsAnalysisTool.Network.Handler
             _mainWindowViewModel.TrackingAllianceName = value.AllianceName;
             _mainWindowViewModel.TrackingCurrentMapName = value.UniqueMapName;
 
-            _trackingController.UserObjectId = value.UserObjectId;
-            _trackingController.Username = value.Username;
+            if (value.UserObjectId != null)
+            {
+                _trackingController.EntityController.AddEntity((long)value.UserObjectId, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
+            }
+            
             _trackingController.SetTotalPlayerSilver(value.Silver.IntegerValue);
             _trackingController.CurrentPlayerUsername = value.Username;
             _trackingController.AddDungeon(value.MapType, value.DungeonGuid, value.MainMapIndex);

@@ -8,6 +8,8 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly TrackingController _trackingController;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        //public List<NewCharacterObject> PartyList { get; } = new List<NewCharacterObject>();
+
         public PartyController(TrackingController trackingController)
         {
             _trackingController = trackingController;

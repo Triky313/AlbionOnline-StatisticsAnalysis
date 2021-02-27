@@ -6,10 +6,16 @@ using System.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class NewCharacterEvent : BaseEvent
+    public class NewMobEvent : BaseEvent
     {
-        public NewCharacterEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public NewMobEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            Debug.Print($"--- NewMob (Event) ---");
+            //foreach (var parameter in parameters)
+            //{
+            //    Debug.Print($"{parameter}");
+            //}
+
             try
             {
                 if (parameters.ContainsKey(0))
@@ -19,18 +25,10 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (parameters.ContainsKey(1))
                 {
-                    Name = parameters[1].ToString();
+                    Type = parameters[1].ObjectToLong() ?? 0;
                 }
 
-                if (parameters.ContainsKey(8))
-                {
-                    GuildName = parameters[8].ToString();
-                }
-
-                if (parameters.ContainsKey(12))
-                {
-                    Position = (float[])parameters[12];
-                }
+                Debug.Print($"ObjectId: {ObjectId} | Type: {Type}");
             }
             catch (Exception e)
             {
@@ -39,8 +37,6 @@ namespace StatisticsAnalysisTool.Network.Events
         }
 
         public long? ObjectId { get; }
-        public string Name { get; }
-        public string GuildName { get; }
-        public float[] Position { get; }
+        public long Type { get; }
     }
 }

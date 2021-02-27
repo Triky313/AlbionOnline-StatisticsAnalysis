@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.GameData
 
     public static class WorldData
     {
-        public static ObservableCollection<MapData> MapData;
+        public static ObservableCollection<ClusterInfo> MapData;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static string GetUniqueNameOrDefault(string index)
@@ -141,31 +141,37 @@ namespace StatisticsAnalysisTool.GameData
             return (MapData?.Count > 0);
         }
 
+        public static ClusterInfo GetClusterByIndex(string index)
+        {
+            return MapData.FirstOrDefault(x => x.Index == index);
+        }
+
         #region Helper methods
 
-        private static ObservableCollection<MapData> GetWorldDataFromLocal()
+        private static ObservableCollection<ClusterInfo> GetWorldDataFromLocal()
         {
             try
             {
-                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.WorldDataFileName}", Encoding.UTF8);
+                var localItemString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"GameFiles",Settings.Default.WorldDataFileName), Encoding.UTF8);
                 return ConvertItemJsonObjectToMapData(JsonConvert.DeserializeObject<ObservableCollection<WorldJsonObject>>(localItemString));
             }
             catch(Exception e)
             {
                 Log.Error(nameof(GetWorldDataFromLocal), e);
-                return new ObservableCollection<MapData>();
+                return new ObservableCollection<ClusterInfo>();
             }
         }
 
-        private static ObservableCollection<MapData> ConvertItemJsonObjectToMapData(ObservableCollection<WorldJsonObject> worldJsonObject)
+        private static ObservableCollection<ClusterInfo> ConvertItemJsonObjectToMapData(ObservableCollection<WorldJsonObject> worldJsonObject)
         {
-            var result = worldJsonObject.Select(item => new MapData()
+            var result = worldJsonObject.Select(item => new ClusterInfo()
             {
                 Index = item.Index,
-                UniqueName = item.UniqueName
+                UniqueName = item.UniqueName,
+                Type = item.Type
             }).ToList();
 
-            return new ObservableCollection<MapData>(result);
+            return new ObservableCollection<ClusterInfo>(result);
         }
 
         private static async Task<bool> GetWorldListFromWebAsync(string url)
@@ -180,7 +186,7 @@ namespace StatisticsAnalysisTool.GameData
                         using (var content = response.Content)
                         {
                             var fileString = await content.ReadAsStringAsync();
-                            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.WorldDataFileName}", fileString, Encoding.UTF8);
+                            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName), fileString, Encoding.UTF8);
                             return true;
                         }
                     }

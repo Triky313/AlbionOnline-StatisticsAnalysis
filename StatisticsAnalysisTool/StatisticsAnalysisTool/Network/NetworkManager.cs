@@ -42,10 +42,11 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
                 builder.AddEventHandler(new NewShrineEventHandler(trackingController));
 
-                builder.AddResponseHandler(new ChangeClusterResponseHandler());
+                builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
                 builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
                 builder.AddEventHandler(new PartyDisbandedEventHandler());
-                builder.AddEventHandler(new NewCharacterEventHandler());
+                builder.AddEventHandler(new NewCharacterEventHandler(trackingController));
+                builder.AddEventHandler(new NewMobEventHandler(trackingController));
 
                 builder.AddEventHandler(new PartySilverGainedEventHandler());
                 //builder.AddEventHandler(new NewLootEventHandler());

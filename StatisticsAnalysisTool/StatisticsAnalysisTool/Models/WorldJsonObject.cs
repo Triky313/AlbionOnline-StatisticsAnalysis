@@ -9,5 +9,8 @@ namespace StatisticsAnalysisTool.Models
 
         [JsonProperty("UniqueName")]
         public string UniqueName { get; set; }
+
+        [JsonProperty("Type")]
+        public string Type { get; set; }
     }
 }

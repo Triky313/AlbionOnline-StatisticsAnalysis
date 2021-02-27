@@ -27,7 +27,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(0))
                 {
                     UserObjectId = parameters[0].ObjectToLong();
-                    Debug.Print($"UserObjectId: {parameters[0].ObjectToLong()}");
+                    Debug.Print($"MainUserObjectId: {parameters[0].ObjectToLong()}");
                 }
 
                 if (parameters.ContainsKey(2))

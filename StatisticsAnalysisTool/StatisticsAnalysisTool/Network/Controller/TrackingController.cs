@@ -4,14 +4,15 @@ using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -22,30 +23,77 @@ namespace StatisticsAnalysisTool.Network.Controller
 {
     public class TrackingController
     {
-        public CombatController combatController;
-        public CharacterController characterController;
+        public EntityController EntityController;
         public PartyController partyController;
+
+        private const int _maxNotifications = 50;
+        private const int _maxDungeons = 999;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly MainWindow _mainWindow;
         private Guid? _lastGuid;
         private Guid? _currentGuid;
+        private string _lastClusterHash;
 
-        public long? UserObjectId { get; set; }
-        public string Username { get; set; }
-        public List<NewCharacterObject> PartyList { get; } = new List<NewCharacterObject>();
+        public ClusterInfo CurrentCluster {
+            get;
+            private set;
+        }
 
-        private const int _maxNotifications = 50;
-        private const int _maxDungeons = 999;
+        public string ClusterOwner {
+            get;
+            private set;
+        }
 
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
-            combatController = new CombatController(this);
-            characterController = new CharacterController(this);
+            EntityController = new EntityController(this);
             partyController = new PartyController(this);
+        }
+
+        #region Cluster
+
+        private bool TryChangeCluster(string name, string mapName, string clusterOwner)
+        {
+            var newClusterHash = string.Empty + name + mapName + clusterOwner;
+
+            if (_lastClusterHash == newClusterHash)
+            {
+                return false;
+            }
+
+            _lastClusterHash = newClusterHash;
+            return true;
+        }
+
+        public event Action<ClusterInfo> OnChangeCluster;
+
+        public void SetNewCluster(string index, string clusterOwner)
+        {
+            CurrentCluster = WorldData.GetClusterByIndex(index);
+
+            if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName, clusterOwner))
+            {
+                return;
+            }
+            
+            ClusterOwner = clusterOwner;
+
+            EntityController.RemoveAll();
+            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}'");
+            OnChangeCluster?.Invoke(CurrentCluster);
+        }
+
+        #endregion
+
+        public event Action<bool, bool> OnChangeCombatMode;
+
+        public void UpdateCombatMode(bool inActiveCombat, bool inPassiveCombat)
+        {
+            OnChangeCombatMode?.Invoke(inActiveCombat, inPassiveCombat);
         }
 
         #region Set Main Window values

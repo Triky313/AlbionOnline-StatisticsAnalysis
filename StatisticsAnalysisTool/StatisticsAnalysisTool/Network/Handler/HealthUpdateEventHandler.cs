@@ -1,5 +1,4 @@
 ﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
 using System.Threading.Tasks;
@@ -16,7 +15,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(HealthUpdateEvent value)
         {
-            _trackingController.combatController.AddDamage(value.CauserId, value.ObjectId, value.HealthChange.ToPositive());
+            //_trackingController.combatController.AddDamage(value.CauserId, value.ObjectId, value.HealthChange.ToPositive());
             await Task.CompletedTask;
         }
     }
