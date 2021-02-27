@@ -295,6 +295,18 @@
                         </ScrollViewer>
                     </Grid>
                 </TabItem>
+                <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE_METER}">
+                    <Grid>
+                        <lvc:CartesianChart Series="{Binding DamageMeterSeriesCollection}">
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis LabelFormatter="{Binding DamageMeterXFormatter, UpdateSourceTrigger=PropertyChanged}" Foreground="{StaticResource SolidColorBrush.Foreground.First}"></lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Title="{Binding Translation.Player, FallbackValue=PLAYER}" Foreground="{StaticResource SolidColorBrush.Foreground.First}"></lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                    </Grid>
+                </TabItem>
             </TabControl>
             <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,30,0">
                 <Grid ZIndex="20" Margin="5,0,0,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">

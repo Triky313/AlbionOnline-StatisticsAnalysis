@@ -52,27 +52,27 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void HealthUpdate(
             long objectId,
-            GameTimeStamp packageTimeStamp,
-            float packageHealthChange,
-            float packageNewHealthValue,
-            EffectType packageEffectType,
-            EffectOrigin packageEffectOrigin,
-            long packageCauserId,
-            int packageCausingSpellType
+            GameTimeStamp TimeStamp,
+            double HealthChange,
+            double NewHealthValue,
+            EffectType EffectType,
+            EffectOrigin EffectOrigin,
+            long CauserId,
+            int CausingSpellType
         )
         {
             OnHealthUpdate?.Invoke(
                 objectId,
-                packageTimeStamp,
-                packageHealthChange,
-                packageNewHealthValue,
-                packageEffectType,
-                packageEffectOrigin,
-                packageCauserId,
-                packageCausingSpellType
+                TimeStamp,
+                HealthChange,
+                NewHealthValue,
+                EffectType,
+                EffectOrigin,
+                CauserId,
+                CausingSpellType
             );
         }
 
-        public event Action<long, GameTimeStamp, float, float, EffectType, EffectOrigin, long, int> OnHealthUpdate;
+        public event Action<long, GameTimeStamp, double, double, EffectType, EffectOrigin, long, int> OnHealthUpdate;
     }
 }

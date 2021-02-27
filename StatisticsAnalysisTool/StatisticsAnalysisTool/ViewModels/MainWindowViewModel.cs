@@ -41,6 +41,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private int _currentGoldPrice;
         private string _currentGoldPriceTimestamp;
         private SeriesCollection _seriesCollection;
+        private SeriesCollection _damageMeterSeriesCollection;
         private string[] _labels;
         private string _textBoxGoldModeNumberOfValues;
         private string _updateTranslation;
@@ -89,6 +90,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
         private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
+        //private ObservableCollection<TrackingNotification> _damageMeter = new ObservableCollection<TrackingNotification>();
         private string _trackingUsername;
         private string _trackingGuildName;
         private string _trackingAllianceName;
@@ -112,6 +114,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
         private DungeonStats _dungeonStatsDay = new DungeonStats();
         private DungeonStats _dungeonStatsTotal = new DungeonStats();
+        private DamageChartController _damageChartController;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -613,6 +616,7 @@ namespace StatisticsAnalysisTool.ViewModels
             if (_trackingController == null)
             {
                 _trackingController = new TrackingController(this, _mainWindow);
+                _trackingController?.RegisterEvents();
             }
 
             TrackingDungeons = _trackingController?.LoadDungeonFromFile();
@@ -620,7 +624,6 @@ namespace StatisticsAnalysisTool.ViewModels
             _trackingController?.SetDungeonStatsTotal();
             DungeonStatsDay.EnteredDungeon = _trackingController.GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
             DungeonStatsTotal.EnteredDungeon = _trackingController.GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
-
 
             _valueCountUpTimer = new ValueCountUpTimer();
 
@@ -643,11 +646,18 @@ namespace StatisticsAnalysisTool.ViewModels
             _valueCountUpTimer?.SilverCountUpTimer.Start();
 
             IsTrackingActive = NetworkManager.StartNetworkCapture(this, _trackingController, _valueCountUpTimer);
+
+            if (_damageChartController == null)
+            {
+                _damageChartController = new DamageChartController(DamageMeterSeriesCollection, DamageMeterXFormatter);
+            }
         }
 
         public void StopTracking()
         {
             _trackingController?.SaveDungeonsInFile(TrackingDungeons);
+            _trackingController?.UnregisterEvents();
+
             _valueCountUpTimer?.FameCountUpTimer?.Stop();
             _valueCountUpTimer?.SilverCountUpTimer?.Stop();
             NetworkManager.StopNetworkCapture();
@@ -699,6 +709,15 @@ namespace StatisticsAnalysisTool.ViewModels
             DungeonStatsDay.OpenedRareChests = 0;
             DungeonStatsDay.OpenedLegendaryChests = 0;
         }
+
+        #region Damage meter
+
+        public void AddToDamageMeter(DamageMeterObject damageMeterObject)
+        {
+            _damageChartController.AddToDamageMeter(damageMeterObject);
+        }
+
+        #endregion
 
         #endregion
 
@@ -806,6 +825,20 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        #region Damage meter
+
+        public SeriesCollection DamageMeterSeriesCollection {
+            get => _damageMeterSeriesCollection;
+            set {
+                _damageMeterSeriesCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Func<double, string> DamageMeterXFormatter { get; set; }
+        
+        #endregion
 
         public Visibility UsernameInformationVisibility {
             get => _usernameInformationVisibility;

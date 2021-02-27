@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.Network.Time;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
@@ -52,6 +53,16 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindow = mainWindow;
             EntityController = new EntityController(this);
             partyController = new PartyController(this);
+        }
+
+        public void RegisterEvents()
+        {
+            EntityController.OnHealthUpdate += SendHealthUpdate;
+        }
+
+        public void UnregisterEvents()
+        {
+            EntityController.OnHealthUpdate -= SendHealthUpdate;
         }
 
         #region Cluster
@@ -765,6 +776,28 @@ namespace StatisticsAnalysisTool.Network.Controller
                 Log.Error(nameof(GetLowestDate), e);
                 return null;
             }
+        }
+
+        #endregion
+
+        #region Trigger events
+
+        public void SendHealthUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType, EffectOrigin effectOrigin, long causerId, int causingSpellType)
+        {
+            // TODO: Fertige Werte übergeben
+            var healthUpdate = new HealthUpdate()
+            {
+                ObjectId = objectId,
+                TimeStamp = timeStamp,
+                HealthChange = healthChange,
+                NewHealthValue = newHealthValue,
+                EffectType = effectType,
+                EffectOrigin = effectOrigin,
+                CauserId = causerId,
+                CausingSpellType = causingSpellType
+            };
+            
+            //_mainWindowViewModel.AddToDamageMeter(new DamageMeterObject() { Name = healthUpdate.ObjectId, Value = healthUpdate.HealthChange });
         }
 
         #endregion
