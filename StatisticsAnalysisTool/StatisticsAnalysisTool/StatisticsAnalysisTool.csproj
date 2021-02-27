@@ -208,6 +208,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\AlertController.cs" />
+    <Compile Include="Common\DamageChartController.cs" />
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Common\ExtensionMethod.cs" />
     <Compile Include="Common\FixPoint.cs" />
@@ -216,8 +217,10 @@
     <Compile Include="Enumerations\EffectType.cs" />
     <Compile Include="Enumerations\GameObjectSubType.cs" />
     <Compile Include="Enumerations\GameObjectType.cs" />
+    <Compile Include="Models\DamageMeterObject.cs" />
     <Compile Include="Models\NetworkModel\DamageObject.cs" />
     <Compile Include="Models\NetworkModel\GameObject.cs" />
+    <Compile Include="Models\NetworkModel\HealthUpdate.cs" />
     <Compile Include="Network\Controller\EntityController.cs" />
     <Compile Include="Network\Controller\PartyController.cs" />
     <Compile Include="Network\Events\HealthUpdateEvent.cs" />
