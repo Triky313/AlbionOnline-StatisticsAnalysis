@@ -1,5 +1,4 @@
 ﻿using AutoUpdaterDotNET;
-using Microsoft.Win32;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Globalization;
@@ -37,42 +36,6 @@ namespace StatisticsAnalysisTool.Common
         public static string UlongMarketPriceToString(ulong value) => value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
 
         public static string MarketPriceDateToString(DateTime value) => Formatting.CurrentDateTimeFormat(value);
-
-        public static bool IsSoftwareInstalled(string c_name)
-        {
-            string displayName;
-
-            var registryKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
-            var key = Registry.LocalMachine.OpenSubKey(registryKey);
-            if (key != null)
-            {
-                foreach (var subkey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
-                {
-                    displayName = subkey?.GetValue("DisplayName") as string;
-                    if (displayName != null && displayName.Contains(c_name))
-                    {
-                        return true;
-                    }
-                }
-                key.Close();
-            }
-
-            registryKey = @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall";
-            key = Registry.LocalMachine.OpenSubKey(registryKey);
-            if (key != null)
-            {
-                foreach (var subkey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
-                {
-                    displayName = subkey?.GetValue("DisplayName") as string;
-                    if (displayName != null && displayName.Contains(c_name))
-                    {
-                        return true;
-                    }
-                }
-                key.Close();
-            }
-            return false;
-        }
 
         public static string GetValuePerHour(double value, TimeSpan time) => Formatting.ToStringShort(value / (time.TotalSeconds / 60 / 60));
 

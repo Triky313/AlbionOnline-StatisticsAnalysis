@@ -28,7 +28,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 _trackingController.EntityController.AddEntity((long)value.UserObjectId, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
             }
-            
+
             _trackingController.SetTotalPlayerSilver(value.Silver.IntegerValue);
             _trackingController.CurrentPlayerUsername = value.Username;
             _trackingController.AddDungeon(value.MapType, value.DungeonGuid, value.MainMapIndex);

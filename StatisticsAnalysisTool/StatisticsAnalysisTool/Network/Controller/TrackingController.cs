@@ -25,7 +25,8 @@ namespace StatisticsAnalysisTool.Network.Controller
     public class TrackingController
     {
         public EntityController EntityController;
-        public PartyController partyController;
+        public PartyController PartyController;
+        public CombatController CombatController;
 
         private const int _maxNotifications = 50;
         private const int _maxDungeons = 999;
@@ -47,22 +48,23 @@ namespace StatisticsAnalysisTool.Network.Controller
             private set;
         }
 
-        public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
+        public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow, DamageChartController damageChartController)
         {
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
             EntityController = new EntityController(this);
-            partyController = new PartyController(this);
+            PartyController = new PartyController(this);
+            CombatController = new CombatController(mainWindowViewModel, damageChartController);
         }
 
         public void RegisterEvents()
         {
-            EntityController.OnHealthUpdate += SendHealthUpdate;
+            EntityController.OnHealthUpdate += DamageMeterUpdate;
         }
 
         public void UnregisterEvents()
         {
-            EntityController.OnHealthUpdate -= SendHealthUpdate;
+            EntityController.OnHealthUpdate -= DamageMeterUpdate;
         }
 
         #region Cluster
@@ -86,6 +88,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             CurrentCluster = WorldData.GetClusterByIndex(index);
 
+            // TODO: Exception wenn Dungeon eine weitere Map hat. Umbauen: Am besten so wie schon vorhanden für Join Event
             if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName, clusterOwner))
             {
                 return;
@@ -94,6 +97,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             ClusterOwner = clusterOwner;
 
             EntityController.RemoveAll();
+            CombatController.AddClusterStartTimer();
+
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}'");
             OnChangeCluster?.Invoke(CurrentCluster);
         }
@@ -782,22 +787,9 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         #region Trigger events
 
-        public void SendHealthUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType, EffectOrigin effectOrigin, long causerId, int causingSpellType)
+        public void DamageMeterUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType, EffectOrigin effectOrigin, long causerId, int causingSpellType)
         {
-            // TODO: Fertige Werte übergeben
-            var healthUpdate = new HealthUpdate()
-            {
-                ObjectId = objectId,
-                TimeStamp = timeStamp,
-                HealthChange = healthChange,
-                NewHealthValue = newHealthValue,
-                EffectType = effectType,
-                EffectOrigin = effectOrigin,
-                CauserId = causerId,
-                CausingSpellType = causingSpellType
-            };
-            
-            //_mainWindowViewModel.AddToDamageMeter(new DamageMeterObject() { Name = healthUpdate.ObjectId, Value = healthUpdate.HealthChange });
+            CombatController.AddDamage(objectId, causerId, healthChange);
         }
 
         #endregion

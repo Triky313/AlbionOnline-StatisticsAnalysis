@@ -1,5 +1,6 @@
 ﻿using FontAwesome.WPF;
 using LiveCharts;
+using LiveCharts.Configurations;
 using log4net;
 using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
@@ -115,6 +116,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private DungeonStats _dungeonStatsDay = new DungeonStats();
         private DungeonStats _dungeonStatsTotal = new DungeonStats();
         private DamageChartController _damageChartController;
+        private Func<double, string> _damageMeterXFormatter;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -613,9 +615,15 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
+            if (_damageChartController == null)
+            {
+                //_damageChartController = new DamageChartController(_mainWindow, DamageMeterSeriesCollection, DamageMeterXFormatter);
+                DamageMeterSeriesCollection = new SeriesCollection(GetDamageMeterMapper());
+            }
+
             if (_trackingController == null)
             {
-                _trackingController = new TrackingController(this, _mainWindow);
+                _trackingController = new TrackingController(this, _mainWindow, _damageChartController);
                 _trackingController?.RegisterEvents();
             }
 
@@ -646,11 +654,6 @@ namespace StatisticsAnalysisTool.ViewModels
             _valueCountUpTimer?.SilverCountUpTimer.Start();
 
             IsTrackingActive = NetworkManager.StartNetworkCapture(this, _trackingController, _valueCountUpTimer);
-
-            if (_damageChartController == null)
-            {
-                _damageChartController = new DamageChartController(DamageMeterSeriesCollection, DamageMeterXFormatter);
-            }
         }
 
         public void StopTracking()
@@ -710,14 +713,44 @@ namespace StatisticsAnalysisTool.ViewModels
             DungeonStatsDay.OpenedLegendaryChests = 0;
         }
 
-        #region Damage meter
-
-        public void AddToDamageMeter(DamageMeterObject damageMeterObject)
+        public void SetDamageObjectToDamageMeter(DamageMeterObject damageMeterObject)
         {
-            _damageChartController.AddToDamageMeter(damageMeterObject);
+            if (string.IsNullOrEmpty(damageMeterObject.Name) || damageMeterObject.Value <= 0)
+            {
+                return;
+            }
+
+            _mainWindow.Dispatcher?.Invoke(() =>
+            {
+                if (DamageMeterSeriesCollection.Any(x => x.Title == damageMeterObject.Name))
+                {
+                    var rowSeries = DamageMeterSeriesCollection.FirstOrDefault(x => x.Title == damageMeterObject.Name);
+                    //rowSeries?.Values?.Clear();
+                    rowSeries?.Values?.Add(new DamageMeterObject() { Name = damageMeterObject.Name, Value = damageMeterObject.Value });
+                }
+                else
+                {
+                    var rowSeries = new RowSeries
+                    {
+                        Fill = (Brush)Application.Current.Resources["SolidColorBrush.City.Martlock"], // TODO: Color method adjustment
+                        Title = damageMeterObject.Name,
+                        Values = new ChartValues<DamageMeterObject>(),
+                        DataLabels = true,
+                        LabelsPosition = BarLabelPosition.Parallel
+                    };
+                    rowSeries.Values?.Add(new DamageMeterObject() { Name = damageMeterObject.Name, Value = damageMeterObject.Value });
+
+                    DamageMeterSeriesCollection.Add(rowSeries);
+                }
+            });
         }
 
-        #endregion
+        private CartesianMapper<DamageMeterObject> GetDamageMeterMapper()
+        {
+            return Mappers.Xy<DamageMeterObject>()
+                .X(value => value.Value);
+            //.Y(value => value.Value);
+        }
 
         #endregion
 
@@ -836,8 +869,14 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Func<double, string> DamageMeterXFormatter { get; set; }
-        
+        public Func<double, string> DamageMeterXFormatter {
+            get => _damageMeterXFormatter;
+            set {
+                _damageMeterXFormatter = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         public Visibility UsernameInformationVisibility {

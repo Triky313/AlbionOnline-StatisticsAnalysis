@@ -2,6 +2,7 @@
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Linq;
 using System.Windows;
@@ -11,44 +12,49 @@ namespace StatisticsAnalysisTool.Common
 {
     public class DamageChartController
     {
+        private readonly MainWindow _mainWindow;
         private readonly SeriesCollection _damageMeterSeriesCollection;
         private Func<double, string> _damageMeterXFormatter;
 
-        public DamageChartController(SeriesCollection damageMeterSeriesCollection, Func<double, string> damageMeterXFormatter)
+        public DamageChartController(MainWindow mainWindow, SeriesCollection damageMeterSeriesCollection, Func<double, string> damageMeterXFormatter)
         {
+            _mainWindow = mainWindow;
             _damageMeterSeriesCollection = damageMeterSeriesCollection;
             _damageMeterXFormatter = damageMeterXFormatter;
 
             _damageMeterSeriesCollection = new SeriesCollection(GetDamageMeterMapper());
         }
 
-        public void AddToDamageMeter(DamageMeterObject damageMeterObject)
+        public void SetDamageObjectToDamageMeter(DamageMeterObject damageMeterObject)
         {
-            if (string.IsNullOrEmpty(damageMeterObject.Name) || damageMeterObject.Value < 0)
+            if (string.IsNullOrEmpty(damageMeterObject.Name) || damageMeterObject.Value <= 0)
             {
                 return;
             }
 
-            if (_damageMeterSeriesCollection.Any(x => x.Title == damageMeterObject.Name))
+            _mainWindow.Dispatcher?.Invoke(() =>
             {
-                var rowSeries = _damageMeterSeriesCollection.FirstOrDefault(x => x.Title == damageMeterObject.Name);
-                rowSeries?.Values?.Clear();
-                rowSeries?.Values?.Add(new DamageMeterObject() { Name = damageMeterObject.Name, Value = damageMeterObject.Value });
-            }
-            else
-            {
-                var rowSeries = new RowSeries
+                if (_damageMeterSeriesCollection.Any(x => x.Title == damageMeterObject.Name))
                 {
-                    Fill = (Brush)Application.Current.Resources["SolidColorBrush.City.Martlock"], // TODO: Color method adjustment
-                    Title = damageMeterObject.Name,
-                    Values = new ChartValues<DamageMeterObject>(),
-                    DataLabels = true,
-                    LabelsPosition = BarLabelPosition.Parallel
-                };
-                rowSeries.Values?.Add(new DamageMeterObject() { Name = damageMeterObject.Name, Value = damageMeterObject.Value });
+                    var rowSeries = _damageMeterSeriesCollection.FirstOrDefault(x => x.Title == damageMeterObject.Name);
+                    rowSeries?.Values?.Clear();
+                    rowSeries?.Values?.Add(new DamageMeterObject() { Name = damageMeterObject.Name, Value = damageMeterObject.Value });
+                }
+                else
+                {
+                    var rowSeries = new RowSeries
+                    {
+                        Fill = (Brush) Application.Current.Resources["SolidColorBrush.City.Martlock"], // TODO: Color method adjustment
+                        Title = damageMeterObject.Name,
+                        Values = new ChartValues<DamageMeterObject>(),
+                        DataLabels = true,
+                        LabelsPosition = BarLabelPosition.Parallel
+                    };
+                    rowSeries.Values?.Add(new DamageMeterObject() {Name = damageMeterObject.Name, Value = damageMeterObject.Value});
 
-                _damageMeterSeriesCollection.Add(rowSeries);
-            }
+                    _damageMeterSeriesCollection.Add(rowSeries);
+                }
+            });
         }
         
         private CartesianMapper<DamageMeterObject> GetDamageMeterMapper()

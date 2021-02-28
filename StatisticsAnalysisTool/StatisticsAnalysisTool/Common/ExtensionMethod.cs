@@ -1,10 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace StatisticsAnalysisTool.Common
 {
     public static class ExtensionMethod
     {
+        public static DateTime? GetHighestDateTime(this ObservableCollection<DateTime> list)
+        {
+            if (!list.Any())
+            {
+                return null;
+            }
+
+            return list.Max();
+        }
+
         public static long? ObjectToLong(this object value)
         {
             return value as byte? ?? value as short? ?? value as int? ?? value as long?;
