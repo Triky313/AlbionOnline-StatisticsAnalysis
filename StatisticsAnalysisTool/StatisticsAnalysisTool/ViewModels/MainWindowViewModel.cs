@@ -1,6 +1,5 @@
 ﻿using FontAwesome.WPF;
 using LiveCharts;
-using LiveCharts.Configurations;
 using log4net;
 using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
@@ -42,7 +41,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private int _currentGoldPrice;
         private string _currentGoldPriceTimestamp;
         private SeriesCollection _seriesCollection;
-        private SeriesCollection _damageMeterSeriesCollection;
         private string[] _labels;
         private string _textBoxGoldModeNumberOfValues;
         private string _updateTranslation;
@@ -113,10 +111,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
+        private ObservableCollection<DamageMeterFragment> _damageMeter = new ObservableCollection<DamageMeterFragment>();
         private DungeonStats _dungeonStatsDay = new DungeonStats();
         private DungeonStats _dungeonStatsTotal = new DungeonStats();
-        private DamageChartController _damageChartController;
-        private Func<double, string> _damageMeterXFormatter;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -615,15 +612,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            if (_damageChartController == null)
-            {
-                //_damageChartController = new DamageChartController(_mainWindow, DamageMeterSeriesCollection, DamageMeterXFormatter);
-                DamageMeterSeriesCollection = new SeriesCollection(GetDamageMeterMapper());
-            }
-
             if (_trackingController == null)
             {
-                _trackingController = new TrackingController(this, _mainWindow, _damageChartController);
+                _trackingController = new TrackingController(this, _mainWindow);
                 _trackingController?.RegisterEvents();
             }
 
@@ -711,45 +702,6 @@ namespace StatisticsAnalysisTool.ViewModels
             DungeonStatsDay.OpenedUncommonChests = 0;
             DungeonStatsDay.OpenedRareChests = 0;
             DungeonStatsDay.OpenedLegendaryChests = 0;
-        }
-
-        public void SetDamageObjectToDamageMeter(DamageMeterObject damageMeterObject)
-        {
-            if (string.IsNullOrEmpty(damageMeterObject.Name) || damageMeterObject.Value <= 0)
-            {
-                return;
-            }
-
-            _mainWindow.Dispatcher?.Invoke(() =>
-            {
-                if (DamageMeterSeriesCollection.Any(x => x.Title == damageMeterObject.Name))
-                {
-                    var rowSeries = DamageMeterSeriesCollection.FirstOrDefault(x => x.Title == damageMeterObject.Name);
-                    //rowSeries?.Values?.Clear();
-                    rowSeries?.Values?.Add(new DamageMeterObject() { Name = damageMeterObject.Name, Value = damageMeterObject.Value });
-                }
-                else
-                {
-                    var rowSeries = new RowSeries
-                    {
-                        Fill = (Brush)Application.Current.Resources["SolidColorBrush.City.Martlock"], // TODO: Color method adjustment
-                        Title = damageMeterObject.Name,
-                        Values = new ChartValues<DamageMeterObject>(),
-                        DataLabels = true,
-                        LabelsPosition = BarLabelPosition.Parallel
-                    };
-                    rowSeries.Values?.Add(new DamageMeterObject() { Name = damageMeterObject.Name, Value = damageMeterObject.Value });
-
-                    DamageMeterSeriesCollection.Add(rowSeries);
-                }
-            });
-        }
-
-        private CartesianMapper<DamageMeterObject> GetDamageMeterMapper()
-        {
-            return Mappers.Xy<DamageMeterObject>()
-                .X(value => value.Value);
-            //.Y(value => value.Value);
         }
 
         #endregion
@@ -859,25 +811,13 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        #region Damage meter
-
-        public SeriesCollection DamageMeterSeriesCollection {
-            get => _damageMeterSeriesCollection;
+        public ObservableCollection<DamageMeterFragment> DamageMeter {
+            get => _damageMeter;
             set {
-                _damageMeterSeriesCollection = value;
+                _damageMeter = value;
                 OnPropertyChanged();
             }
         }
-
-        public Func<double, string> DamageMeterXFormatter {
-            get => _damageMeterXFormatter;
-            set {
-                _damageMeterXFormatter = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
 
         public Visibility UsernameInformationVisibility {
             get => _usernameInformationVisibility;

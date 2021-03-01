@@ -580,4 +580,18 @@
         <Setter Property="Padding" Value="0"></Setter>
         <Setter Property="Margin" Value="0"></Setter>
     </Style>
+
+    <!-- ##### Damage meter ##### -->
+    <DataTemplate DataType="{x:Type notification:DamageMeterFragment}">
+        <Grid>
+            <ProgressBar Foreground="Brown"
+                         Minimum="0" Maximum="{Binding MaximumDamage, IsAsync=True, FallbackValue=0}" Value="{Binding Damage, IsAsync=True, FallbackValue=0}" 
+                         Height="30" Margin="10,2" VerticalAlignment="Top"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding Name}" MinWidth="100" Margin="10,3"></Label>
+                <Label Content="{Binding Damage}" Margin="10,3"></Label>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
 </ResourceDictionary>

@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common
 {
     public static class ExtensionMethod
     {
+        public static async Task ForEachAsync<T>(this List<T> enumerable, Action<T> action)
+        {
+            foreach (var item in enumerable)
+                await Task.Run(() => { action(item); }).ConfigureAwait(false);
+        }
+
         public static DateTime? GetHighestDateTime(this ObservableCollection<DateTime> list)
         {
             if (!list.Any())

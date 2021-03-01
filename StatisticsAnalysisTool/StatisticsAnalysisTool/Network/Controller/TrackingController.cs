@@ -48,13 +48,13 @@ namespace StatisticsAnalysisTool.Network.Controller
             private set;
         }
 
-        public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow, DamageChartController damageChartController)
+        public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
             EntityController = new EntityController(this);
             PartyController = new PartyController(this);
-            CombatController = new CombatController(mainWindowViewModel, damageChartController);
+            CombatController = new CombatController(_mainWindow, mainWindowViewModel);
         }
 
         public void RegisterEvents()
@@ -305,7 +305,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     {
                         _mainWindowViewModel.TrackingDungeons.Insert(
                             0, 
-                            new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow, _mainWindowViewModel));
+                            new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow));
                     }
                     else
                     {
@@ -313,7 +313,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                         {
                             _mainWindowViewModel.TrackingDungeons.Insert(
                                 0, 
-                                new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow, _mainWindowViewModel));
+                                new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow));
                         });
                     }
 

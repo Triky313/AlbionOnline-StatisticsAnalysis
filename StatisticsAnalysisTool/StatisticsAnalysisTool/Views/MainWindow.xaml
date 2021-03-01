@@ -291,20 +291,15 @@
                             <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" MinWidth="200" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Click="BtnDungeonTrackingReset_Click"/>
                         </Grid>
                         <ScrollViewer Margin="0,105,0,0">
-                            <ItemsControl ItemsSource="{Binding TrackingDungeons}" />
+                            <ItemsControl ItemsSource="{Binding TrackingDungeons}"/>
                         </ScrollViewer>
                     </Grid>
                 </TabItem>
                 <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE_METER}">
                     <Grid>
-                        <lvc:CartesianChart Series="{Binding DamageMeterSeriesCollection}">
-                            <!--<lvc:CartesianChart.AxisX>
-                                <lvc:Axis LabelFormatter="{Binding DamageMeterXFormatter, UpdateSourceTrigger=PropertyChanged}" Foreground="{StaticResource SolidColorBrush.Foreground.First}"></lvc:Axis>
-                            </lvc:CartesianChart.AxisX>-->
-                            <lvc:CartesianChart.AxisY>
-                                <lvc:Axis Title="{Binding Translation.Player, FallbackValue=PLAYER}" Foreground="{StaticResource SolidColorBrush.Foreground.First}"></lvc:Axis>
-                            </lvc:CartesianChart.AxisY>
-                        </lvc:CartesianChart>
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{Binding DamageMeter}"/>
+                        </ScrollViewer>
                     </Grid>
                 </TabItem>
             </TabControl>
