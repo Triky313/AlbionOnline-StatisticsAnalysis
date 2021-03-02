@@ -141,9 +141,9 @@ namespace StatisticsAnalysisTool.GameData
             return (MapData?.Count > 0);
         }
 
-        public static ClusterInfo GetClusterByIndex(string index)
+        public static ClusterInfo GetClusterInfoByIndex(string index)
         {
-            return MapData.FirstOrDefault(x => x.Index == index);
+            return MapData.FirstOrDefault(x => x.Index == index) ?? new ClusterInfo() { Index = index, UniqueName = GetUniqueNameOrDefault(index), Type = "Unknown" };
         }
 
         #region Helper methods

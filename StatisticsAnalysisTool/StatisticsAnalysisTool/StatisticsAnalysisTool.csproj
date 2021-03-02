@@ -211,6 +211,7 @@
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Common\ExtensionMethod.cs" />
     <Compile Include="Common\FixPoint.cs" />
+    <Compile Include="Common\ProgressBarSmoother.cs" />
     <Compile Include="Enumerations\ClusterType.cs" />
     <Compile Include="Enumerations\EffectOrigin.cs" />
     <Compile Include="Enumerations\EffectType.cs" />

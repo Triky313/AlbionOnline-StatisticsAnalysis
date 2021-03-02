@@ -3,7 +3,10 @@
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
                     xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
-                    xmlns:fa="http://schemas.fontawesome.io/icons/">
+                    xmlns:fa="http://schemas.fontawesome.io/icons/"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
 
     <Style x:Key="LineFragmentImageStyle" TargetType="{x:Type Image}">
         <Setter Property="Width" Value="16" />
@@ -584,9 +587,9 @@
     <!-- ##### Damage meter ##### -->
     <DataTemplate DataType="{x:Type notification:DamageMeterFragment}">
         <Grid>
-            <ProgressBar Foreground="Brown"
-                         Minimum="0" Maximum="{Binding MaximumDamage, IsAsync=True, FallbackValue=0}" Value="{Binding Damage, IsAsync=True, FallbackValue=0}" 
-                         Height="30" Margin="10,2" VerticalAlignment="Top"/>
+            <ProgressBar Foreground="Brown" com:ProgressBarSmoother.SmoothValue="{Binding Damage}"
+                         Minimum="0" Maximum="{Binding MaximumDamage, IsAsync=True, FallbackValue=0}" 
+                         Height="30" Margin="10,2" VerticalAlignment="Top" />
             <StackPanel Orientation="Horizontal">
                 <Label Content="{Binding Name}" MinWidth="100" Margin="10,3"></Label>
                 <Label Content="{Binding Damage}" Margin="10,3"></Label>

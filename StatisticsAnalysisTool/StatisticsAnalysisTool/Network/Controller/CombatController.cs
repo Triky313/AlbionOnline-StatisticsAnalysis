@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Controller
 {
@@ -38,23 +37,27 @@ namespace StatisticsAnalysisTool.Network.Controller
             var damageValue = (int)Math.Round(healthChange.ToPositive(), MidpointRounding.AwayFromZero);
             // TODO: ObjectId dem Namen zuweisen, anhand von PartyController
             _damageCollection.Add(new DamageObject(causerId, objectId, causerId.ToString(), damageValue));
+            // TODO: Einbauen, dass vorhandene Werte addiert werden und nicht immer wieder jeder damage neu hinzugefügt wird
 
             if (_clusterStarts.Count <= 0)
             {
                 AddClusterStartTimer();
             }
+            
             var damageListByNewestCluster = _damageCollection.Where(x => x.TimeStamp >= _clusterStarts.GetHighestDateTime()).ToList();
 
             var groupedDamageList = damageListByNewestCluster.GroupBy(x => x.CauserId)
                 .Select(x => new DamageObject(x.First().CauserId, x.First().TargetId, x.First().Name, x.Sum(s => s.Damage))).ToList();
 
-            await UpdateDamageMeterUiAsync(groupedDamageList);
+            UpdateDamageMeterUi(groupedDamageList);
         }
 
-        public async Task UpdateDamageMeterUiAsync(List<DamageObject> damageList)
+        public void UpdateDamageMeterUi(List<DamageObject> damageList)
         {
             // Todo: Aktuallisierung nur alle 2-3 Sekunden erlauben
-            await damageList.ForEachAsync(damageObject =>
+            var highestDamage = GetHighestDamage(damageList);
+
+            foreach (var damageObject in damageList)
             {
                 if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserId == damageObject.CauserId))
                 {
@@ -64,7 +67,10 @@ namespace StatisticsAnalysisTool.Network.Controller
                         if (fragment != null)
                         {
                             fragment.Damage = damageObject.Damage;
-                            fragment.MaximumDamage = GetHighestDamage();
+                            if (highestDamage > fragment.MaximumDamage)
+                            {
+                                fragment.MaximumDamage = highestDamage;
+                            }
                         }
                     });
                 }
@@ -72,10 +78,10 @@ namespace StatisticsAnalysisTool.Network.Controller
                 {
                     _mainWindow.Dispatcher?.Invoke(() =>
                     {
-                        _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment() { CauserId = damageObject.CauserId, Damage = damageObject.Damage, MaximumDamage = GetHighestDamage(), Name = damageObject.CauserId.ToString() });
+                        _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment() { CauserId = damageObject.CauserId, Damage = damageObject.Damage, MaximumDamage = highestDamage, Name = damageObject.CauserId.ToString() });
                     });
                 }
-            });
+            }
         }
         
         public void RemoveAll()
@@ -84,17 +90,9 @@ namespace StatisticsAnalysisTool.Network.Controller
             _clusterStarts.Clear();
         }
 
-        private long GetHighestDamage()
+        private long GetHighestDamage(List<DamageObject> damageObjectList)
         {
-            return _damageCollection.Count <= 0 ? 0 : _damageCollection.Max(x =>
-            {
-                if (x == null)
-                {
-                    return 0;
-                }
-
-                return x.Damage;
-            });
+            return (damageObjectList.Count <= 0) ? 0 : damageObjectList.Max(x => x.Damage);
         }
     }
 }

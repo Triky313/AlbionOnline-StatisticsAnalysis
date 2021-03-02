@@ -68,25 +68,12 @@ namespace StatisticsAnalysisTool.Network.Controller
         }
 
         #region Cluster
-
-        private bool TryChangeCluster(string name, string mapName, string clusterOwner)
-        {
-            var newClusterHash = string.Empty + name + mapName + clusterOwner;
-
-            if (_lastClusterHash == newClusterHash)
-            {
-                return false;
-            }
-
-            _lastClusterHash = newClusterHash;
-            return true;
-        }
-
+        
         public event Action<ClusterInfo> OnChangeCluster;
 
         public void SetNewCluster(string index, string clusterOwner)
         {
-            CurrentCluster = WorldData.GetClusterByIndex(index);
+            CurrentCluster = WorldData.GetClusterInfoByIndex(index);
 
             // TODO: Exception wenn Dungeon eine weitere Map hat. Umbauen: Am besten so wie schon vorhanden für Join Event
             if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName, clusterOwner))
@@ -97,10 +84,24 @@ namespace StatisticsAnalysisTool.Network.Controller
             ClusterOwner = clusterOwner;
 
             EntityController.RemoveAll();
+            CombatController.RemoveAll();
             CombatController.AddClusterStartTimer();
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}'");
             OnChangeCluster?.Invoke(CurrentCluster);
+        }
+
+        private bool TryChangeCluster(string name, string mapName, string clusterOwner)
+        {
+            var newClusterHash = name + mapName + clusterOwner;
+
+            if (_lastClusterHash == newClusterHash)
+            {
+                return false;
+            }
+
+            _lastClusterHash = newClusterHash;
+            return true;
         }
 
         #endregion
