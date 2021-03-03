@@ -169,7 +169,7 @@
                     <Grid></Grid>
                 </DockPanel>
             </Grid>
-            <StackPanel IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Margin="0,10,10,0" HorizontalAlignment="Right" Width="200" Height="110" VerticalAlignment="Top">
+            <StackPanel IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Margin="0,10,10,0" HorizontalAlignment="Right" Width="200" Height="96" VerticalAlignment="Top">
                 <Button Content="{Binding Translation.ResetTrackingCounter, FallbackValue=RESET__TRACKING__COUNTER}" Height="26" VerticalAlignment="Top" Click="BtnTrackingReset_Click" />
                 <CheckBox IsChecked="{Binding IsTrackingResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}"></CheckBox>
             </StackPanel>

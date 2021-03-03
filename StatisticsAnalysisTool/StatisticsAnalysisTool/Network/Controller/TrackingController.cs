@@ -27,6 +27,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         public EntityController EntityController;
         public PartyController PartyController;
         public CombatController CombatController;
+        public LocalUserData LocalUserData { get; set; }
 
         private const int _maxNotifications = 50;
         private const int _maxDungeons = 999;
@@ -54,7 +55,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindow = mainWindow;
             EntityController = new EntityController(this);
             PartyController = new PartyController(this);
-            CombatController = new CombatController(_mainWindow, mainWindowViewModel);
+            CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
         }
 
         public void RegisterEvents()
@@ -66,7 +67,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             EntityController.OnHealthUpdate -= DamageMeterUpdate;
         }
-
+        
         #region Cluster
         
         public event Action<ClusterInfo> OnChangeCluster;
@@ -105,7 +106,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         }
 
         #endregion
-
+        
         public event Action<bool, bool> OnChangeCombatMode;
 
         public void UpdateCombatMode(bool inActiveCombat, bool inPassiveCombat)
@@ -129,8 +130,6 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             _mainWindowViewModel.TotalPlayerReSpecPoints = value.ToString("N0", LanguageController.CurrentCultureInfo);
         }
-
-        public string CurrentPlayerUsername { get; set; }
 
         #endregion
         
@@ -438,7 +437,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void SetDiedIfInDungeon(DiedObject dieObject)
         {
-            if (_currentGuid != null && CurrentPlayerUsername != null && dieObject.DiedName == CurrentPlayerUsername)
+            if (_currentGuid != null && LocalUserData.Username != null && dieObject.DiedName == LocalUserData.Username)
             {
                 try
                 {
@@ -790,6 +789,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void DamageMeterUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType, EffectOrigin effectOrigin, long causerId, int causingSpellType)
         {
+            // TODO: System.NullReferenceException: 'Der Objektverweis wurde nicht auf eine Objektinstanz festgelegt.'
             CombatController.AddDamage(objectId, causerId, healthChange);
         }
 

@@ -14,6 +14,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 {
     public class CombatController
     {
+        private readonly TrackingController _trackingController;
         private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -21,8 +22,9 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly ObservableCollection<DamageObject> _damageCollection = new ObservableCollection<DamageObject>();
         private readonly ObservableCollection<DateTime> _clusterStarts = new ObservableCollection<DateTime>();
 
-        public CombatController(MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
+        public CombatController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
+            _trackingController = trackingController;
             _mainWindow = mainWindow;
             _mainWindowViewModel = mainWindowViewModel;
         }
@@ -32,12 +34,13 @@ namespace StatisticsAnalysisTool.Network.Controller
             _clusterStarts.Add(DateTime.UtcNow);
         }
 
-        public async void AddDamage(long objectId, long causerId, double healthChange)
+        public void AddDamage(long objectId, long causerId, double healthChange)
         {
+            // TODO: Damage unter 0 weg lassen und nicht hinzufügen
             var damageValue = (int)Math.Round(healthChange.ToPositive(), MidpointRounding.AwayFromZero);
-            // TODO: ObjectId dem Namen zuweisen, anhand von PartyController
-            _damageCollection.Add(new DamageObject(causerId, objectId, causerId.ToString(), damageValue));
-            // TODO: Einbauen, dass vorhandene Werte addiert werden und nicht immer wieder jeder damage neu hinzugefügt wird
+            var causerName = GetUsernameByObjectId(causerId);
+
+            AddInternalDamage(causerId, causerName, damageValue);
 
             if (_clusterStarts.Count <= 0)
             {
@@ -47,7 +50,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             var damageListByNewestCluster = _damageCollection.Where(x => x.TimeStamp >= _clusterStarts.GetHighestDateTime()).ToList();
 
             var groupedDamageList = damageListByNewestCluster.GroupBy(x => x.CauserId)
-                .Select(x => new DamageObject(x.First().CauserId, x.First().TargetId, x.First().Name, x.Sum(s => s.Damage))).ToList();
+                .Select(x => new DamageObject(x.First().CauserId, x.First().TargetId, x.First().CauserName, x.Sum(s => s.Damage))).ToList();
 
             UpdateDamageMeterUi(groupedDamageList);
         }
@@ -66,11 +69,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                         var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserId == damageObject.CauserId);
                         if (fragment != null)
                         {
+                            fragment.MaximumDamage = highestDamage;
                             fragment.Damage = damageObject.Damage;
-                            if (highestDamage > fragment.MaximumDamage)
-                            {
-                                fragment.MaximumDamage = highestDamage;
-                            }
                         }
                     });
                 }
@@ -78,7 +78,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 {
                     _mainWindow.Dispatcher?.Invoke(() =>
                     {
-                        _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment() { CauserId = damageObject.CauserId, Damage = damageObject.Damage, MaximumDamage = highestDamage, Name = damageObject.CauserId.ToString() });
+                        _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment() { CauserId = damageObject.CauserId, Damage = damageObject.Damage, MaximumDamage = highestDamage, Name = damageObject.CauserName });
                     });
                 }
             }
@@ -88,6 +88,31 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             _damageCollection.Clear();
             _clusterStarts.Clear();
+            // TODO: DamageUi reset adden
+        }
+
+        private void AddInternalDamage(long causerId, string causerName, int damage)
+        {
+            var dmgObject = _damageCollection.FirstOrDefault(x => x.CauserId == causerId);
+            if (dmgObject != null)
+            {
+                dmgObject.CauserName = causerName;
+                dmgObject.Damage += damage;
+                return;
+            }
+
+            _damageCollection.Add(new DamageObject(causerId, null, causerName, damage));
+        }
+
+        private string GetUsernameByObjectId(long objectId)
+        {
+            if (_trackingController?.LocalUserData?.UserObjectId == objectId && !string.IsNullOrEmpty(_trackingController?.LocalUserData?.Username))
+            {
+                return _trackingController?.LocalUserData?.Username;
+            }
+
+            return "Unknown";
+            // TODO: Party user auslesen und der ObjectID zuordnen
         }
 
         private long GetHighestDamage(List<DamageObject> damageObjectList)

@@ -1,5 +1,6 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.ViewModels;
@@ -19,6 +20,22 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(JoinResponse value)
         {
+            _trackingController.LocalUserData = new LocalUserData()
+            {
+                UserObjectId = value.UserObjectId,
+                Username = value.Username,
+                LearningPoints = value.LearningPoints,
+                Reputation = value.Reputation,
+                ReSpecPoints = value.ReSpecPoints,
+                Silver = value.Silver,
+                Gold = value.Gold,
+                GuildName = value.GuildName,
+                MainMapIndex = value.MainMapIndex,
+                PlayTimeInSeconds = value.PlayTimeInSeconds,
+                AllianceName = value.AllianceName,
+                CurrentDailyBonusPoints = value.CurrentDailyBonusPoints
+            };
+
             _mainWindowViewModel.TrackingUsername = value.Username;
             _mainWindowViewModel.TrackingGuildName = value.GuildName;
             _mainWindowViewModel.TrackingAllianceName = value.AllianceName;
@@ -30,7 +47,6 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
 
             _trackingController.SetTotalPlayerSilver(value.Silver.IntegerValue);
-            _trackingController.CurrentPlayerUsername = value.Username;
             _trackingController.AddDungeon(value.MapType, value.DungeonGuid, value.MainMapIndex);
 
             ResetFameCounterByMapChangeIfActive();
