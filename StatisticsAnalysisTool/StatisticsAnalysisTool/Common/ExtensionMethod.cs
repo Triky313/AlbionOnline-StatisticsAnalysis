@@ -42,6 +42,11 @@ namespace StatisticsAnalysisTool.Common
             return value > 0 ? value : -value;
         }
 
+        public static double ToPositiveFromNegativeOrZero(this double healthChange)
+        {
+            return healthChange >= 0d ? 0d : healthChange.ToPositive();
+        }
+
         public static Dictionary<int, T> ToDictionary<T>(this IEnumerable<T> array)
         {
             return array

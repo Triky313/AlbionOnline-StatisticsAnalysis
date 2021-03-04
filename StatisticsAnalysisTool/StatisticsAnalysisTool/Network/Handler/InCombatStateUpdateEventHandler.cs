@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(InCombatStateUpdateEvent value)
         {
-            _trackingController.UpdateCombatMode(value.InActiveCombat, value.InPassiveCombat);
+            _trackingController.CombatController.UpdateCombatMode(value.InActiveCombat, value.InPassiveCombat);
             await Task.CompletedTask;
         }
     }

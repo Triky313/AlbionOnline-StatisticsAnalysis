@@ -107,13 +107,6 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         #endregion
         
-        public event Action<bool, bool> OnChangeCombatMode;
-
-        public void UpdateCombatMode(bool inActiveCombat, bool inPassiveCombat)
-        {
-            OnChangeCombatMode?.Invoke(inActiveCombat, inPassiveCombat);
-        }
-
         #region Set Main Window values
 
         public void SetTotalPlayerFame(double value)
@@ -789,8 +782,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void DamageMeterUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType, EffectOrigin effectOrigin, long causerId, int causingSpellType)
         {
-            // TODO: System.NullReferenceException: 'Der Objektverweis wurde nicht auf eine Objektinstanz festgelegt.'
-            CombatController.AddDamage(objectId, causerId, healthChange);
+            CombatController.AddDamage(causerId, healthChange);
         }
 
         #endregion
