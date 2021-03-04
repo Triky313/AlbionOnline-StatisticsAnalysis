@@ -118,6 +118,8 @@ namespace StatisticsAnalysisTool.ViewModels
         public MainWindowViewModel(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+
             InitViewModeGrids();
             UpgradeSettings();
             InitWindowSettings();
@@ -131,8 +133,20 @@ namespace StatisticsAnalysisTool.ViewModels
             InitMainWindowData();
             InitTracking();
         }
-        
+
         #region Inits
+
+        void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                Log.Fatal(nameof(OnUnhandledException), (Exception)e.ExceptionObject);
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(nameof(OnUnhandledException), ex);
+            }
+        }
 
         #region View mode init
 

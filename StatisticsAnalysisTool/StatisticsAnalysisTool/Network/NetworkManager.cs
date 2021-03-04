@@ -135,11 +135,16 @@ namespace StatisticsAnalysisTool.Network
                     _receiver.ReceivePacket(packet.PayloadData);
                 }
             }
-            catch (Exception ex)
+            catch (OverflowException ex)
             {
                 Log.Error(nameof(StartDeviceCapture), ex);
                 _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
-                _mainWindowViewModel.StopTracking();
+                //_mainWindowViewModel.StopTracking();
+            }
+            catch (Exception exc)
+            {
+                Log.Error(nameof(StartDeviceCapture), exc);
+                _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
             }
         }
     }
