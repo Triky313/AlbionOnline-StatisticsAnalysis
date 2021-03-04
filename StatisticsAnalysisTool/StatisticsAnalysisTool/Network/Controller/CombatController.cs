@@ -62,17 +62,19 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 AddClusterStartTimer();
             }
-            
-            var damageListByNewestCluster = _damageCollection.Where(x => x.TimeStamp >= _clusterStarts.GetHighestDateTime()).ToList();
-            var groupedDamageList = damageListByNewestCluster.GroupBy(x => x.CauserId)
-                .Select(x => new DamageObject(x.First().CauserId, x.First().TargetId, x.First().CauserName, x.Sum(s => s.Damage))).ToList();
 
-            UpdateDamageMeterUi(groupedDamageList);
+            if (IsUiUpdateAllowed())
+            {
+                var damageListByNewestCluster = _damageCollection.Where(x => x.TimeStamp >= _clusterStarts.GetHighestDateTime()).ToList();
+                var groupedDamageList = damageListByNewestCluster.GroupBy(x => x.CauserId)
+                    .Select(x => new DamageObject(x.First().CauserId, x.First().TargetId, x.First().CauserName, x.Sum(s => s.Damage))).ToList();
+
+                UpdateDamageMeterUi(groupedDamageList);
+            }
         }
 
         public void UpdateDamageMeterUi(List<DamageObject> damageList)
         {
-            // Todo: Aktuallisierung nur alle 2-3 Sekunden erlauben
             var highestDamage = GetHighestDamage(damageList);
 
             foreach (var damageObject in damageList)
@@ -143,6 +145,21 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             return false;
             // TODO: Party user auslesen und der ObjectID zuordnen
+        }
+
+        private DateTime _lastDamageUiUpdate;
+
+        private bool IsUiUpdateAllowed()
+        {
+            var currentDateTime = DateTime.UtcNow;
+            var difference = currentDateTime.Subtract(_lastDamageUiUpdate);
+            if (difference.Seconds >= 2)
+            {
+                _lastDamageUiUpdate = currentDateTime;
+                return true;
+            }
+
+            return false;
         }
 
         private long GetHighestDamage(List<DamageObject> damageObjectList)
