@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(SiegeCampClaimStartEvent value)
         {
-            _trackingController.PartyController.AddUserToParty(value.Username);
+            _trackingController.EntityController.SetInParty(value.Username);
             await Task.CompletedTask;
         }
     }

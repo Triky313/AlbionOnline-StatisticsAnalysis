@@ -8,6 +8,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public GameObjectType ObjectType { get; set; } = GameObjectType.Unknown;
         public GameObjectSubType ObjectSubType { get; set; } = GameObjectSubType.Unknown;
         public string Name { get; set; } = "Unknown";
+        public bool IsInParty { get; set; } = false;
 
         public GameObject(long objectId)
         {

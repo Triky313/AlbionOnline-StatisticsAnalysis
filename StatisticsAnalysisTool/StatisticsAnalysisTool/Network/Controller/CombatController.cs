@@ -1,5 +1,5 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Controller
 {
@@ -17,7 +16,6 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly TrackingController _trackingController;
         private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly ObservableCollection<DamageObject> _damageCollection = new ObservableCollection<DamageObject>();
         private readonly ObservableCollection<DateTime> _clusterStarts = new ObservableCollection<DateTime>();
@@ -43,7 +41,8 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void AddDamage(long causerId, double healthChange)
         {
-            if (!IsObjectIdInPartyOrLocalPlayer(causerId))
+            var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
+            if (gameObject == null || gameObject.Value.Value?.ObjectType != GameObjectType.Player || gameObject.Value.Value?.IsInParty != true)
             {
                 return;
             }
@@ -54,9 +53,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 return;
             }
 
-            var causerName = GetUsernameByObjectId(causerId);
-
-            AddInternalDamage(causerId, causerName, damageValue);
+            AddInternalDamage(gameObject.Value.Value.ObjectId, gameObject.Value.Value.Name, damageValue);
 
             if (_clusterStarts.Count <= 0)
             {
@@ -124,29 +121,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             _damageCollection.Add(new DamageObject(causerId, null, causerName, damage));
         }
-
-        private string GetUsernameByObjectId(long objectId)
-        {
-            if (_trackingController?.LocalUserData?.UserObjectId == objectId && !string.IsNullOrEmpty(_trackingController?.LocalUserData?.Username))
-            {
-                return _trackingController?.LocalUserData?.Username;
-            }
-
-            return "Unknown";
-            // TODO: Party user auslesen und der ObjectID zuordnen
-        }
-
-        private bool IsObjectIdInPartyOrLocalPlayer(long objectId)
-        {
-            if (_trackingController?.LocalUserData?.UserObjectId == objectId)
-            {
-                return true;
-            }
-
-            return false;
-            // TODO: Party user auslesen und der ObjectID zuordnen
-        }
-
+        
         private DateTime _lastDamageUiUpdate;
 
         private bool IsUiUpdateAllowed()

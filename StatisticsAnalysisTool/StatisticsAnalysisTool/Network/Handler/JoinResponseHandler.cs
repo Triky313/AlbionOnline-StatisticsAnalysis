@@ -43,7 +43,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             if (value.UserObjectId != null)
             {
-                _trackingController.EntityController.AddEntity((long)value.UserObjectId, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
+                _trackingController.EntityController.AddEntity((long)value.UserObjectId, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer, true);
             }
 
             _trackingController.SetTotalPlayerSilver(value.Silver.IntegerValue);

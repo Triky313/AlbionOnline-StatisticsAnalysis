@@ -15,7 +15,6 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(PartyDisbandedEvent value)
         {
-            _trackingController.PartyController.SetParty(value.PartyUsers);
             await Task.CompletedTask;
         }
     }

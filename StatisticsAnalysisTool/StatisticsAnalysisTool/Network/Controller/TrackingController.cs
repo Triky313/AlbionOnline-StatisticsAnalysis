@@ -25,7 +25,6 @@ namespace StatisticsAnalysisTool.Network.Controller
     public class TrackingController
     {
         public EntityController EntityController;
-        public PartyController PartyController;
         public CombatController CombatController;
         public LocalUserData LocalUserData { get; set; }
 
@@ -54,7 +53,6 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
             EntityController = new EntityController(this);
-            PartyController = new PartyController();
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
         }
 

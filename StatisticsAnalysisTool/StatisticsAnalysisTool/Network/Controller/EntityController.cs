@@ -5,6 +5,7 @@ using StatisticsAnalysisTool.Network.Time;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Controller
@@ -20,7 +21,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             _trackingController = trackingController;
         }
 
-        public void AddEntity(long objectId, string name, GameObjectType objectType, GameObjectSubType objectSubType)
+        public void AddEntity(long objectId, string name, GameObjectType objectType, GameObjectSubType objectSubType, bool isInParty = false)
         {
             if (_knownEntities.ContainsKey(objectId))
             {
@@ -31,16 +32,36 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 Name = name,
                 ObjectType = objectType,
-                ObjectSubType = objectSubType
+                ObjectSubType = objectSubType,
+                IsInParty = isInParty
             };
 
             _knownEntities.TryAdd(objectId, gameObject);
             OnAddEntity?.Invoke(gameObject);
         }
 
+        public void RemoveEntity(long objectId)
+        {
+            _knownEntities.TryRemove(objectId, out var gameObject);
+        }
+
         public void RemoveAll()
         {
             _knownEntities.Clear();
+        }
+
+        public void SetInParty(string username)
+        {
+            var userObject = _knownEntities.FirstOrDefault(x => x.Value.Name == username);
+            if (userObject.Value != null)
+            {
+                userObject.Value.IsInParty = true;
+            }
+        }
+
+        public KeyValuePair<long, GameObject>? GetEntity(long objectId)
+        {
+            return _knownEntities?.FirstOrDefault(x => x.Key == objectId);
         }
 
         public IEnumerable<GameObject> GetEntities()

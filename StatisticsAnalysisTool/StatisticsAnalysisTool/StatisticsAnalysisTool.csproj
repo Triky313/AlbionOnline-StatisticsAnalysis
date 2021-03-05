@@ -180,7 +180,6 @@
     <Compile Include="Models\NetworkModel\LocalUserData.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
     <Compile Include="Network\Controller\EntityController.cs" />
-    <Compile Include="Network\Controller\PartyController.cs" />
     <Compile Include="Network\Events\HealthUpdateEvent.cs" />
     <Compile Include="Network\Events\LeaveEvent.cs" />
     <Compile Include="Network\Events\NewMobEvent.cs" />
