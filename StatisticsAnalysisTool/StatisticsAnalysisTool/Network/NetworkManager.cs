@@ -44,11 +44,12 @@ namespace StatisticsAnalysisTool.Network
 
                 builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
                 builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
-                builder.AddEventHandler(new PartyDisbandedEventHandler(trackingController));
-                builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
+                //builder.AddEventHandler(new PartyDisbandedEventHandler(trackingController));
+                //builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
                 builder.AddEventHandler(new NewCharacterEventHandler(trackingController));
                 builder.AddEventHandler(new SiegeCampClaimStartEventHandler(trackingController));
                 builder.AddEventHandler(new NewMobEventHandler(trackingController));
+                builder.AddEventHandler(new LeaveEventHandler(trackingController));
 
                 builder.AddEventHandler(new PartySilverGainedEventHandler());
                 //builder.AddEventHandler(new NewLootEventHandler());
@@ -139,14 +140,11 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (OverflowException ex)
             {
-                Log.Error(nameof(StartDeviceCapture), ex);
-                _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
-                //_mainWindowViewModel.StopTracking();
+                Log.Error(nameof(PacketHandler), ex);
             }
             catch (Exception exc)
             {
-                Log.Error(nameof(StartDeviceCapture), exc);
-                _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
+                Log.Error(nameof(PacketHandler), exc);
             }
         }
     }

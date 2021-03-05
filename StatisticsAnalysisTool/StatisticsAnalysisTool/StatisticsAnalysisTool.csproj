@@ -182,6 +182,7 @@
     <Compile Include="Network\Controller\EntityController.cs" />
     <Compile Include="Network\Controller\PartyController.cs" />
     <Compile Include="Network\Events\HealthUpdateEvent.cs" />
+    <Compile Include="Network\Events\LeaveEvent.cs" />
     <Compile Include="Network\Events\NewMobEvent.cs" />
     <Compile Include="Network\Events\NewShrineEvent.cs" />
     <Compile Include="Network\Events\InCombatStateUpdateEvent.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Network\Events\PartyChangedOrderEvent.cs" />
     <Compile Include="Network\Events\PartyDisbandedEvent.cs" />
     <Compile Include="Network\Handler\HealthUpdateEventHandler.cs" />
+    <Compile Include="Network\Handler\LeaveEventHandler.cs" />
     <Compile Include="Network\Handler\NewMobEventHandler.cs" />
     <Compile Include="Network\Handler\NewShrineEventHandler.cs" />
     <Compile Include="Network\Handler\InCombatStateUpdateEventHandler.cs" />
