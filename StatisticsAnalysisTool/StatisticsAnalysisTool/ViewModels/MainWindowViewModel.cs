@@ -89,7 +89,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
         private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
-        //private ObservableCollection<TrackingNotification> _damageMeter = new ObservableCollection<TrackingNotification>();
         private string _trackingUsername;
         private string _trackingGuildName;
         private string _trackingAllianceName;

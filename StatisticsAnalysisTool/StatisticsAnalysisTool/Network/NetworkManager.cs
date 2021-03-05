@@ -44,7 +44,8 @@ namespace StatisticsAnalysisTool.Network
 
                 builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
                 builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
-                builder.AddEventHandler(new PartyDisbandedEventHandler());
+                builder.AddEventHandler(new PartyDisbandedEventHandler(trackingController));
+                builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
                 builder.AddEventHandler(new NewCharacterEventHandler(trackingController));
                 builder.AddEventHandler(new NewMobEventHandler(trackingController));
 

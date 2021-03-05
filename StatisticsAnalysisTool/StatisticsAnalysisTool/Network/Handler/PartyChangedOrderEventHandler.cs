@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class PartyDisbandedEventHandler : EventPacketHandler<PartyDisbandedEvent>
+    public class PartyChangedOrderEventHandler : EventPacketHandler<PartyChangedOrderEvent>
     {
         private readonly TrackingController _trackingController;
-        public PartyDisbandedEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyDisbanded)
+        public PartyChangedOrderEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyChangedOrder)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(PartyDisbandedEvent value)
+        protected override async Task OnActionAsync(PartyChangedOrderEvent value)
         {
-            _trackingController.PartyController.SetParty(value.PartyUsers);
+            _trackingController.PartyController.AddUserToParty(value.Username);
             await Task.CompletedTask;
         }
     }

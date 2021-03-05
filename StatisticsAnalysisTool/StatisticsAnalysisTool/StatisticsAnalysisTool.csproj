@@ -185,11 +185,13 @@
     <Compile Include="Network\Events\NewMobEvent.cs" />
     <Compile Include="Network\Events\NewShrineEvent.cs" />
     <Compile Include="Network\Events\InCombatStateUpdateEvent.cs" />
+    <Compile Include="Network\Events\PartyChangedOrderEvent.cs" />
     <Compile Include="Network\Events\PartyDisbandedEvent.cs" />
     <Compile Include="Network\Handler\HealthUpdateEventHandler.cs" />
     <Compile Include="Network\Handler\NewMobEventHandler.cs" />
     <Compile Include="Network\Handler\NewShrineEventHandler.cs" />
     <Compile Include="Network\Handler\InCombatStateUpdateEventHandler.cs" />
+    <Compile Include="Network\Handler\PartyChangedOrderEventHandler.cs" />
     <Compile Include="Network\Handler\PartyDisbandedEventHandler.cs" />
     <Compile Include="Network\Notification\CombatNotificationFragment.cs" />
     <Compile Include="Network\Notification\DamageMeterFragment.cs" />

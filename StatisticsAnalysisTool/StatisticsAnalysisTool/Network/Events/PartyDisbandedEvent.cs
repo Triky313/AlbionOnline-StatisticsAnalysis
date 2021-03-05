@@ -31,13 +31,6 @@ namespace StatisticsAnalysisTool.Network.Handler
                         }
                     }
                 }
-
-                var text = string.Empty;
-                foreach (var usr in PartyUsers)
-                {
-                    text += $"{usr}, ";
-                }
-                Debug.Print(text);
             }
             catch(Exception e)
             {
