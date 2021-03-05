@@ -13,7 +13,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void AddUserToParty(string username)
         {
-            if (!IsUsernameInParty(username))
+            if (!string.IsNullOrEmpty(username) && !IsUsernameInParty(username))
             {
                 PartyUsers.Add(username);
             }
