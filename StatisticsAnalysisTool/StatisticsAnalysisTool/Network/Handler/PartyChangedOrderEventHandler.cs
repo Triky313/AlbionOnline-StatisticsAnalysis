@@ -15,6 +15,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(PartyChangedOrderEvent value)
         {
+            _trackingController.EntityController.SetInParty(value.Username);
             await Task.CompletedTask;
         }
     }

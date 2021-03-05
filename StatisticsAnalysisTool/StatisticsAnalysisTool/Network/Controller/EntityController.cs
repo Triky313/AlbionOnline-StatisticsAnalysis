@@ -59,6 +59,14 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
+        public void SetInParty(List<string> usernames)
+        {
+            foreach (var username in usernames)
+            {
+                SetInParty(username);
+            }
+        }
+
         public KeyValuePair<long, GameObject>? GetEntity(long objectId)
         {
             return _knownEntities?.FirstOrDefault(x => x.Key == objectId);

@@ -13,12 +13,6 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             try
             {
-                Debug.Print($"--- PartyDisbanded (Event) ---");
-                //foreach (var parameter in parameters)
-                //{
-                //    Debug.Print($"{parameter}");
-                //}
-
                 if (parameters.ContainsKey(0) && parameters[0] != null)
                 {
                     var partyUserArray = ((string[])parameters[5]).ToDictionary();
