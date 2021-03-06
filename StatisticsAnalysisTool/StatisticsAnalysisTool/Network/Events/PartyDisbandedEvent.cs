@@ -1,9 +1,9 @@
 ﻿using Albion.Network;
-using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -15,13 +15,16 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 if (parameters.ContainsKey(0) && parameters[0] != null)
                 {
-                    var partyUserArray = ((string[])parameters[5]).ToDictionary();
+                    var partyUsersByteArrays = ((object[])parameters[4]).ToDictionary();
+                    var partyUserNameArray = ((string[])parameters[5]).ToDictionary();
 
-                    if (!partyUserArray.IsNullOrEmpty() && partyUserArray.Count > 0)
+                    for (var i = 0; i < partyUsersByteArrays.Count; i++)
                     {
-                        foreach (var user in partyUserArray)
+                        var guid = partyUsersByteArrays[i].ObjectToGuid();
+                        var name = partyUserNameArray[i];
+                        if (guid != null && !string.IsNullOrEmpty(name))
                         {
-                            PartyUsers.Add(user.Value);
+                            PartyUsersGuid.Add(name, (Guid)guid);
                         }
                     }
                 }
@@ -32,6 +35,6 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
         }
         
-        public List<string> PartyUsers = new List<string>();
+        public Dictionary<string, Guid> PartyUsersGuid = new Dictionary<string, Guid>();
     }
 }

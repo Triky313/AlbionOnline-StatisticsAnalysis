@@ -55,20 +55,20 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        public void SetInParty(string username)
+        public void SetInParty(Guid guid)
         {
-            var userObject = _knownEntities.FirstOrDefault(x => x.Value.Name == username);
-            if (userObject.Value != null)
+            var userObject = _knownEntities.FirstOrDefault(x => x.Value.UserGuid == guid);
+            if (userObject.Value?.IsInParty == false)
             {
                 userObject.Value.IsInParty = true;
             }
         }
 
-        public void SetInParty(List<string> usernames)
+        public void SetInParty(Dictionary<string, Guid> party)
         {
-            foreach (var username in usernames)
+            foreach (var member in party)
             {
-                SetInParty(username);
+                SetInParty(member.Value);
             }
         }
 

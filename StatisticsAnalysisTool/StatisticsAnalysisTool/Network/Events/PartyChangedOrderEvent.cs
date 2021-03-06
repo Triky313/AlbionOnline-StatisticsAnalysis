@@ -1,4 +1,5 @@
 ﻿using Albion.Network;
+using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +12,11 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             try
             {
+                if (parameters.ContainsKey(1))
+                {
+                    UserGuid = parameters[1].ObjectToGuid();
+                }
+
                 if (parameters.ContainsKey(2))
                 {
                     Username = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();
@@ -21,7 +27,8 @@ namespace StatisticsAnalysisTool.Network.Handler
                 Debug.Print(e.Message);
             }
         }
-        
+
+        public Guid? UserGuid;
         public string Username;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
+using System;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -15,7 +16,10 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(PartyChangedOrderEvent value)
         {
-            _trackingController.EntityController.SetInParty(value.Username);
+            if (value?.UserGuid != null)
+            {
+                _trackingController.EntityController.SetInParty((Guid)value.UserGuid);
+            }
             await Task.CompletedTask;
         }
     }

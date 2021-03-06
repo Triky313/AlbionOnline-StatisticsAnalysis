@@ -11,14 +11,13 @@ namespace StatisticsAnalysisTool.Network.Handler
     public class SiegeCampClaimStartEventHandler : EventPacketHandler<SiegeCampClaimStartEvent>
     {
         private readonly TrackingController _trackingController;
-        public SiegeCampClaimStartEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyChangedOrder)
+        public SiegeCampClaimStartEventHandler(TrackingController trackingController) : base((int) EventCodes.SiegeCampClaimStart)
         {
             _trackingController = trackingController;
         }
 
         protected override async Task OnActionAsync(SiegeCampClaimStartEvent value)
         {
-            _trackingController.EntityController.SetInParty(value.Username);
             await Task.CompletedTask;
         }
     }
