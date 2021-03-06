@@ -27,7 +27,13 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(0))
                 {
                     UserObjectId = parameters[0].ObjectToLong();
-                    Debug.Print($"MainUserObjectId: {parameters[0].ObjectToLong()}");
+                    Debug.Print($"Local user ObjectId: {UserObjectId}");
+                }
+
+                if (parameters.ContainsKey(1))
+                {
+                    Guid = parameters[1].ObjectToGuid();
+                    Debug.Print($"Local user Guid: {Guid}");
                 }
 
                 if (parameters.ContainsKey(2))
@@ -110,6 +116,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
         }
 
         public long? UserObjectId;
+        public Guid? Guid { get; }
         public string Username { get; }
         public string MapIndex { get; }
         public string UniqueMapName { get; }

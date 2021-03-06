@@ -22,6 +22,11 @@ namespace StatisticsAnalysisTool.Network.Events
                     Name = parameters[1].ToString();
                 }
 
+                if (parameters.ContainsKey(7))
+                {
+                    Guid = parameters[7].ObjectToGuid();
+                }
+
                 if (parameters.ContainsKey(8))
                 {
                     GuildName = parameters[8].ToString();
@@ -39,6 +44,7 @@ namespace StatisticsAnalysisTool.Network.Events
         }
 
         public long? ObjectId { get; }
+        public Guid? Guid { get; }
         public string Name { get; }
         public string GuildName { get; }
         public float[] Position { get; }

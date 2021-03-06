@@ -52,7 +52,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
-            EntityController = new EntityController(this);
+            EntityController = new EntityController();
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
         }
 
@@ -83,6 +83,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             ClusterOwner = clusterOwner;
 
             EntityController.RemoveAll();
+            EntityController.ResetPartyMember();
             CombatController.RemoveAll();
             CombatController.AddClusterStartTimer();
 

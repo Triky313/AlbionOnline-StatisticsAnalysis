@@ -23,6 +23,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             _trackingController.LocalUserData = new LocalUserData()
             {
                 UserObjectId = value.UserObjectId,
+                Guid = value.Guid,
                 Username = value.Username,
                 LearningPoints = value.LearningPoints,
                 Reputation = value.Reputation,

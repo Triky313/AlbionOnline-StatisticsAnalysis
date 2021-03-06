@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,6 +16,20 @@ namespace StatisticsAnalysisTool.Common
             }
 
             return list.Max();
+        }
+
+        public static Guid? ObjectToGuid(this object value)
+        {
+            try
+            {
+                var valueEnumerable = (IEnumerable)value;
+                var myBytes = valueEnumerable.OfType<byte>().ToArray();
+                return new Guid(myBytes);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public static long? ObjectToLong(this object value)

@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (value.ObjectId != null)
             {
-                _trackingController.EntityController.AddEntity((long)value.ObjectId, value.Name, GameObjectType.Player, GameObjectSubType.Player);
+                _trackingController.EntityController.AddEntity((long)value.ObjectId, value.Guid, value.Name, GameObjectType.Player, GameObjectSubType.Player);
             }
             await Task.CompletedTask;
         }

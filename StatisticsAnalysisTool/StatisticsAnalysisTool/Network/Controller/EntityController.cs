@@ -1,27 +1,23 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Time;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Controller
 {
     public class EntityController
     {
-        private readonly TrackingController _trackingController;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly ConcurrentDictionary<long, GameObject> _knownEntities = new ConcurrentDictionary<long, GameObject>();
 
-        public EntityController(TrackingController trackingController)
+        public void AddEntity(long objectId, string name, GameObjectType objectType, GameObjectSubType objectSubType, bool isInParty = false)
         {
-            _trackingController = trackingController;
+            AddEntity(objectId, null, name, objectType, objectSubType, isInParty);
         }
 
-        public void AddEntity(long objectId, string name, GameObjectType objectType, GameObjectSubType objectSubType, bool isInParty = false)
+        public void AddEntity(long objectId, Guid? userGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType, bool isInParty = false)
         {
             if (_knownEntities.ContainsKey(objectId))
             {
@@ -32,6 +28,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 Name = name,
                 ObjectType = objectType,
+                UserGuid = userGuid,
                 ObjectSubType = objectSubType,
                 IsInParty = isInParty
             };
@@ -42,12 +39,20 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void RemoveEntity(long objectId)
         {
-            _knownEntities.TryRemove(objectId, out var gameObject);
+            _knownEntities.TryRemove(objectId, out _);
         }
 
         public void RemoveAll()
         {
             _knownEntities.Clear();
+        }
+
+        public void ResetPartyMember()
+        {
+            foreach (var entity in _knownEntities.Where(x => x.Value.IsInParty))
+            {
+                entity.Value.IsInParty = false;
+            }
         }
 
         public void SetInParty(string username)
