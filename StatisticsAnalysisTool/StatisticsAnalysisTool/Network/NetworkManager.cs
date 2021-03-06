@@ -52,6 +52,7 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new SiegeCampClaimStartEventHandler(trackingController));
                 builder.AddEventHandler(new NewMobEventHandler(trackingController));
                 builder.AddEventHandler(new LeaveEventHandler(trackingController));
+                builder.AddEventHandler(new CharacterEquipmentChangedEventHandler(trackingController));
 
                 builder.AddEventHandler(new PartySilverGainedEventHandler());
                 //builder.AddEventHandler(new NewLootEventHandler());

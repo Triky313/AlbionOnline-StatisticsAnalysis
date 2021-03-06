@@ -77,6 +77,15 @@ namespace StatisticsAnalysisTool.Network.Controller
             return _knownEntities?.FirstOrDefault(x => x.Key == objectId);
         }
 
+        public void SetCharacterEquipment(long objectId, CharacterEquipment equipment)
+        {
+            var entity = _knownEntities?.FirstOrDefault(x => x.Key == objectId);
+            if (entity?.Value != null)
+            {
+                entity.Value.Value.CharacterEquipment = equipment;
+            }
+        }
+
         public IEnumerable<GameObject> GetEntities()
         {
             return new List<GameObject>(_knownEntities.Values);

@@ -125,8 +125,8 @@ namespace StatisticsAnalysisTool.Common
         }
 
         #endregion Item list
-
-        public static Item GetItemByUniqueName(string uniqueName) => Items.FirstOrDefault(i => i.UniqueName == uniqueName);
+        
+        public static Item GetItemByIndex(int index) => Items.FirstOrDefault(i => i.Index == index);
 
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {

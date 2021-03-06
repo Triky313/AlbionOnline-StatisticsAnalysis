@@ -77,11 +77,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             EntityController.RemoveAll();
             CombatController.RemoveAll();
             CombatController.AddClusterStartTimer();
-
-            if (_lastGuid == null || _currentGuid == null)
-            {
-                EntityController.ResetPartyMember();
-            }
+            EntityController.ResetPartyMember();
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
             OnChangeCluster?.Invoke(CurrentCluster);

@@ -11,17 +11,11 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public GameObjectSubType ObjectSubType { get; set; } = GameObjectSubType.Unknown;
         public string Name { get; set; } = "Unknown";
         public bool IsInParty { get; set; } = false;
+        public CharacterEquipment CharacterEquipment { get; set; } = null;
 
         public GameObject(long objectId)
         {
             ObjectId = objectId;
-        }
-
-        public GameObject(long objectId, GameObjectType objectType, GameObjectSubType objectSubType)
-        {
-            ObjectId = objectId;
-            ObjectType = objectType;
-            ObjectSubType = objectSubType;
         }
 
         public override string ToString()

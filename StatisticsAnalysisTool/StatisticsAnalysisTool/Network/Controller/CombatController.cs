@@ -53,7 +53,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 return;
             }
 
-            AddInternalDamage(gameObject.Value.Value.ObjectId, gameObject.Value.Value.Name, damageValue);
+            AddInternalDamage(gameObject.Value.Value, damageValue);
 
             if (_clusterStarts.Count <= 0)
             {
@@ -64,7 +64,13 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 var damageListByNewestCluster = _damageCollection.Where(x => x.TimeStamp >= _clusterStarts.GetHighestDateTime()).ToList();
                 var groupedDamageList = damageListByNewestCluster.GroupBy(x => x.CauserId)
-                    .Select(x => new DamageObject(x.First().CauserId, x.First().TargetId, x.First().CauserName, x.Sum(s => s.Damage))).ToList();
+                    .Select(x => new DamageObject(
+                        x.First().CauserId, 
+                        x.First().TargetId, 
+                        x.First().CauserName,
+                        x.First().CauserMainHand, 
+                        x.Sum(s => s.Damage)))
+                    .ToList();
 
                 UpdateDamageMeterUi(groupedDamageList);
             }
@@ -109,17 +115,17 @@ namespace StatisticsAnalysisTool.Network.Controller
             });
         }
 
-        private void AddInternalDamage(long causerId, string causerName, int damage)
+        private void AddInternalDamage(GameObject gameObject, int damage)
         {
-            var dmgObject = _damageCollection.FirstOrDefault(x => x.CauserId == causerId);
+            var dmgObject = _damageCollection.FirstOrDefault(x => x.CauserId == gameObject.ObjectId);
             if (dmgObject != null)
             {
-                dmgObject.CauserName = causerName;
+                dmgObject.CauserName = gameObject.Name;
                 dmgObject.Damage += damage;
                 return;
             }
 
-            _damageCollection.Add(new DamageObject(causerId, null, causerName, damage));
+            _damageCollection.Add(new DamageObject(gameObject.ObjectId, null, gameObject.Name, ItemController.GetItemByIndex(gameObject.CharacterEquipment?.MainHand ?? 0), damage));
         }
         
         private DateTime _lastDamageUiUpdate;
