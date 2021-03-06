@@ -21,6 +21,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(JoinResponse value)
         {
+            _trackingController.SetNewCluster(value.MapType, value.DungeonGuid, value.MapIndex, value.MainMapIndex);
+
             _trackingController.LocalUserData = new LocalUserData()
             {
                 UserObjectId = value.UserObjectId,
@@ -49,7 +51,6 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
 
             _trackingController.SetTotalPlayerSilver(value.Silver.IntegerValue);
-            _trackingController.SetNewCluster(value.MapType, value.DungeonGuid, value.MapIndex, value.MainMapIndex);
             _trackingController.AddDungeon(value.MapType, value.DungeonGuid, value.MainMapIndex);
 
             ResetFameCounterByMapChangeIfActive();
