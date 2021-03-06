@@ -1,5 +1,6 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Operations.Responses;
@@ -40,7 +41,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             _mainWindowViewModel.TrackingUsername = value.Username;
             _mainWindowViewModel.TrackingGuildName = value.GuildName;
             _mainWindowViewModel.TrackingAllianceName = value.AllianceName;
-            _mainWindowViewModel.TrackingCurrentMapName = value.UniqueMapName;
+            _mainWindowViewModel.TrackingCurrentMapName = WorldData.GetUniqueNameOrDefault(value.MapIndex);
 
             if (value.UserObjectId != null)
             {
@@ -48,6 +49,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
 
             _trackingController.SetTotalPlayerSilver(value.Silver.IntegerValue);
+            _trackingController.SetNewCluster(value.MapType, value.DungeonGuid, value.MapIndex, value.MainMapIndex);
             _trackingController.AddDungeon(value.MapType, value.DungeonGuid, value.MainMapIndex);
 
             ResetFameCounterByMapChangeIfActive();

@@ -44,7 +44,6 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(8))
                 {
                     MapIndex = parameters[8].ToString();
-                    UniqueMapName = WorldData.GetUniqueNameOrDefault(MapIndex);
                     MapType = WorldData.GetMapType(MapIndex);
                     DungeonGuid = WorldData.GetDungeonGuid(MapIndex);
                 }
@@ -119,7 +118,6 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
         public Guid? Guid { get; }
         public string Username { get; }
         public string MapIndex { get; }
-        public string UniqueMapName { get; }
         public Guid? DungeonGuid { get; }
         public MapType MapType { get; }
         public double CurrentFocusPoints { get; }

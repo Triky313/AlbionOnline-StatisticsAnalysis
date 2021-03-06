@@ -43,11 +43,6 @@ namespace StatisticsAnalysisTool.Network.Controller
             private set;
         }
 
-        public string ClusterOwner {
-            get;
-            private set;
-        }
-
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
             _mainWindowViewModel = mainWindowViewModel;
@@ -70,30 +65,26 @@ namespace StatisticsAnalysisTool.Network.Controller
         
         public event Action<ClusterInfo> OnChangeCluster;
 
-        public void SetNewCluster(string index, string clusterOwner)
+        public void SetNewCluster(MapType mapType, Guid? mapGuid, string clusterIndex, string mainClusterIndex)
         {
-            CurrentCluster = WorldData.GetClusterInfoByIndex(index);
+            CurrentCluster = WorldData.GetClusterInfoByIndex(clusterIndex, mainClusterIndex, mapType, mapGuid);
 
-            // TODO: Exception wenn Dungeon eine weitere Map hat. Umbauen: Am besten so wie schon vorhanden für Join Event
-            if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName, clusterOwner))
+            if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName))
             {
                 return;
             }
             
-            ClusterOwner = clusterOwner;
-
             EntityController.RemoveAll();
-            EntityController.ResetPartyMember();
             CombatController.RemoveAll();
             CombatController.AddClusterStartTimer();
 
-            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}'");
+            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
             OnChangeCluster?.Invoke(CurrentCluster);
         }
 
-        private bool TryChangeCluster(string name, string mapName, string clusterOwner)
+        private bool TryChangeCluster(string index, string mapName)
         {
-            var newClusterHash = name + mapName + clusterOwner;
+            var newClusterHash = index + mapName;
 
             if (_lastClusterHash == newClusterHash)
             {

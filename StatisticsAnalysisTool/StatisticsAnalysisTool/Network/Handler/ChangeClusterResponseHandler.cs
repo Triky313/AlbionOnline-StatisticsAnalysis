@@ -16,7 +16,6 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(ChangeClusterResponse value)
         {
-            _trackingController.SetNewCluster(value.Index, value.ClusterOwner);
             await Task.CompletedTask;
         }
     }

@@ -1,6 +1,7 @@
 using log4net;
 using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -141,9 +142,48 @@ namespace StatisticsAnalysisTool.GameData
             return (MapData?.Count > 0);
         }
 
-        public static ClusterInfo GetClusterInfoByIndex(string index)
+        public static ClusterInfo GetClusterInfoByIndex(string clusterIndex, string mainClusterIndex, MapType mapType = MapType.Unknown, Guid? guid = null)
         {
-            return MapData.FirstOrDefault(x => x.Index == index) ?? new ClusterInfo() { Index = index, UniqueName = GetUniqueNameOrDefault(index), Type = "Unknown" };
+            return MapData.FirstOrDefault(x => x.Index == clusterIndex) ?? new ClusterInfo()
+            {
+                Index = clusterIndex, 
+                MainClusterIndex = mainClusterIndex, 
+                UniqueName = GetUniqueNameOrDefault(clusterIndex), 
+                MapType = mapType,
+                Type = GetTypeByIndex(clusterIndex) ?? GetTypeByIndex(mainClusterIndex) ?? string.Empty,
+                Guid = guid,
+            };
+        }
+
+        public static string GetTypeByIndex(string index)
+        {
+            return MapData?.FirstOrDefault(x => x.Index == index)?.Type;
+        }
+
+        public static ClusterType GetClusterType(string type)
+        {
+
+            if (type.ToUpper().Contains("SAFEAREA"))
+            {
+                return ClusterType.SafeArea;
+            }
+
+            if (type.ToUpper().Contains("YELLOW"))
+            {
+                return ClusterType.Yellow;
+            }
+
+            if (type.ToUpper().Contains("RED"))
+            {
+                return ClusterType.Red;
+            }
+
+            if (type.ToUpper().Contains("BLACK"))
+            {
+                return ClusterType.Black;
+            }
+
+            return ClusterType.Unknown;
         }
 
         #region Helper methods
