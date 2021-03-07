@@ -89,8 +89,13 @@ namespace StatisticsAnalysisTool.Network.Controller
                         var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserId == damageObject.CauserId);
                         if (fragment != null)
                         {
-                            fragment.CauserMainHand = damageObject?.CauserMainHand ?? null;
-                            fragment.MaximumDamage = highestDamage;
+                            fragment.CauserMainHand = damageObject?.CauserMainHand;
+
+                            if (damageObject?.Damage > 0)
+                            {
+                                fragment.DamageInPercent = (highestDamage / damageObject.Damage) * 100;
+                            }
+
                             fragment.Damage = damageObject?.Damage ?? 0;
                         }
                     });
@@ -101,13 +106,13 @@ namespace StatisticsAnalysisTool.Network.Controller
                     {
                         _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment()
                         {
-                            CauserId = damageObject.CauserId, Damage = damageObject.Damage, MaximumDamage = highestDamage, Name = damageObject.CauserName, CauserMainHand = damageObject?.CauserMainHand ?? null
+                            CauserId = damageObject.CauserId, Damage = damageObject.Damage, DamageInPercent = (highestDamage / damageObject.Damage) * 100, Name = damageObject.CauserName, CauserMainHand = damageObject?.CauserMainHand ?? null
                         });
                     });
                 }
             }
         }
-        
+
         public void RemoveAll()
         {
             _damageCollection.Clear();

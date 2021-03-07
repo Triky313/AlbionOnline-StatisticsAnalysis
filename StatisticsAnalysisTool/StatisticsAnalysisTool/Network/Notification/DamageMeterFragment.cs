@@ -10,7 +10,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _name;
         private long _causerId;
         private long _damage;
-        private long _maximumDamage;
+        private double _damageInPercent;
         private Item _causerMainHand;
 
         public string Name {
@@ -36,10 +36,10 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public long MaximumDamage {
-            get => _maximumDamage;
+        public double DamageInPercent {
+            get => _damageInPercent;
             set {
-                _maximumDamage = value;
+                _damageInPercent = value;
                 OnPropertyChanged();
             }
         }

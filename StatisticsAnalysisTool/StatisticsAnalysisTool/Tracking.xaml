@@ -595,8 +595,8 @@
     <!-- Damage meter -->
     <DataTemplate DataType="{x:Type notification:DamageMeterFragment}">
         <Grid>
-            <ProgressBar Foreground="Brown" com:ProgressBarSmoother.SmoothValue="{Binding Damage}"
-                         Minimum="0" Maximum="{Binding MaximumDamage, IsAsync=True, FallbackValue=0}" 
+            <ProgressBar Foreground="Brown" com:ProgressBarSmoother.SmoothValue="{Binding DamageInPercent}"
+                         Minimum="0" Maximum="100" 
                          Height="40" Margin="10,2" VerticalAlignment="Top" />
             <StackPanel Orientation="Horizontal">
                 <Grid Margin="20,0" HorizontalAlignment="Center" VerticalAlignment="Center">
