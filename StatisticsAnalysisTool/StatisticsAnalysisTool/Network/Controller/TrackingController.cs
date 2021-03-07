@@ -74,11 +74,10 @@ namespace StatisticsAnalysisTool.Network.Controller
                 return;
             }
             
-            EntityController.RemoveAll();
             CombatController.RemoveAll();
             CombatController.AddClusterStartTimer();
-            EntityController.ResetPartyMember();
 
+            // TODO: Wrong MapType on normal maps
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
             OnChangeCluster?.Invoke(CurrentCluster);
         }

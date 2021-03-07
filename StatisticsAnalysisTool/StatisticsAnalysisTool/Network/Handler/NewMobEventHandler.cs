@@ -16,10 +16,10 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(NewMobEvent value)
         {
-            if (value.ObjectId != null)
-            {
-                _trackingController.EntityController.AddEntity((long) value.ObjectId, string.Empty, GameObjectType.Mob, (GameObjectSubType) value.Type);
-            }
+            //if (value.ObjectId != null)
+            //{
+            //    _trackingController.EntityController.AddEntity((long) value.ObjectId, string.Empty, GameObjectType.Mob, (GameObjectSubType) value.Type);
+            //}
             await Task.CompletedTask;
         }
     }

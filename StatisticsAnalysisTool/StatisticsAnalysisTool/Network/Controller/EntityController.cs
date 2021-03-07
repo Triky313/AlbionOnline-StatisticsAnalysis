@@ -10,85 +10,80 @@ namespace StatisticsAnalysisTool.Network.Controller
 {
     public class EntityController
     {
-        private readonly ConcurrentDictionary<long, GameObject> _knownEntities = new ConcurrentDictionary<long, GameObject>();
+        private readonly ConcurrentDictionary<Guid, GameObject> _knownEntities = new ConcurrentDictionary<Guid, GameObject>();
+        private readonly ConcurrentDictionary<Guid, string> _knownPartyMember = new ConcurrentDictionary<Guid, string>();
 
-        public void AddEntity(long objectId, string name, GameObjectType objectType, GameObjectSubType objectSubType, bool isInParty = false)
+        public void AddEntity(long objectId, Guid userGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
         {
-            AddEntity(objectId, null, name, objectType, objectSubType, isInParty);
-        }
-
-        public void AddEntity(long objectId, Guid? userGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType, bool isInParty = false)
-        {
-            if (_knownEntities.ContainsKey(objectId))
-            {
-                return;
-            }
-
             var gameObject = new GameObject(objectId)
             {
                 Name = name,
                 ObjectType = objectType,
                 UserGuid = userGuid,
                 ObjectSubType = objectSubType,
-                IsInParty = isInParty
             };
 
-            _knownEntities.TryAdd(objectId, gameObject);
+            _knownEntities.TryRemove(userGuid, out _);
+            _knownEntities.TryAdd(gameObject.UserGuid, gameObject);
             OnAddEntity?.Invoke(gameObject);
         }
 
-        public void RemoveEntity(long objectId)
+        public void RemoveAllEntities()
         {
-            _knownEntities.TryRemove(objectId, out _);
-        }
-
-        public void RemoveAll()
-        {
-            _knownEntities.Clear();
+            foreach (var entity in _knownEntities.Where(x => x.Value.ObjectSubType != GameObjectSubType.LocalPlayer))
+            {
+                _knownEntities.TryRemove(entity.Key, out _);
+            }
         }
 
         public void ResetPartyMember()
         {
-            foreach (var entity in _knownEntities.Where(x => x.Value.IsInParty))
+            _knownPartyMember.Clear();
+
+            foreach (var member in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer))
             {
-                entity.Value.IsInParty = false;
+                _knownPartyMember.TryAdd(member.Key, member.Value.Name);
             }
         }
 
-        public void SetInParty(Guid guid)
+        public void AddToParty(Guid guid, string username)
         {
-            var userObject = _knownEntities.FirstOrDefault(x => x.Value.UserGuid == guid);
-            if (userObject.Value?.IsInParty == false)
+            if (_knownPartyMember.All(x => x.Key != guid))
             {
-                userObject.Value.IsInParty = true;
+                _knownPartyMember.TryAdd(guid, username);
             }
         }
 
-        public void SetInParty(Dictionary<string, Guid> party)
+        public void SetParty(Dictionary<Guid, string> party, bool resetPartyBefore = false)
         {
+            if (resetPartyBefore)
+            {
+                ResetPartyMember();
+            }
+
             foreach (var member in party)
             {
-                SetInParty(member.Value);
+                AddToParty(member.Key, member.Value);
             }
         }
 
-        public KeyValuePair<long, GameObject>? GetEntity(long objectId)
+        public bool IsUserInParty(string name)
         {
-            return _knownEntities?.FirstOrDefault(x => x.Key == objectId);
+            return _knownPartyMember.Any(x => x.Value == name);
+        }
+
+        public KeyValuePair<Guid, GameObject>? GetEntity(long objectId)
+        {
+            return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
         }
 
         public void SetCharacterEquipment(long objectId, CharacterEquipment equipment)
         {
-            var entity = _knownEntities?.FirstOrDefault(x => x.Key == objectId);
+            var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
             if (entity?.Value != null)
             {
                 entity.Value.Value.CharacterEquipment = equipment;
             }
-        }
-
-        public IEnumerable<GameObject> GetEntities()
-        {
-            return new List<GameObject>(_knownEntities.Values);
         }
 
         public event Action<GameObject> OnAddEntity;

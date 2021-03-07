@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (value?.UserGuid != null)
             {
-                _trackingController.EntityController.SetInParty((Guid)value.UserGuid);
+                _trackingController.EntityController.AddToParty((Guid)value.UserGuid, value.Username);
             }
             await Task.CompletedTask;
         }

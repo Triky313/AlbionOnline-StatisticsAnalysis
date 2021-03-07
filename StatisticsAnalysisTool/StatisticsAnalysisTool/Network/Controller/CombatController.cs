@@ -42,7 +42,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         public void AddDamage(long causerId, double healthChange)
         {
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
-            if (gameObject == null || gameObject.Value.Value?.ObjectType != GameObjectType.Player || gameObject.Value.Value?.IsInParty != true)
+            if (gameObject == null || gameObject.Value.Value?.ObjectType != GameObjectType.Player || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name))
             {
                 return;
             }
@@ -80,23 +80,23 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             var highestDamage = GetHighestDamage(damageList);
 
-            foreach (var damageObject in damageList)
+            foreach (var damageObject in damageList.OrderBy(x => x.Damage))
             {
                 if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserId == damageObject.CauserId))
                 {
-                    _mainWindow.Dispatcher?.InvokeAsync(() =>
-                    {
+                    _mainWindow.Dispatcher?.Invoke(() => {
                         var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserId == damageObject.CauserId);
                         if (fragment != null)
                         {
                             fragment.CauserMainHand = damageObject?.CauserMainHand;
 
-                            if (damageObject?.Damage > 0)
+                            if (damageObject.Damage > 0)
                             {
-                                fragment.DamageInPercent = (highestDamage / damageObject.Damage) * 100;
+                                // TODO: Manchmal einfach 0 
+                                fragment.DamageInPercent = (damageObject.Damage / highestDamage) * 100;
                             }
 
-                            fragment.Damage = damageObject?.Damage ?? 0;
+                            fragment.Damage = damageObject.Damage;
                         }
                     });
                 }
@@ -106,7 +106,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     {
                         _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment()
                         {
-                            CauserId = damageObject.CauserId, Damage = damageObject.Damage, DamageInPercent = (highestDamage / damageObject.Damage) * 100, Name = damageObject.CauserName, CauserMainHand = damageObject?.CauserMainHand ?? null
+                            CauserId = damageObject.CauserId, Damage = damageObject.Damage, DamageInPercent = (damageObject.Damage / highestDamage) * 100, Name = damageObject.CauserName, CauserMainHand = damageObject?.CauserMainHand ?? null
                         });
                     });
                 }
@@ -149,7 +149,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             var currentDateTime = DateTime.UtcNow;
             var difference = currentDateTime.Subtract(_lastDamageUiUpdate);
-            if (difference.Seconds >= 2)
+            if (difference.Seconds >= 1)
             {
                 _lastDamageUiUpdate = currentDateTime;
                 return true;

@@ -5,6 +5,7 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.ViewModels;
+using System;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -45,9 +46,10 @@ namespace StatisticsAnalysisTool.Network.Handler
             _mainWindowViewModel.TrackingAllianceName = value.AllianceName;
             _mainWindowViewModel.TrackingCurrentMapName = WorldData.GetUniqueNameOrDefault(value.MapIndex);
 
-            if (value.UserObjectId != null)
+            if (value.Guid != null && value.UserObjectId != null)
             {
-                _trackingController.EntityController.AddEntity((long)value.UserObjectId, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer, true);
+                _trackingController.EntityController.AddEntity((long)value.UserObjectId, (Guid)value.Guid, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
+                _trackingController.EntityController.AddToParty((Guid)value.Guid, value.Username);
             }
 
             _trackingController.SetTotalPlayerSilver(value.Silver.IntegerValue);

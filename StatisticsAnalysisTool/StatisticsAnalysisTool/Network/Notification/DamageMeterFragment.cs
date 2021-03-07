@@ -10,7 +10,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _name;
         private long _causerId;
         private long _damage;
-        private double _damageInPercent;
+        private float _damageInPercent;
         private Item _causerMainHand;
 
         public string Name {
@@ -36,7 +36,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public double DamageInPercent {
+        public float DamageInPercent {
             get => _damageInPercent;
             set {
                 _damageInPercent = value;

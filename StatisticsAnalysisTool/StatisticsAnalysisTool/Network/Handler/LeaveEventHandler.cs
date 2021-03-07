@@ -16,10 +16,10 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(LeaveEvent value)
         {
-            if (value.ObjectId != null)
-            {
-                _trackingController.EntityController.RemoveEntity((long)value.ObjectId);
-            }
+            //if (value.ObjectId != null)
+            //{
+            //    _trackingController.EntityController.RemoveEntity((long)value.ObjectId);
+            //}
             await Task.CompletedTask;
         }
     }

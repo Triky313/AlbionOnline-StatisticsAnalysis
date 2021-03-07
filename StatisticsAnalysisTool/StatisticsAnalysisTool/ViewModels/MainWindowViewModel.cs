@@ -628,9 +628,9 @@ namespace StatisticsAnalysisTool.ViewModels
             if (_trackingController == null)
             {
                 _trackingController = new TrackingController(this, _mainWindow);
-                _trackingController?.RegisterEvents();
             }
 
+            _trackingController?.RegisterEvents();
             TrackingDungeons = _trackingController?.LoadDungeonFromFile();
             _trackingController?.SetDungeonStatsDay();
             _trackingController?.SetDungeonStatsTotal();

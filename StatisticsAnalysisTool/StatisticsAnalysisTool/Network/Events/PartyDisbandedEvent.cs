@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                         var name = partyUserNameArray[i];
                         if (guid != null && !string.IsNullOrEmpty(name))
                         {
-                            PartyUsersGuid.Add(name, (Guid)guid);
+                            PartyUsersGuid.Add((Guid)guid, name);
                         }
                     }
                 }
@@ -35,6 +35,6 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
         }
         
-        public Dictionary<string, Guid> PartyUsersGuid = new Dictionary<string, Guid>();
+        public Dictionary<Guid, string> PartyUsersGuid = new Dictionary<Guid, string>();
     }
 }

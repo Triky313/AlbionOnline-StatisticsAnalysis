@@ -16,6 +16,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(ChangeClusterResponse value)
         {
+            _trackingController.EntityController.RemoveAllEntities();
             await Task.CompletedTask;
         }
     }
