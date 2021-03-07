@@ -68,7 +68,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                         x.First().CauserId, 
                         x.First().TargetId, 
                         x.First().CauserName,
-                        x.First().CauserMainHand, 
+                        x.FirstOrDefault(y => y?.CauserMainHand != null)?.CauserMainHand, 
                         x.Sum(s => s.Damage)))
                     .ToList();
 
@@ -89,8 +89,9 @@ namespace StatisticsAnalysisTool.Network.Controller
                         var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserId == damageObject.CauserId);
                         if (fragment != null)
                         {
+                            fragment.CauserMainHand = damageObject?.CauserMainHand ?? null;
                             fragment.MaximumDamage = highestDamage;
-                            fragment.Damage = damageObject.Damage;
+                            fragment.Damage = damageObject?.Damage ?? 0;
                         }
                     });
                 }
@@ -98,7 +99,10 @@ namespace StatisticsAnalysisTool.Network.Controller
                 {
                     _mainWindow.Dispatcher?.InvokeAsync(() =>
                     {
-                        _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment() { CauserId = damageObject.CauserId, Damage = damageObject.Damage, MaximumDamage = highestDamage, Name = damageObject.CauserName });
+                        _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment()
+                        {
+                            CauserId = damageObject.CauserId, Damage = damageObject.Damage, MaximumDamage = highestDamage, Name = damageObject.CauserName, CauserMainHand = damageObject?.CauserMainHand ?? null
+                        });
                     });
                 }
             }
@@ -121,6 +125,12 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (dmgObject != null)
             {
                 dmgObject.CauserName = gameObject.Name;
+
+                if (gameObject?.CharacterEquipment?.MainHand > 0)
+                {
+                    dmgObject.CauserMainHand = ItemController.GetItemByIndex(gameObject.CharacterEquipment.MainHand);
+                }
+
                 dmgObject.Damage += damage;
                 return;
             }

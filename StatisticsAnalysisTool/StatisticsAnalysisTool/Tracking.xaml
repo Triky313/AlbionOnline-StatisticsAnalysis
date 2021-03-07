@@ -585,12 +585,23 @@
     </Style>
 
     <!-- ##### Damage meter ##### -->
+
+    <!-- Damage meter icon -->
+    <Style TargetType="Image" x:Key="DamageMeter.Icon" >
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="40"/>
+    </Style>
+
+    <!-- Damage meter -->
     <DataTemplate DataType="{x:Type notification:DamageMeterFragment}">
         <Grid>
             <ProgressBar Foreground="Brown" com:ProgressBarSmoother.SmoothValue="{Binding Damage}"
                          Minimum="0" Maximum="{Binding MaximumDamage, IsAsync=True, FallbackValue=0}" 
-                         Height="30" Margin="10,2" VerticalAlignment="Top" />
+                         Height="40" Margin="10,2" VerticalAlignment="Top" />
             <StackPanel Orientation="Horizontal">
+                <Grid Margin="20,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
+                </Grid>
                 <Label Content="{Binding Name}" MinWidth="100" Margin="10,3"></Label>
                 <Label Content="{Binding Damage}" Margin="10,3"></Label>
             </StackPanel>

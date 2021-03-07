@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Annotations;
+using StatisticsAnalysisTool.Models;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -10,6 +11,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private long _causerId;
         private long _damage;
         private long _maximumDamage;
+        private Item _causerMainHand;
 
         public string Name {
             get => _name;
@@ -38,6 +40,14 @@ namespace StatisticsAnalysisTool.Network.Notification
             get => _maximumDamage;
             set {
                 _maximumDamage = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public Item CauserMainHand {
+            get => _causerMainHand;
+            set {
+                _causerMainHand = value;
                 OnPropertyChanged();
             }
         }

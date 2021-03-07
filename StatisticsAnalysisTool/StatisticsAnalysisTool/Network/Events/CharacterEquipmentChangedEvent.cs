@@ -20,7 +20,7 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (parameters.ContainsKey(2))
                 {
-                    var equipment = ((short[])parameters[2]).ToDictionary();
+                    var equipment = ((int[])parameters[2]).ToDictionary();
 
                     CharacterEquipment.MainHand = equipment[0].ObjectToInt();
                     CharacterEquipment.OffHand = equipment[1].ObjectToInt();
