@@ -88,12 +88,11 @@ namespace StatisticsAnalysisTool.Network.Controller
                         var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserId == damageObject.CauserId);
                         if (fragment != null)
                         {
-                            fragment.CauserMainHand = damageObject?.CauserMainHand;
+                            fragment.CauserMainHand = damageObject.CauserMainHand;
 
-                            if (damageObject.Damage > 0)
+                            if (damageObject?.Damage > 0)
                             {
-                                // TODO: Manchmal einfach 0 
-                                fragment.DamageInPercent = (damageObject.Damage / highestDamage) * 100;
+                                fragment.DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100;
                             }
 
                             fragment.Damage = damageObject.Damage;
@@ -106,7 +105,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     {
                         _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment()
                         {
-                            CauserId = damageObject.CauserId, Damage = damageObject.Damage, DamageInPercent = (damageObject.Damage / highestDamage) * 100, Name = damageObject.CauserName, CauserMainHand = damageObject?.CauserMainHand ?? null
+                            CauserId = damageObject.CauserId, Damage = damageObject.Damage, DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100, Name = damageObject.CauserName, CauserMainHand = damageObject?.CauserMainHand ?? null
                         });
                     });
                 }
