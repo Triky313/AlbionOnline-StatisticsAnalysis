@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Controller
 {
@@ -39,7 +40,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             _clusterStarts.Add(DateTime.UtcNow);
         }
 
-        public void AddDamage(long causerId, double healthChange)
+        public async void AddDamage(long causerId, double healthChange)
         {
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
             if (gameObject == null || gameObject.Value.Value?.ObjectType != GameObjectType.Player || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name))
@@ -68,17 +69,25 @@ namespace StatisticsAnalysisTool.Network.Controller
                         x.First().CauserId, 
                         x.First().TargetId, 
                         x.First().CauserName,
-                        x.FirstOrDefault(y => y?.CauserMainHand != null)?.CauserMainHand, 
+                        x.FirstOrDefault(y => y?.CauserMainHand != null)?.CauserMainHand,
                         x.Sum(s => s.Damage)))
                     .ToList();
 
-                UpdateDamageMeterUi(groupedDamageList);
+                await UpdateDamageMeterUiAsync(groupedDamageList);
             }
         }
-
-        public void UpdateDamageMeterUi(List<DamageObject> damageList)
+        
+        public async Task UpdateDamageMeterUiAsync(List<DamageObject> damageList)
         {
             var highestDamage = GetHighestDamage(damageList);
+
+            foreach (var damageObject in damageList)
+            {
+                if (damageObject?.CauserMainHand != null && damageObject.CauserMainHand.FullItemInformation == null)
+                {
+                    damageObject.CauserMainHand.FullItemInformation = await ItemController.GetFullItemInformationAsync(damageObject.CauserMainHand);
+                }
+            }
 
             foreach (var damageObject in damageList.OrderBy(x => x.Damage))
             {
@@ -156,7 +165,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             return false;
         }
-
+        
         private long GetHighestDamage(List<DamageObject> damageObjectList)
         {
             return (damageObjectList.Count <= 0) ? 0 : damageObjectList.Max(x => x.Damage);

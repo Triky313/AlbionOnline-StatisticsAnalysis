@@ -12,6 +12,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _damage;
         private double _damageInPercent;
         private Item _causerMainHand;
+        private string _categoryId;
 
         public string Name {
             get => _name;
@@ -49,6 +50,15 @@ namespace StatisticsAnalysisTool.Network.Notification
             get => _causerMainHand;
             set {
                 _causerMainHand = value;
+                CategoryId = _causerMainHand?.FullItemInformation?.CategoryId;
+                OnPropertyChanged();
+            }
+        }
+        
+        public string CategoryId {
+            get => _categoryId;
+            set {
+                _categoryId = value;
                 OnPropertyChanged();
             }
         }
