@@ -90,12 +90,12 @@ namespace StatisticsAnalysisTool.Network.Controller
                         {
                             fragment.CauserMainHand = damageObject.CauserMainHand;
 
-                            if (damageObject?.Damage > 0)
+                            if (damageObject.Damage > 0)
                             {
                                 fragment.DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100;
                             }
 
-                            fragment.Damage = damageObject.Damage;
+                            fragment.Damage = damageObject.Damage.ToShortNumber();
                         }
                     });
                 }
@@ -105,7 +105,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     {
                         _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment()
                         {
-                            CauserId = damageObject.CauserId, Damage = damageObject.Damage, DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100, Name = damageObject.CauserName, CauserMainHand = damageObject?.CauserMainHand ?? null
+                            CauserId = damageObject.CauserId, Damage = damageObject.Damage.ToShortNumber(), DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100, Name = damageObject.CauserName, CauserMainHand = damageObject.CauserMainHand
                         });
                     });
                 }
@@ -130,7 +130,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 dmgObject.CauserName = gameObject.Name;
 
-                if (gameObject?.CharacterEquipment?.MainHand > 0)
+                if (gameObject.CharacterEquipment?.MainHand > 0)
                 {
                     dmgObject.CauserMainHand = ItemController.GetItemByIndex(gameObject.CharacterEquipment.MainHand);
                 }

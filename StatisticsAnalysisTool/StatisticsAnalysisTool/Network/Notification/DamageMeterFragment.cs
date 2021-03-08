@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.Network.Notification
     {
         private string _name;
         private long _causerId;
-        private long _damage;
+        private string _damage;
         private double _damageInPercent;
         private Item _causerMainHand;
 
@@ -28,7 +28,8 @@ namespace StatisticsAnalysisTool.Network.Notification
                 OnPropertyChanged();
             }
         }
-        public long Damage {
+
+        public string Damage {
             get => _damage;
             set {
                 _damage = value;

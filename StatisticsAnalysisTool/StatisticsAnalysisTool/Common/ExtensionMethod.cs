@@ -2,12 +2,66 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 
 namespace StatisticsAnalysisTool.Common
 {
     public static class ExtensionMethod
     {
+        public static string ToShortNumber(this long num) => GetShortNumber(num);
+
+        public static string ToShortNumber(this int num) => GetShortNumber(num);
+
+        public static string ToShortNumber(this double num) => GetShortNumber((decimal)num);
+
+        private static string GetShortNumber(decimal num)
+        {
+            if (num < -10000000)
+            {
+                num /= 10000;
+                return (num / 100m).ToString("#.00'M'", CultureInfo.CurrentCulture);
+            }
+
+            if (num < -1000000)
+            {
+                num /= 100;
+                return (num / 10m).ToString("#.00'K'", CultureInfo.CurrentCulture);
+            }
+
+            if (num < -10000)
+            {
+                num /= 10;
+                return (num / 100m).ToString("#.00'K'", CultureInfo.CurrentCulture);
+            }
+
+            if (num < 1000)
+            {
+                return num.ToString("N0", CultureInfo.CurrentCulture);
+            }
+
+            if (num < 10000)
+            {
+                num /= 10;
+                return (num / 100m).ToString("#.00'K'", CultureInfo.CurrentCulture);
+            }
+
+            if (num < 1000000)
+            {
+                num /= 100;
+                return (num / 10m).ToString("#.00'K'", CultureInfo.CurrentCulture);
+            }
+
+            if (num < 10000000)
+            {
+                num /= 10000;
+                return (num / 100m).ToString("#.00'M'", CultureInfo.CurrentCulture);
+            }
+
+            num /= 100000;
+            return (num / 10m).ToString("#.00'M'", CultureInfo.CurrentCulture);
+        }
+
         public static DateTime? GetHighestDateTime(this ObservableCollection<DateTime> list)
         {
             if (!list.Any())
