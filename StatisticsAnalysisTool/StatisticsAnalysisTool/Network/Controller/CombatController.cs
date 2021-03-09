@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
@@ -26,6 +27,10 @@ namespace StatisticsAnalysisTool.Network.Controller
             _trackingController = trackingController;
             _mainWindow = mainWindow;
             _mainWindowViewModel = mainWindowViewModel;
+
+#if DEBUG
+            _ = UpdateDamageMeterUiAsync(SetRandomDamageValues(40));
+#endif
         }
 
         public event Action<bool, bool> OnChangeCombatMode;
@@ -89,7 +94,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
             }
 
-            foreach (var damageObject in damageList.OrderBy(x => x.Damage))
+            foreach (var damageObject in damageList.OrderByDescending(x => x.Damage))
             {
                 if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserId == damageObject.CauserId))
                 {
@@ -170,5 +175,62 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             return (damageObjectList.Count <= 0) ? 0 : damageObjectList.Max(x => x.Damage);
         }
+
+        #region Debug methods
+
+        private static readonly Random _random = new Random(DateTime.Now.Millisecond);
+        private List<DamageObject> SetRandomDamageValues(int playerAmount = 5)
+        {
+            var randomDamageList = new List<DamageObject>();
+            
+            for (var i = 0; i < playerAmount; i++)
+            {
+                var causerId = _random.Next(1, 99999);
+                var damage = _random.Next(500, 999999);
+                
+                randomDamageList.Add(new DamageObject(causerId, null, GenerateName(10), new Item()
+                {
+                    UniqueName = "T8_2H_CURSEDSTAFF@3",
+                    FullItemInformation = new ItemInformation()
+                    {
+                        UniqueName = "T8_2H_CURSEDSTAFF@3",
+                        CategoryId = GetRandomWeaponCategoryId()
+                    }
+                }, damage));
+            }
+
+            return randomDamageList;
+        }
+
+        private static string GenerateName(int len)
+        {
+            string[] consonants = { "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "l", "n", "p", "q", "r", "s", "sh", "zh", "t", "v", "w", "x" };
+            string[] vowels = { "a", "e", "i", "o", "u", "ae", "y" };
+            string Name = "";
+            Name += consonants[_random.Next(consonants.Length)].ToUpper();
+            Name += vowels[_random.Next(vowels.Length)];
+            int b = 2; //b tells how many times a new letter has been added. It's 2 right now because the first two letters are already in the name.
+            while (b < len)
+            {
+                Name += consonants[_random.Next(consonants.Length)];
+                b++;
+                Name += vowels[_random.Next(vowels.Length)];
+                b++;
+            }
+
+            return Name;
+        }
+
+        private static string GetRandomWeaponCategoryId()
+        {
+            var names = new List<string> { "sword", "spear", "quarterstaff", "naturestaff", "mace", "holystaff", "hammer", "froststaff", "firestaff", "dagger", "cursestaff", "crossbow", "bow", "axe", "arcanestaff", "Unknown" };
+
+            var index = _random.Next(names.Count);
+            var name = names[index];
+            names.RemoveAt(index);
+            return name;
+        }
+
+        #endregion
     }
 }
