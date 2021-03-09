@@ -69,10 +69,9 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (IsUiUpdateAllowed())
             {
                 var damageListByNewestCluster = _damageCollection.Where(x => x.TimeStamp >= _clusterStarts.GetHighestDateTime()).ToList();
-                var groupedDamageList = damageListByNewestCluster.GroupBy(x => x.CauserId)
+                var groupedDamageList = damageListByNewestCluster.GroupBy(x => x.CauserGuid)
                     .Select(x => new DamageObject(
-                        x.First().CauserId, 
-                        x.First().TargetId, 
+                        x.First().CauserGuid, 
                         x.First().CauserName,
                         x.FirstOrDefault(y => y?.CauserMainHand != null)?.CauserMainHand,
                         x.Sum(s => s.Damage)))
@@ -96,10 +95,10 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             foreach (var damageObject in damageList.OrderByDescending(x => x.Damage))
             {
-                if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserId == damageObject.CauserId))
+                if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.CauserGuid))
                 {
                     _mainWindow.Dispatcher?.Invoke(() => {
-                        var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserId == damageObject.CauserId);
+                        var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == damageObject.CauserGuid);
                         if (fragment != null)
                         {
                             fragment.CauserMainHand = damageObject.CauserMainHand;
@@ -119,7 +118,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     {
                         _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment()
                         {
-                            CauserId = damageObject.CauserId, Damage = damageObject.Damage.ToShortNumber(), DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100, Name = damageObject.CauserName, CauserMainHand = damageObject.CauserMainHand
+                            CauserGuid = damageObject.CauserGuid, Damage = damageObject.Damage.ToShortNumber(), DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100, Name = damageObject.CauserName, CauserMainHand = damageObject.CauserMainHand
                         });
                     });
                 }
@@ -139,7 +138,12 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private void AddInternalDamage(GameObject gameObject, int damage)
         {
-            var dmgObject = _damageCollection.FirstOrDefault(x => x.CauserId == gameObject.ObjectId);
+            if (gameObject?.ObjectId == null)
+            {
+                return;
+            }
+
+            var dmgObject = _damageCollection.FirstOrDefault(x => x.CauserGuid == gameObject.UserGuid);
             if (dmgObject != null)
             {
                 dmgObject.CauserName = gameObject.Name;
@@ -153,7 +157,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 return;
             }
 
-            _damageCollection.Add(new DamageObject(gameObject.ObjectId, null, gameObject.Name, ItemController.GetItemByIndex(gameObject.CharacterEquipment?.MainHand ?? 0), damage));
+            _damageCollection.Add(new DamageObject(gameObject.UserGuid, gameObject.Name, ItemController.GetItemByIndex(gameObject.CharacterEquipment?.MainHand ?? 0), damage));
         }
         
         private DateTime _lastDamageUiUpdate;
@@ -185,10 +189,10 @@ namespace StatisticsAnalysisTool.Network.Controller
             
             for (var i = 0; i < playerAmount; i++)
             {
-                var causerId = _random.Next(1, 99999);
+                var causerGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
                 var damage = _random.Next(500, 999999);
                 
-                randomDamageList.Add(new DamageObject(causerId, null, GenerateName(10), new Item()
+                randomDamageList.Add(new DamageObject(causerGuid, GenerateName(10), new Item()
                 {
                     UniqueName = "T8_2H_CURSEDSTAFF@3",
                     FullItemInformation = new ItemInformation()

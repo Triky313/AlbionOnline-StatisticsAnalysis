@@ -34,6 +34,11 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 _knownEntities.TryRemove(entity.Key, out _);
             }
+
+            foreach (var entity in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer || _knownPartyEntities.ContainsKey(x.Key)))
+            {
+                entity.Value.ObjectId = null;
+            }
         }
 
         public void ResetPartyMember()

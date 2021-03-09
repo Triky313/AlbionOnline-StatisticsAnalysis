@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Models;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -8,7 +9,7 @@ namespace StatisticsAnalysisTool.Network.Notification
     public class DamageMeterFragment : INotifyPropertyChanged
     {
         private string _name;
-        private long _causerId;
+        private Guid _causerGuid;
         private string _damage;
         private double _damageInPercent;
         private Item _causerMainHand;
@@ -22,10 +23,10 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public long CauserId {
-            get => _causerId;
+        public Guid CauserGuid {
+            get => _causerGuid;
             set {
-                _causerId = value;
+                _causerGuid = value;
                 OnPropertyChanged();
             }
         }

@@ -5,7 +5,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
 {
     public class GameObject
     {
-        public long ObjectId { get; set; }
+        public long? ObjectId { get; set; }
         public Guid UserGuid { get; set; }
         public GameObjectType ObjectType { get; set; } = GameObjectType.Unknown;
         public GameObjectSubType ObjectSubType { get; set; } = GameObjectSubType.Unknown;
