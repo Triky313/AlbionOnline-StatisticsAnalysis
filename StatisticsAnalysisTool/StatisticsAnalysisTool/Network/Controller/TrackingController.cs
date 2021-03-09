@@ -74,8 +74,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 return;
             }
             
-            CombatController.RemoveAll();
-            CombatController.AddClusterStartTimer();
+            CombatController.ResetDamage(CombatController.AddClusterStartTimer());
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
             OnChangeCluster?.Invoke(CurrentCluster);

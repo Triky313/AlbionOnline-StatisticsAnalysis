@@ -40,9 +40,11 @@ namespace StatisticsAnalysisTool.Network.Controller
             OnChangeCombatMode?.Invoke(inActiveCombat, inPassiveCombat);
         }
 
-        public void AddClusterStartTimer()
+        public DateTime AddClusterStartTimer()
         {
-            _clusterStarts.Add(DateTime.UtcNow);
+            var time = DateTime.UtcNow;
+            _clusterStarts.Add(time);
+            return time;
         }
 
         public async void AddDamage(long causerId, double healthChange)
@@ -68,7 +70,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             if (IsUiUpdateAllowed())
             {
-                var damageListByNewestCluster = _damageCollection.Where(x => x.TimeStamp >= _clusterStarts.GetHighestDateTime()).ToList();
+                var damageListByNewestCluster = _damageCollection.Where(x => x.StartTime >= _clusterStarts.GetHighestDateTime()).ToList();
                 var groupedDamageList = damageListByNewestCluster.GroupBy(x => x.CauserGuid)
                     .Select(x => new DamageObject(
                         x.First().CauserGuid, 
@@ -125,11 +127,14 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        public void RemoveAll()
+        public void ResetDamage(DateTime newStartTime)
         {
-            _damageCollection.Clear();
-            _clusterStarts.Clear();
-
+            foreach (var damageObject in _damageCollection)
+            {
+                damageObject.Damage = 0;
+                damageObject.StartTime = newStartTime;
+            }
+            
             _mainWindow?.Dispatcher?.InvokeAsync(() =>
             {
                 _mainWindowViewModel?.DamageMeter?.Clear();
