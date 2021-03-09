@@ -11,7 +11,7 @@ namespace StatisticsAnalysisTool.Network.Controller
     public class EntityController
     {
         private readonly ConcurrentDictionary<Guid, GameObject> _knownEntities = new ConcurrentDictionary<Guid, GameObject>();
-        private readonly ConcurrentDictionary<Guid, string> _knownPartyMember = new ConcurrentDictionary<Guid, string>();
+        private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new ConcurrentDictionary<Guid, string>();
 
         public void AddEntity(long objectId, Guid userGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
         {
@@ -30,7 +30,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void RemoveAllEntities()
         {
-            foreach (var entity in _knownEntities.Where(x => x.Value.ObjectSubType != GameObjectSubType.LocalPlayer))
+            foreach (var entity in _knownEntities.Where(x => x.Value.ObjectSubType != GameObjectSubType.LocalPlayer && !_knownPartyEntities.ContainsKey(x.Key)))
             {
                 _knownEntities.TryRemove(entity.Key, out _);
             }
@@ -38,19 +38,19 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void ResetPartyMember()
         {
-            _knownPartyMember.Clear();
+            _knownPartyEntities.Clear();
 
             foreach (var member in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer))
             {
-                _knownPartyMember.TryAdd(member.Key, member.Value.Name);
+                _knownPartyEntities.TryAdd(member.Key, member.Value.Name);
             }
         }
 
         public void AddToParty(Guid guid, string username)
         {
-            if (_knownPartyMember.All(x => x.Key != guid))
+            if (_knownPartyEntities.All(x => x.Key != guid))
             {
-                _knownPartyMember.TryAdd(guid, username);
+                _knownPartyEntities.TryAdd(guid, username);
             }
         }
 
@@ -69,7 +69,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public bool IsUserInParty(string name)
         {
-            return _knownPartyMember.Any(x => x.Value == name);
+            return _knownPartyEntities.Any(x => x.Value == name);
         }
 
         public KeyValuePair<Guid, GameObject>? GetEntity(long objectId)
