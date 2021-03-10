@@ -31,5 +31,6 @@ namespace StatisticsAnalysisTool.Models
         public string ResetDungeonTracking => LanguageController.Translation("RESET_DUNGEON_TRACKING");
         public string Day => LanguageController.Translation("DAY");
         public string Total => LanguageController.Translation("TOTAL");
+        public string DamageMeter => LanguageController.Translation("DAMAGE_METER");
     }
 }
