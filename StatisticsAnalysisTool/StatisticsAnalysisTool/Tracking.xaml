@@ -594,12 +594,12 @@
     <SolidColorBrush x:Key="Progressbar.Foreground.Mace" Color="#D35F91"/>
     <SolidColorBrush x:Key="Progressbar.Foreground.HolyStaff" Color="#afafaf"/>
     <SolidColorBrush x:Key="Progressbar.Foreground.Hammer" Color="#7373D9"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.FrostStaff" Color="#2E7EB8"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.FrostStaff" Color="#4089d1"/>
     <SolidColorBrush x:Key="Progressbar.Foreground.FireStaff" Color="#C9561D"/>
     <SolidColorBrush x:Key="Progressbar.Foreground.Dagger" Color="#A2AD1F"/>
     <SolidColorBrush x:Key="Progressbar.Foreground.CursedStaff" Color="#61358D"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.Crossbow" Color="#004D39"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.Bow" Color="#507010"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.Crossbow" Color="#00576e"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.Bow" Color="#004D39"/>
     <SolidColorBrush x:Key="Progressbar.Foreground.Axe" Color="#AD1F2A"/>
     <SolidColorBrush x:Key="Progressbar.Foreground.ArcaneStaff" Color="#732653"/>
     <SolidColorBrush x:Key="Progressbar.Foreground.UnknownWeaponType" Color="#555555"/>
