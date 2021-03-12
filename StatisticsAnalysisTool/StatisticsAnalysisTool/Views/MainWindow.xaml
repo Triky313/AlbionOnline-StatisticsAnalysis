@@ -287,9 +287,29 @@
                 </TabItem>
                 <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE_METER}">
                     <Grid>
-                        <ScrollViewer>
+                        <Grid Height="20" Width="20" Margin="0,10,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
+                            <fa:ImageAwesome Icon="InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                        </Grid>
+                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,36,0,0" VerticalAlignment="Top"/>
+                        <ScrollViewer Margin="0,39,0,0">
                             <ItemsControl ItemsSource="{Binding DamageMeter}"/>
                         </ScrollViewer>
+                        <Grid Visibility="{Binding IsDamageMeterPopupVisible, FallbackValue=Hidden}" Margin="0,39,0,0" Background="{StaticResource SolidColorBrush.Background.Second}">
+                            <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
+                                <DockPanel Margin="0,0,0,16">
+                                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                                        <fa:ImageAwesome Icon="DotCircleOutline" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                                    </Grid>
+                                    <TextBlock Text="{Binding Translation.DamageMeterDescription1}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="16" TextWrapping="Wrap" Width="auto"></TextBlock>
+                                </DockPanel>
+                                <DockPanel Margin="0,0,0,16">
+                                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                                        <fa:ImageAwesome Icon="DotCircleOutline" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                                    </Grid>
+                                    <TextBlock Text="{Binding Translation.DamageMeterDescription2}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="16" TextWrapping="Wrap" Width="auto"></TextBlock>
+                                </DockPanel>
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </TabItem>
             </TabControl>

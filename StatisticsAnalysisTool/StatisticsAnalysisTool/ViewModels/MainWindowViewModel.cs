@@ -109,6 +109,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _guildInfoWidth;
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
+        private Visibility _isDamageMeterPopupVisible;
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
         private ObservableCollection<DamageMeterFragment> _damageMeter = new ObservableCollection<DamageMeterFragment>();
         private DungeonStats _dungeonStatsDay = new DungeonStats();
@@ -820,6 +821,14 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _itemsView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility IsDamageMeterPopupVisible {
+            get => _isDamageMeterPopupVisible;
+            set {
+                _isDamageMeterPopupVisible = value;
                 OnPropertyChanged();
             }
         }
