@@ -6,6 +6,7 @@
                     xmlns:fa="http://schemas.fontawesome.io/icons/"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
                     mc:Ignorable="d">
 
     <Style x:Key="LineFragmentImageStyle" TargetType="{x:Type Image}">
@@ -605,7 +606,7 @@
     <SolidColorBrush x:Key="Progressbar.Foreground.UnknownWeaponType" Color="#555555"/>
 
     <!-- Damage meter icon -->
-    <Style TargetType="Image" x:Key="DamageMeter.Icon" >
+    <Style TargetType="Image" x:Key="DamageMeter.Icon">
         <Setter Property="Height" Value="40"/>
         <Setter Property="Width" Value="40"/>
     </Style>
@@ -676,6 +677,24 @@
                 <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Damage}" 
                        FontWeight="Bold" Margin="18,3"></Label>
             </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <!-- Damage meter icon -->
+    <Style TargetType="fa:ImageAwesome" x:Key="PartyMemberCircleStyle">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{StaticResource Color.Green.2}" Offset="0.0" />
+                    <GradientStop Color="{StaticResource Color.Green.4}" Offset="1.0" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate DataType="{x:Type networkModel:PartyMemberCircle}">
+        <Grid Height="12" Width="12" Margin="2,4,2,0" VerticalAlignment="Top" ToolTip="{Binding Name}">
+            <fa:ImageAwesome Icon="Circle" Style="{StaticResource PartyMemberCircleStyle}"/>
         </Grid>
     </DataTemplate>
 

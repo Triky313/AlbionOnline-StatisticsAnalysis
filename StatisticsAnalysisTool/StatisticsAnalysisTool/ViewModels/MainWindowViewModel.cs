@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Notification;
@@ -109,11 +110,12 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _guildInfoWidth;
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
-        private Visibility _isDamageMeterPopupVisible;
+        private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
         private ObservableCollection<DamageMeterFragment> _damageMeter = new ObservableCollection<DamageMeterFragment>();
         private DungeonStats _dungeonStatsDay = new DungeonStats();
         private DungeonStats _dungeonStatsTotal = new DungeonStats();
+        private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new ObservableCollection<PartyMemberCircle>();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1189,6 +1191,14 @@ namespace StatisticsAnalysisTool.ViewModels
                 ItemsView?.Refresh();
 
                 Settings.Default.IsFullItemInfoSearchActive = _isFullItemInfoSearchActive;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<PartyMemberCircle> PartyMemberCircles {
+            get => _partyMemberCircles;
+            set {
+                _partyMemberCircles = value;
                 OnPropertyChanged();
             }
         }

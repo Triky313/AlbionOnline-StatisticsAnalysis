@@ -179,6 +179,7 @@
     <Compile Include="Models\NetworkModel\GameObject.cs" />
     <Compile Include="Models\NetworkModel\HealthUpdate.cs" />
     <Compile Include="Models\NetworkModel\LocalUserData.cs" />
+    <Compile Include="Models\NetworkModel\PartyMemberCircle.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
     <Compile Include="Network\Controller\EntityController.cs" />
     <Compile Include="Network\Events\HealthUpdateEvent.cs" />

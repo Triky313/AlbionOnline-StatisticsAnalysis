@@ -1,6 +1,8 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Time;
+using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,8 +12,16 @@ namespace StatisticsAnalysisTool.Network.Controller
 {
     public class EntityController
     {
+        private readonly MainWindow _mainWindow;
+        private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly ConcurrentDictionary<Guid, GameObject> _knownEntities = new ConcurrentDictionary<Guid, GameObject>();
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new ConcurrentDictionary<Guid, string>();
+
+        public EntityController(MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
+        {
+            _mainWindow = mainWindow;
+            _mainWindowViewModel = mainWindowViewModel;
+        }
 
         public void AddEntity(long objectId, Guid userGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
         {
@@ -57,6 +67,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 _knownPartyEntities.TryAdd(guid, username);
             }
+
+            SetPartyMemberUi();
         }
 
         public void SetParty(Dictionary<Guid, string> party, bool resetPartyBefore = false)
@@ -70,6 +82,20 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 AddToParty(member.Key, member.Value);
             }
+
+            SetPartyMemberUi();
+        }
+
+        private void SetPartyMemberUi()
+        {
+            _mainWindow.Dispatcher.Invoke(() =>
+            {
+                _mainWindowViewModel.PartyMemberCircles.Clear();
+                foreach (var member in _knownPartyEntities)
+                {
+                    _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle() {Name = member.Value});
+                }
+            });
         }
 
         public bool IsUserInParty(string name)

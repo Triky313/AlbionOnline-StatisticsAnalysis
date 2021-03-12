@@ -47,7 +47,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
-            EntityController = new EntityController();
+            EntityController = new EntityController(_mainWindow, mainWindowViewModel);
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
         }
 
