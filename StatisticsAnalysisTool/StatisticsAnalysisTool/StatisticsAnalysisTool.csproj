@@ -182,6 +182,8 @@
     <Compile Include="Models\NetworkModel\PartyMemberCircle.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
     <Compile Include="Network\Controller\EntityController.cs" />
+    <Compile Include="Network\Events\ActiveSpellEffectsUpdateEvent.cs" />
+    <Compile Include="Network\Events\NewEquipmentItemEvent.cs" />
     <Compile Include="Network\Events\HealthUpdateEvent.cs" />
     <Compile Include="Network\Events\LeaveEvent.cs" />
     <Compile Include="Network\Events\CharacterEquipmentChangedEvent.cs" />
@@ -191,6 +193,8 @@
     <Compile Include="Network\Events\SiegeCampClaimStartEvent.cs" />
     <Compile Include="Network\Events\PartyChangedOrderEvent.cs" />
     <Compile Include="Network\Events\PartyDisbandedEvent.cs" />
+    <Compile Include="Network\Handler\ActiveSpellEffectsUpdateEventHandler.cs" />
+    <Compile Include="Network\Handler\NewEquipmentItemEventHandler.cs" />
     <Compile Include="Network\Handler\HealthUpdateEventHandler.cs" />
     <Compile Include="Network\Handler\LeaveEventHandler.cs" />
     <Compile Include="Network\Handler\CharacterEquipmentChangedEventHandler.cs" />

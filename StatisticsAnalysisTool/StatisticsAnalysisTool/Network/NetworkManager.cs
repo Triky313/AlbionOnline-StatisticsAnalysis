@@ -34,29 +34,24 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new UpdateFameEventHandler(trackingController, valueCountUpTimerTimer.FameCountUpTimer));
                 builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController, valueCountUpTimerTimer.SilverCountUpTimer));
                 builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController, valueCountUpTimerTimer.ReSpecPointsCountUpTimer));
-
                 builder.AddEventHandler(new DiedEventHandler(trackingController));
-
                 builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
                 builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
                 builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
                 builder.AddEventHandler(new NewShrineEventHandler(trackingController));
-
                 builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
                 builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
-
                 builder.AddEventHandler(new PartyDisbandedEventHandler(trackingController));
                 builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
-
                 builder.AddEventHandler(new NewCharacterEventHandler(trackingController));
                 builder.AddEventHandler(new SiegeCampClaimStartEventHandler(trackingController));
                 builder.AddEventHandler(new NewMobEventHandler(trackingController));
                 builder.AddEventHandler(new LeaveEventHandler(trackingController));
                 builder.AddEventHandler(new CharacterEquipmentChangedEventHandler(trackingController));
-
+                builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
+                builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
                 builder.AddEventHandler(new PartySilverGainedEventHandler());
-                //builder.AddEventHandler(new NewLootEventHandler());
-
+                
                 //builder.AddResponseHandler(new TestHandler());
                 //builder.AddEventHandler(new TestHandler2());
                 //builder.AddRequestHandler(new TestHandler3());
