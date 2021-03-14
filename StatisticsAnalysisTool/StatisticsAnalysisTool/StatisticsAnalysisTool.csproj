@@ -174,12 +174,14 @@
     <Compile Include="Enumerations\EffectType.cs" />
     <Compile Include="Enumerations\GameObjectSubType.cs" />
     <Compile Include="Enumerations\GameObjectType.cs" />
+    <Compile Include="Models\EquipmentItem.cs" />
     <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
     <Compile Include="Models\NetworkModel\DamageObject.cs" />
     <Compile Include="Models\NetworkModel\GameObject.cs" />
     <Compile Include="Models\NetworkModel\HealthUpdate.cs" />
     <Compile Include="Models\NetworkModel\LocalUserData.cs" />
     <Compile Include="Models\NetworkModel\PartyMemberCircle.cs" />
+    <Compile Include="Models\SpellEffect.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
     <Compile Include="Network\Controller\EntityController.cs" />
     <Compile Include="Network\Events\ActiveSpellEffectsUpdateEvent.cs" />
