@@ -19,7 +19,12 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (parameters.ContainsKey(1))
                 {
-                    SpellIndex = parameters[1].ObjectToInt();
+                    var valueType = parameters[1].GetType();
+                    if (valueType.IsArray && typeof(short[]).Name == valueType.Name)
+                    {
+                        var spells = ((short[])parameters[1]).ToDictionary();
+                        SpellIndex = spells[0].ObjectToInt();
+                    }
                 }
             }
             catch (Exception e)

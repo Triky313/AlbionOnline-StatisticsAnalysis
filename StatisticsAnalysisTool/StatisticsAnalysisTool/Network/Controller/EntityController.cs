@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Time;
 using StatisticsAnalysisTool.ViewModels;
@@ -6,6 +7,7 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace StatisticsAnalysisTool.Network.Controller
@@ -16,6 +18,8 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly ConcurrentDictionary<Guid, GameObject> _knownEntities = new ConcurrentDictionary<Guid, GameObject>();
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new ConcurrentDictionary<Guid, string>();
+        private readonly ObservableCollection<EquipmentItem> _newEquipmentItems = new ObservableCollection<EquipmentItem>();
+        private readonly ObservableCollection<SpellEffect> _spellEffects = new ObservableCollection<SpellEffect>();
 
         public EntityController(MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -103,6 +107,17 @@ namespace StatisticsAnalysisTool.Network.Controller
             return _knownPartyEntities.Any(x => x.Value == name);
         }
 
+        public bool IsUserInParty(long objectId)
+        {
+            var entity = _knownEntities.FirstOrDefault(x  => x.Value.ObjectId == objectId);
+            if (entity.Value == null)
+            {
+                return false;
+            }
+
+            return _knownPartyEntities.Any(x => x.Value == entity.Value.Name);
+        }
+
         public KeyValuePair<Guid, GameObject>? GetEntity(long objectId)
         {
             return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
@@ -114,6 +129,21 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (entity?.Value != null)
             {
                 entity.Value.Value.CharacterEquipment = equipment;
+            }
+        }
+
+        public void SetCharacterMainHand(long objectId, int itemIndex)
+        {
+            var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+
+            if (entity != null && entity.Value.Value.CharacterEquipment == null)
+            {
+                entity.Value.Value.CharacterEquipment = new CharacterEquipment();
+            }
+
+            if (entity?.Value != null)
+            {
+                entity.Value.Value.CharacterEquipment.MainHand = itemIndex;
             }
         }
 
@@ -143,5 +173,82 @@ namespace StatisticsAnalysisTool.Network.Controller
         }
 
         public event Action<long, GameTimeStamp, double, double, EffectType, EffectOrigin, long, int> OnHealthUpdate;
+
+        public void AddEquipmentItem(EquipmentItem item)
+        {
+            if (_newEquipmentItems.Any(x => x.ItemIndex.Equals(item.ItemIndex) && x.SpellDictionary.Values == item.SpellDictionary.Values) || item.SpellDictionary.Count <= 0)
+            {
+                return;
+            }
+
+            lock (item)
+            {
+                _newEquipmentItems.Add(item);
+            }
+
+            RemoveSpellAndEquipmentObjects();
+        }
+
+        public void AddSpellEffect(SpellEffect spell)
+        {
+            if (!IsUserInParty(spell.CauserId))
+            {
+                return;
+            }
+
+            if (_spellEffects.Any(x => x.CauserId.Equals(spell.CauserId) && x.SpellIndex.Equals(spell.SpellIndex)))
+            {
+                return;
+            }
+
+            lock (spell)
+            {
+                _spellEffects.Add(spell);
+            }
+
+            RemoveSpellAndEquipmentObjects();
+        }
+
+        public void DetectUsedWeapon()
+        {
+            var playerItemList = new Dictionary<long, int>();
+
+            foreach (var item in _newEquipmentItems)
+            {
+                foreach (var spell in from itemSpell in item.SpellDictionary from spell in _spellEffects where spell.SpellIndex.Equals(itemSpell.Value) select spell)
+                {
+                    if (playerItemList.Any(x => x.Key.Equals(spell.CauserId)))
+                    {
+                        continue;
+                    }
+
+                    playerItemList.Add(spell.CauserId, item.ItemIndex);
+                }
+            }
+
+            foreach (var playerItem in playerItemList)
+            {
+                SetCharacterMainHand(playerItem.Key, playerItem.Value);
+            }
+        }
+
+        private void RemoveSpellAndEquipmentObjects()
+        {
+            foreach (var item in _newEquipmentItems.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-2)))
+            {
+                lock (item)
+                {
+                    _newEquipmentItems.Remove(item);
+                }
+            }
+
+            foreach (var spell in _spellEffects.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-2)))
+            {
+                lock (spell)
+                {
+                    _spellEffects.Remove(spell);
+                }
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -19,13 +20,32 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (parameters.ContainsKey(8))
                 {
+                    // TODO: Manchmal wird nicht die Waffe sondern Schuhe genommen und falsch zugeordnet
+                    // Wahrscheinlich weil per foreach das Array einfach durchnumeriert wird und nicht jede ID dem richtigen Platz zugewiesen wird
                     var valueType = parameters[8].GetType();
-                    if (valueType.IsArray && typeof(int[]).Name == valueType.Name)
+                    if (valueType.IsArray && typeof(byte[]).Name == valueType.Name)
                     {
-                        var spells = ((int[])parameters[2]).ToDictionary();
-                        SpellDictionary.Add(0, spells[0].ObjectToInt());
-                        SpellDictionary.Add(1, spells[1].ObjectToInt());
-                        SpellDictionary.Add(2, spells[2].ObjectToInt());
+                        var spells = ((byte[])parameters[8]).ToDictionary();
+                        foreach (var spell in spells)
+                        {
+                            SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
+                        }
+                    }
+                    else if(valueType.IsArray && typeof(short[]).Name == valueType.Name)
+                    {
+                        var spells = ((short[])parameters[8]).ToDictionary();
+                        foreach (var spell in spells)
+                        {
+                            SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
+                        }
+                    }
+                    else if (valueType.IsArray && typeof(int[]).Name == valueType.Name)
+                    {
+                        var spells = ((int[])parameters[8]).ToDictionary();
+                        foreach (var spell in spells)
+                        {
+                            SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
+                        }
                     }
                 }
             }

@@ -33,6 +33,8 @@ namespace StatisticsAnalysisTool.Network.Controller
 #endif
         }
 
+        #region Damage Meter methods
+
         public event Action<bool, bool> OnChangeCombatMode;
 
         public void UpdateCombatMode(bool inActiveCombat, bool inPassiveCombat)
@@ -54,7 +56,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 return;
             }
-            
+
             var damageValue = (int)Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
             if (damageValue <= 0)
             {
@@ -73,7 +75,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 var damageListByNewestCluster = _damageCollection.Where(x => x.StartTime >= _clusterStarts.GetHighestDateTime()).ToList();
                 var groupedDamageList = damageListByNewestCluster.GroupBy(x => x.CauserGuid)
                     .Select(x => new DamageObject(
-                        x.First().CauserGuid, 
+                        x.First().CauserGuid,
                         x.First().CauserName,
                         x.FirstOrDefault(y => y?.CauserMainHand != null)?.CauserMainHand,
                         x.Sum(s => s.Damage)))
@@ -82,7 +84,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 await UpdateDamageMeterUiAsync(groupedDamageList);
             }
         }
-        
+
         public async Task UpdateDamageMeterUiAsync(List<DamageObject> damageList)
         {
             var highestDamage = GetHighestDamage(damageList);
@@ -120,7 +122,11 @@ namespace StatisticsAnalysisTool.Network.Controller
                     {
                         _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment()
                         {
-                            CauserGuid = damageObject.CauserGuid, Damage = damageObject.Damage.ToShortNumber(), DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100, Name = damageObject.CauserName, CauserMainHand = damageObject.CauserMainHand
+                            CauserGuid = damageObject.CauserGuid,
+                            Damage = damageObject.Damage.ToShortNumber(),
+                            DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100,
+                            Name = damageObject.CauserName,
+                            CauserMainHand = damageObject.CauserMainHand
                         });
                     });
                 }
@@ -134,7 +140,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 damageObject.Damage = 0;
                 damageObject.StartTime = newStartTime;
             }
-            
+
             _mainWindow?.Dispatcher?.InvokeAsync(() =>
             {
                 _mainWindowViewModel?.DamageMeter?.Clear();
@@ -153,6 +159,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 dmgObject.CauserName = gameObject.Name;
 
+                _trackingController.EntityController.DetectUsedWeapon();
+
                 if (gameObject.CharacterEquipment?.MainHand > 0)
                 {
                     dmgObject.CauserMainHand = ItemController.GetItemByIndex(gameObject.CharacterEquipment.MainHand);
@@ -164,7 +172,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             _damageCollection.Add(new DamageObject(gameObject.UserGuid, gameObject.Name, ItemController.GetItemByIndex(gameObject.CharacterEquipment?.MainHand ?? 0), damage));
         }
-        
+
         private DateTime _lastDamageUiUpdate;
 
         private bool IsUiUpdateAllowed()
@@ -179,11 +187,13 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             return false;
         }
-        
+
         private long GetHighestDamage(List<DamageObject> damageObjectList)
         {
             return (damageObjectList.Count <= 0) ? 0 : damageObjectList.Max(x => x.Damage);
         }
+
+        #endregion
 
         #region Debug methods
 
