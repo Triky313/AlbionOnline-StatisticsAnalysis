@@ -64,7 +64,7 @@ namespace StatisticsAnalysisTool.Models
         public LocalizedDescriptions LocalizedDescriptions { get; set; }
 
         [JsonProperty(PropertyName = "slotType")]
-        public object SlotType { get; set; }
+        public string SlotType { get; set; }
 
         [JsonProperty("physicalAttackDamageBonus")]
         public double PhysicalAttackDamageBonus { get; set; }

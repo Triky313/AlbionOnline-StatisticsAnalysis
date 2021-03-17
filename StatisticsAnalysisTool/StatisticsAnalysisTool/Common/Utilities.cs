@@ -40,7 +40,14 @@ namespace StatisticsAnalysisTool.Common
         public static string GetValuePerHour(double value, TimeSpan time) => Formatting.ToStringShort(value / (time.TotalSeconds / 60 / 60));
 
         public static double GetValuePerHourToDouble(double value, TimeSpan time) => value / (time.TotalSeconds / 60 / 60);
-        
+
+        public static bool IsBlockingTimeExpired(DateTime dateTime, int waitingTime)
+        {
+            var currentDateTime = DateTime.UtcNow;
+            var difference = currentDateTime.Subtract(dateTime);
+            return difference.Seconds >= waitingTime;
+        }
+
         #region Window Flash
 
         private const uint FlashwStop = 0; //Stop flashing. The system restores the window to its original state.

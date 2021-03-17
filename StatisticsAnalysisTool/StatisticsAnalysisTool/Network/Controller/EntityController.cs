@@ -136,12 +136,17 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
 
-            if (entity != null && entity.Value.Value.CharacterEquipment == null)
+            if (entity?.Value == null)
+            {
+                return;
+            }
+
+            if (entity.Value.Value?.CharacterEquipment == null)
             {
                 entity.Value.Value.CharacterEquipment = new CharacterEquipment();
             }
 
-            if (entity?.Value != null)
+            if (entity.Value.Value != null)
             {
                 entity.Value.Value.CharacterEquipment.MainHand = itemIndex;
             }

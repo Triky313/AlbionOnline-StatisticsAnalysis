@@ -20,8 +20,6 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (parameters.ContainsKey(8))
                 {
-                    // TODO: Manchmal wird nicht die Waffe sondern Schuhe genommen und falsch zugeordnet
-                    // Wahrscheinlich weil per foreach das Array einfach durchnumeriert wird und nicht jede ID dem richtigen Platz zugewiesen wird
                     var valueType = parameters[8].GetType();
                     if (valueType.IsArray && typeof(byte[]).Name == valueType.Name)
                     {

@@ -169,7 +169,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static int GetItemLevel(string uniqueName)
         {
-            if (!uniqueName.Contains("@"))
+            if (uniqueName == null || !uniqueName.Contains("@"))
             {
                 return 0;
             }
@@ -179,6 +179,11 @@ namespace StatisticsAnalysisTool.Common
 
         public static int GetItemTier(Item item)
         {
+            if (item?.UniqueName == null)
+            {
+                return -1;
+            }
+
             var itemNameTierText = item.UniqueName.Split('_')[0];
             if (itemNameTierText.Substring(0, 1) == "T" && int.TryParse(itemNameTierText.Substring(1, 1), out var result))
             {
@@ -408,6 +413,8 @@ namespace StatisticsAnalysisTool.Common
                 item.FullItemInformation = itemInformation;
             }
         }
+
+        public static bool IsItemSlotType(ItemInformation itemInfo, string slotType) => itemInfo?.SlotType == slotType;
 
         #endregion ItemInformation
     }

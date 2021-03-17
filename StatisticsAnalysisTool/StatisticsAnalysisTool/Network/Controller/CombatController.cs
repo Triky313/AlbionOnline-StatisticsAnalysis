@@ -29,7 +29,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindowViewModel = mainWindowViewModel;
 
 #if DEBUG
-            _ = UpdateDamageMeterUiAsync(SetRandomDamageValues(40));
+            UpdateDamageMeterUi(SetRandomDamageValues(40));
 #endif
         }
 
@@ -49,7 +49,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             return time;
         }
 
-        public async void AddDamage(long causerId, double healthChange)
+        public void AddDamage(long causerId, double healthChange)
         {
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
             if (gameObject == null || healthChange >= 0 || gameObject.Value.Value?.ObjectType != GameObjectType.Player || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name))
@@ -77,35 +77,28 @@ namespace StatisticsAnalysisTool.Network.Controller
                     .Select(x => new DamageObject(
                         x.First().CauserGuid,
                         x.First().CauserName,
-                        x.FirstOrDefault(y => y?.CauserMainHand != null)?.CauserMainHand,
+                        x.FirstOrDefault(y => y?.MainHandItemIndex != null && y.StartTime >= x.Max().StartTime)?.MainHandItemIndex ?? 0,
                         x.Sum(s => s.Damage)))
                     .ToList();
 
-                await UpdateDamageMeterUiAsync(groupedDamageList);
+                UpdateDamageMeterUi(groupedDamageList);
             }
         }
 
-        public async Task UpdateDamageMeterUiAsync(List<DamageObject> damageList)
+        public void UpdateDamageMeterUi(List<DamageObject> damageList)
         {
             var highestDamage = GetHighestDamage(damageList);
-
-            foreach (var damageObject in damageList)
-            {
-                if (damageObject?.CauserMainHand != null && damageObject.CauserMainHand.FullItemInformation == null)
-                {
-                    damageObject.CauserMainHand.FullItemInformation = await ItemController.GetFullItemInformationAsync(damageObject.CauserMainHand);
-                }
-            }
 
             foreach (var damageObject in damageList.OrderByDescending(x => x.Damage))
             {
                 if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.CauserGuid))
                 {
-                    _mainWindow.Dispatcher?.Invoke(() => {
+                    _mainWindow.Dispatcher?.Invoke(async () =>
+                    {
                         var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == damageObject.CauserGuid);
                         if (fragment != null)
                         {
-                            fragment.CauserMainHand = damageObject.CauserMainHand;
+                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(damageObject.MainHandItemIndex);
 
                             if (damageObject.Damage > 0)
                             {
@@ -118,7 +111,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
                 else
                 {
-                    _mainWindow.Dispatcher?.InvokeAsync(() =>
+                    _mainWindow.Dispatcher?.InvokeAsync(async () =>
                     {
                         _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment()
                         {
@@ -126,7 +119,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                             Damage = damageObject.Damage.ToShortNumber(),
                             DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100,
                             Name = damageObject.CauserName,
-                            CauserMainHand = damageObject.CauserMainHand
+                            CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(damageObject.MainHandItemIndex)
                         });
                     });
                 }
@@ -158,23 +151,41 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (dmgObject != null)
             {
                 dmgObject.CauserName = gameObject.Name;
-
+                dmgObject.MainHandItemIndex = gameObject.CharacterEquipment?.MainHand ?? 0;
                 _trackingController.EntityController.DetectUsedWeapon();
-
-                if (gameObject.CharacterEquipment?.MainHand > 0)
-                {
-                    dmgObject.CauserMainHand = ItemController.GetItemByIndex(gameObject.CharacterEquipment.MainHand);
-                }
 
                 dmgObject.Damage += damage;
                 return;
             }
 
-            _damageCollection.Add(new DamageObject(gameObject.UserGuid, gameObject.Name, ItemController.GetItemByIndex(gameObject.CharacterEquipment?.MainHand ?? 0), damage));
+            _damageCollection.Add(new DamageObject(gameObject.UserGuid, gameObject.Name, gameObject.CharacterEquipment?.MainHand ?? 0, damage));
+        }
+
+        private async Task<Item> SetItemInfoIfSlotTypeMainHandAsync(int index)
+        {
+            if (index <= 0)
+            {
+                return null;
+            }
+
+            var item = ItemController.GetItemByIndex(index);
+            if (item == null)
+            {
+                return null;
+            }
+
+            var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);
+            if (ItemController.IsItemSlotType(fullItemInfo, "mainhand"))
+            {
+                item.FullItemInformation = fullItemInfo;
+                return item;
+            }
+
+            return null;
         }
 
         private DateTime _lastDamageUiUpdate;
-
+        
         private bool IsUiUpdateAllowed()
         {
             var currentDateTime = DateTime.UtcNow;
@@ -198,6 +209,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         #region Debug methods
 
         private static readonly Random _random = new Random(DateTime.Now.Millisecond);
+
         private List<DamageObject> SetRandomDamageValues(int playerAmount = 5)
         {
             var randomDamageList = new List<DamageObject>();
@@ -207,15 +219,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 var causerGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
                 var damage = _random.Next(500, 999999);
                 
-                randomDamageList.Add(new DamageObject(causerGuid, GenerateName(10), new Item()
-                {
-                    UniqueName = "T8_2H_CURSEDSTAFF@3",
-                    FullItemInformation = new ItemInformation()
-                    {
-                        UniqueName = "T8_2H_CURSEDSTAFF@3",
-                        CategoryId = GetRandomWeaponCategoryId()
-                    }
-                }, damage));
+                randomDamageList.Add(new DamageObject(causerGuid, GenerateName(10), GetRandomWeaponIndex(), damage));
             }
 
             return randomDamageList;
@@ -240,14 +244,14 @@ namespace StatisticsAnalysisTool.Network.Controller
             return Name;
         }
 
-        private static string GetRandomWeaponCategoryId()
+        private static int GetRandomWeaponIndex()
         {
-            var names = new List<string> { "sword", "spear", "quarterstaff", "naturestaff", "mace", "holystaff", "hammer", "froststaff", "firestaff", "dagger", "cursestaff", "crossbow", "bow", "axe", "arcanestaff", "Unknown" };
+            var indexArray = new List<int> { 6211, 5926, 1176, 1171, 6553, 1087, 6413, 5181, 5080, 5705, 4998, 4777, 4696, 2075, 1102, 0 };
 
-            var index = _random.Next(names.Count);
-            var name = names[index];
-            names.RemoveAt(index);
-            return name;
+            var index = _random.Next(indexArray.Count);
+            var itemIndex = indexArray[index];
+            indexArray.RemoveAt(index);
+            return itemIndex;
         }
 
         #endregion
