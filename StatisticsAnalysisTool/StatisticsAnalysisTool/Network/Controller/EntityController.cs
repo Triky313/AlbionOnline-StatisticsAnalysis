@@ -218,7 +218,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             var playerItemList = new Dictionary<long, int>();
 
-            foreach (var item in _newEquipmentItems)
+            foreach (var item in _newEquipmentItems.ToList())
             {
                 foreach (var spell in from itemSpell in item.SpellDictionary from spell in _spellEffects where spell.SpellIndex.Equals(itemSpell.Value) select spell)
                 {
@@ -231,7 +231,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
             }
 
-            foreach (var playerItem in playerItemList)
+            foreach (var playerItem in playerItemList.ToList())
             {
                 SetCharacterMainHand(playerItem.Key, playerItem.Value);
             }
@@ -239,7 +239,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private void RemoveSpellAndEquipmentObjects()
         {
-            foreach (var item in _newEquipmentItems.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-2)))
+            foreach (var item in _newEquipmentItems.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-2)).ToList())
             {
                 lock (item)
                 {
@@ -247,7 +247,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
             }
 
-            foreach (var spell in _spellEffects.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-2)))
+            foreach (var spell in _spellEffects.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-2)).ToList())
             {
                 lock (spell)
                 {
