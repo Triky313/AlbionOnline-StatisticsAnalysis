@@ -9,6 +9,23 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class ExtensionMethod
     {
+        public static void OrderByReference<T>(this ObservableCollection<T> collection, List<T> comparison)
+        {
+            for (int i = 0; i < comparison.Count; i++)
+            {
+                if (!comparison.ElementAt(i).Equals(collection.ElementAt(i)))
+                    collection.Move(collection.IndexOf(comparison[i]), i);
+            }
+        }
+
+        public static void InsertInPlace<T>(this ObservableCollection<T> collection, List<T> comparison, T item)
+        {
+            int index = comparison.IndexOf(item);
+            comparison.RemoveAt(index);
+            collection.OrderByReference(comparison);
+            collection.Insert(index, item);
+        }
+
         public static string ToShortNumber(this long num) => GetShortNumber(num);
 
         public static string ToShortNumber(this int num) => GetShortNumber(num);

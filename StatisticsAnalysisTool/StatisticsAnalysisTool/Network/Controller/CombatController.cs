@@ -70,28 +70,30 @@ namespace StatisticsAnalysisTool.Network.Controller
                 AddClusterStartTimer();
             }
 
-            if (IsUiUpdateAllowed())
-            {
-                var damageListByNewestCluster = _damageCollection.Where(x => x.StartTime >= _clusterStarts.GetHighestDateTime()).ToList();
-                var groupedDamageList = damageListByNewestCluster.GroupBy(x => x.CauserGuid)
-                    .Select(x => new DamageObject(
-                        x.First().StartTime,
-                        x.First().CauserGuid,
-                        x.First().CauserName,
-                        x.FirstOrDefault(y => y?.MainHandItemIndex != null && y.StartTime >= x.Max().StartTime)?.MainHandItemIndex ?? 0,
-                        x.Sum(s => s.Damage),
-                        Utilities.GetValuePerHourToDouble(x.Sum(s => s.Damage), DateTime.UtcNow - x.First().StartTime)))
-                    .ToList();
-
-                UpdateDamageMeterUi(groupedDamageList);
-            }
+            var damageListByNewestCluster = _damageCollection.Where(x => x.StartTime >= _clusterStarts.GetHighestDateTime()).ToList();
+            UpdateDamageMeterUi(damageListByNewestCluster);
         }
 
-        public void UpdateDamageMeterUi(List<DamageObject> damageList)
+        public void UpdateDamageMeterUi(List<DamageObject> damageObjectList)
         {
-            var highestDamage = GetHighestDamage(damageList);
+            if (!IsUiUpdateAllowed())
+            {
+                return;
+            }
 
-            foreach (var damageObject in damageList.OrderByDescending(x => x.Damage))
+            var groupedDamageList = damageObjectList.GroupBy(x => x.CauserGuid)
+                .Select(x => new DamageObject(
+                    x.First().StartTime,
+                    x.First().CauserGuid,
+                    x.First().CauserName,
+                    x.FirstOrDefault(y => y?.MainHandItemIndex != null && y.StartTime >= x.Max().StartTime)?.MainHandItemIndex ?? 0,
+                    x.Sum(s => s.Damage),
+                    Utilities.GetValuePerHourToDouble(x.Sum(s => s.Damage), DateTime.UtcNow - x.First().StartTime)))
+                .OrderByDescending(x => x.Damage).ToList();
+
+            var highestDamage = GetHighestDamage(groupedDamageList);
+
+            foreach (var damageObject in groupedDamageList)
             {
                 if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.CauserGuid))
                 {
@@ -128,6 +130,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                     });
                 }
             }
+
+            _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderBy(x => x.Damage).ToList());
         }
 
         public void ResetDamage(DateTime newStartTime)
@@ -250,7 +254,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private static int GetRandomWeaponIndex()
         {
-            var indexArray = new List<int> { 6211, 5926, 1176, 1171, 6553, 1087, 6413, 5181, 5080, 5705, 4998, 4777, 4696, 2075, 1102, 0 };
+            var indexArray = new List<int> { 6211, 5926, 1176, 1171, 6553, 1087, 6413, 5181, 5080, 5705, 4998, 4777, 4696, 2075, 5472, 0 };
 
             var index = _random.Next(indexArray.Count);
             var itemIndex = indexArray[index];
