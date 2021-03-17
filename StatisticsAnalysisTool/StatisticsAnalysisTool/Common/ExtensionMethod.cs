@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static string ToShortNumber(this double num) => GetShortNumber((decimal)num);
 
-        private static string GetShortNumber(decimal num)
+        private static string GetShortNumber(this decimal num)
         {
             if (num < -10000000)
             {

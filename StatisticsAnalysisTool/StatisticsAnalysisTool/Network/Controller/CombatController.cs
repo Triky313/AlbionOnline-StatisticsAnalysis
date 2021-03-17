@@ -75,10 +75,12 @@ namespace StatisticsAnalysisTool.Network.Controller
                 var damageListByNewestCluster = _damageCollection.Where(x => x.StartTime >= _clusterStarts.GetHighestDateTime()).ToList();
                 var groupedDamageList = damageListByNewestCluster.GroupBy(x => x.CauserGuid)
                     .Select(x => new DamageObject(
+                        x.First().StartTime,
                         x.First().CauserGuid,
                         x.First().CauserName,
                         x.FirstOrDefault(y => y?.MainHandItemIndex != null && y.StartTime >= x.Max().StartTime)?.MainHandItemIndex ?? 0,
-                        x.Sum(s => s.Damage)))
+                        x.Sum(s => s.Damage),
+                        Utilities.GetValuePerHourToDouble(x.Sum(s => s.Damage), DateTime.UtcNow - x.First().StartTime)))
                     .ToList();
 
                 UpdateDamageMeterUi(groupedDamageList);
@@ -106,6 +108,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                             }
 
                             fragment.Damage = damageObject.Damage.ToShortNumber();
+                            fragment.Dps = damageObject.Dps.ToShortNumber();
                         }
                     });
                 }
@@ -117,6 +120,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                         {
                             CauserGuid = damageObject.CauserGuid,
                             Damage = damageObject.Damage.ToShortNumber(),
+                            Dps = damageObject.Dps.ToShortNumber(),
                             DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100,
                             Name = damageObject.CauserName,
                             CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(damageObject.MainHandItemIndex)
@@ -158,7 +162,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 return;
             }
 
-            _damageCollection.Add(new DamageObject(gameObject.UserGuid, gameObject.Name, gameObject.CharacterEquipment?.MainHand ?? 0, damage));
+            _damageCollection.Add(new DamageObject(DateTime.UtcNow, gameObject.UserGuid, gameObject.Name, gameObject.CharacterEquipment?.MainHand ?? 0, damage, 0));
         }
 
         private async Task<Item> SetItemInfoIfSlotTypeMainHandAsync(int index)
@@ -219,7 +223,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 var causerGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
                 var damage = _random.Next(500, 999999);
                 
-                randomDamageList.Add(new DamageObject(causerGuid, GenerateName(10), GetRandomWeaponIndex(), damage));
+                randomDamageList.Add(new DamageObject(DateTime.UtcNow, causerGuid, GenerateName(10), GetRandomWeaponIndex(), damage, _random.Next(5000, 9999999)));
             }
 
             return randomDamageList;

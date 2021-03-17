@@ -9,14 +9,16 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public string CauserName { get; set; }
         public int MainHandItemIndex { get; set; }
         public long Damage { get; set; }
+        public double Dps { get; set; }
 
-        public DamageObject(Guid causerGuid, string causerName, int mainHandItemIndex, long damage)
+        public DamageObject(DateTime startTime, Guid causerGuid, string causerName, int mainHandItemIndex, long damage, double dps)
         {
-            StartTime = DateTime.UtcNow;
+            StartTime = startTime;
             CauserGuid = causerGuid;
             CauserName = causerName;
             MainHandItemIndex = mainHandItemIndex;
             Damage = damage;
+            Dps = dps;
         }
     }
 }

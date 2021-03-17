@@ -14,6 +14,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private double _damageInPercent;
         private Item _causerMainHand;
         private string _categoryId;
+        private string _dps;
 
         public string Name {
             get => _name;
@@ -35,6 +36,14 @@ namespace StatisticsAnalysisTool.Network.Notification
             get => _damage;
             set {
                 _damage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Dps {
+            get => _dps;
+            set {
+                _dps = value;
                 OnPropertyChanged();
             }
         }
