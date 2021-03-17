@@ -20,5 +20,10 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             Damage = damage;
             Dps = dps;
         }
+
+        public override string ToString()
+        {
+            return $"{StartTime} | {CauserGuid} | {CauserName} | {MainHandItemIndex} | {Damage} | {Dps}";
+        }
     }
 }
