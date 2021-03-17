@@ -316,12 +316,6 @@
                                     </Grid>
                                     <TextBlock Text="{Binding Translation.DamageMeterDescription1}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="16" TextWrapping="Wrap" Width="auto"></TextBlock>
                                 </DockPanel>
-                                <DockPanel Margin="0,0,0,16">
-                                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                                        <fa:ImageAwesome Icon="DotCircleOutline" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
-                                    </Grid>
-                                    <TextBlock Text="{Binding Translation.DamageMeterDescription2}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="16" TextWrapping="Wrap" Width="auto"></TextBlock>
-                                </DockPanel>
                             </StackPanel>
                         </Grid>
                     </Grid>
