@@ -39,7 +39,17 @@ namespace StatisticsAnalysisTool.Common
 
         public static string GetValuePerHour(double value, TimeSpan time) => Formatting.ToStringShort(value / (time.TotalSeconds / 60 / 60));
 
-        public static double GetValuePerHourToDouble(double value, TimeSpan time) => value / (time.TotalSeconds / 60 / 60);
+        public static double GetValuePerHourToDouble(double value, TimeSpan time)
+        {
+            try
+            {
+                return value / (time.TotalSeconds / 60 / 60);
+            }
+            catch (OverflowException)
+            {
+                return double.MaxValue;
+            }
+        }
 
         public static bool IsBlockingTimeExpired(DateTime dateTime, int waitingTime)
         {
