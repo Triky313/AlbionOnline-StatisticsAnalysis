@@ -112,26 +112,28 @@ namespace StatisticsAnalysisTool.Network.Controller
                             fragment.Damage = damageObject.Damage.ToShortNumber();
                             fragment.Dps = damageObject.Dps.ToShortNumber();
                         }
+                        _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
                     });
                 }
                 else
                 {
                     _mainWindow.Dispatcher?.InvokeAsync(async () =>
                     {
-                        _mainWindowViewModel.DamageMeter.Add(new DamageMeterFragment()
+                        var damageMeterFragment = new DamageMeterFragment()
                         {
                             CauserGuid = damageObject.CauserGuid,
                             Damage = damageObject.Damage.ToShortNumber(),
                             Dps = damageObject.Dps.ToShortNumber(),
-                            DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100,
+                            DamageInPercent = ((double) damageObject.Damage / highestDamage) * 100,
                             Name = damageObject.CauserName,
                             CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(damageObject.MainHandItemIndex)
-                        });
+                        };
+
+                        _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
+                        _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
                     });
                 }
             }
-
-            _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderBy(x => x.Damage).ToList());
         }
 
         public void ResetDamage(DateTime newStartTime)
