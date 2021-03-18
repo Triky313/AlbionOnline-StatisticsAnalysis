@@ -24,7 +24,17 @@ namespace StatisticsAnalysisTool.Common
 
         public static string ToShortNumber(this int num) => GetShortNumber(num);
 
-        public static string ToShortNumber(this double num) => GetShortNumber((decimal)num);
+        public static string ToShortNumber(this double num)
+        {
+            try
+            {
+                return GetShortNumber((decimal)num);
+            }
+            catch (OverflowException)
+            {
+                return double.MaxValue.ToString(CultureInfo.InvariantCulture);
+            }
+        }
 
         private static string GetShortNumber(this decimal num)
         {

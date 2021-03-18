@@ -51,11 +51,11 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static bool IsBlockingTimeExpired(DateTime dateTime, int waitingTime)
+        public static bool IsBlockingTimeExpired(DateTime dateTime, int waitingSeconds)
         {
             var currentDateTime = DateTime.UtcNow;
             var difference = currentDateTime.Subtract(dateTime);
-            return difference.Seconds >= waitingTime;
+            return difference.Seconds >= waitingSeconds;
         }
 
         #region Window Flash

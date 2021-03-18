@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Time;
@@ -20,6 +21,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new ConcurrentDictionary<Guid, string>();
         private readonly ObservableCollection<EquipmentItem> _newEquipmentItems = new ObservableCollection<EquipmentItem>();
         private readonly ObservableCollection<SpellEffect> _spellEffects = new ObservableCollection<SpellEffect>();
+        private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipment = new ConcurrentDictionary<long, CharacterEquipmentData>();
 
         public EntityController(MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -34,8 +36,15 @@ namespace StatisticsAnalysisTool.Network.Controller
                 Name = name,
                 ObjectType = objectType,
                 UserGuid = userGuid,
-                ObjectSubType = objectSubType,
+                ObjectSubType = objectSubType
             };
+
+            if (_tempCharacterEquipment.TryGetValue(objectId, out var characterEquipmentData))
+            {
+                ResetTempCharacterEquipment();
+                gameObject.CharacterEquipment = characterEquipmentData.CharacterEquipment;
+                _tempCharacterEquipment.TryRemove(objectId, out _);
+            }
 
             _knownEntities.TryRemove(userGuid, out _);
             _knownEntities.TryAdd(gameObject.UserGuid, gameObject);
@@ -118,6 +127,17 @@ namespace StatisticsAnalysisTool.Network.Controller
             return _knownPartyEntities.Any(x => x.Value == entity.Value.Name);
         }
 
+        public void ResetTempCharacterEquipment()
+        {
+            foreach (var characterEquipment in _tempCharacterEquipment)
+            {
+                if(Utilities.IsBlockingTimeExpired(characterEquipment.Value.TimeStamp, 30))
+                {
+                    _tempCharacterEquipment.TryRemove(characterEquipment.Key, out _);
+                }
+            }
+        }
+
         public KeyValuePair<Guid, GameObject>? GetEntity(long objectId)
         {
             return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
@@ -130,8 +150,12 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 entity.Value.Value.CharacterEquipment = equipment;
             }
+            else
+            {
+                _tempCharacterEquipment.TryAdd(objectId, new CharacterEquipmentData(){ CharacterEquipment = equipment, TimeStamp = DateTime.UtcNow });
+            }
         }
-
+        
         public void SetCharacterMainHand(long objectId, int itemIndex)
         {
             var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
@@ -239,7 +263,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private void RemoveSpellAndEquipmentObjects()
         {
-            foreach (var item in _newEquipmentItems.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-2)).ToList())
+            foreach (var item in _newEquipmentItems.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-1)).ToList())
             {
                 lock (item)
                 {
@@ -247,13 +271,19 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
             }
 
-            foreach (var spell in _spellEffects.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-2)).ToList())
+            foreach (var spell in _spellEffects.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-1)).ToList())
             {
                 lock (spell)
                 {
                     _spellEffects.Remove(spell);
                 }
             }
+        }
+
+        public class CharacterEquipmentData
+        {
+            public DateTime TimeStamp { get; set; }
+            public CharacterEquipment CharacterEquipment { get; set; }
         }
     }
 }
