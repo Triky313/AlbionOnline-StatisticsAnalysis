@@ -88,7 +88,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     x.First().CauserName,
                     x.FirstOrDefault(y => y?.MainHandItemIndex != null && y.StartTime >= x.Max().StartTime)?.MainHandItemIndex ?? 0,
                     x.Sum(s => s.Damage),
-                    Utilities.GetValuePerHourToDouble(x.Sum(s => s.Damage), DateTime.UtcNow - x.First().StartTime)))
+                    Utilities.GetValuePerSecondToDouble(x.Sum(s => s.Damage), DateTime.UtcNow - x.First().StartTime)))
                 .OrderByDescending(x => x.Damage).ToList();
 
             var highestDamage = GetHighestDamage(groupedDamageList);
@@ -227,9 +227,10 @@ namespace StatisticsAnalysisTool.Network.Controller
             for (var i = 0; i < playerAmount; i++)
             {
                 var causerGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
-                var damage = _random.Next(500, 999999);
+                var damage = _random.Next(500, 9999);
+                var dps = _random.Next(5, 500);
                 
-                randomDamageList.Add(new DamageObject(DateTime.UtcNow, causerGuid, GenerateName(10), GetRandomWeaponIndex(), damage, _random.Next(5000, 9999999)));
+                randomDamageList.Add(new DamageObject(DateTime.UtcNow, causerGuid, GenerateName(10), GetRandomWeaponIndex(), damage, dps));
             }
 
             return randomDamageList;

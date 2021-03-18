@@ -51,6 +51,18 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
+        public static double GetValuePerSecondToDouble(double value, TimeSpan time)
+        {
+            try
+            {
+                return value / time.TotalSeconds;
+            }
+            catch (OverflowException)
+            {
+                return double.MaxValue;
+            }
+        }
+
         public static bool IsBlockingTimeExpired(DateTime dateTime, int waitingSeconds)
         {
             var currentDateTime = DateTime.UtcNow;
