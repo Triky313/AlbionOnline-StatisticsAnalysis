@@ -31,7 +31,10 @@ namespace StatisticsAnalysisTool.Network
                 builder = ReceiverBuilder.Create();
 
                 builder.AddEventHandler(new TakeSilverEventHandler());
+
                 builder.AddEventHandler(new UpdateFameEventHandler(trackingController, valueCountUpTimerTimer.FameCountUpTimer));
+                builder.AddEventHandler(new UpdateFactionStandingEventHandler(trackingController, valueCountUpTimerTimer.FactionPointsCountUpTimer));
+
                 builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController, valueCountUpTimerTimer.SilverCountUpTimer));
                 builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController, valueCountUpTimerTimer.ReSpecPointsCountUpTimer));
 

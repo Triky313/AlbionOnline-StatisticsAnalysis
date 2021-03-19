@@ -83,7 +83,15 @@ namespace StatisticsAnalysisTool.ViewModels
         private Brush _trackerActivationToggleColor;
         private string _famePerHour = "0";
         private string _totalPlayerFame = "0";
+        private string _totalGainedFame = "0";
         private string _reSpecPointsPerHour = "0";
+        
+
+        private string _factionPointsPerHour = "0";
+        private string _totalPlayerFactionPoints = "0";
+        private string _totalGainedFactionPoints = "0";
+        private String _timer = "00:00:00";
+
         private TrackingController _trackingController;
         private DateTime? activateWaitTimer;
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
@@ -100,7 +108,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingResetByMapChangeActive;
         private string _silverPerHour = "0";
         private string _totalPlayerSilver = "0";
+        private string _totalGainedSilver = "0";
         private string _totalPlayerReSpecPoints = "0";
+        private string _totalGainedReSpecPoints = "0";
         private ValueCountUpTimer _valueCountUpTimer;
         private Visibility _goldPriceVisibility;
         private Visibility _currentMapInformationVisibility;
@@ -629,6 +639,11 @@ namespace StatisticsAnalysisTool.ViewModels
                 _valueCountUpTimer.FameCountUpTimer = new FameCountUpTimer(this);
             }
 
+            if (_valueCountUpTimer?.FactionPointsCountUpTimer == null)
+            {
+                _valueCountUpTimer.FactionPointsCountUpTimer = new FactionPointsCountUpTimer(this);
+            }
+
             if (_valueCountUpTimer?.SilverCountUpTimer == null)
             {
                 _valueCountUpTimer.SilverCountUpTimer = new SilverCountUpTimer(this);
@@ -667,7 +682,7 @@ namespace StatisticsAnalysisTool.ViewModels
             return false;
         }
 
-        public void ResetMainCounters(bool fame, bool silver, bool reSpec)
+        public void ResetMainCounters(bool fame, bool silver, bool reSpec, bool faction)
         {
             if (fame)
             {
@@ -683,6 +698,12 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Reset();
             }
+
+            if (faction)
+            {
+                _valueCountUpTimer?.FactionPointsCountUpTimer?.Reset();
+            }
+
         }
 
         public void ResetDungeonCounters()
@@ -935,10 +956,30 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public String Timer
+        {
+            get => _timer;
+            set
+            {
+                _timer = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string FamePerHour {
             get => _famePerHour;
             set {
                 _famePerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string FactionPointsPerHour
+        {
+            get => _factionPointsPerHour;
+            set
+            {
+                _factionPointsPerHour = value;
                 OnPropertyChanged();
             }
         }
@@ -967,10 +1008,50 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public string TotalGainedFame
+        {
+            get => _totalGainedFame;
+            set
+            {
+                _totalGainedFame = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TotalPlayerFactionPoints
+        {
+            get => _totalPlayerFactionPoints;
+            set
+            {
+                _totalPlayerFactionPoints = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TotalGainedFactionPoints
+        {
+            get => _totalGainedFactionPoints;
+            set
+            {
+                _totalGainedFactionPoints = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string TotalPlayerSilver {
             get => _totalPlayerSilver;
             set {
                 _totalPlayerSilver = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TotalGainedSilver
+        {
+            get => _totalGainedSilver;
+            set
+            {
+                _totalGainedSilver = value;
                 OnPropertyChanged();
             }
         }
@@ -983,6 +1064,15 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public string TotalGainedReSpecPoints
+        {
+            get => _totalGainedReSpecPoints;
+            set
+            {
+                _totalGainedReSpecPoints = value;
+                OnPropertyChanged();
+            }
+        }
         public bool IsTrackingResetByMapChangeActive {
             get => _isTrackingResetByMapChangeActive;
             set {

@@ -11,44 +11,28 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network
 {
-    public class SilverCountUpTimer : ICountUpTimer
+    public class FactionPointsCountUpTimer : ICountUpTimer
     {
         private readonly MainWindowViewModel _mainWindowViewModel;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool _isCurrentTimerUpdateActive;
         private DateTime _startTime;
-        private double _totalGainedSilver;
+        private double _totalGainedFactionPoints;
         private int? _taskId;
-        private double? _lastValue;
 
-        private readonly List<ValuePerHour> _silverPerHourList = new List<ValuePerHour>();
+        private readonly List<ValuePerHour> _factionPointsPerHourList = new List<ValuePerHour>();
 
-        public SilverCountUpTimer(MainWindowViewModel mainWindowViewModel)
+        public FactionPointsCountUpTimer(MainWindowViewModel mainWindowViewModel)
         {
             _mainWindowViewModel = mainWindowViewModel;
         }
 
         public void Add(double value)
         {
-            if (_lastValue == null)
-            {
-                _lastValue = value;
-                return;
-            }
+            _factionPointsPerHourList.Add(new ValuePerHour() { DateTime = DateTime.Now, Value = value });
+            _factionPointsPerHourList.RemoveAll(x => x.DateTime < DateTime.Now.AddHours(-1));
 
-            var newSilverValue = (double)(value - _lastValue);
-
-            if (newSilverValue == 0)
-            {
-                return;
-            }
-
-            _lastValue = value;
-
-            _silverPerHourList.Add(new ValuePerHour() { DateTime = DateTime.Now, Value = newSilverValue });
-            _silverPerHourList.RemoveAll(x => x.DateTime < DateTime.Now.AddHours(-1));
-
-            _totalGainedSilver = _silverPerHourList.Sum(x => x.Value);
+            _totalGainedFactionPoints = _factionPointsPerHourList.Sum(x => x.Value);
             Start();
         }
 
@@ -75,12 +59,12 @@ namespace StatisticsAnalysisTool.Network
         public void Reset()
         {
             _startTime = DateTime.Now;
-            _mainWindowViewModel.SilverPerHour = "0";
-            _totalGainedSilver = 0;
-            _silverPerHourList.Clear();
+            _mainWindowViewModel.FactionPointsPerHour = "0";
+            _totalGainedFactionPoints = 0;
+            _factionPointsPerHourList.Clear();
             CurrentTimerUpdate();
         }
-        
+
         private void CurrentTimerUpdate()
         {
             if (_isCurrentTimerUpdateActive)
@@ -94,8 +78,8 @@ namespace StatisticsAnalysisTool.Network
             {
                 while (_isCurrentTimerUpdateActive)
                 {
-                    _mainWindowViewModel.SilverPerHour = Utilities.GetValuePerHour(_totalGainedSilver, DateTime.Now - _startTime);
-                    _mainWindowViewModel.TotalGainedSilver = _totalGainedSilver.ToString("N0");
+                    _mainWindowViewModel.FactionPointsPerHour = Utilities.GetValuePerHour(_totalGainedFactionPoints, DateTime.Now - _startTime);
+                    _mainWindowViewModel.TotalGainedFactionPoints = _totalGainedFactionPoints.ToString("N2");
                     await Task.Delay(1000);
                 }
             });

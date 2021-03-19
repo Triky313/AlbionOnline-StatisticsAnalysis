@@ -79,6 +79,9 @@ namespace StatisticsAnalysisTool.Network
                 while (_isCurrentTimerUpdateActive)
                 {
                     _mainWindowViewModel.FamePerHour = Utilities.GetValuePerHour(_totalGainedFame, DateTime.Now - _startTime);
+                    _mainWindowViewModel.TotalGainedFame = _totalGainedFame.ToString("N0");
+                    TimeSpan duration = _startTime - DateTime.Now;
+                    _mainWindowViewModel.Timer = duration.ToString("hh\\:mm\\:ss");
                     await Task.Delay(1000);
                 }
             });

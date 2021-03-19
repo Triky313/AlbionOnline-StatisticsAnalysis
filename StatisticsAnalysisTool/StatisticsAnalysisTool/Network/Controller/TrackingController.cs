@@ -50,6 +50,11 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindowViewModel.TotalPlayerFame = value.ToString("N0", LanguageController.CurrentCultureInfo);
         }
 
+        public void SetTotalPlayerFactionPoints(double value)
+        {
+            _mainWindowViewModel.TotalPlayerFactionPoints = value.ToString("N0", LanguageController.CurrentCultureInfo);
+        }
+
         public void SetTotalPlayerSilver(double value)
         {
             _mainWindowViewModel.TotalPlayerSilver = value.ToString("N0", LanguageController.CurrentCultureInfo);

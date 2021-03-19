@@ -3,6 +3,7 @@
     public enum FameTypeOperator
     {
         Pvp,
-        Pve
+        Pve,
+        FactionPoints
     }
 }

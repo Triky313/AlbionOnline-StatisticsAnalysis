@@ -96,6 +96,7 @@ namespace StatisticsAnalysisTool.Network
                 while (_isCurrentTimerUpdateActive)
                 {
                     _mainWindowViewModel.ReSpecPointsPerHour = Utilities.GetValuePerHour(_totalGained, DateTime.Now - _startTime);
+                    _mainWindowViewModel.TotalGainedReSpecPoints = _totalGained.ToString("N0");
                     await Task.Delay(1000);
                 }
             });

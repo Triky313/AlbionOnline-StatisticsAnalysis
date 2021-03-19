@@ -356,4 +356,12 @@
 
   <translation name="BOSS_CHEST">Boss-Chest</translation>
   <translation name="BOOK_CHEST">Book-Chest</translation>
+  
+  
+  
+  
+  
+  <translation name="FACTION_POINTS">Faction Points</translation>
+  <translation name="TOTAL_PLAYER_FACTION_POINTS">Total Player Faction Points</translation>
+  
 </translations>

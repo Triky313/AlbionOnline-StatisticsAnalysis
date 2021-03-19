@@ -80,6 +80,47 @@
         </StackPanel>
     </DataTemplate>
 
+
+
+    <DataTemplate DataType="{x:Type notification:FactionNotificationFragment}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
+
+            <Image Source="Resources/LymhurstFactionPoints.png" Style="{StaticResource LineFragmentImageStyle}" />
+            <TextBlock Text="{Binding GainedFractionPoints, StringFormat='{} {0:N2} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+
+            <TextBlock>
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Text" Value="{Binding FameText, StringFormat='{} {0} '}"/>
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding FameTypeOperator}" Value="{x:Static enumerations:FameTypeOperator.FactionPoints}">
+                                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Text="(" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+
+
+            <Image Source="Resources/crown.png" Style="{StaticResource LineFragmentImageStyle}" />
+            <TextBlock Text="{Binding BonusPremiumGainedFractionPoints, StringFormat='{}{0:N2} '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+
+            <TextBlock Text=")" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+
+        </StackPanel>
+    </DataTemplate>
+
+
+
+
+
+
+
+
     <DataTemplate DataType="{x:Type notification:CombatNotificationFragment}">
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding CauserName, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
@@ -231,6 +272,24 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+
+    <!--<Style x:Key="DungeonNotificationFragment.BestSilverPerHour" TargetType="Label">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsBestSilverPerHour}" Value="true">
+                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Gold.2}"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsBestSilverPerHour}" Value="false">
+                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>-->
+
+
 
     <Style x:Key="DungeonNotificationFragment.MainMapName" TargetType="Label">
         <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
@@ -539,6 +598,20 @@
     <!-- Silver icon -->
     <Style TargetType="Image" x:Key="Icon.Silver" >
         <Setter Property="Source" Value="Resources/silver.png"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Width" Value="16"/>
+    </Style>
+
+    <!-- Faction Points icon -->
+    <Style TargetType="Image" x:Key="Icon.FactionPoints" >
+        <Setter Property="Source" Value="Resources/LymhurstFactionPoints.png"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Width" Value="16"/>
+    </Style>
+
+    <!-- Clock icon -->
+    <Style TargetType="Image" x:Key="Icon.Clock" >
+        <Setter Property="Source" Value="Resources/clock.png"/>
         <Setter Property="Height" Value="16"/>
         <Setter Property="Width" Value="16"/>
     </Style>

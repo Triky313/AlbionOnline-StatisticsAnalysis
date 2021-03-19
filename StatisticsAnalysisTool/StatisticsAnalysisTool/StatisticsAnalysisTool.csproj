@@ -219,11 +219,15 @@
     <Compile Include="Network\Events\NewShrineEvent.cs" />
     <Compile Include="Network\Events\InCombatStateUpdateEvent.cs" />
     <Compile Include="Network\Events\PartyDisbandedEvent.cs" />
+    <Compile Include="Network\Events\UpdateFactionStandingEvent.cs" />
+    <Compile Include="Network\FactionPointsCountUpTimer.cs" />
     <Compile Include="Network\Handler\HealthUpdateEventHandler.cs" />
     <Compile Include="Network\Handler\NewShrineEventHandler.cs" />
     <Compile Include="Network\Handler\InCombatStateUpdateEventHandler.cs" />
     <Compile Include="Network\Handler\PartyDisbandedEventHandler.cs" />
+    <Compile Include="Network\Handler\UpdateFactionStandingEventHandler.cs" />
     <Compile Include="Network\Notification\CombatNotificationFragment.cs" />
+    <Compile Include="Network\Notification\FactionNotificationFragment.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
     <Compile Include="GameData\LootChestData.cs" />
     <Compile Include="GameData\WorldData.cs" />
@@ -484,6 +488,8 @@
     <Resource Include="Resources\faction_unknown_banner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\LymhurstFactionPoints.png" />
+    <Resource Include="Resources\clock.png" />
     <Content Include="Sounds\alert1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
