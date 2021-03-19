@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,6 +58,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                 return;
             }
 
+            Debug.Print($"causerId: {causerId} - MainHand: " + gameObject.Value.Value?.CharacterEquipment?.MainHand);
+
             var damageValue = (int)Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
             if (damageValue <= 0)
             {
@@ -102,7 +105,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                         var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == damageObject.CauserGuid);
                         if (fragment != null)
                         {
-                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(damageObject.MainHandItemIndex);
+                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, damageObject.MainHandItemIndex);
 
                             if (damageObject.Damage > 0)
                             {
@@ -126,7 +129,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                             Dps = damageObject.Dps.ToShortNumber(),
                             DamageInPercent = ((double) damageObject.Damage / highestDamage) * 100,
                             Name = damageObject.CauserName,
-                            CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(damageObject.MainHandItemIndex)
+                            CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(null, damageObject.MainHandItemIndex)
                         };
 
                         _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
@@ -161,7 +164,12 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (dmgObject != null)
             {
                 dmgObject.CauserName = gameObject.Name;
-                dmgObject.MainHandItemIndex = gameObject.CharacterEquipment?.MainHand ?? 0;
+
+                if (gameObject.CharacterEquipment?.MainHand > 0)
+                {
+                    dmgObject.MainHandItemIndex = (int)gameObject.CharacterEquipment?.MainHand;
+                }
+
                 _trackingController.EntityController.DetectUsedWeapon();
 
                 dmgObject.Damage += damage;
@@ -171,17 +179,17 @@ namespace StatisticsAnalysisTool.Network.Controller
             _damageCollection.Add(new DamageObject(DateTime.UtcNow, gameObject.UserGuid, gameObject.Name, gameObject.CharacterEquipment?.MainHand ?? 0, damage, 0));
         }
 
-        private async Task<Item> SetItemInfoIfSlotTypeMainHandAsync(int index)
+        private async Task<Item> SetItemInfoIfSlotTypeMainHandAsync(Item currentItem, int newIndex)
         {
-            if (index <= 0)
+            if (newIndex <= 0)
             {
-                return null;
+                return currentItem;
             }
 
-            var item = ItemController.GetItemByIndex(index);
+            var item = ItemController.GetItemByIndex(newIndex);
             if (item == null)
             {
-                return null;
+                return currentItem;
             }
 
             var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);
@@ -191,7 +199,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 return item;
             }
 
-            return null;
+            return currentItem;
         }
 
         private DateTime _lastDamageUiUpdate;
