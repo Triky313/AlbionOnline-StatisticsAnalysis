@@ -706,6 +706,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public void ResetDamageMeter()
+        {
+            _trackingController.CombatController.ResetDamage(DateTime.UtcNow);
+        }
+
         public void ResetDungeonCounters()
         {
             DungeonStatsTotal.EnteredDungeon = 0;

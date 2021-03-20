@@ -33,5 +33,6 @@ namespace StatisticsAnalysisTool.Models
         public string Total => LanguageController.Translation("TOTAL");
         public string DamageMeter => LanguageController.Translation("DAMAGE_METER");
         public string DamageMeterDescription1 => LanguageController.Translation("DAMAGE_METER_DESCRIPTION_1");
+        public string ResetDamageMeter => LanguageController.Translation("RESET_DAMAGE_METER");
     }
 }
