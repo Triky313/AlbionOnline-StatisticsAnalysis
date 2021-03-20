@@ -116,6 +116,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private DungeonStats _dungeonStatsDay = new DungeonStats();
         private DungeonStats _dungeonStatsTotal = new DungeonStats();
         private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new ObservableCollection<PartyMemberCircle>();
+        private bool _isDamageMeterResetByMapChangeActive;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1331,6 +1332,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _isTxtSearchEnabled;
             set {
                 _isTxtSearchEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsDamageMeterResetByMapChangeActive {
+            get => _isDamageMeterResetByMapChangeActive;
+            set {
+                _isDamageMeterResetByMapChangeActive = value;
                 OnPropertyChanged();
             }
         }
