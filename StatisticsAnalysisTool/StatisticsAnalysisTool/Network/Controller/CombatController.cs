@@ -8,7 +8,6 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,9 +56,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 return;
             }
-
-            Debug.Print($"causerId: {causerId} - MainHand: " + gameObject.Value.Value?.CharacterEquipment?.MainHand);
-
+            
             var damageValue = (int)Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
             if (damageValue <= 0)
             {

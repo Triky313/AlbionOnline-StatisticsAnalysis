@@ -290,6 +290,10 @@
                         <Grid Height="20" Width="20" Margin="0,10,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
                             <fa:ImageAwesome Icon="InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                         </Grid>
+                        <Grid Margin="0,10,45,0" HorizontalAlignment="Right" Width="200" Height="20" VerticalAlignment="Top">
+                            <CheckBox IsChecked="{Binding IsDamageMeterResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
+                                      HorizontalContentAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="auto"/>
+                        </Grid>
                         <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,36,0,0" VerticalAlignment="Top"/>
                         <ScrollViewer Margin="0,39,0,0">
                             <ItemsControl ItemsSource="{Binding DamageMeter}"/>
