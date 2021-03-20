@@ -489,7 +489,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\LymhurstFactionPoints.png" />
-    <Resource Include="Resources\clock.png" />
     <Content Include="Sounds\alert1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

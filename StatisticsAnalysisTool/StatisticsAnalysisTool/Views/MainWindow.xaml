@@ -173,15 +173,15 @@
                 <Button Content="{Binding Translation.ResetTrackingCounter, FallbackValue=RESET__TRACKING__COUNTER}" Height="26" VerticalAlignment="Top" Click="BtnTrackingReset_Click" />
                 <CheckBox IsChecked="{Binding IsTrackingResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}"></CheckBox>
             </StackPanel>
-            <Grid Margin="10,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+            <Grid Margin="10,55,0,0" Height="44" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
                 <StackPanel>
-                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                    <DockPanel Margin="0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalFame, FallbackValue='TOTAL__FAME'}">
                             <Image Style="{StaticResource Icon.Fame}"/>
                         </Grid>
                         <Label Content="{Binding TotalGainedFame, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
-                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                    <DockPanel Margin="0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Image Style="{StaticResource Icon.Fame}"/>
                         </Grid>
@@ -189,15 +189,15 @@
                     </DockPanel>
                 </StackPanel>
             </Grid>
-            <Grid Margin="160,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
-                <StackPanel Margin="0,0,0,0">
-                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+            <Grid Margin="160,55,0,0" Height="44" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel Margin="0">
+                    <DockPanel Margin="0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalReSpec, FallbackValue='TOTAL__RESPEC'}">
                             <Image Style="{StaticResource Icon.ReSpec}"/>
                         </Grid>
                         <Label Content="{Binding TotalGainedReSpecPoints, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
-                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                    <DockPanel Margin="0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Image Style="{StaticResource Icon.ReSpec}"/>
                         </Grid>
@@ -205,15 +205,15 @@
                     </DockPanel>
                 </StackPanel>
             </Grid>
-            <Grid Margin="320,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
-                <StackPanel Margin="0,0,0,0">
-                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+            <Grid Margin="320,55,0,0" Height="44" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel Margin="0">
+                    <DockPanel Margin="0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalSilver, FallbackValue='TOTAL__SILVER'}">
                             <Image Style="{StaticResource Icon.Silver}"/>
                         </Grid>
                         <Label Content="{Binding TotalGainedSilver, FallbackValue='0'}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
-                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                    <DockPanel Margin="0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Image Style="{StaticResource Icon.Silver}"/>
                         </Grid>
@@ -221,17 +221,15 @@
                     </DockPanel>
                 </StackPanel>
             </Grid>
-
-            <Grid Margin="450,55,0,0" Height="70" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
-                <StackPanel Margin="0,0,0,0">
-
-                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+            <Grid Margin="475,55,0,0" Height="44" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel Margin="0">
+                    <DockPanel Margin="0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalFactionPoints, FallbackValue='TOTAL_GAINED_FACTION_POINTS'}">
                             <Image Style="{StaticResource Icon.FactionPoints}"/>
                         </Grid>
                         <Label Content="{Binding TotalGainedFactionPoints, FallbackValue='0'}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
-                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                    <DockPanel Margin="0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Image Style="{StaticResource Icon.FactionPoints}"/>
                         </Grid>
@@ -239,21 +237,16 @@
                     </DockPanel>
                 </StackPanel>
             </Grid>
-            
-            <Grid Margin="550,80,0,0" Height="70" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
-                <StackPanel Margin="0,0,0,0">
-
-
-                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
-                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Image Style="{StaticResource Icon.Clock}"/>
+            <Grid Margin="625,60,0,0" Height="42" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel Margin="0" VerticalAlignment="Bottom">
+                    <DockPanel Margin="0" Height="24" VerticalAlignment="Top">
+                        <Grid Margin="0,4,0,0" HorizontalAlignment="Right" Width="16" Height="16" VerticalAlignment="Top">
+                            <fa:ImageAwesome Icon="ClockOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                         </Grid>
-                        <!--<TextBlock Text="{Binding Timer, StringFormat={}{0:hh}:{0:mm}, FallbackValue=00:00}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left" />-->
-                        <Label Content="{Binding Timer, StringFormat={}{0}, FallbackValue=00:00:00}"   Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                        <Label Content="{Binding Timer, StringFormat={}{0}, FallbackValue=00:00:00}"   Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-1, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
                 </StackPanel>
             </Grid>
-
 
             <TabControl IsEnabled="{Binding IsTrackingActive, FallbackValue=true}" Margin="10,106,10,35" BorderThickness="0 1 0 0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}">
                 <TabItem Header="{Binding Translation.Tracking, FallbackValue=TRACKING}">
