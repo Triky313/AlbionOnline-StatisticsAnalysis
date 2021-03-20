@@ -1,5 +1,5 @@
 // Filter for this site: https://jsoneditoronline.org/
-// [*].{"Index": "@id", "UniqueName": "@displayname", "Type": "@type"}
+// world.clusters.cluster[*].{"Index": "@id", "UniqueName": "@displayname", "Type": "@type"}
 
 [
   {
@@ -558,16 +558,6 @@
     "Type": "PLAYERCITY_SAFEAREA_01"
   },
   {
-    "Index": "PSG-0001",
-    "UniqueName": "Rock Adit",
-    "Type": "PASSAGE_RED"
-  },
-  {
-    "Index": "PSG-0002",
-    "UniqueName": "Cougar Den",
-    "Type": "PASSAGE_RED"
-  },
-  {
     "Index": "PSG-0003",
     "UniqueName": "Rock Adit",
     "Type": "PASSAGE_RED"
@@ -618,11 +608,6 @@
     "Type": "DUNGEON_SAFEAREA_SANDBOX_SOLO"
   },
   {
-    "Index": "STUB-0702#1",
-    "UniqueName": "Condemned Vault",
-    "Type": "DUNGEON_RED"
-  },
-  {
     "Index": "TUT-CASTLECELLAR#11",
     "UniqueName": "Forgotten Vaults",
     "Type": "DUNGEON_SAFEAREA_SANDBOX_SOLO"
@@ -658,11 +643,6 @@
     "Type": "DUNGEON_SAFEAREA"
   },
   {
-    "Index": "FOCUS-DNG-001-SUB#4",
-    "UniqueName": "Hallowed Undercrypt",
-    "Type": "DUNGEON_SAFEAREA"
-  },
-  {
     "Index": "FOCUS-DNG-001-MAIN#1",
     "UniqueName": "Hallowed Crypt",
     "Type": "DUNGEON_SAFEAREA"
@@ -681,21 +661,6 @@
     "Index": "FOCUS-DNG-003-MAIN#5",
     "UniqueName": "Cathedral of Light",
     "Type": "DUNGEON_RED"
-  },
-  {
-    "Index": "FOCUS-DNG-001-MAIN#4",
-    "UniqueName": "Hallowed Crypt",
-    "Type": "DUNGEON_SAFEAREA"
-  },
-  {
-    "Index": "DNG-0702#2",
-    "UniqueName": "Condemned Sepulcher",
-    "Type": "DUNGEON_RED"
-  },
-  {
-    "Index": "DNG-0702#15",
-    "UniqueName": "Condemned Sepulcher",
-    "Type": "DUNGEON_RED_SANDBOX_SOLO"
   },
   {
     "Index": "1007",
@@ -801,21 +766,6 @@
     "Index": "FistfulOfSilver",
     "UniqueName": "A Fistful of Silver",
     "Type": "T6_EXPEDITION_SURFACE"
-  },
-  {
-    "Index": "HELLGATE-0001",
-    "UniqueName": "Lesser Hell",
-    "Type": "DUNGEON_HELL_GREEN"
-  },
-  {
-    "Index": "HELLGATE-0002",
-    "UniqueName": "Greater Hell",
-    "Type": "DUNGEON_HELL_YELLOW"
-  },
-  {
-    "Index": "HELLGATE-0003",
-    "UniqueName": "Greater Hell",
-    "Type": "DUNGEON_HELL"
   },
   {
     "Index": "1246",
@@ -993,11 +943,6 @@
     "Type": "ARENA_STANDARD"
   },
   {
-    "Index": "3011",
-    "UniqueName": "Caerleon Realmgate",
-    "Type": "PLAYERCITY_BLACK_ROYAL_NOFURNITURE"
-  },
-  {
     "Index": "ARENA-01#1",
     "UniqueName": "Arena2",
     "Type": "ARENA_STANDARD"
@@ -1118,21 +1063,6 @@
     "Type": "DUNGEON_SAFEAREA"
   },
   {
-    "Index": "LEGACY-KEEPER-01",
-    "UniqueName": "LEGACY-KEEPER-01",
-    "Type": "DUNGEON_SAFEAREA"
-  },
-  {
-    "Index": "LEGACY-UNDEAD-01",
-    "UniqueName": "LEGACY-UNDEAD-01",
-    "Type": "DUNGEON_SAFEAREA"
-  },
-  {
-    "Index": "LEGACY-UNDEAD-02",
-    "UniqueName": "LEGACY-UNDEAD-02",
-    "Type": "DUNGEON_SAFEAREA"
-  },
-  {
     "Index": "Torturer",
     "UniqueName": "In the Raven's Claws",
     "Type": "T6_EXPEDITION_STANDARD"
@@ -1146,11 +1076,6 @@
     "Index": "Torturer-HRD",
     "UniqueName": "In the Raven's Claws",
     "Type": "HARDCORE_EXPEDITION_STANDARD"
-  },
-  {
-    "Index": "HELLGATE-0004",
-    "UniqueName": "Lesser Hell",
-    "Type": "DUNGEON_HELL"
   },
   {
     "Index": "FOCUS-DNG-001-MAIN#2",
@@ -1213,19 +1138,9 @@
     "Type": "STARTAREA"
   },
   {
-    "Index": "3010",
-    "UniqueName": "Conquerors' Hall Lvl. 1",
-    "Type": "PLAYERCITY_BLACK_ROYAL_NOFURNITURE"
-  },
-  {
     "Index": "1011",
-    "UniqueName": "Cove",
+    "UniqueName": "The Cove",
     "Type": "STARTAREA"
-  },
-  {
-    "Index": "3012-HALL-02",
-    "UniqueName": "Conquerors' Hall Lvl. 2",
-    "Type": "PLAYERCITY_BLACK_ROYAL_NOFURNITURE"
   },
   {
     "Index": "TUT-CASTLECELLAR",
@@ -1246,16 +1161,6 @@
     "Index": "HIDEOUT-0001a",
     "UniqueName": "HIDEOUT",
     "Type": "HIDEOUT"
-  },
-  {
-    "Index": "HALLOWEEN-UNDEAD-01",
-    "UniqueName": "HALLOWEEN-UNDEAD-01",
-    "Type": "DUNGEON_SAFEAREA"
-  },
-  {
-    "Index": "HALLOWEEN-UNDEAD-01#1",
-    "UniqueName": "Hidden Keep",
-    "Type": "DUNGEON_BLACK"
   },
   {
     "Index": "HIDEOUT-0001b",
@@ -2204,7 +2109,7 @@
   },
   {
     "Index": "4351",
-    "UniqueName": "Frostspring Vulcano",
+    "UniqueName": "Frostspring Volcano",
     "Type": "OPENPVP_BLACK_3"
   },
   {
@@ -4949,12 +4854,12 @@
   },
   {
     "Index": "FOCUS-DNG-001-MAIN",
-    "UniqueName": "FOCUS-DNG-001-MAIN",
+    "UniqueName": "Hallowed Crypt",
     "Type": "DUNGEON_SAFEAREA"
   },
   {
     "Index": "FOCUS-DNG-001-SUB",
-    "UniqueName": "FOCUS-DNG-001-SUB",
+    "UniqueName": "Hallowed Undercrypt",
     "Type": "DUNGEON_SAFEAREA"
   },
   {
@@ -5083,146 +4988,6 @@
     "Type": "CORRUPTED_DUNGEON_INTERMEDIATE"
   },
   {
-    "Index": "0003-2",
-    "UniqueName": "0003-2",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "0003",
-    "UniqueName": "0003",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "0246",
-    "UniqueName": "0246",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "0247",
-    "UniqueName": "0247",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "0248",
-    "UniqueName": "0248",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "0249",
-    "UniqueName": "0249",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "1005-2",
-    "UniqueName": "1005-2",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "1005",
-    "UniqueName": "1005",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "1247",
-    "UniqueName": "1247",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "1248",
-    "UniqueName": "1248",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "1249",
-    "UniqueName": "1249",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "2001-2",
-    "UniqueName": "2001-2",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "2001",
-    "UniqueName": "2001",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "2243",
-    "UniqueName": "2243",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "2244",
-    "UniqueName": "2244",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "2245",
-    "UniqueName": "2245",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "2246",
-    "UniqueName": "2246",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "3000-2",
-    "UniqueName": "3000-2",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "3000",
-    "UniqueName": "3000",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "3250",
-    "UniqueName": "3250",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "3251",
-    "UniqueName": "3251",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "3252",
-    "UniqueName": "3252",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "4005-2",
-    "UniqueName": "4005-2",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "4005",
-    "UniqueName": "4005",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "4250",
-    "UniqueName": "4250",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "4251",
-    "UniqueName": "4251",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "4252",
-    "UniqueName": "4252",
-    "Type": "STARTAREA"
-  },
-  {
-    "Index": "4299",
-    "UniqueName": "4299",
-    "Type": "STARTAREA"
-  },
-  {
     "Index": "DNG-0402",
     "UniqueName": "DNG-0402",
     "Type": "DUNGEON_SAFEAREA"
@@ -5245,11 +5010,6 @@
   {
     "Index": "FOCUS-DNG-001",
     "UniqueName": "FOCUS-DNG-001",
-    "Type": "DUNGEON_SAFEAREA"
-  },
-  {
-    "Index": "Halloween-01",
-    "UniqueName": "Halloween-01",
     "Type": "DUNGEON_SAFEAREA"
   },
   {
@@ -6028,16 +5788,6 @@
     "Type": "CORRUPTED_DUNGEON_INTERMEDIATE"
   },
   {
-    "Index": "LEGACY-KEEPER-SOLO-01",
-    "UniqueName": "LEGACY-KEEPER-SOLO-01",
-    "Type": "DUNGEON_BLACK"
-  },
-  {
-    "Index": "LEGACY-KEEPER-SOLO-01#1",
-    "UniqueName": "LEGACY-KEEPER-SOLO-02",
-    "Type": "DUNGEON_BLACK"
-  },
-  {
     "Index": "RoadPve-151",
     "UniqueName": "RoadPve-151",
     "Type": "TUNNEL_HIDEOUT_DEEP"
@@ -6068,11 +5818,6 @@
     "Type": "TUNNEL_HIDEOUT_DEEP"
   },
   {
-    "Index": "CORRUPT-021",
-    "UniqueName": "SpikeCROSS",
-    "Type": "CORRUPTED_DUNGEON_INTERMEDIATE"
-  },
-  {
     "Index": "CrystalRealmDebug",
     "UniqueName": "CrystalRealmDebug",
     "Type": "STARTAREA"
@@ -6098,38 +5843,783 @@
     "Type": "PLAYERCITY_BLACK_ROYAL_NOFURNITURE"
   },
   {
-    "Index": "3017-HALL-1-4-CAER",
-    "UniqueName": "Conquerors' Hall Lvl. 3",
-    "Type": "PLAYERCITY_BLACK_ROYAL_NOFURNITURE"
-  },
-  {
     "Index": "4009-HALL-1-4",
     "UniqueName": "Conquerors' Hall Lvl. 3",
     "Type": "PLAYERCITY_BLACK_ROYAL_NOFURNITURE"
   },
   {
-    "Index": "CORRUPT-022",
-    "UniqueName": "SpikeROW",
-    "Type": "CORRUPTED_DUNGEON_INTERMEDIATE"
-  },
-  {
-    "Index": "CORRUPT-023",
-    "UniqueName": "SpikeSINGULAR",
-    "Type": "CORRUPTED_DUNGEON_INTERMEDIATE"
-  },
-  {
-    "Index": "HALLOWEEN-SOLO-01",
-    "UniqueName": "HALLOWEEN-SOLO-01",
-    "Type": "DUNGEON_BLACK"
-  },
-  {
     "Index": "ChampionsRealmLive",
     "UniqueName": "Champions' Realm",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "VegAnimTest",
+    "UniqueName": "VegAnimTest",
     "Type": "SAFEAREA"
   },
   {
     "Index": "CrystalRealm20v20",
     "UniqueName": "Large Crystal Realm",
     "Type": "ARENA_CRYSTAL"
+  },
+  {
+    "Index": "HELLGATE-01-10v10-01",
+    "UniqueName": "The Plains",
+    "Type": "DUNGEON_HELL_10V10_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-01-2v2-01",
+    "UniqueName": "The Plains",
+    "Type": "DUNGEON_HELL_2V2_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-01-5v5-01",
+    "UniqueName": "The Plains",
+    "Type": "DUNGEON_HELL_5V5_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-02-10v10-01",
+    "UniqueName": "The Hill",
+    "Type": "DUNGEON_HELL_10V10_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-02-2v2-01",
+    "UniqueName": "The Hill",
+    "Type": "DUNGEON_HELL_2V2_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-02-5v5-01",
+    "UniqueName": "The Hill",
+    "Type": "DUNGEON_HELL_5V5_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-03-10v10-01",
+    "UniqueName": "The Boneyard",
+    "Type": "DUNGEON_HELL_10V10_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-03-2v2-01",
+    "UniqueName": "The Boneyard",
+    "Type": "DUNGEON_HELL_2V2_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-03-5v5-01",
+    "UniqueName": "The Boneyard",
+    "Type": "DUNGEON_HELL_5V5_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-04-10v10-01",
+    "UniqueName": "The Four Bridges",
+    "Type": "DUNGEON_HELL_10V10_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-04-2v2-01",
+    "UniqueName": "The Four Bridges",
+    "Type": "DUNGEON_HELL_2V2_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-04-5v5-01",
+    "UniqueName": "The Four Bridges",
+    "Type": "DUNGEON_HELL_5V5_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-05-10v10-01",
+    "UniqueName": "The Traverse",
+    "Type": "DUNGEON_HELL_10V10_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-05-2v2-01",
+    "UniqueName": "The Traverse",
+    "Type": "DUNGEON_HELL_2V2_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-05-5v5-01",
+    "UniqueName": "The Traverse",
+    "Type": "DUNGEON_HELL_5V5_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-06-10v10-01",
+    "UniqueName": "The Fortress",
+    "Type": "DUNGEON_HELL_10V10_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-06-2v2-01",
+    "UniqueName": "The Fortress",
+    "Type": "DUNGEON_HELL_2V2_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-06-5v5-01",
+    "UniqueName": "The Fortress",
+    "Type": "DUNGEON_HELL_5V5_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-07-10v10-01",
+    "UniqueName": "The Pit",
+    "Type": "DUNGEON_HELL_10V10_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-07-2v2-01",
+    "UniqueName": "The Pit",
+    "Type": "DUNGEON_HELL_2V2_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-07-5v5-01",
+    "UniqueName": "The Pit",
+    "Type": "DUNGEON_HELL_5V5_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-08-10v10-01",
+    "UniqueName": "The Courtyard",
+    "Type": "DUNGEON_HELL_10V10_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-08-2v2-01",
+    "UniqueName": "The Courtyard",
+    "Type": "DUNGEON_HELL_2V2_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-08-5v5-01",
+    "UniqueName": "The Courtyard",
+    "Type": "DUNGEON_HELL_5V5_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-09-10v10-01",
+    "UniqueName": "The Tribunal",
+    "Type": "DUNGEON_HELL_10V10_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-09-2v2-01",
+    "UniqueName": "The Tribunal",
+    "Type": "DUNGEON_HELL_2V2_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-09-5v5-01",
+    "UniqueName": "The Tribunal",
+    "Type": "DUNGEON_HELL_5V5_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-10-10v10-01",
+    "UniqueName": "The Citadel",
+    "Type": "DUNGEON_HELL_10V10_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-10-2v2-01",
+    "UniqueName": "The Citadel",
+    "Type": "DUNGEON_HELL_2V2_NON_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-10-5v5-01",
+    "UniqueName": "The Citadel",
+    "Type": "DUNGEON_HELL_5V5_NON_LETHAL"
+  },
+  {
+    "Index": "0215",
+    "UniqueName": "Murky Fen",
+    "Type": "SAFEAREA"
+  },
+  {
+    "Index": "0216",
+    "UniqueName": "Fog Fen",
+    "Type": "SAFEAREA"
+  },
+  {
+    "Index": "0217",
+    "UniqueName": "Drownhorse Basin",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "0218",
+    "UniqueName": "Slithertail Marsh",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "0219",
+    "UniqueName": "Wanderlure Basin",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "0220",
+    "UniqueName": "Falsestep Marsh",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "0221",
+    "UniqueName": "Darkground Swamp",
+    "Type": "OPENPVP_RED"
+  },
+  {
+    "Index": "0222",
+    "UniqueName": "Anklesnag Mire",
+    "Type": "OPENPVP_RED"
+  },
+  {
+    "Index": "0223",
+    "UniqueName": "Dusktree Swamp",
+    "Type": "OPENPVP_RED"
+  },
+  {
+    "Index": "1216",
+    "UniqueName": "Flynsdell",
+    "Type": "SAFEAREA"
+  },
+  {
+    "Index": "1217",
+    "UniqueName": "Pinecopse",
+    "Type": "SAFEAREA"
+  },
+  {
+    "Index": "1218",
+    "UniqueName": "Deeproot Wood",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "1220",
+    "UniqueName": "Aspenwood",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "1221",
+    "UniqueName": "Spindlewood",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "1222",
+    "UniqueName": "Owlsong Glen",
+    "Type": "OPENPVP_RED"
+  },
+  {
+    "Index": "1223",
+    "UniqueName": "Nightbloom Forest",
+    "Type": "OPENPVP_RED"
+  },
+  {
+    "Index": "2216",
+    "UniqueName": "Dryfield Meadow",
+    "Type": "SAFEAREA"
+  },
+  {
+    "Index": "2217",
+    "UniqueName": "Sandgust Cleft",
+    "Type": "SAFEAREA"
+  },
+  {
+    "Index": "2218",
+    "UniqueName": "Longshadow Plain",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "2219",
+    "UniqueName": "Flatriver Trough",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "2220",
+    "UniqueName": "Redstone Plain",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "2221",
+    "UniqueName": "Flimmerair Steppe",
+    "Type": "OPENPVP_RED"
+  },
+  {
+    "Index": "2222",
+    "UniqueName": "Goldshimmer Plain",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "3216",
+    "UniqueName": "Kilmar Tor",
+    "Type": "SAFEAREA"
+  },
+  {
+    "Index": "3217",
+    "UniqueName": "Carns Hill",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "3218",
+    "UniqueName": "Brons Hill",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "3219",
+    "UniqueName": "Felniks Hill",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "3220",
+    "UniqueName": "Adrens Hill",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "3221",
+    "UniqueName": "Garrow Fell",
+    "Type": "OPENPVP_RED"
+  },
+  {
+    "Index": "3222",
+    "UniqueName": "Broken Fell",
+    "Type": "OPENPVP_RED"
+  },
+  {
+    "Index": "4217",
+    "UniqueName": "Pen Fenair",
+    "Type": "SAFEAREA"
+  },
+  {
+    "Index": "4218",
+    "UniqueName": "Cairn Drain",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "4219",
+    "UniqueName": "Caulder Fissure",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "4220",
+    "UniqueName": "Cairn Cloch",
+    "Type": "OPENPVP_YELLOW"
+  },
+  {
+    "Index": "4221",
+    "UniqueName": "Creag Dhor",
+    "Type": "OPENPVP_RED"
+  },
+  {
+    "Index": "4222",
+    "UniqueName": "Creag Meagir",
+    "Type": "OPENPVP_RED"
+  },
+  {
+    "Index": "4223",
+    "UniqueName": "Domhain Chasm",
+    "Type": "OPENPVP_RED"
+  },
+  {
+    "Index": "FOCUS-DNG-001-MAIN#3",
+    "UniqueName": "Hallowed Crypt",
+    "Type": "DUNGEON_SAFEAREA"
+  },
+  {
+    "Index": "FOCUS-DNG-001-SUB#3",
+    "UniqueName": "Hallowed Undercrypt",
+    "Type": "DUNGEON_SAFEAREA"
+  },
+  {
+    "Index": "FOCUS-DNG-002#1",
+    "UniqueName": "Stoneroot Caverns",
+    "Type": "DUNGEON_YELLOW"
+  },
+  {
+    "Index": "PSG-0006#1",
+    "UniqueName": "Creag's Way",
+    "Type": "PASSAGE_RED"
+  },
+  {
+    "Index": "FOCUS-DNG-002-MAIN#1",
+    "UniqueName": "Exalted Crypt",
+    "Type": "DUNGEON_RED"
+  },
+  {
+    "Index": "FOCUS-DNG-002-SUB#1",
+    "UniqueName": "Exalted Undercrypt",
+    "Type": "DUNGEON_RED"
+  },
+  {
+    "Index": "PSG-0006#2",
+    "UniqueName": "Chasmlight Cave",
+    "Type": "PASSAGE_RED"
+  },
+  {
+    "Index": "FOCUS-DNG-001-MAIN#4",
+    "UniqueName": "Hallowed Crypt",
+    "Type": "DUNGEON_SAFEAREA"
+  },
+  {
+    "Index": "FOCUS-DNG-001-SUB#4",
+    "UniqueName": "Hallowed Undercrypt",
+    "Type": "DUNGEON_SAFEAREA"
+  },
+  {
+    "Index": "PSG-H-0001",
+    "UniqueName": "PSG-H-0001",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "PSG-H-0001#1",
+    "UniqueName": "Boulder Deep",
+    "Type": "PASSAGE_RED"
+  },
+  {
+    "Index": "PSG-H-0002",
+    "UniqueName": "PSG-H-0002",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "FOCUS-DNG-002-SUB#2",
+    "UniqueName": "Exalted Undercrypt",
+    "Type": "DUNGEON_RED"
+  },
+  {
+    "Index": "FOCUS-DNG-002-MAIN#2",
+    "UniqueName": "Exalted Crypt",
+    "Type": "DUNGEON_RED"
+  },
+  {
+    "Index": "PSG-H-0002#1",
+    "UniqueName": "Drystone Channel",
+    "Type": "PASSAGE_RED"
+  },
+  {
+    "Index": "FOCUS-DNG-001-MAIN#5",
+    "UniqueName": "Hallowed Crypt",
+    "Type": "DUNGEON_SAFEAREA"
+  },
+  {
+    "Index": "FOCUS-DNG-001-SUB#5",
+    "UniqueName": "Hallowed Undercrypt",
+    "Type": "DUNGEON_SAFEAREA"
+  },
+  {
+    "Index": "FOCUS-DNG-003-MAIN#1",
+    "UniqueName": "Cathedral of Light",
+    "Type": "DUNGEON_RED"
+  },
+  {
+    "Index": "FOCUS-DNG-003-SUB#1",
+    "UniqueName": "Chambers of Truth",
+    "Type": "DUNGEON_RED"
+  },
+  {
+    "Index": "FOCUS-DNG-002-MAIN#3",
+    "UniqueName": "Exalted Crypt",
+    "Type": "DUNGEON_RED"
+  },
+  {
+    "Index": "FOCUS-DNG-002-SUB#3",
+    "UniqueName": "Exalted Undercrypt",
+    "Type": "DUNGEON_RED"
+  },
+  {
+    "Index": "FOCUS-DNG-001-MAIN#6",
+    "UniqueName": "Hallowed Crypt",
+    "Type": "DUNGEON_SAFEAREA"
+  },
+  {
+    "Index": "FOCUS-DNG-001-SUB#6",
+    "UniqueName": "Hallowed Undercrypt",
+    "Type": "DUNGEON_SAFEAREA"
+  },
+  {
+    "Index": "PSG-0001",
+    "UniqueName": "PSG-0001",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "PSG-0002",
+    "UniqueName": "PSG-0002",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "HELLGATE-01-10v10-01-HRD",
+    "UniqueName": "The Plains",
+    "Type": "DUNGEON_HELL_10V10_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-01-2v2-01-HRD",
+    "UniqueName": "The Plains",
+    "Type": "DUNGEON_HELL_2V2_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-01-5v5-01-HRD",
+    "UniqueName": "The Plains",
+    "Type": "DUNGEON_HELL_5V5_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-02-10v10-01-HRD",
+    "UniqueName": "The Hill",
+    "Type": "DUNGEON_HELL_10V10_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-02-2v2-01-HRD",
+    "UniqueName": "The Hill",
+    "Type": "DUNGEON_HELL_2V2_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-02-5v5-01-HRD",
+    "UniqueName": "The Hill",
+    "Type": "DUNGEON_HELL_5V5_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-03-10v10-01-HRD",
+    "UniqueName": "The Boneyard",
+    "Type": "DUNGEON_HELL_10V10_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-03-2v2-01-HRD",
+    "UniqueName": "The Boneyard",
+    "Type": "DUNGEON_HELL_2V2_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-03-5v5-01-HRD",
+    "UniqueName": "The Boneyard",
+    "Type": "DUNGEON_HELL_5V5_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-04-10v10-01-HRD",
+    "UniqueName": "The Four Bridges",
+    "Type": "DUNGEON_HELL_10V10_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-04-2v2-01-HRD",
+    "UniqueName": "The Four Bridges",
+    "Type": "DUNGEON_HELL_2V2_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-04-5v5-01-HRD",
+    "UniqueName": "The Four Bridges",
+    "Type": "DUNGEON_HELL_5V5_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-05-10v10-01-HRD",
+    "UniqueName": "The Traverse",
+    "Type": "DUNGEON_HELL_10V10_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-05-2v2-01-HRD",
+    "UniqueName": "The Traverse",
+    "Type": "DUNGEON_HELL_2V2_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-05-5v5-01-HRD",
+    "UniqueName": "The Traverse",
+    "Type": "DUNGEON_HELL_5V5_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-06-10v10-01-HRD",
+    "UniqueName": "The Fortress",
+    "Type": "DUNGEON_HELL_10V10_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-06-2v2-01-HRD",
+    "UniqueName": "The Fortress",
+    "Type": "DUNGEON_HELL_2V2_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-06-5v5-01-HRD",
+    "UniqueName": "The Fortress",
+    "Type": "DUNGEON_HELL_5V5_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-07-10v10-01-HRD",
+    "UniqueName": "The Pit",
+    "Type": "DUNGEON_HELL_10V10_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-07-2v2-01-HRD",
+    "UniqueName": "The Pit",
+    "Type": "DUNGEON_HELL_2V2_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-07-5v5-01-HRD",
+    "UniqueName": "The Pit",
+    "Type": "DUNGEON_HELL_5V5_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-08-10v10-01-HRD",
+    "UniqueName": "The Courtyard",
+    "Type": "DUNGEON_HELL_10V10_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-08-2v2-01-HRD",
+    "UniqueName": "The Courtyard",
+    "Type": "DUNGEON_HELL_2V2_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-08-5v5-01-HRD",
+    "UniqueName": "The Courtyard",
+    "Type": "DUNGEON_HELL_5V5_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-09-10v10-01-HRD",
+    "UniqueName": "The Tribunal",
+    "Type": "DUNGEON_HELL_10V10_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-09-2v2-01-HRD",
+    "UniqueName": "The Tribunal",
+    "Type": "DUNGEON_HELL_2V2_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-09-5v5-01-HRD",
+    "UniqueName": "The Tribunal",
+    "Type": "DUNGEON_HELL_5V5_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-10-10v10-01-HRD",
+    "UniqueName": "The Citadel",
+    "Type": "DUNGEON_HELL_10V10_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-10-2v2-01-HRD",
+    "UniqueName": "The Citadel",
+    "Type": "DUNGEON_HELL_2V2_LETHAL"
+  },
+  {
+    "Index": "HELLGATE-10-5v5-01-HRD",
+    "UniqueName": "The Citadel",
+    "Type": "DUNGEON_HELL_5V5_LETHAL"
+  },
+  {
+    "Index": "0246",
+    "UniqueName": "0246",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "0247",
+    "UniqueName": "0247",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "0248",
+    "UniqueName": "0248",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "0249",
+    "UniqueName": "0249",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "1247",
+    "UniqueName": "1247",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "1248",
+    "UniqueName": "1248",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "1249",
+    "UniqueName": "1249",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "2243",
+    "UniqueName": "2243",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "2244",
+    "UniqueName": "2244",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "2245",
+    "UniqueName": "2245",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "2246",
+    "UniqueName": "2246",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "3010",
+    "UniqueName": "3010",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "3011",
+    "UniqueName": "3011",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "3012-HALL-02",
+    "UniqueName": "3012-HALL-02",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "3017-HALL-1-4-CAER",
+    "UniqueName": "3017-HALL-1-4-CAER",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "3030",
+    "UniqueName": "3030",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "3250",
+    "UniqueName": "3250",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "3251",
+    "UniqueName": "3251",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "3252",
+    "UniqueName": "3252",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "4250",
+    "UniqueName": "4250",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "4251",
+    "UniqueName": "4251",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "4252",
+    "UniqueName": "4252",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "4299",
+    "UniqueName": "4299",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "LEGACY-KEEPER-01",
+    "UniqueName": "LEGACY-KEEPER-01",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "LEGACY-KEEPER-SOLO-01",
+    "UniqueName": "LEGACY-KEEPER-SOLO-01",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "LEGACY-UNDEAD-01",
+    "UniqueName": "LEGACY-UNDEAD-01",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "LEGACY-UNDEAD-02",
+    "UniqueName": "LEGACY-UNDEAD-02",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "Halloween-01",
+    "UniqueName": "Halloween-01",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "HALLOWEEN-SOLO-01",
+    "UniqueName": "HALLOWEEN-SOLO-01",
+    "Type": "STARTAREA"
+  },
+  {
+    "Index": "HALLOWEEN-UNDEAD-01",
+    "UniqueName": "HALLOWEEN-UNDEAD-01",
+    "Type": "STARTAREA"
   }
 ]

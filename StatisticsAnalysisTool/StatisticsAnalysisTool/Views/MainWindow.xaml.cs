@@ -185,7 +185,9 @@ namespace StatisticsAnalysisTool.Views
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(_mainWindowViewModel.TextBoxGoldModeNumberOfValues, out var numberOfValues))
+            {
                 _mainWindowViewModel.SetGoldChart(numberOfValues);
+            }
         }
 
         private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
@@ -213,6 +215,11 @@ namespace StatisticsAnalysisTool.Views
             _mainWindowViewModel.ResetMainCounters(true, true, true);
         }
 
+        private void BtnDamageMeterReset_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel.ResetDamageMeter();
+        }
+
         private void BtnDungeonTrackingReset_Click(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel.ResetDungeonCounters();
@@ -223,6 +230,16 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.ErrorBarVisibility = Visibility.Hidden;
             _mainWindowViewModel.ErrorBarText = string.Empty;
+        }
+
+        private void OpenDamageMeterInfoPopup_MouseEnter(object sender, MouseEventArgs e)
+        {
+            _mainWindowViewModel.IsDamageMeterPopupVisible = Visibility.Visible;
+        }
+
+        private void CloseDamageMeterInfoPopup_MouseLeave(object sender, MouseEventArgs e)
+        {
+            _mainWindowViewModel.IsDamageMeterPopupVisible = Visibility.Hidden;
         }
     }
 }

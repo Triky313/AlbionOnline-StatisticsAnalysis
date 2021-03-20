@@ -348,12 +348,15 @@
   <translation name="KILLED_BY">killed by</translation>
   <translation name="DUNGEON_FAME">Dungeon Fame</translation>
   <translation name="DUNGEON_RUN_TIME">Dungeon run Time</translation>
+  <translation name="DAMAGE_METER">Damage Meter</translation>
+  <translation name="RESET_DAMAGE_METER">Reset Damage Meter</translation>
   
   <translation name="STANDARD">Standard</translation>
   <translation name="UNCOMMON">Uncommon</translation>
   <translation name="RARE">Rare</translation>
   <translation name="LEGENDARY">Legendary</translation>
-
   <translation name="BOSS_CHEST">Boss-Chest</translation>
   <translation name="BOOK_CHEST">Book-Chest</translation>
+
+  <translation name="DAMAGE_METER_DESCRIPTION_1">In order for damage from other players in the party to be recognized, the tool must first be activated and then a player must leave or join the party.</translation>
 </translations>

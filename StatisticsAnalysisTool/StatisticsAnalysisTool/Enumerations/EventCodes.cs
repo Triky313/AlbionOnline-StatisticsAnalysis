@@ -256,7 +256,7 @@
         EnteringArenaLockCancel,
         InvitedToArenaMatch,
         PlayerCounts,
-        InCombatStateUpdate, // <- 1 = true; player hits enemy | 2 = true; enemy hits player
+        InCombatStateUpdate = 259, // <- 1 = true; player hits enemy | 2 = true; enemy hits player
         OtherGrabbedLoot,
         SiegeCampClaimStart,
         SiegeCampClaimCancel,
@@ -363,7 +363,7 @@
         TutorialUpdate,
         TriggerHintBox,
         RandomDungeonPositionInfo,
-        NewLootChest,
+        NewLootChest = 367,
         UpdateLootChest, // <- Mob Info: MOB_KEEPER_UNPROVEN_MALE_VETERAN ... and more
         LootChestOpened,
         NewShrine, // <- Min the small shirnes in the solo, mybe also the big?
@@ -372,7 +372,7 @@
         ShopTileUpdate,
         ShopUpdate,
         EasyAntiCheatKick,
-        UnlockVanityUnlock,
+        UnlockVanityUnlock, // [0:24 1:[-148 109] 2:180 3:KEEPER_SHRINE_SILVER_STANDARD 4:SHRINE_KPR_SILVER_STANDARD 5:1 6:637517907902977990 252:370]
         AvatarUnlocked,
         CustomizationChanged,
         BasaultInfo,

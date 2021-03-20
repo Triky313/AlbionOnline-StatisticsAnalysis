@@ -4,13 +4,16 @@ using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.Network.Time;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -21,28 +24,80 @@ namespace StatisticsAnalysisTool.Network.Controller
 {
     public class TrackingController
     {
-        public CombatController combatController;
+        public EntityController EntityController;
+        public CombatController CombatController;
+        public LocalUserData LocalUserData { get; set; }
+
+        private const int _maxNotifications = 50;
+        private const int _maxDungeons = 999;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly MainWindow _mainWindow;
         private Guid? _lastGuid;
         private Guid? _currentGuid;
+        private string _lastClusterHash;
 
-        public long? UserObjectId { get; set; }
-        public string Username { get; set; }
-
-        private const int _maxNotifications = 50;
-        private const int _maxDungeons = 999;
+        public ClusterInfo CurrentCluster {
+            get;
+            private set;
+        }
 
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
-            combatController = new CombatController(this);
-            combatController = new CombatController(this);
+            EntityController = new EntityController(_mainWindow, mainWindowViewModel);
+            CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
         }
 
+        public void RegisterEvents()
+        {
+            EntityController.OnHealthUpdate += DamageMeterUpdate;
+        }
+
+        public void UnregisterEvents()
+        {
+            EntityController.OnHealthUpdate -= DamageMeterUpdate;
+        }
+        
+        #region Cluster
+        
+        public event Action<ClusterInfo> OnChangeCluster;
+
+        public void SetNewCluster(MapType mapType, Guid? mapGuid, string clusterIndex, string mainClusterIndex)
+        {
+            CurrentCluster = WorldData.GetClusterInfoByIndex(clusterIndex, mainClusterIndex, mapType, mapGuid);
+
+            if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName))
+            {
+                return;
+            }
+
+            if (_mainWindowViewModel.IsDamageMeterResetByMapChangeActive)
+            {
+                CombatController.ResetDamage(CombatController.AddClusterStartTimer());
+            }
+
+            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
+            OnChangeCluster?.Invoke(CurrentCluster);
+        }
+
+        private bool TryChangeCluster(string index, string mapName)
+        {
+            var newClusterHash = index + mapName;
+
+            if (_lastClusterHash == newClusterHash)
+            {
+                return false;
+            }
+
+            _lastClusterHash = newClusterHash;
+            return true;
+        }
+
+        #endregion
+        
         #region Set Main Window values
 
         public void SetTotalPlayerFame(double value)
@@ -59,8 +114,6 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             _mainWindowViewModel.TotalPlayerReSpecPoints = value.ToString("N0", LanguageController.CurrentCultureInfo);
         }
-
-        public string CurrentPlayerUsername { get; set; }
 
         #endregion
         
@@ -236,7 +289,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     {
                         _mainWindowViewModel.TrackingDungeons.Insert(
                             0, 
-                            new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow, _mainWindowViewModel));
+                            new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow));
                     }
                     else
                     {
@@ -244,7 +297,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                         {
                             _mainWindowViewModel.TrackingDungeons.Insert(
                                 0, 
-                                new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow, _mainWindowViewModel));
+                                new DungeonNotificationFragment(currentGuid, _mainWindowViewModel.TrackingDungeons.Count + 1, mainMapIndex, DateTime.UtcNow));
                         });
                     }
 
@@ -368,7 +421,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void SetDiedIfInDungeon(DiedObject dieObject)
         {
-            if (_currentGuid != null && CurrentPlayerUsername != null && dieObject.DiedName == CurrentPlayerUsername)
+            if (_currentGuid != null && LocalUserData.Username != null && dieObject.DiedName == LocalUserData.Username)
             {
                 try
                 {
@@ -712,6 +765,15 @@ namespace StatisticsAnalysisTool.Network.Controller
                 Log.Error(nameof(GetLowestDate), e);
                 return null;
             }
+        }
+
+        #endregion
+
+        #region Trigger events
+
+        public void DamageMeterUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType, EffectOrigin effectOrigin, long causerId, int causingSpellType)
+        {
+            CombatController.AddDamage(causerId, healthChange);
         }
 
         #endregion

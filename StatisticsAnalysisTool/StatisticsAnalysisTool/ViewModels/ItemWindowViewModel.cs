@@ -628,29 +628,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Prices
-
-        #region MyRegion
-
-        public void CopyTextToClipboard(object sender)
-        {
-            if (sender == null)
-            {
-                return;
-            }
-
-            try
-            {
-                var label = (Label)sender;
-                Clipboard.SetText(label.Content.ToString());
-            }
-            catch (Exception ex)
-            {
-                Log.Error(nameof(CopyTextToClipboard), ex);
-            }
-        }
-
-        #endregion
-
+        
         #region Bindings
 
         public Item Item {
@@ -919,6 +897,24 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion Bindings
 
         #region Helper
+
+        public void CopyTextToClipboard(object sender)
+        {
+            if (sender == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var label = (Label)sender;
+                Clipboard.SetText(label.Content.ToString());
+            }
+            catch (Exception ex)
+            {
+                Log.Error(nameof(CopyTextToClipboard), ex);
+            }
+        }
 
         public ulong Sum(params ulong[] values)
         {

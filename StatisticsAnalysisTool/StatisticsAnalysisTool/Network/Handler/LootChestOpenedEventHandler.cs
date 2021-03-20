@@ -1,4 +1,5 @@
 ﻿using Albion.Network;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Events;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace StatisticsAnalysisTool.Network.Handler
     public class LootChestOpenedEventHandler : EventPacketHandler<LootChestOpenedEvent>
     {
         private readonly TrackingController _trackingController;
-        public LootChestOpenedEventHandler(TrackingController trackingController) : base(365)
+        public LootChestOpenedEventHandler(TrackingController trackingController) : base((int)EventCodes.LootChestOpened)
         {
             _trackingController = trackingController;
         }

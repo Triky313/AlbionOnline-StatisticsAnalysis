@@ -61,15 +61,6 @@
   <PropertyGroup>
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x86|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug x86\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
@@ -78,6 +69,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -87,42 +79,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x86|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug x86\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x86|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug x86\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Albion.Network, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -146,8 +103,8 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PacketDotNet, Version=1.1.2.0, Culture=neutral, PublicKeyToken=451414c7667b2a58, processorArchitecture=MSIL">
-      <HintPath>..\packages\PacketDotNet.1.1.2\lib\net45\PacketDotNet.dll</HintPath>
+    <Reference Include="PacketDotNet, Version=1.2.0.0, Culture=neutral, PublicKeyToken=451414c7667b2a58, processorArchitecture=MSIL">
+      <HintPath>..\packages\PacketDotNet.1.2.0\lib\net45\PacketDotNet.dll</HintPath>
     </Reference>
     <Reference Include="PcapDotNet.Base, Version=0.10.0.20588, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
       <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Base.dll</HintPath>
@@ -211,19 +168,46 @@
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Common\ExtensionMethod.cs" />
     <Compile Include="Common\FixPoint.cs" />
+    <Compile Include="Common\ProgressBarSmoother.cs" />
+    <Compile Include="Enumerations\ClusterType.cs" />
     <Compile Include="Enumerations\EffectOrigin.cs" />
     <Compile Include="Enumerations\EffectType.cs" />
-    <Compile Include="Models\NetworkModel\NewCharacterObject.cs" />
+    <Compile Include="Enumerations\GameObjectSubType.cs" />
+    <Compile Include="Enumerations\GameObjectType.cs" />
+    <Compile Include="Models\EquipmentItem.cs" />
+    <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
+    <Compile Include="Models\NetworkModel\DamageObject.cs" />
+    <Compile Include="Models\NetworkModel\GameObject.cs" />
+    <Compile Include="Models\NetworkModel\HealthUpdate.cs" />
+    <Compile Include="Models\NetworkModel\LocalUserData.cs" />
+    <Compile Include="Models\NetworkModel\PartyMemberCircle.cs" />
+    <Compile Include="Models\SpellEffect.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
+    <Compile Include="Network\Controller\EntityController.cs" />
+    <Compile Include="Network\Events\ActiveSpellEffectsUpdateEvent.cs" />
+    <Compile Include="Network\Events\NewEquipmentItemEvent.cs" />
     <Compile Include="Network\Events\HealthUpdateEvent.cs" />
+    <Compile Include="Network\Events\LeaveEvent.cs" />
+    <Compile Include="Network\Events\CharacterEquipmentChangedEvent.cs" />
+    <Compile Include="Network\Events\NewMobEvent.cs" />
     <Compile Include="Network\Events\NewShrineEvent.cs" />
     <Compile Include="Network\Events\InCombatStateUpdateEvent.cs" />
+    <Compile Include="Network\Events\SiegeCampClaimStartEvent.cs" />
+    <Compile Include="Network\Events\PartyChangedOrderEvent.cs" />
     <Compile Include="Network\Events\PartyDisbandedEvent.cs" />
+    <Compile Include="Network\Handler\ActiveSpellEffectsUpdateEventHandler.cs" />
+    <Compile Include="Network\Handler\NewEquipmentItemEventHandler.cs" />
     <Compile Include="Network\Handler\HealthUpdateEventHandler.cs" />
+    <Compile Include="Network\Handler\LeaveEventHandler.cs" />
+    <Compile Include="Network\Handler\CharacterEquipmentChangedEventHandler.cs" />
+    <Compile Include="Network\Handler\NewMobEventHandler.cs" />
     <Compile Include="Network\Handler\NewShrineEventHandler.cs" />
     <Compile Include="Network\Handler\InCombatStateUpdateEventHandler.cs" />
+    <Compile Include="Network\Handler\SiegeCampClaimStartEventHandler.cs" />
+    <Compile Include="Network\Handler\PartyChangedOrderEventHandler.cs" />
     <Compile Include="Network\Handler\PartyDisbandedEventHandler.cs" />
     <Compile Include="Network\Notification\CombatNotificationFragment.cs" />
+    <Compile Include="Network\Notification\DamageMeterFragment.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
     <Compile Include="GameData\LootChestData.cs" />
     <Compile Include="GameData\WorldData.cs" />
@@ -237,7 +221,7 @@
     <Compile Include="Models\LootChest.cs" />
     <Compile Include="Models\LootChestRoot.cs" />
     <Compile Include="Models\LootChests.cs" />
-    <Compile Include="Models\MapData.cs" />
+    <Compile Include="Models\ClusterInfo.cs" />
     <Compile Include="Models\NetworkModel\DiedObject.cs" />
     <Compile Include="Models\WorldJsonObject.cs" />
     <Compile Include="Models\NetworkModel\ValuePerHour.cs" />

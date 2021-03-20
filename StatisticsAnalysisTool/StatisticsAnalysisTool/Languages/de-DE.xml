@@ -348,12 +348,15 @@
   <translation name="KILLED_BY">getötet von</translation>
   <translation name="DUNGEON_FAME">Dungeon Ruhm</translation>
   <translation name="DUNGEON_RUN_TIME">Dungeon Laufzeit</translation>
+  <translation name="DAMAGE_METER">Schadensanzeige</translation>
+  <translation name="RESET_DAMAGE_METER">Reset Damage Meter</translation>
 
   <translation name="STANDARD">Standard</translation>
   <translation name="UNCOMMON">Ungewöhnlich</translation>
   <translation name="RARE">Selten</translation>
   <translation name="LEGENDARY">Legendär</translation>
-
   <translation name="BOSS_CHEST">Boss-Truhe</translation>
   <translation name="BOOK_CHEST">Buch-Truhe</translation>
+
+  <translation name="DAMAGE_METER_DESCRIPTION_1">Damit Schaden von anderen Spielern in der Party erkannt wird, muss das Tool zuvor aktiviert sein und dann ein Spieler die Party verlassen oder ihr beitreten.</translation>
 </translations>

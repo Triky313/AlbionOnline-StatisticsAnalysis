@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +14,6 @@ namespace StatisticsAnalysisTool.Network.Notification
 {
     public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
     {
-        private readonly MainWindowViewModel _mainWindowViewModel;
         private int _dungeonCounter;
         private List<Guid> _mapsGuid;
         private double _fame;
@@ -40,10 +38,9 @@ namespace StatisticsAnalysisTool.Network.Notification
         private double _reSpecPerHour;
         private double _silverPerHour;
 
-        public DungeonNotificationFragment(Guid firstMap, int count, string mainMapIndex, DateTime startDungeon, MainWindowViewModel mainWindowViewModel)
+        public DungeonNotificationFragment(Guid firstMap, int count, string mainMapIndex, DateTime startDungeon)
         {
             MainMapIndex = mainMapIndex;
-            _mainWindowViewModel = mainWindowViewModel;
             FirstMap = firstMap;
             MapsGuid = new List<Guid> { firstMap };
             StartDungeon = startDungeon;

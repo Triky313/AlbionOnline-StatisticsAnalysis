@@ -27,7 +27,13 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(0))
                 {
                     UserObjectId = parameters[0].ObjectToLong();
-                    Debug.Print($"UserObjectId: {parameters[0].ObjectToLong()}");
+                    Debug.Print($"Local user ObjectId: {UserObjectId}");
+                }
+
+                if (parameters.ContainsKey(1))
+                {
+                    Guid = parameters[1].ObjectToGuid();
+                    Debug.Print($"Local user Guid: {Guid}");
                 }
 
                 if (parameters.ContainsKey(2))
@@ -38,7 +44,6 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(8))
                 {
                     MapIndex = parameters[8].ToString();
-                    UniqueMapName = WorldData.GetUniqueNameOrDefault(MapIndex);
                     MapType = WorldData.GetMapType(MapIndex);
                     DungeonGuid = WorldData.GetDungeonGuid(MapIndex);
                 }
@@ -110,9 +115,9 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
         }
 
         public long? UserObjectId;
+        public Guid? Guid { get; }
         public string Username { get; }
         public string MapIndex { get; }
-        public string UniqueMapName { get; }
         public Guid? DungeonGuid { get; }
         public MapType MapType { get; }
         public double CurrentFocusPoints { get; }

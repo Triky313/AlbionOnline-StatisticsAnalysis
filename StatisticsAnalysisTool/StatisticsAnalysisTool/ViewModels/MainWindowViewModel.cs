@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Notification;
@@ -109,13 +110,19 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _guildInfoWidth;
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
+        private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
+        private ObservableCollection<DamageMeterFragment> _damageMeter = new ObservableCollection<DamageMeterFragment>();
         private DungeonStats _dungeonStatsDay = new DungeonStats();
         private DungeonStats _dungeonStatsTotal = new DungeonStats();
+        private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new ObservableCollection<PartyMemberCircle>();
+        private bool _isDamageMeterResetByMapChangeActive;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+
             InitViewModeGrids();
             UpgradeSettings();
             InitWindowSettings();
@@ -129,8 +136,20 @@ namespace StatisticsAnalysisTool.ViewModels
             InitMainWindowData();
             InitTracking();
         }
-        
+
         #region Inits
+
+        void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                Log.Fatal(nameof(OnUnhandledException), (Exception)e.ExceptionObject);
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(nameof(OnUnhandledException), ex);
+            }
+        }
 
         #region View mode init
 
@@ -615,12 +634,12 @@ namespace StatisticsAnalysisTool.ViewModels
                 _trackingController = new TrackingController(this, _mainWindow);
             }
 
+            _trackingController?.RegisterEvents();
             TrackingDungeons = _trackingController?.LoadDungeonFromFile();
             _trackingController?.SetDungeonStatsDay();
             _trackingController?.SetDungeonStatsTotal();
             DungeonStatsDay.EnteredDungeon = _trackingController.GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
             DungeonStatsTotal.EnteredDungeon = _trackingController.GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
-
 
             _valueCountUpTimer = new ValueCountUpTimer();
 
@@ -648,6 +667,8 @@ namespace StatisticsAnalysisTool.ViewModels
         public void StopTracking()
         {
             _trackingController?.SaveDungeonsInFile(TrackingDungeons);
+            _trackingController?.UnregisterEvents();
+
             _valueCountUpTimer?.FameCountUpTimer?.Stop();
             _valueCountUpTimer?.SilverCountUpTimer?.Stop();
             NetworkManager.StopNetworkCapture();
@@ -683,6 +704,11 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Reset();
             }
+        }
+
+        public void ResetDamageMeter()
+        {
+            _trackingController.CombatController.ResetDamage(DateTime.UtcNow);
         }
 
         public void ResetDungeonCounters()
@@ -803,6 +829,22 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _itemsView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility IsDamageMeterPopupVisible {
+            get => _isDamageMeterPopupVisible;
+            set {
+                _isDamageMeterPopupVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<DamageMeterFragment> DamageMeter {
+            get => _damageMeter;
+            set {
+                _damageMeter = value;
                 OnPropertyChanged();
             }
         }
@@ -1159,6 +1201,14 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public ObservableCollection<PartyMemberCircle> PartyMemberCircles {
+            get => _partyMemberCircles;
+            set {
+                _partyMemberCircles = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Visibility ItemLevelsVisibility {
             get => _itemLevelsVisibility;
             set {
@@ -1287,6 +1337,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _isTxtSearchEnabled;
             set {
                 _isTxtSearchEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsDamageMeterResetByMapChangeActive {
+            get => _isDamageMeterResetByMapChangeActive;
+            set {
+                _isDamageMeterResetByMapChangeActive = value;
                 OnPropertyChanged();
             }
         }

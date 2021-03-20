@@ -1,10 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
-                    xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
-                    xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
-                    xmlns:fa="http://schemas.fontawesome.io/icons/">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <!-- Base font size -->
     <system:Double x:Key="BaseFontSize">12</system:Double>
@@ -113,6 +109,9 @@
     <SolidColorBrush x:Key="SolidColorBrush.Blue.3" Color="{StaticResource Color.Blue.3}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Blue.4" Color="{StaticResource Color.Blue.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Blue.5" Color="{StaticResource Color.Blue.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Green.1" Color="{StaticResource Color.Green.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Green.2" Color="{StaticResource Color.Green.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Green.3" Color="{StaticResource Color.Green.3}"/>
     <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#FF00799f"/>
     <SolidColorBrush x:Key="Item.IsSelected.Background" Color="#FF0e89b1"/>
     <SolidColorBrush x:Key="GridView.Column.Header.Font" Color="{StaticResource Color.Blue.2}"/>

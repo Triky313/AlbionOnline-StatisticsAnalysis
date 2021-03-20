@@ -25,7 +25,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
                 if (parameters.ContainsKey(0))
                 {
-                    ObjectId = parameters[0].ObjectToLong();
+                    ObjectId = parameters[0].ObjectToLong() ?? throw new ArgumentNullException();
                 }
 
                 if (parameters.ContainsKey(1))
@@ -55,23 +55,13 @@ namespace StatisticsAnalysisTool.Network.Handler
 
                 if (parameters.ContainsKey(6))
                 {
-                    CauserId = parameters[6].ObjectToLong();
+                    CauserId = parameters[6].ObjectToLong() ?? throw new ArgumentNullException();
                 }
 
                 if (parameters.ContainsKey(7))
                 {
                     CausingSpellType = parameters[7].ObjectToShort();
                 }
-
-                //Debug.Print($"---------------------------");
-                //Debug.Print($"ObjectId: {ObjectId}");
-                //Debug.Print($"TimeStamp: {TimeStamp}");
-                //Debug.Print($"HealthChange: {HealthChange}");
-                //Debug.Print($"NewHealthValue: {NewHealthValue}");
-                //Debug.Print($"EffectType: {EffectType}");
-                //Debug.Print($"EffectOrigin: {EffectOrigin}");
-                //Debug.Print($"CauserId: {CauserId}");
-                //Debug.Print($"CausingSpellType: {CausingSpellType}");
             }
             catch (Exception e)
             {
@@ -79,13 +69,13 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
         }
 
-        public long? ObjectId;
+        public long ObjectId;
         public GameTimeStamp TimeStamp;
         public double HealthChange;
         public double NewHealthValue;
         public EffectType EffectType;
         public EffectOrigin EffectOrigin;
-        public long? CauserId;
+        public long CauserId;
         public int CausingSpellType;
     }
 }

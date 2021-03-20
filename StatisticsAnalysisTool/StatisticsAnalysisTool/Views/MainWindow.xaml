@@ -125,16 +125,6 @@
             <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
         </Grid>
         <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Visible">
-            <Label Content="ALPHA TEST" Height="60" FontSize="40" FontWeight="Bold" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" Margin="420,21,0,0" VerticalAlignment="Top" Opacity="0.35" Foreground="{StaticResource SolidColorBrush.Blue.2}">
-                <Label.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="10"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Label.RenderTransform>
-            </Label>
             <Grid Margin="10,10,215,0" Height="45" VerticalAlignment="Top">
                 <DockPanel Margin="0,0,0,0" Height="Auto" VerticalAlignment="Top">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Height="auto" Width="50">
@@ -169,7 +159,7 @@
                     <Grid></Grid>
                 </DockPanel>
             </Grid>
-            <StackPanel IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Margin="0,10,10,0" HorizontalAlignment="Right" Width="200" Height="110" VerticalAlignment="Top">
+            <StackPanel IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Margin="0,10,10,0" HorizontalAlignment="Right" Width="200" Height="96" VerticalAlignment="Top">
                 <Button Content="{Binding Translation.ResetTrackingCounter, FallbackValue=RESET__TRACKING__COUNTER}" Height="26" VerticalAlignment="Top" Click="BtnTrackingReset_Click" />
                 <CheckBox IsChecked="{Binding IsTrackingResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}"></CheckBox>
             </StackPanel>
@@ -291,8 +281,50 @@
                             <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" MinWidth="200" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Click="BtnDungeonTrackingReset_Click"/>
                         </Grid>
                         <ScrollViewer Margin="0,105,0,0">
-                            <ItemsControl ItemsSource="{Binding TrackingDungeons}" />
+                            <ItemsControl ItemsSource="{Binding TrackingDungeons}"/>
                         </ScrollViewer>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE_METER}">
+                    <Grid>
+                        <Grid Height="20" Width="20" Margin="0,8,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
+                            <fa:ImageAwesome Icon="InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                        </Grid>
+                        <Grid Margin="0,0,35,0" HorizontalAlignment="Right" Width="450" Height="36" VerticalAlignment="Top">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsDamageMeterResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
+                                          HorizontalContentAlignment="Left" Margin="5,3,5,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="auto" MaxWidth="250"/>
+                                <Button Content="{Binding Translation.ResetDamageMeter, FallbackValue=RESET__DAMAGE__METER}" Height="26" MaxWidth="300" MinWidth="180" Margin="5,0,5,0" Width="auto" VerticalAlignment="Top" Click="BtnDamageMeterReset_Click" />
+                            </StackPanel>
+                        </Grid>
+                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,36,0,0" VerticalAlignment="Top"/>
+                        <ScrollViewer Margin="0,39,0,0">
+                            <ItemsControl ItemsSource="{Binding DamageMeter}"/>
+                        </ScrollViewer>
+                        <Grid Margin="0,10,35,263">
+                            <StackPanel Orientation="Horizontal">
+                                <Grid Height="20" Width="20" Margin="5,0,5,0" VerticalAlignment="Top">
+                                    <fa:ImageAwesome Icon="Group" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding PartyMemberCircles}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Visibility="{Binding IsDamageMeterPopupVisible, FallbackValue=Hidden}" Margin="0,39,0,0" Background="{StaticResource SolidColorBrush.Background.Second}">
+                            <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
+                                <DockPanel Margin="0,0,0,16">
+                                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                                        <fa:ImageAwesome Icon="DotCircleOutline" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                                    </Grid>
+                                    <TextBlock Text="{Binding Translation.DamageMeterDescription1}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="16" TextWrapping="Wrap" Width="auto"></TextBlock>
+                                </DockPanel>
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </TabItem>
             </TabControl>

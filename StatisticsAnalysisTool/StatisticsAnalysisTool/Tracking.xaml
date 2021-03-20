@@ -3,7 +3,11 @@
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
                     xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
-                    xmlns:fa="http://schemas.fontawesome.io/icons/">
+                    xmlns:fa="http://schemas.fontawesome.io/icons/"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
+                    mc:Ignorable="d">
 
     <Style x:Key="LineFragmentImageStyle" TargetType="{x:Type Image}">
         <Setter Property="Width" Value="16" />
@@ -580,4 +584,118 @@
         <Setter Property="Padding" Value="0"></Setter>
         <Setter Property="Margin" Value="0"></Setter>
     </Style>
+
+    <!-- ##### Damage meter ##### -->
+
+    <SolidColorBrush x:Key="Progressbar.Foreground.Text" Color="#fafafa"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.Sword" Color="#FAA307"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.Spear" Color="#DAB10B"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.Quarterstaff" Color="#297A7A"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.NatureStaff" Color="#afafaf"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.Mace" Color="#D35F91"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.HolyStaff" Color="#afafaf"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.Hammer" Color="#7373D9"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.FrostStaff" Color="#4089d1"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.FireStaff" Color="#C9561D"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.Dagger" Color="#A2AD1F"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.CursedStaff" Color="#61358D"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.Crossbow" Color="#00576e"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.Bow" Color="#004D39"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.Axe" Color="#AD1F2A"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.ArcaneStaff" Color="#732653"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.UnknownWeaponType" Color="#555555"/>
+
+    <!-- Damage meter icon -->
+    <Style TargetType="Image" x:Key="DamageMeter.Icon">
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="40"/>
+    </Style>
+
+    <!-- Damage meter -->
+    <DataTemplate DataType="{x:Type notification:DamageMeterFragment}">
+        <Grid>
+            <ProgressBar com:ProgressBarSmoother.SmoothValue="{Binding DamageInPercent}"
+                         Minimum="0" Maximum="100" Height="40" Margin="3,1,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0">
+                <ProgressBar.Style>
+                    <Style TargetType="ProgressBar">
+                        <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.UnknownWeaponType}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="sword">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Sword}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="spear">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Spear}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="quarterstaff">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Quarterstaff}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="naturestaff">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.NatureStaff}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="mace">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Mace}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="holystaff">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.HolyStaff}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="hammer">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Hammer}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="froststaff">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.FrostStaff}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="firestaff">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.FireStaff}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="dagger">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Dagger}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="cursestaff">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.CursedStaff}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="crossbow">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Crossbow}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="bow">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Bow}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="axe">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Axe}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CategoryId}" Value="arcanestaff">
+                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.ArcaneStaff}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ProgressBar.Style>
+            </ProgressBar>
+            <StackPanel Orientation="Horizontal">
+                <Grid Margin="20,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
+                </Grid>
+                <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Name}" MinWidth="100" Margin="10,3"></Label>
+                <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Damage}" FontWeight="Bold" Margin="18,3"></Label>
+                <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Dps}" ContentStringFormat="{}{0:N0}/dps" FontWeight="Bold" Margin="40,3"></Label>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <!-- Damage meter icon -->
+    <Style TargetType="fa:ImageAwesome" x:Key="PartyMemberCircleStyle">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{StaticResource Color.Green.2}" Offset="0.0" />
+                    <GradientStop Color="{StaticResource Color.Green.4}" Offset="1.0" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate DataType="{x:Type networkModel:PartyMemberCircle}">
+        <Grid Height="12" Width="12" Margin="2,4,2,0" VerticalAlignment="Top" ToolTip="{Binding Name}">
+            <fa:ImageAwesome Icon="Circle" Style="{StaticResource PartyMemberCircleStyle}"/>
+        </Grid>
+    </DataTemplate>
+
 </ResourceDictionary>
