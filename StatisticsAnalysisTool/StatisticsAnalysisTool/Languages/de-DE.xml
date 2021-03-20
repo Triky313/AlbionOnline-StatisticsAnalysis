@@ -349,6 +349,7 @@
   <translation name="DUNGEON_FAME">Dungeon Ruhm</translation>
   <translation name="DUNGEON_RUN_TIME">Dungeon Laufzeit</translation>
   <translation name="DAMAGE_METER">Schadensanzeige</translation>
+  <translation name="RESET_DAMAGE_METER">Reset Damage Meter</translation>
 
   <translation name="STANDARD">Standard</translation>
   <translation name="UNCOMMON">Ungewöhnlich</translation>
