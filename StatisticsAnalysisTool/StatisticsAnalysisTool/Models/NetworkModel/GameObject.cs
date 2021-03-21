@@ -11,6 +11,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public GameObjectSubType ObjectSubType { get; set; } = GameObjectSubType.Unknown;
         public string Name { get; set; } = "Unknown";
         public CharacterEquipment CharacterEquipment { get; set; } = null;
+        public CombatDamageTime CombatDamageTime { get; set; } = null;
 
         public GameObject(long objectId)
         {

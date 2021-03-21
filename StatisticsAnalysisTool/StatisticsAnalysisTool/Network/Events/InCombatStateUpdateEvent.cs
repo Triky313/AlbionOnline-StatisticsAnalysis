@@ -1,5 +1,6 @@
 ﻿using Albion.Network;
 using log4net;
+using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -14,6 +15,11 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             try
             {
+                if (parameters.ContainsKey(0))
+                {
+                    ObjectId = parameters[0].ObjectToLong();
+                }
+
                 if (parameters.ContainsKey(1))
                 {
                     InActiveCombat = parameters[1] as bool? ?? false;
@@ -30,6 +36,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
         }
 
+        public long? ObjectId;
         public bool InActiveCombat;
         public bool InPassiveCombat;
     }

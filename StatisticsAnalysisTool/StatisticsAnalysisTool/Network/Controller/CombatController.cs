@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private readonly ObservableCollection<DamageObject> _damageCollection = new ObservableCollection<DamageObject>();
         private readonly ObservableCollection<DateTime> _clusterStarts = new ObservableCollection<DateTime>();
+        private readonly ConcurrentDictionary<Guid, CombatDamageTime> _combatDamageTimes = new ConcurrentDictionary<Guid, CombatDamageTime>();
 
         public CombatController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -28,19 +30,14 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindow = mainWindow;
             _mainWindowViewModel = mainWindowViewModel;
 
+            OnChangeCombatMode += AddCombatTime;
+
 #if DEBUG
             UpdateDamageMeterUi(SetRandomDamageValues(40));
 #endif
         }
 
         #region Damage Meter methods
-
-        public event Action<bool, bool> OnChangeCombatMode;
-
-        public void UpdateCombatMode(bool inActiveCombat, bool inPassiveCombat)
-        {
-            OnChangeCombatMode?.Invoke(inActiveCombat, inPassiveCombat);
-        }
 
         public DateTime AddClusterStartTimer()
         {
@@ -221,6 +218,46 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         #endregion
 
+        #region Combat Mode / Combat Timer
+
+        public event Action<long, bool, bool> OnChangeCombatMode;
+
+        public void UpdateCombatMode(long objectId, bool inActiveCombat, bool inPassiveCombat)
+        {
+            OnChangeCombatMode?.Invoke(objectId, inActiveCombat, inPassiveCombat);
+        }
+
+        private void AddCombatTime(long objectId, bool inActiveCombat, bool inPassiveCombat)
+        {
+            var playerObject = _trackingController.EntityController.GetEntity(objectId);
+
+            if (playerObject == null)
+            {
+                return;
+            }
+
+            if (_combatDamageTimes.Any(x => x.Key.Equals(playerObject.Value.Key)))
+            {
+                var combatTime = _combatDamageTimes.FirstOrDefault(x => x.Key.Equals(playerObject.Value.Key));
+
+                if ((inActiveCombat || inPassiveCombat) && combatTime.Value.StartTime == null)
+                {
+                    combatTime.Value.StartTime = DateTime.UtcNow;
+                }
+
+                if (!inActiveCombat && !inPassiveCombat && combatTime.Value.EndTime == null)
+                {
+                    combatTime.Value.EndTime = DateTime.UtcNow;
+                }
+            }
+            else
+            {
+                _combatDamageTimes.TryAdd(playerObject.Value.Key, new CombatDamageTime() { StartTime = DateTime.UtcNow });
+            }
+        }
+
+        #endregion
+
         #region Debug methods
 
         private static readonly Random _random = new Random(DateTime.Now.Millisecond);
@@ -235,7 +272,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 var damage = _random.Next(500, 9999);
                 var dps = _random.Next(5, 500);
                 
-                randomDamageList.Add(new DamageObject(DateTime.UtcNow, causerGuid, GenerateName(10), GetRandomWeaponIndex(), damage, dps));
+                randomDamageList.Add(new DamageObject(DateTime.UtcNow.AddMinutes(-2), causerGuid, GenerateName(10), GetRandomWeaponIndex(), damage, dps));
             }
 
             return randomDamageList;
