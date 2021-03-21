@@ -89,7 +89,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     x.FirstOrDefault(y => y?.MainHandItemIndex != null && y.StartTime >= x.Max().StartTime)?.MainHandItemIndex ?? 0,
                     x.Sum(s => s.Damage),
                     Utilities.GetValuePerSecondToDouble(x.Sum(s => s.Damage), DateTime.UtcNow - x.First().StartTime)))
-                .OrderByDescending(x => x.Damage).ToList();
+                .OrderByDescending(x => x.Damage.CompareTo(damageObjectList.FirstOrDefault()?.Damage)).ToList();
 
             var highestDamage = GetHighestDamage(groupedDamageList);
 
