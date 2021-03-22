@@ -675,7 +675,7 @@
                 </Grid>
                 <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Name}" MinWidth="100" Margin="10,3"></Label>
                 <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Damage}" FontWeight="Bold" Margin="18,3"></Label>
-                <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Dps}" ContentStringFormat="{}{0:N0}/dps" FontWeight="Bold" Margin="40,3"></Label>
+                <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" FontWeight="Bold" Margin="40,3"></Label>
             </StackPanel>
         </Grid>
     </DataTemplate>

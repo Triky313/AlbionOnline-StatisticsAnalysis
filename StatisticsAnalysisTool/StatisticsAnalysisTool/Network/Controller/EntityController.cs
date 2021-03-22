@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Network.Controller
     {
         private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private readonly ConcurrentDictionary<Guid, GameObject> _knownEntities = new ConcurrentDictionary<Guid, GameObject>();
+        private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new ConcurrentDictionary<Guid, PlayerGameObject>();
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new ConcurrentDictionary<Guid, string>();
         private readonly ObservableCollection<EquipmentItem> _newEquipmentItems = new ObservableCollection<EquipmentItem>();
         private readonly ObservableCollection<SpellEffect> _spellEffects = new ObservableCollection<SpellEffect>();
@@ -31,7 +31,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void AddEntity(long objectId, Guid userGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
         {
-            var gameObject = new GameObject(objectId)
+            var gameObject = new PlayerGameObject(objectId)
             {
                 Name = name,
                 ObjectType = objectType,
@@ -138,9 +138,14 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        public KeyValuePair<Guid, GameObject>? GetEntity(long objectId)
+        public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
         {
             return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        }
+
+        public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
+        {
+            return onlyInParty ? _knownEntities.Where(x => IsUserInParty(x.Value.Name)).ToList() : _knownEntities.ToList();
         }
 
         public void SetCharacterEquipment(long objectId, CharacterEquipment equipment)
@@ -258,6 +263,30 @@ namespace StatisticsAnalysisTool.Network.Controller
             foreach (var playerItem in playerItemList.ToList())
             {
                 SetCharacterMainHand(playerItem.Key, playerItem.Value);
+            }
+        }
+
+        public void ResetEntitiesDamageStartTime()
+        {
+            foreach (var entity in _knownEntities)
+            {
+                entity.Value.CombatStart = null;
+            }
+        }
+
+        public void ResetEntitiesDamageTimes()
+        {
+            foreach (var entity in _knownEntities)
+            {
+                entity.Value.ResetCombatTimes();
+            }
+        }
+
+        public void ResetEntitiesDamage()
+        {
+            foreach (var entity in _knownEntities)
+            {
+                entity.Value.Damage = 0;
             }
         }
 
