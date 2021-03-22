@@ -20,15 +20,15 @@ namespace StatisticsAnalysisTool.Common
             }
         }
         
-        public static string ToShortNumber(this long num) => GetShortNumber(num);
+        public static string ToShortNumberString(this long num) => GetShortNumber(num);
 
-        public static string ToShortNumber(this int num) => GetShortNumber(num);
+        public static string ToShortNumberString(this int num) => GetShortNumber(num);
 
-        public static string ToShortNumber(this double num)
+        public static string ToShortNumberString(this double num)
         {
             try
             {
-                return GetShortNumber((decimal)num);
+                return double.IsInfinity(num) ? double.MaxValue.ToString(CultureInfo.InvariantCulture) : GetShortNumber((decimal)num);
             }
             catch (OverflowException)
             {
