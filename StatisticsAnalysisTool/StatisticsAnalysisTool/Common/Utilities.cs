@@ -51,16 +51,20 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static double GetValuePerSecondToDouble(double value, TimeSpan time)
+        public static double GetValuePerSecondToDouble(double value, TimeSpan time, double maxValue = -1)
         {
-            try
+            if (double.IsInfinity(value))
             {
-                return value / time.TotalSeconds;
+                return (maxValue > 0) ? maxValue : double.MaxValue;
             }
-            catch (OverflowException)
+
+            var valuePerSeconds = value / time.TotalSeconds;
+            if (maxValue > 0 && valuePerSeconds > maxValue)
             {
-                return double.MaxValue;
+                return maxValue;
             }
+
+            return valuePerSeconds;
         }
 
         public static bool IsBlockingTimeExpired(DateTime dateTime, int waitingSeconds)
