@@ -98,6 +98,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                             Damage = damageObject.Value.Damage.ToShortNumberString(),
                             Dps = damageObject.Value.Dps,
                             DamageInPercent = ((double)damageObject.Value.Damage / highestDamage) * 100,
+                            DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage),
                             Name = damageObject.Value.Name,
                             CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(null, damageObject.Value.CharacterEquipment.MainHand)
                         };
@@ -162,6 +163,12 @@ namespace StatisticsAnalysisTool.Network.Controller
         private long GetHighestDamage(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
         {
             return (playerObjects.Count <= 0) ? 0 : playerObjects.Max(x => x.Value.Damage);
+        }
+
+        private double GetDamagePercentage(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerDamage)
+        {
+            var totalDamage = playerObjects.Sum(x => x.Value.Damage);
+            return 100.00 / totalDamage * playerDamage;
         }
 
         #endregion
