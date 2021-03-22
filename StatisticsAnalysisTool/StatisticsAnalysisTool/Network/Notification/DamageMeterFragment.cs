@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Annotations;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using System;
 using System.ComponentModel;
@@ -14,7 +15,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         private double _damageInPercent;
         private Item _causerMainHand;
         private string _categoryId;
-        private string _dps;
+        private string _dpsString;
+        private double _dps;
 
         public string Name {
             get => _name;
@@ -40,10 +42,19 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public string Dps {
+        public string DpsString {
+            get => _dpsString;
+            private set {
+                _dpsString = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double Dps {
             get => _dps;
             set {
                 _dps = value;
+                DpsString = _dps.ToShortNumberString();
                 OnPropertyChanged();
             }
         }
