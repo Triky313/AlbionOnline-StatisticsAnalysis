@@ -82,8 +82,16 @@ namespace StatisticsAnalysisTool.Network.Controller
                                 fragment.DamageInPercent = ((double)damageObject.Value.Damage / highestDamage) * 100;
                             }
 
-                            fragment.Damage = damageObject.Value.Damage.ToShortNumberString();
-                            fragment.Dps = damageObject.Value.Dps;
+                            fragment.Damage = damageObject.Value?.Damage.ToShortNumberString();
+                            if (damageObject.Value?.Dps != null)
+                            {
+                                fragment.Dps = damageObject.Value.Dps;
+                            }
+
+                            if (damageObject.Value != null)
+                            {
+                                fragment.DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage);
+                            }
                         }
                         _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
                     });
