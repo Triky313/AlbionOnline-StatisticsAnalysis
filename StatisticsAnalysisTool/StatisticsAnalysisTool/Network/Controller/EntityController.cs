@@ -153,7 +153,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             foreach (var characterEquipment in _tempCharacterEquipment)
             {
-                if (Utilities.IsBlockingTimeExpired(characterEquipment.Value.TimeStamp, 30))
+                if (Utilities.IsBlockingTimeExpired(characterEquipment.Value.TimeStamp, 15))
                 {
                     _tempCharacterEquipment.TryRemove(characterEquipment.Key, out _);
                 }
@@ -169,27 +169,11 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
             else
             {
-                _tempCharacterEquipment.TryAdd(objectId, new CharacterEquipmentData() { CharacterEquipment = equipment, TimeStamp = DateTime.UtcNow });
-            }
-        }
-
-        public void SetCharacterMainHand(long objectId, int itemIndex)
-        {
-            var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
-
-            if (entity?.Value == null)
-            {
-                return;
-            }
-
-            if (entity.Value.Value?.CharacterEquipment == null)
-            {
-                entity.Value.Value.CharacterEquipment = new CharacterEquipment();
-            }
-
-            if (entity.Value.Value != null)
-            {
-                entity.Value.Value.CharacterEquipment.MainHand = itemIndex;
+                _tempCharacterEquipment.TryAdd(objectId, new CharacterEquipmentData()
+                {
+                    CharacterEquipment = equipment, 
+                    TimeStamp = DateTime.UtcNow
+                });
             }
         }
 
@@ -248,6 +232,26 @@ namespace StatisticsAnalysisTool.Network.Controller
             foreach (var playerItem in playerItemList.ToList())
             {
                 SetCharacterMainHand(playerItem.Key, playerItem.Value);
+            }
+        }
+
+        private void SetCharacterMainHand(long objectId, int itemIndex)
+        {
+            var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+
+            if (entity?.Value == null)
+            {
+                return;
+            }
+
+            if (entity.Value.Value?.CharacterEquipment == null)
+            {
+                entity.Value.Value.CharacterEquipment = new CharacterEquipment();
+            }
+
+            if (entity.Value.Value != null)
+            {
+                entity.Value.Value.CharacterEquipment.MainHand = itemIndex;
             }
         }
 
