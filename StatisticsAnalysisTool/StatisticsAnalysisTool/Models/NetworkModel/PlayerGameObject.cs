@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public List<CombatTime> CombatTimes { get; } = new List<CombatTime>();
         public TimeSpan CombatTime { get; set; } = new TimeSpan(1);
         public long Damage { get; set; }
-        public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatTime, 9999);
+        public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);
 
         public PlayerGameObject(long objectId)
         {
