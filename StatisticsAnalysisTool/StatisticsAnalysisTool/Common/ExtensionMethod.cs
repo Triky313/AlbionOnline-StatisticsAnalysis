@@ -28,6 +28,11 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
+                if (double.IsNaN(num))
+                {
+                    return "0";
+                }
+
                 return double.IsInfinity(num) ? double.MaxValue.ToString(CultureInfo.InvariantCulture) : GetShortNumber((decimal)num);
             }
             catch (OverflowException)
