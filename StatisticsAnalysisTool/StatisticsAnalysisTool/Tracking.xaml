@@ -674,7 +674,7 @@
                     <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
                 </Grid>
                 <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DamagePercentage}" 
-                       ContentStringFormat="{}{0:N2}%" MinWidth="40" Margin="10,3" HorizontalContentAlignment="Right"></Label>
+                       ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"></Label>
                 <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,3"></Label>
                 <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Damage}" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
                 <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 5, 0"></Label>

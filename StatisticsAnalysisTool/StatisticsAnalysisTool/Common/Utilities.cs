@@ -51,11 +51,18 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static double GetValuePerSecondToDouble(double value, TimeSpan time, double maxValue = -1)
+        public static double GetValuePerSecondToDouble(double value, DateTime? combatStart, TimeSpan time, double maxValue = -1)
         {
             if (double.IsInfinity(value))
             {
                 return (maxValue > 0) ? maxValue : double.MaxValue;
+            }
+
+            if (time.Ticks <= 1 && combatStart != null)
+            {
+                var startTimeSpan = DateTime.UtcNow - (DateTime)combatStart;
+                var calculation = value / startTimeSpan.TotalSeconds;
+                return (calculation > maxValue) ? maxValue : calculation;
             }
 
             var valuePerSeconds = value / time.TotalSeconds;
