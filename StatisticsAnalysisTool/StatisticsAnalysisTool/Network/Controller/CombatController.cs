@@ -75,9 +75,9 @@ namespace StatisticsAnalysisTool.Network.Controller
                         var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == damageObject.Value.UserGuid);
                         if (fragment != null)
                         {
-                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, damageObject.Value.CharacterEquipment.MainHand);
+                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, damageObject.Value?.CharacterEquipment?.MainHand);
 
-                            if (damageObject.Value.Damage > 0)
+                            if (damageObject.Value?.Damage > 0)
                             {
                                 fragment.DamageInPercent = ((double)damageObject.Value.Damage / highestDamage) * 100;
                             }
@@ -100,7 +100,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                             DamageInPercent = ((double)damageObject.Value.Damage / highestDamage) * 100,
                             DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage),
                             Name = damageObject.Value.Name,
-                            CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(null, damageObject.Value.CharacterEquipment.MainHand)
+                            CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(null, damageObject.Value?.CharacterEquipment?.MainHand)
                         };
 
                         _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
@@ -122,14 +122,14 @@ namespace StatisticsAnalysisTool.Network.Controller
             });
         }
 
-        private async Task<Item> SetItemInfoIfSlotTypeMainHandAsync(Item currentItem, int newIndex)
+        private async Task<Item> SetItemInfoIfSlotTypeMainHandAsync(Item currentItem, int? newIndex)
         {
-            if (newIndex <= 0)
+            if (newIndex == null || newIndex <= 0)
             {
                 return currentItem;
             }
 
-            var item = ItemController.GetItemByIndex(newIndex);
+            var item = ItemController.GetItemByIndex((int)newIndex);
             if (item == null)
             {
                 return currentItem;
