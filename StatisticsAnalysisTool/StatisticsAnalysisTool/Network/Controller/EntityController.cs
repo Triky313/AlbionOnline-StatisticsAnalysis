@@ -29,6 +29,10 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindowViewModel = mainWindowViewModel;
         }
 
+        #region Entities
+
+        public event Action<GameObject> OnAddEntity;
+
         public void AddEntity(long objectId, Guid userGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
         {
             var gameObject = new PlayerGameObject(objectId)
@@ -63,6 +67,20 @@ namespace StatisticsAnalysisTool.Network.Controller
                 entity.Value.ObjectId = null;
             }
         }
+
+        public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
+        {
+            return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        }
+
+        public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
+        {
+            return onlyInParty ? _knownEntities.Where(x => IsUserInParty(x.Value.Name)).ToList() : _knownEntities.ToList();
+        }
+
+        #endregion
+
+        #region Party
 
         public void ResetPartyMember()
         {
@@ -106,7 +124,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 _mainWindowViewModel.PartyMemberCircles.Clear();
                 foreach (var member in _knownPartyEntities)
                 {
-                    _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle() {Name = member.Value});
+                    _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle() { Name = member.Value });
                 }
             });
         }
@@ -118,7 +136,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public bool IsUserInParty(long objectId)
         {
-            var entity = _knownEntities.FirstOrDefault(x  => x.Value.ObjectId == objectId);
+            var entity = _knownEntities.FirstOrDefault(x => x.Value.ObjectId == objectId);
             if (entity.Value == null)
             {
                 return false;
@@ -127,25 +145,19 @@ namespace StatisticsAnalysisTool.Network.Controller
             return _knownPartyEntities.Any(x => x.Value == entity.Value.Name);
         }
 
+        #endregion
+
+        #region Equipment
+
         public void ResetTempCharacterEquipment()
         {
             foreach (var characterEquipment in _tempCharacterEquipment)
             {
-                if(Utilities.IsBlockingTimeExpired(characterEquipment.Value.TimeStamp, 30))
+                if (Utilities.IsBlockingTimeExpired(characterEquipment.Value.TimeStamp, 30))
                 {
                     _tempCharacterEquipment.TryRemove(characterEquipment.Key, out _);
                 }
             }
-        }
-
-        public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
-        {
-            return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
-        }
-
-        public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
-        {
-            return onlyInParty ? _knownEntities.Where(x => IsUserInParty(x.Value.Name)).ToList() : _knownEntities.ToList();
         }
 
         public void SetCharacterEquipment(long objectId, CharacterEquipment equipment)
@@ -157,10 +169,10 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
             else
             {
-                _tempCharacterEquipment.TryAdd(objectId, new CharacterEquipmentData(){ CharacterEquipment = equipment, TimeStamp = DateTime.UtcNow });
+                _tempCharacterEquipment.TryAdd(objectId, new CharacterEquipmentData() { CharacterEquipment = equipment, TimeStamp = DateTime.UtcNow });
             }
         }
-        
+
         public void SetCharacterMainHand(long objectId, int itemIndex)
         {
             var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
@@ -180,33 +192,6 @@ namespace StatisticsAnalysisTool.Network.Controller
                 entity.Value.Value.CharacterEquipment.MainHand = itemIndex;
             }
         }
-
-        public event Action<GameObject> OnAddEntity;
-
-        public void HealthUpdate(
-            long objectId,
-            GameTimeStamp TimeStamp,
-            double HealthChange,
-            double NewHealthValue,
-            EffectType EffectType,
-            EffectOrigin EffectOrigin,
-            long CauserId,
-            int CausingSpellType
-        )
-        {
-            OnHealthUpdate?.Invoke(
-                objectId,
-                TimeStamp,
-                HealthChange,
-                NewHealthValue,
-                EffectType,
-                EffectOrigin,
-                CauserId,
-                CausingSpellType
-            );
-        }
-
-        public event Action<long, GameTimeStamp, double, double, EffectType, EffectOrigin, long, int> OnHealthUpdate;
 
         public void AddEquipmentItem(EquipmentItem item)
         {
@@ -266,30 +251,6 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        public void ResetEntitiesDamageStartTime()
-        {
-            foreach (var entity in _knownEntities)
-            {
-                entity.Value.CombatStart = null;
-            }
-        }
-
-        public void ResetEntitiesDamageTimes()
-        {
-            foreach (var entity in _knownEntities)
-            {
-                entity.Value.ResetCombatTimes();
-            }
-        }
-
-        public void ResetEntitiesDamage()
-        {
-            foreach (var entity in _knownEntities)
-            {
-                entity.Value.Damage = 0;
-            }
-        }
-
         private void RemoveSpellAndEquipmentObjects()
         {
             foreach (var item in _newEquipmentItems.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-1)).ToList())
@@ -314,5 +275,64 @@ namespace StatisticsAnalysisTool.Network.Controller
             public DateTime TimeStamp { get; set; }
             public CharacterEquipment CharacterEquipment { get; set; }
         }
+
+        #endregion
+
+        #region Damage
+
+        public void ResetEntitiesDamageStartTime()
+        {
+            foreach (var entity in _knownEntities)
+            {
+                entity.Value.CombatStart = null;
+            }
+        }
+
+        public void ResetEntitiesDamageTimes()
+        {
+            foreach (var entity in _knownEntities)
+            {
+                entity.Value.ResetCombatTimes();
+            }
+        }
+
+        public void ResetEntitiesDamage()
+        {
+            foreach (var entity in _knownEntities)
+            {
+                entity.Value.Damage = 0;
+            }
+        }
+
+        #endregion
+
+        #region Health
+
+        public void HealthUpdate(
+            long objectId,
+            GameTimeStamp TimeStamp,
+            double HealthChange,
+            double NewHealthValue,
+            EffectType EffectType,
+            EffectOrigin EffectOrigin,
+            long CauserId,
+            int CausingSpellType
+        )
+        {
+            OnHealthUpdate?.Invoke(
+                objectId,
+                TimeStamp,
+                HealthChange,
+                NewHealthValue,
+                EffectType,
+                EffectOrigin,
+                CauserId,
+                CausingSpellType
+            );
+        }
+
+        public event Action<long, GameTimeStamp, double, double, EffectType, EffectOrigin, long, int> OnHealthUpdate;
+
+        #endregion
     }
 }
