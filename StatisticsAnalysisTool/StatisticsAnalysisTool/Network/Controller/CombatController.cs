@@ -65,6 +65,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
 
             var highestDamage = GetHighestDamage(entities);
+            _trackingController.EntityController.DetectUsedWeapon();
 
             foreach (var damageObject in entities)
             {

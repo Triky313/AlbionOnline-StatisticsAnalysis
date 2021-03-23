@@ -21,7 +21,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new ConcurrentDictionary<Guid, string>();
         private readonly ObservableCollection<EquipmentItem> _newEquipmentItems = new ObservableCollection<EquipmentItem>();
         private readonly ObservableCollection<SpellEffect> _spellEffects = new ObservableCollection<SpellEffect>();
-        private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipment = new ConcurrentDictionary<long, CharacterEquipmentData>();
+        private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new ConcurrentDictionary<long, CharacterEquipmentData>();
 
         public EntityController(MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -43,11 +43,11 @@ namespace StatisticsAnalysisTool.Network.Controller
                 ObjectSubType = objectSubType
             };
 
-            if (_tempCharacterEquipment.TryGetValue(objectId, out var characterEquipmentData))
+            if (_tempCharacterEquipmentData.TryGetValue(objectId, out var characterEquipmentData))
             {
                 ResetTempCharacterEquipment();
                 gameObject.CharacterEquipment = characterEquipmentData.CharacterEquipment;
-                _tempCharacterEquipment.TryRemove(objectId, out _);
+                _tempCharacterEquipmentData.TryRemove(objectId, out _);
             }
 
             _knownEntities.TryRemove(userGuid, out _);
@@ -149,17 +149,6 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         #region Equipment
 
-        public void ResetTempCharacterEquipment()
-        {
-            foreach (var characterEquipment in _tempCharacterEquipment)
-            {
-                if (Utilities.IsBlockingTimeExpired(characterEquipment.Value.TimeStamp, 15))
-                {
-                    _tempCharacterEquipment.TryRemove(characterEquipment.Key, out _);
-                }
-            }
-        }
-
         public void SetCharacterEquipment(long objectId, CharacterEquipment equipment)
         {
             var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
@@ -169,11 +158,22 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
             else
             {
-                _tempCharacterEquipment.TryAdd(objectId, new CharacterEquipmentData()
+                _tempCharacterEquipmentData.TryAdd(objectId, new CharacterEquipmentData()
                 {
-                    CharacterEquipment = equipment, 
+                    CharacterEquipment = equipment,
                     TimeStamp = DateTime.UtcNow
                 });
+            }
+        }
+
+        public void ResetTempCharacterEquipment()
+        {
+            foreach (var characterEquipment in _tempCharacterEquipmentData)
+            {
+                if (Utilities.IsBlockingTimeExpired(characterEquipment.Value.TimeStamp, 15))
+                {
+                    _tempCharacterEquipmentData.TryRemove(characterEquipment.Key, out _);
+                }
             }
         }
 
@@ -246,18 +246,21 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             if (entity.Value.Value?.CharacterEquipment == null)
             {
-                entity.Value.Value.CharacterEquipment = new CharacterEquipment();
+                entity.Value.Value.CharacterEquipment = new CharacterEquipment()
+                {
+                    MainHand = itemIndex
+                };
             }
 
-            if (entity.Value.Value != null)
-            {
-                entity.Value.Value.CharacterEquipment.MainHand = itemIndex;
-            }
+            //if (entity.Value.Value != null)
+            //{
+            //    entity.Value.Value.CharacterEquipment.MainHand = itemIndex;
+            //}
         }
 
         private void RemoveSpellAndEquipmentObjects()
         {
-            foreach (var item in _newEquipmentItems.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-1)).ToList())
+            foreach (var item in _newEquipmentItems.Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)).ToList())
             {
                 lock (item)
                 {
@@ -265,7 +268,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
             }
 
-            foreach (var spell in _spellEffects.Where(x => x?.TimeStamp < DateTime.UtcNow.AddMinutes(-1)).ToList())
+            foreach (var spell in _spellEffects.Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)).ToList())
             {
                 lock (spell)
                 {
