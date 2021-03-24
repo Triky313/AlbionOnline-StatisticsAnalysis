@@ -182,7 +182,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             foreach (var characterEquipment in _tempCharacterEquipmentData)
             {
-                if (Utilities.IsBlockingTimeExpired(characterEquipment.Value.TimeStamp, 15))
+                if (Utilities.IsBlockingTimeExpired(characterEquipment.Value.TimeStamp, 30))
                 {
                     _tempCharacterEquipmentData.TryRemove(characterEquipment.Key, out _);
                 }

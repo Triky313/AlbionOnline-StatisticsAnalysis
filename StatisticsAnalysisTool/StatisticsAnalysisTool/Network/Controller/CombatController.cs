@@ -101,18 +101,24 @@ namespace StatisticsAnalysisTool.Network.Controller
                 {
                     _mainWindow.Dispatcher?.InvokeAsync(async () =>
                     {
-                        var damageMeterFragment = new DamageMeterFragment()
-                        {
-                            CauserGuid = damageObject.Value.UserGuid,
-                            Damage = damageObject.Value.Damage.ToShortNumberString(),
-                            Dps = damageObject.Value.Dps,
-                            DamageInPercent = ((double)damageObject.Value.Damage / highestDamage) * 100,
-                            DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage),
-                            Name = damageObject.Value.Name,
-                            CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(null, damageObject.Value?.CharacterEquipment?.MainHand)
-                        };
+                        var mainHandItem = ItemController.GetItemByIndex(damageObject.Value?.CharacterEquipment?.MainHand ?? 0);
 
-                        _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
+                        if (damageObject.Value != null)
+                        {
+                            var damageMeterFragment = new DamageMeterFragment()
+                            {
+                                CauserGuid = damageObject.Value.UserGuid,
+                                Damage = damageObject.Value.Damage.ToShortNumberString(),
+                                Dps = damageObject.Value.Dps,
+                                DamageInPercent = ((double)damageObject.Value.Damage / highestDamage) * 100,
+                                DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage),
+                                Name = damageObject.Value.Name,
+                                CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, damageObject.Value?.CharacterEquipment?.MainHand)
+                            };
+
+                            _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
+                        }
+
                         _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
                     });
                 }
