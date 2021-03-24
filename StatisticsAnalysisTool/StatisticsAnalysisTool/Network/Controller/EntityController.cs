@@ -35,13 +35,32 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void AddEntity(long objectId, Guid userGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
         {
-            var gameObject = new PlayerGameObject(objectId)
+            PlayerGameObject gameObject;
+
+            if (_knownEntities.TryRemove(userGuid, out var oldEntity))
             {
-                Name = name,
-                ObjectType = objectType,
-                UserGuid = userGuid,
-                ObjectSubType = objectSubType
-            };
+                gameObject = new PlayerGameObject(objectId)
+                {
+                    Name = name,
+                    ObjectType = objectType,
+                    UserGuid = userGuid,
+                    ObjectSubType = objectSubType,
+                    CharacterEquipment = oldEntity.CharacterEquipment,
+                    CombatStart = oldEntity.CombatStart,
+                    CombatTime = oldEntity.CombatTime,
+                    Damage = oldEntity.Damage
+                };
+            }
+            else
+            {
+                gameObject = new PlayerGameObject(objectId)
+                {
+                    Name = name,
+                    ObjectType = objectType,
+                    UserGuid = userGuid,
+                    ObjectSubType = objectSubType
+                };
+            }
 
             if (_tempCharacterEquipmentData.TryGetValue(objectId, out var characterEquipmentData))
             {
@@ -50,7 +69,6 @@ namespace StatisticsAnalysisTool.Network.Controller
                 _tempCharacterEquipmentData.TryRemove(objectId, out _);
             }
 
-            _knownEntities.TryRemove(userGuid, out _);
             _knownEntities.TryAdd(gameObject.UserGuid, gameObject);
             OnAddEntity?.Invoke(gameObject);
         }
