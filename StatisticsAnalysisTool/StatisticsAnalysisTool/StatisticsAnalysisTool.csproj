@@ -202,6 +202,7 @@
     <Compile Include="Network\Handler\LeaveEventHandler.cs" />
     <Compile Include="Network\Handler\CharacterEquipmentChangedEventHandler.cs" />
     <Compile Include="Network\Handler\NewMobEventHandler.cs" />
+    <Compile Include="Network\Handler\PartyMakeLeaderEventHandler.cs" />
     <Compile Include="Network\Handler\NewShrineEventHandler.cs" />
     <Compile Include="Network\Handler\InCombatStateUpdateEventHandler.cs" />
     <Compile Include="Network\Handler\SiegeCampClaimStartEventHandler.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="Network\Handler\PartyDisbandedEventHandler.cs" />
     <Compile Include="Network\Notification\CombatNotificationFragment.cs" />
     <Compile Include="Network\Notification\DamageMeterFragment.cs" />
+    <Compile Include="Network\Operations\Responses\PartyMakeLeaderResponse.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
     <Compile Include="GameData\LootChestData.cs" />
     <Compile Include="GameData\WorldData.cs" />

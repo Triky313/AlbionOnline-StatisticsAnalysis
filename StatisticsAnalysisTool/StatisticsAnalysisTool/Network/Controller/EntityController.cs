@@ -82,16 +82,6 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         #region Party
 
-        public void ResetPartyMember()
-        {
-            _knownPartyEntities.Clear();
-
-            foreach (var member in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer))
-            {
-                _knownPartyEntities.TryAdd(member.Key, member.Value.Name);
-            }
-        }
-
         public void AddToParty(Guid guid, string username)
         {
             if (_knownPartyEntities.All(x => x.Key != guid))
@@ -100,6 +90,28 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
 
             SetPartyMemberUi();
+        }
+
+        public void RemoveFromParty(string username)
+        {
+            var partyMember = _knownPartyEntities.FirstOrDefault(x => x.Value == username);
+
+            if (partyMember.Value != null)
+            {
+                _knownPartyEntities.TryRemove(partyMember.Key, out _);
+            }
+
+            SetPartyMemberUi();
+        }
+
+        public void ResetPartyMember()
+        {
+            _knownPartyEntities.Clear();
+
+            foreach (var member in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer))
+            {
+                _knownPartyEntities.TryAdd(member.Key, member.Value.Name);
+            }
         }
 
         public void SetParty(Dictionary<Guid, string> party, bool resetPartyBefore = false)
