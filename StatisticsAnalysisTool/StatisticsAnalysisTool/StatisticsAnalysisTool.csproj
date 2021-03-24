@@ -170,6 +170,7 @@
     <Compile Include="Common\FixPoint.cs" />
     <Compile Include="Common\ProgressBarSmoother.cs" />
     <Compile Include="Enumerations\ClusterType.cs" />
+    <Compile Include="Enumerations\DamageMeterSort.cs" />
     <Compile Include="Enumerations\EffectOrigin.cs" />
     <Compile Include="Enumerations\EffectType.cs" />
     <Compile Include="Enumerations\GameObjectSubType.cs" />

@@ -4,6 +4,7 @@ using log4net;
 using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -117,6 +118,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private DungeonStats _dungeonStatsTotal = new DungeonStats();
         private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new ObservableCollection<PartyMemberCircle>();
         private bool _isDamageMeterResetByMapChangeActive;
+        private DamageMeterSortStruct _damageMeterSortSelection;
+        private List<DamageMeterSortStruct> _damageMeterSort = new List<DamageMeterSortStruct>();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -352,6 +355,28 @@ namespace StatisticsAnalysisTool.ViewModels
             CurrentMapInformationVisibility = Visibility.Hidden;
 
             IsTrackingResetByMapChangeActive = Settings.Default.IsTrackingResetByMapChangeActive;
+
+            var sortByDamageStruct = new DamageMeterSortStruct()
+            {
+                Name = Translation.SortByDamage,
+                DamageMeterSortType = DamageMeterSortType.Damage
+            };
+            var sortByDpsStruct = new DamageMeterSortStruct()
+            {
+                Name = Translation.SortByDps,
+                DamageMeterSortType = DamageMeterSortType.Dps
+            };
+            var sortByNameStruct = new DamageMeterSortStruct()
+            {
+                Name = Translation.SortByName,
+                DamageMeterSortType = DamageMeterSortType.Name
+            };
+
+            DamageMeterSort.Clear();
+            DamageMeterSort.Add(sortByDamageStruct);
+            DamageMeterSort.Add(sortByDpsStruct);
+            DamageMeterSort.Add(sortByNameStruct);
+            DamageMeterSortSelection = sortByDamageStruct;
 
             #endregion
         }
@@ -726,6 +751,25 @@ namespace StatisticsAnalysisTool.ViewModels
             DungeonStatsDay.OpenedLegendaryChests = 0;
         }
 
+        public void SetDamageMeterSort()
+        {
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Damage)
+            {
+                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
+                return;
+            }
+
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Dps)
+            {
+                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
+                return;
+            }
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
+            {
+                DamageMeter.OrderByReference(DamageMeter.OrderBy(x => x.Name).ToList());
+            }
+        }
+
         #endregion
 
         #region Item View Filters
@@ -837,6 +881,24 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _isDamageMeterPopupVisible;
             set {
                 _isDamageMeterPopupVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DamageMeterSortStruct DamageMeterSortSelection {
+            get => _damageMeterSortSelection;
+            set {
+                _damageMeterSortSelection = value;
+                SetDamageMeterSort();
+
+                OnPropertyChanged();
+            }
+        }
+
+        public List<DamageMeterSortStruct> DamageMeterSort {
+            get => _damageMeterSort;
+            set {
+                _damageMeterSort = value;
                 OnPropertyChanged();
             }
         }
@@ -1476,11 +1538,21 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion Bindings
 
+        #region Structs
+
         public struct ModeStruct
         {
             public string Name { get; set; }
             public ViewMode ViewMode { get; set; }
         }
+
+        public struct DamageMeterSortStruct
+        {
+            public string Name { get; set; }
+            public DamageMeterSortType DamageMeterSortType { get; set; }
+        }
+
+        #endregion
     }
 
     public enum ViewMode

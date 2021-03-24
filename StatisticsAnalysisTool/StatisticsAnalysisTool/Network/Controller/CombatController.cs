@@ -94,7 +94,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                                 fragment.DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage);
                             }
                         }
-                        _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
+
+                        _mainWindowViewModel.SetDamageMeterSort();
                     });
                 }
                 else
@@ -119,7 +120,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                             _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
                         }
 
-                        _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
+                        _mainWindowViewModel.SetDamageMeterSort();
                     });
                 }
             }
