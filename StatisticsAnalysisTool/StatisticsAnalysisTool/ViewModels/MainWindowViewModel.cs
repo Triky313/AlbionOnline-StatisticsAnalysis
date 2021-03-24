@@ -708,7 +708,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void ResetDamageMeter()
         {
-            _trackingController.CombatController.ResetDamage(DateTime.UtcNow);
+            _trackingController.CombatController.ResetDamageMeter();
         }
 
         public void ResetDungeonCounters()

@@ -76,7 +76,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             if (_mainWindowViewModel.IsDamageMeterResetByMapChangeActive)
             {
-                CombatController.ResetDamage(CombatController.AddClusterStartTimer());
+                CombatController.ResetDamageMeter();
             }
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");

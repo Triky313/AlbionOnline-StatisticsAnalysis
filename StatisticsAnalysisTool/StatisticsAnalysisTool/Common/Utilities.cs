@@ -51,16 +51,27 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static double GetValuePerSecondToDouble(double value, TimeSpan time)
+        public static double GetValuePerSecondToDouble(double value, DateTime? combatStart, TimeSpan time, double maxValue = -1)
         {
-            try
+            if (double.IsInfinity(value))
             {
-                return value / time.TotalSeconds;
+                return (maxValue > 0) ? maxValue : double.MaxValue;
             }
-            catch (OverflowException)
+
+            if (time.Ticks <= 1 && combatStart != null)
             {
-                return double.MaxValue;
+                var startTimeSpan = DateTime.UtcNow - (DateTime)combatStart;
+                var calculation = value / startTimeSpan.TotalSeconds;
+                return (calculation > maxValue) ? maxValue : calculation;
             }
+
+            var valuePerSeconds = value / time.TotalSeconds;
+            if (maxValue > 0 && valuePerSeconds > maxValue)
+            {
+                return maxValue;
+            }
+
+            return valuePerSeconds;
         }
 
         public static bool IsBlockingTimeExpired(DateTime dateTime, int waitingSeconds)

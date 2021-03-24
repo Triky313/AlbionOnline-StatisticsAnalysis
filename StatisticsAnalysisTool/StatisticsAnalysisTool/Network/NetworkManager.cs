@@ -43,6 +43,7 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
                 builder.AddEventHandler(new PartyDisbandedEventHandler(trackingController));
                 builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
+                builder.AddResponseHandler(new PartyMakeLeaderEventHandler(trackingController));
                 builder.AddEventHandler(new NewCharacterEventHandler(trackingController));
                 builder.AddEventHandler(new SiegeCampClaimStartEventHandler(trackingController));
                 builder.AddEventHandler(new NewMobEventHandler(trackingController));

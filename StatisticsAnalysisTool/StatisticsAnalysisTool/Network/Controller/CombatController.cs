@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -7,7 +7,6 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,15 +17,14 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly TrackingController _trackingController;
         private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
-
-        private readonly ObservableCollection<DamageObject> _damageCollection = new ObservableCollection<DamageObject>();
-        private readonly ObservableCollection<DateTime> _clusterStarts = new ObservableCollection<DateTime>();
-
+        
         public CombatController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
             _trackingController = trackingController;
             _mainWindow = mainWindow;
             _mainWindowViewModel = mainWindowViewModel;
+
+            OnChangeCombatMode += AddCombatTime;
 
 #if DEBUG
             UpdateDamageMeterUi(SetRandomDamageValues(40));
@@ -35,20 +33,6 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         #region Damage Meter methods
 
-        public event Action<bool, bool> OnChangeCombatMode;
-
-        public void UpdateCombatMode(bool inActiveCombat, bool inPassiveCombat)
-        {
-            OnChangeCombatMode?.Invoke(inActiveCombat, inPassiveCombat);
-        }
-
-        public DateTime AddClusterStartTimer()
-        {
-            var time = DateTime.UtcNow;
-            _clusterStarts.Add(time);
-            return time;
-        }
-
         public void AddDamage(long causerId, double healthChange)
         {
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
@@ -56,61 +40,59 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 return;
             }
-            
+
             var damageValue = (int)Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
             if (damageValue <= 0)
             {
                 return;
             }
 
-            AddInternalDamage(gameObject.Value.Value, damageValue);
-
-            if (_clusterStarts.Count <= 0)
+            if (gameObject.Value.Value?.CombatStart == null)
             {
-                AddClusterStartTimer();
+                gameObject.Value.Value.CombatStart = DateTime.UtcNow;
             }
 
-            var damageListByNewestCluster = _damageCollection.Where(x => x.StartTime >= _clusterStarts.GetHighestDateTime()).ToList();
-            UpdateDamageMeterUi(damageListByNewestCluster);
+            gameObject.Value.Value.Damage += damageValue;
+
+            UpdateDamageMeterUi(_trackingController.EntityController.GetAllEntities(true));
         }
 
-        public void UpdateDamageMeterUi(List<DamageObject> damageObjectList)
+        public void UpdateDamageMeterUi(List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
             if (!IsUiUpdateAllowed())
             {
                 return;
             }
 
-            var groupedDamageList = damageObjectList.GroupBy(x => x.CauserGuid)
-                .Select(x => new DamageObject(
-                    x.First().StartTime,
-                    x.First().CauserGuid,
-                    x.First().CauserName,
-                    x.FirstOrDefault(y => y?.MainHandItemIndex != null && y.StartTime >= x.Max().StartTime)?.MainHandItemIndex ?? 0,
-                    x.Sum(s => s.Damage),
-                    Utilities.GetValuePerSecondToDouble(x.Sum(s => s.Damage), DateTime.UtcNow - x.First().StartTime)))
-                .OrderByDescending(x => x.Damage.CompareTo(damageObjectList.FirstOrDefault()?.Damage)).ToList();
+            var highestDamage = GetHighestDamage(entities);
+            _trackingController.EntityController.DetectUsedWeapon();
 
-            var highestDamage = GetHighestDamage(groupedDamageList);
-
-            foreach (var damageObject in groupedDamageList)
+            foreach (var damageObject in entities)
             {
-                if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.CauserGuid))
+                if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.Value.UserGuid))
                 {
                     _mainWindow.Dispatcher?.Invoke(async () =>
                     {
-                        var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == damageObject.CauserGuid);
+                        var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == damageObject.Value.UserGuid);
                         if (fragment != null)
                         {
-                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, damageObject.MainHandItemIndex);
+                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, damageObject.Value?.CharacterEquipment?.MainHand);
 
-                            if (damageObject.Damage > 0)
+                            if (damageObject.Value?.Damage > 0)
                             {
-                                fragment.DamageInPercent = ((double)damageObject.Damage / highestDamage) * 100;
+                                fragment.DamageInPercent = ((double)damageObject.Value.Damage / highestDamage) * 100;
                             }
 
-                            fragment.Damage = damageObject.Damage.ToShortNumber();
-                            fragment.Dps = damageObject.Dps.ToShortNumber();
+                            fragment.Damage = damageObject.Value?.Damage.ToShortNumberString();
+                            if (damageObject.Value?.Dps != null)
+                            {
+                                fragment.Dps = damageObject.Value.Dps;
+                            }
+
+                            if (damageObject.Value != null)
+                            {
+                                fragment.DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage);
+                            }
                         }
                         _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
                     });
@@ -119,30 +101,35 @@ namespace StatisticsAnalysisTool.Network.Controller
                 {
                     _mainWindow.Dispatcher?.InvokeAsync(async () =>
                     {
-                        var damageMeterFragment = new DamageMeterFragment()
-                        {
-                            CauserGuid = damageObject.CauserGuid,
-                            Damage = damageObject.Damage.ToShortNumber(),
-                            Dps = damageObject.Dps.ToShortNumber(),
-                            DamageInPercent = ((double) damageObject.Damage / highestDamage) * 100,
-                            Name = damageObject.CauserName,
-                            CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(null, damageObject.MainHandItemIndex)
-                        };
+                        var mainHandItem = ItemController.GetItemByIndex(damageObject.Value?.CharacterEquipment?.MainHand ?? 0);
 
-                        _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
+                        if (damageObject.Value != null)
+                        {
+                            var damageMeterFragment = new DamageMeterFragment()
+                            {
+                                CauserGuid = damageObject.Value.UserGuid,
+                                Damage = damageObject.Value.Damage.ToShortNumberString(),
+                                Dps = damageObject.Value.Dps,
+                                DamageInPercent = ((double)damageObject.Value.Damage / highestDamage) * 100,
+                                DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage),
+                                Name = damageObject.Value.Name,
+                                CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, damageObject.Value?.CharacterEquipment?.MainHand)
+                            };
+
+                            _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
+                        }
+
                         _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
                     });
                 }
             }
         }
 
-        public void ResetDamage(DateTime newStartTime)
+        public void ResetDamageMeter()
         {
-            foreach (var damageObject in _damageCollection)
-            {
-                damageObject.Damage = 0;
-                damageObject.StartTime = newStartTime;
-            }
+            _trackingController.EntityController.ResetEntitiesDamageTimes();
+            _trackingController.EntityController.ResetEntitiesDamage();
+            _trackingController.EntityController.ResetEntitiesDamageStartTime();
 
             _mainWindow?.Dispatcher?.InvokeAsync(() =>
             {
@@ -150,40 +137,14 @@ namespace StatisticsAnalysisTool.Network.Controller
             });
         }
 
-        private void AddInternalDamage(GameObject gameObject, int damage)
+        private async Task<Item> SetItemInfoIfSlotTypeMainHandAsync(Item currentItem, int? newIndex)
         {
-            if (gameObject?.ObjectId == null)
-            {
-                return;
-            }
-
-            var dmgObject = _damageCollection.FirstOrDefault(x => x.CauserGuid == gameObject.UserGuid);
-            if (dmgObject != null)
-            {
-                dmgObject.CauserName = gameObject.Name;
-
-                if (gameObject.CharacterEquipment?.MainHand > 0)
-                {
-                    dmgObject.MainHandItemIndex = (int)gameObject.CharacterEquipment?.MainHand;
-                }
-
-                _trackingController.EntityController.DetectUsedWeapon();
-
-                dmgObject.Damage += damage;
-                return;
-            }
-
-            _damageCollection.Add(new DamageObject(DateTime.UtcNow, gameObject.UserGuid, gameObject.Name, gameObject.CharacterEquipment?.MainHand ?? 0, damage, 0));
-        }
-
-        private async Task<Item> SetItemInfoIfSlotTypeMainHandAsync(Item currentItem, int newIndex)
-        {
-            if (newIndex <= 0)
+            if (newIndex == null || newIndex <= 0)
             {
                 return currentItem;
             }
 
-            var item = ItemController.GetItemByIndex(newIndex);
+            var item = ItemController.GetItemByIndex((int)newIndex);
             if (item == null)
             {
                 return currentItem;
@@ -214,9 +175,60 @@ namespace StatisticsAnalysisTool.Network.Controller
             return false;
         }
 
-        private long GetHighestDamage(List<DamageObject> damageObjectList)
+        private long GetHighestDamage(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
         {
-            return (damageObjectList.Count <= 0) ? 0 : damageObjectList.Max(x => x.Damage);
+            return (playerObjects.Count <= 0) ? 0 : playerObjects.Max(x => x.Value.Damage);
+        }
+
+        private double GetDamagePercentage(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerDamage)
+        {
+            var totalDamage = playerObjects.Sum(x => x.Value.Damage);
+            return 100.00 / totalDamage * playerDamage;
+        }
+
+        #endregion
+
+        #region Combat Mode / Combat Timer
+
+        public event Action<long, bool, bool> OnChangeCombatMode;
+
+        public void UpdateCombatMode(long objectId, bool inActiveCombat, bool inPassiveCombat)
+        {
+            OnChangeCombatMode?.Invoke(objectId, inActiveCombat, inPassiveCombat);
+        }
+
+        private void AddCombatTime(long objectId, bool inActiveCombat, bool inPassiveCombat)
+        {
+            if (!_trackingController.EntityController.IsUserInParty(objectId))
+            {
+                return;
+            }
+
+            var playerObject = _trackingController.EntityController.GetEntity(objectId);
+            
+            if (playerObject?.Value == null)
+            {
+                return;
+            }
+
+            if ((inActiveCombat || inPassiveCombat) && playerObject.Value.Value.CombatTimes.Any(x => x?.EndTime == null))
+            {
+                return;
+            }
+
+            if (inActiveCombat || inPassiveCombat)
+            {
+                playerObject.Value.Value.AddCombatTime(new CombatTime(DateTime.UtcNow));
+            }
+
+            if (!inActiveCombat && !inPassiveCombat)
+            {
+                var combatTime = playerObject.Value.Value.CombatTimes.FirstOrDefault(x => x.EndTime == null);
+                if (combatTime != null)
+                {
+                    combatTime.EndTime = DateTime.UtcNow;
+                }
+            }
         }
 
         #endregion
@@ -225,20 +237,34 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private static readonly Random _random = new Random(DateTime.Now.Millisecond);
 
-        private List<DamageObject> SetRandomDamageValues(int playerAmount = 5)
+        private List<KeyValuePair<Guid, PlayerGameObject>> SetRandomDamageValues(int playerAmount = 5)
         {
-            var randomDamageList = new List<DamageObject>();
+            var randomPlayerList = new List<KeyValuePair<Guid, PlayerGameObject>>();
             
             for (var i = 0; i < playerAmount; i++)
             {
                 var causerGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
                 var damage = _random.Next(500, 9999);
-                var dps = _random.Next(5, 500);
+                var objectId = _random.Next(20, 9999);
+                var len = _random.Next(5, 20);
+                var randomTime = _random.Next(1, 1000);
                 
-                randomDamageList.Add(new DamageObject(DateTime.UtcNow, causerGuid, GenerateName(10), GetRandomWeaponIndex(), damage, dps));
+                randomPlayerList.Add(new KeyValuePair<Guid, PlayerGameObject>(causerGuid, new PlayerGameObject(objectId)
+                {
+                    CharacterEquipment = new CharacterEquipment()
+                    {
+                        MainHand = GetRandomWeaponIndex()
+                    },
+                    CombatTime = new TimeSpan(0,0,0, randomTime),
+                    Damage = damage,
+                    Name = GenerateName(len),
+                    ObjectSubType = GameObjectSubType.Player,
+                    ObjectType = GameObjectType.Player,
+                    UserGuid = causerGuid
+                }));
             }
 
-            return randomDamageList;
+            return randomPlayerList;
         }
 
         private static string GenerateName(int len)
