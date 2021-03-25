@@ -52,6 +52,11 @@
                         }
                     }
                 }
+                catch (TaskCanceledException ex)
+                {
+                    Log.Error(nameof(GetItemInfoFromJsonAsync), ex);
+                    return null;
+                }
                 catch (Exception e)
                 {
                     Log.Error(nameof(GetItemInfoFromJsonAsync), e);
