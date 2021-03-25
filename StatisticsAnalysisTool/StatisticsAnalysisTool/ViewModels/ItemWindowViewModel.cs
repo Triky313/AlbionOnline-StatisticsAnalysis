@@ -1,4 +1,4 @@
-﻿using FontAwesome.WPF;
+﻿using FontAwesome5;
 using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Exceptions;
@@ -52,7 +52,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private List<MarketCurrentPricesItem> _marketCurrentPricesItemList;
         private XmlLanguage _itemListViewLanguage;
         private Visibility _loadingImageVisibility;
-        private FontAwesomeIcon _loadingImageIcon;
+        private EFontAwesomeIcon _loadingImageIcon;
         private bool _loadingImageSpin;
         private string _averagePrices;
         private List<MarketQualityObject> _realMoneyPriceList;
@@ -180,7 +180,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void SetLoadingImageToError()
         {
-            LoadingImageIcon = FontAwesomeIcon.Times;
+            LoadingImageIcon = EFontAwesomeIcon.Solid_Times;
             LoadingImageSpin = false;
         }
 
@@ -703,7 +703,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public FontAwesomeIcon LoadingImageIcon {
+        public EFontAwesomeIcon LoadingImageIcon {
             get => _loadingImageIcon;
             set {
                 _loadingImageIcon = value;

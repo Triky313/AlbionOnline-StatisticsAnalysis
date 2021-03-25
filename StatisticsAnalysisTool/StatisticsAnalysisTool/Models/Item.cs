@@ -1,4 +1,4 @@
-﻿using FontAwesome.WPF;
+﻿using FontAwesome5;
 using StatisticsAnalysisTool.Common;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -39,7 +39,7 @@ namespace StatisticsAnalysisTool.Models
 
         public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
         public bool IsAlertActive { get; set; }
-        public FontAwesomeIcon AlertToggle => (IsAlertActive) ? FontAwesomeIcon.ToggleOn : FontAwesomeIcon.ToggleOff;
+        public EFontAwesomeIcon AlertToggle => (IsAlertActive) ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
         public Brush AlertToggleColor => (IsAlertActive) ? ItemController.ToggleOnColor : ItemController.ToggleOffColor;
     }
 }

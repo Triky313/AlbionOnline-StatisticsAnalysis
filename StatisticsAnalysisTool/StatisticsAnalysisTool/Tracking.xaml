@@ -3,10 +3,10 @@
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
                     xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
-                    xmlns:fa="http://schemas.fontawesome.io/icons/"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
+                    xmlns:fa5="http://schemas.fontawesome.com/icons/"
                     mc:Ignorable="d">
 
     <Style x:Key="LineFragmentImageStyle" TargetType="{x:Type Image}">
@@ -350,7 +350,7 @@
                                 <Image Source="Resources/skull.png" Style="{StaticResource DungeonNotificationFragment.Image.Skull}" />
                             </Grid>
                             <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__RUN__TIME}">
-                                <fa:ImageAwesome Icon="ClockOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                                <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                             </Grid>
                             <Label Content="{Binding RunTimeString, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="55">
                                 <Label.Style>
@@ -675,7 +675,7 @@
                 </Grid>
                 <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DamagePercentage}" 
                        ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"></Label>
-                <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,3"></Label>
+                <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
                 <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Damage}" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
                 <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
             </StackPanel>
@@ -683,7 +683,7 @@
     </DataTemplate>
 
     <!-- Damage meter icon -->
-    <Style TargetType="fa:ImageAwesome" x:Key="PartyMemberCircleStyle">
+    <Style TargetType="fa5:ImageAwesome" x:Key="PartyMemberCircleStyle">
         <Setter Property="Foreground">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -692,11 +692,28 @@
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Name}" Value="Triky313">
+                <Setter Property="Foreground">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="{StaticResource Color.Red.1}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Red.2}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Red.3}"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <DataTemplate DataType="{x:Type networkModel:PartyMemberCircle}">
         <Grid Height="12" Width="12" Margin="2,4,2,0" VerticalAlignment="Top" ToolTip="{Binding Name}">
-            <fa:ImageAwesome Icon="Circle" Style="{StaticResource PartyMemberCircleStyle}"/>
+            <fa5:ImageAwesome Icon="Solid_UserCircle" Style="{StaticResource PartyMemberCircleStyle}"/>
         </Grid>
     </DataTemplate>
 

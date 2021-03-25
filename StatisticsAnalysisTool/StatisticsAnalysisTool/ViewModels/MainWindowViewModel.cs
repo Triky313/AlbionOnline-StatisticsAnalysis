@@ -1,4 +1,4 @@
-﻿using FontAwesome.WPF;
+﻿using FontAwesome5;
 using LiveCharts;
 using log4net;
 using PcapDotNet.Base;
@@ -89,7 +89,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private TrackingController _trackingController;
         private DateTime? activateWaitTimer;
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
-        private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
+        private EFontAwesomeIcon _trackerActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
         private string _trackingUsername;
         private string _trackingGuildName;
@@ -1116,7 +1116,7 @@ namespace StatisticsAnalysisTool.ViewModels
             set {
                 _isTrackingActive = value;
 
-                TrackerActivationToggleIcon = (_isTrackingActive) ? FontAwesomeIcon.ToggleOn : FontAwesomeIcon.ToggleOff;
+                TrackerActivationToggleIcon = (_isTrackingActive) ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 
                 var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
                 var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
@@ -1129,7 +1129,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public FontAwesomeIcon TrackerActivationToggleIcon
+        public EFontAwesomeIcon TrackerActivationToggleIcon
         {
             get => _trackerActivationToggleIcon;
             set

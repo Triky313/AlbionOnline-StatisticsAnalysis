@@ -1,10 +1,10 @@
 ﻿<Window x:Class="StatisticsAnalysisTool.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
         Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="800" Closing="Window_Closing">
     <Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
@@ -20,23 +20,23 @@
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" Margin="0,40,0,0">
             <ComboBox ItemsSource="{Binding Modes}" SelectedItem="{Binding ModeSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="ViewMode" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="170" Height="23" SelectionChanged="CbMode_SelectionChanged" />
             <Grid HorizontalAlignment="Left" Height="24" Margin="185,7,0,0" VerticalAlignment="Top" Width="24">
-                <fa:ImageAwesome Visibility="{Binding LoadIconVisibility}" Icon="CircleOutlineNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                <fa5:ImageAwesome Visibility="{Binding LoadIconVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
             <Grid Visibility="{Binding GoldPriceVisibility, FallbackValue=Visible}" Height="40" VerticalAlignment="Top" HorizontalAlignment="Center" Width="120">
                 <Image Style="{StaticResource Image.Gold}" Width="24" Height="24" Margin="10,8,0,8" HorizontalAlignment="Left" />
                 <Label Content="{Binding CurrentGoldPrice, FallbackValue=0, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding CurrentGoldPriceTimestamp}" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Gold}" Height="26" Margin="35,5,10,9" FontWeight="Bold" />
             </Grid>
             <Grid Margin="0,7,40,0" HorizontalAlignment="Right" Width="28" Height="28" VerticalAlignment="Top" ToolTip="{Binding Translation.IsTrackingActive}">
-                <fa:ImageAwesome Icon="Wifi" Foreground="{Binding TrackingIconColor}" />
+                <fa5:ImageAwesome Icon="Solid_Wifi" Foreground="{Binding TrackingIconColor}" />
             </Grid>
             <Grid Margin="0,10,10,0" HorizontalAlignment="Right" Width="24" Height="24" VerticalAlignment="Top">
-                <fa:ImageAwesome Icon="Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
+                <fa5:ImageAwesome Icon="Solid_Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
             </Grid>
         </Grid>
         <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtSearch" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="22" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" />
             <Grid Margin="215,11,0,0" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left">
-                <fa:ImageAwesome Icon="Repeat" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="FilterReset_MouseUp" />
+                <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="FilterReset_MouseUp" />
             </Grid>
             <ComboBox ItemsSource="{Binding ItemParentCategories}" SelectedValue="{Binding SelectedItemParentCategory}" Visibility="{Binding ItemParentCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="240,10,0,0" VerticalAlignment="Top" Width="150" />
             <ComboBox ItemsSource="{Binding ItemCategories}" SelectedValue="{Binding SelectedItemCategory}" Visibility="{Binding ItemCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="240,37,0,0" VerticalAlignment="Top" Width="150" />
@@ -44,7 +44,7 @@
             <ComboBox ItemsSource="{Binding ItemLevels}" SelectedValue="{Binding SelectedItemLevel}" Visibility="{Binding ItemLevelsVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="480,10,0,0" VerticalAlignment="Top" Width="54" MinWidth="80" />
 
             <Grid Margin="0,6,160,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right">
-                <fa:ImageAwesome Icon="FileImageOutline" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                <fa5:ImageAwesome Icon="Regular_Image" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
             </Grid>
             <Label Content="{Binding LocalImageCounter, FallbackValue=0}" Height="26" Margin="0,6,105,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Left" HorizontalAlignment="Right" Width="50" />
             <StackPanel Orientation="Horizontal" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,6,90,0" Width="10">
@@ -81,7 +81,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid Height="24" Width="24">
-                                        <fa:ImageAwesome Visibility="Visible" Icon="{Binding (models:Item.AlertToggle)}" Foreground="{Binding (models:Item.AlertToggleColor)}" MouseUp="AlertModeAlertActiveToggle_MouseUp" />
+                                        <fa5:ImageAwesome Visibility="Visible" Icon="{Binding (models:Item.AlertToggle)}" Foreground="{Binding (models:Item.AlertToggleColor)}" MouseUp="AlertModeAlertActiveToggle_MouseUp" />
                                     </Grid>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -103,7 +103,7 @@
                 <Grid ZIndex="20" Margin="5,0,0,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
                     <TextBlock>
                         <Hyperlink NavigateUri="{Binding Path=GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                            <fa:ImageAwesome Icon="Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                            <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                         </Hyperlink>
                     </TextBlock>
                 </Grid>
@@ -119,7 +119,7 @@
                 <ProgressBar Minimum="{Binding LoadFullItemInfoProBarMin, IsAsync=True, FallbackValue=0}" Maximum="{Binding LoadFullItemInfoProBarMax, IsAsync=True, FallbackValue=0}" Value="{Binding LoadFullItemInfoProBarValue, IsAsync=True, FallbackValue=0}" Height="22" Margin="0,38,36,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150" />
                 <Label Content="{Binding LoadFullItemInfoProBarCounter, FallbackValue=0/0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="24" Margin="0,36,36,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150"></Label>
                 <Grid Margin="0,38,10,0" HorizontalAlignment="Right" Width="24" Height="22" VerticalAlignment="Top">
-                    <fa:ImageAwesome Icon="StopCircle" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="StopLoadFullItemInfo_MouseUp" />
+                    <fa5:ImageAwesome Icon="Regular_StopCircle" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="StopLoadFullItemInfo_MouseUp" />
                 </Grid>
             </Grid>
             <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
@@ -129,7 +129,7 @@
                 <DockPanel Margin="0,0,0,0" Height="Auto" VerticalAlignment="Top">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Height="auto" Width="50">
                         <Grid Margin="0,0,0,0" HorizontalAlignment="Left" Height="auto" Width="40" VerticalAlignment="Center">
-                            <fa:ImageAwesome Visibility="Visible" Icon="{Binding TrackerActivationToggleIcon, FallbackValue=ToggleOff}" Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" MouseUp="TrackingModeActiveToggle_MouseUp" />
+                            <fa5:ImageAwesome Visibility="Visible" Icon="{Binding TrackerActivationToggleIcon, FallbackValue=Solid_ToggleOff}" Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" MouseUp="TrackingModeActiveToggle_MouseUp" />
                         </Grid>
                     </StackPanel>
                     <Border Width="{Binding UsernameInfoWidth, FallbackValue=NaN}" Visibility="{Binding UsernameInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
@@ -290,7 +290,7 @@
                         <Grid Height="36" VerticalAlignment="Top" HorizontalAlignment="Left" Width="550">
                             <StackPanel Orientation="Horizontal">
                                 <Grid Height="20" Width="20" Margin="0,0,5,0" VerticalAlignment="Center">
-                                    <fa:ImageAwesome Icon="Group" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                                    <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                                 </Grid>
                                 <ItemsControl ItemsSource="{Binding PartyMemberCircles}" Margin="0,0,0,3" VerticalAlignment="Center">
                                     <ItemsControl.ItemsPanel>
@@ -309,7 +309,7 @@
                             </StackPanel>
                         </Grid>
                         <Grid Height="20" Width="20" Margin="0,8,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
-                            <fa:ImageAwesome Icon="InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                            <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                         </Grid>
                         <Grid Margin="0,41,0,0" Height="36" VerticalAlignment="Top">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -324,7 +324,7 @@
                             <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                                 <DockPanel Margin="0,0,0,16">
                                     <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                                        <fa:ImageAwesome Icon="DotCircleOutline" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
                                     </Grid>
                                     <TextBlock Text="{Binding Translation.DamageMeterDescription1}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="16" TextWrapping="Wrap" Width="auto"></TextBlock>
                                 </DockPanel>
@@ -337,7 +337,7 @@
                 <Grid ZIndex="20" Margin="5,0,0,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
                     <TextBlock>
                         <Hyperlink NavigateUri="{Binding Path=GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                            <fa:ImageAwesome Icon="Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                            <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                         </Hyperlink>
                     </TextBlock>
                 </Grid>
