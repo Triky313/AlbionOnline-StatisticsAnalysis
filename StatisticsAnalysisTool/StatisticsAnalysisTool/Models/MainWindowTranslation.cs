@@ -28,6 +28,11 @@ namespace StatisticsAnalysisTool.Models
         public string CurrentMap => LanguageController.Translation("CURRENT_MAP");
         public string Tracking => LanguageController.Translation("TRACKING");
         public string Dungeon => LanguageController.Translation("DUNGEON");
+        public string EnteredDungeon => LanguageController.Translation("ENTERED_DUNGEON");
+        public string OpenedStandardChests => LanguageController.Translation("OPENED_STANDARD_CHESTS");
+        public string OpenedUncommonChests => LanguageController.Translation("OPENED_UNCOMMON_CHESTS");
+        public string OpenedRareChests => LanguageController.Translation("OPENED_RARE_CHESTS");
+        public string OpenedLegendaryChests => LanguageController.Translation("OPENED_LEGENDARY_CHESTS");
         public string ResetDungeonTracking => LanguageController.Translation("RESET_DUNGEON_TRACKING");
         public string Day => LanguageController.Translation("DAY");
         public string Total => LanguageController.Translation("TOTAL");

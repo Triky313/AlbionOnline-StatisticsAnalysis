@@ -357,6 +357,11 @@
   <translation name="LEGENDARY">Legendary</translation>
   <translation name="BOSS_CHEST">Boss-Chest</translation>
   <translation name="BOOK_CHEST">Book-Chest</translation>
+  <translation name="ENTERED_DUNGEON">Entered Dungeon</translation>
+  <translation name="OPENED_STANDARD_CHESTS">Opened standard chests</translation>
+  <translation name="OPENED_UNCOMMON_CHESTS">Opened uncommon chests</translation>
+  <translation name="OPENED_RARE_CHESTS">Opened rare chests</translation>
+  <translation name="OPENED_LEGENDARY_CHESTS">Opened legendary chests</translation>
 
   <translation name="DAMAGE_METER_DESCRIPTION_1">In order for damage from other players in the party to be recognized, the tool must first be activated and then a player must leave or join the party.</translation>
 
