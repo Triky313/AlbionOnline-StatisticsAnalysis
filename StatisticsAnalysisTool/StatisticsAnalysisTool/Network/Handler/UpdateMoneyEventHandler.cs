@@ -21,7 +21,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             _silverCountUpTimer.Add(value.CurrentPlayerSilver);
 
             _trackingController.SetTotalPlayerSilver(value.CurrentPlayerSilver);
-            _trackingController.AddValueToDungeon(value.CurrentPlayerSilver, ValueType.Silver);
+            _trackingController.DungeonController?.AddValueToDungeon(value.CurrentPlayerSilver, ValueType.Silver);
             await Task.CompletedTask;
         }
     }

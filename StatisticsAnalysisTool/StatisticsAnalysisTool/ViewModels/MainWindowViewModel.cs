@@ -660,11 +660,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             _trackingController?.RegisterEvents();
-            TrackingDungeons = _trackingController?.LoadDungeonFromFile();
-            _trackingController?.SetDungeonStatsDay();
-            _trackingController?.SetDungeonStatsTotal();
-            DungeonStatsDay.EnteredDungeon = _trackingController.GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
-            DungeonStatsTotal.EnteredDungeon = _trackingController.GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
+            TrackingDungeons = _trackingController?.DungeonController?.LoadDungeonFromFile();
+            _trackingController?.DungeonController?.SetDungeonStatsDay();
+            _trackingController?.DungeonController?.SetDungeonStatsTotal();
+            DungeonStatsDay.EnteredDungeon = _trackingController.DungeonController.GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
+            DungeonStatsTotal.EnteredDungeon = _trackingController.DungeonController.GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
             _valueCountUpTimer = new ValueCountUpTimer();
 
@@ -691,7 +691,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StopTracking()
         {
-            _trackingController?.SaveDungeonsInFile(TrackingDungeons);
+            _trackingController?.DungeonController?.SaveDungeonsInFile(TrackingDungeons);
             _trackingController?.UnregisterEvents();
 
             _valueCountUpTimer?.FameCountUpTimer?.Stop();

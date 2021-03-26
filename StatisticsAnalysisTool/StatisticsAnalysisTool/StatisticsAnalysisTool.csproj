@@ -188,6 +188,7 @@
     <Compile Include="Models\NetworkModel\PartyMemberCircle.cs" />
     <Compile Include="Models\SpellEffect.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
+    <Compile Include="Network\Controller\DungeonController.cs" />
     <Compile Include="Network\Controller\EntityController.cs" />
     <Compile Include="Network\Events\ActiveSpellEffectsUpdateEvent.cs" />
     <Compile Include="Network\Events\NewEquipmentItemEvent.cs" />

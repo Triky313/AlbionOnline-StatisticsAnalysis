@@ -22,7 +22,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             _reSpecPointsCountUpTimer.Add(value.CurrentReSpecPoints);
 
             _trackingController.SetTotalPlayerReSpecPoints(value.CurrentReSpecPoints);
-            _trackingController.AddValueToDungeon(value.CurrentReSpecPoints, ValueType.ReSpec);
+            _trackingController.DungeonController?.AddValueToDungeon(value.CurrentReSpecPoints, ValueType.ReSpec);
             await Task.CompletedTask;
         }
     }
