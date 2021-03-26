@@ -241,7 +241,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private static int GetRandomWeaponIndex()
         {
-            var indexArray = new List<int> {6211, 5926, 1176, 1171, 6553, 1087, 6413, 5181, 5080, 5705, 4998, 4777, 4696, 2075, 5472, 0};
+            var indexArray = new List<int> {6180, 5900, 6326, 5614, 6600, 5602, 6467, 5181, 5080, 5705, 4998, 4777, 4696, 6045, 0};
 
             var index = _random.Next(indexArray.Count);
             var itemIndex = indexArray[index];
