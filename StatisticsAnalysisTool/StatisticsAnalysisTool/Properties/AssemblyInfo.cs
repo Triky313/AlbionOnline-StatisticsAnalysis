@@ -1,7 +1,7 @@
-﻿using System.Reflection;
+﻿using log4net.Config;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
-using log4net.Config;
 
 // Allgemeine Informationen über eine Assembly werden über die folgenden
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
@@ -11,7 +11,7 @@ using log4net.Config;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("StatisticsAnalysisTool")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -35,11 +35,11 @@ using log4net.Config;
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //Speicherort der designspezifischen Ressourcenwörterbücher
-    //(wird verwendet, wenn eine Ressource auf der Seite nicht gefunden wird,
-    // oder in den Anwendungsressourcen-Wörterbüchern nicht gefunden werden kann.)
+                                     //(wird verwendet, wenn eine Ressource auf der Seite nicht gefunden wird,
+                                     // oder in den Anwendungsressourcen-Wörterbüchern nicht gefunden werden kann.)
     ResourceDictionaryLocation.SourceAssembly //Speicherort des generischen Ressourcenwörterbuchs
-    //(wird verwendet, wenn eine Ressource auf der Seite nicht gefunden wird,
-    // designspezifischen Ressourcenwörterbuch nicht gefunden werden kann.)
+                                              //(wird verwendet, wenn eine Ressource auf der Seite nicht gefunden wird,
+                                              // designspezifischen Ressourcenwörterbuch nicht gefunden werden kann.)
 )]
 
 
@@ -53,5 +53,5 @@ using log4net.Config;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.4.0.*")]
-[assembly: AssemblyFileVersion("3.4.0.0")]
+[assembly: AssemblyVersion("3.4.1.*")]
+[assembly: AssemblyFileVersion("3.4.1.0")]
