@@ -453,7 +453,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (_lastGuid != null && _mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains(currentGuid) && x.MapsGuid.Contains((Guid)_lastGuid)))
             {
                 var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(currentGuid));
-                dun.AddDungeonRun(DateTime.UtcNow);
+                dun.AddDungeonRunTime(DateTime.UtcNow);
             }
         }
 
@@ -499,7 +499,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (_lastGuid != null && _mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid)_lastGuid)) && mapType != MapType.RandomDungeon)
             {
                 var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains((Guid)_lastGuid));
-                dun.AddDungeonRun(DateTime.UtcNow);
+                dun.AddDungeonRunTime(DateTime.UtcNow);
             }
         }
 
