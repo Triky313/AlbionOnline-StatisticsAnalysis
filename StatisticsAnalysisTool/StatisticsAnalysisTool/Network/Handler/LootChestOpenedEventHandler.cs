@@ -16,7 +16,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(LootChestOpenedEvent value)
         {
-            _trackingController.SetDungeonChestOpen(value.Id);
+            _trackingController.DungeonController?.SetDungeonChestOpen(value.Id);
             await Task.CompletedTask;
         }
     }

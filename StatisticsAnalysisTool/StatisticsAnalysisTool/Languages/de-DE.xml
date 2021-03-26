@@ -357,6 +357,15 @@
   <translation name="LEGENDARY">Legendär</translation>
   <translation name="BOSS_CHEST">Boss-Truhe</translation>
   <translation name="BOOK_CHEST">Buch-Truhe</translation>
+  <translation name="ENTERED_DUNGEON">Entered Dungeon</translation>
+  <translation name="OPENED_STANDARD_CHESTS">Geöffnete Truhen (Standard)</translation>
+  <translation name="OPENED_UNCOMMON_CHESTS">Geöffnete Truhen (Ungewöhnlich)</translation>
+  <translation name="OPENED_RARE_CHESTS">Geöffnete Truhen (Selten)</translation>
+  <translation name="OPENED_LEGENDARY_CHESTS">Geöffnete Truhen (Legendär)</translation>
 
   <translation name="DAMAGE_METER_DESCRIPTION_1">Damit Schaden von anderen Spielern in der Party erkannt wird, muss das Tool zuvor aktiviert sein und dann ein Spieler die Party verlassen oder ihr beitreten.</translation>
+
+  <translation name="SORT_BY_DAMAGE">Nach Schaden sortieren</translation>
+  <translation name="SORT_BY_DPS">Nach DPS sortieren</translation>
+  <translation name="SORT_BY_NAME">Nach Name sortieren</translation>
 </translations>

@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             _trackingController.SetNewCluster(value.MapType, value.DungeonGuid, value.MapIndex, value.MainMapIndex);
 
-            _trackingController.LocalUserData = new LocalUserData()
+            _trackingController.DungeonController.LocalUserData = new LocalUserData()
             {
                 UserObjectId = value.UserObjectId,
                 Guid = value.Guid,
@@ -53,7 +53,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
 
             _trackingController.SetTotalPlayerSilver(value.Silver.IntegerValue);
-            _trackingController.AddDungeon(value.MapType, value.DungeonGuid, value.MainMapIndex);
+            _trackingController.DungeonController?.AddDungeon(value.MapType, value.DungeonGuid, value.MainMapIndex);
 
             ResetFameCounterByMapChangeIfActive();
 

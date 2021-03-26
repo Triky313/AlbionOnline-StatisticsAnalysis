@@ -1,9 +1,10 @@
-﻿using FontAwesome.WPF;
+﻿using FontAwesome5;
 using LiveCharts;
 using log4net;
 using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -88,7 +89,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private TrackingController _trackingController;
         private DateTime? activateWaitTimer;
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
-        private FontAwesomeIcon _trackerActivationToggleIcon = FontAwesomeIcon.ToggleOff;
+        private EFontAwesomeIcon _trackerActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
         private string _trackingUsername;
         private string _trackingGuildName;
@@ -117,6 +118,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private DungeonStats _dungeonStatsTotal = new DungeonStats();
         private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new ObservableCollection<PartyMemberCircle>();
         private bool _isDamageMeterResetByMapChangeActive;
+        private DamageMeterSortStruct _damageMeterSortSelection;
+        private List<DamageMeterSortStruct> _damageMeterSort = new List<DamageMeterSortStruct>();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -352,6 +355,28 @@ namespace StatisticsAnalysisTool.ViewModels
             CurrentMapInformationVisibility = Visibility.Hidden;
 
             IsTrackingResetByMapChangeActive = Settings.Default.IsTrackingResetByMapChangeActive;
+
+            var sortByDamageStruct = new DamageMeterSortStruct()
+            {
+                Name = Translation.SortByDamage,
+                DamageMeterSortType = DamageMeterSortType.Damage
+            };
+            var sortByDpsStruct = new DamageMeterSortStruct()
+            {
+                Name = Translation.SortByDps,
+                DamageMeterSortType = DamageMeterSortType.Dps
+            };
+            var sortByNameStruct = new DamageMeterSortStruct()
+            {
+                Name = Translation.SortByName,
+                DamageMeterSortType = DamageMeterSortType.Name
+            };
+
+            DamageMeterSort.Clear();
+            DamageMeterSort.Add(sortByDamageStruct);
+            DamageMeterSort.Add(sortByDpsStruct);
+            DamageMeterSort.Add(sortByNameStruct);
+            DamageMeterSortSelection = sortByDamageStruct;
 
             #endregion
         }
@@ -635,11 +660,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             _trackingController?.RegisterEvents();
-            TrackingDungeons = _trackingController?.LoadDungeonFromFile();
-            _trackingController?.SetDungeonStatsDay();
-            _trackingController?.SetDungeonStatsTotal();
-            DungeonStatsDay.EnteredDungeon = _trackingController.GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
-            DungeonStatsTotal.EnteredDungeon = _trackingController.GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
+            TrackingDungeons = _trackingController?.DungeonController?.LoadDungeonFromFile();
+            _trackingController?.DungeonController?.SetDungeonStatsDay();
+            _trackingController?.DungeonController?.SetDungeonStatsTotal();
+            DungeonStatsDay.EnteredDungeon = _trackingController.DungeonController.GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
+            DungeonStatsTotal.EnteredDungeon = _trackingController.DungeonController.GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
             _valueCountUpTimer = new ValueCountUpTimer();
 
@@ -666,7 +691,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StopTracking()
         {
-            _trackingController?.SaveDungeonsInFile(TrackingDungeons);
+            _trackingController?.DungeonController?.SaveDungeonsInFile(TrackingDungeons);
             _trackingController?.UnregisterEvents();
 
             _valueCountUpTimer?.FameCountUpTimer?.Stop();
@@ -724,6 +749,25 @@ namespace StatisticsAnalysisTool.ViewModels
             DungeonStatsDay.OpenedUncommonChests = 0;
             DungeonStatsDay.OpenedRareChests = 0;
             DungeonStatsDay.OpenedLegendaryChests = 0;
+        }
+
+        public void SetDamageMeterSort()
+        {
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Damage)
+            {
+                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
+                return;
+            }
+
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Dps)
+            {
+                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
+                return;
+            }
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
+            {
+                DamageMeter.OrderByReference(DamageMeter.OrderBy(x => x.Name).ToList());
+            }
         }
 
         #endregion
@@ -837,6 +881,24 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _isDamageMeterPopupVisible;
             set {
                 _isDamageMeterPopupVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DamageMeterSortStruct DamageMeterSortSelection {
+            get => _damageMeterSortSelection;
+            set {
+                _damageMeterSortSelection = value;
+                SetDamageMeterSort();
+
+                OnPropertyChanged();
+            }
+        }
+
+        public List<DamageMeterSortStruct> DamageMeterSort {
+            get => _damageMeterSort;
+            set {
+                _damageMeterSort = value;
                 OnPropertyChanged();
             }
         }
@@ -1054,7 +1116,7 @@ namespace StatisticsAnalysisTool.ViewModels
             set {
                 _isTrackingActive = value;
 
-                TrackerActivationToggleIcon = (_isTrackingActive) ? FontAwesomeIcon.ToggleOn : FontAwesomeIcon.ToggleOff;
+                TrackerActivationToggleIcon = (_isTrackingActive) ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 
                 var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
                 var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
@@ -1067,7 +1129,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public FontAwesomeIcon TrackerActivationToggleIcon
+        public EFontAwesomeIcon TrackerActivationToggleIcon
         {
             get => _trackerActivationToggleIcon;
             set
@@ -1476,11 +1538,21 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion Bindings
 
+        #region Structs
+
         public struct ModeStruct
         {
             public string Name { get; set; }
             public ViewMode ViewMode { get; set; }
         }
+
+        public struct DamageMeterSortStruct
+        {
+            public string Name { get; set; }
+            public DamageMeterSortType DamageMeterSortType { get; set; }
+        }
+
+        #endregion
     }
 
     public enum ViewMode

@@ -21,7 +21,7 @@
 
             using (var client = new HttpClient())
             {
-                client.Timeout = TimeSpan.FromSeconds(30);
+                client.Timeout = TimeSpan.FromSeconds(60);
                 try
                 {
                     using (var response = await client.GetAsync(url))
@@ -51,6 +51,11 @@
                             return emptyItemInfo;
                         }
                     }
+                }
+                catch (TaskCanceledException ex)
+                {
+                    Log.Error(nameof(GetItemInfoFromJsonAsync), ex);
+                    return null;
                 }
                 catch (Exception e)
                 {

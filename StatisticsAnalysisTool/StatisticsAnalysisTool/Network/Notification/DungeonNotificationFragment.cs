@@ -148,7 +148,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public void AddDungeonRun(DateTime dungeonEnd)
+        public void AddDungeonRunTime(DateTime dungeonEnd)
         {
             _dungeonRuns.Add(new DungeonRun() { Start = EnterDungeonMap, End = dungeonEnd });
 

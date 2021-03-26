@@ -94,7 +94,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                                 fragment.DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage);
                             }
                         }
-                        _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
+
+                        _mainWindowViewModel.SetDamageMeterSort();
                     });
                 }
                 else
@@ -119,7 +120,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                             _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
                         }
 
-                        _mainWindowViewModel.DamageMeter.OrderByReference(_mainWindowViewModel.DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
+                        _mainWindowViewModel.SetDamageMeterSort();
                     });
                 }
             }
@@ -246,7 +247,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 var causerGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
                 var damage = _random.Next(500, 9999);
                 var objectId = _random.Next(20, 9999);
-                var len = _random.Next(5, 20);
+                var len = _random.Next(3, 10);
                 var randomTime = _random.Next(1, 1000);
                 
                 randomPlayerList.Add(new KeyValuePair<Guid, PlayerGameObject>(causerGuid, new PlayerGameObject(objectId)
