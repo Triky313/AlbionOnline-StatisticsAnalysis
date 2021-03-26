@@ -11,29 +11,28 @@ namespace StatisticsAnalysisTool.Common
     {
         public static void OrderByReference<T>(this ObservableCollection<T> collection, List<T> comparison)
         {
-            for (int i = 0; i < comparison.Count; i++)
-            {
+            for (var i = 0; i < comparison.Count; i++)
                 if (!comparison.ElementAt(i).Equals(collection.ElementAt(i)))
-                {
                     collection.Move(collection.IndexOf(comparison[i]), i);
-                }
-            }
         }
-        
-        public static string ToShortNumberString(this long num) => GetShortNumber(num);
 
-        public static string ToShortNumberString(this int num) => GetShortNumber(num);
+        public static string ToShortNumberString(this long num)
+        {
+            return GetShortNumber(num);
+        }
+
+        public static string ToShortNumberString(this int num)
+        {
+            return GetShortNumber(num);
+        }
 
         public static string ToShortNumberString(this double num)
         {
             try
             {
-                if (double.IsNaN(num))
-                {
-                    return "0";
-                }
+                if (double.IsNaN(num)) return "0";
 
-                return double.IsInfinity(num) ? double.MaxValue.ToString(CultureInfo.InvariantCulture) : GetShortNumber((decimal)num);
+                return double.IsInfinity(num) ? double.MaxValue.ToString(CultureInfo.InvariantCulture) : GetShortNumber((decimal) num);
             }
             catch (OverflowException)
             {
@@ -61,10 +60,7 @@ namespace StatisticsAnalysisTool.Common
                 return (num / 100m).ToString("#.00'K'", CultureInfo.CurrentCulture);
             }
 
-            if (num < 1000)
-            {
-                return num.ToString("N0", CultureInfo.CurrentCulture);
-            }
+            if (num < 1000) return num.ToString("N0", CultureInfo.CurrentCulture);
 
             if (num < 10000)
             {
@@ -90,10 +86,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static DateTime? GetHighestDateTime(this ObservableCollection<DateTime> list)
         {
-            if (!list.Any())
-            {
-                return null;
-            }
+            if (!list.Any()) return null;
 
             return list.Max();
         }
@@ -102,7 +95,7 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                var valueEnumerable = (IEnumerable)value;
+                var valueEnumerable = (IEnumerable) value;
                 var myBytes = valueEnumerable.OfType<byte>().ToArray();
                 return new Guid(myBytes);
             }
@@ -145,7 +138,7 @@ namespace StatisticsAnalysisTool.Common
         public static Dictionary<int, T> ToDictionary<T>(this IEnumerable<T> array)
         {
             return array
-                .Select((v, i) => new { Key = i, Value = v })
+                .Select((v, i) => new {Key = i, Value = v})
                 .ToDictionary(o => o.Key, o => o.Value);
         }
     }

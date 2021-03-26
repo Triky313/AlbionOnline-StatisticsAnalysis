@@ -1,7 +1,7 @@
-﻿using Albion.Network;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Albion.Network;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -11,11 +11,7 @@ namespace StatisticsAnalysisTool.Network.Events
         {
             try
             {
-                if (parameters.ContainsKey(0) && int.TryParse(parameters[0].ToString(), out var id))
-                {
-                    Id = id;
-                }
-
+                if (parameters.ContainsKey(0) && int.TryParse(parameters[0].ToString(), out var id)) Id = id;
             }
             catch (Exception e)
             {

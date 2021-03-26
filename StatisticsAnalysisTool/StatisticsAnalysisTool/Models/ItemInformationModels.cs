@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
-using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
+using Formatting = StatisticsAnalysisTool.Common.Formatting;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -32,11 +33,9 @@ namespace StatisticsAnalysisTool.Models
         [JsonProperty(PropertyName = "showinmarketplace")]
         public bool ShowInMarketplace { get; set; }
 
-        [JsonProperty(PropertyName = "level")]
-        public int Level { get; set; }
+        [JsonProperty(PropertyName = "level")] public int Level { get; set; }
 
-        [JsonProperty(PropertyName = "tier")]
-        public int Tier { get; set; }
+        [JsonProperty(PropertyName = "tier")] public int Tier { get; set; }
 
         [JsonProperty(PropertyName = "enchantmentLevel")]
         public int EnchantmentLevel { get; set; }
@@ -69,14 +68,11 @@ namespace StatisticsAnalysisTool.Models
         [JsonProperty("physicalAttackDamageBonus")]
         public double PhysicalAttackDamageBonus { get; set; }
 
-        [JsonProperty("skinCount")]
-        public object SkinCount { get; set; }
+        [JsonProperty("skinCount")] public object SkinCount { get; set; }
 
-        [JsonProperty("physicalArmor")]
-        public int PhysicalArmor { get; set; }
+        [JsonProperty("physicalArmor")] public int PhysicalArmor { get; set; }
 
-        [JsonProperty("magicResistance")]
-        public int MagicResistance { get; set; }
+        [JsonProperty("magicResistance")] public int MagicResistance { get; set; }
 
         [JsonProperty("magicAttackDamageBonus")]
         public object MagicAttackDamageBonus { get; set; }
@@ -84,8 +80,7 @@ namespace StatisticsAnalysisTool.Models
         [JsonProperty("itemPowerProgressionType")]
         public string ItemPowerProgressionType { get; set; }
 
-        [JsonProperty("craftingRequirements")]
-        public CraftingRequirements CraftingRequirements { get; set; }
+        [JsonProperty("craftingRequirements")] public CraftingRequirements CraftingRequirements { get; set; }
 
         [JsonProperty(PropertyName = "unlockedToEquip")]
         public bool? UnlockedToEquip { get; set; }
@@ -162,8 +157,7 @@ namespace StatisticsAnalysisTool.Models
         [JsonProperty(PropertyName = "lastUpdate")]
         public DateTime LastUpdate { get; set; }
 
-        [JsonIgnore]
-        public string LastFullItemInformationUpdate => Common.Formatting.CurrentDateTimeFormat(LastUpdate) ?? string.Empty;
+        [JsonIgnore] public string LastFullItemInformationUpdate => Formatting.CurrentDateTimeFormat(LastUpdate) ?? string.Empty;
 
         public CategoryObject CategoryObject => CategoryController.GetCategory(CategoryId);
         public HttpStatusCode HttpStatus { get; set; }
@@ -174,14 +168,12 @@ namespace StatisticsAnalysisTool.Models
         [JsonProperty(PropertyName = "uniqueName")]
         public string UniqueName { get; set; }
 
-        [JsonProperty(PropertyName = "count")]
-        public int Count { get; set; }
+        [JsonProperty(PropertyName = "count")] public int Count { get; set; }
     }
 
     public class CraftingRequirements
     {
-        [JsonProperty(PropertyName = "time")]
-        public double Time { get; set; }
+        [JsonProperty(PropertyName = "time")] public double Time { get; set; }
 
         [JsonProperty(PropertyName = "silver")]
         public int Silver { get; set; }
@@ -216,62 +208,45 @@ namespace StatisticsAnalysisTool.Models
 
     public class LocalizedNames
     {
-        [JsonProperty(PropertyName = "EN-US")]
-        public string EnUs { get; set; }
+        [JsonProperty(PropertyName = "EN-US")] public string EnUs { get; set; }
 
-        [JsonProperty(PropertyName = "DE-DE")]
-        public string DeDe { get; set; }
+        [JsonProperty(PropertyName = "DE-DE")] public string DeDe { get; set; }
 
-        [JsonProperty(PropertyName = "KO-KR")]
-        public string KoKr { get; set; }
+        [JsonProperty(PropertyName = "KO-KR")] public string KoKr { get; set; }
 
-        [JsonProperty(PropertyName = "RU-RU")]
-        public string RuRu { get; set; }
+        [JsonProperty(PropertyName = "RU-RU")] public string RuRu { get; set; }
 
-        [JsonProperty(PropertyName = "PL-PL")]
-        public string PlPl { get; set; }
+        [JsonProperty(PropertyName = "PL-PL")] public string PlPl { get; set; }
 
-        [JsonProperty(PropertyName = "PT-BR")]
-        public string PtBr { get; set; }
+        [JsonProperty(PropertyName = "PT-BR")] public string PtBr { get; set; }
 
-        [JsonProperty(PropertyName = "FR-FR")]
-        public string FrFr { get; set; }
+        [JsonProperty(PropertyName = "FR-FR")] public string FrFr { get; set; }
 
-        [JsonProperty(PropertyName = "ES-ES")]
-        public string EsEs { get; set; }
+        [JsonProperty(PropertyName = "ES-ES")] public string EsEs { get; set; }
 
-        [JsonProperty(PropertyName = "ZH-CN")]
-        public string ZhCn { get; set; }
+        [JsonProperty(PropertyName = "ZH-CN")] public string ZhCn { get; set; }
     }
 
     public class LocalizedDescriptions
     {
-        [JsonProperty(PropertyName = "EN-US")]
-        public string EnUs { get; set; }
+        [JsonProperty(PropertyName = "EN-US")] public string EnUs { get; set; }
 
-        [JsonProperty(PropertyName = "DE-DE")]
-        public string DeDe { get; set; }
+        [JsonProperty(PropertyName = "DE-DE")] public string DeDe { get; set; }
 
-        [JsonProperty(PropertyName = "KO-KR")]
-        public string KoKr { get; set; }
+        [JsonProperty(PropertyName = "KO-KR")] public string KoKr { get; set; }
 
         [JsonProperty(PropertyName = "RU-RUS")]
         public string RuRu { get; set; }
 
-        [JsonProperty(PropertyName = "PL-PL")]
-        public string PlPl { get; set; }
+        [JsonProperty(PropertyName = "PL-PL")] public string PlPl { get; set; }
 
-        [JsonProperty(PropertyName = "PT-BR")]
-        public string PtBr { get; set; }
+        [JsonProperty(PropertyName = "PT-BR")] public string PtBr { get; set; }
 
-        [JsonProperty(PropertyName = "FR-FR")]
-        public string FrFr { get; set; }
+        [JsonProperty(PropertyName = "FR-FR")] public string FrFr { get; set; }
 
-        [JsonProperty(PropertyName = "ES-ES")]
-        public string EsEs { get; set; }
+        [JsonProperty(PropertyName = "ES-ES")] public string EsEs { get; set; }
 
-        [JsonProperty(PropertyName = "ZH-CN")]
-        public string ZhCn { get; set; }
+        [JsonProperty(PropertyName = "ZH-CN")] public string ZhCn { get; set; }
     }
 
     public class BuffOverTime
@@ -279,14 +254,11 @@ namespace StatisticsAnalysisTool.Models
         [JsonProperty(PropertyName = "target")]
         public string Target { get; set; }
 
-        [JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
+        [JsonProperty(PropertyName = "type")] public string Type { get; set; }
 
-        [JsonProperty(PropertyName = "time")]
-        public double Time { get; set; }
+        [JsonProperty(PropertyName = "time")] public double Time { get; set; }
 
-        [JsonProperty(PropertyName = "value")]
-        public double Value { get; set; }
+        [JsonProperty(PropertyName = "value")] public double Value { get; set; }
 
         [JsonProperty(PropertyName = "effectAreaRadius")]
         public object EffectAreaRadius { get; set; }
@@ -381,11 +353,9 @@ namespace StatisticsAnalysisTool.Models
 
     public class Buff
     {
-        [JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
+        [JsonProperty(PropertyName = "type")] public string Type { get; set; }
 
-        [JsonProperty(PropertyName = "value")]
-        public double Value { get; set; }
+        [JsonProperty(PropertyName = "value")] public double Value { get; set; }
     }
 
     //public class PassiveSlots

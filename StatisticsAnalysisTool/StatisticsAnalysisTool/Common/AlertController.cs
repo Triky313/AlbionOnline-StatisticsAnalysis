@@ -1,9 +1,4 @@
-﻿using log4net;
-using Newtonsoft.Json;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -12,15 +7,20 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using log4net;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
 
 namespace StatisticsAnalysisTool.Common
 {
     public class AlertController
     {
-        private readonly MainWindow _mainWindow;
-        private readonly ICollectionView _itemsView;
-        private readonly ObservableCollection<Alert> _alerts = new ObservableCollection<Alert>();
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ObservableCollection<Alert> _alerts = new ObservableCollection<Alert>();
+        private readonly ICollectionView _itemsView;
+        private readonly MainWindow _mainWindow;
 
         private readonly int _maxAlertsAtSameTime = 10;
 
@@ -34,17 +34,11 @@ namespace StatisticsAnalysisTool.Common
 
         private void Add(Item item, int alertModeMinSellPriceIsUndercutPrice)
         {
-            if (IsAlertInCollection(item.UniqueName) || !IsSpaceInAlertsCollection())
-            {
-                return;
-            }
+            if (IsAlertInCollection(item.UniqueName) || !IsSpaceInAlertsCollection()) return;
 
-            _alerts.CollectionChanged += delegate (object sender, NotifyCollectionChangedEventArgs e)
+            _alerts.CollectionChanged += delegate(object sender, NotifyCollectionChangedEventArgs e)
             {
-                if (e.Action == NotifyCollectionChangedAction.Add)
-                {
-                    SaveActiveAlertsToLocalFile();
-                }
+                if (e.Action == NotifyCollectionChangedAction.Add) SaveActiveAlertsToLocalFile();
             };
 
             var alertController = this;
@@ -55,12 +49,9 @@ namespace StatisticsAnalysisTool.Common
 
         private void Remove(string uniqueName)
         {
-            _alerts.CollectionChanged += delegate (object sender, NotifyCollectionChangedEventArgs e)
+            _alerts.CollectionChanged += delegate(object sender, NotifyCollectionChangedEventArgs e)
             {
-                if (e.Action == NotifyCollectionChangedAction.Remove)
-                {
-                    SaveActiveAlertsToLocalFile();
-                }
+                if (e.Action == NotifyCollectionChangedAction.Remove) SaveActiveAlertsToLocalFile();
             };
 
             var alert = GetAlertByUniqueName(uniqueName);
@@ -75,10 +66,7 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                if (!IsAlertInCollection(item.UniqueName) && !IsSpaceInAlertsCollection())
-                {
-                    return false;
-                }
+                if (!IsAlertInCollection(item.UniqueName) && !IsSpaceInAlertsCollection()) return false;
 
                 if (IsAlertInCollection(item.UniqueName))
                 {
@@ -100,21 +88,15 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                var itemCollection = (ObservableCollection<Item>)_itemsView.SourceCollection;
+                var itemCollection = (ObservableCollection<Item>) _itemsView.SourceCollection;
                 var item = itemCollection.FirstOrDefault(i => i.UniqueName == uniqueName);
 
-                if (item == null)
-                {
-                    return;
-                }
+                if (item == null) return;
 
                 item.IsAlertActive = false;
                 Remove(item.UniqueName);
 
-                _mainWindow.Dispatcher?.Invoke(() =>
-                {
-                    _itemsView.Refresh();
-                });
+                _mainWindow.Dispatcher?.Invoke(() => { _itemsView.Refresh(); });
             }
             catch (Exception e)
             {
@@ -126,22 +108,16 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                var itemCollection = (ObservableCollection<Item>)_itemsView.SourceCollection;
+                var itemCollection = (ObservableCollection<Item>) _itemsView.SourceCollection;
                 var item = itemCollection.FirstOrDefault(i => i.UniqueName == uniqueName);
 
-                if (item == null)
-                {
-                    return;
-                }
+                if (item == null) return;
 
                 item.IsAlertActive = true;
                 item.AlertModeMinSellPriceIsUndercutPrice = minSellUndercutPrice;
                 Add(item, item.AlertModeMinSellPriceIsUndercutPrice);
 
-                _mainWindow.Dispatcher?.Invoke(() =>
-                {
-                    _itemsView.Refresh();
-                });
+                _mainWindow.Dispatcher?.Invoke(() => { _itemsView.Refresh(); });
             }
             catch (Exception e)
             {
@@ -149,14 +125,20 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        private bool IsAlertInCollection(string uniqueName) => _alerts.Any(alert => alert.Item.UniqueName == uniqueName);
+        private bool IsAlertInCollection(string uniqueName)
+        {
+            return _alerts.Any(alert => alert.Item.UniqueName == uniqueName);
+        }
 
         private Alert GetAlertByUniqueName(string uniqueName)
         {
             return _alerts.FirstOrDefault(alert => alert.Item.UniqueName == uniqueName);
         }
 
-        public bool IsSpaceInAlertsCollection() => _alerts.Count < _maxAlertsAtSameTime;
+        public bool IsSpaceInAlertsCollection()
+        {
+            return _alerts.Count < _maxAlertsAtSameTime;
+        }
 
         #region Alert file controls
 
@@ -165,27 +147,24 @@ namespace StatisticsAnalysisTool.Common
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ActiveAlertsFileName}";
 
             if (File.Exists(localFilePath))
-            {
                 try
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
 
                     foreach (var alert in JsonConvert.DeserializeObject<List<AlertSaveObject>>(localItemString))
-                    {
                         ActivateAlert(alert.UniqueName, alert.MinSellUndercutPrice);
-                    }
                 }
                 catch (Exception e)
                 {
                     Log.Error(nameof(SetActiveAlertsFromLocalFile), e);
                 }
-            }
         }
 
         private void SaveActiveAlertsToLocalFile()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ActiveAlertsFileName}";
-            var activeItemAlerts = _alerts.Select(alert => new AlertSaveObject() { UniqueName = alert.Item.UniqueName, MinSellUndercutPrice = alert.AlertModeMinSellPriceIsUndercutPrice }).ToList();
+            var activeItemAlerts = _alerts.Select(alert => new AlertSaveObject
+                {UniqueName = alert.Item.UniqueName, MinSellUndercutPrice = alert.AlertModeMinSellPriceIsUndercutPrice}).ToList();
             var fileString = JsonConvert.SerializeObject(activeItemAlerts);
 
             try

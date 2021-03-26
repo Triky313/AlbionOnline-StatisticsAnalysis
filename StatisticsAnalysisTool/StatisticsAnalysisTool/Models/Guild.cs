@@ -1,8 +1,8 @@
-﻿namespace StatisticsAnalysisTool.Models
-{
-    using Newtonsoft.Json;
-    using System;
+﻿using System;
+using Newtonsoft.Json;
 
+namespace StatisticsAnalysisTool.Models
+{
     public class GameInfoGuildsResponse
     {
         public string Id { get; set; }

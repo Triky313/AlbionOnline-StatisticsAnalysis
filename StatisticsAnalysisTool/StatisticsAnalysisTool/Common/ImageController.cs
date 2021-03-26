@@ -1,11 +1,11 @@
-﻿using StatisticsAnalysisTool.Properties;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -34,7 +34,9 @@ namespace StatisticsAnalysisTool.Common
             }
             catch
             {
-                return new BitmapImage(new Uri(@"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png", UriKind.Absolute));
+                return new BitmapImage(new Uri(
+                    @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png",
+                    UriKind.Absolute));
             }
         }
 
@@ -46,7 +48,7 @@ namespace StatisticsAnalysisTool.Common
             image.DownloadCompleted += (sender, args) =>
             {
                 var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create((BitmapImage)sender));
+                encoder.Frames.Add(BitmapFrame.Create((BitmapImage) sender));
                 using (var fileStream = new FileStream(localFilePath, FileMode.Create))
                 {
                     encoder.Save(fileStream);

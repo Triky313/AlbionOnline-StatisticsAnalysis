@@ -18,21 +18,15 @@ namespace StatisticsAnalysisTool.Network.Controller
 {
     public class TrackingController
     {
-        public EntityController EntityController;
-        public DungeonController DungeonController;
-        public CombatController CombatController;
-
         private const int _maxNotifications = 50;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly MainWindow _mainWindow;
+        private readonly MainWindowViewModel _mainWindowViewModel;
         private string _lastClusterHash;
-
-        public ClusterInfo CurrentCluster {
-            get;
-            private set;
-        }
+        public CombatController CombatController;
+        public DungeonController DungeonController;
+        public EntityController EntityController;
 
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
@@ -43,6 +37,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
         }
 
+        public ClusterInfo CurrentCluster { get; private set; }
+
         public void RegisterEvents()
         {
             EntityController.OnHealthUpdate += DamageMeterUpdate;
@@ -52,26 +48,39 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             EntityController.OnHealthUpdate -= DamageMeterUpdate;
         }
-        
+
+        #region Trigger events
+
+        public void DamageMeterUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType,
+            EffectOrigin effectOrigin, long causerId, int causingSpellType)
+        {
+            CombatController.AddDamage(causerId, healthChange);
+        }
+
+        #endregion
+
+        public bool IsMainWindowNull()
+        {
+            if (_mainWindow != null) return false;
+
+            Log.Error($"{nameof(AddNotification)}: _mainWindow is null.");
+            return true;
+        }
+
         #region Cluster
-        
+
         public event Action<ClusterInfo> OnChangeCluster;
 
         public void SetNewCluster(MapType mapType, Guid? mapGuid, string clusterIndex, string mainClusterIndex)
         {
             CurrentCluster = WorldData.GetClusterInfoByIndex(clusterIndex, mainClusterIndex, mapType, mapGuid);
 
-            if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName))
-            {
-                return;
-            }
+            if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName)) return;
 
-            if (_mainWindowViewModel.IsDamageMeterResetByMapChangeActive)
-            {
-                CombatController.ResetDamageMeter();
-            }
+            if (_mainWindowViewModel.IsDamageMeterResetByMapChangeActive) CombatController.ResetDamageMeter();
 
-            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
+            Debug.Print(
+                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
             OnChangeCluster?.Invoke(CurrentCluster);
         }
 
@@ -79,17 +88,14 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             var newClusterHash = index + mapName;
 
-            if (_lastClusterHash == newClusterHash)
-            {
-                return false;
-            }
+            if (_lastClusterHash == newClusterHash) return false;
 
             _lastClusterHash = newClusterHash;
             return true;
         }
 
         #endregion
-        
+
         #region Set Main Window values
 
         public void SetTotalPlayerFame(double value)
@@ -108,46 +114,30 @@ namespace StatisticsAnalysisTool.Network.Controller
         }
 
         #endregion
-        
+
         #region Notifications
 
         public void AddNotification(TrackingNotification item)
         {
-            if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null)
-            {
-                return;
-            }
+            if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null) return;
 
             if (_mainWindow.Dispatcher.CheckAccess())
-            {
                 _mainWindowViewModel.TrackingNotifications.Insert(0, item);
-            }
             else
-            {
-                _mainWindow.Dispatcher.Invoke(delegate
-                {
-                    _mainWindowViewModel.TrackingNotifications.Insert(0, item);
-                });
-            }
+                _mainWindow.Dispatcher.Invoke(delegate { _mainWindowViewModel.TrackingNotifications.Insert(0, item); });
 
             RemovesUnnecessaryNotifications();
         }
 
         public void RemovesUnnecessaryNotifications()
         {
-            if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null)
-            {
-                return;
-            }
+            if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null) return;
 
             try
             {
                 while (true)
                 {
-                    if (_mainWindowViewModel.TrackingNotifications?.Count <= _maxNotifications)
-                    {
-                        break;
-                    }
+                    if (_mainWindowViewModel.TrackingNotifications?.Count <= _maxNotifications) break;
 
                     var dateTime = GetLowestDate(_mainWindowViewModel.TrackingNotifications);
                     if (dateTime != null)
@@ -156,16 +146,9 @@ namespace StatisticsAnalysisTool.Network.Controller
                         if (removableItem != null)
                         {
                             if (_mainWindow.Dispatcher.CheckAccess())
-                            {
                                 _mainWindowViewModel.TrackingNotifications.Remove(removableItem);
-                            }
                             else
-                            {
-                                _mainWindow.Dispatcher.Invoke(delegate
-                                {
-                                    _mainWindowViewModel.TrackingNotifications.Remove(removableItem);
-                                });
-                            }
+                                _mainWindow.Dispatcher.Invoke(delegate { _mainWindowViewModel.TrackingNotifications.Remove(removableItem); });
                         }
                     }
                 }
@@ -178,10 +161,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private static DateTime? GetLowestDate(ObservableCollection<TrackingNotification> items)
         {
-            if (items.IsNullOrEmpty())
-            {
-                return null;
-            }
+            if (items.IsNullOrEmpty()) return null;
 
             try
             {
@@ -194,33 +174,11 @@ namespace StatisticsAnalysisTool.Network.Controller
                 return null;
             }
         }
-        
+
         #endregion
 
         #region Dungeon
-        
-        
 
         #endregion
-
-        #region Trigger events
-
-        public void DamageMeterUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType, EffectOrigin effectOrigin, long causerId, int causingSpellType)
-        {
-            CombatController.AddDamage(causerId, healthChange);
-        }
-
-        #endregion
-
-        public bool IsMainWindowNull()
-        {
-            if (_mainWindow != null)
-            {
-                return false;
-            }
-
-            Log.Error($"{nameof(AddNotification)}: _mainWindow is null.");
-            return true;
-        }
     }
 }

@@ -1,8 +1,8 @@
-﻿namespace StatisticsAnalysisTool.Models
-{
-    using Newtonsoft.Json;
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
+namespace StatisticsAnalysisTool.Models
+{
     public class GameInfoSearchResponse
     {
         [JsonProperty(PropertyName = "guilds")]
@@ -14,11 +14,9 @@
 
     public class SearchGuildResponse
     {
-        [JsonProperty(PropertyName = "Id")]
-        public string Id { get; set; }
+        [JsonProperty(PropertyName = "Id")] public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "Name")]
-        public string Name { get; set; }
+        [JsonProperty(PropertyName = "Name")] public string Name { get; set; }
 
         [JsonProperty(PropertyName = "AllianceId")]
         public string AllianceId { get; set; }
@@ -35,11 +33,9 @@
 
     public class SearchPlayerResponse
     {
-        [JsonProperty(PropertyName = "Id")]
-        public string Id { get; set; }
+        [JsonProperty(PropertyName = "Id")] public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "Name")]
-        public string Name { get; set; }
+        [JsonProperty(PropertyName = "Name")] public string Name { get; set; }
 
         [JsonProperty(PropertyName = "GuildId")]
         public string GuildId { get; set; }

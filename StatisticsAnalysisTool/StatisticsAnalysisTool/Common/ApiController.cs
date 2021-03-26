@@ -1,19 +1,20 @@
-﻿namespace StatisticsAnalysisTool.Common
-{
-    using Exceptions;
-    using log4net;
-    using Models;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Reflection;
+using System.Threading.Tasks;
+using log4net;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Exceptions;
+using StatisticsAnalysisTool.Models;
 
+namespace StatisticsAnalysisTool.Common
+{
     public static class ApiController
     {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(string uniqueName)
         {
@@ -28,7 +29,7 @@
                     {
                         using (var content = response.Content)
                         {
-                            var emptyItemInfo = new ItemInformation()
+                            var emptyItemInfo = new ItemInformation
                             {
                                 UniqueName = uniqueName,
                                 LastUpdate = DateTime.Now
@@ -65,20 +66,23 @@
             }
         }
 
-        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item) => await GetItemInfoFromJsonAsync(item.UniqueName);
+        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item)
+        {
+            return await GetItemInfoFromJsonAsync(item.UniqueName);
+        }
 
         /// <summary>
-        /// Returns all city item prices bye uniqueName, locations and qualities.
+        ///     Returns all city item prices bye uniqueName, locations and qualities.
         /// </summary>
         /// <exception cref="TooManyRequestsException"></exception>
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName)
         {
             var locations = Locations.GetLocationsListByArea(true, true, true, true);
-            return await GetCityItemPricesFromJsonAsync(uniqueName, locations, new List<int>() { 1,2,3,4,5 } );
+            return await GetCityItemPricesFromJsonAsync(uniqueName, locations, new List<int> {1, 2, 3, 4, 5});
         }
 
         /// <summary>
-        /// Returns city item prices bye uniqueName, locations and qualities.
+        ///     Returns city item prices bye uniqueName, locations and qualities.
         /// </summary>
         /// <exception cref="TooManyRequestsException"></exception>
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
@@ -89,7 +93,7 @@
             if (locations?.Count >= 1)
             {
                 url += "?locations=";
-                url = (locations).Aggregate(url, (current, location) => current + $"{location},");
+                url = locations.Aggregate(url, (current, location) => current + $"{location},");
             }
 
             if (qualities?.Count >= 1)
@@ -106,10 +110,7 @@
 
                     using (var response = await client.GetAsync(url))
                     {
-                        if (response.StatusCode == (HttpStatusCode) 429)
-                        {
-                            throw new TooManyRequestsException();
-                        }
+                        if (response.StatusCode == (HttpStatusCode) 429) throw new TooManyRequestsException();
 
                         using (var content = response.Content)
                         {
@@ -121,7 +122,7 @@
                 {
                     throw new TooManyRequestsException();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Log.Error(nameof(GetCityItemPricesFromJsonAsync), e);
                     return null;
@@ -129,7 +130,8 @@
             }
         }
 
-        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<string> locations, DateTime? date, IList<int> qualities, int timeScale = 24)
+        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<string> locations,
+            DateTime? date, IList<int> qualities, int timeScale = 24)
         {
             var locationsString = "";
             var qualitiesString = "";
@@ -156,10 +158,7 @@
                     {
                         using (var content = response.Content)
                         {
-                            if (response.StatusCode == (HttpStatusCode)429)
-                            {
-                                throw new TooManyRequestsException();
-                            }
+                            if (response.StatusCode == (HttpStatusCode) 429) throw new TooManyRequestsException();
 
                             return JsonConvert.DeserializeObject<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
                         }
@@ -169,7 +168,7 @@
                 {
                     throw new TooManyRequestsException();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Log.Error(nameof(GetHistoryItemPricesFromJsonAsync), e);
                     return null;
@@ -195,7 +194,7 @@
                         }
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Log.Error(nameof(GetGameInfoSearchFromJsonAsync), e);
                     return gameInfoSearchResponse;
@@ -217,7 +216,8 @@
                     {
                         using (var content = response.Content)
                         {
-                            return JsonConvert.DeserializeObject<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ?? gameInfoPlayerResponse;
+                            return JsonConvert.DeserializeObject<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ??
+                                   gameInfoPlayerResponse;
                         }
                     }
                 }
@@ -256,9 +256,9 @@
 
         public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count, int timeout = 30)
         {
-            var checkedDateTime = (dateTime != null) ? dateTime.ToString() : string.Empty;
+            var checkedDateTime = dateTime != null ? dateTime.ToString() : string.Empty;
 
-            var url = $"https://www.albion-online-data.com/api/v2/stats/Gold?" +
+            var url = "https://www.albion-online-data.com/api/v2/stats/Gold?" +
                       $"date={checkedDateTime}" +
                       $"&count={count}";
 

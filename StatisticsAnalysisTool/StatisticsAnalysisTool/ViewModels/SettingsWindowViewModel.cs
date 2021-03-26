@@ -1,22 +1,20 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Models;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using log4net;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
-    using Common;
-    using Properties;
-    using System.Collections.ObjectModel;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
-    using Views;
-
     public class SettingsWindowViewModel : INotifyPropertyChanged
     {
         private static SettingsWindow _settingsWindow;
-        private readonly MainWindowViewModel _mainWindowViewModel;
         private static string _itemListSourceUrl;
         private static ObservableCollection<FileInformation> _languages = new ObservableCollection<FileInformation>();
         private static FileInformation _languagesSelection;
@@ -24,13 +22,14 @@ namespace StatisticsAnalysisTool.ViewModels
         private static FileSettingInformation _refreshRatesSelection;
         private static ObservableCollection<FileSettingInformation> _updateItemListByDays = new ObservableCollection<FileSettingInformation>();
         private static FileSettingInformation _settingByDaysSelection;
-        private SettingsWindowTranslation _translation;
-        private bool _isOpenItemWindowInNewWindowChecked;
-        private bool _showInfoWindowOnStartChecked;
-        private int _fullItemInformationUpdateCycleDays;
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly MainWindowViewModel _mainWindowViewModel;
         private ObservableCollection<FileInformation> _alertSounds = new ObservableCollection<FileInformation>();
         private FileInformation _alertSoundSelection;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private int _fullItemInformationUpdateCycleDays;
+        private bool _isOpenItemWindowInNewWindowChecked;
+        private bool _showInfoWindowOnStartChecked;
+        private SettingsWindowTranslation _translation;
 
         public SettingsWindowViewModel(SettingsWindow settingsWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -45,11 +44,11 @@ namespace StatisticsAnalysisTool.ViewModels
             #region Refrash rate
 
             RefreshRates.Clear();
-            RefreshRates.Add(new FileSettingInformation() { Name = LanguageController.Translation("5_SECONDS"), Value = 5000 });
-            RefreshRates.Add(new FileSettingInformation() { Name = LanguageController.Translation("10_SECONDS"), Value = 10000 });
-            RefreshRates.Add(new FileSettingInformation() { Name = LanguageController.Translation("30_SECONDS"), Value = 30000 });
-            RefreshRates.Add(new FileSettingInformation() { Name = LanguageController.Translation("60_SECONDS"), Value = 60000 });
-            RefreshRates.Add(new FileSettingInformation() { Name = LanguageController.Translation("5_MINUTES"), Value = 300000 });
+            RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("5_SECONDS"), Value = 5000});
+            RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("10_SECONDS"), Value = 10000});
+            RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("30_SECONDS"), Value = 30000});
+            RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("60_SECONDS"), Value = 60000});
+            RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("5_MINUTES"), Value = 300000});
             RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == Settings.Default.RefreshRate);
 
             #endregion
@@ -58,7 +57,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
             Languages.Clear();
             foreach (var langInfo in LanguageController.LanguageFiles)
-            {
                 try
                 {
                     var cultureInfo = CultureInfo.CreateSpecificCulture(langInfo.FileName);
@@ -72,7 +70,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     Log.Error(nameof(InitializeSettings), e);
                 }
-            }
 
             LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.TextInfo.CultureName);
 
@@ -81,11 +78,11 @@ namespace StatisticsAnalysisTool.ViewModels
             #region Update item list by days
 
             UpdateItemListByDays.Clear();
-            UpdateItemListByDays.Add(new FileSettingInformation() { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
-            UpdateItemListByDays.Add(new FileSettingInformation() { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
-            UpdateItemListByDays.Add(new FileSettingInformation() { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
-            UpdateItemListByDays.Add(new FileSettingInformation() { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
-            UpdateItemListByDays.Add(new FileSettingInformation() { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
+            UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_DAY"), Value = 1});
+            UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3});
+            UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7});
+            UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14});
+            UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28});
             SettingByDaysSelection = UpdateItemListByDays.FirstOrDefault(x => x.Value == Settings.Default.UpdateItemListByDays);
 
             ItemListSourceUrl = Settings.Default.ItemListSourceUrl;
@@ -98,10 +95,7 @@ namespace StatisticsAnalysisTool.ViewModels
             #region Alert Sounds
 
             AlertSounds.Clear();
-            foreach (var sound in SoundController.AlertSounds)
-            {
-                AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
-            }
+            foreach (var sound in SoundController.AlertSounds) AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
             AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.FileName == Settings.Default.SelectedAlertSound);
 
             #endregion
@@ -137,107 +131,139 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindowViewModel.UpdateTranslation = LanguageController.Translation("UPDATE");
         }
 
+        public struct FileSettingInformation
+        {
+            public string Name { get; set; }
+            public int Value { get; set; }
+        }
+
         #region Bindings
 
-        public ObservableCollection<FileInformation> AlertSounds {
+        public ObservableCollection<FileInformation> AlertSounds
+        {
             get => _alertSounds;
-            set {
+            set
+            {
                 _alertSounds = value;
                 OnPropertyChanged();
             }
         }
 
-        public FileInformation AlertSoundSelection {
+        public FileInformation AlertSoundSelection
+        {
             get => _alertSoundSelection;
-            set {
+            set
+            {
                 _alertSoundSelection = value;
                 OnPropertyChanged();
             }
         }
 
-        public int FullItemInformationUpdateCycleDays {
+        public int FullItemInformationUpdateCycleDays
+        {
             get => _fullItemInformationUpdateCycleDays;
-            set {
+            set
+            {
                 _fullItemInformationUpdateCycleDays = value;
                 OnPropertyChanged();
             }
         }
 
-        public FileSettingInformation SettingByDaysSelection {
+        public FileSettingInformation SettingByDaysSelection
+        {
             get => _settingByDaysSelection;
-            set {
+            set
+            {
                 _settingByDaysSelection = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<FileSettingInformation> UpdateItemListByDays {
+        public ObservableCollection<FileSettingInformation> UpdateItemListByDays
+        {
             get => _updateItemListByDays;
-            set {
+            set
+            {
                 _updateItemListByDays = value;
                 OnPropertyChanged();
             }
         }
 
-        public FileSettingInformation RefreshRatesSelection {
+        public FileSettingInformation RefreshRatesSelection
+        {
             get => _refreshRatesSelection;
-            set {
+            set
+            {
                 _refreshRatesSelection = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<FileSettingInformation> RefreshRates {
+        public ObservableCollection<FileSettingInformation> RefreshRates
+        {
             get => _refreshRates;
-            set {
+            set
+            {
                 _refreshRates = value;
                 OnPropertyChanged();
             }
         }
 
-        public FileInformation LanguagesSelection {
+        public FileInformation LanguagesSelection
+        {
             get => _languagesSelection;
-            set {
+            set
+            {
                 _languagesSelection = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<FileInformation> Languages {
+        public ObservableCollection<FileInformation> Languages
+        {
             get => _languages;
-            set {
+            set
+            {
                 _languages = value;
                 OnPropertyChanged();
             }
         }
 
-        public string ItemListSourceUrl {
+        public string ItemListSourceUrl
+        {
             get => _itemListSourceUrl;
-            set {
+            set
+            {
                 _itemListSourceUrl = value;
                 OnPropertyChanged();
             }
         }
 
-        public SettingsWindowTranslation Translation {
+        public SettingsWindowTranslation Translation
+        {
             get => _translation;
-            set {
+            set
+            {
                 _translation = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsOpenItemWindowInNewWindowChecked {
+        public bool IsOpenItemWindowInNewWindowChecked
+        {
             get => _isOpenItemWindowInNewWindowChecked;
-            set {
+            set
+            {
                 _isOpenItemWindowInNewWindowChecked = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool ShowInfoWindowOnStartChecked {
+        public bool ShowInfoWindowOnStartChecked
+        {
             get => _showInfoWindowOnStartChecked;
-            set {
+            set
+            {
                 _showInfoWindowOnStartChecked = value;
                 OnPropertyChanged();
             }
@@ -251,11 +277,5 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Bindings
-        
-        public struct FileSettingInformation
-        {
-            public string Name { get; set; }
-            public int Value { get; set; }
-        }
     }
 }

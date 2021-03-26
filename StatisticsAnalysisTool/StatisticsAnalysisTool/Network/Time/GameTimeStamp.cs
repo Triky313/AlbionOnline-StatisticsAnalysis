@@ -18,7 +18,8 @@ namespace StatisticsAnalysisTool.Network.Time
             Ticks = iTicks;
         }
 
-        public static TimeSourceDelegate TimeSource {
+        public static TimeSourceDelegate TimeSource
+        {
             get => pTimeSource;
             set => pTimeSource = value;
         }
@@ -37,8 +38,7 @@ namespace StatisticsAnalysisTool.Network.Time
         public static readonly GameTimeStamp Zero = new GameTimeStamp(0L);
         public readonly long Ticks;
 
-        [ThreadStatic] 
-        private static TimeSourceDelegate pTimeSource;
+        [ThreadStatic] private static TimeSourceDelegate pTimeSource;
 
         public delegate GameTimeStamp TimeSourceDelegate();
 
@@ -117,7 +117,7 @@ namespace StatisticsAnalysisTool.Network.Time
         {
             if (!(obj is GameTimeStamp))
                 throw new ArgumentException();
-            var gameTimeStamp = (GameTimeStamp)obj;
+            var gameTimeStamp = (GameTimeStamp) obj;
             if (Ticks > gameTimeStamp.Ticks)
                 return 1;
             if (Ticks == gameTimeStamp.Ticks)
@@ -137,7 +137,7 @@ namespace StatisticsAnalysisTool.Network.Time
         public override bool Equals(object value)
         {
             if (value is GameTimeStamp)
-                return ((GameTimeStamp)value).Ticks == Ticks;
+                return ((GameTimeStamp) value).Ticks == Ticks;
             throw new ArgumentException();
         }
 
@@ -148,7 +148,7 @@ namespace StatisticsAnalysisTool.Network.Time
 
         public override int GetHashCode()
         {
-            return (int)Ticks;
+            return (int) Ticks;
         }
 
         public override string ToString()

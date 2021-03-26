@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Annotations;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
@@ -8,14 +8,16 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
     {
         private string _name;
 
-        public string Name {
+        public string Name
+        {
             get => _name;
-            set {
+            set
+            {
                 _name = value;
                 OnPropertyChanged();
             }
         }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

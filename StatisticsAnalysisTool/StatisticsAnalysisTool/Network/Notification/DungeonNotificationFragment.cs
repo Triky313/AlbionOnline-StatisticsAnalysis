@@ -1,48 +1,56 @@
-﻿using Newtonsoft.Json;
-using StatisticsAnalysisTool.Annotations;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Annotations;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
     public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
     {
-        private int _dungeonCounter;
-        private List<Guid> _mapsGuid;
-        private double _fame;
-        private string _runTimeString;
-        private DateTime _enterDungeonMap;
         private readonly List<DungeonRun> _dungeonRuns = new List<DungeonRun>();
-        private DungeonStatus _status;
-        private bool _isBestTime;
-        private bool _isBestFame;
-        private TimeSpan _totalTime;
-        private string _mainMapIndex;
         private bool _diedInDungeon;
-        private ObservableCollection<DungeonChestFragment> _dungeonChests = new ObservableCollection<DungeonChestFragment>();
-        private DungeonMode _mode = DungeonMode.Unknown;
-        private Faction _faction;
         private string _diedName;
-        private string _killedBy;
-        private string _mainMapName;
-        private double _reSpec;
-        private double _silver;
+        private ObservableCollection<DungeonChestFragment> _dungeonChests = new ObservableCollection<DungeonChestFragment>();
+        private int _dungeonCounter;
+        private DateTime _enterDungeonMap;
+        private Faction _faction;
+        private double _fame;
         private double _famePerHour;
+        private bool _isBestFame;
+        private bool _isBestFamePerHour;
+        private bool _isBestReSpec;
+        private bool _isBestReSpecPerHour;
+        private bool _isBestSilver;
+        private bool _isBestSilverPerHour;
+        private bool _isBestTime;
+        private string _killedBy;
+
+        private double? _lastReSpecValue;
+        private double? _lastSilverValue;
+        private string _mainMapIndex;
+        private string _mainMapName;
+        private List<Guid> _mapsGuid;
+        private DungeonMode _mode = DungeonMode.Unknown;
+        private double _reSpec;
         private double _reSpecPerHour;
+        private string _runTimeString;
+        private double _silver;
         private double _silverPerHour;
+        private DungeonStatus _status;
+        private TimeSpan _totalTime;
 
         public DungeonNotificationFragment(Guid firstMap, int count, string mainMapIndex, DateTime startDungeon)
         {
             MainMapIndex = mainMapIndex;
             FirstMap = firstMap;
-            MapsGuid = new List<Guid> { firstMap };
+            MapsGuid = new List<Guid> {firstMap};
             StartDungeon = startDungeon;
             EnterDungeonMap = DateTime.UtcNow;
             DungeonCounter = count;
@@ -52,7 +60,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         public ObservableCollection<DungeonChestFragment> DungeonChests
         {
             get => _dungeonChests;
-            set {
+            set
+            {
                 _dungeonChests = value;
                 OnPropertyChanged();
             }
@@ -61,7 +70,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         public Faction Faction
         {
             get => _faction;
-            set {
+            set
+            {
                 _faction = value;
                 OnPropertyChanged();
             }
@@ -70,7 +80,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         public DungeonMode Mode
         {
             get => _mode;
-            set {
+            set
+            {
                 _mode = value;
                 OnPropertyChanged();
             }
@@ -79,7 +90,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         public string MainMapIndex
         {
             get => _mainMapIndex;
-            set {
+            set
+            {
                 _mainMapIndex = value;
                 MainMapName = WorldData.GetUniqueNameOrDefault(value);
                 OnPropertyChanged();
@@ -89,91 +101,89 @@ namespace StatisticsAnalysisTool.Network.Notification
         public string MainMapName
         {
             get => _mainMapName;
-            set {
+            set
+            {
                 _mainMapName = value;
                 OnPropertyChanged();
             }
         }
 
-        public int DungeonCounter {
+        public int DungeonCounter
+        {
             get => _dungeonCounter;
-            set {
+            set
+            {
                 _dungeonCounter = value;
                 OnPropertyChanged();
             }
         }
 
         [JsonProperty]
-        public bool DiedInDungeon {
+        public bool DiedInDungeon
+        {
             get => _diedInDungeon;
-            set {
+            set
+            {
                 _diedInDungeon = value;
                 OnPropertyChanged();
             }
         }
 
-        [JsonIgnore]
-        public string DiedMessage => $"{DiedName} {LanguageController.Translation("KILLED_BY")} {KilledBy}";
+        [JsonIgnore] public string DiedMessage => $"{DiedName} {LanguageController.Translation("KILLED_BY")} {KilledBy}";
 
         [JsonProperty]
-        public string DiedName {
+        public string DiedName
+        {
             get => _diedName;
-            set {
+            set
+            {
                 _diedName = value;
                 OnPropertyChanged();
             }
         }
 
         [JsonProperty]
-        public string KilledBy {
+        public string KilledBy
+        {
             get => _killedBy;
-            set {
+            set
+            {
                 _killedBy = value;
                 OnPropertyChanged();
             }
         }
 
-        [JsonProperty]
-        public DateTime StartDungeon { get; }
+        [JsonProperty] public DateTime StartDungeon { get; }
+
+        [JsonProperty] private TimeSpan RunTimeInSeconds => TotalTime.TotalSeconds <= 0 ? DateTime.UtcNow - StartDungeon : TotalTime;
 
         [JsonProperty]
-        private TimeSpan RunTimeInSeconds => TotalTime.TotalSeconds <= 0 ? (DateTime.UtcNow - StartDungeon) : TotalTime;
-
-        [JsonProperty]
-        public DateTime EnterDungeonMap {
+        public DateTime EnterDungeonMap
+        {
             get => _enterDungeonMap;
-            set {
+            set
+            {
                 _enterDungeonMap = value;
                 OnPropertyChanged();
             }
         }
 
-        public void AddDungeonRunTime(DateTime dungeonEnd)
-        {
-            _dungeonRuns.Add(new DungeonRun() { Start = EnterDungeonMap, End = dungeonEnd });
-
-            TotalTime = new TimeSpan();
-            foreach (var dunRun in _dungeonRuns)
-            {
-                TotalTime = TotalTime.Add(dunRun.Run);
-            }
-            
-            RunTimeString = (TotalTime.Ticks <= 0) ? "00:00:00" : $"{TotalTime.Hours:D2}:{TotalTime.Minutes:D2}:{TotalTime.Seconds:D2}";
-        }
-
         public string RunTimeString
         {
             get => _runTimeString;
-            set {
+            set
+            {
                 _runTimeString = value;
                 OnPropertyChanged();
             }
         }
 
         [JsonProperty]
-        public TimeSpan TotalTime {
+        public TimeSpan TotalTime
+        {
             get => _totalTime;
-            set {
+            set
+            {
                 _totalTime = value;
                 OnPropertyChanged();
             }
@@ -183,20 +193,21 @@ namespace StatisticsAnalysisTool.Network.Notification
         public List<Guid> MapsGuid
         {
             get => _mapsGuid;
-            set {
+            set
+            {
                 _mapsGuid = value;
                 OnPropertyChanged();
             }
         }
 
-        [JsonProperty]
-        public Guid FirstMap { get; }
+        [JsonProperty] public Guid FirstMap { get; }
 
         [JsonProperty]
         public double Fame
         {
             get => _fame;
-            private set {
+            private set
+            {
                 _fame = value;
                 FamePerHour = Utilities.GetValuePerHourToDouble(value, RunTimeInSeconds);
                 OnPropertyChanged();
@@ -207,7 +218,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         public double ReSpec
         {
             get => _reSpec;
-            private set {
+            private set
+            {
                 _reSpec = value;
                 ReSpecPerHour = Utilities.GetValuePerHourToDouble(value, RunTimeInSeconds);
                 OnPropertyChanged();
@@ -218,7 +230,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         public double Silver
         {
             get => _silver;
-            private set {
+            private set
+            {
                 _silver = value;
                 SilverPerHour = Utilities.GetValuePerHourToDouble(value, RunTimeInSeconds);
                 OnPropertyChanged();
@@ -229,7 +242,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         public double FamePerHour
         {
             get => _famePerHour;
-            private set {
+            private set
+            {
                 _famePerHour = value;
                 OnPropertyChanged();
             }
@@ -239,7 +253,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         public double ReSpecPerHour
         {
             get => _reSpecPerHour;
-            private set {
+            private set
+            {
                 _reSpecPerHour = value;
                 OnPropertyChanged();
             }
@@ -249,19 +264,124 @@ namespace StatisticsAnalysisTool.Network.Notification
         public double SilverPerHour
         {
             get => _silverPerHour;
-            private set {
+            private set
+            {
                 _silverPerHour = value;
                 OnPropertyChanged();
             }
         }
 
-        private double? _lastReSpecValue;
-        private double? _lastSilverValue;
-        private bool _isBestReSpec;
-        private bool _isBestFamePerHour;
-        private bool _isBestSilver;
-        private bool _isBestReSpecPerHour;
-        private bool _isBestSilverPerHour;
+        [JsonProperty]
+        public DungeonStatus Status
+        {
+            get => _status;
+            set
+            {
+                _status = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty]
+        public bool IsBestTime
+        {
+            get => _isBestTime;
+            set
+            {
+                _isBestTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty]
+        public bool IsBestFame
+        {
+            get => _isBestFame;
+            set
+            {
+                _isBestFame = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty]
+        public bool IsBestReSpec
+        {
+            get => _isBestReSpec;
+            set
+            {
+                _isBestReSpec = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty]
+        public bool IsBestSilver
+        {
+            get => _isBestSilver;
+            set
+            {
+                _isBestSilver = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty]
+        public bool IsBestFamePerHour
+        {
+            get => _isBestFamePerHour;
+            set
+            {
+                _isBestFamePerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty]
+        public bool IsBestReSpecPerHour
+        {
+            get => _isBestReSpecPerHour;
+            set
+            {
+                _isBestReSpecPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty]
+        public bool IsBestSilverPerHour
+        {
+            get => _isBestSilverPerHour;
+            set
+            {
+                _isBestSilverPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore] public string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
+
+        [JsonIgnore] public string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
+
+        [JsonIgnore] public string TranslationSolo => LanguageController.Translation("SOLO");
+
+        [JsonIgnore] public string TranslationStandard => LanguageController.Translation("STANDARD");
+
+        [JsonIgnore] public string TranslationAvalon => LanguageController.Translation("AVALON");
+
+        [JsonIgnore] public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void AddDungeonRunTime(DateTime dungeonEnd)
+        {
+            _dungeonRuns.Add(new DungeonRun {Start = EnterDungeonMap, End = dungeonEnd});
+
+            TotalTime = new TimeSpan();
+            foreach (var dunRun in _dungeonRuns) TotalTime = TotalTime.Add(dunRun.Run);
+
+            RunTimeString = TotalTime.Ticks <= 0 ? "00:00:00" : $"{TotalTime.Hours:D2}:{TotalTime.Minutes:D2}:{TotalTime.Seconds:D2}";
+        }
 
         public void Add(double value, ValueType type)
         {
@@ -287,7 +407,7 @@ namespace StatisticsAnalysisTool.Network.Notification
                 return 0;
             }
 
-            var newSilverValue = (double)(value - lastValue);
+            var newSilverValue = (double) (value - lastValue);
 
             if (newSilverValue == 0)
             {
@@ -299,93 +419,6 @@ namespace StatisticsAnalysisTool.Network.Notification
 
             return newSilverValue;
         }
-
-        [JsonProperty]
-        public DungeonStatus Status {
-            get => _status;
-            set {
-                _status = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [JsonProperty]
-        public bool IsBestTime {
-            get => _isBestTime;
-            set {
-                _isBestTime = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [JsonProperty]
-        public bool IsBestFame {
-            get => _isBestFame;
-            set {
-                _isBestFame = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [JsonProperty]
-        public bool IsBestReSpec {
-            get => _isBestReSpec;
-            set {
-                _isBestReSpec = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [JsonProperty]
-        public bool IsBestSilver {
-            get => _isBestSilver;
-            set {
-                _isBestSilver = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [JsonProperty]
-        public bool IsBestFamePerHour {
-            get => _isBestFamePerHour;
-            set {
-                _isBestFamePerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [JsonProperty]
-        public bool IsBestReSpecPerHour {
-            get => _isBestReSpecPerHour;
-            set {
-                _isBestReSpecPerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [JsonProperty]
-        public bool IsBestSilverPerHour {
-            get => _isBestSilverPerHour;
-            set {
-                _isBestSilverPerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [JsonIgnore]
-        public string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
-        [JsonIgnore]
-        public string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
-        [JsonIgnore]
-        public string TranslationSolo => LanguageController.Translation("SOLO");
-        [JsonIgnore]
-        public string TranslationStandard => LanguageController.Translation("STANDARD");
-        [JsonIgnore]
-        public string TranslationAvalon => LanguageController.Translation("AVALON");
-        [JsonIgnore]
-        public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

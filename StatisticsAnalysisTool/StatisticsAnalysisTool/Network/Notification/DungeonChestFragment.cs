@@ -1,44 +1,50 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
     public class DungeonChestFragment : INotifyPropertyChanged
     {
         private int _id;
-        private DateTime _opened;
-        private string _uniqueName;
-        private ChestType _type;
-        private ChestRarity _rarity;
         private bool _isBossChest;
         private bool _isChestOpen;
+        private DateTime _opened;
+        private ChestRarity _rarity;
         private ChestStatus _status;
+        private ChestType _type;
+        private string _uniqueName;
 
-        public int Id {
+        public int Id
+        {
             get => _id;
-            set {
+            set
+            {
                 _id = value;
                 OnPropertyChanged();
             }
         }
 
-        public DateTime Opened {
+        public DateTime Opened
+        {
             get => _opened;
-            set {
+            set
+            {
                 _opened = value;
                 OnPropertyChanged();
             }
         }
 
-        public string UniqueName {
+        public string UniqueName
+        {
             get => _uniqueName;
-            set {
+            set
+            {
                 _uniqueName = value;
                 Type = LootChestData.GetChestType(_uniqueName);
                 Rarity = LootChestData.GetChestRarity(UniqueName);
@@ -46,65 +52,75 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public ChestType Type {
+        public ChestType Type
+        {
             get => _type;
-            set {
+            set
+            {
                 _type = value;
                 OnPropertyChanged();
             }
         }
 
-        public ChestRarity Rarity {
+        public ChestRarity Rarity
+        {
             get => _rarity;
-            set {
+            set
+            {
                 _rarity = value;
                 Status = SetStatus();
                 OnPropertyChanged();
             }
         }
 
-        public ChestStatus Status {
+        public ChestStatus Status
+        {
             get => _status;
-            set {
+            set
+            {
                 _status = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsBossChest {
+        public bool IsBossChest
+        {
             get => _isBossChest;
-            set {
+            set
+            {
                 _isBossChest = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsChestOpen {
+        public bool IsChestOpen
+        {
             get => _isChestOpen;
-            set {
+            set
+            {
                 _isChestOpen = value;
                 Status = SetStatus();
                 OnPropertyChanged();
             }
         }
 
-        [JsonIgnore]
-        public string TranslationStandard => LanguageController.Translation("STANDARD");
-        [JsonIgnore]
-        public string TranslationUncommon => LanguageController.Translation("UNCOMMON");
-        [JsonIgnore]
-        public string TranslationRare => LanguageController.Translation("RARE");
-        [JsonIgnore]
-        public string TranslationLegendary => LanguageController.Translation("LEGENDARY");
-        [JsonIgnore]
-        public string TranslationBossChest => LanguageController.Translation("BOSS_CHEST");
-        [JsonIgnore]
-        public string TranslationBookChest => LanguageController.Translation("BOOK_CHEST");
+        [JsonIgnore] public string TranslationStandard => LanguageController.Translation("STANDARD");
+
+        [JsonIgnore] public string TranslationUncommon => LanguageController.Translation("UNCOMMON");
+
+        [JsonIgnore] public string TranslationRare => LanguageController.Translation("RARE");
+
+        [JsonIgnore] public string TranslationLegendary => LanguageController.Translation("LEGENDARY");
+
+        [JsonIgnore] public string TranslationBossChest => LanguageController.Translation("BOSS_CHEST");
+
+        [JsonIgnore] public string TranslationBookChest => LanguageController.Translation("BOOK_CHEST");
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private ChestStatus SetStatus()
         {
             if (IsChestOpen)
-            {
                 switch (Rarity)
                 {
                     case ChestRarity.Standard:
@@ -116,9 +132,7 @@ namespace StatisticsAnalysisTool.Network.Notification
                     case ChestRarity.Legendary:
                         return ChestStatus.LegendaryChestOpen;
                 }
-            }
             else
-            {
                 switch (Rarity)
                 {
                     case ChestRarity.Standard:
@@ -130,12 +144,9 @@ namespace StatisticsAnalysisTool.Network.Notification
                     case ChestRarity.Legendary:
                         return ChestStatus.LegendaryChestClose;
                 }
-            }
 
             return ChestStatus.Unknown;
         }
-        
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

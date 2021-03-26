@@ -10,6 +10,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         Chest,
         Player
     }
+
     public class Container
     {
         public string Id { get; set; }

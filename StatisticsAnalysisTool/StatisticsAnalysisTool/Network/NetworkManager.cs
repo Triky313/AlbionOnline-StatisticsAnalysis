@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Windows;
 using Albion.Network;
 using log4net;
 using PacketDotNet;
@@ -6,12 +12,6 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.Network
 {
@@ -23,7 +23,10 @@ namespace StatisticsAnalysisTool.Network
         private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController, ValueCountUpTimer valueCountUpTimerTimer)
+        public static bool IsNetworkCaptureRunning => _capturedDevices.Where(device => device.Started).Any(device => device.Started);
+
+        public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController,
+            ValueCountUpTimer valueCountUpTimerTimer)
         {
             try
             {
@@ -52,7 +55,7 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
                 builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
                 builder.AddEventHandler(new PartySilverGainedEventHandler());
-                
+
                 //builder.AddResponseHandler(new TestHandler());
                 //builder.AddEventHandler(new TestHandler2());
                 //builder.AddRequestHandler(new TestHandler3());
@@ -75,17 +78,11 @@ namespace StatisticsAnalysisTool.Network
 
         private static bool StartDeviceCapture()
         {
-            if (_capturedDevices.Count <= 0)
-            {
-                return false;
-            }
+            if (_capturedDevices.Count <= 0) return false;
 
             try
             {
-                foreach (var device in _capturedDevices)
-                {
-                    PacketEvent(device);
-                }
+                foreach (var device in _capturedDevices) PacketEvent(device);
             }
             catch (Exception e)
             {
@@ -94,21 +91,19 @@ namespace StatisticsAnalysisTool.Network
                 _mainWindowViewModel.StopTracking();
                 return false;
             }
-            
+
             return true;
         }
 
         public static void StopNetworkCapture()
         {
             foreach (var device in _capturedDevices.Where(device => device.Started))
-            {
                 Task.Run(() =>
                 {
                     device.StopCapture();
                     device.Close();
                     builder = null;
                 });
-            }
             _capturedDevices.Clear();
         }
 
@@ -125,17 +120,12 @@ namespace StatisticsAnalysisTool.Network
             });
         }
 
-        public static bool IsNetworkCaptureRunning => _capturedDevices.Where(device => device.Started).Any(device => device.Started);
-
         private static void PacketHandler(object sender, CaptureEventArgs e)
         {
             try
             {
                 var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data).Extract<UdpPacket>();
-                if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
-                {
-                    _receiver.ReceivePacket(packet.PayloadData);
-                }
+                if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056)) _receiver.ReceivePacket(packet.PayloadData);
             }
             catch (OverflowException ex)
             {

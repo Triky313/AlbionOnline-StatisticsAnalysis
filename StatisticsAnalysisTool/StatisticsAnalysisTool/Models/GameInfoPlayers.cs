@@ -1,8 +1,8 @@
-﻿namespace StatisticsAnalysisTool.Models
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace StatisticsAnalysisTool.Models
+{
     public class GameInfoPlayersResponse
     {
         public double AverageItemPower { get; set; }

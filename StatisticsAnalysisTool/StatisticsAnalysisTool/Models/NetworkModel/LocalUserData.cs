@@ -1,5 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {

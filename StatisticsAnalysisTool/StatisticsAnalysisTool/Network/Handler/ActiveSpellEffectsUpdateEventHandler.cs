@@ -1,16 +1,17 @@
-﻿using Albion.Network;
+﻿using System.Threading.Tasks;
+using Albion.Network;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Events;
-using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class ActiveSpellEffectsUpdateEventHandler : EventPacketHandler<ActiveSpellEffectsUpdateEvent>
     {
         private readonly TrackingController _trackingController;
+
         public ActiveSpellEffectsUpdateEventHandler(TrackingController trackingController) : base((int) EventCodes.ActiveSpellEffectsUpdate)
         {
             _trackingController = trackingController;
@@ -20,7 +21,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (value.CauserId != null)
             {
-                var spellEffect = new SpellEffect()
+                var spellEffect = new SpellEffect
                 {
                     CauserId = value.CauserId.ObjectToLong() ?? 0,
                     SpellIndex = value.SpellIndex

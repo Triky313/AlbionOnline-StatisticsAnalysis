@@ -1,26 +1,26 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using log4net;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Network
 {
     public class FameCountUpTimer : ICountUpTimer
     {
-        private readonly MainWindowViewModel _mainWindowViewModel;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private bool _isCurrentTimerUpdateActive;
-        private DateTime _startTime;
-        private double _totalGainedFame;
-        private int? _taskId;
 
         private readonly List<ValuePerHour> _famePerHourList = new List<ValuePerHour>();
+        private readonly MainWindowViewModel _mainWindowViewModel;
+        private bool _isCurrentTimerUpdateActive;
+        private DateTime _startTime;
+        private int? _taskId;
+        private double _totalGainedFame;
 
         public FameCountUpTimer(MainWindowViewModel mainWindowViewModel)
         {
@@ -29,7 +29,7 @@ namespace StatisticsAnalysisTool.Network
 
         public void Add(double value)
         {
-            _famePerHourList.Add(new ValuePerHour() { DateTime = DateTime.Now, Value = value });
+            _famePerHourList.Add(new ValuePerHour {DateTime = DateTime.Now, Value = value});
             _famePerHourList.RemoveAll(x => x.DateTime < DateTime.Now.AddHours(-1));
 
             _totalGainedFame = _famePerHourList.Sum(x => x.Value);
@@ -38,15 +38,9 @@ namespace StatisticsAnalysisTool.Network
 
         public void Start()
         {
-            if (_isCurrentTimerUpdateActive)
-            {
-                return;
-            }
+            if (_isCurrentTimerUpdateActive) return;
 
-            if (_startTime.Millisecond <= 0)
-            {
-                _startTime = DateTime.Now;
-            }
+            if (_startTime.Millisecond <= 0) _startTime = DateTime.Now;
             CurrentTimerUpdate();
         }
 
@@ -67,10 +61,7 @@ namespace StatisticsAnalysisTool.Network
 
         private void CurrentTimerUpdate()
         {
-            if (_isCurrentTimerUpdateActive)
-            {
-                return;
-            }
+            if (_isCurrentTimerUpdateActive) return;
 
             _isCurrentTimerUpdateActive = true;
 
@@ -87,17 +78,11 @@ namespace StatisticsAnalysisTool.Network
 
         private void KillTimerTask(int? taskId)
         {
-            if (taskId == null)
-            {
-                return;
-            }
+            if (taskId == null) return;
 
             try
             {
-                if (Process.GetProcesses().Any(x => x.Id == (int)taskId))
-                {
-                    Process.GetProcessById((int)taskId).Kill();
-                }
+                if (Process.GetProcesses().Any(x => x.Id == (int) taskId)) Process.GetProcessById((int) taskId).Kill();
             }
             catch (Exception e)
             {

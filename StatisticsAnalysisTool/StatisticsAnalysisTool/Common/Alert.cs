@@ -1,25 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using log4net;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Views;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common
 {
     public class Alert
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly MainWindow _mainWindow;
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private AlertController AlertController { get; }
-        private Item _item;
         private int _alertModeMinSellPriceIsUndercutPrice;
         private bool _isEventActive;
+        private Item _item;
 
         public Alert(MainWindow mainWindow, AlertController alertController, Item item, int alertModeMinSellPriceIsUndercutPrice)
         {
@@ -29,13 +29,32 @@ namespace StatisticsAnalysisTool.Common
             AlertModeMinSellPriceIsUndercutPrice = alertModeMinSellPriceIsUndercutPrice;
         }
 
+        private AlertController AlertController { get; }
+
+        public Item Item
+        {
+            get => _item;
+            set
+            {
+                _item = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int AlertModeMinSellPriceIsUndercutPrice
+        {
+            get => _alertModeMinSellPriceIsUndercutPrice;
+            set
+            {
+                _alertModeMinSellPriceIsUndercutPrice = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void StartEvent()
         {
-            if (_isEventActive)
-            {
-                return;
-            }
-            
+            if (_isEventActive) return;
+
             _isEventActive = true;
             AlertEventAsync(_item.UniqueName);
         }
@@ -49,16 +68,14 @@ namespace StatisticsAnalysisTool.Common
         private async void AlertEventAsync(string uniqueName)
         {
             while (_isEventActive)
-            {
                 try
                 {
                     var cityPrices = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, null, null).ConfigureAwait(false);
 
                     foreach (var marketResponse in cityPrices ?? new List<MarketResponse>())
-                    {
-                        if (Locations.GetName(marketResponse.City) != Location.BlackMarket  
-                            && marketResponse.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5) 
-                            && marketResponse.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice 
+                        if (Locations.GetName(marketResponse.City) != Location.BlackMarket
+                            && marketResponse.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5)
+                            && marketResponse.SellPriceMin <= (ulong) AlertModeMinSellPriceIsUndercutPrice
                             && AlertModeMinSellPriceIsUndercutPrice > 0)
                         {
                             SoundController.PlayAlertSound();
@@ -73,7 +90,6 @@ namespace StatisticsAnalysisTool.Common
 
                             break;
                         }
-                    }
 
                     await Task.Delay(25000);
                 }
@@ -86,23 +102,6 @@ namespace StatisticsAnalysisTool.Common
                     Log.Warn(nameof(AlertEventAsync), e);
                     return;
                 }
-            }
-        }
-
-        public Item Item {
-            get => _item;
-            set {
-                _item = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int AlertModeMinSellPriceIsUndercutPrice {
-            get => _alertModeMinSellPriceIsUndercutPrice;
-            set {
-                _alertModeMinSellPriceIsUndercutPrice = value;
-                OnPropertyChanged();
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

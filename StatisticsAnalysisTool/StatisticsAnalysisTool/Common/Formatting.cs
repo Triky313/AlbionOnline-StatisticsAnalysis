@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Globalization;
 
 namespace StatisticsAnalysisTool.Common
 {
-    using System.Globalization;
-
     public class Formatting
     {
-        public static string CurrentDateTimeFormat(DateTime value) => DateTime.SpecifyKind(value, DateTimeKind.Utc).ToLocalTime().ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        public static string CurrentDateTimeFormat(DateTime value)
+        {
+            return DateTime.SpecifyKind(value, DateTimeKind.Utc).ToLocalTime()
+                .ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        }
 
         public static string DateTimeToLastUpdateTime(DateTime dateTime)
         {
@@ -16,20 +19,11 @@ namespace StatisticsAnalysisTool.Common
             var hours = (endTime - startTime).TotalHours;
             var days = (endTime - startTime).TotalDays;
 
-            if (minutes <= 120)
-            {
-                return $"{minutes:N0} {LanguageController.Translation("MINUTES")}";
-            }
+            if (minutes <= 120) return $"{minutes:N0} {LanguageController.Translation("MINUTES")}";
 
-            if (hours <= 48)
-            {
-                return $"{hours:N0} {LanguageController.Translation("HOURS")}";
-            }
+            if (hours <= 48) return $"{hours:N0} {LanguageController.Translation("HOURS")}";
 
-            if (days <= 365)
-            {
-                return $"{days:N0} {LanguageController.Translation("DAYS")}";
-            }
+            if (days <= 365) return $"{days:N0} {LanguageController.Translation("DAYS")}";
 
             return $"{LanguageController.Translation("OVER_A_YEAR")}";
         }
@@ -54,10 +48,7 @@ namespace StatisticsAnalysisTool.Common
                 return (num / 100f).ToString("#.00'K'", CultureInfo.CurrentCulture);
             }
 
-            if (num < 1000)
-            {
-                return num.ToString("N0", CultureInfo.CurrentCulture);
-            }
+            if (num < 1000) return num.ToString("N0", CultureInfo.CurrentCulture);
 
             if (num < 10000)
             {

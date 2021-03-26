@@ -5,17 +5,19 @@ namespace StatisticsAnalysisTool.Common
 {
     public class WebDownload : WebClient
     {
-        /// <summary>
-        /// Time in milliseconds
-        /// </summary>
-        public int Timeout { get; set; }
-
-        public WebDownload() : this(30000) { }
+        public WebDownload() : this(30000)
+        {
+        }
 
         public WebDownload(int timeout)
         {
             Timeout = timeout;
         }
+
+        /// <summary>
+        ///     Time in milliseconds
+        /// </summary>
+        public int Timeout { get; set; }
 
         protected override WebRequest GetWebRequest(Uri address)
         {

@@ -35,20 +35,14 @@
 
         public static GameTimeSpan FromSeconds(double fSeconds)
         {
-            return new GameTimeSpan((long)(fSeconds * TicksPerSecond + 0.5));
+            return new GameTimeSpan((long) (fSeconds * TicksPerSecond + 0.5));
         }
 
         public string ToStringVerbose()
         {
-            if (Ticks < TicksPerMinute)
-            {
-                return $"{Seconds:0}.{Milliseconds:000}s";
-            }
+            if (Ticks < TicksPerMinute) return $"{Seconds:0}.{Milliseconds:000}s";
 
-            if (Ticks < TicksPerHour)
-            {
-                return $"{Minutes:0}:{Seconds:00}.{Milliseconds:000}";
-            }
+            if (Ticks < TicksPerHour) return $"{Minutes:0}:{Seconds:00}.{Milliseconds:000}";
 
             return $"{Hours + Days * 24L:0}:{Minutes:00}:{Seconds:00}.{Milliseconds:000}";
         }

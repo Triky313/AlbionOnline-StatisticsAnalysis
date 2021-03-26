@@ -1,52 +1,62 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Annotations;
 
 namespace StatisticsAnalysisTool.Models
 {
     public class DungeonStats : INotifyPropertyChanged
     {
         private int _enteredDungeon;
+        private int _openedLegendaryChests;
+        private int _openedRareChests;
         private int _openedStandardChests;
         private int _openedUncommonChests;
-        private int _openedRareChests;
-        private int _openedLegendaryChests;
 
-        public int EnteredDungeon {
+        public int EnteredDungeon
+        {
             get => _enteredDungeon;
-            set {
+            set
+            {
                 _enteredDungeon = value;
                 OnPropertyChanged();
             }
         }
 
-        public int OpenedStandardChests {
+        public int OpenedStandardChests
+        {
             get => _openedStandardChests;
-            set {
+            set
+            {
                 _openedStandardChests = value;
                 OnPropertyChanged();
             }
         }
 
-        public int OpenedUncommonChests {
+        public int OpenedUncommonChests
+        {
             get => _openedUncommonChests;
-            set {
+            set
+            {
                 _openedUncommonChests = value;
                 OnPropertyChanged();
             }
         }
 
-        public int OpenedRareChests {
+        public int OpenedRareChests
+        {
             get => _openedRareChests;
-            set {
+            set
+            {
                 _openedRareChests = value;
                 OnPropertyChanged();
             }
         }
 
-        public int OpenedLegendaryChests {
+        public int OpenedLegendaryChests
+        {
             get => _openedLegendaryChests;
-            set {
+            set
+            {
                 _openedLegendaryChests = value;
                 OnPropertyChanged();
             }

@@ -1,9 +1,3 @@
-using log4net;
-using Newtonsoft.Json;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -12,10 +6,15 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.GameData
 {
-
     public static class WorldData
     {
         public static ObservableCollection<ClusterInfo> MapData;
@@ -24,12 +23,9 @@ namespace StatisticsAnalysisTool.GameData
         public static string GetUniqueNameOrDefault(string index)
         {
             var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;
-            var splitName = name?.Split(new[] { "@" }, StringSplitOptions.None);
+            var splitName = name?.Split(new[] {"@"}, StringSplitOptions.None);
 
-            if (splitName != null && splitName.Length > 0 && name.ToLower().Contains('@'))
-            {
-                return GetMapNameByMapType(GetMapType(splitName[1]));
-            }
+            if (splitName != null && splitName.Length > 0 && name.ToLower().Contains('@')) return GetMapNameByMapType(GetMapType(splitName[1]));
 
             return name;
         }
@@ -38,7 +34,7 @@ namespace StatisticsAnalysisTool.GameData
         {
             try
             {
-                var splitName = index.Split(new[] { "@" }, StringSplitOptions.RemoveEmptyEntries);
+                var splitName = index.Split(new[] {"@"}, StringSplitOptions.RemoveEmptyEntries);
 
                 if (splitName.Length > 1 && index.ToLower().Contains('@'))
                 {
@@ -79,30 +75,15 @@ namespace StatisticsAnalysisTool.GameData
 
         public static MapType GetMapType(string index)
         {
-            if (index.ToUpper().Contains("HELLCLUSTER"))
-            {
-                return MapType.HellGate;
-            }
+            if (index.ToUpper().Contains("HELLCLUSTER")) return MapType.HellGate;
 
-            if (index.ToUpper().Contains("RANDOMDUNGEON"))
-            {
-                return MapType.RandomDungeon;
-            }
+            if (index.ToUpper().Contains("RANDOMDUNGEON")) return MapType.RandomDungeon;
 
-            if (index.ToUpper().Contains("CORRUPTEDDUNGEON"))
-            {
-                return MapType.CorruptedDungeon;
-            }
+            if (index.ToUpper().Contains("CORRUPTEDDUNGEON")) return MapType.CorruptedDungeon;
 
-            if (index.ToUpper().Contains("ISLAND"))
-            {
-                return MapType.Island;
-            }
+            if (index.ToUpper().Contains("ISLAND")) return MapType.Island;
 
-            if (index.ToUpper().Contains("HIDEOUT"))
-            {
-                return MapType.Hideout;
-            }
+            if (index.ToUpper().Contains("HIDEOUT")) return MapType.Hideout;
 
             return MapType.Unknown;
         }
@@ -124,34 +105,29 @@ namespace StatisticsAnalysisTool.GameData
 
                 if (fileDateTime.AddDays(Settings.Default.UpdateWorldDataByDays) < DateTime.Now)
                 {
-                    if (await GetWorldListFromWebAsync(url))
-                    {
-                        MapData = GetWorldDataFromLocal();
-                    }
-                    return (MapData?.Count > 0);
+                    if (await GetWorldListFromWebAsync(url)) MapData = GetWorldDataFromLocal();
+                    return MapData?.Count > 0;
                 }
 
                 MapData = GetWorldDataFromLocal();
-                return (MapData?.Count > 0);
+                return MapData?.Count > 0;
             }
 
-            if (await GetWorldListFromWebAsync(url))
-            {
-                MapData = GetWorldDataFromLocal();
-            }
-            return (MapData?.Count > 0);
+            if (await GetWorldListFromWebAsync(url)) MapData = GetWorldDataFromLocal();
+            return MapData?.Count > 0;
         }
 
-        public static ClusterInfo GetClusterInfoByIndex(string clusterIndex, string mainClusterIndex, MapType mapType = MapType.Unknown, Guid? guid = null)
+        public static ClusterInfo GetClusterInfoByIndex(string clusterIndex, string mainClusterIndex, MapType mapType = MapType.Unknown,
+            Guid? guid = null)
         {
-            return MapData.FirstOrDefault(x => x.Index == clusterIndex) ?? new ClusterInfo()
+            return MapData.FirstOrDefault(x => x.Index == clusterIndex) ?? new ClusterInfo
             {
-                Index = clusterIndex, 
-                MainClusterIndex = mainClusterIndex, 
-                UniqueName = GetUniqueNameOrDefault(clusterIndex), 
+                Index = clusterIndex,
+                MainClusterIndex = mainClusterIndex,
+                UniqueName = GetUniqueNameOrDefault(clusterIndex),
                 MapType = mapType,
                 Type = GetTypeByIndex(clusterIndex) ?? GetTypeByIndex(mainClusterIndex) ?? string.Empty,
-                Guid = guid,
+                Guid = guid
             };
         }
 
@@ -162,26 +138,13 @@ namespace StatisticsAnalysisTool.GameData
 
         public static ClusterType GetClusterType(string type)
         {
+            if (type.ToUpper().Contains("SAFEAREA")) return ClusterType.SafeArea;
 
-            if (type.ToUpper().Contains("SAFEAREA"))
-            {
-                return ClusterType.SafeArea;
-            }
+            if (type.ToUpper().Contains("YELLOW")) return ClusterType.Yellow;
 
-            if (type.ToUpper().Contains("YELLOW"))
-            {
-                return ClusterType.Yellow;
-            }
+            if (type.ToUpper().Contains("RED")) return ClusterType.Red;
 
-            if (type.ToUpper().Contains("RED"))
-            {
-                return ClusterType.Red;
-            }
-
-            if (type.ToUpper().Contains("BLACK"))
-            {
-                return ClusterType.Black;
-            }
+            if (type.ToUpper().Contains("BLACK")) return ClusterType.Black;
 
             return ClusterType.Unknown;
         }
@@ -192,10 +155,12 @@ namespace StatisticsAnalysisTool.GameData
         {
             try
             {
-                var localItemString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"GameFiles",Settings.Default.WorldDataFileName), Encoding.UTF8);
+                var localItemString =
+                    File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName),
+                        Encoding.UTF8);
                 return ConvertItemJsonObjectToMapData(JsonConvert.DeserializeObject<ObservableCollection<WorldJsonObject>>(localItemString));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.Error(nameof(GetWorldDataFromLocal), e);
                 return new ObservableCollection<ClusterInfo>();
@@ -204,7 +169,7 @@ namespace StatisticsAnalysisTool.GameData
 
         private static ObservableCollection<ClusterInfo> ConvertItemJsonObjectToMapData(ObservableCollection<WorldJsonObject> worldJsonObject)
         {
-            var result = worldJsonObject.Select(item => new ClusterInfo()
+            var result = worldJsonObject.Select(item => new ClusterInfo
             {
                 Index = item.Index,
                 UniqueName = item.UniqueName,
@@ -226,7 +191,8 @@ namespace StatisticsAnalysisTool.GameData
                         using (var content = response.Content)
                         {
                             var fileString = await content.ReadAsStringAsync();
-                            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName), fileString, Encoding.UTF8);
+                            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName),
+                                fileString, Encoding.UTF8);
                             return true;
                         }
                     }
@@ -242,7 +208,8 @@ namespace StatisticsAnalysisTool.GameData
         #endregion
     }
 
-    public enum MapType {
+    public enum MapType
+    {
         RandomDungeon,
         HellGate,
         CorruptedDungeon,

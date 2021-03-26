@@ -15,13 +15,15 @@ namespace StatisticsAnalysisTool.Network.Controller
 {
     public class EntityController
     {
-        private readonly MainWindow _mainWindow;
-        private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new ConcurrentDictionary<Guid, PlayerGameObject>();
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new ConcurrentDictionary<Guid, string>();
+        private readonly MainWindow _mainWindow;
+        private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly ObservableCollection<EquipmentItem> _newEquipmentItems = new ObservableCollection<EquipmentItem>();
         private readonly ObservableCollection<SpellEffect> _spellEffects = new ObservableCollection<SpellEffect>();
-        private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new ConcurrentDictionary<long, CharacterEquipmentData>();
+
+        private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData =
+            new ConcurrentDictionary<long, CharacterEquipmentData>();
 
         public EntityController(MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -38,7 +40,6 @@ namespace StatisticsAnalysisTool.Network.Controller
             PlayerGameObject gameObject;
 
             if (_knownEntities.TryRemove(userGuid, out var oldEntity))
-            {
                 gameObject = new PlayerGameObject(objectId)
                 {
                     Name = name,
@@ -50,9 +51,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     CombatTime = oldEntity.CombatTime,
                     Damage = oldEntity.Damage
                 };
-            }
             else
-            {
                 gameObject = new PlayerGameObject(objectId)
                 {
                     Name = name,
@@ -60,7 +59,6 @@ namespace StatisticsAnalysisTool.Network.Controller
                     UserGuid = userGuid,
                     ObjectSubType = objectSubType
                 };
-            }
 
             if (_tempCharacterEquipmentData.TryGetValue(objectId, out var characterEquipmentData))
             {
@@ -75,15 +73,12 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void RemoveAllEntities()
         {
-            foreach (var entity in _knownEntities.Where(x => x.Value.ObjectSubType != GameObjectSubType.LocalPlayer && !_knownPartyEntities.ContainsKey(x.Key)))
-            {
+            foreach (var entity in _knownEntities.Where(x =>
+                x.Value.ObjectSubType != GameObjectSubType.LocalPlayer && !_knownPartyEntities.ContainsKey(x.Key)))
                 _knownEntities.TryRemove(entity.Key, out _);
-            }
 
-            foreach (var entity in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer || _knownPartyEntities.ContainsKey(x.Key)))
-            {
-                entity.Value.ObjectId = null;
-            }
+            foreach (var entity in _knownEntities.Where(x =>
+                x.Value.ObjectSubType == GameObjectSubType.LocalPlayer || _knownPartyEntities.ContainsKey(x.Key))) entity.Value.ObjectId = null;
         }
 
         public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
@@ -102,10 +97,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void AddToParty(Guid guid, string username)
         {
-            if (_knownPartyEntities.All(x => x.Key != guid))
-            {
-                _knownPartyEntities.TryAdd(guid, username);
-            }
+            if (_knownPartyEntities.All(x => x.Key != guid)) _knownPartyEntities.TryAdd(guid, username);
 
             SetPartyMemberUi();
         }
@@ -114,10 +106,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             var partyMember = _knownPartyEntities.FirstOrDefault(x => x.Value == username);
 
-            if (partyMember.Value != null)
-            {
-                _knownPartyEntities.TryRemove(partyMember.Key, out _);
-            }
+            if (partyMember.Value != null) _knownPartyEntities.TryRemove(partyMember.Key, out _);
 
             SetPartyMemberUi();
         }
@@ -127,22 +116,14 @@ namespace StatisticsAnalysisTool.Network.Controller
             _knownPartyEntities.Clear();
 
             foreach (var member in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer))
-            {
                 _knownPartyEntities.TryAdd(member.Key, member.Value.Name);
-            }
         }
 
         public void SetParty(Dictionary<Guid, string> party, bool resetPartyBefore = false)
         {
-            if (resetPartyBefore)
-            {
-                ResetPartyMember();
-            }
+            if (resetPartyBefore) ResetPartyMember();
 
-            foreach (var member in party)
-            {
-                AddToParty(member.Key, member.Value);
-            }
+            foreach (var member in party) AddToParty(member.Key, member.Value);
 
             SetPartyMemberUi();
         }
@@ -152,10 +133,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindow.Dispatcher.Invoke(() =>
             {
                 _mainWindowViewModel.PartyMemberCircles.Clear();
-                foreach (var member in _knownPartyEntities)
-                {
-                    _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle() { Name = member.Value });
-                }
+                foreach (var member in _knownPartyEntities) _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle {Name = member.Value});
             });
         }
 
@@ -167,10 +145,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         public bool IsUserInParty(long objectId)
         {
             var entity = _knownEntities.FirstOrDefault(x => x.Value.ObjectId == objectId);
-            if (entity.Value == null)
-            {
-                return false;
-            }
+            if (entity.Value == null) return false;
 
             return _knownPartyEntities.Any(x => x.Value == entity.Value.Name);
         }
@@ -183,36 +158,26 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
             if (entity?.Value != null)
-            {
                 entity.Value.Value.CharacterEquipment = equipment;
-            }
             else
-            {
-                _tempCharacterEquipmentData.TryAdd(objectId, new CharacterEquipmentData()
+                _tempCharacterEquipmentData.TryAdd(objectId, new CharacterEquipmentData
                 {
                     CharacterEquipment = equipment,
                     TimeStamp = DateTime.UtcNow
                 });
-            }
         }
 
         public void ResetTempCharacterEquipment()
         {
             foreach (var characterEquipment in _tempCharacterEquipmentData)
-            {
                 if (Utilities.IsBlockingTimeExpired(characterEquipment.Value.TimeStamp, 30))
-                {
                     _tempCharacterEquipmentData.TryRemove(characterEquipment.Key, out _);
-                }
-            }
         }
 
         public void AddEquipmentItem(EquipmentItem item)
         {
-            if (_newEquipmentItems.Any(x => x.ItemIndex.Equals(item.ItemIndex) && x.SpellDictionary.Values == item.SpellDictionary.Values) || item.SpellDictionary.Count <= 0)
-            {
-                return;
-            }
+            if (_newEquipmentItems.Any(x => x.ItemIndex.Equals(item.ItemIndex) && x.SpellDictionary.Values == item.SpellDictionary.Values) ||
+                item.SpellDictionary.Count <= 0) return;
 
             lock (item)
             {
@@ -224,15 +189,9 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void AddSpellEffect(SpellEffect spell)
         {
-            if (!IsUserInParty(spell.CauserId))
-            {
-                return;
-            }
+            if (!IsUserInParty(spell.CauserId)) return;
 
-            if (_spellEffects.Any(x => x.CauserId.Equals(spell.CauserId) && x.SpellIndex.Equals(spell.SpellIndex)))
-            {
-                return;
-            }
+            if (_spellEffects.Any(x => x.CauserId.Equals(spell.CauserId) && x.SpellIndex.Equals(spell.SpellIndex))) return;
 
             lock (spell)
             {
@@ -247,40 +206,30 @@ namespace StatisticsAnalysisTool.Network.Controller
             var playerItemList = new Dictionary<long, int>();
 
             foreach (var item in _newEquipmentItems.ToList())
+            foreach (var spell in from itemSpell in item.SpellDictionary
+                from spell in _spellEffects
+                where spell.SpellIndex.Equals(itemSpell.Value)
+                select spell)
             {
-                foreach (var spell in from itemSpell in item.SpellDictionary from spell in _spellEffects where spell.SpellIndex.Equals(itemSpell.Value) select spell)
-                {
-                    if (playerItemList.Any(x => x.Key.Equals(spell.CauserId)))
-                    {
-                        continue;
-                    }
+                if (playerItemList.Any(x => x.Key.Equals(spell.CauserId))) continue;
 
-                    playerItemList.Add(spell.CauserId, item.ItemIndex);
-                }
+                playerItemList.Add(spell.CauserId, item.ItemIndex);
             }
 
-            foreach (var playerItem in playerItemList.ToList())
-            {
-                SetCharacterMainHand(playerItem.Key, playerItem.Value);
-            }
+            foreach (var playerItem in playerItemList.ToList()) SetCharacterMainHand(playerItem.Key, playerItem.Value);
         }
 
         private void SetCharacterMainHand(long objectId, int itemIndex)
         {
             var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
 
-            if (entity?.Value == null)
-            {
-                return;
-            }
+            if (entity?.Value == null) return;
 
             if (entity.Value.Value?.CharacterEquipment == null)
-            {
-                entity.Value.Value.CharacterEquipment = new CharacterEquipment()
+                entity.Value.Value.CharacterEquipment = new CharacterEquipment
                 {
                     MainHand = itemIndex
                 };
-            }
 
             //if (entity.Value.Value != null)
             //{
@@ -291,20 +240,16 @@ namespace StatisticsAnalysisTool.Network.Controller
         private void RemoveSpellAndEquipmentObjects()
         {
             foreach (var item in _newEquipmentItems.Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)).ToList())
-            {
                 lock (item)
                 {
                     _newEquipmentItems.Remove(item);
                 }
-            }
 
             foreach (var spell in _spellEffects.Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)).ToList())
-            {
                 lock (spell)
                 {
                     _spellEffects.Remove(spell);
                 }
-            }
         }
 
         public class CharacterEquipmentData
@@ -319,26 +264,17 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void ResetEntitiesDamageStartTime()
         {
-            foreach (var entity in _knownEntities)
-            {
-                entity.Value.CombatStart = null;
-            }
+            foreach (var entity in _knownEntities) entity.Value.CombatStart = null;
         }
 
         public void ResetEntitiesDamageTimes()
         {
-            foreach (var entity in _knownEntities)
-            {
-                entity.Value.ResetCombatTimes();
-            }
+            foreach (var entity in _knownEntities) entity.Value.ResetCombatTimes();
         }
 
         public void ResetEntitiesDamage()
         {
-            foreach (var entity in _knownEntities)
-            {
-                entity.Value.Damage = 0;
-            }
+            foreach (var entity in _knownEntities) entity.Value.Damage = 0;
         }
 
         #endregion

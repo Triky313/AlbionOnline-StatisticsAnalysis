@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -6,12 +7,10 @@ namespace StatisticsAnalysisTool.Common
     {
         public const long InternalFactor = 10000L;
         public static readonly FixPoint One = new FixPoint(InternalFactor);
-        public double DoubleValue => (double)InternalValue / InternalFactor;
+        public double DoubleValue => (double) InternalValue / InternalFactor;
         public long IntegerValue => InternalValue / InternalFactor;
 
-        public long InternalValue {
-            get;
-        }
+        public long InternalValue { get; }
 
         private FixPoint(long internalValue)
         {
@@ -25,8 +24,8 @@ namespace StatisticsAnalysisTool.Common
 
         public static FixPoint FromFloatingPointValue(double value)
         {
-            value = System.Math.Min(System.Math.Max(value, double.MinValue), double.MaxValue);
-            return new FixPoint((long)System.Math.Round(value * InternalFactor));
+            value = Math.Min(Math.Max(value, double.MinValue), double.MaxValue);
+            return new FixPoint((long) Math.Round(value * InternalFactor));
         }
 
         public override string ToString()

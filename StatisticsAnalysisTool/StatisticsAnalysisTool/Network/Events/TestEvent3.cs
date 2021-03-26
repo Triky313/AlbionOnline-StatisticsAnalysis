@@ -1,7 +1,7 @@
-﻿using Albion.Network;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Albion.Network;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -9,16 +9,13 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public TestEvent3(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Debug.Print($"----- Join (Operations) -----");
+            Debug.Print("----- Join (Operations) -----");
 
             try
             {
-                foreach (var parameter in parameters)
-                {
-                    Debug.Print($"{parameter}");
-                }
+                foreach (var parameter in parameters) Debug.Print($"{parameter}");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.Print(e.Message);
             }

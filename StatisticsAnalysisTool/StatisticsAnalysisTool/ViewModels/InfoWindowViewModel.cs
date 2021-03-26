@@ -1,7 +1,7 @@
-﻿using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -22,17 +22,21 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Bindings
 
-        public InfoWindowTranslation Translation {
+        public InfoWindowTranslation Translation
+        {
             get => _translation;
-            set {
+            set
+            {
                 _translation = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool ShowNotAgainChecked {
+        public bool ShowNotAgainChecked
+        {
             get => _showNotAgainChecked;
-            set {
+            set
+            {
                 _showNotAgainChecked = value;
                 Settings.Default.ShowInfoWindowOnStartChecked = !_showNotAgainChecked;
                 OnPropertyChanged();

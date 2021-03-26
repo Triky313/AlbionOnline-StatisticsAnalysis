@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+﻿using System;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
-using System;
 
 namespace StatisticsAnalysisTool.Models
 {

@@ -1,12 +1,17 @@
-﻿using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
     public class PlayerGameObject : GameObject
     {
+        public PlayerGameObject(long objectId)
+        {
+            ObjectId = objectId;
+        }
+
         public Guid UserGuid { get; set; }
         public string Name { get; set; } = "Unknown";
         public CharacterEquipment CharacterEquipment { get; set; } = null;
@@ -15,11 +20,6 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public TimeSpan CombatTime { get; set; } = new TimeSpan(1);
         public long Damage { get; set; }
         public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);
-
-        public PlayerGameObject(long objectId)
-        {
-            ObjectId = objectId;
-        }
 
         public override string ToString()
         {
@@ -34,21 +34,12 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
 
         public int CompareTo(object obj)
         {
-            if (!(obj is long))
-            {
-                return -1;
-            }
+            if (!(obj is long)) return -1;
 
-            var dmg = (long)obj;
-            if (Damage > dmg)
-            {
-                return 1;
-            }
+            var dmg = (long) obj;
+            if (Damage > dmg) return 1;
 
-            if (Damage == dmg)
-            {
-                return 0;
-            }
+            if (Damage == dmg) return 0;
 
             return -1;
         }

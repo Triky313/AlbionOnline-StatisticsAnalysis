@@ -10,6 +10,6 @@
         RareChestOpen,
         LegendaryChestClose,
         LegendaryChestOpen,
-        Unknown,
+        Unknown
     }
 }

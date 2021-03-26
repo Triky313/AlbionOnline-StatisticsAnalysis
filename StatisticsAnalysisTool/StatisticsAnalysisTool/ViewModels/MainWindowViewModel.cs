@@ -1,5 +1,6 @@
 ﻿using FontAwesome5;
 using LiveCharts;
+using LiveCharts.Wpf;
 using log4net;
 using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
@@ -25,12 +26,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
-    using LiveCharts.Wpf;
-    using System.Windows.Media;
-
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private static MainWindow _mainWindow;
@@ -38,88 +37,88 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
-        private ObservableCollection<ModeStruct> _modes = new ObservableCollection<ModeStruct>();
-        private ModeStruct _modeSelection;
+        private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
+        private Visibility _allianceInformationVisibility;
+        private double _allianceInfoWidth;
         private int _currentGoldPrice;
         private string _currentGoldPriceTimestamp;
-        private SeriesCollection _seriesCollection;
-        private string[] _labels;
-        private string _textBoxGoldModeNumberOfValues;
-        private string _updateTranslation;
-        private string _numberOfValuesTranslation;
-        private string _loadTranslation;
-        private PlayerModeTranslation _playerModeTranslation = new PlayerModeTranslation();
-        private bool _isTxtSearchEnabled;
-        private string _itemCounterString;
-        private int _localImageCounter;
-        private string _fullItemInformationExistLocal;
-        private Dictionary<Category, string> _itemCategories = new Dictionary<Category, string>();
-        private Category _selectedItemCategories;
-        private Dictionary<ParentCategory, string> _itemParentCategories = new Dictionary<ParentCategory, string>();
-        private ParentCategory _selectedItemParentCategories;
-        private Dictionary<ItemTier, string> _itemTiers = new Dictionary<ItemTier, string>();
-        private ItemTier _selectedItemTier;
-        private Dictionary<ItemLevel, string> _itemLevels = new Dictionary<ItemLevel, string>();
-        private ItemLevel _selectedItemLevel;
-        private string _searchText;
-        private bool _isFullItemInfoSearchActive;
-        private Visibility _itemLevelsVisibility;
-        private Visibility _itemTiersVisibility;
-        private Visibility _itemCategoriesVisibility;
-        private Visibility _itemParentCategoriesVisibility;
-        private MainWindowTranslation _translation;
-        private string _savedPlayerInformationName;
-        private Visibility _loadFullItemInfoButtonVisibility;
-        private bool _isLoadFullItemInfoButtonEnabled;
-        private int _loadFullItemInfoProBarValue;
-        private int _loadFullItemInfoProBarMax;
-        private int _loadFullItemInfoProBarMin;
-        private Visibility _loadFullItemInfoProBarGridVisibility;
-        private Visibility _loadIconVisibility;
-        private string _loadFullItemInfoProBarCounter;
-        private bool _isFullItemInfoLoading;
-        private ICollectionView _itemsView;
-        public AlertController AlertManager;
-        private bool _isShowOnlyItemsWithAlertOnActive;
-        private bool _isTrackingActive;
-        private Brush _trackerActivationToggleColor;
-        private string _famePerHour = "0";
-        private string _totalPlayerFame = "0";
-        private string _reSpecPointsPerHour = "0";
-        private TrackingController _trackingController;
-        private DateTime? activateWaitTimer;
-        private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
-        private EFontAwesomeIcon _trackerActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
-        private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
-        private string _trackingUsername;
-        private string _trackingGuildName;
-        private string _trackingAllianceName;
-        private string _errorBarText;
-        private Visibility _errorBarVisibility;
-        private Visibility _usernameInformationVisibility;
-        private Visibility _guildInformationVisibility;
-        private Visibility _allianceInformationVisibility;
-        private bool _isTrackingResetByMapChangeActive;
-        private string _silverPerHour = "0";
-        private string _totalPlayerSilver = "0";
-        private string _totalPlayerReSpecPoints = "0";
-        private ValueCountUpTimer _valueCountUpTimer;
-        private Visibility _goldPriceVisibility;
         private Visibility _currentMapInformationVisibility;
-        private string _trackingCurrentMapName;
-        private double _usernameInfoWidth;
-        private double _guildInfoWidth;
-        private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
-        private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
-        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
         private ObservableCollection<DamageMeterFragment> _damageMeter = new ObservableCollection<DamageMeterFragment>();
+        private List<DamageMeterSortStruct> _damageMeterSort = new List<DamageMeterSortStruct>();
+        private DamageMeterSortStruct _damageMeterSortSelection;
         private DungeonStats _dungeonStatsDay = new DungeonStats();
         private DungeonStats _dungeonStatsTotal = new DungeonStats();
-        private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new ObservableCollection<PartyMemberCircle>();
+        private string _errorBarText;
+        private Visibility _errorBarVisibility;
+        private string _famePerHour = "0";
+        private string _fullItemInformationExistLocal;
+        private Visibility _goldPriceVisibility;
+        private Visibility _guildInformationVisibility;
+        private double _guildInfoWidth;
+        private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
         private bool _isDamageMeterResetByMapChangeActive;
-        private DamageMeterSortStruct _damageMeterSortSelection;
-        private List<DamageMeterSortStruct> _damageMeterSort = new List<DamageMeterSortStruct>();
+        private bool _isFullItemInfoLoading;
+        private bool _isFullItemInfoSearchActive;
+        private bool _isLoadFullItemInfoButtonEnabled;
+        private bool _isShowOnlyItemsWithAlertOnActive;
+        private bool _isTrackingActive;
+        private bool _isTrackingResetByMapChangeActive;
+        private bool _isTxtSearchEnabled;
+        private Dictionary<Category, string> _itemCategories = new Dictionary<Category, string>();
+        private Visibility _itemCategoriesVisibility;
+        private string _itemCounterString;
+        private Dictionary<ItemLevel, string> _itemLevels = new Dictionary<ItemLevel, string>();
+        private Visibility _itemLevelsVisibility;
+        private Dictionary<ParentCategory, string> _itemParentCategories = new Dictionary<ParentCategory, string>();
+        private Visibility _itemParentCategoriesVisibility;
+        private ICollectionView _itemsView;
+        private Dictionary<ItemTier, string> _itemTiers = new Dictionary<ItemTier, string>();
+        private Visibility _itemTiersVisibility;
+        private string[] _labels;
+        private Visibility _loadFullItemInfoButtonVisibility;
+        private string _loadFullItemInfoProBarCounter;
+        private Visibility _loadFullItemInfoProBarGridVisibility;
+        private int _loadFullItemInfoProBarMax;
+        private int _loadFullItemInfoProBarMin;
+        private int _loadFullItemInfoProBarValue;
+        private Visibility _loadIconVisibility;
+        private string _loadTranslation;
+        private int _localImageCounter;
+        private ObservableCollection<ModeStruct> _modes = new ObservableCollection<ModeStruct>();
+        private ModeStruct _modeSelection;
+        private string _numberOfValuesTranslation;
+        private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new ObservableCollection<PartyMemberCircle>();
+        private PlayerModeTranslation _playerModeTranslation = new PlayerModeTranslation();
+        private string _reSpecPointsPerHour = "0";
+        private string _savedPlayerInformationName;
+        private string _searchText;
+        private Category _selectedItemCategories;
+        private ItemLevel _selectedItemLevel;
+        private ParentCategory _selectedItemParentCategories;
+        private ItemTier _selectedItemTier;
+        private SeriesCollection _seriesCollection;
+        private string _silverPerHour = "0";
+        private string _textBoxGoldModeNumberOfValues;
+        private string _totalPlayerFame = "0";
+        private string _totalPlayerReSpecPoints = "0";
+        private string _totalPlayerSilver = "0";
+        private Brush _trackerActivationToggleColor;
+        private EFontAwesomeIcon _trackerActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
+        private string _trackingAllianceName;
+        private TrackingController _trackingController;
+        private string _trackingCurrentMapName;
+        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
+        private string _trackingGuildName;
+        private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
+        private string _trackingUsername;
+        private MainWindowTranslation _translation;
+        private string _updateTranslation;
+        private Visibility _usernameInformationVisibility;
+        private double _usernameInfoWidth;
+        private ValueCountUpTimer _valueCountUpTimer;
+        private DateTime? activateWaitTimer;
+        public AlertController AlertManager;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -131,22 +130,161 @@ namespace StatisticsAnalysisTool.ViewModels
             InitWindowSettings();
             Utilities.AutoUpdate();
 
-            if (!LanguageController.InitializeLanguage())
-            {
-                _mainWindow.Close();
-            }
+            if (!LanguageController.InitializeLanguage()) _mainWindow.Close();
 
             InitMainWindowData();
             InitTracking();
         }
 
+        public async void SetUiElements()
+        {
+            #region Error bar
+
+            ErrorBarVisibility = Visibility.Hidden;
+
+            #endregion
+
+            #region Set Modes to combobox
+
+            Modes.Clear();
+            Modes.Add(new ModeStruct {Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal});
+            Modes.Add(new ModeStruct {Name = LanguageController.Translation("TRACKING"), ViewMode = ViewMode.Tracking});
+            Modes.Add(new ModeStruct {Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player});
+            Modes.Add(new ModeStruct {Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold});
+            ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
+
+            #endregion Set Modes to combobox
+
+            #region Full Item Info elements
+
+            LoadFullItemInfoButtonVisibility = Visibility.Hidden;
+
+            IsFullItemInfoSearchActive = Settings.Default.IsFullItemInfoSearchActive;
+
+            ItemParentCategories = CategoryController.ParentCategoryNames;
+            SelectedItemParentCategory = ParentCategory.Unknown;
+
+            ItemTiers = FrequentlyValues.ItemTiers;
+            SelectedItemTier = ItemTier.Unknown;
+
+            ItemLevels = FrequentlyValues.ItemLevels;
+            SelectedItemLevel = ItemLevel.Unknown;
+
+            if (!IsFullItemInfoLoading) LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
+
+            #endregion Full Item Info elements
+
+            #region Gold price
+
+            var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
+            CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
+            if (!currentGoldPrice.IsNullOrEmpty())
+            {
+                CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ??
+                                            new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
+                GoldPriceVisibility = Visibility.Visible;
+            }
+            else
+            {
+                GoldPriceVisibility = Visibility.Hidden;
+            }
+
+            #endregion Gold price
+
+            #region Player information
+
+            SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
+
+            #endregion Player information
+
+            #region Tracking
+
+            UsernameInformationVisibility = Visibility.Hidden;
+            GuildInformationVisibility = Visibility.Hidden;
+            AllianceInformationVisibility = Visibility.Hidden;
+            CurrentMapInformationVisibility = Visibility.Hidden;
+
+            IsTrackingResetByMapChangeActive = Settings.Default.IsTrackingResetByMapChangeActive;
+
+            var sortByDamageStruct = new DamageMeterSortStruct
+            {
+                Name = Translation.SortByDamage,
+                DamageMeterSortType = DamageMeterSortType.Damage
+            };
+            var sortByDpsStruct = new DamageMeterSortStruct
+            {
+                Name = Translation.SortByDps,
+                DamageMeterSortType = DamageMeterSortType.Dps
+            };
+            var sortByNameStruct = new DamageMeterSortStruct
+            {
+                Name = Translation.SortByName,
+                DamageMeterSortType = DamageMeterSortType.Name
+            };
+
+            DamageMeterSort.Clear();
+            DamageMeterSort.Add(sortByDamageStruct);
+            DamageMeterSort.Add(sortByDpsStruct);
+            DamageMeterSort.Add(sortByNameStruct);
+            DamageMeterSortSelection = sortByDamageStruct;
+
+            #endregion
+        }
+
+        #region Alert
+
+        public void ToggleAlertSender(object sender)
+        {
+            if (sender == null) return;
+
+            try
+            {
+                var imageAwesome = (ImageAwesome) sender;
+                var item = (Item) imageAwesome.DataContext;
+
+                if (item.AlertModeMinSellPriceIsUndercutPrice <= 0) return;
+
+                item.IsAlertActive = AlertManager.ToggleAlert(ref item);
+                ItemsView.Refresh();
+            }
+            catch (Exception e)
+            {
+                Log.Error(nameof(ToggleAlertSender), e);
+            }
+        }
+
+        #endregion
+
+        #region Item list (Normal Mode)
+
+        public void ItemFilterReset()
+        {
+            SearchText = string.Empty;
+            SelectedItemCategory = Category.Unknown;
+            SelectedItemParentCategory = ParentCategory.Unknown;
+            SelectedItemLevel = ItemLevel.Unknown;
+            SelectedItemTier = ItemTier.Unknown;
+        }
+
+        #endregion Item list (Normal Mode)
+
+        #region Helper methods
+
+        public void SetErrorBar(Visibility visibility, string errorMessage)
+        {
+            ErrorBarText = errorMessage;
+            ErrorBarVisibility = visibility;
+        }
+
+        #endregion
+
         #region Inits
 
-        void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             try
             {
-                Log.Fatal(nameof(OnUnhandledException), (Exception)e.ExceptionObject);
+                Log.Fatal(nameof(OnUnhandledException), (Exception) e.ExceptionObject);
             }
             catch (Exception ex)
             {
@@ -173,10 +311,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 Log.Warn($"SelectViewModeGrid: Grid for [{ModeSelection.ViewMode}] is not existing");
 
-                if (viewModeGrid.FirstOrDefault().Value != null)
-                {
-                    viewModeGrid.FirstOrDefault().Value.Visibility = Visibility.Visible;
-                }
+                if (viewModeGrid.FirstOrDefault().Value != null) viewModeGrid.FirstOrDefault().Value.Visibility = Visibility.Visible;
 
                 return;
             }
@@ -187,15 +322,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void HideAllGrids()
         {
-            if (viewModeGrid == null)
-            {
-                return;
-            }
+            if (viewModeGrid == null) return;
 
-            foreach (var grid in viewModeGrid)
-            {
-                grid.Value.Visibility = Visibility.Hidden;
-            }
+            foreach (var grid in viewModeGrid) grid.Value.Visibility = Visibility.Hidden;
         }
 
         #endregion
@@ -224,10 +353,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 _mainWindow.Height = Settings.Default.MainWindowHeight;
                 _mainWindow.Width = Settings.Default.MainWindowWidth;
-                if (Settings.Default.MainWindowMaximized)
-                {
-                    _mainWindow.WindowState = WindowState.Maximized;
-                }
+                if (Settings.Default.MainWindowMaximized) _mainWindow.WindowState = WindowState.Maximized;
 
                 CenterWindowOnScreen();
 
@@ -246,9 +372,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
             if (!isItemListLoaded)
-            {
                 MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), LanguageController.Translation("ERROR"));
-            }
 
             if (isItemListLoaded)
             {
@@ -261,10 +385,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 LoadIconVisibility = Visibility.Hidden;
                 IsTxtSearchEnabled = true;
 
-                _mainWindow.Dispatcher?.Invoke(() =>
-                {
-                    _mainWindow.TxtSearch.Focus();
-                });
+                _mainWindow.Dispatcher?.Invoke(() => { _mainWindow.TxtSearch.Focus(); });
             }
 
             ShowInfoWindow();
@@ -276,110 +397,10 @@ namespace StatisticsAnalysisTool.ViewModels
             await WorldData.GetDataListFromJsonAsync();
             await LootChestData.GetDataListFromJsonAsync();
 
-            if (Settings.Default.IsTrackingActiveAtToolStart)
-            {
-                StartTracking();
-            }
+            if (Settings.Default.IsTrackingActiveAtToolStart) StartTracking();
         }
 
         #endregion
-        
-        public async void SetUiElements()
-        {
-            #region Error bar
-
-            ErrorBarVisibility = Visibility.Hidden;
-
-            #endregion
-
-            #region Set Modes to combobox
-
-            Modes.Clear();
-            Modes.Add(new ModeStruct { Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal });
-            Modes.Add(new ModeStruct { Name = LanguageController.Translation("TRACKING"), ViewMode = ViewMode.Tracking });
-            Modes.Add(new ModeStruct { Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player });
-            Modes.Add(new ModeStruct { Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold });
-            ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
-
-            #endregion Set Modes to combobox
-
-            #region Full Item Info elements
-
-            LoadFullItemInfoButtonVisibility = Visibility.Hidden;
-
-            IsFullItemInfoSearchActive = Settings.Default.IsFullItemInfoSearchActive;
-
-            ItemParentCategories = CategoryController.ParentCategoryNames;
-            SelectedItemParentCategory = ParentCategory.Unknown;
-
-            ItemTiers = FrequentlyValues.ItemTiers;
-            SelectedItemTier = ItemTier.Unknown;
-
-            ItemLevels = FrequentlyValues.ItemLevels;
-            SelectedItemLevel = ItemLevel.Unknown;
-
-            if (!IsFullItemInfoLoading)
-            {
-                LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
-            }
-
-            #endregion Full Item Info elements
-
-            #region Gold price
-
-            var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
-            CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
-            if (!currentGoldPrice.IsNullOrEmpty())
-            {
-                CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ?? new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
-                GoldPriceVisibility = Visibility.Visible;
-            }
-            else
-            {
-                GoldPriceVisibility = Visibility.Hidden;
-            }
-
-            #endregion Gold price
-
-            #region Player information
-
-            SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
-
-            #endregion Player information
-
-            #region Tracking
-
-            UsernameInformationVisibility = Visibility.Hidden;
-            GuildInformationVisibility = Visibility.Hidden;
-            AllianceInformationVisibility = Visibility.Hidden;
-            CurrentMapInformationVisibility = Visibility.Hidden;
-
-            IsTrackingResetByMapChangeActive = Settings.Default.IsTrackingResetByMapChangeActive;
-
-            var sortByDamageStruct = new DamageMeterSortStruct()
-            {
-                Name = Translation.SortByDamage,
-                DamageMeterSortType = DamageMeterSortType.Damage
-            };
-            var sortByDpsStruct = new DamageMeterSortStruct()
-            {
-                Name = Translation.SortByDps,
-                DamageMeterSortType = DamageMeterSortType.Dps
-            };
-            var sortByNameStruct = new DamageMeterSortStruct()
-            {
-                Name = Translation.SortByName,
-                DamageMeterSortType = DamageMeterSortType.Name
-            };
-
-            DamageMeterSort.Clear();
-            DamageMeterSort.Add(sortByDamageStruct);
-            DamageMeterSort.Add(sortByDpsStruct);
-            DamageMeterSort.Add(sortByNameStruct);
-            DamageMeterSortSelection = sortByDamageStruct;
-
-            #endregion
-        }
 
         #region Ui utility methods
 
@@ -389,8 +410,8 @@ namespace StatisticsAnalysisTool.ViewModels
             var screenHeight = SystemParameters.PrimaryScreenHeight;
             var windowWidth = _mainWindow.Width;
             var windowHeight = _mainWindow.Height;
-            _mainWindow.Left = (screenWidth / 2) - (windowWidth / 2);
-            _mainWindow.Top = (screenHeight / 2) - (windowHeight / 2);
+            _mainWindow.Left = screenWidth / 2 - windowWidth / 2;
+            _mainWindow.Top = screenHeight / 2 - windowHeight / 2;
         }
 
         private void ShowInfoWindow()
@@ -429,7 +450,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-
         #endregion
 
         #region Full Item Information
@@ -462,10 +482,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             foreach (var item in ItemController.Items)
             {
-                if (!IsFullItemInfoLoading)
-                {
-                    break;
-                }
+                if (!IsFullItemInfoLoading) break;
 
                 item.FullItemInformation = await ItemController.GetFullItemInformationAsync(item);
                 LoadFullItemInfoProBarValue++;
@@ -486,49 +503,6 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-
-        #region Alert
-
-        public void ToggleAlertSender(object sender)
-        {
-            if (sender == null)
-            {
-                return;
-            }
-
-            try
-            {
-                var imageAwesome = (ImageAwesome)sender;
-                var item = (Item)imageAwesome.DataContext;
-
-                if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
-                {
-                    return;
-                }
-
-                item.IsAlertActive = AlertManager.ToggleAlert(ref item);
-                ItemsView.Refresh();
-            }
-            catch (Exception e)
-            {
-                Log.Error(nameof(ToggleAlertSender), e);
-            }
-        }
-
-        #endregion
-
-        #region Item list (Normal Mode)
-
-        public void ItemFilterReset()
-        {
-            SearchText = string.Empty;
-            SelectedItemCategory = Category.Unknown;
-            SelectedItemParentCategory = ParentCategory.Unknown;
-            SelectedItemLevel = ItemLevel.Unknown;
-            SelectedItemTier = ItemTier.Unknown;
-        }
-
-        #endregion Item list (Normal Mode)
 
         #region Player information (Player Mode)
 
@@ -552,7 +526,7 @@ namespace StatisticsAnalysisTool.ViewModels
             var searchPlayer = gameInfoSearch.SearchPlayer?.FirstOrDefault();
             var gameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(gameInfoSearch.SearchPlayer?.FirstOrDefault()?.Id);
 
-            return new PlayerModeInformationModel()
+            return new PlayerModeInformationModel
             {
                 Timestamp = DateTime.UtcNow,
                 GameInfoSearch = gameInfoSearch,
@@ -561,17 +535,21 @@ namespace StatisticsAnalysisTool.ViewModels
             };
         }
 
-        public PlayerModeInformationModel PlayerModeInformation {
+        public PlayerModeInformationModel PlayerModeInformation
+        {
             get => _playerModeInformation;
-            set {
+            set
+            {
                 _playerModeInformation = value;
                 OnPropertyChanged();
             }
         }
 
-        public PlayerModeInformationModel PlayerModeInformationLocal {
+        public PlayerModeInformationModel PlayerModeInformationLocal
+        {
             get => _playerModeInformationLocal;
-            set {
+            set
+            {
                 _playerModeInformationLocal = value;
                 OnPropertyChanged();
             }
@@ -602,23 +580,27 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     Title = "Gold",
                     Values = amount,
-                    Fill = (Brush)Application.Current.Resources["Solid.Color.Gold.Fill"],
-                    Stroke = (Brush)Application.Current.Resources["Solid.Color.Text.Gold"]
+                    Fill = (Brush) Application.Current.Resources["Solid.Color.Gold.Fill"],
+                    Stroke = (Brush) Application.Current.Resources["Solid.Color.Text.Gold"]
                 }
             };
         }
 
-        public SeriesCollection SeriesCollection {
+        public SeriesCollection SeriesCollection
+        {
             get => _seriesCollection;
-            set {
+            set
+            {
                 _seriesCollection = value;
                 OnPropertyChanged();
             }
         }
 
-        public string[] Labels {
+        public string[] Labels
+        {
             get => _labels;
-            set {
+            set
+            {
                 _labels = value;
                 OnPropertyChanged();
             }
@@ -630,58 +612,40 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void TrackerActivationToggle()
         {
-            if (!IsReadyToTracking())
-            {
-                return;
-            }
+            if (!IsReadyToTracking()) return;
 
             IsTrackingActive = !IsTrackingActive;
 
             if (IsTrackingActive)
-            {
                 StartTracking();
-            }
             else
-            {
                 StopTracking();
-            }
         }
 
         public void StartTracking()
         {
-            if (NetworkManager.IsNetworkCaptureRunning)
-            {
-                return;
-            }
+            if (NetworkManager.IsNetworkCaptureRunning) return;
 
-            if (_trackingController == null)
-            {
-                _trackingController = new TrackingController(this, _mainWindow);
-            }
+            if (_trackingController == null) _trackingController = new TrackingController(this, _mainWindow);
 
             _trackingController?.RegisterEvents();
             TrackingDungeons = _trackingController?.DungeonController?.LoadDungeonFromFile();
             _trackingController?.DungeonController?.SetDungeonStatsDay();
             _trackingController?.DungeonController?.SetDungeonStatsTotal();
-            DungeonStatsDay.EnteredDungeon = _trackingController.DungeonController.GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
-            DungeonStatsTotal.EnteredDungeon = _trackingController.DungeonController.GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
+            if (_trackingController.DungeonController != null)
+            {
+                DungeonStatsDay.EnteredDungeon = _trackingController.DungeonController.GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
+                DungeonStatsTotal.EnteredDungeon = _trackingController.DungeonController.GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
+            }
 
             _valueCountUpTimer = new ValueCountUpTimer();
 
-            if (_valueCountUpTimer?.FameCountUpTimer == null)
-            {
-                _valueCountUpTimer.FameCountUpTimer = new FameCountUpTimer(this);
-            }
+            if (_valueCountUpTimer?.FameCountUpTimer == null) _valueCountUpTimer.FameCountUpTimer = new FameCountUpTimer(this);
 
-            if (_valueCountUpTimer?.SilverCountUpTimer == null)
-            {
-                _valueCountUpTimer.SilverCountUpTimer = new SilverCountUpTimer(this);
-            }
+            if (_valueCountUpTimer?.SilverCountUpTimer == null) _valueCountUpTimer.SilverCountUpTimer = new SilverCountUpTimer(this);
 
             if (_valueCountUpTimer?.ReSpecPointsCountUpTimer == null)
-            {
                 _valueCountUpTimer.ReSpecPointsCountUpTimer = new ReSpecPointsCountUpTimer(this);
-            }
 
             _valueCountUpTimer?.FameCountUpTimer.Start();
             _valueCountUpTimer?.SilverCountUpTimer.Start();
@@ -715,20 +679,11 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void ResetMainCounters(bool fame, bool silver, bool reSpec)
         {
-            if (fame)
-            {
-                _valueCountUpTimer?.FameCountUpTimer?.Reset();
-            }
+            if (fame) _valueCountUpTimer?.FameCountUpTimer?.Reset();
 
-            if (silver)
-            {
-                _valueCountUpTimer?.SilverCountUpTimer?.Reset();
-            }
+            if (silver) _valueCountUpTimer?.SilverCountUpTimer?.Reset();
 
-            if (reSpec)
-            {
-                _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Reset();
-            }
+            if (reSpec) _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Reset();
         }
 
         public void ResetDamageMeter()
@@ -764,10 +719,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
                 return;
             }
+
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
-            {
                 DamageMeter.OrderByReference(DamageMeter.OrderBy(x => x.Name).ToList());
-            }
         }
 
         #endregion
@@ -776,53 +730,40 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void ItemsViewFilter()
         {
-            if (ItemsView == null)
-            {
-                return;
-            }
+            if (ItemsView == null) return;
 
             if (IsFullItemInfoSearchActive)
-            {
                 ItemsView.Filter = i =>
                 {
                     var item = i as Item;
                     if (IsShowOnlyItemsWithAlertOnActive)
-                    {
                         return item?.FullItemInformation != null &&
                                item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
-                               && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
-                               && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
-                               && ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                               && ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
-                               && item.IsAlertActive;
-                    }
-                    else
-                    {
-                        return item?.FullItemInformation != null &&
-                               item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
-                               && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory || SelectedItemParentCategory == ParentCategory.Unknown)
-                               && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                               && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory ||
+                                   SelectedItemParentCategory == ParentCategory.Unknown)
+                               && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory ||
+                                   SelectedItemCategory == Category.Unknown)
                                && ((ItemTier) item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                               && ((ItemLevel) item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
-                    }
+                               && ((ItemLevel) item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
+                               && item.IsAlertActive;
+                    return item?.FullItemInformation != null &&
+                           item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
+                           && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory ||
+                               SelectedItemParentCategory == ParentCategory.Unknown)
+                           && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                           && ((ItemTier) item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                           && ((ItemLevel) item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
                 };
-            }
             else
-            {
                 ItemsView.Filter = i =>
                 {
                     var item = i as Item;
 
                     if (IsShowOnlyItemsWithAlertOnActive)
-                    {
-                        return (item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false) && item.IsAlertActive;
-                    }
-                    else
-                    {
-                        return item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false;
-                    }
+                        return (item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false) &&
+                               item.IsAlertActive;
+                    return item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false;
                 };
-            }
 
             SetItemCounterAsync();
         }
@@ -832,7 +773,7 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 LocalImageCounter = await ImageController.LocalImagesCounterAsync();
-                ItemCounterString = $"{((ListCollectionView)ItemsView)?.Count ?? 0}/{ItemController.Items?.Count ?? 0}";
+                ItemCounterString = $"{((ListCollectionView) ItemsView)?.Count ?? 0}/{ItemController.Items?.Count ?? 0}";
             }
             catch (Exception e)
             {
@@ -840,26 +781,17 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-
-        #endregion
-
-        #region Helper methods
-
-        public void SetErrorBar(Visibility visibility, string errorMessage)
-        {
-            ErrorBarText = errorMessage;
-            ErrorBarVisibility = visibility;
-        }
-
         #endregion
 
         #region Bindings
 
-        public string SearchText {
+        public string SearchText
+        {
             get => _searchText;
-            set {
+            set
+            {
                 _searchText = value;
-                
+
                 ItemsViewFilter();
                 ItemsView?.Refresh();
 
@@ -877,17 +809,21 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Visibility IsDamageMeterPopupVisible {
+        public Visibility IsDamageMeterPopupVisible
+        {
             get => _isDamageMeterPopupVisible;
-            set {
+            set
+            {
                 _isDamageMeterPopupVisible = value;
                 OnPropertyChanged();
             }
         }
 
-        public DamageMeterSortStruct DamageMeterSortSelection {
+        public DamageMeterSortStruct DamageMeterSortSelection
+        {
             get => _damageMeterSortSelection;
-            set {
+            set
+            {
                 _damageMeterSortSelection = value;
                 SetDamageMeterSort();
 
@@ -895,235 +831,289 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public List<DamageMeterSortStruct> DamageMeterSort {
+        public List<DamageMeterSortStruct> DamageMeterSort
+        {
             get => _damageMeterSort;
-            set {
+            set
+            {
                 _damageMeterSort = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<DamageMeterFragment> DamageMeter {
+        public ObservableCollection<DamageMeterFragment> DamageMeter
+        {
             get => _damageMeter;
-            set {
+            set
+            {
                 _damageMeter = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility UsernameInformationVisibility {
+        public Visibility UsernameInformationVisibility
+        {
             get => _usernameInformationVisibility;
-            set {
+            set
+            {
                 _usernameInformationVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility GuildInformationVisibility {
+        public Visibility GuildInformationVisibility
+        {
             get => _guildInformationVisibility;
-            set {
+            set
+            {
                 _guildInformationVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility AllianceInformationVisibility {
+        public Visibility AllianceInformationVisibility
+        {
             get => _allianceInformationVisibility;
-            set {
+            set
+            {
                 _allianceInformationVisibility = value;
                 OnPropertyChanged();
             }
         }
-        
-        public Visibility CurrentMapInformationVisibility {
+
+        public Visibility CurrentMapInformationVisibility
+        {
             get => _currentMapInformationVisibility;
-            set {
+            set
+            {
                 _currentMapInformationVisibility = value;
                 OnPropertyChanged();
             }
         }
-        
-        public Visibility GoldPriceVisibility {
+
+        public Visibility GoldPriceVisibility
+        {
             get => _goldPriceVisibility;
-            set {
+            set
+            {
                 _goldPriceVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public DungeonStats DungeonStatsDay {
+        public DungeonStats DungeonStatsDay
+        {
             get => _dungeonStatsDay;
-            set {
+            set
+            {
                 _dungeonStatsDay = value;
                 OnPropertyChanged();
             }
         }
 
-        public DungeonStats DungeonStatsTotal {
+        public DungeonStats DungeonStatsTotal
+        {
             get => _dungeonStatsTotal;
-            set {
+            set
+            {
                 _dungeonStatsTotal = value;
                 OnPropertyChanged();
             }
         }
 
-        public string TrackingUsername {
+        public string TrackingUsername
+        {
             get => _trackingUsername;
-            set {
+            set
+            {
                 _trackingUsername = value;
                 UsernameInformationVisibility = !string.IsNullOrEmpty(_trackingUsername) ? Visibility.Visible : Visibility.Hidden;
-                UsernameInfoWidth = (string.IsNullOrEmpty(_trackingUsername)) ? 0 : double.NaN;
+                UsernameInfoWidth = string.IsNullOrEmpty(_trackingUsername) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
 
-        public string TrackingGuildName {
+        public string TrackingGuildName
+        {
             get => _trackingGuildName;
-            set {
+            set
+            {
                 _trackingGuildName = value;
                 GuildInformationVisibility = !string.IsNullOrEmpty(_trackingGuildName) ? Visibility.Visible : Visibility.Hidden;
-                GuildInfoWidth = (string.IsNullOrEmpty(_trackingGuildName)) ? 0 : double.NaN;
+                GuildInfoWidth = string.IsNullOrEmpty(_trackingGuildName) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
 
-        public string TrackingAllianceName {
+        public string TrackingAllianceName
+        {
             get => _trackingAllianceName;
-            set {
+            set
+            {
                 _trackingAllianceName = value;
                 AllianceInformationVisibility = !string.IsNullOrEmpty(_trackingAllianceName) ? Visibility.Visible : Visibility.Hidden;
-                AllianceInfoWidth = (string.IsNullOrEmpty(_trackingAllianceName)) ? 0 : double.NaN;
+                AllianceInfoWidth = string.IsNullOrEmpty(_trackingAllianceName) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
 
-        public string TrackingCurrentMapName {
+        public string TrackingCurrentMapName
+        {
             get => _trackingCurrentMapName;
-            set {
+            set
+            {
                 _trackingCurrentMapName = value;
                 CurrentMapInformationVisibility = !string.IsNullOrEmpty(_trackingCurrentMapName) ? Visibility.Visible : Visibility.Hidden;
-                CurrentMapInfoWidth = (string.IsNullOrEmpty(_trackingCurrentMapName)) ? 0 : double.NaN;
+                CurrentMapInfoWidth = string.IsNullOrEmpty(_trackingCurrentMapName) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
 
-        public double UsernameInfoWidth {
+        public double UsernameInfoWidth
+        {
             get => _usernameInfoWidth;
-            set {
+            set
+            {
                 _usernameInfoWidth = value;
                 OnPropertyChanged();
             }
         }
 
-        public double GuildInfoWidth {
+        public double GuildInfoWidth
+        {
             get => _guildInfoWidth;
-            set {
+            set
+            {
                 _guildInfoWidth = value;
                 OnPropertyChanged();
             }
         }
 
-        public double AllianceInfoWidth {
+        public double AllianceInfoWidth
+        {
             get => _allianceInfoWidth;
-            set {
+            set
+            {
                 _allianceInfoWidth = value;
                 OnPropertyChanged();
             }
         }
 
-        public double CurrentMapInfoWidth {
+        public double CurrentMapInfoWidth
+        {
             get => _currentMapInfoWidth;
-            set {
+            set
+            {
                 _currentMapInfoWidth = value;
                 OnPropertyChanged();
             }
         }
 
-        public string FamePerHour {
+        public string FamePerHour
+        {
             get => _famePerHour;
-            set {
+            set
+            {
                 _famePerHour = value;
                 OnPropertyChanged();
             }
         }
 
-        public string SilverPerHour {
+        public string SilverPerHour
+        {
             get => _silverPerHour;
-            set {
+            set
+            {
                 _silverPerHour = value;
                 OnPropertyChanged();
             }
         }
 
-        public string ReSpecPointsPerHour {
+        public string ReSpecPointsPerHour
+        {
             get => _reSpecPointsPerHour;
-            set {
+            set
+            {
                 _reSpecPointsPerHour = value;
                 OnPropertyChanged();
             }
         }
 
-        public string TotalPlayerFame {
+        public string TotalPlayerFame
+        {
             get => _totalPlayerFame;
-            set {
+            set
+            {
                 _totalPlayerFame = value;
                 OnPropertyChanged();
             }
         }
 
-        public string TotalPlayerSilver {
+        public string TotalPlayerSilver
+        {
             get => _totalPlayerSilver;
-            set {
+            set
+            {
                 _totalPlayerSilver = value;
                 OnPropertyChanged();
             }
         }
 
-        public string TotalPlayerReSpecPoints {
+        public string TotalPlayerReSpecPoints
+        {
             get => _totalPlayerReSpecPoints;
-            set {
+            set
+            {
                 _totalPlayerReSpecPoints = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsTrackingResetByMapChangeActive {
+        public bool IsTrackingResetByMapChangeActive
+        {
             get => _isTrackingResetByMapChangeActive;
-            set {
+            set
+            {
                 _isTrackingResetByMapChangeActive = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<TrackingNotification> TrackingNotifications {
+        public ObservableCollection<TrackingNotification> TrackingNotifications
+        {
             get => _trackingNotifications;
-            set {
+            set
+            {
                 _trackingNotifications = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<DungeonNotificationFragment> TrackingDungeons {
+        public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
+        {
             get => _trackingDungeons;
-            set {
+            set
+            {
                 _trackingDungeons = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsTrackingActive {
+        public bool IsTrackingActive
+        {
             get => _isTrackingActive;
-            set {
+            set
+            {
                 _isTrackingActive = value;
 
-                TrackerActivationToggleIcon = (_isTrackingActive) ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
+                TrackerActivationToggleIcon = _isTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 
-                var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
-                var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+                var colorOn = new SolidColorBrush((Color) Application.Current.Resources["Color.Blue.2"]);
+                var colorOff = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.Normal"]);
                 TrackerActivationToggleColor = _isTrackingActive ? colorOn : colorOff;
 
-                var trackingIconColorOn = new SolidColorBrush((Color)Application.Current.Resources["Tracking.On"]);
-                var trackingIconColorOff = new SolidColorBrush((Color)Application.Current.Resources["Tracking.Off"]);
+                var trackingIconColorOn = new SolidColorBrush((Color) Application.Current.Resources["Tracking.On"]);
+                var trackingIconColorOff = new SolidColorBrush((Color) Application.Current.Resources["Tracking.Off"]);
                 TrackingIconColor = _isTrackingActive ? trackingIconColorOn : trackingIconColorOff;
                 OnPropertyChanged();
             }
@@ -1139,28 +1129,31 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Brush TrackerActivationToggleColor 
+        public Brush TrackerActivationToggleColor
         {
-            get => _trackerActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+            get => _trackerActivationToggleColor ?? new SolidColorBrush((Color) Application.Current.Resources["Color.Text.Normal"]);
             set
             {
                 _trackerActivationToggleColor = value;
                 OnPropertyChanged();
             }
         }
-        
-        public Brush TrackingIconColor {
-            get => _trackerActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Tracking.Off"]);
+
+        public Brush TrackingIconColor
+        {
+            get => _trackerActivationToggleColor ?? new SolidColorBrush((Color) Application.Current.Resources["Tracking.Off"]);
             set
             {
                 _trackerActivationToggleColor = value;
                 OnPropertyChanged();
             }
         }
-        
-        public bool IsShowOnlyItemsWithAlertOnActive {
+
+        public bool IsShowOnlyItemsWithAlertOnActive
+        {
             get => _isShowOnlyItemsWithAlertOnActive;
-            set {
+            set
+            {
                 _isShowOnlyItemsWithAlertOnActive = value;
                 ItemsViewFilter();
                 ItemsView?.Refresh();
@@ -1168,92 +1161,108 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsFullItemInfoLoading {
+        public bool IsFullItemInfoLoading
+        {
             get => _isFullItemInfoLoading;
-            set {
+            set
+            {
                 _isFullItemInfoLoading = value;
                 OnPropertyChanged();
             }
         }
 
-        public string LoadFullItemInfoProBarCounter {
+        public string LoadFullItemInfoProBarCounter
+        {
             get => _loadFullItemInfoProBarCounter;
-            set {
+            set
+            {
                 _loadFullItemInfoProBarCounter = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility LoadIconVisibility {
+        public Visibility LoadIconVisibility
+        {
             get => _loadIconVisibility;
-            set {
+            set
+            {
                 _loadIconVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility LoadFullItemInfoProBarGridVisibility {
+        public Visibility LoadFullItemInfoProBarGridVisibility
+        {
             get => _loadFullItemInfoProBarGridVisibility;
-            set {
+            set
+            {
                 _loadFullItemInfoProBarGridVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public int LoadFullItemInfoProBarValue {
+        public int LoadFullItemInfoProBarValue
+        {
             get => _loadFullItemInfoProBarValue;
-            set {
+            set
+            {
                 _loadFullItemInfoProBarValue = value;
                 LoadFullItemInfoProBarCounter = $"{_loadFullItemInfoProBarValue}/{LoadFullItemInfoProBarMax}";
                 OnPropertyChanged();
             }
         }
 
-        public int LoadFullItemInfoProBarMax {
+        public int LoadFullItemInfoProBarMax
+        {
             get => _loadFullItemInfoProBarMax;
-            set {
+            set
+            {
                 _loadFullItemInfoProBarMax = value;
                 OnPropertyChanged();
             }
         }
 
-        public int LoadFullItemInfoProBarMin {
+        public int LoadFullItemInfoProBarMin
+        {
             get => _loadFullItemInfoProBarMin;
-            set {
+            set
+            {
                 _loadFullItemInfoProBarMin = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsLoadFullItemInfoButtonEnabled {
+        public bool IsLoadFullItemInfoButtonEnabled
+        {
             get => _isLoadFullItemInfoButtonEnabled;
-            set {
+            set
+            {
                 _isLoadFullItemInfoButtonEnabled = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility LoadFullItemInfoButtonVisibility {
+        public Visibility LoadFullItemInfoButtonVisibility
+        {
             get => _loadFullItemInfoButtonVisibility;
-            set {
+            set
+            {
                 _loadFullItemInfoButtonVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsFullItemInfoSearchActive {
+        public bool IsFullItemInfoSearchActive
+        {
             get => _isFullItemInfoSearchActive;
-            set {
+            set
+            {
                 _isFullItemInfoSearchActive = value;
 
                 if (_isFullItemInfoSearchActive)
-                {
                     ItemLevelsVisibility = ItemTiersVisibility = ItemCategoriesVisibility = ItemParentCategoriesVisibility = Visibility.Visible;
-                }
                 else
-                {
                     ItemLevelsVisibility = ItemTiersVisibility = ItemCategoriesVisibility = ItemParentCategoriesVisibility = Visibility.Hidden;
-                }
 
                 ItemsViewFilter();
                 ItemsView?.Refresh();
@@ -1263,59 +1272,74 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<PartyMemberCircle> PartyMemberCircles {
+        public ObservableCollection<PartyMemberCircle> PartyMemberCircles
+        {
             get => _partyMemberCircles;
-            set {
+            set
+            {
                 _partyMemberCircles = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility ItemLevelsVisibility {
+        public Visibility ItemLevelsVisibility
+        {
             get => _itemLevelsVisibility;
-            set {
+            set
+            {
                 _itemLevelsVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility ItemTiersVisibility {
+        public Visibility ItemTiersVisibility
+        {
             get => _itemTiersVisibility;
-            set {
+            set
+            {
                 _itemTiersVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility ItemCategoriesVisibility {
+        public Visibility ItemCategoriesVisibility
+        {
             get => _itemCategoriesVisibility;
-            set {
+            set
+            {
                 _itemCategoriesVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility ItemParentCategoriesVisibility {
+        public Visibility ItemParentCategoriesVisibility
+        {
             get => _itemParentCategoriesVisibility;
-            set {
+            set
+            {
                 _itemParentCategoriesVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public Dictionary<Category, string> ItemCategories {
+        public Dictionary<Category, string> ItemCategories
+        {
             get => _itemCategories;
-            set {
+            set
+            {
                 var categories = value;
-                categories = (new Dictionary<Category, string> { { Category.Unknown, string.Empty } }).Concat(categories).ToDictionary(k => k.Key, v => v.Value);
+                categories = new Dictionary<Category, string> {{Category.Unknown, string.Empty}}.Concat(categories)
+                    .ToDictionary(k => k.Key, v => v.Value);
                 _itemCategories = categories;
                 OnPropertyChanged();
             }
         }
 
-        public Category SelectedItemCategory {
+        public Category SelectedItemCategory
+        {
             get => _selectedItemCategories;
-            set {
+            set
+            {
                 _selectedItemCategories = value;
                 ItemsViewFilter();
                 ItemsView?.Refresh();
@@ -1323,17 +1347,21 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Dictionary<ParentCategory, string> ItemParentCategories {
+        public Dictionary<ParentCategory, string> ItemParentCategories
+        {
             get => _itemParentCategories;
-            set {
+            set
+            {
                 _itemParentCategories = value;
                 OnPropertyChanged();
             }
         }
 
-        public ParentCategory SelectedItemParentCategory {
+        public ParentCategory SelectedItemParentCategory
+        {
             get => _selectedItemParentCategories;
-            set {
+            set
+            {
                 _selectedItemParentCategories = value;
                 ItemCategories = CategoryController.GetCategoriesByParentCategory(SelectedItemParentCategory);
                 SelectedItemCategory = Category.Unknown;
@@ -1343,17 +1371,21 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Dictionary<ItemTier, string> ItemTiers {
+        public Dictionary<ItemTier, string> ItemTiers
+        {
             get => _itemTiers;
-            set {
+            set
+            {
                 _itemTiers = value;
                 OnPropertyChanged();
             }
         }
 
-        public ItemTier SelectedItemTier {
+        public ItemTier SelectedItemTier
+        {
             get => _selectedItemTier;
-            set {
+            set
+            {
                 _selectedItemTier = value;
                 ItemsViewFilter();
                 ItemsView?.Refresh();
@@ -1361,17 +1393,21 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Dictionary<ItemLevel, string> ItemLevels {
+        public Dictionary<ItemLevel, string> ItemLevels
+        {
             get => _itemLevels;
-            set {
+            set
+            {
                 _itemLevels = value;
                 OnPropertyChanged();
             }
         }
 
-        public ItemLevel SelectedItemLevel {
+        public ItemLevel SelectedItemLevel
+        {
             get => _selectedItemLevel;
-            set {
+            set
+            {
                 _selectedItemLevel = value;
                 ItemsView?.Refresh();
                 SetItemCounterAsync();
@@ -1379,146 +1415,182 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public int LocalImageCounter {
+        public int LocalImageCounter
+        {
             get => _localImageCounter;
-            set {
+            set
+            {
                 _localImageCounter = value;
                 OnPropertyChanged();
             }
         }
 
-        public string ItemCounterString {
+        public string ItemCounterString
+        {
             get => _itemCounterString;
-            set {
+            set
+            {
                 _itemCounterString = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsTxtSearchEnabled {
+        public bool IsTxtSearchEnabled
+        {
             get => _isTxtSearchEnabled;
-            set {
+            set
+            {
                 _isTxtSearchEnabled = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsDamageMeterResetByMapChangeActive {
+        public bool IsDamageMeterResetByMapChangeActive
+        {
             get => _isDamageMeterResetByMapChangeActive;
-            set {
+            set
+            {
                 _isDamageMeterResetByMapChangeActive = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<ModeStruct> Modes {
+        public ObservableCollection<ModeStruct> Modes
+        {
             get => _modes;
-            set {
+            set
+            {
                 _modes = value;
                 OnPropertyChanged();
             }
         }
 
-        public ModeStruct ModeSelection {
+        public ModeStruct ModeSelection
+        {
             get => _modeSelection;
-            set {
+            set
+            {
                 _modeSelection = value;
                 OnPropertyChanged();
             }
         }
 
-        public int CurrentGoldPrice {
+        public int CurrentGoldPrice
+        {
             get => _currentGoldPrice;
-            set {
+            set
+            {
                 _currentGoldPrice = value;
                 OnPropertyChanged();
             }
         }
 
-        public string CurrentGoldPriceTimestamp {
+        public string CurrentGoldPriceTimestamp
+        {
             get => _currentGoldPriceTimestamp;
-            set {
+            set
+            {
                 _currentGoldPriceTimestamp = value;
                 OnPropertyChanged();
             }
         }
 
-        public string TextBoxGoldModeNumberOfValues {
+        public string TextBoxGoldModeNumberOfValues
+        {
             get => _textBoxGoldModeNumberOfValues;
-            set {
+            set
+            {
                 _textBoxGoldModeNumberOfValues = value;
                 OnPropertyChanged();
             }
         }
 
-        public PlayerModeTranslation PlayerModeTranslation {
+        public PlayerModeTranslation PlayerModeTranslation
+        {
             get => _playerModeTranslation;
-            set {
+            set
+            {
                 _playerModeTranslation = value;
                 OnPropertyChanged();
             }
         }
 
-        public string LoadTranslation {
+        public string LoadTranslation
+        {
             get => _loadTranslation;
-            set {
+            set
+            {
                 _loadTranslation = value;
                 OnPropertyChanged();
             }
         }
 
-        public string FullItemInformationExistLocal {
+        public string FullItemInformationExistLocal
+        {
             get => _fullItemInformationExistLocal;
-            set {
+            set
+            {
                 _fullItemInformationExistLocal = value;
                 OnPropertyChanged();
             }
         }
 
-        public string NumberOfValuesTranslation {
+        public string NumberOfValuesTranslation
+        {
             get => _numberOfValuesTranslation;
-            set {
+            set
+            {
                 _numberOfValuesTranslation = value;
                 OnPropertyChanged();
             }
         }
 
-        public string SavedPlayerInformationName {
+        public string SavedPlayerInformationName
+        {
             get => _savedPlayerInformationName;
-            set {
+            set
+            {
                 _savedPlayerInformationName = value;
                 Settings.Default.SavedPlayerInformationName = _savedPlayerInformationName;
                 OnPropertyChanged();
             }
         }
 
-        public string ErrorBarText {
+        public string ErrorBarText
+        {
             get => _errorBarText;
-            set {
+            set
+            {
                 _errorBarText = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility ErrorBarVisibility {
+        public Visibility ErrorBarVisibility
+        {
             get => _errorBarVisibility;
-            set {
+            set
+            {
                 _errorBarVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public string UpdateTranslation {
+        public string UpdateTranslation
+        {
             get => _updateTranslation;
-            set {
+            set
+            {
                 _updateTranslation = value;
                 OnPropertyChanged();
             }
         }
-        
-        public MainWindowTranslation Translation {
+
+        public MainWindowTranslation Translation
+        {
             get => _translation;
-            set {
+            set
+            {
                 _translation = value;
                 OnPropertyChanged();
             }

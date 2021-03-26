@@ -424,6 +424,6 @@
         Unknown419,
         Unknown420,
         Unknown421,
-        Unknown422,
+        Unknown422
     }
 }

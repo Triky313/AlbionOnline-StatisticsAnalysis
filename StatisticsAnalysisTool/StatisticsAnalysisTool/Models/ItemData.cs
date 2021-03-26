@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -23,8 +23,10 @@ namespace StatisticsAnalysisTool.Models
         //public List<KeyValueStruct> LocalizedNames { get; set; }
         public List<KeyValueStruct> LocalizedNames { get; set; }
 
-        public string LocalizedName {
-            get {
+        public string LocalizedName
+        {
+            get
+            {
                 var name = UniqueName;
 
                 if (LocalizedNames.Exists(a => a.Key == LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper()))

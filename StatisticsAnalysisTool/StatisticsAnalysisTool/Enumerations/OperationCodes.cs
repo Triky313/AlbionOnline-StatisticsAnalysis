@@ -393,6 +393,6 @@
         GetNextOpenWorldAttackScheduleTime,
         RecoverVaultFromHideout,
         GetGuildEnergyDrainInfo,
-        ChannelingUpdate,
+        ChannelingUpdate
     }
 }

@@ -1,8 +1,8 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Albion.Network;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -12,10 +12,7 @@ namespace StatisticsAnalysisTool.Network.Events
         {
             try
             {
-                if (parameters.ContainsKey(0))
-                {
-                    ObjectId = parameters[0].ObjectToLong();
-                }
+                if (parameters.ContainsKey(0)) ObjectId = parameters[0].ObjectToLong();
             }
             catch (Exception e)
             {

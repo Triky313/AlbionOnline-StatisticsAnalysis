@@ -1,12 +1,12 @@
-﻿using StatisticsAnalysisTool.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Common
 {
     public static class CategoryController
     {
-        public static List<CategoryObject> Categories = new List<CategoryObject>()
+        public static List<CategoryObject> Categories = new List<CategoryObject>
         {
             new CategoryObject("bag", Category.Bag, ParentCategory.Accessories),
             new CategoryObject("cape", Category.Cape, ParentCategory.Accessories),
@@ -167,7 +167,7 @@ namespace StatisticsAnalysisTool.Common
             new CategoryObject("mercenarytrophy", Category.MercenaryTrophy, ParentCategory.Trophies),
             new CategoryObject("oretrophy", Category.OreTrophy, ParentCategory.Trophies),
             new CategoryObject("rocktrophy", Category.RockTrophy, ParentCategory.Trophies),
-            new CategoryObject("woodtrophy", Category.WoodTrophy, ParentCategory.Trophies),
+            new CategoryObject("woodtrophy", Category.WoodTrophy, ParentCategory.Trophies)
         };
 
         public static readonly Dictionary<Category, string> CategoryNames = new Dictionary<Category, string>
@@ -447,14 +447,25 @@ namespace StatisticsAnalysisTool.Common
             {ParentCategory.Trophies, LanguageController.Translation("TROPHIES")}
         };
 
-        public static CategoryObject GetCategory(string categoryId) => Categories.SingleOrDefault(x => x.CategoryId == categoryId);
+        public static CategoryObject GetCategory(string categoryId)
+        {
+            return Categories.SingleOrDefault(x => x.CategoryId == categoryId);
+        }
 
-        public static string GetCategoryName(Category category) => CategoryNames.TryGetValue(category, out var name) ? name : null;
+        public static string GetCategoryName(Category category)
+        {
+            return CategoryNames.TryGetValue(category, out var name) ? name : null;
+        }
 
-        public static string GetParentCategoryName(ParentCategory parentCategory) => ParentCategoryNames.TryGetValue(parentCategory, out var name) ? name : null;
+        public static string GetParentCategoryName(ParentCategory parentCategory)
+        {
+            return ParentCategoryNames.TryGetValue(parentCategory, out var name) ? name : null;
+        }
 
-        public static Dictionary<Category, string> GetCategoriesByParentCategory(ParentCategory parentCategory) =>
-            Categories?.Where(x => x.ParentCategory == parentCategory).ToDictionary(x => x.Category, x => x.CategoryName);
+        public static Dictionary<Category, string> GetCategoriesByParentCategory(ParentCategory parentCategory)
+        {
+            return Categories?.Where(x => x.ParentCategory == parentCategory).ToDictionary(x => x.Category, x => x.CategoryName);
+        }
     }
 
     public enum Category
@@ -595,7 +606,7 @@ namespace StatisticsAnalysisTool.Common
         MercenaryTrophy,
         OreTrophy,
         RockTrophy,
-        WoodTrophy,
+        WoodTrophy
     }
 
     public enum ParentCategory

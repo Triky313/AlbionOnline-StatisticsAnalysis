@@ -1,12 +1,12 @@
-﻿using AutoUpdaterDotNET;
-using StatisticsAnalysisTool.Properties;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
+using AutoUpdaterDotNET;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -33,11 +33,20 @@ namespace StatisticsAnalysisTool.Common
                 : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
         }
 
-        public static string UlongMarketPriceToString(ulong value) => value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        public static string UlongMarketPriceToString(ulong value)
+        {
+            return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        }
 
-        public static string MarketPriceDateToString(DateTime value) => Formatting.CurrentDateTimeFormat(value);
+        public static string MarketPriceDateToString(DateTime value)
+        {
+            return Formatting.CurrentDateTimeFormat(value);
+        }
 
-        public static string GetValuePerHour(double value, TimeSpan time) => Formatting.ToStringShort(value / (time.TotalSeconds / 60 / 60));
+        public static string GetValuePerHour(double value, TimeSpan time)
+        {
+            return Formatting.ToStringShort(value / (time.TotalSeconds / 60 / 60));
+        }
 
         public static double GetValuePerHourToDouble(double value, TimeSpan time)
         {
@@ -53,23 +62,17 @@ namespace StatisticsAnalysisTool.Common
 
         public static double GetValuePerSecondToDouble(double value, DateTime? combatStart, TimeSpan time, double maxValue = -1)
         {
-            if (double.IsInfinity(value))
-            {
-                return (maxValue > 0) ? maxValue : double.MaxValue;
-            }
+            if (double.IsInfinity(value)) return maxValue > 0 ? maxValue : double.MaxValue;
 
             if (time.Ticks <= 1 && combatStart != null)
             {
-                var startTimeSpan = DateTime.UtcNow - (DateTime)combatStart;
+                var startTimeSpan = DateTime.UtcNow - (DateTime) combatStart;
                 var calculation = value / startTimeSpan.TotalSeconds;
-                return (calculation > maxValue) ? maxValue : calculation;
+                return calculation > maxValue ? maxValue : calculation;
             }
 
             var valuePerSeconds = value / time.TotalSeconds;
-            if (maxValue > 0 && valuePerSeconds > maxValue)
-            {
-                return maxValue;
-            }
+            if (maxValue > 0 && valuePerSeconds > maxValue) return maxValue;
 
             return valuePerSeconds;
         }
@@ -99,7 +102,9 @@ namespace StatisticsAnalysisTool.Common
 
             public uint dwFlags; //The Flash Status.            
             public uint uCount; // number of times to flash the window            
-            public uint dwTimeout; //The rate at which the Window is to be flashed, in milliseconds. If Zero, the function uses the default cursor blink rate.        
+
+            public uint
+                dwTimeout; //The rate at which the Window is to be flashed, in milliseconds. If Zero, the function uses the default cursor blink rate.        
         }
 
         [DllImport("user32.dll")]
@@ -110,10 +115,7 @@ namespace StatisticsAnalysisTool.Common
         {
             win.Dispatcher.Invoke(() =>
             {
-                if (win.IsActive)
-                {
-                    return;
-                }
+                if (win.IsActive) return;
 
                 var h = new WindowInteropHelper(win);
 
@@ -135,7 +137,7 @@ namespace StatisticsAnalysisTool.Common
             win.Dispatcher.Invoke(() =>
             {
                 var h = new WindowInteropHelper(win);
-                var info = new FlashInfo { hwnd = h.Handle };
+                var info = new FlashInfo {hwnd = h.Handle};
                 info.cbSize = Convert.ToUInt32(Marshal.SizeOf(info));
                 info.dwFlags = FlashwStop;
                 info.uCount = uint.MaxValue;

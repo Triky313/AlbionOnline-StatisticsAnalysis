@@ -1,9 +1,9 @@
-﻿using Albion.Network;
-using log4net;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using Albion.Network;
+using log4net;
 
 namespace StatisticsAnalysisTool.Network
 {
@@ -15,15 +15,11 @@ namespace StatisticsAnalysisTool.Network
         {
             try
             {
-                if (parameters.ContainsKey(1) && long.TryParse(parameters[1].ToString(), out long currentPlayerSilver))
-                {
+                if (parameters.ContainsKey(1) && long.TryParse(parameters[1].ToString(), out var currentPlayerSilver))
                     CurrentPlayerSilver = currentPlayerSilver / 10000d;
-                }
 
-                if (parameters.ContainsKey(2) && long.TryParse(parameters[2].ToString(), out long currentPlayerGold))
-                {
+                if (parameters.ContainsKey(2) && long.TryParse(parameters[2].ToString(), out var currentPlayerGold))
                     CurrentPlayerGold = currentPlayerGold / 10000d;
-                }
             }
             catch (ArgumentNullException e)
             {

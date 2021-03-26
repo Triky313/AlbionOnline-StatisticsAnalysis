@@ -5,8 +5,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Main.xaml"/>
-                <ResourceDictionary Source="Tracking.xaml"/>
+                <ResourceDictionary Source="Main.xaml" />
+                <ResourceDictionary Source="Tracking.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

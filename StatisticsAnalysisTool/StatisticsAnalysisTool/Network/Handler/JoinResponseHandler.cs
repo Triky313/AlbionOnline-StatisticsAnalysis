@@ -1,20 +1,21 @@
-﻿using Albion.Network;
+﻿using System;
+using System.Threading.Tasks;
+using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.ViewModels;
-using System;
-using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
     {
-        private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
-        public JoinResponseHandler(TrackingController trackingController, MainWindowViewModel mainWindowViewModel) : base((int)OperationCodes.Join)
+        private readonly TrackingController _trackingController;
+
+        public JoinResponseHandler(TrackingController trackingController, MainWindowViewModel mainWindowViewModel) : base((int) OperationCodes.Join)
         {
             _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
@@ -24,7 +25,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             _trackingController.SetNewCluster(value.MapType, value.DungeonGuid, value.MapIndex, value.MainMapIndex);
 
-            _trackingController.DungeonController.LocalUserData = new LocalUserData()
+            _trackingController.DungeonController.LocalUserData = new LocalUserData
             {
                 UserObjectId = value.UserObjectId,
                 Guid = value.Guid,
@@ -48,8 +49,9 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             if (value.Guid != null && value.UserObjectId != null)
             {
-                _trackingController.EntityController.AddEntity((long)value.UserObjectId, (Guid)value.Guid, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
-                _trackingController.EntityController.AddToParty((Guid)value.Guid, value.Username);
+                _trackingController.EntityController.AddEntity((long) value.UserObjectId, (Guid) value.Guid, value.Username, GameObjectType.Player,
+                    GameObjectSubType.LocalPlayer);
+                _trackingController.EntityController.AddToParty((Guid) value.Guid, value.Username);
             }
 
             _trackingController.SetTotalPlayerSilver(value.Silver.IntegerValue);
@@ -62,10 +64,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         private void ResetFameCounterByMapChangeIfActive()
         {
-            if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
-            {
-                _mainWindowViewModel.ResetMainCounters(true, true, true);
-            }
+            if (_mainWindowViewModel.IsTrackingResetByMapChangeActive) _mainWindowViewModel.ResetMainCounters(true, true, true);
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Albion.Network;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -10,7 +10,7 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public NewMobEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Debug.Print($"--- NewMob (Event) ---");
+            Debug.Print("--- NewMob (Event) ---");
             //foreach (var parameter in parameters)
             //{
             //    Debug.Print($"{parameter}");
@@ -18,15 +18,9 @@ namespace StatisticsAnalysisTool.Network.Events
 
             try
             {
-                if (parameters.ContainsKey(0))
-                {
-                    ObjectId = parameters[0].ObjectToLong();
-                }
+                if (parameters.ContainsKey(0)) ObjectId = parameters[0].ObjectToLong();
 
-                if (parameters.ContainsKey(1))
-                {
-                    Type = parameters[1].ObjectToLong() ?? 0;
-                }
+                if (parameters.ContainsKey(1)) Type = parameters[1].ObjectToLong() ?? 0;
 
                 Debug.Print($"ObjectId: {ObjectId} | Type: {Type}");
             }

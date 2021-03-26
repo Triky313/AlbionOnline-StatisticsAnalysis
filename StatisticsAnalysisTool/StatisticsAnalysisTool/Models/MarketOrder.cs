@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
-using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
+using Formatting = StatisticsAnalysisTool.Common.Formatting;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -11,8 +12,7 @@ namespace StatisticsAnalysisTool.Models
         [JsonProperty(PropertyName = "item_id")]
         public string ItemTypeId { get; set; }
 
-        [JsonProperty(PropertyName = "city")]
-        public string City { get; set; }
+        [JsonProperty(PropertyName = "city")] public string City { get; set; }
 
         [JsonProperty(PropertyName = "quality")]
         public int QualityLevel { get; set; }
@@ -48,7 +48,7 @@ namespace StatisticsAnalysisTool.Models
         {
             ItemTypeId = item.ItemTypeId;
             City = Locations.GetName(item.City);
-            QualityLevel = (byte)item.QualityLevel;
+            QualityLevel = (byte) item.QualityLevel;
             SellPriceMin = item.SellPriceMin;
             SellPriceMax = item.SellPriceMax;
             BuyPriceMin = item.BuyPriceMin;
@@ -105,22 +105,22 @@ namespace StatisticsAnalysisTool.Models
         public string SellPriceMinString => Utilities.UlongMarketPriceToString(SellPriceMin);
         public DateTime SellPriceMinDate { get; set; }
         public string SellPriceMinDateString => Utilities.MarketPriceDateToString(SellPriceMinDate);
-        public string SellPriceMinDateLastUpdateTime => Common.Formatting.DateTimeToLastUpdateTime(SellPriceMinDate);
+        public string SellPriceMinDateLastUpdateTime => Formatting.DateTimeToLastUpdateTime(SellPriceMinDate);
         public ulong SellPriceMax { get; set; }
         public string SellPriceMaxString => Utilities.UlongMarketPriceToString(SellPriceMax);
         public DateTime SellPriceMaxDate { get; set; }
         public string SellPriceMaxDateString => Utilities.MarketPriceDateToString(SellPriceMaxDate);
-        public string SellPriceMaxDateLastUpdateTime => Common.Formatting.DateTimeToLastUpdateTime(SellPriceMaxDate);
+        public string SellPriceMaxDateLastUpdateTime => Formatting.DateTimeToLastUpdateTime(SellPriceMaxDate);
         public ulong BuyPriceMin { get; set; }
         public string BuyPriceMinString => Utilities.UlongMarketPriceToString(BuyPriceMin);
         public DateTime BuyPriceMinDate { get; set; }
         public string BuyPriceMinDateString => Utilities.MarketPriceDateToString(BuyPriceMinDate);
-        public string BuyPriceMinDateLastUpdateTime => Common.Formatting.DateTimeToLastUpdateTime(BuyPriceMinDate);
+        public string BuyPriceMinDateLastUpdateTime => Formatting.DateTimeToLastUpdateTime(BuyPriceMinDate);
         public ulong BuyPriceMax { get; set; }
         public string BuyPriceMaxString => Utilities.UlongMarketPriceToString(BuyPriceMax);
         public DateTime BuyPriceMaxDate { get; set; }
         public string BuyPriceMaxDateString => Utilities.MarketPriceDateToString(BuyPriceMaxDate);
-        public string BuyPriceMaxDateLastUpdateTime => Common.Formatting.DateTimeToLastUpdateTime(BuyPriceMaxDate);
+        public string BuyPriceMaxDateLastUpdateTime => Formatting.DateTimeToLastUpdateTime(BuyPriceMaxDate);
         public bool BestSellMinPrice { get; set; }
         public bool BestSellMaxPrice { get; set; }
         public bool BestBuyMinPrice { get; set; }

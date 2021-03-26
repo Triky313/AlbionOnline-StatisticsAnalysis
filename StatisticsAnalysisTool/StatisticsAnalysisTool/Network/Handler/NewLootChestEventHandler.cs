@@ -1,15 +1,16 @@
-﻿using Albion.Network;
+﻿using System.Threading.Tasks;
+using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Events;
-using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class NewLootChestEventHandler : EventPacketHandler<NewLootChestEvent>
     {
         private readonly TrackingController _trackingController;
-        public NewLootChestEventHandler(TrackingController trackingController) : base((int)EventCodes.NewLootChest)
+
+        public NewLootChestEventHandler(TrackingController trackingController) : base((int) EventCodes.NewLootChest)
         {
             _trackingController = trackingController;
         }

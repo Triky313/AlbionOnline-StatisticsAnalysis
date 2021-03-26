@@ -1,13 +1,7 @@
-﻿using FontAwesome5;
-using log4net;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Exceptions;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -16,52 +10,63 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
+using FontAwesome5;
+using LiveCharts;
+using LiveCharts.Wpf;
+using log4net;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Exceptions;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
-    using LiveCharts;
-    using LiveCharts.Wpf;
-    using System.Globalization;
-
     public class ItemWindowViewModel : INotifyPropertyChanged
     {
+        public enum Error
+        {
+            NoPrices,
+            NoItemInfo,
+            GeneralError,
+            ToManyRequests
+        }
+
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly ItemWindow _mainWindow;
+        private List<MarketQualityObject> _allQualityPricesList;
+        private string _averagePrices;
+        private List<MarketResponse> _currentCityPrices;
+        private GoldResponseModel _currentGoldPrice;
+        private string _errorBarText;
+        private Visibility _errorBarVisibility;
+        private bool _excellentQualityChecked;
+        private bool _goodQualityChecked;
+        private bool _hasItemPrices;
+        private BitmapImage _icon;
+        private Visibility _informationLoadingImageVisibility;
+        private bool _isAutoUpdateActive;
         private Item _item;
         private ItemInformation _itemInformation;
-        private bool _runUpdate = true;
-        private Visibility _errorBarVisibility;
-        private string _errorBarText;
-        private BitmapImage _icon;
-        private string _itemName;
-        private bool _masterpieceQualityChecked;
-        private bool _excellentQualityChecked;
-        private bool _outstandingQualityChecked;
-        private bool _goodQualityChecked;
-        private bool _normalQualityChecked;
-        private ItemWindowTranslation _translation;
-        private bool _hasItemPrices;
-        private bool _showBlackZoneOutpostsChecked;
-        private bool _showVillagesChecked;
-        private SeriesCollection _seriesCollectionHistory;
-        private string[] _labelsHistory;
-        private bool _refreshSpin;
-        private bool _isAutoUpdateActive;
-        private string _refreshIconTooltipText;
-        private List<MarketQualityObject> _allQualityPricesList;
-        private string _itemTierLevel;
-        private List<MarketCurrentPricesItem> _marketCurrentPricesItemList;
         private XmlLanguage _itemListViewLanguage;
-        private Visibility _loadingImageVisibility;
+        private string _itemName;
+        private string _itemTierLevel;
+        private string[] _labelsHistory;
         private EFontAwesomeIcon _loadingImageIcon;
         private bool _loadingImageSpin;
-        private string _averagePrices;
+        private Visibility _loadingImageVisibility;
+        private List<MarketCurrentPricesItem> _marketCurrentPricesItemList;
+        private bool _masterpieceQualityChecked;
+        private bool _normalQualityChecked;
+        private bool _outstandingQualityChecked;
         private List<MarketQualityObject> _realMoneyPriceList;
-        private GoldResponseModel _currentGoldPrice;
-        private List<MarketResponse> _currentCityPrices;
-        private Visibility _informationLoadingImageVisibility;
-
-        public enum Error { NoPrices, NoItemInfo, GeneralError, ToManyRequests }
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private string _refreshIconTooltipText;
+        private bool _refreshSpin;
+        private bool _runUpdate = true;
+        private SeriesCollection _seriesCollectionHistory;
+        private bool _showBlackZoneOutpostsChecked;
+        private bool _showVillagesChecked;
+        private ItemWindowTranslation _translation;
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
@@ -97,7 +102,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            ItemTierLevel = (Item?.Tier != -1 && Item?.Level != -1) ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
+            ItemTierLevel = Item?.Tier != -1 && Item?.Level != -1 ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
             SetFullItemInformationAsync(item);
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
@@ -122,7 +127,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Icon = item.Icon;
                 _mainWindow.Title = $"{localizedName} (T{item.Tier})";
             });
-            
+
             StartAutoUpdater();
             RefreshSpin = IsAutoUpdateActive;
         }
@@ -254,9 +259,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private void SetDefaultQualityIfNoOneChecked()
         {
             if (!NormalQualityChecked && !GoodQualityChecked && !OutstandingQualityChecked && !ExcellentQualityChecked && !MasterpieceQualityChecked)
-            {
                 NormalQualityChecked = true;
-            }
         }
 
         public async void SetHistoryChartPricesAsync()
@@ -266,12 +269,10 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 var locations = Locations.GetLocationsListByArea(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
-                historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
+                historyItemPrices = await ApiController
+                    .GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
-                if (historyItemPrices == null)
-                {
-                    return;
-                }
+                if (historyItemPrices == null) return;
             }
             catch (TooManyRequestsException)
             {
@@ -293,9 +294,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 foreach (var data in marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
                 {
                     if (!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
-                    {
                         date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
-                    }
 
                     amount.Add(data.AveragePrice);
                 }
@@ -324,7 +323,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
             foreach (var stat in filteredCityPrices)
-            {
                 if (realMoneyMarketObject.Exists(x => x.Location == stat.City))
                 {
                     var marketQualityObject = realMoneyMarketObject.Find(x => x.LocationName == stat.City);
@@ -332,11 +330,11 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
                 else
                 {
-                    var marketQualityObject = new MarketQualityObject { Location = stat.City };
+                    var marketQualityObject = new MarketQualityObject {Location = stat.City};
                     await SetRealMoneyQualityStat(stat, marketQualityObject);
                     realMoneyMarketObject.Add(marketQualityObject);
                 }
-            }
+
             RealMoneyPriceList = realMoneyMarketObject;
         }
 
@@ -349,7 +347,6 @@ namespace StatisticsAnalysisTool.ViewModels
             var marketQualityObjectList = new List<MarketQualityObject>();
 
             foreach (var stat in filteredCityPrices)
-            {
                 if (marketQualityObjectList.Exists(x => x.Location == stat.City))
                 {
                     var marketQualityObject = marketQualityObjectList.Find(x => x.LocationName == stat.City);
@@ -357,11 +354,11 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
                 else
                 {
-                    var marketQualityObject = new MarketQualityObject { Location = stat.City };
+                    var marketQualityObject = new MarketQualityObject {Location = stat.City};
                     SetQualityStat(stat, ref marketQualityObject);
                     marketQualityObjectList.Add(marketQualityObject);
                 }
-            }
+
             AllQualityPricesList = marketQualityObjectList;
         }
 
@@ -375,36 +372,41 @@ namespace StatisticsAnalysisTool.ViewModels
                 var getGoldPricesObjectList = await ApiController.GetGoldPricesFromJsonAsync(null, 1);
                 _currentGoldPrice = getGoldPricesObjectList?.FirstOrDefault();
             }
-            
+
             switch (ItemController.GetQuality(marketResponse.QualityLevel))
             {
                 case ItemQuality.Normal:
-                    marketQualityObject.SellPriceMinNormalStringInRalMoney = Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinNormalStringInRalMoney =
+                        Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Good:
-                    marketQualityObject.SellPriceMinGoodStringInRalMoney = Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinGoodStringInRalMoney =
+                        Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Outstanding:
-                    marketQualityObject.SellPriceMinOutstandingStringInRalMoney = Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinOutstandingStringInRalMoney =
+                        Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Excellent:
-                    marketQualityObject.SellPriceMinExcellentStringInRalMoney = Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinExcellentStringInRalMoney =
+                        Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
                     return;
 
                 case ItemQuality.Masterpiece:
-                    marketQualityObject.SellPriceMinMasterpieceStringInRalMoney = Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
+                    marketQualityObject.SellPriceMinMasterpieceStringInRalMoney =
+                        Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
                     marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
                     return;
             }
         }
-        
+
         private static void SetQualityStat(MarketResponse marketResponse, ref MarketQualityObject marketQualityObject)
         {
             if (marketQualityObject == null)
@@ -439,10 +441,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool getAllQualities = false)
+        private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket,
+            bool getAllQualities = false)
         {
             return CurrentCityPrices?.Where(x =>
-                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket).Contains(x.City) 
+                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket).Contains(x.City)
                 && (GetQualities().Contains(x.QualityLevel) || getAllQualities)).ToList();
         }
 
@@ -458,10 +461,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var marketCurrentPricesItemList = statsPricesTotalList.Select(item => new MarketCurrentPricesItem(item)).ToList();
 
-            if (LoadingImageVisibility != Visibility.Hidden)
-            {
-                LoadingImageVisibility = Visibility.Hidden;
-            }
+            if (LoadingImageVisibility != Visibility.Hidden) LoadingImageVisibility = Visibility.Hidden;
 
             MarketCurrentPricesItemList = marketCurrentPricesItemList;
             SetAveragePricesString();
@@ -475,7 +475,6 @@ namespace StatisticsAnalysisTool.ViewModels
             var currentStatsPricesTotalList = new List<MarketResponseTotal>();
 
             foreach (var newStats in newStatsPricesList)
-            {
                 try
                 {
                     if (currentStatsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == newStats.City))
@@ -515,7 +514,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     return currentStatsPricesTotalList;
                 }
-            }
 
             return currentStatsPricesTotalList;
         }
@@ -529,10 +527,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                if (list.Exists(s => s.BuyPriceMax == max))
-                {
-                    list.Find(s => s.BuyPriceMax == max).BestBuyMaxPrice = true;
-                }
+                if (list.Exists(s => s.BuyPriceMax == max)) list.Find(s => s.BuyPriceMax == max).BestBuyMaxPrice = true;
             }
             catch
             {
@@ -543,10 +538,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                if (list.Exists(s => s.SellPriceMin == min))
-                {
-                    list.First(s => s.SellPriceMin == min).BestSellMinPrice = true;
-                }
+                if (list.Exists(s => s.SellPriceMin == min)) list.First(s => s.SellPriceMin == min).BestSellMinPrice = true;
             }
             catch
             {
@@ -595,27 +587,15 @@ namespace StatisticsAnalysisTool.ViewModels
 
             foreach (var price in cityPrices)
             {
-                if (price.SellPriceMin != 0)
-                {
-                    sellPriceMin.Add(price.SellPriceMin);
-                }
+                if (price.SellPriceMin != 0) sellPriceMin.Add(price.SellPriceMin);
 
-                if (price.SellPriceMax != 0)
-                {
-                    sellPriceMax.Add(price.SellPriceMax);
-                }
+                if (price.SellPriceMax != 0) sellPriceMax.Add(price.SellPriceMax);
 
-                if (price.BuyPriceMin != 0)
-                {
-                    buyPriceMin.Add(price.BuyPriceMin);
-                }
+                if (price.BuyPriceMin != 0) buyPriceMin.Add(price.BuyPriceMin);
 
-                if (price.BuyPriceMax != 0)
-                {
-                    buyPriceMax.Add(price.BuyPriceMax);
-                }
+                if (price.BuyPriceMax != 0) buyPriceMax.Add(price.BuyPriceMax);
             }
-            
+
             var sellPriceMinAverage = Average(sellPriceMin.ToArray());
             var sellPriceMaxAverage = Average(sellPriceMax.ToArray());
             var buyPriceMinAverage = Average(buyPriceMin.ToArray());
@@ -628,260 +608,324 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Prices
-        
+
         #region Bindings
 
-        public Item Item {
+        public Item Item
+        {
             get => _item;
-            set {
+            set
+            {
                 _item = value;
                 OnPropertyChanged();
             }
         }
 
-        public ItemInformation ItemInformation {
+        public ItemInformation ItemInformation
+        {
             get => _itemInformation;
-            set {
+            set
+            {
                 _itemInformation = value;
                 OnPropertyChanged();
             }
         }
 
-        public string ItemName {
+        public string ItemName
+        {
             get => _itemName;
-            set {
+            set
+            {
                 _itemName = value;
                 OnPropertyChanged();
             }
         }
 
-        public string ItemTierLevel {
+        public string ItemTierLevel
+        {
             get => _itemTierLevel;
-            set {
+            set
+            {
                 _itemTierLevel = value;
                 OnPropertyChanged();
             }
         }
 
-        public BitmapImage Icon {
+        public BitmapImage Icon
+        {
             get => _icon;
-            set {
+            set
+            {
                 _icon = value;
                 OnPropertyChanged();
             }
         }
 
-        public List<MarketResponse> CurrentCityPrices {
+        public List<MarketResponse> CurrentCityPrices
+        {
             get => _currentCityPrices;
-            set {
+            set
+            {
                 _currentCityPrices = value;
                 OnPropertyChanged();
             }
         }
 
-        public string AveragePrices {
+        public string AveragePrices
+        {
             get => _averagePrices;
-            set {
+            set
+            {
                 _averagePrices = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility LoadingImageVisibility {
+        public Visibility LoadingImageVisibility
+        {
             get => _loadingImageVisibility;
-            set {
+            set
+            {
                 _loadingImageVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility InformationLoadingImageVisibility {
+        public Visibility InformationLoadingImageVisibility
+        {
             get => _informationLoadingImageVisibility;
-            set {
+            set
+            {
                 _informationLoadingImageVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public EFontAwesomeIcon LoadingImageIcon {
+        public EFontAwesomeIcon LoadingImageIcon
+        {
             get => _loadingImageIcon;
-            set {
+            set
+            {
                 _loadingImageIcon = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool LoadingImageSpin {
+        public bool LoadingImageSpin
+        {
             get => _loadingImageSpin;
-            set {
+            set
+            {
                 _loadingImageSpin = value;
                 OnPropertyChanged();
             }
         }
 
-        public List<MarketCurrentPricesItem> MarketCurrentPricesItemList {
+        public List<MarketCurrentPricesItem> MarketCurrentPricesItemList
+        {
             get => _marketCurrentPricesItemList;
-            set {
+            set
+            {
                 _marketCurrentPricesItemList = value;
                 OnPropertyChanged();
             }
         }
 
-        public XmlLanguage ItemListViewLanguage {
+        public XmlLanguage ItemListViewLanguage
+        {
             get => _itemListViewLanguage;
-            set {
+            set
+            {
                 _itemListViewLanguage = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool RunUpdate {
+        public bool RunUpdate
+        {
             get => _runUpdate;
-            set {
+            set
+            {
                 _runUpdate = value;
                 OnPropertyChanged();
             }
         }
 
-        public string ErrorBarText {
+        public string ErrorBarText
+        {
             get => _errorBarText;
-            set {
+            set
+            {
                 _errorBarText = value;
                 OnPropertyChanged();
             }
         }
 
-        public Visibility ErrorBarVisibility {
+        public Visibility ErrorBarVisibility
+        {
             get => _errorBarVisibility;
-            set {
+            set
+            {
                 _errorBarVisibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public ItemWindowTranslation Translation {
+        public ItemWindowTranslation Translation
+        {
             get => _translation;
-            set {
+            set
+            {
                 _translation = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool NormalQualityChecked {
+        public bool NormalQualityChecked
+        {
             get => _normalQualityChecked;
-            set {
+            set
+            {
                 _normalQualityChecked = !_normalQualityChecked && value;
                 OnPropertyChanged();
             }
         }
 
-        public bool GoodQualityChecked {
+        public bool GoodQualityChecked
+        {
             get => _goodQualityChecked;
-            set {
+            set
+            {
                 _goodQualityChecked = !_goodQualityChecked && value;
                 OnPropertyChanged();
             }
         }
 
-        public bool OutstandingQualityChecked {
+        public bool OutstandingQualityChecked
+        {
             get => _outstandingQualityChecked;
-            set {
+            set
+            {
                 _outstandingQualityChecked = !_outstandingQualityChecked && value;
                 OnPropertyChanged();
             }
         }
 
-        public bool ExcellentQualityChecked {
+        public bool ExcellentQualityChecked
+        {
             get => _excellentQualityChecked;
-            set {
+            set
+            {
                 _excellentQualityChecked = !_excellentQualityChecked && value;
                 OnPropertyChanged();
             }
         }
 
-        public bool MasterpieceQualityChecked {
+        public bool MasterpieceQualityChecked
+        {
             get => _masterpieceQualityChecked;
-            set {
+            set
+            {
                 _masterpieceQualityChecked = !_masterpieceQualityChecked && value;
                 OnPropertyChanged();
             }
         }
 
-        public bool ShowBlackZoneOutpostsChecked {
+        public bool ShowBlackZoneOutpostsChecked
+        {
             get => _showBlackZoneOutpostsChecked;
-            set {
+            set
+            {
                 _showBlackZoneOutpostsChecked = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool ShowVillagesChecked {
+        public bool ShowVillagesChecked
+        {
             get => _showVillagesChecked;
-            set {
+            set
+            {
                 _showVillagesChecked = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsAutoUpdateActive {
+        public bool IsAutoUpdateActive
+        {
             get => _isAutoUpdateActive;
-            set {
+            set
+            {
                 _isAutoUpdateActive = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool HasItemPrices {
+        public bool HasItemPrices
+        {
             get => _hasItemPrices;
-            set {
+            set
+            {
                 _hasItemPrices = value;
                 OnPropertyChanged();
             }
         }
 
-        public SeriesCollection SeriesCollectionHistory {
+        public SeriesCollection SeriesCollectionHistory
+        {
             get => _seriesCollectionHistory;
-            set {
+            set
+            {
                 _seriesCollectionHistory = value;
                 OnPropertyChanged();
             }
         }
 
-        public string[] LabelsHistory {
+        public string[] LabelsHistory
+        {
             get => _labelsHistory;
-            set {
+            set
+            {
                 _labelsHistory = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool RefreshSpin {
+        public bool RefreshSpin
+        {
             get => _refreshSpin;
-            set {
+            set
+            {
                 _refreshSpin = value;
                 OnPropertyChanged();
             }
         }
 
-        public string RefreshIconTooltipText {
+        public string RefreshIconTooltipText
+        {
             get => _refreshIconTooltipText;
-            set {
+            set
+            {
                 _refreshIconTooltipText = value;
                 OnPropertyChanged();
             }
         }
 
-        public List<MarketQualityObject> AllQualityPricesList {
+        public List<MarketQualityObject> AllQualityPricesList
+        {
             get => _allQualityPricesList;
-            set {
+            set
+            {
                 _allQualityPricesList = value;
                 OnPropertyChanged();
             }
         }
 
-        public List<MarketQualityObject> RealMoneyPriceList {
+        public List<MarketQualityObject> RealMoneyPriceList
+        {
             get => _realMoneyPriceList;
-            set {
+            set
+            {
                 _realMoneyPriceList = value;
                 OnPropertyChanged();
             }
@@ -900,14 +944,11 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void CopyTextToClipboard(object sender)
         {
-            if (sender == null)
-            {
-                return;
-            }
+            if (sender == null) return;
 
             try
             {
-                var label = (Label)sender;
+                var label = (Label) sender;
                 Clipboard.SetText(label.Content.ToString());
             }
             catch (Exception ex)
@@ -923,10 +964,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public ulong Average(params ulong[] values)
         {
-            if (values.Length == 0)
-            {
-                return 0;
-            }
+            if (values.Length == 0) return 0;
 
             var sum = Sum(values);
             var result = sum / (ulong) values.Length;

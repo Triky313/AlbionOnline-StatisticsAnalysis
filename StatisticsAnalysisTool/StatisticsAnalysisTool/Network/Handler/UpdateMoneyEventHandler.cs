@@ -1,16 +1,17 @@
-﻿using Albion.Network;
+﻿using System.Threading.Tasks;
+using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
-using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UpdateMoneyEventHandler : EventPacketHandler<UpdateMoneyEvent>
     {
-        private readonly TrackingController _trackingController;
         private readonly SilverCountUpTimer _silverCountUpTimer;
+        private readonly TrackingController _trackingController;
 
-        public UpdateMoneyEventHandler(TrackingController trackingController, SilverCountUpTimer silverCountUpTimer) : base((int) EventCodes.UpdateMoney)
+        public UpdateMoneyEventHandler(TrackingController trackingController, SilverCountUpTimer silverCountUpTimer) : base(
+            (int) EventCodes.UpdateMoney)
         {
             _trackingController = trackingController;
             _silverCountUpTimer = silverCountUpTimer;

@@ -1,9 +1,9 @@
-﻿namespace StatisticsAnalysisTool.Models
-{
-    using Annotations;
-    using Newtonsoft.Json;
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Annotations;
 
+namespace StatisticsAnalysisTool.Models
+{
     public class MarketHistoriesResponse
     {
         [JsonProperty(PropertyName = "location")]

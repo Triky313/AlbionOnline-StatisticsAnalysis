@@ -4,7 +4,8 @@ namespace StatisticsAnalysisTool.Network.Notification
 {
     public class FameNotificationFragment : LineFragment
     {
-        public FameNotificationFragment(string startText, AttributeStatOperator statOperator, double totalPlayerFame, double totalGainedFame, string fameText, FameTypeOperator fameTypeOperator, double zone, double premium, double satchel, string endText)
+        public FameNotificationFragment(string startText, AttributeStatOperator statOperator, double totalPlayerFame, double totalGainedFame,
+            string fameText, FameTypeOperator fameTypeOperator, double zone, double premium, double satchel, string endText)
         {
             StartText = startText;
             Operator = statOperator;

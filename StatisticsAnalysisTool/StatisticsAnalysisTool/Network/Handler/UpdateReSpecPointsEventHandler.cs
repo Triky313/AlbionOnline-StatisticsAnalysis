@@ -1,17 +1,18 @@
-﻿using Albion.Network;
+﻿using System.Threading.Tasks;
+using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Events;
-using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UpdateReSpecPointsEventHandler : EventPacketHandler<UpdateReSpecPointsEvent>
     {
-        private readonly TrackingController _trackingController;
         private readonly ReSpecPointsCountUpTimer _reSpecPointsCountUpTimer;
+        private readonly TrackingController _trackingController;
 
-        public UpdateReSpecPointsEventHandler(TrackingController trackingController, ReSpecPointsCountUpTimer reSpecPointsCountUpTimer) : base((int) EventCodes.UpdateReSpecPoints)
+        public UpdateReSpecPointsEventHandler(TrackingController trackingController, ReSpecPointsCountUpTimer reSpecPointsCountUpTimer) : base(
+            (int) EventCodes.UpdateReSpecPoints)
         {
             _trackingController = trackingController;
             _reSpecPointsCountUpTimer = reSpecPointsCountUpTimer;

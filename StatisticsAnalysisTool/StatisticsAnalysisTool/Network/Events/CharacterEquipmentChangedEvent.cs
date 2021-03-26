@@ -1,9 +1,9 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models.NetworkModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Albion.Network;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -13,17 +13,14 @@ namespace StatisticsAnalysisTool.Network.Events
         {
             try
             {
-                if (parameters.ContainsKey(0))
-                {
-                    ObjectId = parameters[0].ObjectToLong();
-                }
+                if (parameters.ContainsKey(0)) ObjectId = parameters[0].ObjectToLong();
 
                 if (parameters.ContainsKey(2))
                 {
                     var valueType = parameters[2].GetType();
                     if (valueType.IsArray && typeof(short[]).Name == valueType.Name)
                     {
-                        var equipment = ((short[])parameters[2]).ToDictionary();
+                        var equipment = ((short[]) parameters[2]).ToDictionary();
                         CharacterEquipment.MainHand = equipment[0].ObjectToInt();
                         CharacterEquipment.OffHand = equipment[1].ObjectToInt();
                         CharacterEquipment.Head = equipment[2].ObjectToInt();

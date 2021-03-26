@@ -1,9 +1,8 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using Albion.Network;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -13,37 +12,25 @@ namespace StatisticsAnalysisTool.Network.Events
         {
             try
             {
-                if (parameters.ContainsKey(1))
-                {
-                    ItemIndex = parameters[1].ObjectToInt();
-                }
+                if (parameters.ContainsKey(1)) ItemIndex = parameters[1].ObjectToInt();
 
                 if (parameters.ContainsKey(8))
                 {
                     var valueType = parameters[8].GetType();
                     if (valueType.IsArray && typeof(byte[]).Name == valueType.Name)
                     {
-                        var spells = ((byte[])parameters[8]).ToDictionary();
-                        foreach (var spell in spells)
-                        {
-                            SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
-                        }
+                        var spells = ((byte[]) parameters[8]).ToDictionary();
+                        foreach (var spell in spells) SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
                     }
-                    else if(valueType.IsArray && typeof(short[]).Name == valueType.Name)
+                    else if (valueType.IsArray && typeof(short[]).Name == valueType.Name)
                     {
-                        var spells = ((short[])parameters[8]).ToDictionary();
-                        foreach (var spell in spells)
-                        {
-                            SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
-                        }
+                        var spells = ((short[]) parameters[8]).ToDictionary();
+                        foreach (var spell in spells) SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
                     }
                     else if (valueType.IsArray && typeof(int[]).Name == valueType.Name)
                     {
-                        var spells = ((int[])parameters[8]).ToDictionary();
-                        foreach (var spell in spells)
-                        {
-                            SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
-                        }
+                        var spells = ((int[]) parameters[8]).ToDictionary();
+                        foreach (var spell in spells) SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
                     }
                 }
             }

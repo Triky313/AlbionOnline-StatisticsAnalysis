@@ -3,6 +3,6 @@
     public enum DungeonStatus
     {
         Active,
-        Done,
+        Done
     }
 }

@@ -1,57 +1,65 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.Common
 {
-    using System.Windows;
-    using System.Windows.Media;
-
     public static class Locations
     {
         public static readonly Dictionary<Location, string> Names = new Dictionary<Location, string>
         {
-          {Location.Thetford, "Thetford" },
-          {Location.SwampCross, "Swamp Cross" },
-          {Location.Lymhurst, "Lymhurst" },
-          {Location.ForestCross, "Forest Cross" },
-          {Location.Bridgewatch, "Bridgewatch" },
-          {Location.SteppeCross, "Steppe Cross" },
-          {Location.HighlandCross, "Highland Cross" },
-          {Location.BlackMarket, "Black Market" },
-          {Location.Martlock, "Martlock" },
-          {Location.Caerleon, "Caerleon" },
-          {Location.FortSterling, "Fort Sterling" },
-          {Location.MountainCross, "Mountain Cross" },
-          {Location.ArthursRest, "Arthur's Rest" },
-          {Location.MerlynsRest, "Merlyn's Rest" },
-          {Location.MorganasRest, "Morgana's Rest" }
+            {Location.Thetford, "Thetford"},
+            {Location.SwampCross, "Swamp Cross"},
+            {Location.Lymhurst, "Lymhurst"},
+            {Location.ForestCross, "Forest Cross"},
+            {Location.Bridgewatch, "Bridgewatch"},
+            {Location.SteppeCross, "Steppe Cross"},
+            {Location.HighlandCross, "Highland Cross"},
+            {Location.BlackMarket, "Black Market"},
+            {Location.Martlock, "Martlock"},
+            {Location.Caerleon, "Caerleon"},
+            {Location.FortSterling, "Fort Sterling"},
+            {Location.MountainCross, "Mountain Cross"},
+            {Location.ArthursRest, "Arthur's Rest"},
+            {Location.MerlynsRest, "Merlyn's Rest"},
+            {Location.MorganasRest, "Morgana's Rest"}
         };
 
         public static readonly Dictionary<Location, string> ParameterNames = new Dictionary<Location, string>
         {
-            {Location.Thetford, "Thetford" },
-            {Location.SwampCross, "Swamp Cross" },
-            {Location.Lymhurst, "Lymhurst" },
-            {Location.ForestCross, "Forest Cross" },
-            {Location.Bridgewatch, "Bridgewatch" },
-            {Location.SteppeCross, "Steppe Cross" },
-            {Location.HighlandCross, "Highland Cross" },
-            {Location.BlackMarket, "Black Market" },
-            {Location.Martlock, "Martlock" },
-            {Location.Caerleon, "Caerleon" },
-            {Location.FortSterling, "Fort Sterling" },
-            {Location.MountainCross, "Mountain Cross" },
-            {Location.ArthursRest, "Arthurs Rest" },
-            {Location.MerlynsRest, "Merlyns Rest" },
-            {Location.MorganasRest, "Morganas Rest" }
+            {Location.Thetford, "Thetford"},
+            {Location.SwampCross, "Swamp Cross"},
+            {Location.Lymhurst, "Lymhurst"},
+            {Location.ForestCross, "Forest Cross"},
+            {Location.Bridgewatch, "Bridgewatch"},
+            {Location.SteppeCross, "Steppe Cross"},
+            {Location.HighlandCross, "Highland Cross"},
+            {Location.BlackMarket, "Black Market"},
+            {Location.Martlock, "Martlock"},
+            {Location.Caerleon, "Caerleon"},
+            {Location.FortSterling, "Fort Sterling"},
+            {Location.MountainCross, "Mountain Cross"},
+            {Location.ArthursRest, "Arthurs Rest"},
+            {Location.MerlynsRest, "Merlyns Rest"},
+            {Location.MorganasRest, "Morganas Rest"}
         };
 
-        public static string GetName(Location location) => Names.TryGetValue(location, out var name) ? name : null;
+        public static string GetName(Location location)
+        {
+            return Names.TryGetValue(location, out var name) ? name : null;
+        }
 
-        public static string GetParameterName(Location location) => ParameterNames.TryGetValue(location, out var name) ? name : null;
+        public static string GetParameterName(Location location)
+        {
+            return ParameterNames.TryGetValue(location, out var name) ? name : null;
+        }
 
-        public static Location GetName(string location) => ParameterNames.FirstOrDefault(x => x.Value == location).Key;
-        
+        public static Location GetName(string location)
+        {
+            return ParameterNames.FirstOrDefault(x => x.Value == location).Key;
+        }
+
         public static List<string> GetLocationsListByArea(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket)
         {
             var locationAreas = new List<LocationArea>();
@@ -71,7 +79,6 @@ namespace StatisticsAnalysisTool.Common
             var locations = new List<string>();
 
             foreach (var area in locationAreas)
-            {
                 switch (area)
                 {
                     case LocationArea.BlackMarket:
@@ -101,7 +108,7 @@ namespace StatisticsAnalysisTool.Common
                         locations.Add(GetParameterName(Location.Caerleon));
                         break;
                 }
-            }
+
             return locations;
         }
 
@@ -110,17 +117,12 @@ namespace StatisticsAnalysisTool.Common
             try
             {
                 if (transparent)
-                {
-                    return (Brush)Application.Current.Resources[$"SolidColorBrush.City.{GetParameterName(location)}.Transparent"];
-                }
-                else
-                {
-                    return (Brush)Application.Current.Resources[$"SolidColorBrush.City.{GetParameterName(location)}"];
-                }
+                    return (Brush) Application.Current.Resources[$"SolidColorBrush.City.{GetParameterName(location)}.Transparent"];
+                return (Brush) Application.Current.Resources[$"SolidColorBrush.City.{GetParameterName(location)}"];
             }
             catch
             {
-                return (Brush)Application.Current.Resources["SolidColorBrush.City.Default.Transparent"];
+                return (Brush) Application.Current.Resources["SolidColorBrush.City.Default.Transparent"];
             }
         }
 
@@ -128,11 +130,11 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                return (Color)Application.Current.Resources[$"Color.City.{location}"];
+                return (Color) Application.Current.Resources[$"Color.City.{location}"];
             }
             catch
             {
-                return (Color)Application.Current.Resources["Color.City.Default"];
+                return (Color) Application.Current.Resources["Color.City.Default"];
             }
         }
     }
@@ -153,7 +155,7 @@ namespace StatisticsAnalysisTool.Common
         MountainCross = 4006,
         ArthursRest = 4300,
         MerlynsRest = -2,
-        MorganasRest = -3,
+        MorganasRest = -3
     }
 
     public enum LocationArea

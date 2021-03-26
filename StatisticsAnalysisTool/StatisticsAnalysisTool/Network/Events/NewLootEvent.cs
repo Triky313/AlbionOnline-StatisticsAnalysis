@@ -1,7 +1,7 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Models.NetworkModel;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Albion.Network;
+using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -15,11 +15,11 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 var containerId = parameters[0].ToString();
                 // 2 = mob id?
-                var bodyName = (string)parameters[3];
+                var bodyName = (string) parameters[3];
 
                 var container = new Container
                 {
-                    Id = containerId, Owner = bodyName, 
+                    Id = containerId, Owner = bodyName,
                     Type = BodyName.StartsWith("@MOB") ? ContainerType.Monster : ContainerType.Player
                 };
 

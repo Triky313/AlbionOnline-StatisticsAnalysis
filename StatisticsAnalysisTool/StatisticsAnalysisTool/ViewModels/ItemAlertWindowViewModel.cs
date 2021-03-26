@@ -1,20 +1,20 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
     public class ItemAlertWindowViewModel : INotifyPropertyChanged
     {
         private readonly AlertInfos _alertInfos;
-        private ItemAlertWindowTranslation _translation;
-        private string _itemName;
+        private Color _cityColor;
         private string _cityName;
         private BitmapImage _icon;
-        private Color _cityColor;
+        private string _itemName;
+        private ItemAlertWindowTranslation _translation;
 
         public ItemAlertWindowViewModel(AlertInfos alertInfos)
         {
@@ -33,7 +33,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Bindings
 
-        public string ItemName {
+        public string ItemName
+        {
             get => _itemName;
             set
             {
@@ -42,7 +43,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string CityName {
+        public string CityName
+        {
             get => _cityName;
             set
             {
@@ -51,7 +53,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public BitmapImage Icon {
+        public BitmapImage Icon
+        {
             get => _icon;
             set
             {
@@ -60,7 +63,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Color CityColor {
+        public Color CityColor
+        {
             get => _cityColor;
             set
             {
@@ -69,9 +73,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ItemAlertWindowTranslation Translation {
+        public ItemAlertWindowTranslation Translation
+        {
             get => _translation;
-            set {
+            set
+            {
                 _translation = value;
                 OnPropertyChanged();
             }

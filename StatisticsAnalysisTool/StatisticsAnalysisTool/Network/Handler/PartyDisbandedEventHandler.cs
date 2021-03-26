@@ -1,13 +1,14 @@
-﻿using Albion.Network;
+﻿using System.Threading.Tasks;
+using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
-using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class PartyDisbandedEventHandler : EventPacketHandler<PartyDisbandedEvent>
     {
         private readonly TrackingController _trackingController;
+
         public PartyDisbandedEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyDisbanded)
         {
             _trackingController = trackingController;
