@@ -27,7 +27,6 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly TrackingController _trackingController;
         private Guid? _currentGuid;
-
         private Guid? _lastGuid;
 
         public DungeonController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
@@ -46,20 +45,21 @@ namespace StatisticsAnalysisTool.Network.Controller
             SetBestDungeonTime();
             SetBestDungeonValuesWithDispatcher();
 
-            if (mapType != MapType.RandomDungeon || mapGuid == null)
+            if (!CheckIfDungeonCluster(mapType, mapGuid))
             {
-                if (_lastGuid != null) SetCurrentDungeonActive((Guid) _lastGuid, true);
-
-                _currentGuid = null;
-                _lastGuid = null;
                 return;
             }
 
+            if (mapGuid == null)
+            {
+                return;
+            }
+
+            _currentGuid = (Guid)mapGuid;
+            var currentGuid = (Guid)_currentGuid;
+
             try
             {
-                _currentGuid = (Guid) mapGuid;
-                var currentGuid = (Guid) _currentGuid;
-
                 AddDungeonRunIfNextMap(currentGuid);
                 SetNewStartTimeWhenOneMoreTimeEnter(currentGuid);
 
@@ -243,26 +243,34 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        private void SetCurrentDungeonActive(Guid guid, bool allToFalse = false)
+        private void SetCurrentDungeonActive(Guid? guid)
         {
-            if (_mainWindowViewModel.TrackingDungeons.Count <= 0) return;
+            if (_mainWindowViewModel.TrackingDungeons.Count <= 0)
+            {
+                return;
+            }
 
             if (_mainWindow.Dispatcher.CheckAccess())
             {
                 _mainWindowViewModel.TrackingDungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
-                var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(guid));
-                if (!allToFalse) dun.Status = DungeonStatus.Active;
+                if (guid != null)
+                {
+                    var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains((Guid)guid));
+                    dun.Status = DungeonStatus.Active;
+                }
             }
             else
             {
                 _mainWindow.Dispatcher.Invoke(delegate
                 {
-                    _mainWindowViewModel.TrackingDungeons.Where(x => x.Status != DungeonStatus.Done).ToList()
-                        .ForEach(x => x.Status = DungeonStatus.Done);
+                    _mainWindowViewModel.TrackingDungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
-                    var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains(guid));
-                    if (!allToFalse) dun.Status = DungeonStatus.Active;
+                    if (guid != null)
+                    {
+                        var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains((Guid)guid));
+                        dun.Status = DungeonStatus.Active;
+                    }
                 });
             }
         }
@@ -271,14 +279,17 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             if (_mainWindow.Dispatcher.CheckAccess())
             {
-                if (_mainWindowViewModel?.TrackingDungeons?.Any(x =>
-                    x?.Status == DungeonStatus.Done && x.DungeonChests.Any(y => y?.IsBossChest == true)) == true)
+                if (_mainWindowViewModel?.TrackingDungeons?.Any(x => x?.Status == DungeonStatus.Done && x.DungeonChests.Any(y => y?.IsBossChest == true)) == true)
                 {
                     _mainWindowViewModel.TrackingDungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
                     var min = _mainWindowViewModel?.TrackingDungeons?.Where(x => x?.DungeonChests.Any(y => y.IsBossChest) == true)
                         .Select(x => x.TotalTime).Min();
                     var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == min);
-                    if (bestTimeDungeon != null) bestTimeDungeon.IsBestTime = true;
+
+                    if (bestTimeDungeon != null)
+                    {
+                        bestTimeDungeon.IsBestTime = true;
+                    }
                 }
             }
             else
@@ -294,7 +305,11 @@ namespace StatisticsAnalysisTool.Network.Controller
                         var min = _mainWindowViewModel?.TrackingDungeons?.Where(x => x?.DungeonChests.Any(y => y.IsBossChest) == true)
                             .Select(x => x.TotalTime).Min();
                         var bestTimeDungeon = _mainWindowViewModel?.TrackingDungeons?.SingleOrDefault(x => x.TotalTime == min);
-                        if (bestTimeDungeon != null) bestTimeDungeon.IsBestTime = true;
+
+                        if (bestTimeDungeon != null)
+                        {
+                            bestTimeDungeon.IsBestTime = true;
+                        }
                     }
                 });
             }
@@ -303,9 +318,30 @@ namespace StatisticsAnalysisTool.Network.Controller
         private void SetBestDungeonValuesWithDispatcher()
         {
             if (_mainWindow.Dispatcher.CheckAccess())
+            {
                 CalculateBestDungeonValues();
+            }
             else
+            {
                 _mainWindow.Dispatcher.Invoke(CalculateBestDungeonValues);
+            }
+        }
+
+        private bool CheckIfDungeonCluster(MapType mapType, Guid? mapGuid)
+        {
+            if ((mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate) || mapGuid == null)
+            {
+                if (_lastGuid != null)
+                {
+                    SetCurrentDungeonActive(null);
+                }
+
+                _currentGuid = null;
+                _lastGuid = null;
+                return false;
+            }
+
+            return true;
         }
 
         private void CalculateBestDungeonValues()
@@ -441,8 +477,8 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private void LeaveDungeonCheck(MapType mapType)
         {
-            if (_lastGuid != null && _mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid) _lastGuid)) &&
-                mapType != MapType.RandomDungeon)
+            if (_lastGuid != null && _mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid) _lastGuid)) 
+                                  && (mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate))
             {
                 var dun = _mainWindowViewModel.TrackingDungeons?.First(x => x.MapsGuid.Contains((Guid) _lastGuid));
                 dun.AddDungeonRunTime(DateTime.UtcNow);
@@ -451,12 +487,16 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private void IsDungeonDoneCheck(MapType mapType)
         {
-            if (_lastGuid != null && _mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid) _lastGuid)) &&
-                mapType != MapType.RandomDungeon)
+            if (_lastGuid != null && _mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid)_lastGuid))
+                                  && (mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate))
             {
                 var dun = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x =>
                     x.MapsGuid.Contains((Guid) _lastGuid) && x.DungeonChests.Any(y => y.IsBossChest));
-                if (dun != null) dun.Status = DungeonStatus.Done;
+
+                if (dun != null)
+                {
+                    dun.Status = DungeonStatus.Done;
+                }
             }
         }
 
