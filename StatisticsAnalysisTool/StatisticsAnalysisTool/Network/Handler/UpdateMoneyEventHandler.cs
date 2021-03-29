@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using Albion.Network;
+﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -19,10 +19,10 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(UpdateMoneyEvent value)
         {
-            _silverCountUpTimer.Add(value.CurrentPlayerSilver);
+            _silverCountUpTimer.Add(value.CurrentPlayerSilver.DoubleValue);
 
-            _trackingController.SetTotalPlayerSilver(value.CurrentPlayerSilver);
-            _trackingController.DungeonController?.AddValueToDungeon(value.CurrentPlayerSilver, ValueType.Silver);
+            _trackingController.SetTotalPlayerSilver(value.CurrentPlayerSilver.DoubleValue);
+            _trackingController.DungeonController?.AddValueToDungeon(value.CurrentPlayerSilver.DoubleValue, ValueType.Silver);
             await Task.CompletedTask;
         }
     }

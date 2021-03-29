@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Albion.Network;
+﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Events;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -20,10 +20,14 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(UpdateReSpecPointsEvent value)
         {
-            _reSpecPointsCountUpTimer.Add(value.CurrentReSpecPoints);
+            if (value?.CurrentReSpecPoints != null)
+            {
+                _reSpecPointsCountUpTimer.Add(value.CurrentReSpecPoints.Value.DoubleValue);
 
-            _trackingController.SetTotalPlayerReSpecPoints(value.CurrentReSpecPoints);
-            _trackingController.DungeonController?.AddValueToDungeon(value.CurrentReSpecPoints, ValueType.ReSpec);
+                _trackingController.SetTotalPlayerReSpecPoints(value.CurrentReSpecPoints.Value.DoubleValue);
+                _trackingController.DungeonController?.AddValueToDungeon(value.CurrentReSpecPoints.Value.DoubleValue, ValueType.ReSpec);
+            }
+            
             await Task.CompletedTask;
         }
     }
