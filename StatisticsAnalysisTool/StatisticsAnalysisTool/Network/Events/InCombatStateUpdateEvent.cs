@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Albion.Network;
+﻿using Albion.Network;
 using log4net;
 using StatisticsAnalysisTool.Common;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -19,11 +19,20 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             try
             {
-                if (parameters.ContainsKey(0)) ObjectId = parameters[0].ObjectToLong();
+                if (parameters.ContainsKey(0))
+                {
+                    ObjectId = parameters[0].ObjectToLong();
+                }
 
-                if (parameters.ContainsKey(1)) InActiveCombat = parameters[1] as bool? ?? false;
+                if (parameters.ContainsKey(1))
+                {
+                    InActiveCombat = parameters[1] as bool? ?? false;
+                }
 
-                if (parameters.ContainsKey(2)) InPassiveCombat = parameters[2] as bool? ?? false;
+                if (parameters.ContainsKey(2))
+                {
+                    InPassiveCombat = parameters[2] as bool? ?? false;
+                }
             }
             catch (Exception e)
             {

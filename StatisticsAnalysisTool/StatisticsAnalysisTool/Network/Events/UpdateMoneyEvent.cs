@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Albion.Network;
+using log4net;
+using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using Albion.Network;
-using log4net;
 
 namespace StatisticsAnalysisTool.Network
 {
@@ -15,11 +16,15 @@ namespace StatisticsAnalysisTool.Network
         {
             try
             {
-                if (parameters.ContainsKey(1) && long.TryParse(parameters[1].ToString(), out var currentPlayerSilver))
-                    CurrentPlayerSilver = currentPlayerSilver / 10000d;
+                if (parameters.ContainsKey(1))
+                {
+                    CurrentPlayerSilver = FixPoint.FromInternalValue(parameters[1].ObjectToLong() ?? 0);
+                }
 
-                if (parameters.ContainsKey(2) && long.TryParse(parameters[2].ToString(), out var currentPlayerGold))
-                    CurrentPlayerGold = currentPlayerGold / 10000d;
+                if (parameters.ContainsKey(2))
+                {
+                    CurrentPlayerGold = FixPoint.FromInternalValue(parameters[2].ObjectToLong() ?? 0);
+                }
             }
             catch (ArgumentNullException e)
             {
@@ -28,7 +33,7 @@ namespace StatisticsAnalysisTool.Network
             }
         }
 
-        public double CurrentPlayerSilver { get; }
-        public double CurrentPlayerGold { get; }
+        public FixPoint CurrentPlayerSilver { get; }
+        public FixPoint CurrentPlayerGold { get; }
     }
 }

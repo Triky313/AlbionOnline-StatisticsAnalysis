@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using Albion.Network;
+﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -18,6 +18,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             _trackingController.EntityController.HealthUpdate(value.ObjectId, value.TimeStamp, value.HealthChange, value.NewHealthValue,
                 value.EffectType, value.EffectOrigin, value.CauserId, value.CausingSpellType);
+
             await Task.CompletedTask;
         }
     }
