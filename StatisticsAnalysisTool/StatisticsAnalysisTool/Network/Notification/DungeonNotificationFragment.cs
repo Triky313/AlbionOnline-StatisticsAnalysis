@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.Models.NetworkModel;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Notification
@@ -19,7 +21,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _diedName;
         private ObservableCollection<DungeonChestFragment> _dungeonChests = new ObservableCollection<DungeonChestFragment>();
         private int _dungeonCounter;
-        private DateTime _enterDungeonMap;
+        private DateTime _enterDungeonFirstTime;
         private Faction _faction;
         private double _fame;
         private double _famePerHour;
@@ -45,16 +47,44 @@ namespace StatisticsAnalysisTool.Network.Notification
         private double _silverPerHour;
         private DungeonStatus _status;
         private TimeSpan _totalTime;
+        private TimeSpan _dungeonTime = new TimeSpan(1);
 
+        public List<TimeCollectObject> DungeonRunTimes { get; } = new List<TimeCollectObject>();
+        
         public DungeonNotificationFragment(Guid firstMap, int count, string mainMapIndex, DateTime startDungeon)
         {
             MainMapIndex = mainMapIndex;
             FirstMap = firstMap;
             MapsGuid = new List<Guid> {firstMap};
             StartDungeon = startDungeon;
-            EnterDungeonMap = DateTime.UtcNow;
+            EnterDungeonFirstTime = DateTime.UtcNow;
             DungeonCounter = count;
             Faction = Faction.Unknown;
+
+            AddDungeonStartTime(DateTime.UtcNow);
+        }
+
+        public void AddDungeonStartTime(DateTime time)
+        {
+            DungeonRunTimes.Add(new TimeCollectObject(time));
+            SetCombatTimeSpan();
+        }
+
+        private void SetCombatTimeSpan()
+        {
+            foreach (var combatTime in DungeonRunTimes.Where(x => x.EndTime != null).ToList())
+            {
+                DungeonTime += combatTime.TimeSpan;
+                DungeonRunTimes.Remove(combatTime);
+            }
+        }
+
+        public TimeSpan DungeonTime {
+            get => _dungeonTime;
+            set {
+                _dungeonTime = value;
+                OnPropertyChanged();
+            }
         }
 
         public ObservableCollection<DungeonChestFragment> DungeonChests
@@ -158,12 +188,12 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonProperty] private TimeSpan RunTimeInSeconds => TotalTime.TotalSeconds <= 0 ? DateTime.UtcNow - StartDungeon : TotalTime;
 
         [JsonProperty]
-        public DateTime EnterDungeonMap
+        public DateTime EnterDungeonFirstTime
         {
-            get => _enterDungeonMap;
+            get => _enterDungeonFirstTime;
             set
             {
-                _enterDungeonMap = value;
+                _enterDungeonFirstTime = value;
                 OnPropertyChanged();
             }
         }
@@ -375,7 +405,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public void AddDungeonRunTime(DateTime dungeonEnd)
         {
-            _dungeonRuns.Add(new DungeonRun {Start = EnterDungeonMap, End = dungeonEnd});
+            _dungeonRuns.Add(new DungeonRun {Start = EnterDungeonFirstTime, End = dungeonEnd});
 
             TotalTime = new TimeSpan();
             foreach (var dunRun in _dungeonRuns) TotalTime = TotalTime.Add(dunRun.Run);

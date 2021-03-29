@@ -1,7 +1,7 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
@@ -16,7 +16,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public string Name { get; set; } = "Unknown";
         public CharacterEquipment CharacterEquipment { get; set; } = null;
         public DateTime? CombatStart { get; set; }
-        public List<CombatTime> CombatTimes { get; } = new List<CombatTime>();
+        public List<TimeCollectObject> CombatTimes { get; } = new List<TimeCollectObject>();
         public TimeSpan CombatTime { get; set; } = new TimeSpan(1);
         public long Damage { get; set; }
         public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);
@@ -26,9 +26,9 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             return $"{ObjectType}[ObjectId: {ObjectId}, Name: '{Name}']";
         }
 
-        public void AddCombatTime(CombatTime combatTime)
+        public void AddCombatTime(TimeCollectObject timeCollectObject)
         {
-            CombatTimes.Add(combatTime);
+            CombatTimes.Add(timeCollectObject);
             SetCombatTimeSpan();
         }
 
@@ -54,7 +54,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         {
             foreach (var combatTime in CombatTimes.Where(x => x.EndTime != null).ToList())
             {
-                CombatTime += combatTime.CombatTimeSpan;
+                CombatTime += combatTime.TimeSpan;
                 CombatTimes.Remove(combatTime);
             }
         }

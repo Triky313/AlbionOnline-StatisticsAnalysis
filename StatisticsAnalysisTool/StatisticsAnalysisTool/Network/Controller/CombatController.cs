@@ -175,7 +175,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             if ((inActiveCombat || inPassiveCombat) && playerObject.Value.Value.CombatTimes.Any(x => x?.EndTime == null)) return;
 
-            if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new CombatTime(DateTime.UtcNow));
+            if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new TimeCollectObject(DateTime.UtcNow));
 
             if (!inActiveCombat && !inPassiveCombat)
             {
