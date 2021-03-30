@@ -386,7 +386,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
             _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
-            var counter = 0;
+            var counter = _dungeons.Count + 1;
             foreach (var dungeon in _dungeons)
             {
                 _mainWindow.Dispatcher?.Invoke(() =>
@@ -396,18 +396,18 @@ namespace StatisticsAnalysisTool.Network.Controller
                     if (uiDungeon != null)
                     {
                         uiDungeon.SetValues(dungeon);
-                        uiDungeon.DungeonNumber = ++counter;
+                        uiDungeon.DungeonNumber = --counter;
                     }
                     else
                     {
-                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
+                        var dunFragment = new DungeonNotificationFragment(--counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
                         dunFragment.SetValues(dungeon);
                         _mainWindowViewModel?.TrackingDungeons?.Add(dunFragment);
                     }
                 });
             }
 
-            _mainWindowViewModel?.TrackingDungeons?.OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderByDescending(x => x.EnterDungeonFirstTime).ToList());
+            _mainWindowViewModel?.TrackingDungeons?.OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderBy(x => x.EnterDungeonFirstTime).ToList());
         }
 
         public void UpdateDungeonDataUi(DungeonObject dungeon)
