@@ -3,24 +3,20 @@ using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
     public class DungeonNotificationFragment : LineFragment, INotifyPropertyChanged
     {
-        private readonly List<DungeonRun> _dungeonRuns = new List<DungeonRun>();
         private bool _diedInDungeon;
         private string _diedName;
+        private string _killedBy;
         private ObservableCollection<DungeonChestFragment> _dungeonChests = new ObservableCollection<DungeonChestFragment>();
-        private int _dungeonCounter;
         private DateTime _enterDungeonFirstTime;
         private Faction _faction;
         private double _fame;
@@ -32,13 +28,10 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isBestSilver;
         private bool _isBestSilverPerHour;
         private bool _isBestTime;
-        private string _killedBy;
 
-        private double? _lastReSpecValue;
-        private double? _lastSilverValue;
         private string _mainMapIndex;
         private string _mainMapName;
-        private List<Guid> _mapsGuid;
+        private List<Guid> _guidList;
         private DungeonMode _mode = DungeonMode.Unknown;
         private double _reSpec;
         private double _reSpecPerHour;
@@ -46,45 +39,59 @@ namespace StatisticsAnalysisTool.Network.Notification
         private double _silver;
         private double _silverPerHour;
         private DungeonStatus _status;
-        private TimeSpan _totalTime;
-        private TimeSpan _dungeonTime = new TimeSpan(1);
-
-        public List<TimeCollectObject> DungeonRunTimes { get; } = new List<TimeCollectObject>();
+        private TimeSpan _totalRunTime;
+        private int _dungeonNumber;
+        public string DungeonHash => $"{EnterDungeonFirstTime}{GuidList}";
         
-        public DungeonNotificationFragment(Guid firstMap, int count, string mainMapIndex, DateTime startDungeon)
+        public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
         {
+            DungeonNumber = dungeonNumber;
             MainMapIndex = mainMapIndex;
-            FirstMap = firstMap;
-            MapsGuid = new List<Guid> {firstMap};
-            StartDungeon = startDungeon;
-            EnterDungeonFirstTime = DateTime.UtcNow;
-            DungeonCounter = count;
+            GuidList = guidList;
+            EnterDungeonFirstTime = enterDungeonFirstTime;
             Faction = Faction.Unknown;
-
-            AddDungeonStartTime(DateTime.UtcNow);
         }
 
-        public void AddDungeonStartTime(DateTime time)
+        public void SetValues(DungeonObject dungeonObject)
         {
-            DungeonRunTimes.Add(new TimeCollectObject(time));
-            SetCombatTimeSpan();
-        }
+            TotalRunTime = dungeonObject.TotalRunTime;
+            DiedInDungeon = dungeonObject.DiedInDungeon;
+            DiedName = dungeonObject.DiedName;
+            KilledBy = dungeonObject.KilledBy;
+            TotalRunTime = dungeonObject.TotalRunTime;
+            Faction = dungeonObject.Faction;
+            Fame = dungeonObject.Fame;
+            FamePerHour = dungeonObject.FamePerHour;
+            ReSpec = dungeonObject.ReSpec;
+            ReSpecPerHour = dungeonObject.ReSpecPerHour;
+            Silver = dungeonObject.Silver;
+            SilverPerHour = dungeonObject.SilverPerHour;
+            IsBestFame = dungeonObject.IsBestFame;
+            IsBestFamePerHour = dungeonObject.IsBestFamePerHour;
+            IsBestReSpec = dungeonObject.IsBestReSpec;
+            IsBestReSpecPerHour = dungeonObject.IsBestReSpecPerHour;
+            IsBestSilver = dungeonObject.IsBestSilver;
+            IsBestSilverPerHour = dungeonObject.IsBestSilverPerHour;
+            Mode = dungeonObject.Mode;
+            Status = dungeonObject.Status;
 
-        private void SetCombatTimeSpan()
-        {
-            foreach (var combatTime in DungeonRunTimes.Where(x => x.EndTime != null).ToList())
+            var dungeonsChestFragments = new ObservableCollection<DungeonChestFragment>();
+            foreach (var dungeonChest in dungeonObject.DungeonChests)
             {
-                DungeonTime += combatTime.TimeSpan;
-                DungeonRunTimes.Remove(combatTime);
+                dungeonsChestFragments.Add(new DungeonChestFragment()
+                {
+                    Id = dungeonChest.Id,
+                    IsBossChest = dungeonChest.IsBossChest,
+                    IsChestOpen = dungeonChest.IsChestOpen,
+                    Opened = dungeonChest.Opened,
+                    Rarity = dungeonChest.Rarity,
+                    Status = dungeonChest.Status,
+                    Type = dungeonChest.Type,
+                    UniqueName = dungeonChest.UniqueName
+                });
             }
-        }
 
-        public TimeSpan DungeonTime {
-            get => _dungeonTime;
-            set {
-                _dungeonTime = value;
-                OnPropertyChanged();
-            }
+            DungeonChests = dungeonsChestFragments;
         }
 
         public ObservableCollection<DungeonChestFragment> DungeonChests
@@ -93,6 +100,15 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _dungeonChests = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int DungeonNumber {
+            get => _dungeonNumber;
+            set
+            {
+                _dungeonNumber = value;
                 OnPropertyChanged();
             }
         }
@@ -138,16 +154,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public int DungeonCounter
-        {
-            get => _dungeonCounter;
-            set
-            {
-                _dungeonCounter = value;
-                OnPropertyChanged();
-            }
-        }
-
         [JsonProperty]
         public bool DiedInDungeon
         {
@@ -183,11 +189,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty] public DateTime StartDungeon { get; }
-
-        [JsonProperty] private TimeSpan RunTimeInSeconds => TotalTime.TotalSeconds <= 0 ? DateTime.UtcNow - StartDungeon : TotalTime;
-
-        [JsonProperty]
         public DateTime EnterDungeonFirstTime
         {
             get => _enterDungeonFirstTime;
@@ -208,67 +209,57 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
-        public TimeSpan TotalTime
+        public TimeSpan TotalRunTime
         {
-            get => _totalTime;
+            get => _totalRunTime;
             set
             {
-                _totalTime = value;
+                _totalRunTime = value;
+                RunTimeString = value.Ticks <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).ToTimerString() : value.ToTimerString();
                 OnPropertyChanged();
             }
         }
 
-        [JsonProperty]
-        public List<Guid> MapsGuid
+        public List<Guid> GuidList
         {
-            get => _mapsGuid;
+            get => _guidList;
             set
             {
-                _mapsGuid = value;
+                _guidList = value;
                 OnPropertyChanged();
             }
         }
-
-        [JsonProperty] public Guid FirstMap { get; }
-
-        [JsonProperty]
+        
         public double Fame
         {
             get => _fame;
             private set
             {
                 _fame = value;
-                FamePerHour = Utilities.GetValuePerHourToDouble(value, RunTimeInSeconds);
                 OnPropertyChanged();
             }
         }
 
-        [JsonProperty]
         public double ReSpec
         {
             get => _reSpec;
             private set
             {
                 _reSpec = value;
-                ReSpecPerHour = Utilities.GetValuePerHourToDouble(value, RunTimeInSeconds);
                 OnPropertyChanged();
             }
         }
 
-        [JsonProperty]
         public double Silver
         {
             get => _silver;
             private set
             {
                 _silver = value;
-                SilverPerHour = Utilities.GetValuePerHourToDouble(value, RunTimeInSeconds);
                 OnPropertyChanged();
             }
         }
 
-        [JsonProperty]
         public double FamePerHour
         {
             get => _famePerHour;
@@ -279,7 +270,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public double ReSpecPerHour
         {
             get => _reSpecPerHour;
@@ -290,7 +280,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public double SilverPerHour
         {
             get => _silverPerHour;
@@ -301,7 +290,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public DungeonStatus Status
         {
             get => _status;
@@ -312,7 +300,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public bool IsBestTime
         {
             get => _isBestTime;
@@ -323,7 +310,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public bool IsBestFame
         {
             get => _isBestFame;
@@ -334,7 +320,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public bool IsBestReSpec
         {
             get => _isBestReSpec;
@@ -345,7 +330,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public bool IsBestSilver
         {
             get => _isBestSilver;
@@ -356,7 +340,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public bool IsBestFamePerHour
         {
             get => _isBestFamePerHour;
@@ -367,7 +350,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public bool IsBestReSpecPerHour
         {
             get => _isBestReSpecPerHour;
@@ -378,7 +360,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public bool IsBestSilverPerHour
         {
             get => _isBestSilverPerHour;
@@ -402,65 +383,11 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonIgnore] public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public void AddDungeonRunTime(DateTime dungeonEnd)
-        {
-            _dungeonRuns.Add(new DungeonRun {Start = EnterDungeonFirstTime, End = dungeonEnd});
-
-            TotalTime = new TimeSpan();
-            foreach (var dunRun in _dungeonRuns) TotalTime = TotalTime.Add(dunRun.Run);
-
-            RunTimeString = TotalTime.Ticks <= 0 ? "00:00:00" : $"{TotalTime.Hours:D2}:{TotalTime.Minutes:D2}:{TotalTime.Seconds:D2}";
-        }
-
-        public void Add(double value, ValueType type)
-        {
-            switch (type)
-            {
-                case ValueType.Fame:
-                    Fame += value;
-                    return;
-                case ValueType.ReSpec:
-                    ReSpec += AddValue(value, _lastReSpecValue, out _lastReSpecValue);
-                    return;
-                case ValueType.Silver:
-                    Silver += AddValue(value, _lastSilverValue, out _lastSilverValue);
-                    return;
-            }
-        }
-
-        private double AddValue(double value, double? lastValue, out double? newLastValue)
-        {
-            if (lastValue == null)
-            {
-                newLastValue = value;
-                return 0;
-            }
-
-            var newSilverValue = (double) (value - lastValue);
-
-            if (newSilverValue == 0)
-            {
-                newLastValue = value;
-                return 0;
-            }
-
-            newLastValue = value;
-
-            return newSilverValue;
-        }
-
+        
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private struct DungeonRun
-        {
-            public DateTime Start { get; set; }
-            public DateTime End { get; set; }
-            public TimeSpan Run => End.Subtract(Start);
         }
     }
 }

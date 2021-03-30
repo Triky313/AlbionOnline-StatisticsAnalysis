@@ -629,14 +629,10 @@ namespace StatisticsAnalysisTool.ViewModels
             if (_trackingController == null) _trackingController = new TrackingController(this, _mainWindow);
 
             _trackingController?.RegisterEvents();
-            TrackingDungeons = _trackingController?.DungeonController?.LoadDungeonFromFile();
+            _trackingController?.DungeonController?.LoadDungeonFromFile();
             _trackingController?.DungeonController?.SetDungeonStatsDay();
             _trackingController?.DungeonController?.SetDungeonStatsTotal();
-            if (_trackingController.DungeonController != null)
-            {
-                DungeonStatsDay.EnteredDungeon = _trackingController.DungeonController.GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
-                DungeonStatsTotal.EnteredDungeon = _trackingController.DungeonController.GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
-            }
+            _trackingController?.DungeonController?.SetDungeonDataToUi();
 
             _valueCountUpTimer = new ValueCountUpTimer();
 
@@ -655,7 +651,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StopTracking()
         {
-            _trackingController?.DungeonController?.SaveDungeonsInFile(TrackingDungeons);
+            _trackingController?.DungeonController?.SaveDungeonsInFile();
             _trackingController?.UnregisterEvents();
 
             _valueCountUpTimer?.FameCountUpTimer?.Stop();
@@ -689,6 +685,11 @@ namespace StatisticsAnalysisTool.ViewModels
         public void ResetDamageMeter()
         {
             _trackingController.CombatController.ResetDamageMeter();
+        }
+
+        public void ResetDungeons()
+        {
+            _trackingController.DungeonController.ResetDungeons();
         }
 
         public void ResetDungeonCounters()

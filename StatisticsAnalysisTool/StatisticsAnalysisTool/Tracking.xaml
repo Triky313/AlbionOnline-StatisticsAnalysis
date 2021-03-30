@@ -322,13 +322,13 @@
                     <Grid Width="5" HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
                     <Grid Height="50">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                            <Label Content="{Binding DungeonCounter, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="38" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                            <Label Content="{Binding DungeonNumber, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="38" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                             <Label MinWidth="135" VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}">
                                 <Label.Content>
                                     <TextBlock>
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
-                                                <Binding Path="StartDungeon" FallbackValue="00.00.0000 00:00:00" />
+                                                <Binding Path="EnterDungeonFirstTime" FallbackValue="00.00.0000 00:00:00" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>

@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         public TimeSpan TotalRunTime { get; set; }
         public List<Guid> GuidList { get; set; }
         public DateTime EnterDungeonFirstTime { get; }
-        public int DungeonNumber { get; }
+        public string MainMapIndex { get; set; }
         public List<DungeonChestObject> DungeonChests { get; set; } = new List<DungeonChestObject>();
         public DungeonStatus Status { get; set; }
         public bool IsBestTime { get; set; }
@@ -32,20 +32,21 @@ namespace StatisticsAnalysisTool.Network.Notification
         public bool DiedInDungeon { get; set; }
         public Faction Faction { get; set; }
         public DungeonMode Mode { get; set; } = DungeonMode.Unknown;
+        public string DungeonHash => $"{EnterDungeonFirstTime}{GuidList}";
 
-        public double FamePerHour => Utilities.GetValuePerHourToDouble(Fame, TotalRunTime);
-        public double ReSpecPerHour => Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTime);
-        public double SilverPerHour => Utilities.GetValuePerHourToDouble(Silver, TotalRunTime);
+        public double FamePerHour => Utilities.GetValuePerHourToDouble(Fame, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
+        public double ReSpecPerHour => Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
+        public double SilverPerHour => Utilities.GetValuePerHourToDouble(Silver, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
 
         private double? _lastReSpecValue;
         private double? _lastSilverValue;
 
-        public DungeonObject(Guid firstGuid, int dungeonNumber, string mainMapIndex)
+        public DungeonObject(Guid firstGuid, string mainMapIndex)
         {
             GuidList = new List<Guid> { firstGuid };
-            DungeonNumber = dungeonNumber;
             AddStartTime(DateTime.UtcNow);
             EnterDungeonFirstTime = DateTime.UtcNow;
+            MainMapIndex = mainMapIndex;
         }
 
         public void Add(double value, ValueType type)
@@ -116,10 +117,10 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         private void SetCombatTimeSpan()
         {
-            foreach (var combatTime in DungeonRunTimes.Where(x => x.EndTime != null).ToList())
+            foreach (var time in DungeonRunTimes.Where(x => x.EndTime != null).ToList())
             {
-                TotalRunTime += combatTime.TimeSpan;
-                DungeonRunTimes.Remove(combatTime);
+                TotalRunTime += time.TimeSpan;
+                DungeonRunTimes.Remove(time);
             }
         }
         

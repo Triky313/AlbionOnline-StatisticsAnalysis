@@ -141,5 +141,10 @@ namespace StatisticsAnalysisTool.Common
                 .Select((v, i) => new {Key = i, Value = v})
                 .ToDictionary(o => o.Key, o => o.Value);
         }
+
+        public static string ToTimerString(this TimeSpan span)
+        {
+            return $"{span.Hours:00}:{span.Minutes:00}:{span.Seconds:00}";
+        }
     }
 }

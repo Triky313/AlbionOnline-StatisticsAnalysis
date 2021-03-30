@@ -176,9 +176,5 @@ namespace StatisticsAnalysisTool.Network.Controller
         }
 
         #endregion
-
-        #region Dungeon
-
-        #endregion
     }
 }

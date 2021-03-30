@@ -91,8 +91,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                                 DamageInPercent = (double) damageObject.Value.Damage / highestDamage * 100,
                                 DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage),
                                 Name = damageObject.Value.Name,
-                                CauserMainHand =
-                                    await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, damageObject.Value?.CharacterEquipment?.MainHand)
+                                CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, damageObject.Value?.CharacterEquipment?.MainHand)
                             };
 
                             _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);

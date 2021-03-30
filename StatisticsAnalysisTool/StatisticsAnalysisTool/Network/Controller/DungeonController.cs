@@ -1,6 +1,7 @@
 ﻿using log4net;
 using Newtonsoft.Json;
 using PcapDotNet.Base;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -10,7 +11,6 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -29,7 +29,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly TrackingController _trackingController;
         private Guid? _currentGuid;
         private Guid? _lastGuid;
-        private readonly List<DungeonObject> _dungeons = new List<DungeonObject>();
+        private List<DungeonObject> _dungeons = new List<DungeonObject>();
 
         public DungeonController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -47,11 +47,13 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             if (!CheckIfDungeonCluster(_dungeons, mapType, mapGuid))
             {
+                SetDungeonDataToUi();
                 return;
             }
 
             if (mapGuid == null)
             {
+                SetDungeonDataToUi();
                 return;
             }
 
@@ -70,28 +72,39 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
+                    SetDungeonDataToUi();
                     return;
                 }
 
-                if (_lastGuid == null && !_mainWindowViewModel.TrackingDungeons.Any(x => x.MapsGuid.Contains((Guid) mapGuid)))
+                if (_lastGuid == null && !_mainWindowViewModel.TrackingDungeons.Any(x => x.GuidList.Contains((Guid) mapGuid)))
                 {
-                    _dungeons.Insert(0, new DungeonObject(currentGuid, _dungeons.Count + 1, mainMapIndex));
+                    _dungeons.Insert(0, new DungeonObject(currentGuid, mainMapIndex));
                     _lastGuid = mapGuid;
 
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
+                    SetDungeonDataToUi();
                     return;
                 }
 
                 SetCurrentDungeonActive(_dungeons, currentGuid);
                 _lastGuid = currentGuid;
 
-                SetDungeonDataToUi(_dungeons);
+                SetDungeonDataToUi();
             }
             catch
             {
                 _currentGuid = null;
             }
+        }
+
+        public void ResetDungeons()
+        {
+            _dungeons.Clear();
+            _mainWindow.Dispatcher?.Invoke(() =>
+            {
+                _mainWindowViewModel?.TrackingDungeons?.Clear();
+            });
         }
 
         public void SetDungeonChestOpen(int id)
@@ -156,9 +169,9 @@ namespace StatisticsAnalysisTool.Network.Controller
             return dungeons.Select(dun => dun.DungeonChests.Where(x => x.Rarity == rarity)).Select(filteredChests => filteredChests.Count()).Sum();
         }
 
-        public int GetDungeonsCount(List<DungeonObject> dungeons, DateTime dungeonIsNewerAsDateTime)
+        public int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
         {
-            return dungeons.Count(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime);
+            return _dungeons.Count(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime);
         }
 
         public void SetDungeonStatsDay()
@@ -365,16 +378,44 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        private void SetDungeonDataToUi(List<DungeonObject> dungeons)
+        public void SetDungeonDataToUi()
         {
-            SetBestDungeonTime(dungeons);
-            CalculateBestDungeonValues(dungeons);
+            SetBestDungeonTime(_dungeons);
+            CalculateBestDungeonValues(_dungeons);
 
-            _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(dungeons, DateTime.UtcNow.AddDays(-1));
-            _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(dungeons, DateTime.UtcNow.AddYears(-10));
+            _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
+            _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
-            // TODO: DungeonObject to DungeonNotificationFragment
-            throw new NotImplementedException();
+            var counter = 0;
+            foreach (var dungeon in _dungeons)
+            {
+                _mainWindow.Dispatcher?.Invoke(() =>
+                {
+                    var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
+                        x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime == dungeon.EnterDungeonFirstTime);
+                    if (uiDungeon != null)
+                    {
+                        uiDungeon.SetValues(dungeon);
+                        uiDungeon.DungeonNumber = ++counter;
+                    }
+                    else
+                    {
+                        _mainWindowViewModel?.TrackingDungeons?.Add(new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime));
+                    }
+                });
+            }
+
+            _mainWindowViewModel?.TrackingDungeons?.OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderByDescending(x => x.EnterDungeonFirstTime).ToList());
+        }
+
+        public void UpdateDungeonDataUi(DungeonObject dungeon)
+        {
+            _mainWindow.Dispatcher?.Invoke(() =>
+            {
+                var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
+                    x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
+                uiDungeon?.SetValues(dungeon);
+            });
         }
 
         private void AddMapToExistDungeon(List<DungeonObject> dungeons, Guid currentGuid, Guid lastGuid)
@@ -418,7 +459,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         public void AddValueToDungeon(double value, ValueType valueType)
         {
             if (_currentGuid == null)
-            {
+            { 
                 return;
             }
 
@@ -426,6 +467,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
                 dun?.Add(value, valueType);
+
+                UpdateDungeonDataUi(dun);
             }
             catch
             {
@@ -451,7 +494,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        public ObservableCollection<DungeonNotificationFragment> LoadDungeonFromFile()
+        public void LoadDungeonFromFile()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}";
 
@@ -459,24 +502,24 @@ namespace StatisticsAnalysisTool.Network.Controller
                 try
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                    return JsonConvert.DeserializeObject<ObservableCollection<DungeonNotificationFragment>>(localItemString);
+                    _dungeons = JsonConvert.DeserializeObject<List<DungeonObject>>(localItemString);
                 }
                 catch (Exception e)
                 {
                     Log.Error(nameof(LoadDungeonFromFile), e);
-                    return new ObservableCollection<DungeonNotificationFragment>();
+                    _dungeons = new List<DungeonObject>();
                 }
 
-            return new ObservableCollection<DungeonNotificationFragment>();
+            _dungeons = new List<DungeonObject>();
         }
 
-        public void SaveDungeonsInFile(ObservableCollection<DungeonNotificationFragment> dungeons)
+        public void SaveDungeonsInFile()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}";
 
             try
             {
-                var toSaveDungeons = dungeons.Where(x => x != null && x.Status == DungeonStatus.Done && x.TotalTime.Ticks > 0);
+                var toSaveDungeons = _dungeons.Where(x => x != null && x.Status == DungeonStatus.Done && x.TotalRunTime.Ticks > 0);
                 var fileString = JsonConvert.SerializeObject(toSaveDungeons);
                 File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
             }
