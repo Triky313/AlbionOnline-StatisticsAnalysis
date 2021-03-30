@@ -632,7 +632,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _trackingController?.DungeonController?.LoadDungeonFromFile();
             _trackingController?.DungeonController?.SetDungeonStatsDay();
             _trackingController?.DungeonController?.SetDungeonStatsTotal();
-            _trackingController?.DungeonController?.SetDungeonDataToUi();
+            _trackingController?.DungeonController?.SetOrUpdateDungeonDataToUi();
 
             _valueCountUpTimer = new ValueCountUpTimer();
 

@@ -154,7 +154,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public bool DiedInDungeon
         {
             get => _diedInDungeon;
@@ -165,9 +164,8 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonIgnore] public string DiedMessage => $"{DiedName} {LanguageController.Translation("KILLED_BY")} {KilledBy}";
+        public string DiedMessage => $"{DiedName} {LanguageController.Translation("KILLED_BY")} {KilledBy}";
 
-        [JsonProperty]
         public string DiedName
         {
             get => _diedName;
@@ -178,7 +176,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonProperty]
         public string KilledBy
         {
             get => _killedBy;

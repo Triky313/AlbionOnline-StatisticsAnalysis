@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
@@ -10,6 +11,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 {
     public class DungeonObject
     {
+        [JsonIgnore]
         public List<TimeCollectObject> DungeonRunTimes { get; } = new List<TimeCollectObject>();
         public TimeSpan TotalRunTime { get; set; }
         public List<Guid> GuidList { get; set; }
@@ -32,10 +34,13 @@ namespace StatisticsAnalysisTool.Network.Notification
         public bool DiedInDungeon { get; set; }
         public Faction Faction { get; set; }
         public DungeonMode Mode { get; set; } = DungeonMode.Unknown;
+        [JsonIgnore]
         public string DungeonHash => $"{EnterDungeonFirstTime}{GuidList}";
-
+        [JsonIgnore]
         public double FamePerHour => Utilities.GetValuePerHourToDouble(Fame, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
+        [JsonIgnore]
         public double ReSpecPerHour => Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
+        [JsonIgnore]
         public double SilverPerHour => Utilities.GetValuePerHourToDouble(Silver, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
 
         private double? _lastReSpecValue;

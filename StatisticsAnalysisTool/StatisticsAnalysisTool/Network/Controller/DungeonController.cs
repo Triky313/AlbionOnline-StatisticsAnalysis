@@ -47,13 +47,13 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             if (!CheckIfDungeonCluster(_dungeons, mapType, mapGuid))
             {
-                SetDungeonDataToUi();
+                SetOrUpdateDungeonDataToUi();
                 return;
             }
 
             if (mapGuid == null)
             {
-                SetDungeonDataToUi();
+                SetOrUpdateDungeonDataToUi();
                 return;
             }
 
@@ -72,7 +72,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
-                    SetDungeonDataToUi();
+                    SetOrUpdateDungeonDataToUi();
                     return;
                 }
 
@@ -83,14 +83,14 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
-                    SetDungeonDataToUi();
+                    SetOrUpdateDungeonDataToUi();
                     return;
                 }
 
                 SetCurrentDungeonActive(_dungeons, currentGuid);
                 _lastGuid = currentGuid;
 
-                SetDungeonDataToUi();
+                SetOrUpdateDungeonDataToUi();
             }
             catch
             {
@@ -378,7 +378,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        public void SetDungeonDataToUi()
+        public void SetOrUpdateDungeonDataToUi()
         {
             SetBestDungeonTime(_dungeons);
             CalculateBestDungeonValues(_dungeons);
@@ -400,7 +400,9 @@ namespace StatisticsAnalysisTool.Network.Controller
                     }
                     else
                     {
-                        _mainWindowViewModel?.TrackingDungeons?.Add(new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime));
+                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
+                        dunFragment.SetValues(dungeon);
+                        _mainWindowViewModel?.TrackingDungeons?.Add(dunFragment);
                     }
                 });
             }
@@ -499,16 +501,20 @@ namespace StatisticsAnalysisTool.Network.Controller
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}";
 
             if (File.Exists(localFilePath))
+            {
                 try
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
                     _dungeons = JsonConvert.DeserializeObject<List<DungeonObject>>(localItemString);
+                    return;
                 }
                 catch (Exception e)
                 {
                     Log.Error(nameof(LoadDungeonFromFile), e);
                     _dungeons = new List<DungeonObject>();
+                    return;
                 }
+            }
 
             _dungeons = new List<DungeonObject>();
         }
