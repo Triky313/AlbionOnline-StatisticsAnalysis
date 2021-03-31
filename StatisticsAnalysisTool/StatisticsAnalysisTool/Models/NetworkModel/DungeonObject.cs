@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
@@ -19,13 +18,6 @@ namespace StatisticsAnalysisTool.Network.Notification
         public string MainMapIndex { get; set; }
         public List<DungeonChestObject> DungeonChests { get; set; } = new List<DungeonChestObject>();
         public DungeonStatus Status { get; set; }
-        public bool IsBestTime { get; set; }
-        public bool IsBestFame { get; set; }
-        public bool IsBestReSpec { get; set; }
-        public bool IsBestSilver { get; set; }
-        public bool IsBestFamePerHour { get; set; }
-        public bool IsBestReSpecPerHour { get; set; }
-        public bool IsBestSilverPerHour { get; set; }
         public double Fame { get; set; }
         public double ReSpec { get; set; }
         public double Silver { get; set; }
@@ -35,14 +27,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         public Faction Faction { get; set; } = Faction.Unknown;
         public DungeonMode Mode { get; set; } = DungeonMode.Unknown;
         [JsonIgnore]
-        public string DungeonHash => $"{EnterDungeonFirstTime}{GuidList}";
-        [JsonIgnore]
-        public double FamePerHour => Utilities.GetValuePerHourToDouble(Fame, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
-        [JsonIgnore]
-        public double ReSpecPerHour => Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
-        [JsonIgnore]
-        public double SilverPerHour => Utilities.GetValuePerHourToDouble(Silver, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
-
+        public string DungeonHash => $"{EnterDungeonFirstTime}{string.Join(",", GuidList)}";
+        
         private double? _lastReSpecValue;
         private double? _lastSilverValue;
         

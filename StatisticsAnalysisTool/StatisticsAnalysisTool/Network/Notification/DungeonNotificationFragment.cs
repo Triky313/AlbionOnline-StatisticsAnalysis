@@ -41,8 +41,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         private DungeonStatus _status;
         private TimeSpan _totalRunTime;
         private int _dungeonNumber;
-        public string DungeonHash => $"{EnterDungeonFirstTime}{GuidList}";
-        
+        public string DungeonHash => $"{EnterDungeonFirstTime}{string.Join(",", GuidList)}";
+
         public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
         {
             DungeonNumber = dungeonNumber;
@@ -61,17 +61,8 @@ namespace StatisticsAnalysisTool.Network.Notification
             TotalRunTime = dungeonObject.TotalRunTime;
             Faction = dungeonObject.Faction;
             Fame = dungeonObject.Fame;
-            FamePerHour = dungeonObject.FamePerHour;
             ReSpec = dungeonObject.ReSpec;
-            ReSpecPerHour = dungeonObject.ReSpecPerHour;
             Silver = dungeonObject.Silver;
-            SilverPerHour = dungeonObject.SilverPerHour;
-            IsBestFame = dungeonObject.IsBestFame;
-            IsBestFamePerHour = dungeonObject.IsBestFamePerHour;
-            IsBestReSpec = dungeonObject.IsBestReSpec;
-            IsBestReSpecPerHour = dungeonObject.IsBestReSpecPerHour;
-            IsBestSilver = dungeonObject.IsBestSilver;
-            IsBestSilverPerHour = dungeonObject.IsBestSilverPerHour;
             Mode = dungeonObject.Mode;
             Status = dungeonObject.Status;
 
@@ -233,6 +224,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             private set
             {
                 _fame = value;
+                FamePerHour = Utilities.GetValuePerHourToDouble(Fame, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
                 OnPropertyChanged();
             }
         }
@@ -243,6 +235,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             private set
             {
                 _reSpec = value;
+                ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
                 OnPropertyChanged();
             }
         }
@@ -253,6 +246,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             private set
             {
                 _silver = value;
+                SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
                 OnPropertyChanged();
             }
         }

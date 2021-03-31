@@ -11,6 +11,7 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -45,7 +46,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             LeaveDungeonCheck(mapType);
             IsDungeonDoneCheck(mapType);
 
-            if (!CheckIfDungeonCluster(_dungeons, mapType, mapGuid))
+            if (!IsClusterADungeonCluster(_dungeons, mapType, mapGuid))
             {
                 SetOrUpdateDungeonDataToUi();
                 return;
@@ -263,7 +264,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        private bool CheckIfDungeonCluster(List<DungeonObject> dungeons, MapType mapType, Guid? mapGuid)
+        private bool IsClusterADungeonCluster(List<DungeonObject> dungeons, MapType mapType, Guid? mapGuid)
         {
             if ((mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate) || mapGuid == null)
             {
@@ -280,14 +281,13 @@ namespace StatisticsAnalysisTool.Network.Controller
             return true;
         }
 
-        private void SetBestDungeonTime(List<DungeonObject> dungeons)
+        private void SetBestDungeonTime(ObservableCollection<DungeonNotificationFragment> dungeons)
         {
-            if (dungeons?.Any(x => x?.Status == DungeonStatus.Done && x.DungeonChests.Any(y => y?.IsBossChest == true)) == true)
+            if (dungeons?.Any(x => x.Status == DungeonStatus.Done && x.DungeonChests.Any(y => y?.IsBossChest == true)) == true)
             {
                 dungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
-                var min = _dungeons?.Where(x => x?.DungeonChests.Any(y => y.IsBossChest) == true)
-                    .Select(x => x.TotalRunTime).Min();
-                var bestTimeDungeon = _dungeons?.SingleOrDefault(x => x.TotalRunTime == min);
+                var min = dungeons.Where(x => x?.DungeonChests.Any(y => y.IsBossChest) == true).Select(x => x.TotalRunTime).Min();
+                var bestTimeDungeon = dungeons.SingleOrDefault(x => x.TotalRunTime == min);
 
                 if (bestTimeDungeon != null)
                 {
@@ -296,7 +296,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        private void CalculateBestDungeonValues(List<DungeonObject> dungeons)
+        private void CalculateBestDungeonValues(ObservableCollection<DungeonNotificationFragment> dungeons)
         {
             try
             {
@@ -319,56 +319,68 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                 if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.Fame > 0))
                 {
-                    var highestFame = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Fame > 0)
-                        .Select(x => x.Fame).Max();
+                    var highestFame = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Fame > 0).Select(x => x.Fame).Max();
                     var bestDungeonFame = dungeons.FirstOrDefault(x => x.Fame.CompareTo(highestFame) == 0);
 
-                    if (bestDungeonFame != null) bestDungeonFame.IsBestFame = true;
+                    if (bestDungeonFame != null)
+                    {
+                        bestDungeonFame.IsBestFame = true;
+                    }
                 }
 
                 if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.ReSpec > 0))
                 {
-                    var highestReSpec = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpec > 0)
-                        .Select(x => x.ReSpec).Max();
+                    var highestReSpec = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpec > 0).Select(x => x.ReSpec).Max();
                     var bestDungeonReSpec = dungeons.FirstOrDefault(x => x.ReSpec.CompareTo(highestReSpec) == 0);
 
-                    if (bestDungeonReSpec != null) bestDungeonReSpec.IsBestReSpec = true;
+                    if (bestDungeonReSpec != null)
+                    {
+                        bestDungeonReSpec.IsBestReSpec = true;
+                    }
                 }
 
                 if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.Silver > 0))
                 {
-                    var highestSilver = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Silver > 0)
-                        .Select(x => x.Silver).Max();
+                    var highestSilver = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Silver > 0).Select(x => x.Silver).Max();
                     var bestDungeonSilver = dungeons.FirstOrDefault(x => x.Silver.CompareTo(highestSilver) == 0);
 
-                    if (bestDungeonSilver != null) bestDungeonSilver.IsBestSilver = true;
+                    if (bestDungeonSilver != null)
+                    {
+                        bestDungeonSilver.IsBestSilver = true;
+                    }
                 }
 
                 if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0))
                 {
-                    var highestFamePerHour = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0)
-                        .Select(x => x.FamePerHour).Max();
+                    var highestFamePerHour = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0).Select(x => x.FamePerHour).Max();
                     var bestDungeonFamePerHour = dungeons.FirstOrDefault(x => x.FamePerHour.CompareTo(highestFamePerHour) == 0);
 
-                    if (bestDungeonFamePerHour != null) bestDungeonFamePerHour.IsBestFamePerHour = true;
+                    if (bestDungeonFamePerHour != null)
+                    {
+                        bestDungeonFamePerHour.IsBestFamePerHour = true;
+                    }
                 }
 
                 if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.ReSpecPerHour > 0))
                 {
-                    var highestReSpecPerHour = dungeons
-                        .Where(x => x?.Status == DungeonStatus.Done && x.ReSpecPerHour > 0).Select(x => x.ReSpecPerHour).Max();
+                    var highestReSpecPerHour = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpecPerHour > 0).Select(x => x.ReSpecPerHour).Max();
                     var bestDungeonReSpecPerHour = dungeons.FirstOrDefault(x => x.ReSpecPerHour.CompareTo(highestReSpecPerHour) == 0);
 
-                    if (bestDungeonReSpecPerHour != null) bestDungeonReSpecPerHour.IsBestReSpecPerHour = true;
+                    if (bestDungeonReSpecPerHour != null)
+                    {
+                        bestDungeonReSpecPerHour.IsBestReSpecPerHour = true;
+                    }
                 }
 
                 if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.SilverPerHour > 0))
                 {
-                    var highestSilverPerHour = dungeons
-                        .Where(x => x?.Status == DungeonStatus.Done && x.SilverPerHour > 0).Select(x => x.SilverPerHour).Max();
+                    var highestSilverPerHour = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.SilverPerHour > 0).Select(x => x.SilverPerHour).Max();
                     var bestDungeonSilverPerHour = dungeons.FirstOrDefault(x => x.SilverPerHour.CompareTo(highestSilverPerHour) == 0);
 
-                    if (bestDungeonSilverPerHour != null) bestDungeonSilverPerHour.IsBestSilverPerHour = true;
+                    if (bestDungeonSilverPerHour != null)
+                    {
+                        bestDungeonSilverPerHour.IsBestSilverPerHour = true;
+                    }
                 }
             }
             catch (Exception e)
@@ -389,9 +401,6 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void SetOrUpdateDungeonDataToUi()
         {
-            SetBestDungeonTime(_dungeons);
-            CalculateBestDungeonValues(_dungeons);
-
             _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
             _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
@@ -418,6 +427,8 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             _mainWindow.Dispatcher?.Invoke(() =>
             {
+                SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
+                CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
                 _mainWindowViewModel?.TrackingDungeons?.OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderByDescending(x => x.DungeonNumber).ToList());
             });
         }
