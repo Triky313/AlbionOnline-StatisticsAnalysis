@@ -259,7 +259,15 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public double FamePerHour
         {
-            get => _famePerHour;
+            get
+            {
+                if (double.IsNaN(_famePerHour))
+                {
+                    return 0;
+                }
+
+                return _famePerHour;
+            }
             private set
             {
                 _famePerHour = value;
@@ -269,7 +277,14 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public double ReSpecPerHour
         {
-            get => _reSpecPerHour;
+            get {
+                if (double.IsNaN(_reSpecPerHour))
+                {
+                    return 0;
+                }
+
+                return _reSpecPerHour;
+            }
             private set
             {
                 _reSpecPerHour = value;
@@ -279,7 +294,14 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public double SilverPerHour
         {
-            get => _silverPerHour;
+            get {
+                if (double.IsNaN(_silverPerHour))
+                {
+                    return 0;
+                }
+
+                return _silverPerHour;
+            }
             private set
             {
                 _silverPerHour = value;
