@@ -14,8 +14,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonIgnore]
         public List<TimeCollectObject> DungeonRunTimes { get; } = new List<TimeCollectObject>();
         public TimeSpan TotalRunTime { get; set; }
-        public List<Guid> GuidList { get; set; }
-        public DateTime EnterDungeonFirstTime { get; }
+        public List<Guid> GuidList { get; set; } = new List<Guid>();
+        public DateTime EnterDungeonFirstTime { get; set; }
         public string MainMapIndex { get; set; }
         public List<DungeonChestObject> DungeonChests { get; set; } = new List<DungeonChestObject>();
         public DungeonStatus Status { get; set; }
@@ -32,7 +32,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         public string DiedName { get; set; }
         public string KilledBy { get; set; }
         public bool DiedInDungeon { get; set; }
-        public Faction Faction { get; set; }
+        public Faction Faction { get; set; } = Faction.Unknown;
         public DungeonMode Mode { get; set; } = DungeonMode.Unknown;
         [JsonIgnore]
         public string DungeonHash => $"{EnterDungeonFirstTime}{GuidList}";
@@ -45,15 +45,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         private double? _lastReSpecValue;
         private double? _lastSilverValue;
-
-        public DungeonObject(Guid firstGuid, string mainMapIndex)
-        {
-            GuidList = new List<Guid> { firstGuid };
-            AddStartTime(DateTime.UtcNow);
-            EnterDungeonFirstTime = DateTime.UtcNow;
-            MainMapIndex = mainMapIndex;
-        }
-
+        
         public void Add(double value, ValueType type)
         {
             switch (type)
