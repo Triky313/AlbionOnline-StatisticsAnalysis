@@ -12,8 +12,12 @@ namespace StatisticsAnalysisTool.Common
         public static void OrderByReference<T>(this ObservableCollection<T> collection, List<T> comparison)
         {
             for (var i = 0; i < comparison.Count; i++)
+            {
                 if (!comparison.ElementAt(i).Equals(collection.ElementAt(i)))
+                {
                     collection.Move(collection.IndexOf(comparison[i]), i);
+                }
+            }
         }
 
         public static string ToShortNumberString(this long num)
