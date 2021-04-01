@@ -76,7 +76,6 @@ namespace StatisticsAnalysisTool.Network.Notification
                     IsChestOpen = dungeonChest.IsChestOpen,
                     Opened = dungeonChest.Opened,
                     Rarity = dungeonChest.Rarity,
-                    Status = dungeonChest.Status,
                     Type = dungeonChest.Type,
                     UniqueName = dungeonChest.UniqueName
                 });

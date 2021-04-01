@@ -79,15 +79,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                 if (_lastGuid == null && !_mainWindowViewModel.TrackingDungeons.Any(x => x.GuidList.Contains((Guid) mapGuid)))
                 {
-                    var newDungeon = new DungeonObject()
-                    {
-                        MainMapIndex = mainMapIndex,
-                        EnterDungeonFirstTime = DateTime.UtcNow
-                    };
-                    newDungeon.GuidList.Add(currentGuid);
-                    newDungeon.AddStartTime(DateTime.UtcNow);
-
-                    _dungeons.Insert(0, newDungeon);
+                    _dungeons.Insert(0, CreateNewDungeon(mainMapIndex, currentGuid));
 
                     _lastGuid = mapGuid;
 
@@ -125,7 +117,10 @@ namespace StatisticsAnalysisTool.Network.Controller
                     var dun = GetCurrentDungeon((Guid) _currentGuid);
                     var chest = dun?.DungeonChests?.FirstOrDefault(x => x.Id == id);
 
-                    if (chest == null) return;
+                    if (chest == null)
+                    {
+                        return;
+                    }
 
                     chest.IsChestOpen = true;
                     chest.Opened = DateTime.UtcNow;
@@ -167,6 +162,19 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
         }
 
+        private DungeonObject CreateNewDungeon(string mainMapIndex, Guid guid)
+        {
+            var dungeon = new DungeonObject()
+            {
+                MainMapIndex = mainMapIndex,
+                EnterDungeonFirstTime = DateTime.UtcNow
+            };
+            dungeon.GuidList.Add(guid);
+            dungeon.AddStartTime(DateTime.UtcNow);
+
+            return dungeon;
+        }
+
         private DungeonObject GetCurrentDungeon(Guid guid)
         {
             return _dungeons.FirstOrDefault(x => x.GuidList.Contains(guid));
@@ -174,8 +182,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private int GetChests(DateTime? chestIsNewerAsDateTime, ChestRarity rarity)
         {
-            var dungeons = _dungeons.Where(x =>
-                x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null);
+            var dungeons = _dungeons.Where(x => x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null);
             return dungeons.Select(dun => dun.DungeonChests.Where(x => x.Rarity == rarity)).Select(filteredChests => filteredChests.Count()).Sum();
         }
 

@@ -1,11 +1,10 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
@@ -46,8 +45,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _uniqueName = value;
-                Type = LootChestData.GetChestType(_uniqueName);
-                Rarity = LootChestData.GetChestRarity(UniqueName);
                 OnPropertyChanged();
             }
         }
@@ -104,17 +101,23 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonIgnore] public string TranslationStandard => LanguageController.Translation("STANDARD");
+        [JsonIgnore] 
+        public string TranslationStandard => LanguageController.Translation("STANDARD");
 
-        [JsonIgnore] public string TranslationUncommon => LanguageController.Translation("UNCOMMON");
+        [JsonIgnore] 
+        public string TranslationUncommon => LanguageController.Translation("UNCOMMON");
 
-        [JsonIgnore] public string TranslationRare => LanguageController.Translation("RARE");
+        [JsonIgnore] 
+        public string TranslationRare => LanguageController.Translation("RARE");
 
-        [JsonIgnore] public string TranslationLegendary => LanguageController.Translation("LEGENDARY");
+        [JsonIgnore] 
+        public string TranslationLegendary => LanguageController.Translation("LEGENDARY");
 
-        [JsonIgnore] public string TranslationBossChest => LanguageController.Translation("BOSS_CHEST");
+        [JsonIgnore] 
+        public string TranslationBossChest => LanguageController.Translation("BOSS_CHEST");
 
-        [JsonIgnore] public string TranslationBookChest => LanguageController.Translation("BOOK_CHEST");
+        [JsonIgnore] 
+        public string TranslationBookChest => LanguageController.Translation("BOOK_CHEST");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
 using System;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
@@ -9,9 +10,8 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public bool IsBossChest { get; set; }
         public bool IsChestOpen { get; set; }
         public DateTime Opened { get; set; }
-        public ChestRarity Rarity { get; set; }
-        public ChestStatus Status { get; set; }
-        public ChestType Type { get; set; }
+        public ChestRarity Rarity => LootChestData.GetChestRarity(UniqueName);
+        public ChestType Type => LootChestData.GetChestType(UniqueName);
         public string UniqueName { get; set; }
     }
 }
