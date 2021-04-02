@@ -42,5 +42,6 @@ namespace StatisticsAnalysisTool.Models
         public string SortByDamage => LanguageController.Translation("SORT_BY_DAMAGE");
         public string SortByDps => LanguageController.Translation("SORT_BY_DPS");
         public string SortByName => LanguageController.Translation("SORT_BY_NAME");
+        public string Settings => LanguageController.Translation("SETTINGS");
     }
 }

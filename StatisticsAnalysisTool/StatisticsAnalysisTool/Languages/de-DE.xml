@@ -343,13 +343,13 @@
   <translation name="ISLAND">Insel</translation>
   <translation name="HIDEOUT">Unterschlupf</translation>
   <translation name="DAY">Tag</translation>
-  <translation name="RESET_DUNGEON_TRACKING">Dungeon tracking zurücksetzen</translation>
+  <translation name="RESET_DUNGEON_TRACKING">Dungeon Tracking zurücksetzen</translation>
   <translation name="SOLO">Solo</translation>
   <translation name="KILLED_BY">getötet von</translation>
   <translation name="DUNGEON_FAME">Dungeon Ruhm</translation>
   <translation name="DUNGEON_RUN_TIME">Dungeon Laufzeit</translation>
   <translation name="DAMAGE_METER">Schadensanzeige</translation>
-  <translation name="RESET_DAMAGE_METER">Reset Damage Meter</translation>
+  <translation name="RESET_DAMAGE_METER">Damage Meter zurücksetzen</translation>
 
   <translation name="STANDARD">Standard</translation>
   <translation name="UNCOMMON">Ungewöhnlich</translation>
