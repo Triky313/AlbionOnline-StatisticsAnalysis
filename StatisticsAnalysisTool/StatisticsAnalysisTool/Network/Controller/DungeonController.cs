@@ -539,6 +539,8 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                     // Deprecated
                     // Remove after a few month
+
+                    // TODO: Guids sind gelöscht und dadurch werden Dungeons dupliziert
                     foreach (var dun in dungeons)
                     {
                         if (dun.RunTimeInSeconds.Ticks > 0)

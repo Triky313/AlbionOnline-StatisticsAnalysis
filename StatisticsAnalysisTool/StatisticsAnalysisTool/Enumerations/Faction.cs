@@ -7,6 +7,8 @@
         Morgana,
         Heretic,
         Avalon,
+        HellGate,
+        Corrupted,
         Unknown
     }
 }

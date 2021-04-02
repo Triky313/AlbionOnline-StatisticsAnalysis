@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -85,16 +86,42 @@ namespace StatisticsAnalysisTool.GameData
 
         public static Faction GetFaction(string value)
         {
-            if (value.Contains("KEEPER")) return Faction.Keeper;
+            if (value.Contains("KEEPER"))
+            {
+                return Faction.Keeper;
+            }
 
-            if (value.Contains("HERETIC")) return Faction.Heretic;
+            if (value.Contains("HERETIC"))
+            {
+                return Faction.Heretic;
+            }
 
-            if (value.Contains("MORGANA")) return Faction.Morgana;
+            if (value.Contains("MORGANA"))
+            {
+                return Faction.Morgana;
+            }
 
-            if (value.Contains("UNDEAD")) return Faction.Undead;
+            if (value.Contains("UNDEAD"))
+            {
+                return Faction.Undead;
+            }
 
-            if (value.Contains("AVALON")) return Faction.Avalon;
+            if (value.Contains("AVALON"))
+            {
+                return Faction.Avalon;
+            }
 
+            if (value.Contains("HELLGATE"))
+            {
+                return Faction.HellGate;
+            }
+
+            if (value.Contains("CORRUPTED"))
+            {
+                return Faction.Corrupted;
+            }
+
+            Debug.Print($"GetFaction Unknown: {value}");
             return Faction.Unknown;
         }
 

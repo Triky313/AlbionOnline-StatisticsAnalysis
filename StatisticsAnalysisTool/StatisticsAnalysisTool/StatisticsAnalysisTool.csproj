@@ -478,6 +478,8 @@
     <Resource Include="Resources\faction_unknown_banner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\corrupted_banner.png" />
+    <Resource Include="Resources\hellgate_banner.png" />
     <Content Include="Sounds\alert1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

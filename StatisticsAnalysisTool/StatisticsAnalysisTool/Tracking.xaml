@@ -137,6 +137,20 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
+            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.HellGate}">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush Stretch="None" ImageSource="Resources/hellgate_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Corrupted}">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush Stretch="None" ImageSource="Resources/corrupted_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
@@ -304,7 +318,7 @@
     </Style>
 
     <DataTemplate DataType="{x:Type notification:DungeonNotificationFragment}">
-        <Grid Height="48" Margin="0 1 0 1">
+        <Grid Height="72" Margin="0 1 0 1">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Background">
@@ -320,7 +334,7 @@
             <StackPanel Orientation="Vertical" Style="{StaticResource DungeonNotificationFragment.Fraction}">
                 <DockPanel>
                     <Grid Width="5" HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
-                    <Grid Height="50">
+                    <Grid Height="72">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                             <Label Content="{Binding DungeonNumber, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="38" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                             <Label MinWidth="135" VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}">
@@ -409,6 +423,7 @@
                             <Label Content="{Binding SilverPerHour, FallbackValue=999.999.999}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFamePerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
                         </StackPanel>
+                        <!-- TODO: Neue Reihe mit Infos --> 
                     </Grid>
                 </DockPanel>
             </StackPanel>
