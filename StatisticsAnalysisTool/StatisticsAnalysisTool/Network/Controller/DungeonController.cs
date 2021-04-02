@@ -294,7 +294,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 dungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
                 var min = dungeons.Where(x => x?.DungeonChests.Any(y => y.IsBossChest) == true).Select(x => x.TotalRunTime).Min();
-                var bestTimeDungeon = dungeons.SingleOrDefault(x => x.TotalRunTime == min);
+                var bestTimeDungeon = dungeons.FirstOrDefault(x => x.TotalRunTime == min);
 
                 if (bestTimeDungeon != null)
                 {
@@ -535,7 +535,24 @@ namespace StatisticsAnalysisTool.Network.Controller
                 try
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                    _dungeons = JsonConvert.DeserializeObject<List<DungeonObject>>(localItemString);
+                    var dungeons = JsonConvert.DeserializeObject<List<DungeonObject>>(localItemString);
+
+                    // Deprecated
+                    // Remove after a few month
+                    foreach (var dun in dungeons)
+                    {
+                        if (dun.RunTimeInSeconds.Ticks > 0)
+                        {
+                            dun.TotalRunTime = dun.RunTimeInSeconds;
+                        }
+
+                        if (dun.StartDungeon.Ticks > 1)
+                        {
+                            dun.EnterDungeonFirstTime = dun.StartDungeon;
+                        }
+                    }
+
+                    _dungeons = dungeons;
                     return;
                 }
                 catch (Exception e)
@@ -555,7 +572,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             try
             {
-                var toSaveDungeons = _dungeons.Where(x => x != null && x.Status == DungeonStatus.Done && x.TotalRunTime.Ticks > 0);
+                var toSaveDungeons = _dungeons.Where(x => x != null && x.Status == DungeonStatus.Done);
                 var fileString = JsonConvert.SerializeObject(toSaveDungeons);
                 File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
             }
