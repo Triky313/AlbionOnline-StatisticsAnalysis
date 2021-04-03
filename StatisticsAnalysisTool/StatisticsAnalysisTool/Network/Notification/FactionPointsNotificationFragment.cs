@@ -4,15 +4,14 @@ namespace StatisticsAnalysisTool.Network.Notification
 {
     public class FactionPointsNotificationFragment : LineFragment
     {
-        public FactionPointsNotificationFragment(string startText, AttributeStatOperator statOperator, CityFaction cityFaction, double gainedFractionPoints, double bonusPremiumGainedFractionPoints, string fameText, FameTypeOperator fameTypeOperator, string endText)
+        public FactionPointsNotificationFragment(string startText, AttributeStatOperator statOperator, CityFaction cityFaction, double gainedFractionPoints, double bonusPremiumGainedFractionPoints, string valueText, string endText)
         {
             StartText = startText;
             Operator = statOperator;
             CityFaction = cityFaction;
             GainedFractionPoints = gainedFractionPoints;
             BonusPremiumGainedFractionPoints = bonusPremiumGainedFractionPoints;
-            FameText = fameText;
-            FameTypeOperator = fameTypeOperator;
+            ValueText = valueText;
             EndText = endText;
         }
 
@@ -21,8 +20,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         public CityFaction CityFaction { get; }
         public double GainedFractionPoints { get; }
         public double BonusPremiumGainedFractionPoints { get; }
-        public string FameText { get; }
-        public FameTypeOperator FameTypeOperator { get; }
+        public string ValueText { get; }
         public string EndText { get; }
     }
 }

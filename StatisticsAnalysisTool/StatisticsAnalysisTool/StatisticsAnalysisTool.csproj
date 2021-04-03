@@ -273,7 +273,7 @@
     <Compile Include="Network\FameCountUpTimer.cs" />
     <Compile Include="Models\NetworkModel\Container.cs" />
     <Compile Include="Models\NetworkModel\Loot.cs" />
-    <Compile Include="Enumerations\FameTypeOperator.cs" />
+    <Compile Include="Enumerations\PvpPveType.cs" />
     <Compile Include="Network\Notification\TrackingNotification.cs" />
     <Compile Include="Network\Events\UpdateMoneyEvent.cs" />
     <Compile Include="Common\SoundController.cs" />

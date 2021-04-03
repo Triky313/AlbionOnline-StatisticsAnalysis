@@ -26,6 +26,60 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="Tracker.Fraction.Coin.Icon" TargetType="{x:Type Image}">
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Width" Value="16"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Unknown}">
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Martlock}">
+                <Setter Property="Source" Value="Resources/factioncoin_martlock.png"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Lymhurst}">
+                <Setter Property="Source" Value="Resources/factioncoin_lymhurst.png"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Bridgewatch}">
+                <Setter Property="Source" Value="Resources/factioncoin_bridgewatch.png"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.FortSterling}">
+                <Setter Property="Source" Value="Resources/factioncoin_fortsterling.png"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Thetford}">
+                <Setter Property="Source" Value="Resources/factioncoin_thetford.png"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Caerleon}">
+                <Setter Property="Source" Value="Resources/factioncoin_caerleon.png"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="Tracker.Fraction.Flag.Icon" TargetType="{x:Type Image}">
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Width" Value="16"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Unknown}">
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Martlock}">
+                <Setter Property="Source" Value="Resources/factionflag_martlock.png"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Lymhurst}">
+                <Setter Property="Source" Value="Resources/factionflag_lymhurst.png"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Bridgewatch}">
+                <Setter Property="Source" Value="Resources/factionflag_bridgewatch.png"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.FortSterling}">
+                <Setter Property="Source" Value="Resources/factionflag_fortsterling.png"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Thetford}">
+                <Setter Property="Source" Value="Resources/factionflag_thetford.png"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Caerleon}">
+                <Setter Property="Source" Value="Resources/factionflag_caerleon.png"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <DataTemplate DataType="{x:Type notification:TextFragment}">
         <TextBlock Text="{Binding Text, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
     </DataTemplate>
@@ -61,10 +115,10 @@
                         <Setter Property="Text" Value="{Binding FameText, StringFormat='{} {0} '}"/>
                         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding FameTypeOperator}" Value="{x:Static enumerations:FameTypeOperator.Pve}">
+                            <DataTrigger Binding="{Binding PvpPveType}" Value="{x:Static enumerations:PvpPveType.Pve}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding FameTypeOperator}" Value="{x:Static enumerations:FameTypeOperator.Pvp}">
+                            <DataTrigger Binding="{Binding PvpPveType}" Value="{x:Static enumerations:PvpPveType.Pvp}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pvp}" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -81,6 +135,46 @@
 
             <Image Source="Resources/satchel.png" Style="{StaticResource LineFragmentImageStyle}" />
             <TextBlock Text="{Binding Satchel, StringFormat='{}{0:N0}) '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+            <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type notification:FactionPointsNotificationFragment}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
+
+            <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
+            <TextBlock Text="{Binding GainedFractionPoints, StringFormat='{} {0:N0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+
+            <TextBlock>
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Text" Value="{Binding ValueText, StringFormat='{} {0} '}"/>
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type notification:FactionFlagPointsNotificationFragment}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
+
+            <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
+            <TextBlock Text="{Binding GainedFractionPoints, StringFormat='{} {0:N0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+
+            <TextBlock>
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Text" Value="{Binding ValueText, StringFormat='{} {0} '}"/>
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
             <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
         </StackPanel>
     </DataTemplate>
@@ -605,44 +699,17 @@
         <Setter Property="Margin" Value="0"></Setter>
     </Style>
 
-    <Style x:Key="Tracker.Fraction.Icon" TargetType="{x:Type Image}">
-        <Setter Property="Height" Value="16"/>
-        <Setter Property="Width" Value="16"/>
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Unknown}">
-            </DataTrigger>
-            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Martlock}">
-                <Setter Property="Source" Value="Resources/factioncoin_martlock.png"/>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Lymhurst}">
-                <Setter Property="Source" Value="Resources/factioncoin_lymhurst.png"/>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Bridgewatch}">
-                <Setter Property="Source" Value="Resources/factioncoin_bridgewatch.png"/>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.FortSterling}">
-                <Setter Property="Source" Value="Resources/factioncoin_fortsterling.png"/>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Thetford}">
-                <Setter Property="Source" Value="Resources/factioncoin_thetford.png"/>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding CityFaction}" Value="{x:Static enumerations:CityFaction.Caerleon}">
-                <Setter Property="Source" Value="Resources/factioncoin_caerleon.png"/>
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
-
     <DataTemplate DataType="{x:Type models:MainStatObject}">
         <StackPanel Margin="0,0,0,0" Visibility="{Binding Visibility}">
             <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Visibility}" ToolTip="{Binding TranslationTotalFactionPoints, FallbackValue='TOTAL__FACTION__POINTS'}">
-                    <Image Style="{StaticResource Tracker.Fraction.Icon}"/>
+                    <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
                 </Grid>
                 <Label Content="{Binding Value, FallbackValue='0'}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
             </DockPanel>
             <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Visibility}">
-                    <Image Style="{StaticResource Tracker.Fraction.Icon}"/>
+                    <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
                 </Grid>
                 <Label Content="{Binding ValuePerHour, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
             </DockPanel>

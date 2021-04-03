@@ -5,14 +5,14 @@ namespace StatisticsAnalysisTool.Network.Notification
     public class FameNotificationFragment : LineFragment
     {
         public FameNotificationFragment(string startText, AttributeStatOperator statOperator, double totalPlayerFame, double totalGainedFame,
-            string fameText, FameTypeOperator fameTypeOperator, double zone, double premium, double satchel, string endText)
+            string fameText, PvpPveType pvpPveType, double zone, double premium, double satchel, string endText)
         {
             StartText = startText;
             Operator = statOperator;
             TotalPlayerFame = totalPlayerFame;
             TotalGainedFame = totalGainedFame;
             FameText = fameText;
-            FameTypeOperator = fameTypeOperator;
+            PvpPveType = pvpPveType;
             Zone = zone;
             Premium = premium;
             Satchel = satchel;
@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         public double TotalPlayerFame { get; }
         public double TotalGainedFame { get; }
         public string FameText { get; }
-        public FameTypeOperator FameTypeOperator { get; }
+        public PvpPveType PvpPveType { get; }
         public double Zone { get; }
         public double Premium { get; }
         public double Satchel { get; }
