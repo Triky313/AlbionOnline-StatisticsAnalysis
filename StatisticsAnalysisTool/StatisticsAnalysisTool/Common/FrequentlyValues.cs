@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using StatisticsAnalysisTool.Enumerations;
+using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -47,18 +48,6 @@ namespace StatisticsAnalysisTool.Common
             {GameLanguage.Spain, "ES-ES"},
             {GameLanguage.Chinese, "ZH-CN"}
         };
-    }
-
-    public enum GameLanguage
-    {
-        UnitedStates,
-        Germany,
-        Russia,
-        Poland,
-        Brazil,
-        France,
-        Spain,
-        Chinese
     }
 
     public enum ItemTier

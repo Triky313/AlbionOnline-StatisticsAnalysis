@@ -90,7 +90,10 @@ namespace StatisticsAnalysisTool.Common
 
         public static DateTime? GetHighestDateTime(this ObservableCollection<DateTime> list)
         {
-            if (!list.Any()) return null;
+            if (!list.Any())
+            {
+                return null;
+            }
 
             return list.Max();
         }
@@ -122,6 +125,11 @@ namespace StatisticsAnalysisTool.Common
         public static short ObjectToShort(this object value)
         {
             return value as byte? ?? value as short? ?? 0;
+        }
+
+        public static byte ObjectToByte(this object value)
+        {
+            return value as byte? ?? 0;
         }
 
         public static double ObjectToDouble(this object value)

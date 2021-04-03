@@ -65,7 +65,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
             {
-                _mainWindowViewModel.ResetMainCounters(true, true, true);
+                _mainWindowViewModel.ResetMainCounters(true, true, true, true);
             }
         }
     }

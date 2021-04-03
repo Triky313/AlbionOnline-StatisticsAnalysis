@@ -5,6 +5,7 @@
         xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
         Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="800" Closing="Window_Closing">
     <Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
@@ -210,6 +211,9 @@
                         <Label Content="{Binding SilverPerHour, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
                 </StackPanel>
+            </Grid>
+            <Grid Margin="480,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <ItemsControl ItemsSource="{Binding FactionPointStats}" />
             </Grid>
             <TabControl IsEnabled="{Binding IsTrackingActive, FallbackValue=true}" Margin="10,106,10,35" BorderThickness="0 1 0 0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}">
                 <TabItem Header="{Binding Translation.Tracking, FallbackValue=TRACKING}">

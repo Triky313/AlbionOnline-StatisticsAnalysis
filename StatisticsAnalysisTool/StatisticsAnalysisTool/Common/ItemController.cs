@@ -1,3 +1,7 @@
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,9 +14,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Newtonsoft.Json;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common
 {

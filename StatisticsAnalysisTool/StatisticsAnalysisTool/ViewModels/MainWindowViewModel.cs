@@ -119,6 +119,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ValueCountUpTimer _valueCountUpTimer;
         private DateTime? activateWaitTimer;
         public AlertController AlertManager;
+        private ObservableCollection<MainStatObject> _factionPointStats = new ObservableCollection<MainStatObject>() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -639,15 +640,30 @@ namespace StatisticsAnalysisTool.ViewModels
 
             _valueCountUpTimer = new ValueCountUpTimer();
 
-            if (_valueCountUpTimer?.FameCountUpTimer == null) _valueCountUpTimer.FameCountUpTimer = new FameCountUpTimer(this);
+            if (_valueCountUpTimer?.FameCountUpTimer == null)
+            {
+                _valueCountUpTimer.FameCountUpTimer = new FameCountUpTimer(this);
+            }
 
-            if (_valueCountUpTimer?.SilverCountUpTimer == null) _valueCountUpTimer.SilverCountUpTimer = new SilverCountUpTimer(this);
+            if (_valueCountUpTimer?.SilverCountUpTimer == null)
+            {
+                _valueCountUpTimer.SilverCountUpTimer = new SilverCountUpTimer(this);
+            }
 
             if (_valueCountUpTimer?.ReSpecPointsCountUpTimer == null)
+            {
                 _valueCountUpTimer.ReSpecPointsCountUpTimer = new ReSpecPointsCountUpTimer(this);
+            }
+
+            if (_valueCountUpTimer?.FactionPointsCountUpTimer == null)
+            {
+                _valueCountUpTimer.FactionPointsCountUpTimer = new FactionPointsCountUpTimer(this);
+            }
 
             _valueCountUpTimer?.FameCountUpTimer.Start();
             _valueCountUpTimer?.SilverCountUpTimer.Start();
+            _valueCountUpTimer?.ReSpecPointsCountUpTimer.Start();
+            _valueCountUpTimer?.FactionPointsCountUpTimer.Start();
 
             IsTrackingActive = NetworkManager.StartNetworkCapture(this, _trackingController, _valueCountUpTimer);
         }
@@ -659,6 +675,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
             _valueCountUpTimer?.FameCountUpTimer?.Stop();
             _valueCountUpTimer?.SilverCountUpTimer?.Stop();
+            _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Stop();
+            _valueCountUpTimer?.FactionPointsCountUpTimer?.Stop();
             NetworkManager.StopNetworkCapture();
 
             IsTrackingActive = false;
@@ -676,13 +694,27 @@ namespace StatisticsAnalysisTool.ViewModels
             return false;
         }
 
-        public void ResetMainCounters(bool fame, bool silver, bool reSpec)
+        public void ResetMainCounters(bool fame, bool silver, bool reSpec, bool faction)
         {
-            if (fame) _valueCountUpTimer?.FameCountUpTimer?.Reset();
+            if (fame)
+            {
+                _valueCountUpTimer?.FameCountUpTimer?.Reset();
+            }
 
-            if (silver) _valueCountUpTimer?.SilverCountUpTimer?.Reset();
+            if (silver)
+            {
+                _valueCountUpTimer?.SilverCountUpTimer?.Reset();
+            }
 
-            if (reSpec) _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Reset();
+            if (reSpec)
+            {
+                _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Reset();
+            }
+
+            if (faction)
+            {
+                _valueCountUpTimer?.FactionPointsCountUpTimer?.Reset();
+            }
         }
 
         public void ResetDamageMeter()
@@ -1566,6 +1598,14 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _errorBarText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<MainStatObject> FactionPointStats {
+            get => _factionPointStats;
+            set {
+                _factionPointStats = value;
                 OnPropertyChanged();
             }
         }
