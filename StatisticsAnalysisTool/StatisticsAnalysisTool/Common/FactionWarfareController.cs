@@ -24,5 +24,26 @@ namespace StatisticsAnalysisTool.Common
                     return CityFaction.Unknown;
             }
         }
+
+        public static CityFaction GetCityFactionFlagType(byte id)
+        {
+            switch (id)
+            {
+                case 6:
+                    return CityFaction.Caerleon;
+                case 5:
+                    return CityFaction.Thetford;
+                case 4:
+                    return CityFaction.Bridgewatch;
+                case 3:
+                    return CityFaction.FortSterling;
+                case 2:
+                    return CityFaction.Lymhurst;
+                case 1:
+                    return CityFaction.Martlock;
+                default:
+                    return CityFaction.Unknown;
+            }
+        }
     }
 }

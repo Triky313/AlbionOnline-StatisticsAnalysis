@@ -20,7 +20,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 if (parameters.ContainsKey(0))
                 {
-                    CityFaction = FactionWarfareController.GetCityFactionType(parameters[0].ObjectToByte());
+                    CityFaction = FactionWarfareController.GetCityFactionFlagType(parameters[0].ObjectToByte());
                 }
 
                 if (parameters.ContainsKey(1))
