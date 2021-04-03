@@ -412,7 +412,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
             var counter = 0;
-            foreach (var dungeon in _dungeons.OrderBy(x => x.EnterDungeonFirstTime))
+            foreach (var dungeon in _dungeons.Where(x => x.GuidList.Count > 0).OrderBy(x => x.EnterDungeonFirstTime))
             {
                 _mainWindow.Dispatcher?.Invoke(() =>
                 {
@@ -539,10 +539,13 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                     // Deprecated
                     // Remove after a few month
-
-                    // TODO: Guids sind gelöscht und dadurch werden Dungeons dupliziert
                     foreach (var dun in dungeons)
                     {
+                        if (dun.MapsGuid != null)
+                        {
+                            dun.GuidList = dun.MapsGuid;
+                        }
+
                         if (dun.RunTimeInSeconds.Ticks > 0)
                         {
                             dun.TotalRunTime = dun.RunTimeInSeconds;
