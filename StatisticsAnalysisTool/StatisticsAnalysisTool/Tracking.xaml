@@ -165,7 +165,7 @@
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
 
             <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
-            <TextBlock Text="{Binding GainedFractionPoints, StringFormat='{} {0:N0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock Text="{Binding GainedFractionPoints, StringFormat='{} {0:N2} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
 
             <TextBlock>
                 <TextBlock.Style>

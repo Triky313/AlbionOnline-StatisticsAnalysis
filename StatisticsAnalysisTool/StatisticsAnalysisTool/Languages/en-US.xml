@@ -368,4 +368,6 @@
   <translation name="SORT_BY_DAMAGE">Sort by damage</translation>
   <translation name="SORT_BY_DPS">Sort by DPS</translation>
   <translation name="SORT_BY_NAME">Sort by name</translation>
+  <translation name="FACTION_FLAG_POINTS">Faction Flag Points</translation>
+  <translation name="FACTION_POINTS">Faction Points</translation>
 </translations>

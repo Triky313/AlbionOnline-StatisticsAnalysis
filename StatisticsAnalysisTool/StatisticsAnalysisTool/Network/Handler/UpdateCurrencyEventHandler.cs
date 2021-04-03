@@ -32,7 +32,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
                 new FactionPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, cityFaction, GainedFractionPoints, 
-                    BonusPremiumGainedFractionPoints, LanguageController.Translation("FACTION_FLAG_POINTS"), LanguageController.Translation("GAINED")),
+                    BonusPremiumGainedFractionPoints, LanguageController.Translation("FACTION_POINTS"), LanguageController.Translation("GAINED")),
             });
         }
     }
