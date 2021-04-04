@@ -2,15 +2,15 @@
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
-    public class CombatTime
+    public class TimeCollectObject
     {
-        public CombatTime(DateTime startTime)
+        public TimeCollectObject(DateTime startTime)
         {
             StartTime = startTime;
         }
 
         public DateTime StartTime { get; }
         public DateTime? EndTime { get; set; }
-        public TimeSpan CombatTimeSpan => EndTime != null ? (DateTime) EndTime - StartTime : new TimeSpan(0);
+        public TimeSpan TimeSpan => EndTime != null ? (DateTime) EndTime - StartTime : new TimeSpan(0);
     }
 }

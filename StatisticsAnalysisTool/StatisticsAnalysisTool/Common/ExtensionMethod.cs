@@ -12,8 +12,12 @@ namespace StatisticsAnalysisTool.Common
         public static void OrderByReference<T>(this ObservableCollection<T> collection, List<T> comparison)
         {
             for (var i = 0; i < comparison.Count; i++)
+            {
                 if (!comparison.ElementAt(i).Equals(collection.ElementAt(i)))
+                {
                     collection.Move(collection.IndexOf(comparison[i]), i);
+                }
+            }
         }
 
         public static string ToShortNumberString(this long num)
@@ -86,7 +90,10 @@ namespace StatisticsAnalysisTool.Common
 
         public static DateTime? GetHighestDateTime(this ObservableCollection<DateTime> list)
         {
-            if (!list.Any()) return null;
+            if (!list.Any())
+            {
+                return null;
+            }
 
             return list.Max();
         }
@@ -120,6 +127,11 @@ namespace StatisticsAnalysisTool.Common
             return value as byte? ?? value as short? ?? 0;
         }
 
+        public static byte ObjectToByte(this object value)
+        {
+            return value as byte? ?? 0;
+        }
+
         public static double ObjectToDouble(this object value)
         {
             return value as float? ?? value as double? ?? 0;
@@ -140,6 +152,11 @@ namespace StatisticsAnalysisTool.Common
             return array
                 .Select((v, i) => new {Key = i, Value = v})
                 .ToDictionary(o => o.Key, o => o.Value);
+        }
+
+        public static string ToTimerString(this TimeSpan span)
+        {
+            return $"{span.Hours:00}:{span.Minutes:00}:{span.Seconds:00}";
         }
     }
 }

@@ -5,6 +5,7 @@
         xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
         Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="800" Closing="Window_Closing">
     <Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
@@ -211,6 +212,9 @@
                     </DockPanel>
                 </StackPanel>
             </Grid>
+            <Grid Margin="480,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <ItemsControl ItemsSource="{Binding FactionPointStats}" />
+            </Grid>
             <TabControl IsEnabled="{Binding IsTrackingActive, FallbackValue=true}" Margin="10,106,10,35" BorderThickness="0 1 0 0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}">
                 <TabItem Header="{Binding Translation.Tracking, FallbackValue=TRACKING}">
                     <Grid>
@@ -277,9 +281,6 @@
                                 </StackPanel>
                             </Border>
                         </StackPanel>
-                        <Grid Height="100" VerticalAlignment="Top" HorizontalAlignment="Right" Width="225">
-                            <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" MinWidth="200" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Click="BtnDungeonTrackingReset_Click"/>
-                        </Grid>
                         <ScrollViewer Margin="0,105,0,0">
                             <ItemsControl ItemsSource="{Binding TrackingDungeons}"/>
                         </ScrollViewer>
@@ -287,7 +288,7 @@
                 </TabItem>
                 <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE_METER}">
                     <Grid>
-                        <Grid Height="36" VerticalAlignment="Top" HorizontalAlignment="Left" Width="550">
+                        <Grid Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="550">
                             <StackPanel Orientation="Horizontal">
                                 <Grid Height="20" Width="20" Margin="0,0,5,0" VerticalAlignment="Center">
                                     <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
@@ -301,26 +302,25 @@
                                 </ItemsControl>
                             </StackPanel>
                         </Grid>
-                        <Grid Margin="0,0,35,0" HorizontalAlignment="Right" Width="389" Height="36" VerticalAlignment="Top">
+                        <Grid Margin="0,0,35,0" HorizontalAlignment="Right" Width="389" Height="30" VerticalAlignment="Top">
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
                                 <CheckBox IsChecked="{Binding IsDamageMeterResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
                                           HorizontalContentAlignment="Left" Margin="5,3,5,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="auto" MaxWidth="250"/>
-                                <Button Content="{Binding Translation.ResetDamageMeter, FallbackValue=RESET__DAMAGE__METER}" Height="26" MaxWidth="300" MinWidth="180" Margin="5,0,5,0" Width="auto" VerticalAlignment="Top" Click="BtnDamageMeterReset_Click" />
                             </StackPanel>
                         </Grid>
                         <Grid Height="20" Width="20" Margin="0,8,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
                             <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                         </Grid>
-                        <Grid Margin="0,41,0,0" Height="36" VerticalAlignment="Top">
+                        <Grid Margin="0,35,0,0" Height="30" VerticalAlignment="Top">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterSort}" SelectedItem="{Binding DamageMeterSortSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
                             </StackPanel>
                         </Grid>
-                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,74,0,0" VerticalAlignment="Top"/>
-                        <ScrollViewer Margin="0,78,0,0">
+                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,65,0,0" VerticalAlignment="Top"/>
+                        <ScrollViewer Margin="0,70,0,0">
                             <ItemsControl ItemsSource="{Binding DamageMeter}"/>
                         </ScrollViewer>
-                        <Grid Visibility="{Binding IsDamageMeterPopupVisible, FallbackValue=Hidden}" Margin="0,39,0,0" Background="{StaticResource SolidColorBrush.Background.Second}">
+                        <Grid Visibility="{Binding IsDamageMeterPopupVisible, FallbackValue=Hidden}" Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.Second}">
                             <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                                 <DockPanel Margin="0,0,0,16">
                                     <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
@@ -330,6 +330,16 @@
                                 </DockPanel>
                             </StackPanel>
                         </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{Binding Translation.Settings, FallbackValue=SETTINGS}">
+                    <Grid>
+                        <ScrollViewer Margin="0,10,0,0">
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Height="auto">
+                                <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="200" Margin="0,5,0,5" Click="BtnDungeonTrackingReset_Click" />
+                                <Button Content="{Binding Translation.ResetDamageMeter, FallbackValue=RESET__DAMAGE__METER}" Height="26" MaxWidth="500" MinWidth="200" Margin="0,5,0,5" Width="auto" VerticalAlignment="Top" Click="BtnDamageMeterReset_Click" />
+                            </StackPanel>
+                        </ScrollViewer>
                     </Grid>
                 </TabItem>
             </TabControl>

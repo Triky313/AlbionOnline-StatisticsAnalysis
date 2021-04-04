@@ -343,7 +343,7 @@
   <translation name="CORRUPTED_LAIR">Corrupted Lair</translation>
   <translation name="HIDEOUT">Hideout</translation>
   <translation name="DAY">Day</translation>
-  <translation name="RESET_DUNGEON_TRACKING">Reset dungeon tracking</translation>
+  <translation name="RESET_DUNGEON_TRACKING">Reset Dungeon Tracking</translation>
   <translation name="SOLO">Solo</translation>
   <translation name="KILLED_BY">killed by</translation>
   <translation name="DUNGEON_FAME">Dungeon Fame</translation>
@@ -368,4 +368,7 @@
   <translation name="SORT_BY_DAMAGE">Sort by damage</translation>
   <translation name="SORT_BY_DPS">Sort by DPS</translation>
   <translation name="SORT_BY_NAME">Sort by name</translation>
+  <translation name="FACTION_FLAG_POINTS">Faction Flag Points</translation>
+  <translation name="FACTION_POINTS">Faction Points</translation>
+  <translation name="NUMBER_OF_DUNGEON_FLOORS">Number of dungeon floors</translation>
 </translations>

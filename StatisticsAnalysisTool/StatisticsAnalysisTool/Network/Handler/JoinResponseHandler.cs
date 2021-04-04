@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Albion.Network;
+﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.ViewModels;
+using System;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -49,8 +49,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             if (value.Guid != null && value.UserObjectId != null)
             {
-                _trackingController.EntityController.AddEntity((long) value.UserObjectId, (Guid) value.Guid, value.Username, GameObjectType.Player,
-                    GameObjectSubType.LocalPlayer);
+                _trackingController.EntityController.AddEntity((long) value.UserObjectId, (Guid) value.Guid, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
                 _trackingController.EntityController.AddToParty((Guid) value.Guid, value.Username);
             }
 
@@ -64,7 +63,10 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         private void ResetFameCounterByMapChangeIfActive()
         {
-            if (_mainWindowViewModel.IsTrackingResetByMapChangeActive) _mainWindowViewModel.ResetMainCounters(true, true, true);
+            if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
+            {
+                _mainWindowViewModel.ResetMainCounters(true, true, true, true);
+            }
         }
     }
 }

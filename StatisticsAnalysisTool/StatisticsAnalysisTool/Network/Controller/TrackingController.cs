@@ -27,7 +27,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         public CombatController CombatController;
         public DungeonController DungeonController;
         public EntityController EntityController;
-
+        
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
             _mainWindowViewModel = mainWindowViewModel;
@@ -174,10 +174,6 @@ namespace StatisticsAnalysisTool.Network.Controller
                 return null;
             }
         }
-
-        #endregion
-
-        #region Dungeon
 
         #endregion
     }

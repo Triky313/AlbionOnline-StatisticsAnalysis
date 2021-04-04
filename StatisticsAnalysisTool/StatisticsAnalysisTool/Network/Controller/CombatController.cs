@@ -91,8 +91,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                                 DamageInPercent = (double) damageObject.Value.Damage / highestDamage * 100,
                                 DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage),
                                 Name = damageObject.Value.Name,
-                                CauserMainHand =
-                                    await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, damageObject.Value?.CharacterEquipment?.MainHand)
+                                CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, damageObject.Value?.CharacterEquipment?.MainHand)
                             };
 
                             _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
@@ -175,7 +174,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             if ((inActiveCombat || inPassiveCombat) && playerObject.Value.Value.CombatTimes.Any(x => x?.EndTime == null)) return;
 
-            if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new CombatTime(DateTime.UtcNow));
+            if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new TimeCollectObject(DateTime.UtcNow));
 
             if (!inActiveCombat && !inPassiveCombat)
             {

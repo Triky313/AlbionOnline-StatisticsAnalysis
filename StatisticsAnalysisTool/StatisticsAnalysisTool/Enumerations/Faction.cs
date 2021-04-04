@@ -2,6 +2,8 @@
 {
     public enum Faction
     {
+        HellGate,
+        Corrupted,
         Keeper,
         Undead,
         Morgana,

@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows;
 using Albion.Network;
 using log4net;
 using PacketDotNet;
@@ -12,6 +6,12 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Handler;
 using StatisticsAnalysisTool.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Network
 {
@@ -37,6 +37,7 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new UpdateFameEventHandler(trackingController, valueCountUpTimerTimer.FameCountUpTimer));
                 builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController, valueCountUpTimerTimer.SilverCountUpTimer));
                 builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController, valueCountUpTimerTimer.ReSpecPointsCountUpTimer));
+                builder.AddEventHandler(new UpdateCurrencyEventHandler(trackingController, valueCountUpTimerTimer.FactionPointsCountUpTimer));
                 builder.AddEventHandler(new DiedEventHandler(trackingController));
                 builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
                 builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
@@ -55,6 +56,7 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
                 builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
                 builder.AddEventHandler(new PartySilverGainedEventHandler());
+                builder.AddEventHandler(new UpdateFactionStandingEventHandler(trackingController));
 
                 //builder.AddResponseHandler(new TestHandler());
                 //builder.AddEventHandler(new TestHandler2());

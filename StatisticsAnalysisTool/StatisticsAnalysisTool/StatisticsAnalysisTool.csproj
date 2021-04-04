@@ -171,21 +171,28 @@
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Common\ExtensionMethod.cs" />
     <Compile Include="Common\FixPoint.cs" />
+    <Compile Include="Common\FactionWarfareController.cs" />
+    <Compile Include="Enumerations\GameLanguage.cs" />
     <Compile Include="Common\ProgressBarSmoother.cs" />
     <Compile Include="Enumerations\ClusterType.cs" />
     <Compile Include="Enumerations\DamageMeterSort.cs" />
     <Compile Include="Enumerations\EffectOrigin.cs" />
     <Compile Include="Enumerations\EffectType.cs" />
+    <Compile Include="Enumerations\CityFaction.cs" />
     <Compile Include="Enumerations\GameObjectSubType.cs" />
     <Compile Include="Enumerations\GameObjectType.cs" />
+    <Compile Include="Models\MainStatObject.cs" />
     <Compile Include="Models\EquipmentItem.cs" />
     <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
-    <Compile Include="Models\NetworkModel\CombatTime.cs" />
+    <Compile Include="Models\NetworkModel\DungeonChestObject.cs" />
+    <Compile Include="Models\NetworkModel\DungeonObject.cs" />
+    <Compile Include="Models\NetworkModel\TimeCollectObject.cs" />
     <Compile Include="Models\NetworkModel\GameObject.cs" />
     <Compile Include="Models\NetworkModel\PlayerGameObject.cs" />
     <Compile Include="Models\NetworkModel\HealthUpdate.cs" />
     <Compile Include="Models\NetworkModel\LocalUserData.cs" />
     <Compile Include="Models\NetworkModel\PartyMemberCircle.cs" />
+    <Compile Include="Models\NetworkModel\FactionValuePerHour.cs" />
     <Compile Include="Models\SpellEffect.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
     <Compile Include="Network\Controller\DungeonController.cs" />
@@ -201,6 +208,9 @@
     <Compile Include="Network\Events\SiegeCampClaimStartEvent.cs" />
     <Compile Include="Network\Events\PartyChangedOrderEvent.cs" />
     <Compile Include="Network\Events\PartyDisbandedEvent.cs" />
+    <Compile Include="Network\Events\UpdateCurrencyEvent.cs" />
+    <Compile Include="Network\Events\UpdateFactionStandingEvent.cs" />
+    <Compile Include="Network\FactionPointsCountUpTimer.cs" />
     <Compile Include="Network\Handler\ActiveSpellEffectsUpdateEventHandler.cs" />
     <Compile Include="Network\Handler\NewEquipmentItemEventHandler.cs" />
     <Compile Include="Network\Handler\HealthUpdateEventHandler.cs" />
@@ -213,8 +223,12 @@
     <Compile Include="Network\Handler\SiegeCampClaimStartEventHandler.cs" />
     <Compile Include="Network\Handler\PartyChangedOrderEventHandler.cs" />
     <Compile Include="Network\Handler\PartyDisbandedEventHandler.cs" />
+    <Compile Include="Network\Handler\UpdateCurrencyEventHandler.cs" />
+    <Compile Include="Network\Handler\UpdateFactionStandingEventHandler.cs" />
     <Compile Include="Network\Notification\CombatNotificationFragment.cs" />
     <Compile Include="Network\Notification\DamageMeterFragment.cs" />
+    <Compile Include="Network\Notification\FactionPointsNotificationFragment.cs" />
+    <Compile Include="Network\Notification\FactionFlagPointsNotificationFragment.cs" />
     <Compile Include="Network\Operations\Responses\PartyMakeLeaderResponse.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
     <Compile Include="GameData\LootChestData.cs" />
@@ -259,7 +273,7 @@
     <Compile Include="Network\FameCountUpTimer.cs" />
     <Compile Include="Models\NetworkModel\Container.cs" />
     <Compile Include="Models\NetworkModel\Loot.cs" />
-    <Compile Include="Enumerations\FameTypeOperator.cs" />
+    <Compile Include="Enumerations\PvpPveType.cs" />
     <Compile Include="Network\Notification\TrackingNotification.cs" />
     <Compile Include="Network\Events\UpdateMoneyEvent.cs" />
     <Compile Include="Common\SoundController.cs" />
@@ -476,6 +490,20 @@
     <Resource Include="Resources\faction_unknown_banner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\corrupted_banner.png" />
+    <Resource Include="Resources\hellgate_banner.png" />
+    <Resource Include="Resources\factioncoin_bridgewatch.png" />
+    <Resource Include="Resources\factioncoin_caerleon.png" />
+    <Resource Include="Resources\factioncoin_fortsterling.png" />
+    <Resource Include="Resources\factioncoin_lymhurst.png" />
+    <Resource Include="Resources\factioncoin_martlock.png" />
+    <Resource Include="Resources\factioncoin_thetford.png" />
+    <Resource Include="Resources\factionflag_bridgewatch.png" />
+    <Resource Include="Resources\factionflag_caerleon.png" />
+    <Resource Include="Resources\factionflag_fortsterling.png" />
+    <Resource Include="Resources\factionflag_lymhurst.png" />
+    <Resource Include="Resources\factionflag_martlock.png" />
+    <Resource Include="Resources\factionflag_thetford.png" />
     <Content Include="Sounds\alert1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

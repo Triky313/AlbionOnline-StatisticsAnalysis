@@ -1,6 +1,6 @@
 ﻿namespace StatisticsAnalysisTool.Enumerations
 {
-    public enum FameTypeOperator
+    public enum PvpPveType
     {
         Pvp,
         Pve
