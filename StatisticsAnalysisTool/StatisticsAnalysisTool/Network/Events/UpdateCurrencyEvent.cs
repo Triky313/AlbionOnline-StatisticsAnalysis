@@ -10,7 +10,7 @@ namespace StatisticsAnalysisTool.Network.Handler
     public class UpdateCurrencyEvent : BaseEvent
     {
         public CityFaction CityFaction;
-        public FixPoint GainedFactionPoints;
+        public FixPoint GainedFactionCoins;
         public FixPoint BonusPremiumGainedFractionFlagPoints;
         public FixPoint TotalPlayerFactionPoints;
 
@@ -25,7 +25,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
                 if (parameters.ContainsKey(2))
                 {
-                    GainedFactionPoints = FixPoint.FromInternalValue(parameters[2].ObjectToLong() ?? 0);
+                    GainedFactionCoins = FixPoint.FromInternalValue(parameters[2].ObjectToLong() ?? 0);
                 }
 
                 //if (parameters.ContainsKey(2))

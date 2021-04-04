@@ -27,18 +27,22 @@ namespace StatisticsAnalysisTool.Network.Notification
         public double Fame { get; set; }
         public double ReSpec { get; set; }
         public double Silver { get; set; }
+        public double FactionCoins { get; set; }
+        public double FactionFlags { get; set; }
         public string DiedName { get; set; }
         public string KilledBy { get; set; }
         public bool DiedInDungeon { get; set; }
         public Faction Faction { get; set; } = Faction.Unknown;
         public DungeonMode Mode { get; set; } = DungeonMode.Unknown;
+        public CityFaction CityFaction { get; private set; } = CityFaction.Unknown;
+
         [JsonIgnore]
         public string DungeonHash => $"{EnterDungeonFirstTime}{string.Join(",", GuidList)}";
         
         private double? _lastReSpecValue;
         private double? _lastSilverValue;
         
-        public void Add(double value, ValueType type)
+        public void Add(double value, ValueType type, CityFaction cityFaction = CityFaction.Unknown)
         {
             switch (type)
             {
@@ -50,6 +54,16 @@ namespace StatisticsAnalysisTool.Network.Notification
                     return;
                 case ValueType.Silver:
                     Silver += AddValue(value, _lastSilverValue, out _lastSilverValue);
+                    return;
+                case ValueType.FactionFlags:
+                    FactionFlags += value;
+                    return;
+                case ValueType.FactionCoins:
+                    FactionCoins += value;
+                    if (cityFaction != CityFaction.Unknown)
+                    {
+                        CityFaction = cityFaction;
+                    }
                     return;
             }
         }

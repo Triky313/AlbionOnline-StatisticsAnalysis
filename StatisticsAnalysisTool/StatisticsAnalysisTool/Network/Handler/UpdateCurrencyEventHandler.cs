@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -22,8 +23,9 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(UpdateCurrencyEvent value)
         {
-            _trackingController.AddNotification(SetFactionPointsNotification(value.CityFaction, value.GainedFactionPoints.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
-            _factionPointsCountUpTimer.Add(value.CityFaction, value.GainedFactionPoints.DoubleValue);
+            _trackingController.AddNotification(SetFactionPointsNotification(value.CityFaction, value.GainedFactionCoins.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
+            _factionPointsCountUpTimer.Add(value.CityFaction, value.GainedFactionCoins.DoubleValue);
+            _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionCoins.DoubleValue, ValueType.FactionCoins, value.CityFaction);
             await Task.CompletedTask;
         }
 

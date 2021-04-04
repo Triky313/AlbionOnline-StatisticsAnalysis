@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -21,6 +22,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         protected override async Task OnActionAsync(UpdateFactionStandingEvent value)
         {
             _trackingController.AddNotification(SetFactionFlagPointsNotification(value.CityFaction, value.GainedFactionFlagPoints.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
+            _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionFlagPoints.DoubleValue, ValueType.FactionFlags);
             await Task.CompletedTask;
         }
 

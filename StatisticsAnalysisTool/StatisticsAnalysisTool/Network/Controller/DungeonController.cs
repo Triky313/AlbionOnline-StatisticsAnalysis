@@ -311,17 +311,25 @@ namespace StatisticsAnalysisTool.Network.Controller
                     x?.IsBestFame == true ||
                     x?.IsBestReSpec == true ||
                     x?.IsBestSilver == true ||
+                    x?.IsBestFactionFlags == true ||
+                    x?.IsBestFactionCoins == true ||
                     x?.IsBestFamePerHour == true ||
                     x?.IsBestReSpecPerHour == true ||
-                    x?.IsBestSilverPerHour == true
+                    x?.IsBestSilverPerHour == true || 
+                    x?.IsBestFactionFlagsPerHour == true || 
+                    x?.IsBestFactionCoinsPerHour == true
                 ).ToList().ForEach(x =>
                 {
                     x.IsBestFame = false;
                     x.IsBestReSpec = false;
                     x.IsBestSilver = false;
+                    x.IsBestFactionFlags = false;
+                    x.IsBestFactionCoins = false;
                     x.IsBestFamePerHour = false;
                     x.IsBestReSpecPerHour = false;
                     x.IsBestSilverPerHour = false;
+                    x.IsBestFactionFlagsPerHour = false;
+                    x.IsBestFactionCoinsPerHour = false;
                 });
 
                 if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.Fame > 0))
@@ -357,6 +365,28 @@ namespace StatisticsAnalysisTool.Network.Controller
                     }
                 }
 
+                if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.FactionFlags > 0))
+                {
+                    var highestFactionFlags = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionFlags > 0).Select(x => x.FactionFlags).Max();
+                    var bestDungeonFlags = dungeons.FirstOrDefault(x => x.FactionFlags.CompareTo(highestFactionFlags) == 0);
+
+                    if (bestDungeonFlags != null)
+                    {
+                        bestDungeonFlags.IsBestFactionFlags = true;
+                    }
+                }
+
+                if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.FactionCoins > 0))
+                {
+                    var highestFactionCoins = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionCoins > 0).Select(x => x.FactionCoins).Max();
+                    var bestDungeonCoins = dungeons.FirstOrDefault(x => x.FactionCoins.CompareTo(highestFactionCoins) == 0);
+
+                    if (bestDungeonCoins != null)
+                    {
+                        bestDungeonCoins.IsBestFactionCoins = true;
+                    }
+                }
+
                 if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0))
                 {
                     var highestFamePerHour = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0).Select(x => x.FamePerHour).Max();
@@ -387,6 +417,28 @@ namespace StatisticsAnalysisTool.Network.Controller
                     if (bestDungeonSilverPerHour != null)
                     {
                         bestDungeonSilverPerHour.IsBestSilverPerHour = true;
+                    }
+                }
+
+                if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.FactionFlagsPerHour > 0))
+                {
+                    var highestFactionFlagsPerHour = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionFlagsPerHour > 0).Select(x => x.FactionFlagsPerHour).Max();
+                    var bestDungeonFactionFlagsPerHour = dungeons.FirstOrDefault(x => x.FactionFlagsPerHour.CompareTo(highestFactionFlagsPerHour) == 0);
+
+                    if (bestDungeonFactionFlagsPerHour != null)
+                    {
+                        bestDungeonFactionFlagsPerHour.IsBestFactionFlagsPerHour = true;
+                    }
+                }
+
+                if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.FactionCoinsPerHour > 0))
+                {
+                    var highestFactionCoinsPerHour = dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionCoinsPerHour > 0).Select(x => x.FactionCoinsPerHour).Max();
+                    var bestDungeonFactionCoinsPerHour = dungeons.FirstOrDefault(x => x.FactionCoinsPerHour.CompareTo(highestFactionCoinsPerHour) == 0);
+
+                    if (bestDungeonFactionCoinsPerHour != null)
+                    {
+                        bestDungeonFactionCoinsPerHour.IsBestFactionCoinsPerHour = true;
                     }
                 }
             }
@@ -488,7 +540,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        public void AddValueToDungeon(double value, ValueType valueType)
+        public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
         {
             if (_currentGuid == null)
             { 
@@ -498,7 +550,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             try
             {
                 var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
-                dun?.Add(value, valueType);
+                dun?.Add(value, valueType, cityFaction);
 
                 UpdateDungeonDataUi(dun);
             }

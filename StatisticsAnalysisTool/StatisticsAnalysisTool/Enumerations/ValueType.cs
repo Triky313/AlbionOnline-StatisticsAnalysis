@@ -4,6 +4,8 @@
     {
         Fame,
         ReSpec,
-        Silver
+        Silver,
+        FactionFlags,
+        FactionCoins
     }
 }

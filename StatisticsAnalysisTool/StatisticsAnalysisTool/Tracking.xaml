@@ -313,6 +313,70 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="DungeonNotificationFragment.BestFactionFlags" TargetType="Label">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsBestFactionFlags}" Value="true">
+                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Gold.2}"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsBestFactionFlags}" Value="false">
+                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="DungeonNotificationFragment.BestFactionFlagsPerHour" TargetType="Label">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsBestFactionFlagsPerHour}" Value="true">
+                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Gold.2}"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsBestFactionFlagsPerHour}" Value="false">
+                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="DungeonNotificationFragment.BestFactionCoins" TargetType="Label">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsBestFactionCoins}" Value="true">
+                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Gold.2}"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsBestFactionCoins}" Value="false">
+                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="DungeonNotificationFragment.BestFactionCoinsPerHour" TargetType="Label">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsBestFactionCoinsPerHour}" Value="true">
+                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Gold.2}"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsBestFactionCoinsPerHour}" Value="false">
+                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="DungeonNotificationFragment.BestReSpecPerHour" TargetType="Label">
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsBestReSpecPerHour}" Value="true">
@@ -431,7 +495,7 @@
                     <Grid Width="5" HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
                     <Grid Height="72">
                         <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Height="24" Margin="0">
                                 <Label Content="{Binding DungeonNumber, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="38" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                                 <Label MinWidth="135" VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}">
                                     <Label.Content>
@@ -482,20 +546,20 @@
                                     </Label.Style>
                                 </Label>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5 0 0 0">
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
+                            <StackPanel Orientation="Horizontal" Height="24">
+                                <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
                                     <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                                 </Grid>
                                 <Label Content="{Binding Fame, FallbackValue=999.999.999}" 
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Image Source="Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                                 </Grid>
                                 <Label Content="{Binding ReSpec, FallbackValue=999.999.999}" 
                                    ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestReSpec}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Image Source="Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                                 </Grid>
                                 <Label Content="{Binding Silver, FallbackValue=999.999.999}" 
@@ -507,20 +571,47 @@
                                 <Label Content="{Binding FamePerHour, FallbackValue=999.999.999}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFamePerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Image Source="Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                                 </Grid>
                                 <Label Content="{Binding ReSpecPerHour, FallbackValue=999.999.999}" 
-                                   ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFamePerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
+                                   ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestReSpecPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Image Source="Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                                 </Grid>
                                 <Label Content="{Binding SilverPerHour, FallbackValue=999.999.999}" 
-                                   ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFamePerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
+                                   ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestSilverPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5 0 0 0">
-                                
+                            <StackPanel Orientation="Horizontal" Height="24">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,5,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}">
+                                    <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
+                                </Grid>
+                                <Label Content="{Binding FactionFlags, FallbackValue=999.999.999}" Visibility="Visible"
+                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionFlags}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}">
+                                    <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
+                                </Grid>
+                                <Label Content="{Binding FactionFlagsPerHour, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}"
+                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionFlagsPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
+
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,5,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}">
+                                    <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
+                                </Grid>
+                                <Label Content="{Binding FactionCoins, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}"
+                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionCoins}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}">
+                                    <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
+                                </Grid>
+                                <Label Content="{Binding FactionCoinsPerHour, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}"
+                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionCoinsPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
+
+                                <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__RUN__TIME}">
+                                    <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                                </Grid>
+                                <Label Content="{Binding RunTimeString, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="55" />
                             </StackPanel>
                         </StackPanel>
                     </Grid>

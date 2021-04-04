@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
@@ -41,6 +42,16 @@ namespace StatisticsAnalysisTool.Network.Notification
         private DungeonStatus _status;
         private TimeSpan _totalRunTime;
         private int _dungeonNumber;
+        private double _factionCoinsPerHour;
+        private double _factionFlagsPerHour;
+        private double _factionFlags;
+        private double _factionCoins;
+        private Visibility _isFactionWarfareVisible = Visibility.Hidden;
+        private bool _isBestFactionCoinsPerHour;
+        private bool _isBestFactionFlagsPerHour;
+        private bool _isBestFactionFlags;
+        private bool _isBestFactionCoins;
+        private CityFaction _cityFaction;
         public string DungeonHash => $"{EnterDungeonFirstTime}{string.Join(",", GuidList)}";
 
         public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
@@ -63,6 +74,9 @@ namespace StatisticsAnalysisTool.Network.Notification
             Fame = dungeonObject.Fame;
             ReSpec = dungeonObject.ReSpec;
             Silver = dungeonObject.Silver;
+            CityFaction = dungeonObject.CityFaction;
+            FactionCoins = dungeonObject.FactionCoins;
+            FactionFlags = dungeonObject.FactionFlags;
             Mode = dungeonObject.Mode;
             Status = dungeonObject.Status;
 
@@ -119,6 +133,15 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _mode = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public CityFaction CityFaction {
+            get => _cityFaction;
+            set
+            {
+                _cityFaction = value;
                 OnPropertyChanged();
             }
         }
@@ -250,6 +273,65 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        public double FactionFlags {
+            get => _factionFlags;
+            private set
+            {
+                _factionFlags = value;
+                FactionFlagsPerHour = Utilities.GetValuePerHourToDouble(FactionFlags, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
+                OnPropertyChanged();
+            }
+        }
+
+        public double FactionCoins {
+            get => _factionCoins;
+            private set
+            {
+                _factionCoins = value;
+                FactionCoinsPerHour = Utilities.GetValuePerHourToDouble(FactionCoins, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
+
+                if (FactionCoins > 0 && IsFactionWarfareVisible == Visibility.Hidden)
+                {
+                    IsFactionWarfareVisible = Visibility.Visible;
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        public double FactionFlagsPerHour {
+            get
+            {
+                if (double.IsNaN(_factionFlagsPerHour))
+                {
+                    return 0;
+                }
+
+                return _factionFlagsPerHour;
+            }
+            private set
+            {
+                _factionFlagsPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double FactionCoinsPerHour {
+            get
+            {
+                if (double.IsNaN(_factionCoinsPerHour))
+                {
+                    return 0;
+                }
+
+                return _factionCoinsPerHour;
+            }
+            private set
+            {
+                _factionCoinsPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
         public double FamePerHour
         {
             get
@@ -312,6 +394,15 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        public Visibility IsFactionWarfareVisible {
+            get => _isFactionWarfareVisible;
+            set
+            {
+                _isFactionWarfareVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsBestTime
         {
             get => _isBestTime;
@@ -348,6 +439,42 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _isBestSilver = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestFactionCoins {
+            get => _isBestFactionCoins;
+            set
+            {
+                _isBestFactionCoins = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestFactionFlags {
+            get => _isBestFactionFlags;
+            set
+            {
+                _isBestFactionFlags = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestFactionFlagsPerHour {
+            get => _isBestFactionFlagsPerHour;
+            set
+            {
+                _isBestFactionFlagsPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestFactionCoinsPerHour {
+            get => _isBestFactionCoinsPerHour;
+            set
+            {
+                _isBestFactionCoinsPerHour = value;
                 OnPropertyChanged();
             }
         }
