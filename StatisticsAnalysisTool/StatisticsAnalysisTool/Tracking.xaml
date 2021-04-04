@@ -526,7 +526,7 @@
                                 <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__RUN__TIME}">
                                     <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                                 </Grid>
-                                <Label Content="{Binding RunTimeString, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="55">
+                                <Label Content="{Binding RunTimeString, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="3 0 10 0" MinWidth="55">
                                     <Label.Style>
                                         <Style TargetType="Label">
                                             <Style.Triggers>
@@ -584,34 +584,34 @@
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestSilverPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Height="24">
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,5,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,2,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
                                     <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
                                 </Grid>
-                                <Label Content="{Binding FactionFlags, FallbackValue=999.999.999}" Visibility="Visible"
-                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionFlags}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                                <Label Content="{Binding FactionFlags, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionFlags}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="82" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
                                     <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
                                 </Grid>
-                                <Label Content="{Binding FactionFlagsPerHour, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}"
-                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionFlagsPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
+                                <Label Content="{Binding FactionFlagsPerHour, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionFlagsPerHour}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,5,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
                                     <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
                                 </Grid>
-                                <Label Content="{Binding FactionCoins, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}"
-                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionCoins}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                                <Label Content="{Binding FactionCoins, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionCoins}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
                                     <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
                                 </Grid>
-                                <Label Content="{Binding FactionCoinsPerHour, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Visible}"
-                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionCoinsPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
+                                <Label Content="{Binding FactionCoinsPerHour, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionCoinsPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205" />
 
-                                <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__RUN__TIME}">
-                                    <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                                <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}">
+                                    <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                                 </Grid>
-                                <Label Content="{Binding RunTimeString, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="55" />
+                                <Label Content="{Binding NumberOfDungeonFloors, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55" />
                             </StackPanel>
                         </StackPanel>
                     </Grid>

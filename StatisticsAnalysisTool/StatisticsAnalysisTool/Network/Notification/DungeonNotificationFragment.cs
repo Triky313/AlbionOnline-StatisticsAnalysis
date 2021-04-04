@@ -52,6 +52,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isBestFactionFlags;
         private bool _isBestFactionCoins;
         private CityFaction _cityFaction;
+        private int _numberOfDungeonFloors;
         public string DungeonHash => $"{EnterDungeonFirstTime}{string.Join(",", GuidList)}";
 
         public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
@@ -236,6 +237,16 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _guidList = value;
+                NumberOfDungeonFloors = value?.Count ?? 0;
+                OnPropertyChanged();
+            }
+        }
+        
+        public int NumberOfDungeonFloors {
+            get => _numberOfDungeonFloors;
+            set
+            {
+                _numberOfDungeonFloors = value;
                 OnPropertyChanged();
             }
         }
@@ -512,6 +523,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonIgnore] public string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
 
         [JsonIgnore] public string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
+
+        [JsonIgnore] public string TranslationNumberOfDungeonFloors => LanguageController.Translation("NUMBER_OF_DUNGEON_FLOORS");
 
         [JsonIgnore] public string TranslationSolo => LanguageController.Translation("SOLO");
 

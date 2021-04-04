@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         public bool DiedInDungeon { get; set; }
         public Faction Faction { get; set; } = Faction.Unknown;
         public DungeonMode Mode { get; set; } = DungeonMode.Unknown;
-        public CityFaction CityFaction { get; private set; } = CityFaction.Unknown;
+        public CityFaction CityFaction { get; set; } = CityFaction.Unknown;
 
         [JsonIgnore]
         public string DungeonHash => $"{EnterDungeonFirstTime}{string.Join(",", GuidList)}";
