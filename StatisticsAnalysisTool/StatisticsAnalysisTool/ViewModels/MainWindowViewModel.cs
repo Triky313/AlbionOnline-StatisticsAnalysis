@@ -401,7 +401,10 @@ namespace StatisticsAnalysisTool.ViewModels
             await WorldData.GetDataListFromJsonAsync();
             await LootChestData.GetDataListFromJsonAsync();
 
-            if (Settings.Default.IsTrackingActiveAtToolStart) StartTracking();
+            if (Settings.Default.IsTrackingActiveAtToolStart)
+            {
+                StartTracking();
+            }
         }
 
         #endregion

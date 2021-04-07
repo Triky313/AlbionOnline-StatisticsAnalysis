@@ -22,15 +22,31 @@ namespace StatisticsAnalysisTool.GameData
 
         public static ChestType GetChestType(string value)
         {
-            if (value.Contains("BOOKCHEST")) return ChestType.BookChest;
+            if (value.Contains("BOOKCHEST"))
+            {
+                return ChestType.BookChest;
+            }
 
-            if (value.Contains("CHEST") || value.Contains("AVALON")) return ChestType.Chest;
+            if (value.Contains("CHEST") || value.Contains("AVALON"))
+            {
+                return ChestType.Chest;
+            }
 
             return ChestType.Unknown;
         }
 
         public static DungeonMode GetDungeonMode(string value)
         {
+            if (value.Contains("CORRUPTED"))
+            {
+                return DungeonMode.Corrupted;
+            }
+
+            if (value.Contains("HELL_"))
+            {
+                return DungeonMode.HellGate;
+            }
+
             if (value.Contains("MORGANA_SOLO_CHEST") || value.Contains("KEEPER_SOLO_CHEST") || value.Contains("HERETIC_SOLO_CHEST") ||
                 value.Contains("UNDEAD_SOLO_CHEST")
                 || value.Contains("MORGANA_SOLO_BOOKCHEST") || value.Contains("KEEPER_SOLO_BOOKCHEST") || value.Contains("HERETIC_SOLO_BOOKCHEST") ||
