@@ -227,6 +227,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             {
                 _totalRunTime = value;
                 RunTimeString = value.Ticks <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).ToTimerString() : value.ToTimerString();
+                NumberOfDungeonFloors = GuidList?.Count ?? 0;
                 OnPropertyChanged();
             }
         }

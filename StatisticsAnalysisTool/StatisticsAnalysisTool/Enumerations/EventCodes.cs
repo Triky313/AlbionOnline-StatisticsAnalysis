@@ -366,13 +366,13 @@
         NewLootChest = 367,
         UpdateLootChest, // <- Mob Info: MOB_KEEPER_UNPROVEN_MALE_VETERAN ... and more
         LootChestOpened,
-        NewShrine, // <- Min the small shirnes in the solo, mybe also the big?
+        NewShrine, // [0:24 1:[-148 109] 2:180 3:KEEPER_SHRINE_SILVER_STANDARD 4:SHRINE_KPR_SILVER_STANDARD 5:1 6:637517907902977990 252:370]
         UpdateShrine,
         MutePlayerUpdate,
         ShopTileUpdate,
         ShopUpdate,
         EasyAntiCheatKick,
-        UnlockVanityUnlock, // [0:24 1:[-148 109] 2:180 3:KEEPER_SHRINE_SILVER_STANDARD 4:SHRINE_KPR_SILVER_STANDARD 5:1 6:637517907902977990 252:370]
+        UnlockVanityUnlock,
         AvatarUnlocked,
         CustomizationChanged,
         BasaultInfo,

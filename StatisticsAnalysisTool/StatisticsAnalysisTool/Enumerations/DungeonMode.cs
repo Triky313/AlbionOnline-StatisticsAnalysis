@@ -2,9 +2,11 @@
 {
     public enum DungeonMode
     {
+        Unknown,
         Solo,
         Standard,
         Avalon,
-        Unknown
+        HellGate,
+        Corrupted
     }
 }
