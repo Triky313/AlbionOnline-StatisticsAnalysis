@@ -119,6 +119,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private DateTime? activateWaitTimer;
         public AlertController AlertManager;
         private ObservableCollection<MainStatObject> _factionPointStats = new ObservableCollection<MainStatObject>() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
+        private string _mainTrackerTimer;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1057,6 +1058,15 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _totalGainedReSpecPointsInSessionInSession = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string MainTrackerTimer {
+            get => _mainTrackerTimer;
+            set
+            {
+                _mainTrackerTimer = value;
                 OnPropertyChanged();
             }
         }

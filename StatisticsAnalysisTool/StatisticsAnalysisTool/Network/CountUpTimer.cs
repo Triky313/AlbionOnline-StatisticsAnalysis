@@ -202,6 +202,8 @@ namespace StatisticsAnalysisTool.Network
                     _mainWindowViewModel.ReSpecPointsPerHour = Utilities.GetValuePerHourInShort(_reSpecPerHourValue, DateTime.UtcNow - _startTime);
                     _mainWindowViewModel.SilverPerHour = Utilities.GetValuePerHourInShort(_silverPerHourValue, DateTime.UtcNow - _startTime);
 
+                    var duration = _startTime - DateTime.UtcNow;
+                    _mainWindowViewModel.MainTrackerTimer = duration.ToString("hh\\:mm\\:ss");
                     await Task.Delay(1000);
                 }
             });
