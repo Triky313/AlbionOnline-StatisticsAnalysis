@@ -50,7 +50,7 @@ namespace StatisticsAnalysisTool.Network
             {
                 case ValueType.Fame:
                     _famePerHourValue += value;
-                    _famePerHourList.Add(new ValuePerHour { DateTime = DateTime.Now, Value = value });
+                    _famePerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
                     _totalGainedFameInSession += value;
 
                     RemoveValueFromValuePerHour(_famePerHourList, _famePerHourValue);
@@ -58,21 +58,21 @@ namespace StatisticsAnalysisTool.Network
                 case ValueType.ReSpec:
                     var internalReSpecValue = AddValue(value, _lastReSpecValue, out _lastReSpecValue);
                     _reSpecPerHourValue += internalReSpecValue;
-                    _reSpecPerHourList.Add(new ValuePerHour { DateTime = DateTime.Now, Value = value });
+                    _reSpecPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
                     _totalGainedReSpecInSession += internalReSpecValue;
 
                     RemoveValueFromValuePerHour(_reSpecPerHourList, _reSpecPerHourValue);
                     break;
                 case ValueType.Silver:
                     _silverPerHourValue += value;
-                    _silverPerHourList.Add(new ValuePerHour { DateTime = DateTime.Now, Value = value });
+                    _silverPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
                     _totalGainedSilverInSession += value;
 
                     RemoveValueFromValuePerHour(_silverPerHourList, _silverPerHourValue);
                     break;
                 case ValueType.FactionPoints:
                     _factionPointsPerHourValue += value;
-                    _factionPointsPerHourList.Add(new ValuePerHour() { DateTime = DateTime.Now, CityFaction = cityFaction, Value = value });
+                    _factionPointsPerHourList.Add(new ValuePerHour() { DateTime = DateTime.UtcNow, CityFaction = cityFaction, Value = value });
                     _currentCityFaction = cityFaction;
                     _totalGainedFactionPointsInSession += value;
 
@@ -91,7 +91,7 @@ namespace StatisticsAnalysisTool.Network
 
             if (_startTime.Millisecond <= 0)
             {
-                _startTime = DateTime.Now;
+                _startTime = DateTime.UtcNow;
             }
 
             CurrentTimerUpdate();
@@ -105,7 +105,7 @@ namespace StatisticsAnalysisTool.Network
 
         public void Reset()
         {
-            _startTime = DateTime.Now;
+            _startTime = DateTime.UtcNow;
             _mainWindowViewModel.FamePerHour = "0";
             _mainWindowViewModel.ReSpecPointsPerHour = "0";
             _mainWindowViewModel.SilverPerHour = "0";
@@ -120,6 +120,11 @@ namespace StatisticsAnalysisTool.Network
             _totalGainedReSpecInSession = 0;
             _totalGainedSilverInSession = 0;
             _totalGainedFactionPointsInSession = 0;
+
+            _famePerHourValue = 0;
+            _reSpecPerHourValue = 0;
+            _silverPerHourValue = 0;
+            _factionPointsPerHourValue = 0;
 
             _famePerHourList.Clear();
             _reSpecPerHourList.Clear();
@@ -150,7 +155,7 @@ namespace StatisticsAnalysisTool.Network
 
         private void RemoveValueFromValuePerHour(List<ValuePerHour> valueList, double perHourValue)
         {
-            var removeList = valueList.Where(x => x.DateTime < DateTime.Now.AddHours(-1));
+            var removeList = valueList.Where(x => x.DateTime < DateTime.UtcNow.AddHours(-1));
 
             foreach (var item in removeList)
             {
@@ -164,7 +169,7 @@ namespace StatisticsAnalysisTool.Network
                 valueList.Remove(item);
             }
 
-            valueList.RemoveAll(x => x.DateTime < DateTime.Now.AddHours(-1));
+            valueList.RemoveAll(x => x.DateTime < DateTime.UtcNow.AddHours(-1));
         }
 
         private void CurrentTimerUpdate()
@@ -193,9 +198,9 @@ namespace StatisticsAnalysisTool.Network
 
                     }
 
-                    _mainWindowViewModel.FamePerHour = Utilities.GetValuePerHourInShort(_famePerHourValue, DateTime.Now - _startTime);
-                    _mainWindowViewModel.ReSpecPointsPerHour = Utilities.GetValuePerHourInShort(_reSpecPerHourValue, DateTime.Now - _startTime);
-                    _mainWindowViewModel.SilverPerHour = Utilities.GetValuePerHourInShort(_silverPerHourValue, DateTime.Now - _startTime);
+                    _mainWindowViewModel.FamePerHour = Utilities.GetValuePerHourInShort(_famePerHourValue, DateTime.UtcNow - _startTime);
+                    _mainWindowViewModel.ReSpecPointsPerHour = Utilities.GetValuePerHourInShort(_reSpecPerHourValue, DateTime.UtcNow - _startTime);
+                    _mainWindowViewModel.SilverPerHour = Utilities.GetValuePerHourInShort(_silverPerHourValue, DateTime.UtcNow - _startTime);
 
                     await Task.Delay(1000);
                 }
