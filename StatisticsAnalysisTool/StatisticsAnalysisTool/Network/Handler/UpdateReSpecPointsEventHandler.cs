@@ -8,23 +8,21 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UpdateReSpecPointsEventHandler : EventPacketHandler<UpdateReSpecPointsEvent>
     {
-        private readonly ReSpecPointsCountUpTimer _reSpecPointsCountUpTimer;
         private readonly TrackingController _trackingController;
+        private readonly CountUpTimer _countUpTimer;
 
-        public UpdateReSpecPointsEventHandler(TrackingController trackingController, ReSpecPointsCountUpTimer reSpecPointsCountUpTimer) : base(
+        public UpdateReSpecPointsEventHandler(TrackingController trackingController) : base(
             (int) EventCodes.UpdateReSpecPoints)
         {
             _trackingController = trackingController;
-            _reSpecPointsCountUpTimer = reSpecPointsCountUpTimer;
+            _countUpTimer = _trackingController.CountUpTimer;
         }
 
         protected override async Task OnActionAsync(UpdateReSpecPointsEvent value)
         {
             if (value?.CurrentReSpecPoints != null)
             {
-                _reSpecPointsCountUpTimer.Add(value.CurrentReSpecPoints.Value.DoubleValue);
-
-                _trackingController.SetTotalPlayerReSpecPoints(value.CurrentReSpecPoints.Value.DoubleValue);
+                _countUpTimer.Add(ValueType.ReSpec, value.CurrentReSpecPoints.Value.DoubleValue);
                 _trackingController.DungeonController?.AddValueToDungeon(value.CurrentReSpecPoints.Value.DoubleValue, ValueType.ReSpec);
             }
             

@@ -170,7 +170,7 @@
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalFame, FallbackValue='TOTAL__FAME'}">
                             <Image Style="{StaticResource Icon.Fame}"/>
                         </Grid>
-                        <Label Content="{Binding TotalPlayerFame, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                        <Label Content="{Binding TotalGainedFameInSession, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
                     <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -186,7 +186,7 @@
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalReSpec, FallbackValue='TOTAL__RESPEC'}">
                             <Image Style="{StaticResource Icon.ReSpec}"/>
                         </Grid>
-                        <Label Content="{Binding TotalPlayerReSpecPoints, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                        <Label Content="{Binding TotalGainedReSpecPointsInSession, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
                     <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -202,7 +202,7 @@
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalSilver, FallbackValue='TOTAL__SILVER'}">
                             <Image Style="{StaticResource Icon.Silver}"/>
                         </Grid>
-                        <Label Content="{Binding TotalPlayerSilver, FallbackValue='0'}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                        <Label Content="{Binding TotalGainedSilverInSession, FallbackValue='0'}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
                     </DockPanel>
                     <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">

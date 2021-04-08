@@ -1,12 +1,12 @@
-﻿using System;
+﻿using AutoUpdaterDotNET;
+using StatisticsAnalysisTool.Properties;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
-using AutoUpdaterDotNET;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -43,7 +43,7 @@ namespace StatisticsAnalysisTool.Common
             return Formatting.CurrentDateTimeFormat(value);
         }
 
-        public static string GetValuePerHour(double value, TimeSpan time)
+        public static string GetValuePerHourInShort(double value, TimeSpan time)
         {
             return Formatting.ToStringShort(value / (time.TotalSeconds / 60 / 60));
         }

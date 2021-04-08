@@ -192,7 +192,7 @@
     <Compile Include="Models\NetworkModel\HealthUpdate.cs" />
     <Compile Include="Models\NetworkModel\LocalUserData.cs" />
     <Compile Include="Models\NetworkModel\PartyMemberCircle.cs" />
-    <Compile Include="Models\NetworkModel\FactionValuePerHour.cs" />
+    <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
     <Compile Include="Models\SpellEffect.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
     <Compile Include="Network\Controller\DungeonController.cs" />
@@ -210,7 +210,6 @@
     <Compile Include="Network\Events\PartyDisbandedEvent.cs" />
     <Compile Include="Network\Events\UpdateCurrencyEvent.cs" />
     <Compile Include="Network\Events\UpdateFactionStandingEvent.cs" />
-    <Compile Include="Network\FactionPointsCountUpTimer.cs" />
     <Compile Include="Network\Handler\ActiveSpellEffectsUpdateEventHandler.cs" />
     <Compile Include="Network\Handler\NewEquipmentItemEventHandler.cs" />
     <Compile Include="Network\Handler\HealthUpdateEventHandler.cs" />
@@ -246,7 +245,6 @@
     <Compile Include="Models\ClusterInfo.cs" />
     <Compile Include="Models\NetworkModel\DiedObject.cs" />
     <Compile Include="Models\WorldJsonObject.cs" />
-    <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
     <Compile Include="Network\Events\DiedEvent.cs" />
     <Compile Include="Network\Events\NewLootChestEvent.cs" />
     <Compile Include="Network\Events\LootChestOpenedEvent.cs" />
@@ -260,17 +258,14 @@
     <Compile Include="Network\Handler\TestHandler2.cs" />
     <Compile Include="Network\Handler\TestHandler.cs" />
     <Compile Include="Network\Handler\DiedEventHandler.cs" />
-    <Compile Include="Network\ICountUpTimer.cs" />
     <Compile Include="Network\Notification\DungeonChestFragment.cs" />
     <Compile Include="Network\Notification\DungeonNotificationFragment.cs" />
     <Compile Include="Enumerations\DungeonStatus.cs" />
     <Compile Include="Enumerations\ChestRarity.cs" />
     <Compile Include="Enumerations\DungeonMode.cs" />
     <Compile Include="Enumerations\Faction.cs" />
-    <Compile Include="Network\ReSpecPointsCountUpTimer.cs" />
     <Compile Include="Network\Operations\Responses\ChangeClusterResponse.cs" />
-    <Compile Include="Network\SilverCountUpTimer.cs" />
-    <Compile Include="Network\FameCountUpTimer.cs" />
+    <Compile Include="Network\CountUpTimer.cs" />
     <Compile Include="Models\NetworkModel\Container.cs" />
     <Compile Include="Models\NetworkModel\Loot.cs" />
     <Compile Include="Enumerations\PvpPveType.cs" />
@@ -325,7 +320,6 @@
     <Compile Include="Network\Handler\TakeSilverEventHandler.cs" />
     <Compile Include="Network\Handler\NewLootEventHandler.cs" />
     <Compile Include="Network\Handler\NewCharacterEventHandler.cs" />
-    <Compile Include="Network\ValueCountUpTimer.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

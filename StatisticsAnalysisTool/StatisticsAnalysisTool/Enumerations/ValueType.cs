@@ -5,7 +5,7 @@
         Fame,
         ReSpec,
         Silver,
-        FactionFlags,
-        FactionCoins
+        FactionFame,
+        FactionPoints
     }
 }

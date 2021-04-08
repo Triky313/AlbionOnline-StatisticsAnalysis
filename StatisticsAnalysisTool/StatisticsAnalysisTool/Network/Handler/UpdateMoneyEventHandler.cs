@@ -7,22 +7,18 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UpdateMoneyEventHandler : EventPacketHandler<UpdateMoneyEvent>
     {
-        private readonly SilverCountUpTimer _silverCountUpTimer;
         private readonly TrackingController _trackingController;
+        private readonly CountUpTimer _countUpTimer;
 
-        public UpdateMoneyEventHandler(TrackingController trackingController, SilverCountUpTimer silverCountUpTimer) : base(
+        public UpdateMoneyEventHandler(TrackingController trackingController) : base(
             (int) EventCodes.UpdateMoney)
         {
             _trackingController = trackingController;
-            _silverCountUpTimer = silverCountUpTimer;
+            _countUpTimer = _trackingController.CountUpTimer;
         }
 
         protected override async Task OnActionAsync(UpdateMoneyEvent value)
         {
-            _silverCountUpTimer.Add(value.CurrentPlayerSilver.DoubleValue);
-
-            _trackingController.SetTotalPlayerSilver(value.CurrentPlayerSilver.DoubleValue);
-            _trackingController.DungeonController?.AddValueToDungeon(value.CurrentPlayerSilver.DoubleValue, ValueType.Silver);
             await Task.CompletedTask;
         }
     }

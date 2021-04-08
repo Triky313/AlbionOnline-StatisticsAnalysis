@@ -13,19 +13,19 @@ namespace StatisticsAnalysisTool.Network.Handler
     public class UpdateCurrencyEventHandler : EventPacketHandler<UpdateCurrencyEvent>
     {
         private readonly TrackingController _trackingController;
-        private readonly FactionPointsCountUpTimer _factionPointsCountUpTimer;
+        private readonly CountUpTimer _countUpTimer;
 
-        public UpdateCurrencyEventHandler(TrackingController trackingController, FactionPointsCountUpTimer factionPointsCountUpTimer) : base((int)EventCodes.UpdateCurrency)
+        public UpdateCurrencyEventHandler(TrackingController trackingController) : base((int)EventCodes.UpdateCurrency)
         {
             _trackingController = trackingController;
-            _factionPointsCountUpTimer = factionPointsCountUpTimer;
+            _countUpTimer = _trackingController.CountUpTimer;
         }
 
         protected override async Task OnActionAsync(UpdateCurrencyEvent value)
         {
             _trackingController.AddNotification(SetFactionPointsNotification(value.CityFaction, value.GainedFactionCoins.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
-            _factionPointsCountUpTimer.Add(value.CityFaction, value.GainedFactionCoins.DoubleValue);
-            _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionCoins.DoubleValue, ValueType.FactionCoins, value.CityFaction);
+            _countUpTimer.Add(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue, value.CityFaction);
+            _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionCoins.DoubleValue, ValueType.FactionPoints, value.CityFaction);
             await Task.CompletedTask;
         }
 

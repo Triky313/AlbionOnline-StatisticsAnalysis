@@ -25,19 +25,18 @@ namespace StatisticsAnalysisTool.Network
 
         public static bool IsNetworkCaptureRunning => _capturedDevices.Where(device => device.Started).Any(device => device.Started);
 
-        public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController,
-            ValueCountUpTimer valueCountUpTimerTimer)
+        public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController)
         {
             try
             {
                 _mainWindowViewModel = mainWindowViewModel;
                 builder = ReceiverBuilder.Create();
 
-                builder.AddEventHandler(new TakeSilverEventHandler());
-                builder.AddEventHandler(new UpdateFameEventHandler(trackingController, valueCountUpTimerTimer.FameCountUpTimer));
-                builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController, valueCountUpTimerTimer.SilverCountUpTimer));
-                builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController, valueCountUpTimerTimer.ReSpecPointsCountUpTimer));
-                builder.AddEventHandler(new UpdateCurrencyEventHandler(trackingController, valueCountUpTimerTimer.FactionPointsCountUpTimer));
+                builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
+                builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
+                builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController));
+                builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController));
+                builder.AddEventHandler(new UpdateCurrencyEventHandler(trackingController));
                 builder.AddEventHandler(new DiedEventHandler(trackingController));
                 builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
                 builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));

@@ -91,6 +91,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             return onlyInParty ? _knownEntities.Where(x => IsUserInParty(x.Value.Name)).ToList() : _knownEntities.ToList();
         }
 
+        public KeyValuePair<Guid, PlayerGameObject>? GetLocalEntity() => _knownEntities?.FirstOrDefault(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer);
+
         #endregion
 
         #region Party
@@ -116,7 +118,9 @@ namespace StatisticsAnalysisTool.Network.Controller
             _knownPartyEntities.Clear();
 
             foreach (var member in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer))
+            {
                 _knownPartyEntities.TryAdd(member.Key, member.Value.Name);
+            }
         }
 
         public void SetParty(Dictionary<Guid, string> party, bool resetPartyBefore = false)
