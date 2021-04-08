@@ -40,7 +40,6 @@ namespace StatisticsAnalysisTool.Network.Notification
         public string DungeonHash => $"{EnterDungeonFirstTime}{string.Join(",", GuidList)}";
         
         private double? _lastReSpecValue;
-        private double? _lastSilverValue;
         
         public void Add(double value, ValueType type, CityFaction cityFaction = CityFaction.Unknown)
         {
@@ -53,12 +52,12 @@ namespace StatisticsAnalysisTool.Network.Notification
                     ReSpec += AddValue(value, _lastReSpecValue, out _lastReSpecValue);
                     return;
                 case ValueType.Silver:
-                    Silver += AddValue(value, _lastSilverValue, out _lastSilverValue);
+                    Silver += value;
                     return;
-                case ValueType.FactionFlags:
+                case ValueType.FactionFame:
                     FactionFlags += value;
                     return;
-                case ValueType.FactionCoins:
+                case ValueType.FactionPoints:
                     FactionCoins += value;
                     if (cityFaction != CityFaction.Unknown)
                     {
@@ -76,9 +75,9 @@ namespace StatisticsAnalysisTool.Network.Notification
                 return 0;
             }
 
-            var newSilverValue = (double)(value - lastValue);
+            var newValue = (double)(value - lastValue);
 
-            if (newSilverValue == 0)
+            if (newValue == 0)
             {
                 newLastValue = value;
                 return 0;
@@ -86,7 +85,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 
             newLastValue = value;
 
-            return newSilverValue;
+            return newValue;
         }
 
         public void AddStartTime(DateTime time)

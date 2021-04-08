@@ -1,6 +1,5 @@
 ﻿using log4net;
 using PcapDotNet.Base;
-using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
@@ -24,6 +23,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private string _lastClusterHash;
+        public CountUpTimer CountUpTimer;
         public CombatController CombatController;
         public DungeonController DungeonController;
         public EntityController EntityController;
@@ -35,6 +35,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             EntityController = new EntityController(_mainWindow, mainWindowViewModel);
             DungeonController = new DungeonController(this, _mainWindow, mainWindowViewModel);
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
+            CountUpTimer = new CountUpTimer(mainWindowViewModel);
         }
 
         public ClusterInfo CurrentCluster { get; private set; }
@@ -75,12 +76,17 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             CurrentCluster = WorldData.GetClusterInfoByIndex(clusterIndex, mainClusterIndex, mapType, mapGuid);
 
-            if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName)) return;
+            if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName))
+            {
+                return;
+            }
 
-            if (_mainWindowViewModel.IsDamageMeterResetByMapChangeActive) CombatController.ResetDamageMeter();
+            if (_mainWindowViewModel.IsDamageMeterResetByMapChangeActive)
+            {
+                CombatController.ResetDamageMeter();
+            }
 
-            Debug.Print(
-                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
+            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
             OnChangeCluster?.Invoke(CurrentCluster);
         }
 
@@ -95,26 +101,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         }
 
         #endregion
-
-        #region Set Main Window values
-
-        public void SetTotalPlayerFame(double value)
-        {
-            _mainWindowViewModel.TotalPlayerFame = value.ToString("N0", LanguageController.CurrentCultureInfo);
-        }
-
-        public void SetTotalPlayerSilver(double value)
-        {
-            _mainWindowViewModel.TotalPlayerSilver = value.ToString("N0", LanguageController.CurrentCultureInfo);
-        }
-
-        public void SetTotalPlayerReSpecPoints(double value)
-        {
-            _mainWindowViewModel.TotalPlayerReSpecPoints = value.ToString("N0", LanguageController.CurrentCultureInfo);
-        }
-
-        #endregion
-
+        
         #region Notifications
 
         public void AddNotification(TrackingNotification item)

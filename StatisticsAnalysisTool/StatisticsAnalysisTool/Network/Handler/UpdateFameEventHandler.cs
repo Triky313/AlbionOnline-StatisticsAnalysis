@@ -1,34 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Albion.Network;
+﻿using Albion.Network;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Notification;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UpdateFameEventHandler : EventPacketHandler<UpdateFameEvent>
     {
-        private readonly FameCountUpTimer _fameCountUpTimer;
+        private readonly CountUpTimer _countUpTimer;
         private readonly TrackingController _trackingController;
 
-        public UpdateFameEventHandler(TrackingController trackingController, FameCountUpTimer fameCountUpTimer) : base((int) EventCodes.UpdateFame)
+        public UpdateFameEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateFame)
         {
             _trackingController = trackingController;
-            _fameCountUpTimer = fameCountUpTimer;
+            _countUpTimer = _trackingController.CountUpTimer;
         }
 
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
             _trackingController.AddNotification(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame.DoubleValue,
                 value.ZoneFame.DoubleValue, value.PremiumFame.DoubleValue, value.SatchelFame.DoubleValue, value.IsPremiumBonus));
-            _fameCountUpTimer.Add(value.TotalGainedFame.DoubleValue);
+            _countUpTimer.Add(ValueType.Fame, value.TotalGainedFame.DoubleValue);
             _trackingController.DungeonController?.AddValueToDungeon(value.TotalGainedFame.DoubleValue, ValueType.Fame);
 
-            _trackingController.SetTotalPlayerFame(value.TotalPlayerFame.DoubleValue);
             await Task.CompletedTask;
         }
 

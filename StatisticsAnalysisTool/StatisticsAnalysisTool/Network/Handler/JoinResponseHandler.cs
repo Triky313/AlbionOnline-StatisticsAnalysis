@@ -53,7 +53,6 @@ namespace StatisticsAnalysisTool.Network.Handler
                 _trackingController.EntityController.AddToParty((Guid) value.Guid, value.Username);
             }
 
-            _trackingController.SetTotalPlayerSilver(value.Silver.IntegerValue);
             _trackingController.DungeonController?.AddDungeon(value.MapType, value.DungeonGuid, value.MainMapIndex);
 
             ResetFameCounterByMapChangeIfActive();
@@ -65,7 +64,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
             {
-                _mainWindowViewModel.ResetMainCounters(true, true, true, true);
+                _mainWindowViewModel.ResetMainCounters();
             }
         }
     }

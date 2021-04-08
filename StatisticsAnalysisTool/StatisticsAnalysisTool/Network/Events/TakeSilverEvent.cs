@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Albion.Network;
+using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Albion.Network;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class TakeSilverEvent : BaseEvent
     {
         public bool ClusterBonus; // 9?
+        public long? ObjectId;
         public FixPoint ClusterTax;
         public FixPoint GuildTax;
         public FixPoint Multiplier;
@@ -24,9 +25,20 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             try
             {
-                if (parameters.ContainsKey(1)) TimeStamp = parameters[1].ObjectToLong() ?? 0;
+                if (parameters.ContainsKey(0))
+                {
+                    ObjectId = parameters[0].ObjectToLong();
+                }
 
-                if (parameters.ContainsKey(2)) TargetEntityId = parameters[2].ObjectToLong();
+                if (parameters.ContainsKey(1))
+                {
+                    TimeStamp = parameters[1].ObjectToLong() ?? 0;
+                }
+
+                if (parameters.ContainsKey(2))
+                {
+                    TargetEntityId = parameters[2].ObjectToLong();
+                }
 
                 if (parameters.ContainsKey(3))
                 {

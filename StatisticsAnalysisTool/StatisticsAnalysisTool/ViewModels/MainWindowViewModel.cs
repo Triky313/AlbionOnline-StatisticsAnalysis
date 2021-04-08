@@ -51,7 +51,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private DungeonStats _dungeonStatsTotal = new DungeonStats();
         private string _errorBarText;
         private Visibility _errorBarVisibility;
-        private string _famePerHour = "0";
         private string _fullItemInformationExistLocal;
         private Visibility _goldPriceVisibility;
         private Visibility _guildInformationVisibility;
@@ -90,7 +89,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _numberOfValuesTranslation;
         private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new ObservableCollection<PartyMemberCircle>();
         private PlayerModeTranslation _playerModeTranslation = new PlayerModeTranslation();
-        private string _reSpecPointsPerHour = "0";
         private string _savedPlayerInformationName;
         private string _searchText;
         private Category _selectedItemCategories;
@@ -98,11 +96,13 @@ namespace StatisticsAnalysisTool.ViewModels
         private ParentCategory _selectedItemParentCategories;
         private ItemTier _selectedItemTier;
         private SeriesCollection _seriesCollection;
+        private string _famePerHour = "0";
+        private string _reSpecPointsPerHour = "0";
         private string _silverPerHour = "0";
         private string _textBoxGoldModeNumberOfValues;
-        private string _totalPlayerFame = "0";
-        private string _totalPlayerReSpecPoints = "0";
-        private string _totalPlayerSilver = "0";
+        private string _totalGainedFameInSessionInSession = "0";
+        private string _totalGainedReSpecPointsInSessionInSession = "0";
+        private string _totalGainedSilverInSessionInSession = "0";
         private Brush _trackerActivationToggleColor;
         private EFontAwesomeIcon _trackerActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private string _trackingAllianceName;
@@ -116,10 +116,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _updateTranslation;
         private Visibility _usernameInformationVisibility;
         private double _usernameInfoWidth;
-        private ValueCountUpTimer _valueCountUpTimer;
         private DateTime? activateWaitTimer;
         public AlertController AlertManager;
         private ObservableCollection<MainStatObject> _factionPointStats = new ObservableCollection<MainStatObject>() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
+        private string _mainTrackerTimer;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -641,45 +641,17 @@ namespace StatisticsAnalysisTool.ViewModels
             _trackingController?.DungeonController?.SetDungeonStatsTotal();
             _trackingController?.DungeonController?.SetOrUpdateDungeonDataToUi();
 
-            _valueCountUpTimer = new ValueCountUpTimer();
+            _trackingController?.CountUpTimer.Start();
 
-            if (_valueCountUpTimer?.FameCountUpTimer == null)
-            {
-                _valueCountUpTimer.FameCountUpTimer = new FameCountUpTimer(this);
-            }
-
-            if (_valueCountUpTimer?.SilverCountUpTimer == null)
-            {
-                _valueCountUpTimer.SilverCountUpTimer = new SilverCountUpTimer(this);
-            }
-
-            if (_valueCountUpTimer?.ReSpecPointsCountUpTimer == null)
-            {
-                _valueCountUpTimer.ReSpecPointsCountUpTimer = new ReSpecPointsCountUpTimer(this);
-            }
-
-            if (_valueCountUpTimer?.FactionPointsCountUpTimer == null)
-            {
-                _valueCountUpTimer.FactionPointsCountUpTimer = new FactionPointsCountUpTimer(this);
-            }
-
-            _valueCountUpTimer?.FameCountUpTimer.Start();
-            _valueCountUpTimer?.SilverCountUpTimer.Start();
-            _valueCountUpTimer?.ReSpecPointsCountUpTimer.Start();
-            _valueCountUpTimer?.FactionPointsCountUpTimer.Start();
-
-            IsTrackingActive = NetworkManager.StartNetworkCapture(this, _trackingController, _valueCountUpTimer);
+            IsTrackingActive = NetworkManager.StartNetworkCapture(this, _trackingController);
         }
 
         public void StopTracking()
         {
             _trackingController?.DungeonController?.SaveDungeonsInFile();
             _trackingController?.UnregisterEvents();
+            _trackingController?.CountUpTimer?.Stop();
 
-            _valueCountUpTimer?.FameCountUpTimer?.Stop();
-            _valueCountUpTimer?.SilverCountUpTimer?.Stop();
-            _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Stop();
-            _valueCountUpTimer?.FactionPointsCountUpTimer?.Stop();
             NetworkManager.StopNetworkCapture();
 
             IsTrackingActive = false;
@@ -697,27 +669,9 @@ namespace StatisticsAnalysisTool.ViewModels
             return false;
         }
 
-        public void ResetMainCounters(bool fame, bool silver, bool reSpec, bool faction)
+        public void ResetMainCounters()
         {
-            if (fame)
-            {
-                _valueCountUpTimer?.FameCountUpTimer?.Reset();
-            }
-
-            if (silver)
-            {
-                _valueCountUpTimer?.SilverCountUpTimer?.Reset();
-            }
-
-            if (reSpec)
-            {
-                _valueCountUpTimer?.ReSpecPointsCountUpTimer?.Reset();
-            }
-
-            if (faction)
-            {
-                _valueCountUpTimer?.FactionPointsCountUpTimer?.Reset();
-            }
+            _trackingController?.CountUpTimer?.Reset();
         }
 
         public void ResetDamageMeter()
@@ -1078,32 +1032,41 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string TotalPlayerFame
+        public string TotalGainedFameInSession
         {
-            get => _totalPlayerFame;
+            get => _totalGainedFameInSessionInSession;
             set
             {
-                _totalPlayerFame = value;
+                _totalGainedFameInSessionInSession = value;
                 OnPropertyChanged();
             }
         }
 
-        public string TotalPlayerSilver
+        public string TotalGainedSilverInSession
         {
-            get => _totalPlayerSilver;
+            get => _totalGainedSilverInSessionInSession;
             set
             {
-                _totalPlayerSilver = value;
+                _totalGainedSilverInSessionInSession = value;
                 OnPropertyChanged();
             }
         }
 
-        public string TotalPlayerReSpecPoints
+        public string TotalGainedReSpecPointsInSession
         {
-            get => _totalPlayerReSpecPoints;
+            get => _totalGainedReSpecPointsInSessionInSession;
             set
             {
-                _totalPlayerReSpecPoints = value;
+                _totalGainedReSpecPointsInSessionInSession = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string MainTrackerTimer {
+            get => _mainTrackerTimer;
+            set
+            {
+                _mainTrackerTimer = value;
                 OnPropertyChanged();
             }
         }
