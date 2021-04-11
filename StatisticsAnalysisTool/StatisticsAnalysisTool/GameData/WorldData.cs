@@ -1,3 +1,9 @@
+using log4net;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -6,12 +12,6 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using log4net;
-using Newtonsoft.Json;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.GameData
 {
@@ -39,7 +39,7 @@ namespace StatisticsAnalysisTool.GameData
                 if (splitName.Length > 1 && index.ToLower().Contains('@'))
                 {
                     var mapType = GetMapType(splitName[0]);
-                    if (mapType == MapType.RandomDungeon && !string.IsNullOrEmpty(splitName[1]))
+                    if ((mapType == MapType.RandomDungeon || mapType == MapType.CorruptedDungeon || mapType == MapType.HellGate) && !string.IsNullOrEmpty(splitName[1]))
                     {
                         var mapGuid = new Guid(splitName[1]);
                         return mapGuid;

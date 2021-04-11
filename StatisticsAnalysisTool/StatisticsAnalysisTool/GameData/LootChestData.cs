@@ -102,6 +102,16 @@ namespace StatisticsAnalysisTool.GameData
 
         public static Faction GetFaction(string value)
         {
+            if (value.Contains("HELLGATE"))
+            {
+                return Faction.HellGate;
+            }
+
+            if (value.Contains("CORRUPTED"))
+            {
+                return Faction.Corrupted;
+            }
+
             if (value.Contains("KEEPER"))
             {
                 return Faction.Keeper;
@@ -125,16 +135,6 @@ namespace StatisticsAnalysisTool.GameData
             if (value.Contains("AVALON"))
             {
                 return Faction.Avalon;
-            }
-
-            if (value.Contains("HELLGATE"))
-            {
-                return Faction.HellGate;
-            }
-
-            if (value.Contains("CORRUPTED"))
-            {
-                return Faction.Corrupted;
             }
 
             Debug.Print($"GetFaction Unknown: {value}");

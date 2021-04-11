@@ -519,8 +519,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private void LeaveDungeonCheck(MapType mapType)
         {
-            if (_lastGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid) _lastGuid)) 
-                                  && (mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate))
+            if (_lastGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid) _lastGuid)) && mapType != MapType.RandomDungeon)
             {
                 var dun = _dungeons?.First(x => x.GuidList.Contains((Guid) _lastGuid));
                 dun?.AddEndTime(DateTime.UtcNow);
@@ -587,7 +586,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 try
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                    var dungeons = JsonConvert.DeserializeObject<List<DungeonObject>>(localItemString);
+                    var dungeons = JsonConvert.DeserializeObject<List<DungeonObject>>(localItemString) ?? new List<DungeonObject>();
 
                     // Deprecated
                     // Remove after a few month

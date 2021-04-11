@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _killedBy;
         private ObservableCollection<DungeonChestFragment> _dungeonChests = new ObservableCollection<DungeonChestFragment>();
         private DateTime _enterDungeonFirstTime;
-        private Faction _faction;
+        private Faction _faction = Faction.Unknown;
         private double _fame;
         private double _famePerHour;
         private bool _isBestFame;

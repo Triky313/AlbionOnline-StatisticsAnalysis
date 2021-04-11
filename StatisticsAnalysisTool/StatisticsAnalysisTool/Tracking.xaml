@@ -187,7 +187,7 @@
         </StackPanel>
     </DataTemplate>
 
-    <Style x:Key="DungeonNotificationFragment.Fraction" TargetType="StackPanel">
+    <Style x:Key="DungeonNotificationFragment.Faction" TargetType="StackPanel">
         <Setter Property="VerticalAlignment" Value="Top"></Setter>
         <Style.Triggers>
             <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Unknown}">
@@ -512,7 +512,7 @@
                     </Setter>
                 </Style>
             </Grid.Style>
-            <StackPanel Orientation="Vertical" Style="{StaticResource DungeonNotificationFragment.Fraction}">
+            <StackPanel Orientation="Vertical" Style="{StaticResource DungeonNotificationFragment.Faction}">
                 <DockPanel>
                     <Grid Width="5" HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
                     <Grid Height="72">
