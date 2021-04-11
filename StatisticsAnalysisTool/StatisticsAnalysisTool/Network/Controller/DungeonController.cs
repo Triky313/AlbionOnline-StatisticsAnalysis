@@ -66,7 +66,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 AddDungeonRunIfNextMap(currentGuid);
                 SetNewStartTimeWhenOneMoreTimeEnter(currentGuid);
 
-                if (_lastGuid != null && !_dungeons.Any(x => x.GuidList.Contains(currentGuid)))
+                if (_lastGuid != null && !_dungeons.Any(x => x.GuidList.Contains(currentGuid)) && mapType != MapType.HellGate && mapType != MapType.CorruptedDungeon)
                 {
                     AddMapToExistDungeon(_dungeons, currentGuid, (Guid) _lastGuid);
                     _lastGuid = currentGuid;
@@ -77,7 +77,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                     return;
                 }
 
-                if (_lastGuid == null && !_mainWindowViewModel.TrackingDungeons.Any(x => x.GuidList.Contains((Guid) mapGuid)))
+                if (_lastGuid == null && !_mainWindowViewModel.TrackingDungeons.Any(x => x.GuidList.Contains((Guid) mapGuid)) 
+                    || (!_mainWindowViewModel.TrackingDungeons.Any(x => x.GuidList.Contains((Guid)mapGuid)) && (mapType == MapType.HellGate || mapType == MapType.CorruptedDungeon)))
                 {
                     _dungeons.Insert(0, CreateNewDungeon(mainMapIndex, currentGuid));
 
@@ -450,8 +451,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private void AddDungeonRunIfNextMap(Guid currentGuid)
         {
-            if (_lastGuid != null &&
-                _dungeons.Any(x => x.GuidList.Contains(currentGuid) && x.GuidList.Contains((Guid) _lastGuid)))
+            if (_lastGuid != null && _dungeons.Any(x => x.GuidList.Contains(currentGuid) && x.GuidList.Contains((Guid) _lastGuid)))
             {
                 var dun = _dungeons?.First(x => x.GuidList.Contains(currentGuid));
                 dun?.AddEndTime(DateTime.UtcNow);
