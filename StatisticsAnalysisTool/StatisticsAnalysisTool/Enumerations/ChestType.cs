@@ -2,8 +2,8 @@
 {
     public enum ChestType
     {
+        Unknown,
         Chest,
-        BookChest,
-        Unknown
+        BookChest
     }
 }

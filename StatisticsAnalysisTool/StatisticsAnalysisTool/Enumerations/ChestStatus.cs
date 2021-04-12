@@ -2,6 +2,7 @@
 {
     public enum ChestStatus
     {
+        Unknown,
         StandardChestClose,
         StandardChestOpen,
         UncommonChestClose,
@@ -9,7 +10,6 @@
         RareChestClose,
         RareChestOpen,
         LegendaryChestClose,
-        LegendaryChestOpen,
-        Unknown
+        LegendaryChestOpen
     }
 }

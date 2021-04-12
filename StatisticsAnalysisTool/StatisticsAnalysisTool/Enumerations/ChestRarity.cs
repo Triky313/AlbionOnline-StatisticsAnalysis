@@ -2,10 +2,10 @@
 {
     public enum ChestRarity
     {
+        Unknown,
         Standard,
         Uncommon,
         Rare,
-        Legendary,
-        Unknown
+        Legendary
     }
 }
