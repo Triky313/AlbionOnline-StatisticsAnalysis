@@ -1607,6 +1607,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         public string DonateUrl => Settings.Default.DonateUrl;
+        public string DiscordUrl => Settings.Default.DiscordUrl;
         public string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
         public string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 

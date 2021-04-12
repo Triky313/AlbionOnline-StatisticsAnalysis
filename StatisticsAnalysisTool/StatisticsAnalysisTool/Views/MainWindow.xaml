@@ -344,18 +344,31 @@
                 </TabItem>
             </TabControl>
             <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,30,0">
-                <Grid ZIndex="20" Margin="5,0,0,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
-                    <TextBlock>
-                        <Hyperlink NavigateUri="{Binding Path=GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                            <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                        </Hyperlink>
-                    </TextBlock>
-                </Grid>
-                <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="34,0,0,0" VerticalAlignment="Top" Height="35" Width="106" />
-                <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center"
-                           FontSize="14" Margin="140,0,0,0" FontWeight="Bold" HorizontalAlignment="Left" Width="110" Height="28" VerticalAlignment="Bottom">
-                    (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="PayPal Donate" /></Hyperlink>)
-                </TextBlock>
+                <StackPanel Orientation="Horizontal" Width="auto" HorizontalAlignment="Left">
+                    <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+                        <TextBlock>
+                            <Hyperlink NavigateUri="{Binding GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                                <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </Grid>
+                    <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+                        <TextBlock>
+                            <Hyperlink NavigateUri="{Binding DiscordUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                                <fa5:ImageAwesome Icon="Brands_Discord" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </Grid>
+                    <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+                        <TextBlock>
+                            <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                                <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </Grid>
+                    <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" 
+                           HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="35" Width="auto" />
+                </StackPanel>
             </Grid>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
