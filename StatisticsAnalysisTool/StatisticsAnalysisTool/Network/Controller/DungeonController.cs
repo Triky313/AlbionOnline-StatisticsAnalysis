@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using Newtonsoft.Json;
 using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
@@ -73,6 +73,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
+                    SetDungeonInformation(currentGuid, mapType);
                     SetOrUpdateDungeonDataToUi();
                     return;
                 }
@@ -86,6 +87,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
+                    SetDungeonInformation(currentGuid, mapType);
                     SetOrUpdateDungeonDataToUi();
                     return;
                 }
@@ -179,6 +181,29 @@ namespace StatisticsAnalysisTool.Network.Controller
         private DungeonObject GetCurrentDungeon(Guid guid)
         {
             return _dungeons.FirstOrDefault(x => x.GuidList.Contains(guid));
+        }
+
+        private void SetDungeonInformation(Guid guid, MapType mapType)
+        {
+            var dun = GetCurrentDungeon(guid);
+            if (dun == null)
+            {
+                return;
+            }
+
+            switch (mapType)
+            {
+                case MapType.CorruptedDungeon:
+                    dun.Faction = Faction.Corrupted;
+                    dun.Mode = DungeonMode.Corrupted;
+                    return;
+                case MapType.HellGate:
+                    dun.Faction = Faction.HellGate;
+                    dun.Mode = DungeonMode.HellGate;
+                    return;
+                default:
+                    return;
+            }
         }
 
         private int GetChests(DateTime? chestIsNewerAsDateTime, ChestRarity rarity)
