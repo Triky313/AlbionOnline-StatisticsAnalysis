@@ -12,12 +12,6 @@ namespace StatisticsAnalysisTool.Network.Notification
     {
         [JsonIgnore]
         public List<TimeCollectObject> DungeonRunTimes { get; } = new List<TimeCollectObject>();
-
-        // Deprecated
-        public TimeSpan RunTimeInSeconds { get; set; }
-        public DateTime StartDungeon { get; set; }
-        public List<Guid> MapsGuid { get; set; }
-
         public TimeSpan TotalRunTime { get; set; }
         public List<Guid> GuidList { get; set; } = new List<Guid>();
         public DateTime EnterDungeonFirstTime { get; set; }

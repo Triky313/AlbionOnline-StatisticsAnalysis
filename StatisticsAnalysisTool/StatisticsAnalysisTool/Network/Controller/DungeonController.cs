@@ -612,27 +612,6 @@ namespace StatisticsAnalysisTool.Network.Controller
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
                     var dungeons = JsonConvert.DeserializeObject<List<DungeonObject>>(localItemString) ?? new List<DungeonObject>();
-
-                    // Deprecated
-                    // Remove after a few month
-                    foreach (var dun in dungeons)
-                    {
-                        if (dun.MapsGuid != null)
-                        {
-                            dun.GuidList = dun.MapsGuid;
-                        }
-
-                        if (dun.RunTimeInSeconds.Ticks > 0)
-                        {
-                            dun.TotalRunTime = dun.RunTimeInSeconds;
-                        }
-
-                        if (dun.StartDungeon.Ticks > 1)
-                        {
-                            dun.EnterDungeonFirstTime = dun.StartDungeon;
-                        }
-                    }
-
                     _dungeons = dungeons;
                     return;
                 }
