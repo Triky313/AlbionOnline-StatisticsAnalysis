@@ -5,7 +5,7 @@
 [![Discord](https://img.shields.io/badge/Discord-join-blueviolet)](https://discord.gg/6dGTvuF5nJ) 
 [![Donate](https://img.shields.io/badge/paypal-donate-1e477a)](https://www.paypal.me/schultzaaron) 
 
-A tool for easy reading of auction house data, Tracking of Dungeons and with Damage Meter for the game Albion Online
+A tool for easy reading of auction house data, Tracking of Dungeons and a Damage Meter for the game Albion Online
 
 ![Image of this Application](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/blob/master/StatisticsAnalysisTool.png)
 
