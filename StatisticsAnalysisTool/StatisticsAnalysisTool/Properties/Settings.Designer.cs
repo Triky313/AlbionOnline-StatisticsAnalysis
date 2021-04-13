@@ -439,5 +439,14 @@ namespace StatisticsAnalysisTool.Properties {
                 this["LootChestDataSourceUrl"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://discord.com/invite/sahSrSPmaJ")]
+        public string DiscordUrl {
+            get {
+                return ((string)(this["DiscordUrl"]));
+            }
+        }
     }
 }
