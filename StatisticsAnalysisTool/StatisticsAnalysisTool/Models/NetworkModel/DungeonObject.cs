@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
@@ -43,7 +44,13 @@ namespace StatisticsAnalysisTool.Network.Notification
                     Fame += value;
                     return;
                 case ValueType.ReSpec:
-                    ReSpec += AddValue(value, _lastReSpecValue, out _lastReSpecValue);
+                    var internalReSpecValue = Utilities.AddValue(value, _lastReSpecValue, out _lastReSpecValue);
+                    if (internalReSpecValue <= 0)
+                    {
+                        return;
+                    }
+
+                    ReSpec += internalReSpecValue;
                     return;
                 case ValueType.Silver:
                     Silver += value;
@@ -60,28 +67,7 @@ namespace StatisticsAnalysisTool.Network.Notification
                     return;
             }
         }
-
-        private double AddValue(double value, double? lastValue, out double? newLastValue)
-        {
-            if (lastValue == null)
-            {
-                newLastValue = value;
-                return 0;
-            }
-
-            var newValue = (double)(value - lastValue);
-
-            if (newValue == 0)
-            {
-                newLastValue = value;
-                return 0;
-            }
-
-            newLastValue = value;
-
-            return newValue;
-        }
-
+        
         public void AddStartTime(DateTime time)
         {
             if (DungeonRunTimes.Any(x => x.EndTime == null))

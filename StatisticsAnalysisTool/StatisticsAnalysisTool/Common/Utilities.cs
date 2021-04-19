@@ -84,6 +84,25 @@ namespace StatisticsAnalysisTool.Common
             return difference.Seconds >= waitingSeconds;
         }
 
+        public static double AddValue(double value, double? lastValue, out double? newLastValue)
+        {
+            if (lastValue == null)
+            {
+                newLastValue = value;
+                return 0;
+            }
+
+            var newValue = (double)(value - lastValue);
+            if (newValue == 0)
+            {
+                newLastValue = value;
+                return 0;
+            }
+
+            newLastValue = value;
+            return newValue;
+        }
+
         #region Window Flash
 
         private const uint FlashwStop = 0; //Stop flashing. The system restores the window to its original state.
