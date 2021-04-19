@@ -57,6 +57,11 @@ namespace StatisticsAnalysisTool.Network
                     break;
                 case ValueType.ReSpec:
                     var internalReSpecValue = AddValue(value, _lastReSpecValue, out _lastReSpecValue);
+                    if (internalReSpecValue <= 0)
+                    {
+                        break;
+                    }
+
                     _reSpecPerHourValue += internalReSpecValue;
                     _reSpecPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
                     _totalGainedReSpecInSession += internalReSpecValue;
