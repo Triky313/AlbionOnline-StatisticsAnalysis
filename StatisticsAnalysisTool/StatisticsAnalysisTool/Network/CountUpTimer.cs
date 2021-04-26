@@ -56,7 +56,12 @@ namespace StatisticsAnalysisTool.Network
                     RemoveValueFromValuePerHour(_famePerHourList, _famePerHourValue);
                     break;
                 case ValueType.ReSpec:
-                    var internalReSpecValue = AddValue(value, _lastReSpecValue, out _lastReSpecValue);
+                    var internalReSpecValue = Utilities.AddValue(value, _lastReSpecValue, out _lastReSpecValue);
+                    if (internalReSpecValue <= 0)
+                    {
+                        break;
+                    }
+
                     _reSpecPerHourValue += internalReSpecValue;
                     _reSpecPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
                     _totalGainedReSpecInSession += internalReSpecValue;
@@ -132,25 +137,6 @@ namespace StatisticsAnalysisTool.Network
             _factionPointsPerHourList.Clear();
 
             CurrentTimerUpdate();
-        }
-
-        private double AddValue(double value, double? lastValue, out double? newLastValue)
-        {
-            if (lastValue == null)
-            {
-                newLastValue = value;
-                return 0;
-            }
-
-            var newValue = (double)(value - lastValue);
-            if (newValue == 0)
-            {
-                newLastValue = value;
-                return 0;
-            }
-
-            newLastValue = value;
-            return newValue;
         }
 
         private void RemoveValueFromValuePerHour(List<ValuePerHour> valueList, double perHourValue)
