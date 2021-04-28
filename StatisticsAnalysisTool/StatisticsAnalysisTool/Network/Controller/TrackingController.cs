@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 {
     public class TrackingController
     {
-        private const int _maxNotifications = 50;
+        private const int _maxNotifications = 1000;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly MainWindow _mainWindow;
