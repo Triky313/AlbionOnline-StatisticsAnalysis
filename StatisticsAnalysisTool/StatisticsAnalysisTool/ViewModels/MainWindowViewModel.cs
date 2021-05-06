@@ -120,6 +120,7 @@ namespace StatisticsAnalysisTool.ViewModels
         public AlertController AlertManager;
         private ObservableCollection<MainStatObject> _factionPointStats = new ObservableCollection<MainStatObject>() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
+        private Visibility _isMainTrackerPopupVisible = Visibility.Hidden;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -808,6 +809,15 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isDamageMeterPopupVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility IsMainTrackerPopupVisible {
+            get => _isMainTrackerPopupVisible;
+            set
+            {
+                _isMainTrackerPopupVisible = value;
                 OnPropertyChanged();
             }
         }

@@ -363,6 +363,7 @@
   <translation name="OPENED_RARE_CHESTS">Opened rare chests</translation>
   <translation name="OPENED_LEGENDARY_CHESTS">Opened legendary chests</translation>
 
+  <translation name="MAIN_TRACKER_DESCRIPTION_1">The fame that the tracker tracks is the real overall fame. So that means with Premium and Satchel Fame. Fame in the profile of a player is the normal fame, without premium or other special fame.</translation>
   <translation name="DAMAGE_METER_DESCRIPTION_1">In order for damage from other players in the party to be recognized, the tool must first be activated and then a player must leave or join the party.</translation>
 
   <translation name="SORT_BY_DAMAGE">Sort by damage</translation>
