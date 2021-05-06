@@ -241,5 +241,15 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.IsDamageMeterPopupVisible = Visibility.Hidden;
         }
+
+        private void OpenMainTrackerInfoPopup_MouseEnter(object sender, MouseEventArgs e)
+        {
+            _mainWindowViewModel.IsMainTrackerPopupVisible = Visibility.Visible;
+        }
+
+        private void CloseMainTrackerInfoPopup_MouseLeave(object sender, MouseEventArgs e)
+        {
+            _mainWindowViewModel.IsMainTrackerPopupVisible = Visibility.Hidden;
+        }
     }
 }
