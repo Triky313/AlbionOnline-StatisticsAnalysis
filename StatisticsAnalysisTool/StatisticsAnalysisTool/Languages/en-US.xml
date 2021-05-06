@@ -372,4 +372,6 @@
   <translation name="FACTION_FLAG_POINTS">Faction Flag Points</translation>
   <translation name="FACTION_POINTS">Faction Points</translation>
   <translation name="NUMBER_OF_DUNGEON_FLOORS">Number of dungeon floors</translation>
+  <translation name="TOOL_DIRECTORY">Tool Directory</translation>
+  <translation name="OPEN_TOOL_DIRECTORY">Open tool Directory</translation>
 </translations>

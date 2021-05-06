@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Height="403" Width="600" Style="{StaticResource PrimaryWindow}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Height="450" Width="600" Style="{StaticResource PrimaryWindow}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
@@ -18,13 +18,14 @@
         </Grid>
         <StackPanel Margin="10,75,0,39" HorizontalAlignment="Left" Width="250">
             <Label Content="{Binding Translation.Language, FallbackValue=LANGUAGE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.UpdateItemListByDays, FallbackValue=UPDATE__ITEM__LIST__BY__DAYS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.ItemListSourceUrl, FallbackValue=ITEM_LIST_SOURCE_URL}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,18,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.FullItemInformationUpdateCycleDays, FallbackValue=FULL__ITEM__INFO__UPDATE__CYCLE__DAYS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top" />
+            <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
+            <Label Content="{Binding Translation.UpdateItemListByDays, FallbackValue=UPDATE__ITEM__LIST__BY__DAYS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
+            <Label Content="{Binding Translation.ItemListSourceUrl, FallbackValue=ITEM_LIST_SOURCE_URL}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
+            <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,16,0,0" VerticalAlignment="Top" />
+            <Label Content="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
+            <Label Content="{Binding Translation.FullItemInformationUpdateCycleDays, FallbackValue=FULL__ITEM__INFO__UPDATE__CYCLE__DAYS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
+            <Label Content="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
+            <Label Content="{Binding Translation.ToolDirectory, FallbackValue=TOOL__DIRECTORY}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
         </StackPanel>
         <StackPanel Margin="265,75,0,39">
             <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" Margin="0,5,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200" />
@@ -35,6 +36,7 @@
             <CheckBox IsChecked="{Binding ShowInfoWindowOnStartChecked}" Height="21" VerticalContentAlignment="Center" Margin="0,10,10,0" />
             <TextBox Text="{Binding FullItemInformationUpdateCycleDays, FallbackValue=90}" Height="26" Margin="0,6,10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
             <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="FileName" SelectedValuePath="FileInformation" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="200" Height="26" />
+            <Button Content="{Binding Translation.OpenToolDirectory, FallbackValue=TOOL__DIRECTORY}" Margin="0,5,10,10" Height="24" VerticalAlignment="Bottom" Click="OpenToolDirectory_Click" />
         </StackPanel>
         <Button Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click" />
     </Grid>

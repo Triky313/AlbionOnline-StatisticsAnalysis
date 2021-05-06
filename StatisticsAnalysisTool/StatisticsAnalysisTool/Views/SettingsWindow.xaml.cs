@@ -1,4 +1,6 @@
-﻿namespace StatisticsAnalysisTool.Views
+﻿using System.Diagnostics;
+
+namespace StatisticsAnalysisTool.Views
 {
     using System.Windows;
     using System.Windows.Input;
@@ -31,6 +33,11 @@
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             _settingsWindowViewModel.SaveSettings();
+        }
+
+        private void OpenToolDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(_settingsWindowViewModel.ToolDirectory);
         }
     }
 }

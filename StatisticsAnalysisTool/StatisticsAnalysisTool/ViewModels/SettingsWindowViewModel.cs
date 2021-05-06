@@ -1,14 +1,14 @@
-﻿using System.Collections.ObjectModel;
+﻿using log4net;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using log4net;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Views;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -268,6 +268,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string ToolDirectory => System.AppDomain.CurrentDomain.BaseDirectory;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
