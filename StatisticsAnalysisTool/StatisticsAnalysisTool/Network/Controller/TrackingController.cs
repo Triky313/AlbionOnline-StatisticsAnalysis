@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Network.Time;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         public CombatController CombatController;
         public DungeonController DungeonController;
         public EntityController EntityController;
+        public EntityController DebugTrackerController;
         
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
@@ -144,6 +146,31 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 Log.Error(nameof(RemovesUnnecessaryNotifications), e);
             }
+        }
+
+        public void AddDebugNotification(HandlerType handlerType, int handlerCode, string text)
+        {
+            if (IsMainWindowNull() || _mainWindowViewModel.DebugTrackingNotifications == null)
+            {
+                return;
+            }
+
+            if (_mainWindow.Dispatcher.CheckAccess())
+            {
+                _mainWindowViewModel.TrackingNotifications.Insert(0, SetDebugNotification(handlerType, handlerCode, text));
+            }
+            else
+            {
+                _mainWindow.Dispatcher.Invoke(delegate { _mainWindowViewModel.DebugTrackingNotifications.Insert(0, SetDebugNotification(handlerType, handlerCode, text)); });
+            }
+        }
+
+        private TrackingNotification SetDebugNotification(HandlerType handlerType, int handlerCode, string text)
+        {
+            return new TrackingNotification(DateTime.Now, new List<LineFragment>
+            {
+                new DebugNotificationFragment(handlerType, handlerCode, text)
+            });
         }
 
         private static DateTime? GetLowestDate(ObservableCollection<TrackingNotification> items)

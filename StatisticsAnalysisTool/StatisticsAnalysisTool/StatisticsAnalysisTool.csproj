@@ -228,6 +228,8 @@
     <Compile Include="Network\Notification\DamageMeterFragment.cs" />
     <Compile Include="Network\Notification\FactionPointsNotificationFragment.cs" />
     <Compile Include="Network\Notification\FactionFlagPointsNotificationFragment.cs" />
+    <Compile Include="Network\Notification\DebugNotificationFragment.cs" />
+    <Compile Include="Enumerations\HandlerType.cs" />
     <Compile Include="Network\Operations\Responses\PartyMakeLeaderResponse.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
     <Compile Include="GameData\LootChestData.cs" />

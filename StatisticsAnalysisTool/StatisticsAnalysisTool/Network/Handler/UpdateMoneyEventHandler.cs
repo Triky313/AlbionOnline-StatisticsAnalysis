@@ -1,6 +1,8 @@
 ﻿using Albion.Network;
+using Newtonsoft.Json;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
+using StatisticsAnalysisTool.Network.Notification;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -10,8 +12,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         private readonly TrackingController _trackingController;
         private readonly CountUpTimer _countUpTimer;
 
-        public UpdateMoneyEventHandler(TrackingController trackingController) : base(
-            (int) EventCodes.UpdateMoney)
+        public UpdateMoneyEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateMoney)
         {
             _trackingController = trackingController;
             _countUpTimer = _trackingController.CountUpTimer;
@@ -19,6 +20,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(UpdateMoneyEvent value)
         {
+            _trackingController.AddDebugNotification(HandlerType.Event, (int)EventCodes.UpdateMoney, JsonConvert.SerializeObject(value));
+
             await Task.CompletedTask;
         }
     }

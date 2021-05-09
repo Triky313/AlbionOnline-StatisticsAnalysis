@@ -1,9 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using Albion.Network;
+﻿using Albion.Network;
+using Newtonsoft.Json;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Notification;
+using System;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -18,9 +20,13 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(NewCharacterEvent value)
         {
+            _trackingController.AddDebugNotification(HandlerType.Event, (int)EventCodes.NewCharacter, JsonConvert.SerializeObject(value));
+
             if (value.Guid != null && value.ObjectId != null)
-                _trackingController.EntityController.AddEntity((long) value.ObjectId, (Guid) value.Guid, value.Name, GameObjectType.Player,
-                    GameObjectSubType.Player);
+            {
+                _trackingController.EntityController.AddEntity((long) value.ObjectId, (Guid) value.Guid, value.Name, GameObjectType.Player, GameObjectSubType.Player);
+            }
+
             await Task.CompletedTask;
         }
     }

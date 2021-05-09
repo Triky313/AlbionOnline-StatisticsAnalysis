@@ -54,7 +54,7 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new CharacterEquipmentChangedEventHandler(trackingController));
                 builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
                 builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
-                builder.AddEventHandler(new PartySilverGainedEventHandler());
+                builder.AddEventHandler(new PartySilverGainedEventHandler(trackingController));
                 builder.AddEventHandler(new UpdateFactionStandingEventHandler(trackingController));
 
                 //builder.AddResponseHandler(new TestHandler());
@@ -79,11 +79,17 @@ namespace StatisticsAnalysisTool.Network
 
         private static bool StartDeviceCapture()
         {
-            if (_capturedDevices.Count <= 0) return false;
+            if (_capturedDevices.Count <= 0)
+            {
+                return false;
+            }
 
             try
             {
-                foreach (var device in _capturedDevices) PacketEvent(device);
+                foreach (var device in _capturedDevices)
+                {
+                    PacketEvent(device);
+                }
             }
             catch (Exception e)
             {
@@ -126,7 +132,10 @@ namespace StatisticsAnalysisTool.Network
             try
             {
                 var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data).Extract<UdpPacket>();
-                if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056)) _receiver.ReceivePacket(packet.PayloadData);
+                if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
+                {
+                    _receiver.ReceivePacket(packet.PayloadData);
+                }
             }
             catch (OverflowException ex)
             {

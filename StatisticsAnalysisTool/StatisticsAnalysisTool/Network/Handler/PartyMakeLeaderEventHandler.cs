@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
-using Albion.Network;
+﻿using Albion.Network;
+using Newtonsoft.Json;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
+using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Network.Operations.Responses;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -17,6 +19,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(PartyMakeLeaderResponse value)
         {
+            _trackingController.AddDebugNotification(HandlerType.Operation, (int)OperationCodes.PartyMakeLeader, JsonConvert.SerializeObject(value));
+
             _trackingController.EntityController.RemoveFromParty(value.Username);
             await Task.CompletedTask;
         }

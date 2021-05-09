@@ -356,6 +356,14 @@
                         </ScrollViewer>
                     </Grid>
                 </TabItem>
+                <TabItem Header="{Binding Translation.Debugging, FallbackValue=DEBUGGING}" Visibility="Visible">
+                    <Grid>
+                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,30,0,0" VerticalAlignment="Top"/>
+                        <ScrollViewer Margin="0,35,0,0">
+                            <ItemsControl ItemsSource="{Binding DebugTrackingNotifications}" />
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
             </TabControl>
             <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,25,0">
                 <StackPanel Orientation="Horizontal" Width="auto" HorizontalAlignment="Left">

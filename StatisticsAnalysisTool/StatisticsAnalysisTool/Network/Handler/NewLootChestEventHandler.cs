@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
-using Albion.Network;
+﻿using Albion.Network;
+using Newtonsoft.Json;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Notification;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -17,6 +19,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(NewLootChestEvent value)
         {
+            _trackingController.AddDebugNotification(HandlerType.Event, (int)EventCodes.NewLootChest, JsonConvert.SerializeObject(value));
+
             _trackingController.DungeonController?.SetDungeonChestInformation(value.Id, value.UniqueName);
             await Task.CompletedTask;
         }

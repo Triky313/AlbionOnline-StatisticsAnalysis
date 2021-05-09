@@ -111,6 +111,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
         private string _trackingGuildName;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
+        private ObservableCollection<TrackingNotification> _debugTrackingNotifications = new ObservableCollection<TrackingNotification>();
         private string _trackingUsername;
         private MainWindowTranslation _translation;
         private string _updateTranslation;
@@ -1097,6 +1098,15 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingNotifications = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<TrackingNotification> DebugTrackingNotifications {
+            get => _debugTrackingNotifications;
+            set
+            {
+                _debugTrackingNotifications = value;
                 OnPropertyChanged();
             }
         }
