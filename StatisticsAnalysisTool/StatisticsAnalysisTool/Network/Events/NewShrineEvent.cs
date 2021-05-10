@@ -1,5 +1,6 @@
 ﻿using Albion.Network;
 using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,6 +17,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public NewShrineEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            Console.WriteLine($@"[{DateTime.UtcNow}] {GetType().Name}: {JsonConvert.SerializeObject(parameters)}");
+
             try
             {
                 Debug.Print("----- NewShrineEvent (Event) -----");

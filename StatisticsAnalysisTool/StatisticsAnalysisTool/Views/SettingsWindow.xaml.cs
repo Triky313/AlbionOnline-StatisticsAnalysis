@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using StatisticsAnalysisTool.Common;
+using System.Diagnostics;
 
 namespace StatisticsAnalysisTool.Views
 {
@@ -38,6 +39,11 @@ namespace StatisticsAnalysisTool.Views
         private void OpenToolDirectory_Click(object sender, RoutedEventArgs e)
         {
             Process.Start(_settingsWindowViewModel.ToolDirectory);
+        }
+
+        private void OpenDebugConsole_Click(object sender, RoutedEventArgs e)
+        {
+            ConsoleManager.Toggle();
         }
     }
 }

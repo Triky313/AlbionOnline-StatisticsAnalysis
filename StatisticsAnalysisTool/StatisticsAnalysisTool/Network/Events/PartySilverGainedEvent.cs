@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Albion.Network;
+﻿using Albion.Network;
+using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Time;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -17,6 +18,8 @@ namespace StatisticsAnalysisTool.Network.Events
 
         public PartySilverGainedEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            Console.WriteLine($@"[{DateTime.UtcNow}] {GetType().Name}: {JsonConvert.SerializeObject(parameters)}");
+
             try
             {
                 Debug.Print("--- PartySilverGained (Event) ---");

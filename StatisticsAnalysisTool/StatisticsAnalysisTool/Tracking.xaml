@@ -97,10 +97,6 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type notification:DebugNotificationFragment}">
-        <TextBox TextWrapping="Wrap" Text="{Binding OutputText, Mode=OneWay}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type notification:TextFragment}">
         <TextBlock Text="{Binding Text, StringFormat='{}{0} '}" TextWrapping="Wrap" Foreground="{StaticResource Solid.Color.Text.Normal}" />
     </DataTemplate>

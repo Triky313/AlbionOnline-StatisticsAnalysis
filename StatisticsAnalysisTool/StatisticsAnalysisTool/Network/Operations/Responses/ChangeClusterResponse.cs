@@ -1,5 +1,6 @@
 ﻿using Albion.Network;
 using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -18,6 +19,8 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
         public ChangeClusterResponse(Dictionary<byte, object> parameters) : base(parameters)
         {
+            Console.WriteLine($@"[{DateTime.UtcNow}] {GetType().Name}: {JsonConvert.SerializeObject(parameters)}");
+
             try
             {
                 if (parameters.ContainsKey(0))

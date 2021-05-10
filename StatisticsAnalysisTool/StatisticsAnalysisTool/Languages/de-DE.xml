@@ -374,4 +374,5 @@
   <translation name="NUMBER_OF_DUNGEON_FLOORS">Anzahl Dungeon Ebenen</translation>
   <translation name="TOOL_DIRECTORY">Tool Verzeichnis</translation>
   <translation name="OPEN_TOOL_DIRECTORY">Öffne Tool Verzeichnis</translation>
+  <translation name="OPEN_OR_CLOSE_DEBUG_CONSOLE">Debug-Konsole öffnen oder schließen</translation>
 </translations>

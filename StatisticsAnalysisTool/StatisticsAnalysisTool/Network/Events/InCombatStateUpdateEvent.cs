@@ -1,5 +1,6 @@
 ﻿using Albion.Network;
 using log4net;
+using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public InCombatStateUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            Console.WriteLine($@"[{DateTime.UtcNow}] {GetType().Name}: {JsonConvert.SerializeObject(parameters)}");
+
             try
             {
                 if (parameters.ContainsKey(0))

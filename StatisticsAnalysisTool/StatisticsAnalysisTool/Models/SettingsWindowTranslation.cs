@@ -16,5 +16,6 @@ namespace StatisticsAnalysisTool.Models
         public string AlarmSoundUsed => LanguageController.Translation("ALARM_SOUND_USED");
         public string ToolDirectory => LanguageController.Translation("TOOL_DIRECTORY");
         public string OpenToolDirectory => LanguageController.Translation("OPEN_TOOL_DIRECTORY");
+        public string OpenCloseDebugConsole => LanguageController.Translation("OPEN_OR_CLOSE_DEBUG_CONSOLE");
     }
 }

@@ -1,8 +1,6 @@
 ﻿using Albion.Network;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
-using StatisticsAnalysisTool.Network.Notification;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -21,8 +19,6 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(SiegeCampClaimStartEvent value)
         {
-            _trackingController.AddDebugNotification(HandlerType.Event, (int)EventCodes.SiegeCampClaimStart, JsonConvert.SerializeObject(value));
-
             await Task.CompletedTask;
         }
     }

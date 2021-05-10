@@ -1,5 +1,4 @@
 ﻿using Albion.Network;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
@@ -22,8 +21,6 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(UpdateFactionStandingEvent value)
         {
-            _trackingController.AddDebugNotification(HandlerType.Event, (int)EventCodes.UpdateFactionStanding, JsonConvert.SerializeObject(value));
-
             _trackingController.AddNotification(SetFactionFlagPointsNotification(value.CityFaction, value.GainedFactionFlagPoints.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
             _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionFlagPoints.DoubleValue, ValueType.FactionFame);
             await Task.CompletedTask;

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Albion.Network;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Albion.Network;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -17,6 +18,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public UpdateFameEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            Console.WriteLine($@"[{DateTime.UtcNow}] {GetType().Name}: {JsonConvert.SerializeObject(parameters)}");
+
             // Array[10] exist only by Crafting...
             try
             {

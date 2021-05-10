@@ -1,5 +1,4 @@
 ﻿using Albion.Network;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
@@ -24,8 +23,6 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
-            _trackingController.AddDebugNotification(HandlerType.Event, (int)EventCodes.UpdateFame, JsonConvert.SerializeObject(value));
-
             _trackingController.AddNotification(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame.DoubleValue,
                 value.ZoneFame.DoubleValue, value.PremiumFame.DoubleValue, value.SatchelFame.DoubleValue, value.IsPremiumBonus));
             _countUpTimer.Add(ValueType.Fame, value.TotalGainedFame.DoubleValue);

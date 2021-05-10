@@ -1,4 +1,5 @@
 ﻿using Albion.Network;
+using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public LootChestOpenedEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            Console.WriteLine($@"[{DateTime.UtcNow}] {GetType().Name}: {JsonConvert.SerializeObject(parameters)}");
+
             try
             {
                 if (parameters.ContainsKey(0))
