@@ -17,6 +17,8 @@ namespace StatisticsAnalysisTool.Network.Events
 
         public UpdateReSpecPointsEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
             try
             {
                 if (parameters.ContainsKey(0) && parameters[0] != null)

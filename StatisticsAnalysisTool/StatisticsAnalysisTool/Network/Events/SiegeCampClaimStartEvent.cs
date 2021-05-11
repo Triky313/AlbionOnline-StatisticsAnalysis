@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Albion.Network;
+using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Albion.Network;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -11,6 +12,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public SiegeCampClaimStartEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
             try
             {
                 if (parameters.ContainsKey(2)) Username = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();

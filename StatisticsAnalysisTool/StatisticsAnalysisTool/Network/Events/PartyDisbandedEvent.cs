@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Albion.Network;
+using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Albion.Network;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -12,6 +12,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public PartyDisbandedEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
             try
             {
                 if (parameters.ContainsKey(0) && parameters[0] != null)

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Albion.Network;
+using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Albion.Network;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -10,6 +10,8 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public ActiveSpellEffectsUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
             try
             {
                 if (parameters.ContainsKey(0)) CauserId = parameters[0].ObjectToLong();

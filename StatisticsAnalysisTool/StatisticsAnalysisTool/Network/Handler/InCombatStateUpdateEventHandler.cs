@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using Albion.Network;
+﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -17,7 +17,9 @@ namespace StatisticsAnalysisTool.Network.Handler
         protected override async Task OnActionAsync(InCombatStateUpdateEvent value)
         {
             if (value.ObjectId != null)
+            {
                 _trackingController.CombatController.UpdateCombatMode((long) value.ObjectId, value.InActiveCombat, value.InPassiveCombat);
+            }
 
             await Task.CompletedTask;
         }

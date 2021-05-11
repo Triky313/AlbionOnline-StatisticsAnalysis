@@ -14,6 +14,8 @@ namespace StatisticsAnalysisTool.Network
 
         public UpdateMoneyEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
             try
             {
                 if (parameters.ContainsKey(1))

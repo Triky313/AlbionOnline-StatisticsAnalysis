@@ -16,6 +16,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public UpdateFactionStandingEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
             try
             {
                 if (parameters.ContainsKey(0))

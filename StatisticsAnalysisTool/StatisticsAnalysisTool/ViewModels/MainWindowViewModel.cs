@@ -111,6 +111,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
         private string _trackingGuildName;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
+        private ObservableCollection<TrackingNotification> _debugTrackingNotifications = new ObservableCollection<TrackingNotification>();
         private string _trackingUsername;
         private MainWindowTranslation _translation;
         private string _updateTranslation;
@@ -625,16 +626,26 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingActive = !IsTrackingActive;
 
             if (IsTrackingActive)
+            {
                 StartTracking();
+            }
             else
+            {
                 StopTracking();
+            }
         }
 
         public void StartTracking()
         {
-            if (NetworkManager.IsNetworkCaptureRunning) return;
+            if (NetworkManager.IsNetworkCaptureRunning)
+            {
+                return;
+            }
 
-            if (_trackingController == null) _trackingController = new TrackingController(this, _mainWindow);
+            if (_trackingController == null)
+            {
+                _trackingController = new TrackingController(this, _mainWindow);
+            }
 
             _trackingController?.RegisterEvents();
             _trackingController?.DungeonController?.LoadDungeonFromFile();
@@ -645,6 +656,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _trackingController?.CountUpTimer.Start();
 
             IsTrackingActive = NetworkManager.StartNetworkCapture(this, _trackingController);
+            Console.WriteLine(@"### Start Tracking...");
         }
 
         public void StopTracking()
@@ -656,6 +668,7 @@ namespace StatisticsAnalysisTool.ViewModels
             NetworkManager.StopNetworkCapture();
 
             IsTrackingActive = false;
+            Console.WriteLine(@"### Stop Tracking");
         }
 
         private bool IsReadyToTracking()
@@ -1097,6 +1110,15 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingNotifications = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<TrackingNotification> DebugTrackingNotifications {
+            get => _debugTrackingNotifications;
+            set
+            {
+                _debugTrackingNotifications = value;
                 OnPropertyChanged();
             }
         }

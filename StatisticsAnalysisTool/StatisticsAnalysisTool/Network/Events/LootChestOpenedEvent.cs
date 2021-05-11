@@ -10,6 +10,8 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public LootChestOpenedEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
             try
             {
                 if (parameters.ContainsKey(0))

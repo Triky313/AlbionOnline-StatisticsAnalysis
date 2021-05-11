@@ -11,8 +11,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         private readonly TrackingController _trackingController;
         private readonly CountUpTimer _countUpTimer;
 
-        public UpdateReSpecPointsEventHandler(TrackingController trackingController) : base(
-            (int) EventCodes.UpdateReSpecPoints)
+        public UpdateReSpecPointsEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateReSpecPoints)
         {
             _trackingController = trackingController;
             _countUpTimer = _trackingController.CountUpTimer;

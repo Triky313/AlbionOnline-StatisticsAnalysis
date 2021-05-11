@@ -1,14 +1,18 @@
-﻿using System.Threading.Tasks;
-using Albion.Network;
+﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Events;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
     public class PartySilverGainedEventHandler : EventPacketHandler<PartySilverGainedEvent>
     {
-        public PartySilverGainedEventHandler() : base((int) EventCodes.PartySilverGained)
+        private readonly TrackingController _trackingController;
+
+        public PartySilverGainedEventHandler(TrackingController trackingController) : base((int) EventCodes.PartySilverGained)
         {
+            _trackingController = trackingController;
         }
 
         protected override async Task OnActionAsync(PartySilverGainedEvent value)

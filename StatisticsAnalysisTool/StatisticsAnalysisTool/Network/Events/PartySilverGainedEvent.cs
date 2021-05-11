@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Albion.Network;
+﻿using Albion.Network;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Time;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -17,6 +17,8 @@ namespace StatisticsAnalysisTool.Network.Events
 
         public PartySilverGainedEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
             try
             {
                 Debug.Print("--- PartySilverGained (Event) ---");

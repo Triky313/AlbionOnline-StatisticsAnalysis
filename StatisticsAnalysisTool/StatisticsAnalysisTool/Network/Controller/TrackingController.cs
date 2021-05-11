@@ -27,6 +27,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         public CombatController CombatController;
         public DungeonController DungeonController;
         public EntityController EntityController;
+        public EntityController DebugTrackerController;
         
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {

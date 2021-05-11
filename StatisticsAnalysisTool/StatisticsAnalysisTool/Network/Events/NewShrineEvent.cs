@@ -1,5 +1,6 @@
 ﻿using Albion.Network;
 using log4net;
+using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,6 +17,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public NewShrineEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
             try
             {
                 Debug.Print("----- NewShrineEvent (Event) -----");

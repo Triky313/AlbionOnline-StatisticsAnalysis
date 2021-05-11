@@ -80,10 +80,6 @@
         </Style.Triggers>
     </Style>
 
-    <DataTemplate DataType="{x:Type notification:TextFragment}">
-        <TextBlock Text="{Binding Text, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type notification:TrackingNotification}">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -99,6 +95,10 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
         </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type notification:TextFragment}">
+        <TextBlock Text="{Binding Text, StringFormat='{}{0} '}" TextWrapping="Wrap" Foreground="{StaticResource Solid.Color.Text.Normal}" />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type notification:FameNotificationFragment}">

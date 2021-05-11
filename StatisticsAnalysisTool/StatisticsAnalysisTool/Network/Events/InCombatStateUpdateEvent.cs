@@ -17,6 +17,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public InCombatStateUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
             try
             {
                 if (parameters.ContainsKey(0))
