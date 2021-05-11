@@ -1,5 +1,4 @@
 ﻿using Albion.Network;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
@@ -12,7 +11,7 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public CharacterEquipmentChangedEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Console.WriteLine($@"[{DateTime.UtcNow}] {GetType().Name}: {JsonConvert.SerializeObject(parameters)}");
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
             try
             {

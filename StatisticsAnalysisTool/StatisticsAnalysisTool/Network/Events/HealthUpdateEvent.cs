@@ -1,6 +1,5 @@
 ﻿using Albion.Network;
 using log4net;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Time;
@@ -25,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public HealthUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Console.WriteLine($@"[{DateTime.UtcNow}] {GetType().Name}: {JsonConvert.SerializeObject(parameters)}");
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
             try
             {

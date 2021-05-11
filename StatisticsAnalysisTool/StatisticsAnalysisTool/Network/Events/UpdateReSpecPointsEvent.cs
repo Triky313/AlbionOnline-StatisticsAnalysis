@@ -1,6 +1,5 @@
 ﻿using Albion.Network;
 using log4net;
-using Newtonsoft.Json;
 using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
 using System;
@@ -18,7 +17,7 @@ namespace StatisticsAnalysisTool.Network.Events
 
         public UpdateReSpecPointsEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Console.WriteLine($@"[{DateTime.UtcNow}] {GetType().Name}: {JsonConvert.SerializeObject(parameters)}");
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
             try
             {

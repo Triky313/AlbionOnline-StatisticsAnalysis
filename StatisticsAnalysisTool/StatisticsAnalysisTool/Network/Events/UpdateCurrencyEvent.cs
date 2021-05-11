@@ -1,5 +1,4 @@
 ﻿using Albion.Network;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System;
@@ -17,7 +16,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public UpdateCurrencyEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Console.WriteLine($@"[{DateTime.UtcNow}] {GetType().Name}: {JsonConvert.SerializeObject(parameters)}");
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
             try
             {

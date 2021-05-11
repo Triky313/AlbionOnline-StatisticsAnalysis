@@ -626,16 +626,26 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingActive = !IsTrackingActive;
 
             if (IsTrackingActive)
+            {
                 StartTracking();
+            }
             else
+            {
                 StopTracking();
+            }
         }
 
         public void StartTracking()
         {
-            if (NetworkManager.IsNetworkCaptureRunning) return;
+            if (NetworkManager.IsNetworkCaptureRunning)
+            {
+                return;
+            }
 
-            if (_trackingController == null) _trackingController = new TrackingController(this, _mainWindow);
+            if (_trackingController == null)
+            {
+                _trackingController = new TrackingController(this, _mainWindow);
+            }
 
             _trackingController?.RegisterEvents();
             _trackingController?.DungeonController?.LoadDungeonFromFile();
@@ -646,6 +656,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _trackingController?.CountUpTimer.Start();
 
             IsTrackingActive = NetworkManager.StartNetworkCapture(this, _trackingController);
+            Console.WriteLine(@"### Start Tracking...");
         }
 
         public void StopTracking()
@@ -657,6 +668,7 @@ namespace StatisticsAnalysisTool.ViewModels
             NetworkManager.StopNetworkCapture();
 
             IsTrackingActive = false;
+            Console.WriteLine(@"### Stop Tracking");
         }
 
         private bool IsReadyToTracking()

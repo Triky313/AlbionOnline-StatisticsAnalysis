@@ -1,5 +1,5 @@
 ﻿using Albion.Network;
-using Newtonsoft.Json;
+using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public NewLootChestEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
-            Console.WriteLine($@"[{DateTime.UtcNow}] {GetType().Name}: {JsonConvert.SerializeObject(parameters)}");
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
             try
             {

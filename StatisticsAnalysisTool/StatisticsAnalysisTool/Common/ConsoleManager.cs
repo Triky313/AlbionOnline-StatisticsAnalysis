@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -67,7 +69,7 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        static void InvalidateOutAndError()
+        private static void InvalidateOutAndError()
         {
             Type type = typeof(Console);
 
@@ -86,10 +88,15 @@ namespace StatisticsAnalysisTool.Common
             _InitializeStdOutError.Invoke(null, new object[] { true });
         }
 
-        static void SetOutAndErrorNull()
+        private static void SetOutAndErrorNull()
         {
             Console.SetOut(TextWriter.Null);
             Console.SetError(TextWriter.Null);
+        }
+
+        public static void WriteLineForNetworkHandler(string name, Dictionary<byte, object> parameters)
+        {
+            Console.WriteLine($@"[{DateTime.UtcNow}] {name}: {JsonConvert.SerializeObject(parameters)}");
         }
     }
 }
