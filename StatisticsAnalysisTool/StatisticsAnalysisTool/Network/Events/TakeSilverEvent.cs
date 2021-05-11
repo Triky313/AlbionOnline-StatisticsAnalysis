@@ -60,7 +60,10 @@ namespace StatisticsAnalysisTool.Network.Handler
                     ClusterTax = FixPoint.FromInternalValue(clusterTax ?? 0);
                 }
 
-                if (parameters.ContainsKey(7)) PremiumBonus = parameters[7] as bool? ?? false;
+                if (parameters.ContainsKey(7))
+                {
+                    PremiumBonus = parameters[7] as bool? ?? false;
+                }
 
                 if (parameters.ContainsKey(8))
                 {
