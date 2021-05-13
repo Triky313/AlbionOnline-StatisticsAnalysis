@@ -22,10 +22,10 @@ namespace StatisticsAnalysisTool.Network.Handler
         protected override async Task OnActionAsync(TakeSilverEvent value)
         {
             var localEntity = _trackingController.EntityController.GetLocalEntity()?.Value;
-            if (localEntity?.ObjectId == value.ObjectId)
+
+            if (value.ObjectId != null && (localEntity?.ObjectId == value.ObjectId || _trackingController.EntityController.IsEntityInParty((long)value.ObjectId)))
             {
                 _trackingController.AddNotification(SetNotification(value.YieldAfterTax, value.ClusterYieldAfterTax, value.PremiumAfterTax, value.ClusterTax));
-
                 _trackingController.CountUpTimer.Add(ValueType.Silver, value.YieldAfterTax.DoubleValue);
                 _trackingController.DungeonController?.AddValueToDungeon(value.YieldAfterTax.DoubleValue, ValueType.Silver);
             }

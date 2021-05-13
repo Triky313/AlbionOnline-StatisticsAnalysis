@@ -91,6 +91,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             return onlyInParty ? _knownEntities.Where(x => IsUserInParty(x.Value.Name)).ToList() : _knownEntities.ToList();
         }
 
+        public bool IsEntityInParty(long objectId) => GetAllEntities(true).Any(x => x.Value.ObjectId == objectId);
+
         public KeyValuePair<Guid, PlayerGameObject>? GetLocalEntity() => _knownEntities?.FirstOrDefault(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer);
 
         #endregion
