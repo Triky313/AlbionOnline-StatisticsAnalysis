@@ -34,13 +34,11 @@ namespace StatisticsAnalysisTool.Common
         /// </summary>
         public static void Show()
         {
-            //#if DEBUG
             if (!HasConsole)
             {
                 AllocConsole();
                 InvalidateOutAndError();
             }
-            //#endif
         }
 
         /// <summary>
@@ -48,13 +46,11 @@ namespace StatisticsAnalysisTool.Common
         /// </summary>
         public static void Hide()
         {
-            //#if DEBUG
             if (HasConsole)
             {
                 SetOutAndErrorNull();
                 FreeConsole();
             }
-            //#endif
         }
 
         public static void Toggle()
@@ -71,7 +67,7 @@ namespace StatisticsAnalysisTool.Common
 
         private static void InvalidateOutAndError()
         {
-            Type type = typeof(Console);
+            var type = typeof(Console);
 
             var _out = type.GetField("_out", BindingFlags.Static | BindingFlags.NonPublic);
             var _error = type.GetField("_error", BindingFlags.Static | BindingFlags.NonPublic);
@@ -96,7 +92,10 @@ namespace StatisticsAnalysisTool.Common
 
         public static void WriteLineForNetworkHandler(string name, Dictionary<byte, object> parameters)
         {
-            Console.WriteLine($@"[{DateTime.UtcNow}] {name}: {JsonConvert.SerializeObject(parameters)}");
+            if (HasConsole)
+            {
+                Console.WriteLine($@"[{DateTime.UtcNow}] {name}: {JsonConvert.SerializeObject(parameters)}");
+            }
         }
     }
 }
