@@ -230,6 +230,7 @@
     <Compile Include="Network\Notification\FactionPointsNotificationFragment.cs" />
     <Compile Include="Network\Notification\FactionFlagPointsNotificationFragment.cs" />
     <Compile Include="Enumerations\HandlerType.cs" />
+    <Compile Include="Network\Notification\SilverNotificationFragment.cs" />
     <Compile Include="Network\Operations\Responses\PartyMakeLeaderResponse.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
     <Compile Include="GameData\LootChestData.cs" />
@@ -500,6 +501,9 @@
     <Resource Include="Resources\factionflag_lymhurst.png" />
     <Resource Include="Resources\factionflag_martlock.png" />
     <Resource Include="Resources\factionflag_thetford.png" />
+    <Resource Include="Resources\shields.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Sounds\alert1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

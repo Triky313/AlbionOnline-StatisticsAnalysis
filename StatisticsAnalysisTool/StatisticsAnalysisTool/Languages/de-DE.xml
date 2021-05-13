@@ -137,6 +137,7 @@
   <translation name="MELEE_ARTEFACT">Nahkampf</translation>
   <translation name="OFFHAND_ARTEFACT">Zweihand</translation>
   <translation name="RANGED_ARTEFACT">Fernkampf</translation>
+
   <translation name="BEASTHEART">Bestienherz</translation>
   <translation name="MOUNTAINHEART">Gebirgsherz</translation>
   <translation name="ROCKHEART">Felsherz</translation>
@@ -331,6 +332,7 @@
   <translation name="TOTAL_FAME">Gesammter Ruhm</translation>
   <translation name="TOTAL_SILVER">Gesammtes Silber</translation>
   <translation name="TOTAL_RESPEC">Total ReSpec</translation>
+  <translation name="SILVER">Silber</translation>
 
   <translation name="MINUTES">Minuten</translation>
   <translation name="HOURS">Stunden</translation>

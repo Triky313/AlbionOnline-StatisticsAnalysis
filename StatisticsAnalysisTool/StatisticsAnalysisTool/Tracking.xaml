@@ -139,6 +139,39 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type notification:SilverNotificationFragment}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
+
+            <Image Source="Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
+            <TextBlock Text="{Binding TotalGainedSilver, StringFormat='{} {0:N2} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+
+            <TextBlock>
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Text" Value="{Binding SilverText, StringFormat='{} {0} '}"/>
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Text="(" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+
+            <Image Source="Resources/zone.png" Style="{StaticResource LineFragmentImageStyle}" />
+            <TextBlock Text="{Binding ClusterBonus, StringFormat='{}{0:N2} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+
+            <Image Source="Resources/crown.png" Style="{StaticResource LineFragmentImageStyle}" />
+            <TextBlock Text="{Binding PremiumBonus, StringFormat='{}{0:N2}  '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+
+            <TextBlock Text="-" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+            <Image Source="Resources/shields.png" Style="{StaticResource LineFragmentImageStyle}" />
+            <TextBlock Text="{Binding ClusterTax, StringFormat='{}{0:N2}) '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+
+
+            <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+        </StackPanel>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type notification:FactionPointsNotificationFragment}">
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>

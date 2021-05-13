@@ -27,7 +27,6 @@ namespace StatisticsAnalysisTool.Network.Controller
         public CombatController CombatController;
         public DungeonController DungeonController;
         public EntityController EntityController;
-        public EntityController DebugTrackerController;
         
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
@@ -107,12 +106,19 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void AddNotification(TrackingNotification item)
         {
-            if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null) return;
+            if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null)
+            {
+                return;
+            }
 
             if (_mainWindow.Dispatcher.CheckAccess())
+            {
                 _mainWindowViewModel.TrackingNotifications.Insert(0, item);
+            }
             else
+            {
                 _mainWindow.Dispatcher.Invoke(delegate { _mainWindowViewModel.TrackingNotifications.Insert(0, item); });
+            }
 
             RemovesUnnecessaryNotifications();
         }
