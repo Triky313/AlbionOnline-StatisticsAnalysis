@@ -24,8 +24,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             var localEntity = _trackingController.EntityController.GetLocalEntity()?.Value;
             if (localEntity?.ObjectId == value.ObjectId)
             {
-                // TODO: Add cluster and premium bonus calculation
-                _trackingController.AddNotification(SetNotification(value.YieldAfterTax.DoubleValue, 0, 0));
+                _trackingController.AddNotification(SetNotification(value.YieldAfterTax.DoubleValue, value.ClusterYieldAfterTax.DoubleValue, value.PremiumAfterTax.DoubleValue));
 
                 _trackingController.CountUpTimer.Add(ValueType.Silver, value.YieldAfterTax.DoubleValue);
                 _trackingController.DungeonController?.AddValueToDungeon(value.YieldAfterTax.DoubleValue, ValueType.Silver);

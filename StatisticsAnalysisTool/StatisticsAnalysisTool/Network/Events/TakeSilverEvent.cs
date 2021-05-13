@@ -8,23 +8,24 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class TakeSilverEvent : BaseEvent
     {
-        public bool ClusterBonus; // 9?
         public long? ObjectId;
         public FixPoint ClusterTax;
         public FixPoint GuildTax;
         public FixPoint Multiplier;
-        public bool PremiumBonus;
+        public bool IsPremiumBonus;
         public long? TargetEntityId;
-
         public long TimeStamp;
 
         public FixPoint YieldAfterTax;
         public FixPoint YieldPreTax;
+        public FixPoint ClusterYieldPreTax;
+        public FixPoint PremiumAfterTax;
+        public FixPoint ClusterYieldAfterTax;
 
         public TakeSilverEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-
+            
             try
             {
                 if (parameters.ContainsKey(0))
@@ -62,7 +63,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
                 if (parameters.ContainsKey(7))
                 {
-                    PremiumBonus = parameters[7] as bool? ?? false;
+                    IsPremiumBonus = parameters[7] as bool? ?? false;
                 }
 
                 if (parameters.ContainsKey(8))
@@ -72,6 +73,9 @@ namespace StatisticsAnalysisTool.Network.Handler
                 }
 
                 YieldAfterTax = YieldPreTax - GuildTax;
+                ClusterYieldPreTax = FixPoint.FromFloatingPointValue(YieldPreTax.DoubleValue - (YieldPreTax.DoubleValue / Multiplier.DoubleValue));
+                PremiumAfterTax = ClusterYieldPreTax - ClusterTax;
+                ClusterYieldAfterTax = FixPoint.FromFloatingPointValue((ClusterYieldPreTax.DoubleValue / Multiplier.DoubleValue) - ClusterTax.DoubleValue);
             }
             catch (Exception e)
             {
