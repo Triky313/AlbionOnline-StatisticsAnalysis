@@ -158,10 +158,15 @@
             <TextBlock Text="(" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
 
             <Image Source="Resources/zone.png" Style="{StaticResource LineFragmentImageStyle}" />
-            <TextBlock Text="{Binding ClusterBonus, StringFormat='{} {0:N0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock Text="{Binding ClusterBonus, StringFormat='{}{0:N0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
 
             <Image Source="Resources/crown.png" Style="{StaticResource LineFragmentImageStyle}" />
-            <TextBlock Text="{Binding PremiumBonus, StringFormat='{}{0:N0}) '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+            <TextBlock Text="{Binding PremiumBonus, StringFormat='{}{0:N0}  '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+
+            <TextBlock Text="-" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+            <Image Source="Resources/shields.png" Style="{StaticResource LineFragmentImageStyle}" />
+            <TextBlock Text="{Binding ClusterTax, StringFormat='{}{0:N0}) '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+
 
             <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
         </StackPanel>

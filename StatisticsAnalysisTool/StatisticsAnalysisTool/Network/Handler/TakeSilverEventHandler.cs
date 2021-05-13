@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             var localEntity = _trackingController.EntityController.GetLocalEntity()?.Value;
             if (localEntity?.ObjectId == value.ObjectId)
             {
-                _trackingController.AddNotification(SetNotification(value.YieldAfterTax.DoubleValue, value.ClusterYieldAfterTax.DoubleValue, value.PremiumAfterTax.DoubleValue));
+                _trackingController.AddNotification(SetNotification(value.YieldAfterTax, value.ClusterYieldAfterTax, value.PremiumAfterTax, value.ClusterTax));
 
                 _trackingController.CountUpTimer.Add(ValueType.Silver, value.YieldAfterTax.DoubleValue);
                 _trackingController.DungeonController?.AddValueToDungeon(value.YieldAfterTax.DoubleValue, ValueType.Silver);
@@ -33,12 +33,12 @@ namespace StatisticsAnalysisTool.Network.Handler
             await Task.CompletedTask;
         }
 
-        private TrackingNotification SetNotification(double totalGainedSilver, double cluster, double premium)
+        private TrackingNotification SetNotification(FixPoint totalGainedSilver, FixPoint cluster, FixPoint premium, FixPoint clusterTax)
         {
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
                 new SilverNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, totalGainedSilver, 
-                    LanguageController.Translation("SILVER"), cluster, premium, LanguageController.Translation("GAINED"))
+                    LanguageController.Translation("SILVER"), cluster, premium, clusterTax, LanguageController.Translation("GAINED"))
             });
         }
     }

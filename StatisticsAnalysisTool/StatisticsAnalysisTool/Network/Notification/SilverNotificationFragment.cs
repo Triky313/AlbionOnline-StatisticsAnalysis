@@ -1,18 +1,20 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
     public class SilverNotificationFragment : LineFragment
     {
-        public SilverNotificationFragment(string startText, AttributeStatOperator statOperator, double totalGainedSilver,
-            string silverText, double clusterBonus, double premiumBonus, string endText)
+        public SilverNotificationFragment(string startText, AttributeStatOperator statOperator, FixPoint totalGainedSilver,
+            string silverText, FixPoint clusterBonus, FixPoint premiumBonus, FixPoint clusterTax, string endText)
         {
             StartText = startText;
             Operator = statOperator;
-            TotalGainedSilver = totalGainedSilver;
+            TotalGainedSilver = totalGainedSilver.DoubleValue;
             SilverText = silverText;
-            ClusterBonus = clusterBonus;
-            PremiumBonus = premiumBonus;
+            ClusterBonus = clusterBonus.DoubleValue;
+            PremiumBonus = premiumBonus.DoubleValue;
+            ClusterTax = clusterTax.DoubleValue;
             EndText = endText;
         }
 
@@ -22,6 +24,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         public string SilverText { get; }
         public double ClusterBonus { get; }
         public double PremiumBonus { get; }
+        public double ClusterTax { get; }
         public string EndText { get; }
     }
 }
