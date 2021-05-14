@@ -154,6 +154,7 @@ namespace StatisticsAnalysisTool.Views
             
             Settings.Default.Save();
 
+            ItemController.SaveFavoriteItemsToLocalFile();
             ItemController.SaveItemInformationLocal();
         }
 

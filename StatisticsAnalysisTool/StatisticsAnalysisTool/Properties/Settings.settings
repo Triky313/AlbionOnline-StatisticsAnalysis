@@ -110,5 +110,8 @@
     <Setting Name="DiscordUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://discord.com/invite/sahSrSPmaJ</Value>
     </Setting>
+    <Setting Name="FavoriteItemsFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">FavoriteItems.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

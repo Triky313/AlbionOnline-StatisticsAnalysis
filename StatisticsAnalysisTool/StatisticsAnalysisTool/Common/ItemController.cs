@@ -1,3 +1,4 @@
+using log4net;
 using Newtonsoft.Json;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -9,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +21,8 @@ namespace StatisticsAnalysisTool.Common
 {
     public class ItemController
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static ObservableCollection<Item> Items;
 
         private static readonly string FullItemInformationFilePath =
@@ -81,7 +85,7 @@ namespace StatisticsAnalysisTool.Common
 
             return int.TryParse(uniqueName.Split('@')[1], out var number) ? number : 0;
         }
-
+        
         public static int GetItemTier(Item item)
         {
             if (item?.UniqueName == null) return -1;
@@ -266,6 +270,47 @@ namespace StatisticsAnalysisTool.Common
                 {
                     return false;
                 }
+            }
+        }
+
+        public static void SetFavoriteItemsFromLocalFile()
+        {
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
+            if (File.Exists(localFilePath))
+            {
+                try
+                {
+                    var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
+                    foreach (var uniqueName in JsonConvert.DeserializeObject<List<string>>(localItemString))
+                    {
+                        var item = Items.FirstOrDefault(i => i.UniqueName == uniqueName);
+                        if (item != null)
+                        {
+                            item.IsFavorite = true;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error(MethodBase.GetCurrentMethod().Name, e);
+                }
+            }
+        }
+
+        public static void SaveFavoriteItemsToLocalFile()
+        {
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
+            var favoriteItems = Items.Where(x => x.IsFavorite);
+            var toSaveFavoriteItems = favoriteItems.Select(x => x.UniqueName);
+            var fileString = JsonConvert.SerializeObject(toSaveFavoriteItems);
+
+            try
+            {
+                File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
+            }
+            catch (Exception e)
+            {
+                Log.Error(MethodBase.GetCurrentMethod().Name, e);
             }
         }
 

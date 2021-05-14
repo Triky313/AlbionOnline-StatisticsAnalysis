@@ -448,5 +448,17 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((string)(this["DiscordUrl"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("FavoriteItems.json")]
+        public string FavoriteItemsFileName {
+            get {
+                return ((string)(this["FavoriteItemsFileName"]));
+            }
+            set {
+                this["FavoriteItemsFileName"] = value;
+            }
+        }
     }
 }
