@@ -21,7 +21,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private static ObservableCollection<FileSettingInformation> _refreshRates = new ObservableCollection<FileSettingInformation>();
         private static FileSettingInformation _refreshRatesSelection;
         private static ObservableCollection<FileSettingInformation> _updateItemListByDays = new ObservableCollection<FileSettingInformation>();
-        private static FileSettingInformation _settingByDaysSelection;
+        private static FileSettingInformation _updateItemListByDaysSelection;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
         private ObservableCollection<FileInformation> _alertSounds = new ObservableCollection<FileInformation>();
@@ -83,7 +83,7 @@ namespace StatisticsAnalysisTool.ViewModels
             UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7});
             UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14});
             UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28});
-            SettingByDaysSelection = UpdateItemListByDays.FirstOrDefault(x => x.Value == Settings.Default.UpdateItemListByDays);
+            UpdateItemListByDaysSelection = UpdateItemListByDays.FirstOrDefault(x => x.Value == Settings.Default.UpdateItemListByDays);
 
             ItemListSourceUrl = Settings.Default.ItemListSourceUrl;
             IsOpenItemWindowInNewWindowChecked = Settings.Default.IsOpenItemWindowInNewWindowChecked;
@@ -105,7 +105,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             Settings.Default.ItemListSourceUrl = ItemListSourceUrl;
             Settings.Default.RefreshRate = RefreshRatesSelection.Value;
-            Settings.Default.UpdateItemListByDays = SettingByDaysSelection.Value;
+            Settings.Default.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
             Settings.Default.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
             Settings.Default.ShowInfoWindowOnStartChecked = ShowInfoWindowOnStartChecked;
             Settings.Default.FullItemInformationUpdateCycleDays = FullItemInformationUpdateCycleDays;
@@ -169,12 +169,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public FileSettingInformation SettingByDaysSelection
+        public FileSettingInformation UpdateItemListByDaysSelection
         {
-            get => _settingByDaysSelection;
+            get => _updateItemListByDaysSelection;
             set
             {
-                _settingByDaysSelection = value;
+                _updateItemListByDaysSelection = value;
                 OnPropertyChanged();
             }
         }
