@@ -13,6 +13,7 @@ namespace StatisticsAnalysisTool.Models
         public string Name => LanguageController.Translation("NAME");
         public string LoadFullItemInfo => LanguageController.Translation("LOAD_FULL_ITEM_INFO");
         public string ShowOnlyItemsWithAlertOn => LanguageController.Translation("SHOW_ONLY_ITEMS_WITH_ALERT_ON");
+        public string ShowOnlyFavorites => LanguageController.Translation("SHOW_ONLY_FAVORITES");
         public string IsAlertActive => LanguageController.Translation("IS_ALERT_ACTIVATE");
         public string UndercuttingPrice => LanguageController.Translation("UNDERCUTTING_PRICE");
         public string IsTrackingActive => LanguageController.Translation("IS_TRACKING_ACTIVE");
@@ -44,5 +45,6 @@ namespace StatisticsAnalysisTool.Models
         public string SortByDps => LanguageController.Translation("SORT_BY_DPS");
         public string SortByName => LanguageController.Translation("SORT_BY_NAME");
         public string Settings => LanguageController.Translation("SETTINGS");
+        
     }
 }

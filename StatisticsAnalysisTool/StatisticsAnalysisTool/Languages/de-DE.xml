@@ -310,7 +310,8 @@
   <translation name="ITEM_PRICE_UNDERCUT">Item Preis unterboten</translation>
   <translation name="THE_PRICE_OF">Der Preis von</translation>
   <translation name="IN">in</translation>
-  <translation name="SHOW_ONLY_ITEMS_WITH_ALERT_ON">Zeige nur Items mit Alarm AN</translation>
+  <translation name="SHOW_ONLY_ITEMS_WITH_ALERT_ON">Nur Items mit Alarm AN zeigen</translation>
+  <translation name="SHOW_ONLY_FAVORITES">Nur Favoriten zeigen</translation>
   <translation name="HAS_BEEN_UNDERCUT">ist unterboten worden</translation>
   <translation name="IS_ALERT_ACTIVATE">Ist Alarm aktiv</translation>
   <translation name="UNDERCUTTING_PRICE">Zu unterbietender Preis</translation>

@@ -1,7 +1,7 @@
-﻿using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using FontAwesome5;
+﻿using FontAwesome5;
 using StatisticsAnalysisTool.Common;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -29,6 +29,7 @@ namespace StatisticsAnalysisTool.Models
 
         public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
         public bool IsAlertActive { get; set; }
+        public bool IsFavorite { get; set; }
         public EFontAwesomeIcon AlertToggle => IsAlertActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
         public Brush AlertToggleColor => IsAlertActive ? ItemController.ToggleOnColor : ItemController.ToggleOffColor;
 

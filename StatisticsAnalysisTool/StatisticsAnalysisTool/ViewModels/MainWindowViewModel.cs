@@ -122,6 +122,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<MainStatObject> _factionPointStats = new ObservableCollection<MainStatObject>() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
         private Visibility _isMainTrackerPopupVisible = Visibility.Hidden;
+        private bool _isShowOnlyFavoritesActive;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -378,10 +379,14 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
             if (!isItemListLoaded)
+            {
                 MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), LanguageController.Translation("ERROR"));
+            }
 
             if (isItemListLoaded)
             {
+                ItemController.SetFavoriteItemsFromLocalFile();
+
                 await ItemController.GetItemInformationListFromLocalAsync();
                 IsFullItemInformationCompleteCheck();
 
@@ -737,22 +742,39 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void ItemsViewFilter()
         {
-            if (ItemsView == null) return;
+            if (ItemsView == null)
+            {
+                return;
+            }
 
             if (IsFullItemInfoSearchActive)
                 ItemsView.Filter = i =>
                 {
                     var item = i as Item;
                     if (IsShowOnlyItemsWithAlertOnActive)
+                    {
                         return item?.FullItemInformation != null &&
                                item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
                                && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory ||
                                    SelectedItemParentCategory == ParentCategory.Unknown)
-                               && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory ||
-                                   SelectedItemCategory == Category.Unknown)
+                               && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
                                && ((ItemTier) item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
                                && ((ItemLevel) item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
                                && item.IsAlertActive;
+                    }
+
+                    if (IsShowOnlyFavoritesActive)
+                    {
+                        return item?.FullItemInformation != null &&
+                               item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
+                               && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory ||
+                                   SelectedItemParentCategory == ParentCategory.Unknown)
+                               && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                               && ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                               && ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
+                               && item.IsFavorite;
+                    }
+
                     return item?.FullItemInformation != null &&
                            item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
                            && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory ||
@@ -767,8 +789,15 @@ namespace StatisticsAnalysisTool.ViewModels
                     var item = i as Item;
 
                     if (IsShowOnlyItemsWithAlertOnActive)
-                        return (item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false) &&
-                               item.IsAlertActive;
+                    {
+                        return (item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false) && item.IsAlertActive;
+                    }
+
+                    if (IsShowOnlyFavoritesActive)
+                    {
+                        return (item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false) && item.IsFavorite;
+                    }
+
                     return item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false;
                 };
 
@@ -1189,6 +1218,28 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isShowOnlyItemsWithAlertOnActive = value;
+
+                if (value)
+                {
+                    IsShowOnlyFavoritesActive = false;
+                }
+
+                ItemsViewFilter();
+                ItemsView?.Refresh();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsShowOnlyFavoritesActive {
+            get => _isShowOnlyFavoritesActive;
+            set {
+                _isShowOnlyFavoritesActive = value;
+
+                if (value)
+                {
+                    IsShowOnlyItemsWithAlertOnActive = false;
+                }
+
                 ItemsViewFilter();
                 ItemsView?.Refresh();
                 OnPropertyChanged();
