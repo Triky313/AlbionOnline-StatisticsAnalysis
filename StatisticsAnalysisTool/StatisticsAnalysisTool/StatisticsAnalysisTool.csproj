@@ -173,6 +173,9 @@
     <Compile Include="Common\ExtensionMethod.cs" />
     <Compile Include="Common\FixPoint.cs" />
     <Compile Include="Common\FactionWarfareController.cs" />
+    <Compile Include="Common\Shortcut\IShellLink.cs" />
+    <Compile Include="Common\Shortcut\ShellLink.cs" />
+    <Compile Include="Common\Shortcut\ShortcutController.cs" />
     <Compile Include="Enumerations\GameLanguage.cs" />
     <Compile Include="Common\ProgressBarSmoother.cs" />
     <Compile Include="Enumerations\ClusterType.cs" />

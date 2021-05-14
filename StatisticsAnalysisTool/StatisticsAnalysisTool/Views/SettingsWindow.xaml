@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Height="450" Width="600" Style="{StaticResource PrimaryWindow}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Height="500" Width="600" Style="{StaticResource PrimaryWindow}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
@@ -36,6 +36,7 @@
             <TextBox Text="{Binding FullItemInformationUpdateCycleDays, FallbackValue=90}" Height="26" Margin="0,6,10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
             <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="FileName" SelectedValuePath="FileInformation" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="200" Height="26" />
             <Button Content="{Binding Translation.OpenToolDirectory, FallbackValue=OPEN__TOOL__DIRECTORY}" Margin="0,5,10,2" Height="24" VerticalAlignment="Bottom" Click="OpenToolDirectory_Click" />
+            <Button Content="{Binding Translation.CreateDesktopShortcut, FallbackValue=CREATE__DESKTOP__SHORTCUT}" Margin="0,5,10,2" Height="24" VerticalAlignment="Bottom" Click="CreateDesktopShortcut_Click" />
             <Button Content="{Binding Translation.OpenCloseDebugConsole, FallbackValue=OPEN__CLOSE__DEBUG__CONSOLE}" Margin="0,5,10,0" Height="24" VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
         </StackPanel>
         <Button Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click" />

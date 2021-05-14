@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.Shortcut;
 using System.Diagnostics;
 
 namespace StatisticsAnalysisTool.Views
@@ -39,6 +40,11 @@ namespace StatisticsAnalysisTool.Views
         private void OpenToolDirectory_Click(object sender, RoutedEventArgs e)
         {
             Process.Start(_settingsWindowViewModel.ToolDirectory);
+        }
+
+        private void CreateDesktopShortcut_Click(object sender, RoutedEventArgs e)
+        {
+            ShortcutController.CreateShortcut();
         }
 
         private void OpenDebugConsole_Click(object sender, RoutedEventArgs e)

@@ -377,4 +377,5 @@
   <translation name="TOOL_DIRECTORY">Tool Verzeichnis</translation>
   <translation name="OPEN_TOOL_DIRECTORY">Öffne Tool Verzeichnis</translation>
   <translation name="OPEN_OR_CLOSE_DEBUG_CONSOLE">Debug-Konsole öffnen oder schließen</translation>
+  <translation name="CREATE_DESKTOP_SHORTCUT">Desktop-Verknüpfung erstellen</translation>
 </translations>
