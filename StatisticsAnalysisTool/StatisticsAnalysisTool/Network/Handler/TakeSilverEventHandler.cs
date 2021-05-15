@@ -41,9 +41,9 @@ namespace StatisticsAnalysisTool.Network.Handler
                 {
                     value.GuildTax = _trackingController.EntityController.GetLastLocalEntityGuildTax(value.YieldPreTax);
                     var YieldAfterGuildTax = value.YieldPreTax - value.GuildTax;
-                    var currentClusterTax = _trackingController.EntityController.GetLastLocalEntityClusterTax(YieldAfterGuildTax);
-
-                    var yieldAfterGuildTaxAndClusterTax = YieldAfterGuildTax - currentClusterTax;
+                    value.ClusterTax = _trackingController.EntityController.GetLastLocalEntityClusterTax(YieldAfterGuildTax);
+                    
+                    var yieldAfterGuildTaxAndClusterTax = YieldAfterGuildTax - value.ClusterTax;
                     value.YieldAfterTax = yieldAfterGuildTaxAndClusterTax;
                 }
 
