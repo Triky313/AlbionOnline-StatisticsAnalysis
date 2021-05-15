@@ -21,9 +21,9 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly ObservableCollection<EquipmentItem> _newEquipmentItems = new ObservableCollection<EquipmentItem>();
         private readonly ObservableCollection<SpellEffect> _spellEffects = new ObservableCollection<SpellEffect>();
-
-        private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData =
-            new ConcurrentDictionary<long, CharacterEquipmentData>();
+        private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new ConcurrentDictionary<long, CharacterEquipmentData>();
+        private double _lastLocalEntityGuildTaxInPercent;
+        private double _lastLocalEntityClusterTaxInPercent;
 
         public EntityController(MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -311,6 +311,24 @@ namespace StatisticsAnalysisTool.Network.Controller
         }
 
         public event Action<long, GameTimeStamp, double, double, EffectType, EffectOrigin, long, int> OnHealthUpdate;
+
+        #endregion
+
+        #region Local Entity
+
+        public FixPoint GetLastLocalEntityClusterTax(FixPoint yieldPreClusterTax) => FixPoint.FromFloatingPointValue(yieldPreClusterTax.DoubleValue / 100 * _lastLocalEntityClusterTaxInPercent);
+
+        public void SetLastLocalEntityClusterTax(FixPoint yieldPreTax, FixPoint clusterTax)
+        {
+            _lastLocalEntityClusterTaxInPercent = (100 / yieldPreTax.DoubleValue) * clusterTax.DoubleValue;
+        }
+
+        public void SetLastLocalEntityGuildTax(FixPoint yieldPreTax, FixPoint guildTax)
+        {
+            _lastLocalEntityGuildTaxInPercent = (100 / yieldPreTax.DoubleValue) * guildTax.DoubleValue;
+        }
+
+        public FixPoint GetLastLocalEntityGuildTax(FixPoint yieldPreTax) => FixPoint.FromFloatingPointValue(yieldPreTax.DoubleValue / 100 * _lastLocalEntityGuildTaxInPercent);
 
         #endregion
     }
