@@ -3,7 +3,6 @@ using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network
@@ -30,8 +29,8 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (ArgumentNullException e)
             {
-                Log.Error(nameof(UpdateMoneyEvent), e);
-                Debug.Print(e.Message);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
 

@@ -162,7 +162,8 @@ namespace StatisticsAnalysisTool.GameData
             }
             catch (Exception e)
             {
-                Log.Error(nameof(GetWorldDataFromLocal), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 return new ObservableCollection<ClusterInfo>();
             }
         }
@@ -199,7 +200,8 @@ namespace StatisticsAnalysisTool.GameData
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(GetWorldListFromWebAsync), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                     return false;
                 }
             }

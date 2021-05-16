@@ -68,7 +68,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
                 catch (CultureNotFoundException e)
                 {
-                    Log.Error(nameof(InitializeSettings), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 }
 
             LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.TextInfo.CultureName);

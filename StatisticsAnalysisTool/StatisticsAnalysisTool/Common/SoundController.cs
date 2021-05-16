@@ -1,12 +1,12 @@
-﻿using System;
+﻿using log4net;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
-using log4net;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -17,17 +17,29 @@ namespace StatisticsAnalysisTool.Common
 
         public static void InitializeSoundFilesFromDirectory()
         {
-            if (AlertSounds != null) return;
+            if (AlertSounds != null)
+            {
+                return;
+            }
 
             var soundFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SoundDirectoryName);
 
-            if (!Directory.Exists(soundFilePath)) return;
+            if (!Directory.Exists(soundFilePath))
+            {
+                return;
+            }
 
             var files = DirectoryController.GetFiles(soundFilePath, "*.wav");
 
-            if (files == null) return;
+            if (files == null)
+            {
+                return;
+            }
 
-            if (AlertSounds == null) AlertSounds = new List<FileInformation>();
+            if (AlertSounds == null)
+            {
+                AlertSounds = new List<FileInformation>();
+            }
 
             foreach (var file in files)
             {
@@ -48,7 +60,8 @@ namespace StatisticsAnalysisTool.Common
             catch (Exception e) when (e is InvalidOperationException || e is UriFormatException || e is FileNotFoundException ||
                                       e is ArgumentException)
             {
-                Log.Error(nameof(PlayAlertSound), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
 
@@ -61,7 +74,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e) when (e is ArgumentException)
             {
-                Log.Error(nameof(GetCurrentSound), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 return string.Empty;
             }
         }

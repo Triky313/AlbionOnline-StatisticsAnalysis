@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Pastel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -90,11 +91,36 @@ namespace StatisticsAnalysisTool.Common
             Console.SetError(TextWriter.Null);
         }
 
+        private const string _errorColor = "#ca3431";
+        private const string _warnColor = "#faa627";
+        private const string _eventColor = "#248A84";
+
         public static void WriteLineForNetworkHandler(string name, Dictionary<byte, object> parameters)
         {
             if (HasConsole)
             {
-                Console.WriteLine($@"[{DateTime.UtcNow}] {name}: {JsonConvert.SerializeObject(parameters)}");
+                Console.WriteLine($@"[{DateTime.UtcNow}] {name}: ".Pastel(_eventColor) + $@"{JsonConvert.SerializeObject(parameters)}");
+            }
+        }
+
+        public static void WriteLineForWarning(Type declaringType, Exception e)
+        {
+            if (HasConsole)
+            {
+                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {e.Message}".Pastel(_warnColor));
+                if (!string.IsNullOrEmpty(e.StackTrace))
+                {
+                    Console.WriteLine($"{e.StackTrace}".Pastel(_warnColor));
+                }
+            }
+        }
+
+        public static void WriteLineForError(Type declaringType, Exception e)
+        {
+            if (HasConsole)
+            {
+                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {e.Message}".Pastel(_errorColor));
+                Console.WriteLine($"{e.StackTrace}".Pastel(_errorColor));
             }
         }
     }
