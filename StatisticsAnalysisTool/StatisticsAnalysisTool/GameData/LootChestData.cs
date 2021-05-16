@@ -1,6 +1,7 @@
 ﻿using log4net;
 using Newtonsoft.Json;
 using PcapDotNet.Base;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -183,6 +184,7 @@ namespace StatisticsAnalysisTool.GameData
             }
             catch
             {
+                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, null);
                 return new List<LootChest>();
             }
         }
@@ -208,7 +210,8 @@ namespace StatisticsAnalysisTool.GameData
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(GetLootChestListFromWebAsync), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                     return false;
                 }
             }

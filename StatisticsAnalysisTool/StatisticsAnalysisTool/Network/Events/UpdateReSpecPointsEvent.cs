@@ -4,7 +4,6 @@ using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
@@ -47,13 +46,13 @@ namespace StatisticsAnalysisTool.Network.Events
             }
             catch (ArgumentNullException e)
             {
-                Log.Error(nameof(UpdateReSpecPointsEvent), e);
-                Debug.Print(e.Message);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
             catch (InvalidCastException e)
             {
-                Log.Error(nameof(UpdateReSpecPointsEvent), e);
-                Debug.Print(e.Message);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
     }

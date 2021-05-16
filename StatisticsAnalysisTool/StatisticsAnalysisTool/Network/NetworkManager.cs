@@ -70,7 +70,8 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (Exception e)
             {
-                Log.Error(nameof(StartDeviceCapture), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
                 _mainWindowViewModel.StopTracking();
                 return false;
@@ -93,7 +94,8 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (Exception e)
             {
-                Log.Error(nameof(StartDeviceCapture), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
                 _mainWindowViewModel.StopTracking();
                 return false;
@@ -139,10 +141,12 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (OverflowException ex)
             {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, ex);
                 Log.Error(nameof(PacketHandler), ex);
             }
             catch (Exception exc)
             {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, exc);
                 Log.Error(nameof(PacketHandler), exc);
             }
         }

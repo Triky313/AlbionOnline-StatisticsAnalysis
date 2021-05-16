@@ -130,7 +130,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(SetDungeonChestOpen), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 }
 
             SetDungeonStatsDay();
@@ -161,7 +162,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(SetDungeonChestInformation), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 }
         }
 
@@ -246,7 +248,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(SetDiedIfInDungeon), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 }
             }
         }
@@ -274,7 +277,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
             catch (Exception e)
             {
-                Log.Error(nameof(RemoveDungeonsAfterCertainNumber), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
 
@@ -470,7 +474,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
             catch (Exception e)
             {
-                Log.Error(nameof(CalculateBestDungeonValues), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
 
@@ -597,7 +602,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
             catch (ArgumentNullException e)
             {
-                Log.Error(nameof(GetLowestDate), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 return null;
             }
         }
@@ -617,7 +623,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(LoadDungeonFromFile), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                     _dungeons = new List<DungeonObject>();
                     return;
                 }
@@ -638,7 +645,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
             catch (Exception e)
             {
-                Log.Error(nameof(SaveDungeonsInFile), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
     }

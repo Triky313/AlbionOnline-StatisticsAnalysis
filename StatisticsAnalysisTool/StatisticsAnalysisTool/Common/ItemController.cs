@@ -292,6 +292,7 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (Exception e)
                 {
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
                     Log.Error(MethodBase.GetCurrentMethod().Name, e);
                 }
             }
@@ -310,6 +311,7 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod().Name, e);
             }
         }

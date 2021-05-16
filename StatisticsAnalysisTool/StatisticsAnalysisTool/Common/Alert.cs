@@ -1,3 +1,8 @@
+using log4net;
+using StatisticsAnalysisTool.Annotations;
+using StatisticsAnalysisTool.Exceptions;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -5,11 +10,6 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using log4net;
-using StatisticsAnalysisTool.Annotations;
-using StatisticsAnalysisTool.Exceptions;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Views;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -95,11 +95,13 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (FileNotFoundException e)
                 {
-                    Log.Error(nameof(AlertEventAsync), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 }
                 catch (TooManyRequestsException e)
                 {
-                    Log.Warn(nameof(AlertEventAsync), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Warn(MethodBase.GetCurrentMethod().DeclaringType, e);
                     return;
                 }
         }

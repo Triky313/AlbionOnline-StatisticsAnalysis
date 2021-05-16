@@ -40,7 +40,8 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
             catch (Exception e)
             {
-                Log.Error(nameof(UpdateMoneyEvent), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
     }

@@ -1,4 +1,9 @@
-﻿using System;
+﻿using log4net;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -7,11 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using log4net;
-using Newtonsoft.Json;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Views;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -79,7 +79,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                Log.Error(nameof(ToggleAlert), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 return false;
             }
         }
@@ -100,7 +101,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                Log.Error(nameof(DeactivateAlert), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
 
@@ -121,7 +123,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                Log.Error(nameof(DeactivateAlert), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
 
@@ -156,7 +159,8 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(SetActiveAlertsFromLocalFile), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 }
         }
 
@@ -173,7 +177,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                Log.Error(nameof(SaveActiveAlertsToLocalFile), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
 

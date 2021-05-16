@@ -70,11 +70,13 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
             catch (ArgumentNullException ex)
             {
-                Log.Error(nameof(HealthUpdateEvent), ex);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, ex);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, ex);
             }
             catch (Exception e)
             {
-                Log.Error(nameof(HealthUpdateEvent), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
     }

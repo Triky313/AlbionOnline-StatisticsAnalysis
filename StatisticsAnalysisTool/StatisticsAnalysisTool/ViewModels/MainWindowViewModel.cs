@@ -256,7 +256,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (Exception e)
             {
-                Log.Error(nameof(ToggleAlertSender), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
 
@@ -458,7 +459,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (ArgumentNullException e)
             {
-                Log.Error(nameof(OpenItemWindow), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 var catchItemWindow = new ItemWindow(item);
                 catchItemWindow.Show();
             }
@@ -813,7 +815,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (Exception e)
             {
-                Log.Error(nameof(SetItemCounterAsync), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
 

@@ -1,14 +1,14 @@
-﻿using System;
+﻿using log4net;
+using Newtonsoft.Json;
+using StatisticsAnalysisTool.Exceptions;
+using StatisticsAnalysisTool.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
-using log4net;
-using Newtonsoft.Json;
-using StatisticsAnalysisTool.Exceptions;
-using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -55,12 +55,14 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (TaskCanceledException ex)
                 {
-                    Log.Error(nameof(GetItemInfoFromJsonAsync), ex);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, ex);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, ex);
                     return null;
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(GetItemInfoFromJsonAsync), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                     return null;
                 }
             }
@@ -110,7 +112,10 @@ namespace StatisticsAnalysisTool.Common
 
                     using (var response = await client.GetAsync(url))
                     {
-                        if (response.StatusCode == (HttpStatusCode) 429) throw new TooManyRequestsException();
+                        if (response.StatusCode == (HttpStatusCode) 429)
+                        {
+                            throw new TooManyRequestsException();
+                        }
 
                         using (var content = response.Content)
                         {
@@ -120,11 +125,13 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (TooManyRequestsException)
                 {
+                    ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, new TooManyRequestsException());
                     throw new TooManyRequestsException();
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(GetCityItemPricesFromJsonAsync), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                     return null;
                 }
             }
@@ -166,11 +173,13 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (TooManyRequestsException)
                 {
+                    ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, new TooManyRequestsException());
                     throw new TooManyRequestsException();
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(GetHistoryItemPricesFromJsonAsync), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                     return null;
                 }
             }
@@ -196,7 +205,8 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(GetGameInfoSearchFromJsonAsync), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                     return gameInfoSearchResponse;
                 }
             }
@@ -223,7 +233,8 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(GetGameInfoPlayersFromJsonAsync), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                     return gameInfoPlayerResponse;
                 }
             }
@@ -248,7 +259,8 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(GetGameInfoGuildsFromJsonAsync), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                     return null;
                 }
             }
@@ -271,13 +283,15 @@ namespace StatisticsAnalysisTool.Common
                     {
                         using (var content = response.Content)
                         {
-                            return JsonConvert.DeserializeObject<List<GoldResponseModel>>(await content.ReadAsStringAsync());
+                            var contentString = await content.ReadAsStringAsync();
+                            return string.IsNullOrEmpty(contentString) ? new List<GoldResponseModel>() : JsonConvert.DeserializeObject<List<GoldResponseModel>>(contentString);
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    Log.Error(nameof(GetGoldPricesFromJsonAsync), e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                     return new List<GoldResponseModel>();
                 }
             }

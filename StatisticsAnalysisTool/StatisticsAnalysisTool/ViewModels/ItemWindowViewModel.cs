@@ -1,4 +1,13 @@
-﻿using System;
+﻿using FontAwesome5;
+using LiveCharts;
+using LiveCharts.Wpf;
+using log4net;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Exceptions;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Views;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -10,15 +19,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
-using FontAwesome5;
-using LiveCharts;
-using LiveCharts.Wpf;
-using log4net;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Exceptions;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Views;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -953,7 +953,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Error(nameof(CopyTextToClipboard), ex);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, ex);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, ex);
             }
         }
 

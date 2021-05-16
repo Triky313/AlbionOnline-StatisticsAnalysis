@@ -212,7 +212,8 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (Exception e)
             {
-                Log.Error(nameof(KillTimerTask), e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(GetType().Name, e);
             }
         }
     }
