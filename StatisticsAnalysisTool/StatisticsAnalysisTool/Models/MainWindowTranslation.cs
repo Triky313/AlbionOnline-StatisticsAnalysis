@@ -45,6 +45,6 @@ namespace StatisticsAnalysisTool.Models
         public string SortByDps => LanguageController.Translation("SORT_BY_DPS");
         public string SortByName => LanguageController.Translation("SORT_BY_NAME");
         public string Settings => LanguageController.Translation("SETTINGS");
-        
+        public string Favorite => LanguageController.Translation("FAVORITE");
     }
 }

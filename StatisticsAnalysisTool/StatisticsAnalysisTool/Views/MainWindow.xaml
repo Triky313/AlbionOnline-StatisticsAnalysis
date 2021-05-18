@@ -97,7 +97,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="{Binding Translation.IsFavorite, FallbackValue=IS_FAVORITE}" Width="80">
+                        <GridViewColumn Header="{Binding Translation.Favorite, FallbackValue=FAVORITE}" Width="80">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
