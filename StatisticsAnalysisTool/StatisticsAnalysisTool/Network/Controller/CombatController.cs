@@ -27,7 +27,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             OnChangeCombatMode += AddCombatTime;
 
 #if DEBUG
-            UpdateDamageMeterUi(SetRandomDamageValues(40));
+            RunDamageMeterDebugAsync(32);
 #endif
         }
 
@@ -37,46 +37,74 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
             if (gameObject == null || healthChange >= 0 || gameObject.Value.Value?.ObjectType != GameObjectType.Player ||
-                !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name)) return;
+                !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name))
+            {
+                return;
+            }
 
             var damageValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
-            if (damageValue <= 0) return;
+            if (damageValue <= 0)
+            {
+                return;
+            }
 
-            if (gameObject.Value.Value?.CombatStart == null) gameObject.Value.Value.CombatStart = DateTime.UtcNow;
+            if (gameObject.Value.Value?.CombatStart == null)
+            {
+                gameObject.Value.Value.CombatStart = DateTime.UtcNow;
+            }
 
             gameObject.Value.Value.Damage += damageValue;
 
             UpdateDamageMeterUi(_trackingController.EntityController.GetAllEntities(true));
         }
 
+        private bool _isDamageMeterUiUpdateBlocked;
+
         public void UpdateDamageMeterUi(List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
-            if (!IsUiUpdateAllowed()) return;
+            if (!IsUiUpdateAllowed() || _isDamageMeterUiUpdateBlocked)
+            {
+                return;
+            }
+
+            _isDamageMeterUiUpdateBlocked = true;
 
             var highestDamage = GetHighestDamage(entities);
             _trackingController.EntityController.DetectUsedWeapon();
 
             foreach (var damageObject in entities)
+            {
                 if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.Value.UserGuid))
+                {
                     _mainWindow.Dispatcher?.Invoke(async () =>
                     {
                         var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == damageObject.Value.UserGuid);
                         if (fragment != null)
                         {
-                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand,
-                                damageObject.Value?.CharacterEquipment?.MainHand);
+                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, damageObject.Value?.CharacterEquipment?.MainHand);
 
-                            if (damageObject.Value?.Damage > 0) fragment.DamageInPercent = (double) damageObject.Value.Damage / highestDamage * 100;
+                            if (damageObject.Value?.Damage > 0)
+                            {
+                                fragment.DamageInPercent = (double) damageObject.Value.Damage / highestDamage * 100;
+                            }
 
                             fragment.Damage = damageObject.Value?.Damage.ToShortNumberString();
-                            if (damageObject.Value?.Dps != null) fragment.Dps = damageObject.Value.Dps;
+                            if (damageObject.Value?.Dps != null)
+                            {
+                                fragment.Dps = damageObject.Value.Dps;
+                            }
 
-                            if (damageObject.Value != null) fragment.DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage);
+                            if (damageObject.Value != null)
+                            {
+                                fragment.DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage);
+                            }
                         }
 
                         _mainWindowViewModel.SetDamageMeterSort();
                     });
+                }
                 else
+                {
                     _mainWindow.Dispatcher?.InvokeAsync(async () =>
                     {
                         var mainHandItem = ItemController.GetItemByIndex(damageObject.Value?.CharacterEquipment?.MainHand ?? 0);
@@ -99,6 +127,10 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                         _mainWindowViewModel.SetDamageMeterSort();
                     });
+                }
+            }
+
+            _isDamageMeterUiUpdateBlocked = false;
         }
 
         public void ResetDamageMeter()
@@ -106,6 +138,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             _trackingController.EntityController.ResetEntitiesDamageTimes();
             _trackingController.EntityController.ResetEntitiesDamage();
             _trackingController.EntityController.ResetEntitiesDamageStartTime();
+            _isDamageMeterUiUpdateBlocked = false;
 
             _mainWindow?.Dispatcher?.InvokeAsync(() => { _mainWindowViewModel?.DamageMeter?.Clear(); });
         }
@@ -189,34 +222,75 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private static readonly Random _random = new Random(DateTime.Now.Millisecond);
 
+        private async void RunDamageMeterDebugAsync(int runs = 30)
+        {
+            var entities = SetRandomDamageValues(20);
+
+            for (var i = 0; i < runs; i++)
+            {
+                UpdateDamageMeterUi(entities);
+                await Task.Delay(1080);
+
+                foreach (var entity in entities)
+                {
+                    if (_random.Next(0, 10) < 8)
+                    {
+                        continue;
+                    }
+
+                    entity.Value.Damage += _random.Next(10, 500);
+                    entity.Value.AddCombatTime(new TimeCollectObject(DateTime.UtcNow)
+                    {
+                        EndTime = DateTime.UtcNow.AddSeconds(_random.Next(1, 35))
+                    });
+                }
+            }
+        }
+
         private List<KeyValuePair<Guid, PlayerGameObject>> SetRandomDamageValues(int playerAmount = 5)
         {
             var randomPlayerList = new List<KeyValuePair<Guid, PlayerGameObject>>();
-
+            
             for (var i = 0; i < playerAmount; i++)
             {
-                var causerGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
-                var damage = _random.Next(500, 9999);
-                var objectId = _random.Next(20, 9999);
-                var len = _random.Next(3, 10);
-                var randomTime = _random.Next(1, 1000);
-
-                randomPlayerList.Add(new KeyValuePair<Guid, PlayerGameObject>(causerGuid, new PlayerGameObject(objectId)
+                var randomPlayer = GetRandomPlayerDebug();
+                randomPlayerList.Add(new KeyValuePair<Guid, PlayerGameObject>(randomPlayer.CauserGuid, new PlayerGameObject(randomPlayer.ObjectId)
                 {
                     CharacterEquipment = new CharacterEquipment
                     {
                         MainHand = GetRandomWeaponIndex()
                     },
-                    CombatTime = new TimeSpan(0, 0, 0, randomTime),
-                    Damage = damage,
-                    Name = GenerateName(len),
+                    CombatTime = new TimeSpan(0, 0, 0, randomPlayer.RandomTime),
+                    Damage = randomPlayer.Damage,
+                    Name = GenerateName(randomPlayer.Name),
                     ObjectSubType = GameObjectSubType.Player,
                     ObjectType = GameObjectType.Player,
-                    UserGuid = causerGuid
+                    UserGuid = randomPlayer.CauserGuid
                 }));
             }
 
             return randomPlayerList;
+        }
+
+        private RandomPlayerDebugStruct GetRandomPlayerDebug()
+        {
+            return new RandomPlayerDebugStruct()
+            {
+                CauserGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000"),
+                Damage = _random.Next(500, 9999),
+                ObjectId = _random.Next(20, 9999),
+                Name = _random.Next(3, 10),
+                RandomTime = _random.Next(1, 1000)
+            };
+        }
+
+        struct RandomPlayerDebugStruct
+        {
+            public Guid CauserGuid { get; set; }
+            public int Damage { get; set; }
+            public int ObjectId { get; set; }
+            public int Name { get; set; }
+            public int RandomTime { get; set; }
         }
 
         private static string GenerateName(int len)
