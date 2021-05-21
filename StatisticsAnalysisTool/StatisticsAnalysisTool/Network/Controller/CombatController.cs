@@ -27,7 +27,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             OnChangeCombatMode += AddCombatTime;
 
 #if DEBUG
-            UpdateDamageMeterUi(SetRandomDamageValues(40));
+            RunDamageMeterDebugAsync(32);
 #endif
         }
 
@@ -222,34 +222,75 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private static readonly Random _random = new Random(DateTime.Now.Millisecond);
 
+        private async void RunDamageMeterDebugAsync(int runs = 30)
+        {
+            var entities = SetRandomDamageValues(20);
+
+            for (var i = 0; i < runs; i++)
+            {
+                UpdateDamageMeterUi(entities);
+                await Task.Delay(1080);
+
+                foreach (var entity in entities)
+                {
+                    if (_random.Next(0, 10) < 8)
+                    {
+                        continue;
+                    }
+
+                    entity.Value.Damage += _random.Next(10, 500);
+                    entity.Value.AddCombatTime(new TimeCollectObject(DateTime.UtcNow)
+                    {
+                        EndTime = DateTime.UtcNow.AddSeconds(_random.Next(1, 35))
+                    });
+                }
+            }
+        }
+
         private List<KeyValuePair<Guid, PlayerGameObject>> SetRandomDamageValues(int playerAmount = 5)
         {
             var randomPlayerList = new List<KeyValuePair<Guid, PlayerGameObject>>();
-
+            
             for (var i = 0; i < playerAmount; i++)
             {
-                var causerGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
-                var damage = _random.Next(500, 9999);
-                var objectId = _random.Next(20, 9999);
-                var len = _random.Next(3, 10);
-                var randomTime = _random.Next(1, 1000);
-
-                randomPlayerList.Add(new KeyValuePair<Guid, PlayerGameObject>(causerGuid, new PlayerGameObject(objectId)
+                var randomPlayer = GetRandomPlayerDebug();
+                randomPlayerList.Add(new KeyValuePair<Guid, PlayerGameObject>(randomPlayer.CauserGuid, new PlayerGameObject(randomPlayer.ObjectId)
                 {
                     CharacterEquipment = new CharacterEquipment
                     {
                         MainHand = GetRandomWeaponIndex()
                     },
-                    CombatTime = new TimeSpan(0, 0, 0, randomTime),
-                    Damage = damage,
-                    Name = GenerateName(len),
+                    CombatTime = new TimeSpan(0, 0, 0, randomPlayer.RandomTime),
+                    Damage = randomPlayer.Damage,
+                    Name = GenerateName(randomPlayer.Name),
                     ObjectSubType = GameObjectSubType.Player,
                     ObjectType = GameObjectType.Player,
-                    UserGuid = causerGuid
+                    UserGuid = randomPlayer.CauserGuid
                 }));
             }
 
             return randomPlayerList;
+        }
+
+        private RandomPlayerDebugStruct GetRandomPlayerDebug()
+        {
+            return new RandomPlayerDebugStruct()
+            {
+                CauserGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000"),
+                Damage = _random.Next(500, 9999),
+                ObjectId = _random.Next(20, 9999),
+                Name = _random.Next(3, 10),
+                RandomTime = _random.Next(1, 1000)
+            };
+        }
+
+        struct RandomPlayerDebugStruct
+        {
+            public Guid CauserGuid { get; set; }
+            public int Damage { get; set; }
+            public int ObjectId { get; set; }
+            public int Name { get; set; }
+            public int RandomTime { get; set; }
         }
 
         private static string GenerateName(int len)
