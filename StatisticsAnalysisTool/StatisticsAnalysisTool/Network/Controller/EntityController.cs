@@ -270,17 +270,26 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void ResetEntitiesDamageStartTime()
         {
-            foreach (var entity in _knownEntities) entity.Value.CombatStart = null;
+            foreach (var entity in _knownEntities)
+            {
+                entity.Value.CombatStart = null;
+            }
         }
 
         public void ResetEntitiesDamageTimes()
         {
-            foreach (var entity in _knownEntities) entity.Value.ResetCombatTimes();
+            foreach (var entity in _knownEntities)
+            {
+                entity.Value.ResetCombatTimes();
+            }
         }
 
         public void ResetEntitiesDamage()
         {
-            foreach (var entity in _knownEntities) entity.Value.Damage = 0;
+            foreach (var entity in _knownEntities)
+            {
+                entity.Value.Damage = 0;
+            }
         }
 
         #endregion

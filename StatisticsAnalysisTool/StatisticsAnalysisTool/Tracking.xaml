@@ -983,6 +983,7 @@
         </Setter>
         <Style.Triggers>
             <DataTrigger Binding="{Binding Name}" Value="Triky313">
+                <Setter Property="Margin" Value="0,0,0,1" />
                 <Setter Property="Foreground">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
