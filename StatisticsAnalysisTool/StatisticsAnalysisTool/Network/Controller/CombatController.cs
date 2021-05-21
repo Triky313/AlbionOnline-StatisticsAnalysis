@@ -37,46 +37,74 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
             if (gameObject == null || healthChange >= 0 || gameObject.Value.Value?.ObjectType != GameObjectType.Player ||
-                !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name)) return;
+                !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name))
+            {
+                return;
+            }
 
             var damageValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
-            if (damageValue <= 0) return;
+            if (damageValue <= 0)
+            {
+                return;
+            }
 
-            if (gameObject.Value.Value?.CombatStart == null) gameObject.Value.Value.CombatStart = DateTime.UtcNow;
+            if (gameObject.Value.Value?.CombatStart == null)
+            {
+                gameObject.Value.Value.CombatStart = DateTime.UtcNow;
+            }
 
             gameObject.Value.Value.Damage += damageValue;
 
             UpdateDamageMeterUi(_trackingController.EntityController.GetAllEntities(true));
         }
 
+        private bool _isDamageMeterUiUpdateBlocked;
+
         public void UpdateDamageMeterUi(List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
-            if (!IsUiUpdateAllowed()) return;
+            if (!IsUiUpdateAllowed() || _isDamageMeterUiUpdateBlocked)
+            {
+                return;
+            }
+
+            _isDamageMeterUiUpdateBlocked = true;
 
             var highestDamage = GetHighestDamage(entities);
             _trackingController.EntityController.DetectUsedWeapon();
 
             foreach (var damageObject in entities)
+            {
                 if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.Value.UserGuid))
+                {
                     _mainWindow.Dispatcher?.Invoke(async () =>
                     {
                         var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == damageObject.Value.UserGuid);
                         if (fragment != null)
                         {
-                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand,
-                                damageObject.Value?.CharacterEquipment?.MainHand);
+                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, damageObject.Value?.CharacterEquipment?.MainHand);
 
-                            if (damageObject.Value?.Damage > 0) fragment.DamageInPercent = (double) damageObject.Value.Damage / highestDamage * 100;
+                            if (damageObject.Value?.Damage > 0)
+                            {
+                                fragment.DamageInPercent = (double) damageObject.Value.Damage / highestDamage * 100;
+                            }
 
                             fragment.Damage = damageObject.Value?.Damage.ToShortNumberString();
-                            if (damageObject.Value?.Dps != null) fragment.Dps = damageObject.Value.Dps;
+                            if (damageObject.Value?.Dps != null)
+                            {
+                                fragment.Dps = damageObject.Value.Dps;
+                            }
 
-                            if (damageObject.Value != null) fragment.DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage);
+                            if (damageObject.Value != null)
+                            {
+                                fragment.DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage);
+                            }
                         }
 
                         _mainWindowViewModel.SetDamageMeterSort();
                     });
+                }
                 else
+                {
                     _mainWindow.Dispatcher?.InvokeAsync(async () =>
                     {
                         var mainHandItem = ItemController.GetItemByIndex(damageObject.Value?.CharacterEquipment?.MainHand ?? 0);
@@ -99,6 +127,10 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                         _mainWindowViewModel.SetDamageMeterSort();
                     });
+                }
+            }
+
+            _isDamageMeterUiUpdateBlocked = false;
         }
 
         public void ResetDamageMeter()
@@ -106,6 +138,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             _trackingController.EntityController.ResetEntitiesDamageTimes();
             _trackingController.EntityController.ResetEntitiesDamage();
             _trackingController.EntityController.ResetEntitiesDamageStartTime();
+            _isDamageMeterUiUpdateBlocked = false;
 
             _mainWindow?.Dispatcher?.InvokeAsync(() => { _mainWindowViewModel?.DamageMeter?.Clear(); });
         }
