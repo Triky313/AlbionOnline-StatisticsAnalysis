@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,16 +37,32 @@ namespace StatisticsAnalysisTool.Network.Controller
         public void AddDamage(long causerId, double healthChange)
         {
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
-            if (gameObject == null || healthChange >= 0 || gameObject.Value.Value?.ObjectType != GameObjectType.Player ||
-                !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name))
+
+            if (gameObject == null || gameObject.Value.Value?.ObjectType != GameObjectType.Player || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name))
             {
                 return;
             }
 
-            var damageValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
-            if (damageValue <= 0)
+            if (GetHealthChangeType(healthChange) == HealthChangeType.Damage)
             {
-                return;
+                var damageValue = (int)Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
+                if (damageValue <= 0)
+                {
+                    return;
+                }
+
+                gameObject.Value.Value.Damage += damageValue;
+            }
+
+            if (GetHealthChangeType(healthChange) == HealthChangeType.Heal)
+            {
+                var healValue = healthChange;
+                if (healValue <= 0)
+                {
+                    return;
+                }
+
+                gameObject.Value.Value.Heal += (int)Math.Round(healValue, MidpointRounding.AwayFromZero);
             }
 
             if (gameObject.Value.Value?.CombatStart == null)
@@ -53,27 +70,32 @@ namespace StatisticsAnalysisTool.Network.Controller
                 gameObject.Value.Value.CombatStart = DateTime.UtcNow;
             }
 
-            gameObject.Value.Value.Damage += damageValue;
-
             UpdateDamageMeterUi(_trackingController.EntityController.GetAllEntities(true));
         }
-
-        private bool _isDamageMeterUiUpdateBlocked;
-
+        
         public void UpdateDamageMeterUi(List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
-            if (!IsUiUpdateAllowed() || _isDamageMeterUiUpdateBlocked)
+            if (!IsUiUpdateAllowed())
             {
                 return;
             }
 
-            _isDamageMeterUiUpdateBlocked = true;
-
             var highestDamage = GetHighestDamage(entities);
             _trackingController.EntityController.DetectUsedWeapon();
 
+            var duplicatedNames = entities.GroupBy(x => x.Value.Name)
+                .Where(g => g.Count() > 1)
+                .Select(y => y.Key)
+                .ToList();
+
+            foreach (var names in duplicatedNames)
+            {
+                Debug.Print(names);
+            }
+
             foreach (var damageObject in entities)
             {
+                // TODO: Hier wird irgendwas dupliziert! Filter in foreach einbauen?
                 if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.Value.UserGuid))
                 {
                     _mainWindow.Dispatcher?.Invoke(async () =>
@@ -129,8 +151,6 @@ namespace StatisticsAnalysisTool.Network.Controller
                     });
                 }
             }
-
-            _isDamageMeterUiUpdateBlocked = false;
         }
 
         public void ResetDamageMeter()
@@ -138,10 +158,11 @@ namespace StatisticsAnalysisTool.Network.Controller
             _trackingController.EntityController.ResetEntitiesDamageTimes();
             _trackingController.EntityController.ResetEntitiesDamage();
             _trackingController.EntityController.ResetEntitiesDamageStartTime();
-            _isDamageMeterUiUpdateBlocked = false;
 
             _mainWindow?.Dispatcher?.InvokeAsync(() => { _mainWindowViewModel?.DamageMeter?.Clear(); });
         }
+
+        private HealthChangeType GetHealthChangeType(double healthChange) => healthChange <= 0 ? HealthChangeType.Damage : HealthChangeType.Heal;
 
         private async Task<Item> SetItemInfoIfSlotTypeMainHandAsync(Item currentItem, int? newIndex)
         {
