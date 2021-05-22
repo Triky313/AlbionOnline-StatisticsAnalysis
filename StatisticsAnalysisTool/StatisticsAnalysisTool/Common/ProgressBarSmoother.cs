@@ -10,7 +10,7 @@ namespace StatisticsAnalysisTool.Common
     public class ProgressBarSmoother
     {
         public static readonly DependencyProperty SmoothValueProperty =
-            DependencyProperty.RegisterAttached("SmoothValue", typeof(double), typeof(ProgressBarSmoother), new PropertyMetadata(0.0, changing));
+            DependencyProperty.RegisterAttached("SmoothValue", typeof(double), typeof(ProgressBarSmoother), new PropertyMetadata(0.0, Changing));
 
         public static double GetSmoothValue(DependencyObject obj)
         {
@@ -22,9 +22,14 @@ namespace StatisticsAnalysisTool.Common
             obj.SetValue(SmoothValueProperty, value);
         }
 
-        private static void changing(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void Changing(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var anim = new DoubleAnimation((double) e.OldValue, (double) e.NewValue, new TimeSpan(0, 0, 0, 0, 250));
+            if (double.IsNaN((double) e.OldValue) || double.IsNaN((double) e.NewValue))
+            {
+                return;
+            }
+
+            var anim = new DoubleAnimation((double)e.OldValue, (double)e.NewValue, new TimeSpan(0, 0, 0, 0, 250));
             (d as ProgressBar)?.BeginAnimation(RangeBase.ValueProperty, anim, HandoffBehavior.Compose);
         }
     }
