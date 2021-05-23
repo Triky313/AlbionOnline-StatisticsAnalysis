@@ -1,5 +1,6 @@
-﻿using log4net;
+using log4net;
 using PcapDotNet.Base;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
@@ -87,6 +88,9 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType,
+                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
+
             OnChangeCluster?.Invoke(CurrentCluster);
         }
 

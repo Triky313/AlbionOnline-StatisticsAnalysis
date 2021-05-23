@@ -95,8 +95,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             foreach (var damageObject in entities)
             {
-                // TODO: Hier wird irgendwas dupliziert! Filter in foreach einbauen?
-                if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.Value.UserGuid))
+                if (_mainWindowViewModel.DamageMeter.Any(x => x.Name == damageObject.Value.Name))
                 {
                     _mainWindow.Dispatcher?.Invoke(async () =>
                     {
