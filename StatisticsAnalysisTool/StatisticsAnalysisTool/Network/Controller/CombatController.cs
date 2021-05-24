@@ -80,11 +80,12 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
 
             var highestDamage = GetHighestDamage(entities);
+            var highestHeal = GetHighestHeal(entities);
             _trackingController.EntityController.DetectUsedWeapon();
 
-            foreach (var damageObject in entities)
+            foreach (var healthChangeObject in entities)
             {
-                if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.Value.UserGuid))
+                if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == healthChangeObject.Value.UserGuid))
                 {
                     if (_mainWindow?.Dispatcher == null)
                     {
@@ -93,25 +94,43 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                     await _mainWindow?.Dispatcher?.InvokeAsync(async () =>
                     {
-                        var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == damageObject.Value.UserGuid);
+                        var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
                         if (fragment != null)
                         {
-                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, damageObject.Value?.CharacterEquipment?.MainHand);
+                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, healthChangeObject.Value?.CharacterEquipment?.MainHand);
 
-                            if (damageObject.Value?.Damage > 0)
+                            // Damage
+                            if (healthChangeObject.Value?.Damage > 0)
                             {
-                                fragment.DamageInPercent = (double) damageObject.Value.Damage / highestDamage * 100;
+                                fragment.DamageInPercent = (double) healthChangeObject.Value.Damage / highestDamage * 100;
+                            }
+                            
+                            fragment.Damage = healthChangeObject.Value?.Damage.ToShortNumberString();
+                            if (healthChangeObject.Value?.Dps != null)
+                            {
+                                fragment.Dps = healthChangeObject.Value.Dps;
                             }
 
-                            fragment.Damage = damageObject.Value?.Damage.ToShortNumberString();
-                            if (damageObject.Value?.Dps != null)
+                            if (healthChangeObject.Value != null)
                             {
-                                fragment.Dps = damageObject.Value.Dps;
+                                fragment.DamagePercentage = GetDamagePercentage(entities, healthChangeObject.Value.Damage);
                             }
 
-                            if (damageObject.Value != null)
+                            // Heal
+                            if (healthChangeObject.Value?.Heal > 0)
                             {
-                                fragment.DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage);
+                                fragment.HealInPercent = (double)healthChangeObject.Value.Heal / highestHeal * 100;
+                            }
+
+                            fragment.Heal = healthChangeObject.Value?.Heal.ToShortNumberString();
+                            if (healthChangeObject.Value?.Hps != null)
+                            {
+                                fragment.Hps = healthChangeObject.Value.Hps;
+                            }
+
+                            if (healthChangeObject.Value != null)
+                            {
+                                fragment.HealPercentage = GetDamagePercentage(entities, healthChangeObject.Value.Heal);
                             }
                         }
 
@@ -127,19 +146,25 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                     await _mainWindow?.Dispatcher?.InvokeAsync(async () =>
                     {
-                        var mainHandItem = ItemController.GetItemByIndex(damageObject.Value?.CharacterEquipment?.MainHand ?? 0);
+                        var mainHandItem = ItemController.GetItemByIndex(healthChangeObject.Value?.CharacterEquipment?.MainHand ?? 0);
 
-                        if (damageObject.Value != null && !double.IsNaN(damageObject.Value.Damage) && damageObject.Value.Damage > 0)
+                        if (healthChangeObject.Value != null && !double.IsNaN(healthChangeObject.Value.Damage) && healthChangeObject.Value.Damage > 0)
                         {
                             var damageMeterFragment = new DamageMeterFragment
                             {
-                                CauserGuid = damageObject.Value.UserGuid,
-                                Damage = damageObject.Value.Damage.ToShortNumberString(),
-                                Dps = damageObject.Value.Dps,
-                                DamageInPercent = (double) damageObject.Value.Damage / highestDamage * 100,
-                                DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage),
-                                Name = damageObject.Value.Name,
-                                CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, damageObject.Value?.CharacterEquipment?.MainHand)
+                                CauserGuid = healthChangeObject.Value.UserGuid,
+                                Damage = healthChangeObject.Value.Damage.ToShortNumberString(),
+                                Dps = healthChangeObject.Value.Dps,
+                                DamageInPercent = (double) healthChangeObject.Value.Damage / highestDamage * 100,
+                                DamagePercentage = GetDamagePercentage(entities, healthChangeObject.Value.Damage),
+
+                                Heal = healthChangeObject.Value.Heal.ToShortNumberString(),
+                                Hps = healthChangeObject.Value.Hps,
+                                HealInPercent = (double) healthChangeObject.Value.Heal / highestHeal * 100,
+                                HealPercentage = GetHealPercentage(entities, healthChangeObject.Value.Heal),
+
+                                Name = healthChangeObject.Value.Name,
+                                CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, healthChangeObject.Value?.CharacterEquipment?.MainHand)
                             };
 
                             _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
@@ -199,10 +224,21 @@ namespace StatisticsAnalysisTool.Network.Controller
             return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.Damage);
         }
 
+        private long GetHighestHeal(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
+        {
+            return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.Heal);
+        }
+
         private double GetDamagePercentage(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerDamage)
         {
             var totalDamage = playerObjects.Sum(x => x.Value.Damage);
             return 100.00 / totalDamage * playerDamage;
+        }
+
+        private double GetHealPercentage(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerHeal)
+        {
+            var totalHeal = playerObjects.Sum(x => x.Value.Heal);
+            return 100.00 / totalHeal * playerHeal;
         }
 
         #endregion
