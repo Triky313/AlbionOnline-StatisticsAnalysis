@@ -28,13 +28,13 @@ namespace StatisticsAnalysisTool.Network.Controller
             OnChangeCombatMode += AddCombatTime;
 
 #if DEBUG
-            RunDamageMeterDebugAsync(32);
+            RunDamageMeterDebugAsync(25);
 #endif
         }
 
         #region Damage Meter methods
 
-        public void AddDamage(long causerId, double healthChange)
+        public async void AddDamageAsync(long causerId, double healthChange)
         {
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
 
@@ -70,10 +70,10 @@ namespace StatisticsAnalysisTool.Network.Controller
                 gameObject.Value.Value.CombatStart = DateTime.UtcNow;
             }
 
-            UpdateDamageMeterUi(_trackingController.EntityController.GetAllEntities(true));
+            await UpdateDamageMeterUiAsync(_trackingController.EntityController.GetAllEntities(true));
         }
         
-        public void UpdateDamageMeterUi(List<KeyValuePair<Guid, PlayerGameObject>> entities)
+        public async Task UpdateDamageMeterUiAsync(List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
             if (!IsUiUpdateAllowed())
             {
@@ -83,21 +83,16 @@ namespace StatisticsAnalysisTool.Network.Controller
             var highestDamage = GetHighestDamage(entities);
             _trackingController.EntityController.DetectUsedWeapon();
 
-            var duplicatedNames = entities.GroupBy(x => x.Value.Name)
-                .Where(g => g.Count() > 1)
-                .Select(y => y.Key)
-                .ToList();
-
-            foreach (var names in duplicatedNames)
-            {
-                Debug.Print(names);
-            }
-
             foreach (var damageObject in entities)
             {
-                if (_mainWindowViewModel.DamageMeter.Any(x => x.Name == damageObject.Value.Name))
+                if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.Value.UserGuid))
                 {
-                    _mainWindow.Dispatcher?.Invoke(async () =>
+                    if (_mainWindow?.Dispatcher == null)
+                    {
+                        continue;
+                    }
+
+                    await _mainWindow?.Dispatcher?.InvokeAsync(async () =>
                     {
                         var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == damageObject.Value.UserGuid);
                         if (fragment != null)
@@ -126,11 +121,16 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
                 else
                 {
-                    _mainWindow.Dispatcher?.InvokeAsync(async () =>
+                    if (_mainWindow?.Dispatcher == null)
+                    {
+                        continue;
+                    }
+
+                    await _mainWindow?.Dispatcher?.InvokeAsync(async () =>
                     {
                         var mainHandItem = ItemController.GetItemByIndex(damageObject.Value?.CharacterEquipment?.MainHand ?? 0);
 
-                        if (damageObject.Value != null)
+                        if (damageObject.Value != null && !double.IsNaN(damageObject.Value.Damage) && damageObject.Value.Damage > 0)
                         {
                             var damageMeterFragment = new DamageMeterFragment
                             {
@@ -142,6 +142,13 @@ namespace StatisticsAnalysisTool.Network.Controller
                                 Name = damageObject.Value.Name,
                                 CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, damageObject.Value?.CharacterEquipment?.MainHand)
                             };
+
+                            if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.Value.UserGuid))
+                            {
+                                // TODO: Einfach 0 Werte entfernen!
+                                // Zusätzlich Chars die nicht mehr in der Gruppe sind, aus der Liste entfernen!
+                                Debug.Print($"##### DUPLICATE! Guid: {damageObject.Value.UserGuid} | Name: {damageObject.Value.Name} #####");
+                            }
 
                             _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
                         }
@@ -248,7 +255,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             for (var i = 0; i < runs; i++)
             {
-                UpdateDamageMeterUi(entities);
+                await UpdateDamageMeterUiAsync(entities);
                 await Task.Delay(1080);
 
                 foreach (var entity in entities)

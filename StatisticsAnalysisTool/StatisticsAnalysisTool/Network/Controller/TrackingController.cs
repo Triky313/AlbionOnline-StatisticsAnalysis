@@ -56,7 +56,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         public void DamageMeterUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType,
             EffectOrigin effectOrigin, long causerId, int causingSpellType)
         {
-            CombatController.AddDamage(causerId, healthChange);
+            CombatController.AddDamageAsync(causerId, healthChange);
         }
 
         #endregion
