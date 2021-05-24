@@ -7,7 +7,6 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -142,13 +141,6 @@ namespace StatisticsAnalysisTool.Network.Controller
                                 Name = damageObject.Value.Name,
                                 CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, damageObject.Value?.CharacterEquipment?.MainHand)
                             };
-
-                            if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.Value.UserGuid))
-                            {
-                                // TODO: Einfach 0 Werte entfernen!
-                                // Zusätzlich Chars die nicht mehr in der Gruppe sind, aus der Liste entfernen!
-                                Debug.Print($"##### DUPLICATE! Guid: {damageObject.Value.UserGuid} | Name: {damageObject.Value.Name} #####");
-                            }
 
                             _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
                         }
