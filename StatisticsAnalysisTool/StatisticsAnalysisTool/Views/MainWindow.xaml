@@ -328,24 +328,26 @@
                 </TabItem>
                 <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE_METER}">
                     <Grid>
+                        <Grid Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterSort}" SelectedItem="{Binding DamageMeterSortSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
+                            </StackPanel>
+                        </Grid>
                         <Grid Margin="0,0,30,0" HorizontalAlignment="Right" Width="389" Height="30" VerticalAlignment="Top">
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
                                 <CheckBox IsChecked="{Binding IsDamageMeterResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
                                           HorizontalContentAlignment="Left" Margin="5,3,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="auto" MaxWidth="250"/>
                             </StackPanel>
                         </Grid>
-                        <Grid Height="20" Width="20" Margin="0,8,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
+                        <Grid Height="20" Width="20" Margin="0,5,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
                             <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                         </Grid>
-                        <Grid Margin="0,35,0,0" Height="30" VerticalAlignment="Top">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterSort}" SelectedItem="{Binding DamageMeterSortSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
-                            </StackPanel>
-                        </Grid>
-                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,65,0,0" VerticalAlignment="Top"/>
-                        <ScrollViewer Margin="0,70,0,0">
+                        
+                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,31,0,0" VerticalAlignment="Top"/>
+                        <ScrollViewer Margin="0,35,0,0">
                             <ItemsControl ItemsSource="{Binding DamageMeter}"/>
                         </ScrollViewer>
+
                         <Grid Visibility="{Binding IsDamageMeterPopupVisible, FallbackValue=Hidden}" Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.Second}">
                             <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                                 <DockPanel Margin="0,0,0,16">

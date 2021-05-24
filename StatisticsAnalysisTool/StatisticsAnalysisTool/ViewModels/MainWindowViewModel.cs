@@ -228,11 +228,23 @@ namespace StatisticsAnalysisTool.ViewModels
                 Name = Translation.SortByName,
                 DamageMeterSortType = DamageMeterSortType.Name
             };
+            var sortByHealStruct = new DamageMeterSortStruct
+            {
+                Name = Translation.SortByHeal,
+                DamageMeterSortType = DamageMeterSortType.Heal
+            };
+            var sortByHpsStruct = new DamageMeterSortStruct
+            {
+                Name = Translation.SortByHps,
+                DamageMeterSortType = DamageMeterSortType.Hps
+            };
 
             DamageMeterSort.Clear();
             DamageMeterSort.Add(sortByDamageStruct);
             DamageMeterSort.Add(sortByDpsStruct);
             DamageMeterSort.Add(sortByNameStruct);
+            DamageMeterSort.Add(sortByHealStruct);
+            DamageMeterSort.Add(sortByHpsStruct);
             DamageMeterSortSelection = sortByDamageStruct;
 
             #endregion
@@ -735,7 +747,22 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
+            {
                 DamageMeter.OrderByReference(DamageMeter.OrderBy(x => x.Name).ToList());
+                return;
+            }
+
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Heal)
+            {
+                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
+                // TODO: Heal Bars einstellen.. und oben Damage Bars
+                return;
+            }
+
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Hps)
+            {
+                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
+            }
         }
 
         #endregion
