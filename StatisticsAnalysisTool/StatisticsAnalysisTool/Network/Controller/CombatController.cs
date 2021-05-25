@@ -294,6 +294,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     }
 
                     entity.Value.Damage += _random.Next(10, 500);
+                    entity.Value.Heal += _random.Next(10, 750);
                     entity.Value.AddCombatTime(new TimeCollectObject(DateTime.UtcNow)
                     {
                         EndTime = DateTime.UtcNow.AddSeconds(_random.Next(1, 35))
@@ -317,6 +318,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     },
                     CombatTime = new TimeSpan(0, 0, 0, randomPlayer.RandomTime),
                     Damage = randomPlayer.Damage,
+                    Heal = randomPlayer.Heal,
                     Name = GenerateName(randomPlayer.Name),
                     ObjectSubType = GameObjectSubType.Player,
                     ObjectType = GameObjectType.Player,
@@ -333,6 +335,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 CauserGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000"),
                 Damage = _random.Next(500, 9999),
+                Heal = _random.Next(500, 9999),
                 ObjectId = _random.Next(20, 9999),
                 Name = _random.Next(3, 10),
                 RandomTime = _random.Next(1, 1000)
@@ -343,6 +346,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             public Guid CauserGuid { get; set; }
             public int Damage { get; set; }
+            public int Heal { get; set; }
             public int ObjectId { get; set; }
             public int Name { get; set; }
             public int RandomTime { get; set; }

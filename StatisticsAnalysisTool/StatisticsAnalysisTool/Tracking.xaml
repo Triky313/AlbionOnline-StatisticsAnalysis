@@ -893,6 +893,7 @@
     <SolidColorBrush x:Key="Progressbar.Foreground.Axe" Color="#AD1F2A"/>
     <SolidColorBrush x:Key="Progressbar.Foreground.ArcaneStaff" Color="#732653"/>
     <SolidColorBrush x:Key="Progressbar.Foreground.UnknownWeaponType" Color="#555555"/>
+    <SolidColorBrush x:Key="Progressbar.Foreground.HealBar" Color="#00aa1a"/>
 
     <!-- Damage meter icon -->
     <Style TargetType="Image" x:Key="DamageMeter.Icon">
@@ -900,77 +901,124 @@
         <Setter Property="Width" Value="40"/>
     </Style>
 
+    <!-- Damage meter progress bar colors -->
+    <Style TargetType="ProgressBar" x:Key="DamageMeter.ProgressBar.Colors">
+        <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.UnknownWeaponType}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding CategoryId}" Value="sword">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Sword}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="spear">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Spear}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="quarterstaff">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Quarterstaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="naturestaff">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.NatureStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="mace">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Mace}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="holystaff">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.HolyStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="hammer">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Hammer}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="froststaff">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.FrostStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="firestaff">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.FireStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="dagger">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Dagger}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="cursestaff">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.CursedStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="crossbow">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Crossbow}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="bow">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Bow}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="axe">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Axe}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="arcanestaff">
+                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.ArcaneStaff}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- Damage meter -->
     <DataTemplate DataType="{x:Type notification:DamageMeterFragment}">
         <Grid>
-            <ProgressBar com:ProgressBarSmoother.SmoothValue="{Binding DamageInPercent}"
-                         Minimum="0" Maximum="100" Height="40" Margin="3,1,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0">
-                <ProgressBar.Style>
-                    <Style TargetType="ProgressBar">
-                        <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.UnknownWeaponType}" />
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="sword">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Sword}" />
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="spear">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Spear}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="quarterstaff">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Quarterstaff}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="naturestaff">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.NatureStaff}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="mace">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Mace}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="holystaff">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.HolyStaff}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="hammer">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Hammer}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="froststaff">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.FrostStaff}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="firestaff">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.FireStaff}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="dagger">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Dagger}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="cursestaff">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.CursedStaff}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="crossbow">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Crossbow}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="bow">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Bow}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="axe">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Axe}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CategoryId}" Value="arcanestaff">
-                                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.ArcaneStaff}" />
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="False">
+                                <Setter Property="Visibility" Value="Hidden"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </ProgressBar.Style>
-            </ProgressBar>
-            <StackPanel Orientation="Horizontal">
-                <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
-                </Grid>
-                <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DamagePercentage}" 
-                       ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"></Label>
-                <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
-                <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Damage}" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
-                <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
-            </StackPanel>
+                </Grid.Style>
+                <ProgressBar com:ProgressBarSmoother.SmoothValue="{Binding DamageInPercent}" Minimum="0" Maximum="100" 
+                             Height="40" Margin="3,1,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" Style="{StaticResource DamageMeter.ProgressBar.Colors}" />
+                <ProgressBar com:ProgressBarSmoother.SmoothValue="{Binding HealInPercent}"
+                             Minimum="0" Maximum="100" Height="2" Margin="3,1,2,1" VerticalAlignment="Bottom" Background="#00FFFFFF" BorderThickness="0">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.HealBar}" />
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
+                <StackPanel Orientation="Horizontal">
+                    <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
+                    </Grid>
+                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DamagePercentage}" 
+                           ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"></Label>
+                    <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
+                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Damage}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
+                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"></Label>
+                </StackPanel>
+            </Grid>
+            <Grid >
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <ProgressBar com:ProgressBarSmoother.SmoothValue="{Binding HealInPercent}" Minimum="0" Maximum="100" 
+                             Height="40" Margin="3,1,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" Style="{StaticResource DamageMeter.ProgressBar.Colors}" />
+                <StackPanel Orientation="Horizontal">
+                    <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
+                    </Grid>
+                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding HealPercentage}" 
+                           ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"></Label>
+                    <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
+                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Heal}" ContentStringFormat="{}{0:N0}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
+                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding HpsString}" ContentStringFormat="{}{0:N0}/hps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"></Label>
+                </StackPanel>
+            </Grid>
         </Grid>
     </DataTemplate>
-
+    
     <!-- Damage meter icon -->
     <Style TargetType="fa5:ImageAwesome" x:Key="PartyMemberCircleStyle">
         <Setter Property="Foreground">

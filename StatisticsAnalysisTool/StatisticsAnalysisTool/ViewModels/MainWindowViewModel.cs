@@ -734,34 +734,36 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void SetDamageMeterSort()
         {
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Damage)
+            switch (DamageMeterSortSelection.DamageMeterSortType)
             {
-                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
-                return;
+                case DamageMeterSortType.Damage:
+                    SetIsDamageMeterShowing(DamageMeter, true);
+                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList()); 
+                    return;
+                case DamageMeterSortType.Dps:
+                    SetIsDamageMeterShowing(DamageMeter, true);
+                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
+                    return;
+                case DamageMeterSortType.Name:
+                    SetIsDamageMeterShowing(DamageMeter, true);
+                    DamageMeter.OrderByReference(DamageMeter.OrderBy(x => x.Name).ToList());
+                    return;
+                case DamageMeterSortType.Heal:
+                    SetIsDamageMeterShowing(DamageMeter, false);
+                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.HealInPercent).ToList());
+                    return;
+                case DamageMeterSortType.Hps:
+                    SetIsDamageMeterShowing(DamageMeter, false);
+                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Hps).ToList());
+                    break;
             }
+        }
 
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Dps)
+        private void SetIsDamageMeterShowing(IEnumerable<DamageMeterFragment> damageMeter, bool isDamageMeterShowing)
+        {
+            foreach (var fragment in damageMeter)
             {
-                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
-                return;
-            }
-
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
-            {
-                DamageMeter.OrderByReference(DamageMeter.OrderBy(x => x.Name).ToList());
-                return;
-            }
-
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Heal)
-            {
-                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
-                // TODO: Heal Bars einstellen.. und oben Damage Bars
-                return;
-            }
-
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Hps)
-            {
-                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
+                fragment.IsDamageMeterShowing = isDamageMeterShowing;
             }
         }
 

@@ -23,6 +23,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private double _hps;
         private double _healInPercent;
         private double _healPercentage;
+        private bool _isDamageMeterShowing = true;
 
         public string Name
         {
@@ -40,6 +41,15 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _causerGuid = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsDamageMeterShowing {
+            get => _isDamageMeterShowing;
+            set
+            {
+                _isDamageMeterShowing = value;
                 OnPropertyChanged();
             }
         }
