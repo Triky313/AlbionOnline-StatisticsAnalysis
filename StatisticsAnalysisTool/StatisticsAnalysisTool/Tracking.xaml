@@ -990,7 +990,7 @@
                     <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"></Label>
                 </StackPanel>
             </Grid>
-            <Grid >
+            <Grid>
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
                         <Style.Triggers>
