@@ -109,20 +109,6 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,30,0">
-                <Grid ZIndex="20" Margin="5,0,0,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
-                    <TextBlock>
-                        <Hyperlink NavigateUri="{Binding Path=GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                            <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                        </Hyperlink>
-                    </TextBlock>
-                </Grid>
-                <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="34,0,0,0" VerticalAlignment="Top" Height="35" Width="106" />
-                <TextBlock Foreground="{StaticResource SolidColorBrush.Foreground.First}" TextAlignment="Center"
-                           FontSize="14" Margin="140,0,0,0" FontWeight="Bold" HorizontalAlignment="Left" Width="110" Height="28" VerticalAlignment="Bottom">
-                    (<Hyperlink NavigateUri="{Binding Path=DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate"><TextBlock Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" Text="PayPal Donate" /></Hyperlink>)
-                </TextBlock>
-            </Grid>
             <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearchActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="245" />
             <CheckBox Content="{Binding Translation.ShowOnlyItemsWithAlertOn, FallbackValue=SHOW__ONLY__ITEMS__WITH__ALERT__ON}" IsChecked="{Binding IsShowOnlyItemsWithAlertOnActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Width="245" />
             <CheckBox Content="{Binding Translation.ShowOnlyFavorites, FallbackValue=SHOW__ONLY__FAVORITES}" IsChecked="{Binding IsShowOnlyFavoritesActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="260,59,0,0" VerticalAlignment="Top" Width="235" />
@@ -371,33 +357,6 @@
                     </Grid>
                 </TabItem>
             </TabControl>
-            <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,25,0">
-                <StackPanel Orientation="Horizontal" Width="auto" HorizontalAlignment="Left">
-                    <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
-                        <TextBlock>
-                            <Hyperlink NavigateUri="{Binding GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                            </Hyperlink>
-                        </TextBlock>
-                    </Grid>
-                    <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
-                        <TextBlock>
-                            <Hyperlink NavigateUri="{Binding DiscordUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Brands_Discord" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                            </Hyperlink>
-                        </TextBlock>
-                    </Grid>
-                    <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
-                        <TextBlock>
-                            <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                            </Hyperlink>
-                        </TextBlock>
-                    </Grid>
-                    <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" 
-                           HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="35" Width="auto" />
-                </StackPanel>
-            </Grid>
         </Grid>
         <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding SavedPlayerInformationName}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown" />
@@ -657,6 +616,33 @@
                     </lvc:CartesianChart.AxisX>
                 </lvc:CartesianChart>
             </Grid>
+        </Grid>
+        <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,25,0">
+            <StackPanel Orientation="Horizontal" Width="auto" HorizontalAlignment="Left">
+                <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+                    <TextBlock>
+                            <Hyperlink NavigateUri="{Binding GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                                <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                            </Hyperlink>
+                    </TextBlock>
+                </Grid>
+                <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+                    <TextBlock>
+                            <Hyperlink NavigateUri="{Binding DiscordUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                                <fa5:ImageAwesome Icon="Brands_Discord" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                            </Hyperlink>
+                    </TextBlock>
+                </Grid>
+                <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+                    <TextBlock>
+                            <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                                <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                            </Hyperlink>
+                    </TextBlock>
+                </Grid>
+                <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" 
+                           HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="35" Width="auto" />
+            </StackPanel>
         </Grid>
         <Grid ZIndex="2" Style="{StaticResource Grid.Error.Bar}" Visibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}">
             <Button Style="{StaticResource Window.Error.Bar.Button.Style}" Content="r" Margin="0,0,7,0" Click="BtnErrorBar_Click" />
