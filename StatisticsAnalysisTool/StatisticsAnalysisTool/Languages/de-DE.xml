@@ -372,6 +372,8 @@
   <translation name="SORT_BY_DAMAGE">Nach Schaden sortieren</translation>
   <translation name="SORT_BY_DPS">Nach DPS sortieren</translation>
   <translation name="SORT_BY_NAME">Nach Name sortieren</translation>
+  <translation name="SORT_BY_HEAL">Nach Heilung sortieren</translation>
+  <translation name="SORT_BY_HPS">Nach HPS sortieren</translation>
   <translation name="FACTION_FLAG_POINTS">Flaggen Fraktionspunkte</translation>
   <translation name="FACTION_POINTS">Fraktionspunkte</translation>
   <translation name="NUMBER_OF_DUNGEON_FLOORS">Anzahl Dungeon Ebenen</translation>

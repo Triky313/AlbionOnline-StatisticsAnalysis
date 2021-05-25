@@ -188,6 +188,7 @@
     <Compile Include="Enumerations\CityFaction.cs" />
     <Compile Include="Enumerations\GameObjectSubType.cs" />
     <Compile Include="Enumerations\GameObjectType.cs" />
+    <Compile Include="Enumerations\HealthChangeType.cs" />
     <Compile Include="Models\MainStatObject.cs" />
     <Compile Include="Models\EquipmentItem.cs" />
     <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />

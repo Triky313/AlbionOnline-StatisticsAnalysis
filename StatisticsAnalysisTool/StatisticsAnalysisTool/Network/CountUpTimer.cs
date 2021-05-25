@@ -143,7 +143,7 @@ namespace StatisticsAnalysisTool.Network
         {
             var removeList = valueList.Where(x => x.DateTime < DateTime.UtcNow.AddHours(-1));
 
-            foreach (var item in removeList)
+            foreach (var item in removeList.ToList())
             {
                 perHourValue -= item.Value;
 

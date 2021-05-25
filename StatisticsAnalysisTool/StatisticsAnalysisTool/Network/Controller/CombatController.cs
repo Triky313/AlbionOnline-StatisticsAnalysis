@@ -27,25 +27,41 @@ namespace StatisticsAnalysisTool.Network.Controller
             OnChangeCombatMode += AddCombatTime;
 
 #if DEBUG
-            RunDamageMeterDebugAsync(32);
+            RunDamageMeterDebugAsync(25);
 #endif
         }
 
         #region Damage Meter methods
 
-        public void AddDamage(long causerId, double healthChange)
+        public async void AddDamageAsync(long causerId, double healthChange)
         {
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
-            if (gameObject == null || healthChange >= 0 || gameObject.Value.Value?.ObjectType != GameObjectType.Player ||
-                !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name))
+
+            if (gameObject == null || gameObject.Value.Value?.ObjectType != GameObjectType.Player || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name))
             {
                 return;
             }
 
-            var damageValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
-            if (damageValue <= 0)
+            if (GetHealthChangeType(healthChange) == HealthChangeType.Damage)
             {
-                return;
+                var damageValue = (int)Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
+                if (damageValue <= 0)
+                {
+                    return;
+                }
+
+                gameObject.Value.Value.Damage += damageValue;
+            }
+
+            if (GetHealthChangeType(healthChange) == HealthChangeType.Heal)
+            {
+                var healValue = healthChange;
+                if (healValue <= 0)
+                {
+                    return;
+                }
+
+                gameObject.Value.Value.Heal += (int)Math.Round(healValue, MidpointRounding.AwayFromZero);
             }
 
             if (gameObject.Value.Value?.CombatStart == null)
@@ -53,50 +69,68 @@ namespace StatisticsAnalysisTool.Network.Controller
                 gameObject.Value.Value.CombatStart = DateTime.UtcNow;
             }
 
-            gameObject.Value.Value.Damage += damageValue;
-
-            UpdateDamageMeterUi(_trackingController.EntityController.GetAllEntities(true));
+            await UpdateDamageMeterUiAsync(_trackingController.EntityController.GetAllEntities(true));
         }
-
-        private bool _isDamageMeterUiUpdateBlocked;
-
-        public void UpdateDamageMeterUi(List<KeyValuePair<Guid, PlayerGameObject>> entities)
+        
+        public async Task UpdateDamageMeterUiAsync(List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
-            if (!IsUiUpdateAllowed() || _isDamageMeterUiUpdateBlocked)
+            if (!IsUiUpdateAllowed())
             {
                 return;
             }
 
-            _isDamageMeterUiUpdateBlocked = true;
-
             var highestDamage = GetHighestDamage(entities);
+            var highestHeal = GetHighestHeal(entities);
             _trackingController.EntityController.DetectUsedWeapon();
 
-            foreach (var damageObject in entities)
+            foreach (var healthChangeObject in entities)
             {
-                if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == damageObject.Value.UserGuid))
+                if (_mainWindowViewModel.DamageMeter.Any(x => x.CauserGuid == healthChangeObject.Value.UserGuid))
                 {
-                    _mainWindow.Dispatcher?.Invoke(async () =>
+                    if (_mainWindow?.Dispatcher == null)
                     {
-                        var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == damageObject.Value.UserGuid);
+                        continue;
+                    }
+
+                    await _mainWindow?.Dispatcher?.InvokeAsync(async () =>
+                    {
+                        var fragment = _mainWindowViewModel.DamageMeter.FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
                         if (fragment != null)
                         {
-                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, damageObject.Value?.CharacterEquipment?.MainHand);
+                            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, healthChangeObject.Value?.CharacterEquipment?.MainHand);
 
-                            if (damageObject.Value?.Damage > 0)
+                            // Damage
+                            if (healthChangeObject.Value?.Damage > 0)
                             {
-                                fragment.DamageInPercent = (double) damageObject.Value.Damage / highestDamage * 100;
+                                fragment.DamageInPercent = (double) healthChangeObject.Value.Damage / highestDamage * 100;
+                            }
+                            
+                            fragment.Damage = healthChangeObject.Value?.Damage.ToShortNumberString();
+                            if (healthChangeObject.Value?.Dps != null)
+                            {
+                                fragment.Dps = healthChangeObject.Value.Dps;
                             }
 
-                            fragment.Damage = damageObject.Value?.Damage.ToShortNumberString();
-                            if (damageObject.Value?.Dps != null)
+                            if (healthChangeObject.Value != null)
                             {
-                                fragment.Dps = damageObject.Value.Dps;
+                                fragment.DamagePercentage = GetDamagePercentage(entities, healthChangeObject.Value.Damage);
                             }
 
-                            if (damageObject.Value != null)
+                            // Heal
+                            if (healthChangeObject.Value?.Heal > 0)
                             {
-                                fragment.DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage);
+                                fragment.HealInPercent = (double)healthChangeObject.Value.Heal / highestHeal * 100;
+                            }
+
+                            fragment.Heal = healthChangeObject.Value?.Heal.ToShortNumberString();
+                            if (healthChangeObject.Value?.Hps != null)
+                            {
+                                fragment.Hps = healthChangeObject.Value.Hps;
+                            }
+
+                            if (healthChangeObject.Value != null)
+                            {
+                                fragment.HealPercentage = GetDamagePercentage(entities, healthChangeObject.Value.Heal);
                             }
                         }
 
@@ -105,21 +139,32 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
                 else
                 {
-                    _mainWindow.Dispatcher?.InvokeAsync(async () =>
+                    if (_mainWindow?.Dispatcher == null)
                     {
-                        var mainHandItem = ItemController.GetItemByIndex(damageObject.Value?.CharacterEquipment?.MainHand ?? 0);
+                        continue;
+                    }
 
-                        if (damageObject.Value != null)
+                    await _mainWindow?.Dispatcher?.InvokeAsync(async () =>
+                    {
+                        var mainHandItem = ItemController.GetItemByIndex(healthChangeObject.Value?.CharacterEquipment?.MainHand ?? 0);
+
+                        if (healthChangeObject.Value != null && !double.IsNaN(healthChangeObject.Value.Damage) && healthChangeObject.Value.Damage > 0)
                         {
                             var damageMeterFragment = new DamageMeterFragment
                             {
-                                CauserGuid = damageObject.Value.UserGuid,
-                                Damage = damageObject.Value.Damage.ToShortNumberString(),
-                                Dps = damageObject.Value.Dps,
-                                DamageInPercent = (double) damageObject.Value.Damage / highestDamage * 100,
-                                DamagePercentage = GetDamagePercentage(entities, damageObject.Value.Damage),
-                                Name = damageObject.Value.Name,
-                                CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, damageObject.Value?.CharacterEquipment?.MainHand)
+                                CauserGuid = healthChangeObject.Value.UserGuid,
+                                Damage = healthChangeObject.Value.Damage.ToShortNumberString(),
+                                Dps = healthChangeObject.Value.Dps,
+                                DamageInPercent = (double) healthChangeObject.Value.Damage / highestDamage * 100,
+                                DamagePercentage = GetDamagePercentage(entities, healthChangeObject.Value.Damage),
+
+                                Heal = healthChangeObject.Value.Heal.ToShortNumberString(),
+                                Hps = healthChangeObject.Value.Hps,
+                                HealInPercent = (double) healthChangeObject.Value.Heal / highestHeal * 100,
+                                HealPercentage = GetHealPercentage(entities, healthChangeObject.Value.Heal),
+
+                                Name = healthChangeObject.Value.Name,
+                                CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, healthChangeObject.Value?.CharacterEquipment?.MainHand)
                             };
 
                             _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
@@ -129,8 +174,6 @@ namespace StatisticsAnalysisTool.Network.Controller
                     });
                 }
             }
-
-            _isDamageMeterUiUpdateBlocked = false;
         }
 
         public void ResetDamageMeter()
@@ -138,10 +181,11 @@ namespace StatisticsAnalysisTool.Network.Controller
             _trackingController.EntityController.ResetEntitiesDamageTimes();
             _trackingController.EntityController.ResetEntitiesDamage();
             _trackingController.EntityController.ResetEntitiesDamageStartTime();
-            _isDamageMeterUiUpdateBlocked = false;
 
             _mainWindow?.Dispatcher?.InvokeAsync(() => { _mainWindowViewModel?.DamageMeter?.Clear(); });
         }
+
+        private HealthChangeType GetHealthChangeType(double healthChange) => healthChange <= 0 ? HealthChangeType.Damage : HealthChangeType.Heal;
 
         private async Task<Item> SetItemInfoIfSlotTypeMainHandAsync(Item currentItem, int? newIndex)
         {
@@ -180,10 +224,21 @@ namespace StatisticsAnalysisTool.Network.Controller
             return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.Damage);
         }
 
+        private long GetHighestHeal(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
+        {
+            return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.Heal);
+        }
+
         private double GetDamagePercentage(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerDamage)
         {
             var totalDamage = playerObjects.Sum(x => x.Value.Damage);
             return 100.00 / totalDamage * playerDamage;
+        }
+
+        private double GetHealPercentage(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerHeal)
+        {
+            var totalHeal = playerObjects.Sum(x => x.Value.Heal);
+            return 100.00 / totalHeal * playerHeal;
         }
 
         #endregion
@@ -228,7 +283,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             for (var i = 0; i < runs; i++)
             {
-                UpdateDamageMeterUi(entities);
+                await UpdateDamageMeterUiAsync(entities);
                 await Task.Delay(1080);
 
                 foreach (var entity in entities)
@@ -239,6 +294,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     }
 
                     entity.Value.Damage += _random.Next(10, 500);
+                    entity.Value.Heal += _random.Next(10, 750);
                     entity.Value.AddCombatTime(new TimeCollectObject(DateTime.UtcNow)
                     {
                         EndTime = DateTime.UtcNow.AddSeconds(_random.Next(1, 35))
@@ -262,6 +318,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     },
                     CombatTime = new TimeSpan(0, 0, 0, randomPlayer.RandomTime),
                     Damage = randomPlayer.Damage,
+                    Heal = randomPlayer.Heal,
                     Name = GenerateName(randomPlayer.Name),
                     ObjectSubType = GameObjectSubType.Player,
                     ObjectType = GameObjectType.Player,
@@ -278,6 +335,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 CauserGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000"),
                 Damage = _random.Next(500, 9999),
+                Heal = _random.Next(500, 9999),
                 ObjectId = _random.Next(20, 9999),
                 Name = _random.Next(3, 10),
                 RandomTime = _random.Next(1, 1000)
@@ -288,6 +346,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             public Guid CauserGuid { get; set; }
             public int Damage { get; set; }
+            public int Heal { get; set; }
             public int ObjectId { get; set; }
             public int Name { get; set; }
             public int RandomTime { get; set; }

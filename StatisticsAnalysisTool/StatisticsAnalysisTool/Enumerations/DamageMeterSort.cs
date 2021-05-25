@@ -4,6 +4,8 @@
     {
         Damage,
         Dps,
-        Name
+        Name, 
+        Heal,
+        Hps
     }
 }

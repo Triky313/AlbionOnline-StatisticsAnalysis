@@ -19,7 +19,9 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public List<TimeCollectObject> CombatTimes { get; } = new List<TimeCollectObject>();
         public TimeSpan CombatTime { get; set; } = new TimeSpan(1);
         public long Damage { get; set; }
+        public long Heal { get; set; }
         public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);
+        public double Hps => Utilities.GetValuePerSecondToDouble(Heal, CombatStart, CombatTime, 9999);
 
         public override string ToString()
         {
