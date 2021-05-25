@@ -4,11 +4,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace StatisticsAnalysisTool.Common
 {
     public static class ExtensionMethod
     {
+        public static string ToUTF8(this string text)
+        {
+            var bytes = Encoding.Default.GetBytes(text);
+            return Encoding.UTF8.GetString(bytes);
+        }
+
         public static void OrderByReference<T>(this ObservableCollection<T> collection, List<T> comparison)
         {
             for (var i = 0; i < comparison.Count; i++)

@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Common
         public static ObservableCollection<Item> Items;
 
         private static readonly string FullItemInformationFilePath =
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FullItemInformationFileName);
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory.ToUTF8(), Settings.Default.FullItemInformationFileName.ToUTF8());
 
         private static ObservableCollection<ItemInformation> _itemInformationList = new ObservableCollection<ItemInformation>();
 
@@ -42,10 +42,14 @@ namespace StatisticsAnalysisTool.Common
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {
             if (localizedNames == null)
+            {
                 return alternativeName;
+            }
 
             if (string.IsNullOrEmpty(currentLanguage))
+            {
                 currentLanguage = LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper();
+            }
 
             switch (FrequentlyValues.GameLanguages
                 .FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase)).Key)
@@ -183,10 +187,12 @@ namespace StatisticsAnalysisTool.Common
         public static async Task<bool> GetItemListFromJsonAsync()
         {
             var url = Settings.Default.ItemListSourceUrl;
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory.ToUTF8()}{Settings.Default.ItemListFileName.ToUTF8()}";
 
             if (!GetItemListSourceUrlIfExist(ref url))
+            {
                 return false;
+            }
 
             if (File.Exists(localFilePath))
             {
@@ -210,11 +216,13 @@ namespace StatisticsAnalysisTool.Common
         {
             if (string.IsNullOrEmpty(Settings.Default.ItemListSourceUrl))
             {
-                url = Settings.Default.DefaultItemListSourceUrl;
+                url = Settings.Default.DefaultItemListSourceUrl.ToUTF8();
                 if (string.IsNullOrEmpty(url))
+                {
                     return false;
+                }
 
-                Settings.Default.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
+                Settings.Default.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl.ToUTF8();
                 MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
             }
 
@@ -225,7 +233,7 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", Encoding.UTF8);
+                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory.ToUTF8()}{Settings.Default.ItemListFileName.ToUTF8()}", Encoding.UTF8);
                 return ConvertItemJsonObjectToItem(JsonConvert.DeserializeObject<ObservableCollection<ItemJsonObject>>(localItemString));
             }
             catch
@@ -260,8 +268,7 @@ namespace StatisticsAnalysisTool.Common
                         using (var content = response.Content)
                         {
                             var fileString = await content.ReadAsStringAsync();
-                            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", fileString,
-                                Encoding.UTF8);
+                            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory.ToUTF8()}{Settings.Default.ItemListFileName.ToUTF8()}", fileString, Encoding.UTF8);
                             return true;
                         }
                     }
@@ -275,7 +282,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static void SetFavoriteItemsFromLocalFile()
         {
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory.ToUTF8()}{Settings.Default.FavoriteItemsFileName.ToUTF8()}";
             if (File.Exists(localFilePath))
             {
                 try
@@ -300,7 +307,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static void SaveFavoriteItemsToLocalFile()
         {
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory.ToUTF8()}{Settings.Default.FavoriteItemsFileName.ToUTF8()}";
             var favoriteItems = Items.Where(x => x.IsFavorite);
             var toSaveFavoriteItems = favoriteItems.Select(x => x.UniqueName);
             var fileString = JsonConvert.SerializeObject(toSaveFavoriteItems);
