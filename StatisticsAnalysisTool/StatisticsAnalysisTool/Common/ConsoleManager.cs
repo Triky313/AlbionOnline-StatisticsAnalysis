@@ -94,6 +94,7 @@ namespace StatisticsAnalysisTool.Common
         private const string _errorColor = "#ca3431";
         private const string _warnColor = "#faa627";
         private const string _eventColor = "#248A84";
+        private const string _eventMapChangeColor = "#0279be";
 
         public static void WriteLineForNetworkHandler(string name, Dictionary<byte, object> parameters)
         {
@@ -121,6 +122,14 @@ namespace StatisticsAnalysisTool.Common
             {
                 Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {e.Message}".Pastel(_errorColor));
                 Console.WriteLine($"{e.StackTrace}".Pastel(_errorColor));
+            }
+        }
+
+        public static void WriteLineForMessage(Type declaringType, string message)
+        {
+            if (HasConsole)
+            {
+                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {message}".Pastel(_eventMapChangeColor));
             }
         }
     }

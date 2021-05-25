@@ -228,11 +228,23 @@ namespace StatisticsAnalysisTool.ViewModels
                 Name = Translation.SortByName,
                 DamageMeterSortType = DamageMeterSortType.Name
             };
+            var sortByHealStruct = new DamageMeterSortStruct
+            {
+                Name = Translation.SortByHeal,
+                DamageMeterSortType = DamageMeterSortType.Heal
+            };
+            var sortByHpsStruct = new DamageMeterSortStruct
+            {
+                Name = Translation.SortByHps,
+                DamageMeterSortType = DamageMeterSortType.Hps
+            };
 
             DamageMeterSort.Clear();
             DamageMeterSort.Add(sortByDamageStruct);
             DamageMeterSort.Add(sortByDpsStruct);
             DamageMeterSort.Add(sortByNameStruct);
+            DamageMeterSort.Add(sortByHealStruct);
+            DamageMeterSort.Add(sortByHpsStruct);
             DamageMeterSortSelection = sortByDamageStruct;
 
             #endregion
@@ -722,20 +734,37 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void SetDamageMeterSort()
         {
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Damage)
+            switch (DamageMeterSortSelection.DamageMeterSortType)
             {
-                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
-                return;
+                case DamageMeterSortType.Damage:
+                    SetIsDamageMeterShowing(DamageMeter, true);
+                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList()); 
+                    return;
+                case DamageMeterSortType.Dps:
+                    SetIsDamageMeterShowing(DamageMeter, true);
+                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
+                    return;
+                case DamageMeterSortType.Name:
+                    SetIsDamageMeterShowing(DamageMeter, true);
+                    DamageMeter.OrderByReference(DamageMeter.OrderBy(x => x.Name).ToList());
+                    return;
+                case DamageMeterSortType.Heal:
+                    SetIsDamageMeterShowing(DamageMeter, false);
+                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.HealInPercent).ToList());
+                    return;
+                case DamageMeterSortType.Hps:
+                    SetIsDamageMeterShowing(DamageMeter, false);
+                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Hps).ToList());
+                    break;
             }
+        }
 
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Dps)
+        private void SetIsDamageMeterShowing(IEnumerable<DamageMeterFragment> damageMeter, bool isDamageMeterShowing)
+        {
+            foreach (var fragment in damageMeter)
             {
-                DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
-                return;
+                fragment.IsDamageMeterShowing = isDamageMeterShowing;
             }
-
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
-                DamageMeter.OrderByReference(DamageMeter.OrderBy(x => x.Name).ToList());
         }
 
         #endregion
