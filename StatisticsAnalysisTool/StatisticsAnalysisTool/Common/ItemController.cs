@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Common
         public static ObservableCollection<Item> Items;
 
         private static readonly string FullItemInformationFilePath =
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory.ToUTF8(), Settings.Default.FullItemInformationFileName.ToUTF8());
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FullItemInformationFileName);
 
         private static ObservableCollection<ItemInformation> _itemInformationList = new ObservableCollection<ItemInformation>();
 
@@ -187,7 +187,7 @@ namespace StatisticsAnalysisTool.Common
         public static async Task<bool> GetItemListFromJsonAsync()
         {
             var url = Settings.Default.ItemListSourceUrl;
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory.ToUTF8()}{Settings.Default.ItemListFileName.ToUTF8()}";
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
 
             if (!GetItemListSourceUrlIfExist(ref url))
             {
@@ -216,13 +216,13 @@ namespace StatisticsAnalysisTool.Common
         {
             if (string.IsNullOrEmpty(Settings.Default.ItemListSourceUrl))
             {
-                url = Settings.Default.DefaultItemListSourceUrl.ToUTF8();
+                url = Settings.Default.DefaultItemListSourceUrl;
                 if (string.IsNullOrEmpty(url))
                 {
                     return false;
                 }
 
-                Settings.Default.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl.ToUTF8();
+                Settings.Default.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
                 MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
             }
 
@@ -233,7 +233,7 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory.ToUTF8()}{Settings.Default.ItemListFileName.ToUTF8()}", Encoding.UTF8);
+                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", Encoding.UTF8);
                 return ConvertItemJsonObjectToItem(JsonConvert.DeserializeObject<ObservableCollection<ItemJsonObject>>(localItemString));
             }
             catch
@@ -268,7 +268,7 @@ namespace StatisticsAnalysisTool.Common
                         using (var content = response.Content)
                         {
                             var fileString = await content.ReadAsStringAsync();
-                            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory.ToUTF8()}{Settings.Default.ItemListFileName.ToUTF8()}", fileString, Encoding.UTF8);
+                            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", fileString, Encoding.UTF8);
                             return true;
                         }
                     }
@@ -282,7 +282,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static void SetFavoriteItemsFromLocalFile()
         {
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory.ToUTF8()}{Settings.Default.FavoriteItemsFileName.ToUTF8()}";
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
             if (File.Exists(localFilePath))
             {
                 try
@@ -307,7 +307,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static void SaveFavoriteItemsToLocalFile()
         {
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory.ToUTF8()}{Settings.Default.FavoriteItemsFileName.ToUTF8()}";
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
             var favoriteItems = Items.Where(x => x.IsFavorite);
             var toSaveFavoriteItems = favoriteItems.Select(x => x.UniqueName);
             var fileString = JsonConvert.SerializeObject(toSaveFavoriteItems);
