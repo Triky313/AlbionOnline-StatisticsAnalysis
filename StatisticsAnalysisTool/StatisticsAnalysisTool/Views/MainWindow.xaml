@@ -331,7 +331,7 @@
                         
                         <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,31,0,0" VerticalAlignment="Top"/>
                         <ScrollViewer Margin="0,35,0,0">
-                            <ItemsControl ItemsSource="{Binding DamageMeter}"/>
+                            <ItemsControl ItemsSource="{Binding DamageMeter, IsAsync=True, Mode=OneWay}"/>
                         </ScrollViewer>
 
                         <Grid Visibility="{Binding IsDamageMeterPopupVisible, FallbackValue=Hidden}" Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.Second}">

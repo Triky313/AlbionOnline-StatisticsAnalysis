@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Common
 
         private static void Changing(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (double.IsNaN((double) e.OldValue) || double.IsNaN((double) e.NewValue))
+            if (double.IsNaN((double) e.OldValue) || double.IsNaN((double) e.NewValue) || double.IsInfinity((double) e.OldValue) || double.IsInfinity((double) e.NewValue))
             {
                 return;
             }
