@@ -7,7 +7,6 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -156,11 +155,12 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        private async Task<bool> AddDamageMeterFragmentAsync(KeyValuePair<Guid, PlayerGameObject> healthChangeObject, List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
+        private async Task AddDamageMeterFragmentAsync(KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
+            List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
             if (healthChangeObject.Value == null || double.IsNaN(healthChangeObject.Value.Damage) || healthChangeObject.Value.Damage <= 0)
             {
-                return false;
+                return;
             }
 
             var mainHandItem = ItemController.GetItemByIndex(healthChangeObject.Value?.CharacterEquipment?.MainHand ?? 0);
@@ -183,16 +183,6 @@ namespace StatisticsAnalysisTool.Network.Controller
             };
 
             _mainWindowViewModel.DamageMeter.Add(damageMeterFragment);
-
-            Debug.Print($"### Add DMG: {damageMeterFragment?.Damage} | DPS: {damageMeterFragment?.Dps} | Guid: {damageMeterFragment?.CauserGuid}");
-            var fragmentString = "List after add: ";
-            foreach (var dmFragment in _mainWindowViewModel.DamageMeter)
-            {
-                fragmentString += $"{dmFragment.Name}, {dmFragment.CauserGuid}, {dmFragment.Damage} | ";
-            }
-            Debug.Print(fragmentString);
-
-            return true;
         }
 
         public void ResetDamageMeter()
