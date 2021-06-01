@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.Common
                 }
             }
         }
-
+        
         public static string ToShortNumberString(this long num)
         {
             return GetShortNumber(num);
