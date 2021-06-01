@@ -144,9 +144,13 @@ namespace StatisticsAnalysisTool.Network.Controller
                         if (removableItem != null)
                         {
                             if (_mainWindow.Dispatcher.CheckAccess())
+                            {
                                 _mainWindowViewModel.TrackingNotifications.Remove(removableItem);
+                            }
                             else
+                            {
                                 _mainWindow.Dispatcher.Invoke(delegate { _mainWindowViewModel.TrackingNotifications.Remove(removableItem); });
+                            }
                         }
                     }
                 }

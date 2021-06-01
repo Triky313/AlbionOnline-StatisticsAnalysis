@@ -342,6 +342,8 @@
   <translation name="CURRENT_MAP">CURRENT MAP</translation>
   <translation name="KILLDED_BY">killed by</translation>
   <translation name="DUNGEON">Dungeon</translation>
+  <translation name="ARENA">Arena</translation>
+  <translation name="EXPEDITION">Expedition</translation>
   <translation name="CORRUPTED_LAIR">Corrupted Lair</translation>
   <translation name="HIDEOUT">Hideout</translation>
   <translation name="DAY">Day</translation>

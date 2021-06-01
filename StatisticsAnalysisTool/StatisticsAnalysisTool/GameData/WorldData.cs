@@ -68,6 +68,10 @@ namespace StatisticsAnalysisTool.GameData
                     return LanguageController.Translation("ISLAND");
                 case MapType.Hideout:
                     return LanguageController.Translation("HIDEOUT");
+                case MapType.Expedition:
+                    return LanguageController.Translation("EXPEDITION");
+                case MapType.Arena:
+                    return LanguageController.Translation("ARENA");
                 default:
                     return LanguageController.Translation("UNKNOWN");
             }
@@ -84,6 +88,10 @@ namespace StatisticsAnalysisTool.GameData
             if (index.ToUpper().Contains("ISLAND")) return MapType.Island;
 
             if (index.ToUpper().Contains("HIDEOUT")) return MapType.Hideout;
+
+            if (index.ToUpper().Contains("EXPEDITION")) return MapType.Expedition;
+
+            if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
 
             return MapType.Unknown;
         }
@@ -217,6 +225,8 @@ namespace StatisticsAnalysisTool.GameData
         CorruptedDungeon,
         Island,
         Hideout,
+        Expedition,
+        Arena,
         Unknown
     }
 }
