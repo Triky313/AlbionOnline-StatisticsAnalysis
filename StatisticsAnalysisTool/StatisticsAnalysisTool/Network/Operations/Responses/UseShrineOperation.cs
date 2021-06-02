@@ -12,9 +12,6 @@ namespace StatisticsAnalysisTool.Network.Handler
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public bool InActiveCombat;
-        public bool InPassiveCombat;
-
         public UseShrineOperation(Dictionary<byte, object> parameters) : base(parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
@@ -26,16 +23,6 @@ namespace StatisticsAnalysisTool.Network.Handler
                 foreach (var parameter in parameters)
                 {
                     Debug.Print($"{parameter}");
-                }
-
-                if (parameters.ContainsKey(1))
-                {
-                    InActiveCombat = parameters[1] as bool? ?? false;
-                }
-
-                if (parameters.ContainsKey(2))
-                {
-                    InPassiveCombat = parameters[2] as bool? ?? false;
                 }
             }
             catch (Exception e)

@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.Network.Handler
     {
         private readonly TrackingController _trackingController;
 
-        public UseShrineEventHandler(TrackingController trackingController) : base((int) EventCodes.NewShrine)
+        public UseShrineEventHandler(TrackingController trackingController) : base((int) OperationCodes.UseShrine)
         {
             _trackingController = trackingController;
         }
