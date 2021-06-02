@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-using Albion.Network;
+﻿using Albion.Network;
 using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.GameData;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses
 {
@@ -20,11 +20,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
             try
             {
                 Debug.Print("---------- UserInformation (Response) ----------");
-                //foreach (var parameter in parameters)
-                //{
-                //    Debug.Print($"{parameter}");
-                //}
-
+                
                 UserObjectId = null;
                 if (parameters.ContainsKey(0))
                 {
@@ -60,20 +56,34 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(36)) Reputation = parameters[36].ObjectToDouble();
 
                 if (parameters.ContainsKey(38) && parameters[38] != null && parameters[38] is long[] reSpecArray && reSpecArray.Length > 1)
+                {
                     ReSpecPoints = FixPoint.FromInternalValue(reSpecArray[1]);
+                }
 
                 if (parameters.ContainsKey(51))
+                {
                     GuildName = string.IsNullOrEmpty(parameters[51].ToString()) ? string.Empty : parameters[51].ToString();
+                }
 
                 if (parameters.ContainsKey(58))
+                {
                     MainMapIndex = string.IsNullOrEmpty(parameters[58].ToString()) ? string.Empty : parameters[58].ToString();
+                }
 
-                if (parameters.ContainsKey(61)) PlayTimeInSeconds = parameters[61].ObjectToInt();
+                if (parameters.ContainsKey(61))
+                {
+                    PlayTimeInSeconds = parameters[61].ObjectToInt();
+                }
 
-                if (parameters.ContainsKey(69))
-                    AllianceName = string.IsNullOrEmpty(parameters[69].ToString()) ? string.Empty : parameters[69].ToString();
+                if (parameters.ContainsKey(70))
+                {
+                    AllianceName = string.IsNullOrEmpty(parameters[70].ToString()) ? string.Empty : parameters[70].ToString();
+                }
 
-                if (parameters.ContainsKey(92)) CurrentDailyBonusPoints = parameters[92].ObjectToLong();
+                if (parameters.ContainsKey(92))
+                {
+                    CurrentDailyBonusPoints = parameters[92].ObjectToLong();
+                }
             }
             catch (Exception e)
             {
