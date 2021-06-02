@@ -224,6 +224,7 @@
     <Compile Include="Network\Handler\LeaveEventHandler.cs" />
     <Compile Include="Network\Handler\CharacterEquipmentChangedEventHandler.cs" />
     <Compile Include="Network\Handler\NewMobEventHandler.cs" />
+    <Compile Include="Network\Handler\UseShrineEventHandler.cs" />
     <Compile Include="Network\Handler\PartyMakeLeaderEventHandler.cs" />
     <Compile Include="Network\Handler\NewShrineEventHandler.cs" />
     <Compile Include="Network\Handler\InCombatStateUpdateEventHandler.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Network\Notification\FactionFlagPointsNotificationFragment.cs" />
     <Compile Include="Enumerations\HandlerType.cs" />
     <Compile Include="Network\Notification\SilverNotificationFragment.cs" />
+    <Compile Include="Network\Operations\Responses\UseShrineOperation.cs" />
     <Compile Include="Network\Operations\Responses\PartyMakeLeaderResponse.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
     <Compile Include="GameData\LootChestData.cs" />
