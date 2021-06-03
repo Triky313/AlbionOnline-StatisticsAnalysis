@@ -82,13 +82,13 @@ namespace StatisticsAnalysisTool.Network.Notification
             Status = dungeonObject.Status;
 
             var dungeonsChestFragments = new ObservableCollection<DungeonChestFragment>();
-            foreach (var dungeonChest in dungeonObject.DungeonChests)
+            foreach (var dungeonChest in dungeonObject.DungeonEventObjects)
             {
                 dungeonsChestFragments.Add(new DungeonChestFragment()
                 {
                     Id = dungeonChest.Id,
                     IsBossChest = dungeonChest.IsBossChest,
-                    IsChestOpen = dungeonChest.IsChestOpen,
+                    IsChestOpen = dungeonChest.IsOpen,
                     Opened = dungeonChest.Opened,
                     Rarity = dungeonChest.Rarity,
                     Type = dungeonChest.Type,

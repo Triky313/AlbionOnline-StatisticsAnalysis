@@ -118,14 +118,14 @@ namespace StatisticsAnalysisTool.Network.Controller
                 try
                 {
                     var dun = GetCurrentDungeon((Guid) _currentGuid);
-                    var chest = dun?.DungeonChests?.FirstOrDefault(x => x.Id == id);
+                    var chest = dun?.DungeonEventObjects?.FirstOrDefault(x => x.Id == id);
 
                     if (chest == null)
                     {
                         return;
                     }
 
-                    chest.IsChestOpen = true;
+                    chest.IsOpen = true;
                     chest.Opened = DateTime.UtcNow;
                 }
                 catch (Exception e)
@@ -141,30 +141,70 @@ namespace StatisticsAnalysisTool.Network.Controller
         public void SetDungeonChestInformation(int id, string uniqueName)
         {
             if (_currentGuid != null && uniqueName != null)
+            {
                 try
                 {
                     var dun = GetCurrentDungeon((Guid) _currentGuid);
 
-                    if (dun == null || _currentGuid == null || dun.DungeonChests?.Any(x => x.Id == id) == true) return;
+                    if (dun == null || _currentGuid == null || dun.DungeonEventObjects?.Any(x => x.Id == id) == true) return;
 
                     var dunChest = new DungeonChestObject()
                     {
                         UniqueName = uniqueName,
-                        IsBossChest = LootChestData.IsBossChest(uniqueName),
-                        IsChestOpen = false,
+                        IsBossChest = DungeonObjectData.IsBossChest(uniqueName),
+                        IsOpen = false,
                         Id = id
                     };
 
-                    dun.DungeonChests?.Add(dunChest);
+                    dun.DungeonEventObjects?.Add(dunChest);
 
-                    dun.Faction = LootChestData.GetFaction(uniqueName);
-                    dun.Mode = LootChestData.GetDungeonMode(uniqueName);
+                    dun.Faction = DungeonObjectData.GetFaction(uniqueName);
+
+                    if (dun.Mode == DungeonMode.Unknown)
+                    {
+                        dun.Mode = DungeonObjectData.GetDungeonMode(uniqueName);
+                    }
                 }
                 catch (Exception e)
                 {
                     ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
                     Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 }
+            }
+        }
+
+        public void SetShrineInformation(int id, string uniqueName)
+        {
+            if (_currentGuid != null && uniqueName != null)
+            {
+                try
+                {
+                    var dun = GetCurrentDungeon((Guid) _currentGuid);
+                    if (dun == null || _currentGuid == null || dun.DungeonEventObjects?.Any(x => x.Id == id) == true)
+                    {
+                        return;
+                    }
+
+                    var shrine = new DungeonShrineObject()
+                    {
+                        UniqueName = uniqueName, 
+                        IsOpen = false,
+                        Id = id
+                    };
+
+                    dun.DungeonEventObjects?.Add(shrine);
+
+                    if (dun.Mode == DungeonMode.Unknown)
+                    {
+                        dun.Mode = DungeonObjectData.GetDungeonMode(uniqueName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                }
+            }
         }
 
         private DungeonObject CreateNewDungeon(string mainMapIndex, Guid guid)
@@ -174,8 +214,14 @@ namespace StatisticsAnalysisTool.Network.Controller
                 MainMapIndex = mainMapIndex,
                 EnterDungeonFirstTime = DateTime.UtcNow
             };
+            
             dungeon.GuidList.Add(guid);
             dungeon.AddStartTime(DateTime.UtcNow);
+
+            if (dungeon.Mode == DungeonMode.Unknown)
+            {
+                dungeon.Mode = DungeonObjectData.GetDungeonMode(mainMapIndex);
+            }
 
             return dungeon;
         }
@@ -211,7 +257,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         private int GetChests(DateTime? chestIsNewerAsDateTime, ChestRarity rarity)
         {
             var dungeons = _dungeons.Where(x => x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null);
-            return dungeons.Select(dun => dun.DungeonChests.Where(x => x.Rarity == rarity)).Select(filteredChests => filteredChests.Count()).Sum();
+            return dungeons.Select(dun => dun.DungeonEventObjects.OfType<DungeonChestObject>().Where(x => x.Rarity == rarity)).Select(filteredChests => filteredChests.Count()).Sum();
         }
 
         public int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
@@ -561,7 +607,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (_lastGuid != null && _currentGuid == null && _dungeons.Any(x => x.GuidList.Contains((Guid)_lastGuid))
                                   && (mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate))
             {
-                var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid) _lastGuid) && x.DungeonChests.Any(y => y.IsBossChest));
+                var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid) _lastGuid) && x.DungeonEventObjects.OfType<DungeonChestObject>().Any(y => y.IsBossChest));
                 if (dun != null)
                 {
                     dun.Status = DungeonStatus.Done;

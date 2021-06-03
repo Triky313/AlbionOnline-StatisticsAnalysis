@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         public List<Guid> GuidList { get; set; } = new List<Guid>();
         public DateTime EnterDungeonFirstTime { get; set; }
         public string MainMapIndex { get; set; }
-        public List<DungeonChestObject> DungeonChests { get; set; } = new List<DungeonChestObject>();
+        public List<DungeonEventObject> DungeonEventObjects { get; set; } = new List<DungeonEventObject>();
         public DungeonStatus Status { get; set; }
         public double Fame { get; set; }
         public double ReSpec { get; set; }

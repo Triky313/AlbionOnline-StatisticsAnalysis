@@ -3,7 +3,6 @@ using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -18,12 +17,12 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             try
             {
-                Debug.Print("----- UseShrine (Operation) -----");
+                //Debug.Print("----- UseShrine (Operation) -----");
 
-                foreach (var parameter in parameters)
-                {
-                    Debug.Print($"{parameter}");
-                }
+                //foreach (var parameter in parameters)
+                //{
+                //    Debug.Print($"{parameter}");
+                //}
             }
             catch (Exception e)
             {

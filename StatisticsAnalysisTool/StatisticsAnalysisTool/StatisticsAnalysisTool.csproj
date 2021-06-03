@@ -189,9 +189,13 @@
     <Compile Include="Enumerations\GameObjectSubType.cs" />
     <Compile Include="Enumerations\GameObjectType.cs" />
     <Compile Include="Enumerations\HealthChangeType.cs" />
+    <Compile Include="Enumerations\ShrineBuff.cs" />
+    <Compile Include="Enumerations\ShrineType.cs" />
     <Compile Include="Models\MainStatObject.cs" />
     <Compile Include="Models\EquipmentItem.cs" />
     <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
+    <Compile Include="Models\NetworkModel\DungeonEventObject.cs" />
+    <Compile Include="Models\NetworkModel\DungeonShrineObject.cs" />
     <Compile Include="Models\NetworkModel\DungeonChestObject.cs" />
     <Compile Include="Models\NetworkModel\DungeonObject.cs" />
     <Compile Include="Models\NetworkModel\TimeCollectObject.cs" />
@@ -242,7 +246,7 @@
     <Compile Include="Network\Operations\Responses\UseShrineOperation.cs" />
     <Compile Include="Network\Operations\Responses\PartyMakeLeaderResponse.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
-    <Compile Include="GameData\LootChestData.cs" />
+    <Compile Include="GameData\DungeonObjectData.cs" />
     <Compile Include="GameData\WorldData.cs" />
     <Compile Include="Network\Controller\TrackingController.cs" />
     <Compile Include="Enumerations\ChestStatus.cs" />
@@ -511,6 +515,15 @@
     <Resource Include="Resources\factionflag_martlock.png" />
     <Resource Include="Resources\factionflag_thetford.png" />
     <Resource Include="Resources\shields.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\shrine_fame.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\shrine_silver.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\shrine_combat_buff.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="Sounds\alert1.wav">
