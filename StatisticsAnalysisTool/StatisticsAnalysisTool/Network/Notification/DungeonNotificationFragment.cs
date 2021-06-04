@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _diedInDungeon;
         private string _diedName;
         private string _killedBy;
-        private ObservableCollection<DungeonChestFragment> _dungeonChests = new ObservableCollection<DungeonChestFragment>();
+        private ObservableCollection<DungeonEventObjectFragment> _dungeonChests = new ObservableCollection<DungeonEventObjectFragment>();
         private DateTime _enterDungeonFirstTime;
         private Faction _faction = Faction.Unknown;
         private double _fame;
@@ -81,25 +81,27 @@ namespace StatisticsAnalysisTool.Network.Notification
             Mode = dungeonObject.Mode;
             Status = dungeonObject.Status;
 
-            var dungeonsChestFragments = new ObservableCollection<DungeonChestFragment>();
-            foreach (var dungeonChest in dungeonObject.DungeonEventObjects)
+            var dungeonsChestFragments = new ObservableCollection<DungeonEventObjectFragment>();
+            foreach (var dungeonEventObject in dungeonObject.DungeonEventObjects)
             {
-                dungeonsChestFragments.Add(new DungeonChestFragment()
+                dungeonsChestFragments.Add(new DungeonEventObjectFragment()
                 {
-                    Id = dungeonChest.Id,
-                    IsBossChest = dungeonChest.IsBossChest,
-                    IsChestOpen = dungeonChest.IsOpen,
-                    Opened = dungeonChest.Opened,
-                    Rarity = dungeonChest.Rarity,
-                    Type = dungeonChest.Type,
-                    UniqueName = dungeonChest.UniqueName
+                    Id = dungeonEventObject.Id,
+                    IsBossChest = dungeonEventObject.IsBossChest,
+                    IsChestOpen = dungeonEventObject.IsOpen,
+                    Opened = dungeonEventObject.Opened,
+                    Rarity = dungeonEventObject.Rarity,
+                    Type = dungeonEventObject.ObjectType,
+                    UniqueName = dungeonEventObject.UniqueName,
+                    ShrineType = dungeonEventObject.ShrineType,
+                    ShrineBuff = dungeonEventObject.ShrineBuff
                 });
             }
 
             DungeonChests = dungeonsChestFragments;
         }
 
-        public ObservableCollection<DungeonChestFragment> DungeonChests
+        public ObservableCollection<DungeonEventObjectFragment> DungeonChests
         {
             get => _dungeonChests;
             set

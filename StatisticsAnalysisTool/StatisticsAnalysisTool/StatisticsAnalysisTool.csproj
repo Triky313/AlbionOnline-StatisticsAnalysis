@@ -195,8 +195,6 @@
     <Compile Include="Models\EquipmentItem.cs" />
     <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
     <Compile Include="Models\NetworkModel\DungeonEventObject.cs" />
-    <Compile Include="Models\NetworkModel\DungeonShrineObject.cs" />
-    <Compile Include="Models\NetworkModel\DungeonChestObject.cs" />
     <Compile Include="Models\NetworkModel\DungeonObject.cs" />
     <Compile Include="Models\NetworkModel\TimeCollectObject.cs" />
     <Compile Include="Models\NetworkModel\GameObject.cs" />
@@ -250,7 +248,7 @@
     <Compile Include="GameData\WorldData.cs" />
     <Compile Include="Network\Controller\TrackingController.cs" />
     <Compile Include="Enumerations\ChestStatus.cs" />
-    <Compile Include="Enumerations\ChestType.cs" />
+    <Compile Include="Enumerations\DungeonEventObjectType.cs" />
     <Compile Include="Enumerations\AttributeStatOperator.cs" />
     <Compile Include="Enumerations\EventCodes.cs" />
     <Compile Include="Enumerations\OperationCodes.cs" />
@@ -274,7 +272,7 @@
     <Compile Include="Network\Handler\TestHandler2.cs" />
     <Compile Include="Network\Handler\TestHandler.cs" />
     <Compile Include="Network\Handler\DiedEventHandler.cs" />
-    <Compile Include="Network\Notification\DungeonChestFragment.cs" />
+    <Compile Include="Network\Notification\DungeonEventObjectFragment.cs" />
     <Compile Include="Network\Notification\DungeonNotificationFragment.cs" />
     <Compile Include="Enumerations\DungeonStatus.cs" />
     <Compile Include="Enumerations\ChestRarity.cs" />

@@ -125,22 +125,37 @@ namespace StatisticsAnalysisTool.GameData
             return LootChests != null && !LootChests.IsNullOrEmpty();
         }
 
-        #region Chest
-
-        public static ChestType GetChestType(string value)
+        public static DungeonEventObjectType GetDungeonEventObjectType(string value)
         {
+            if (value.Contains("SHRINE_COMBAT"))
+            {
+                return DungeonEventObjectType.CombatShrine;
+            }
+
+            if (value.Contains("SHRINE_SILVER"))
+            {
+                return DungeonEventObjectType.SilverShrine;
+            }
+
+            if (value.Contains("SHRINE_FAME"))
+            {
+                return DungeonEventObjectType.FameShrine;
+            }
+
             if (value.Contains("BOOKCHEST"))
             {
-                return ChestType.BookChest;
+                return DungeonEventObjectType.BookChest;
             }
 
             if (value.Contains("CHEST") || value.Contains("AVALON"))
             {
-                return ChestType.Chest;
+                return DungeonEventObjectType.Chest;
             }
 
-            return ChestType.Unknown;
+            return DungeonEventObjectType.Unknown;
         }
+
+        #region Chest
 
         public static ChestRarity GetChestRarity(string value)
         {
