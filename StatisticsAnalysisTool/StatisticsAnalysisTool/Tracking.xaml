@@ -715,7 +715,6 @@
 
     <DataTemplate DataType="{x:Type notification:DungeonEventObjectFragment}">
         <Grid Width="18" Margin="0 0 0 0">
-
             <Grid>
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
