@@ -1,9 +1,10 @@
 ﻿namespace StatisticsAnalysisTool.Enumerations
 {
-    public enum ChestType
+    public enum ShrineBuff
     {
         Unknown,
-        Chest,
-        BookChest
+        Fame,
+        Silver,
+        Combat
     }
 }

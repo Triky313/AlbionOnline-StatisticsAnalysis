@@ -5,18 +5,17 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class NewShrineEventHandler : EventPacketHandler<NewShrineEvent>
+    public class UseShrineEventHandler : RequestPacketHandler<UseShrineOperation>
     {
         private readonly TrackingController _trackingController;
 
-        public NewShrineEventHandler(TrackingController trackingController) : base((int) EventCodes.NewShrine)
+        public UseShrineEventHandler(TrackingController trackingController) : base((int) OperationCodes.UseShrine)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(NewShrineEvent value)
+        protected override async Task OnActionAsync(UseShrineOperation value)
         {
-            _trackingController.DungeonController?.SetDungeonEventObjectInformation(value.Id, value.UniqueName);
             await Task.CompletedTask;
         }
     }

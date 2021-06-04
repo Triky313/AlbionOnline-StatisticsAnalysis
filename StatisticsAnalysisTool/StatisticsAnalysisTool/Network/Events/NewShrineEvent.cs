@@ -3,7 +3,6 @@ using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -11,38 +10,36 @@ namespace StatisticsAnalysisTool.Network.Handler
     public class NewShrineEvent : BaseEvent
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public bool InActiveCombat;
-        public bool InPassiveCombat;
-
+        
         public NewShrineEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
             try
             {
-                Debug.Print("----- NewShrineEvent (Event) -----");
-
-                foreach (var parameter in parameters)
+                if (parameters.ContainsKey(0) && int.TryParse(parameters[0].ToString(), out var id))
                 {
-                    Debug.Print($"{parameter}");
+                    Id = id;
                 }
 
-                if (parameters.ContainsKey(1))
+                if (parameters.ContainsKey(3))
                 {
-                    InActiveCombat = parameters[1] as bool? ?? false;
+                    UniqueName = string.IsNullOrEmpty(parameters[3].ToString()) ? string.Empty : parameters[3].ToString();
                 }
 
-                if (parameters.ContainsKey(2))
+                if (parameters.ContainsKey(4))
                 {
-                    InPassiveCombat = parameters[2] as bool? ?? false;
+                    ObjectName = string.IsNullOrEmpty(parameters[4].ToString()) ? string.Empty : parameters[4].ToString();
                 }
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Debug(nameof(NewShrineEvent), e);
             }
         }
+
+        public int Id { get; set; }
+        public string UniqueName { get; set; }
+        public string ObjectName { get; set; }
     }
 }

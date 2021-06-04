@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
-    public class DungeonChestFragment : INotifyPropertyChanged
+    public class DungeonEventObjectFragment : INotifyPropertyChanged
     {
         private int _id;
         private bool _isBossChest;
@@ -16,8 +16,10 @@ namespace StatisticsAnalysisTool.Network.Notification
         private DateTime _opened;
         private ChestRarity _rarity;
         private ChestStatus _status;
-        private ChestType _type;
+        private DungeonEventObjectType _type;
         private string _uniqueName;
+        private ShrineType _shrineType;
+        private ShrineBuff _shrineBuff;
 
         public int Id
         {
@@ -49,7 +51,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public ChestType Type
+        public DungeonEventObjectType Type
         {
             get => _type;
             set
@@ -76,6 +78,26 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _status = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ShrineType ShrineType 
+        {
+            get => _shrineType;
+            set
+            {
+                _shrineType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ShrineBuff ShrineBuff
+        {
+            get => _shrineBuff;
+            set
+            {
+                _shrineBuff = value;
                 OnPropertyChanged();
             }
         }
@@ -119,11 +141,21 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonIgnore] 
         public string TranslationBookChest => LanguageController.Translation("BOOK_CHEST");
 
+        [JsonIgnore] 
+        public string TranslationCombatShrine => LanguageController.Translation("COMBAT_SHRINE");
+
+        [JsonIgnore] 
+        public string TranslationSilverShrine => LanguageController.Translation("SILVER_SHRINE");
+
+        [JsonIgnore] 
+        public string TranslationFameShrine => LanguageController.Translation("FAME_SHRINE");
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private ChestStatus SetStatus()
         {
             if (IsChestOpen)
+            {
                 switch (Rarity)
                 {
                     case ChestRarity.Standard:
@@ -135,7 +167,9 @@ namespace StatisticsAnalysisTool.Network.Notification
                     case ChestRarity.Legendary:
                         return ChestStatus.LegendaryChestOpen;
                 }
+            }
             else
+            {
                 switch (Rarity)
                 {
                     case ChestRarity.Standard:
@@ -147,6 +181,7 @@ namespace StatisticsAnalysisTool.Network.Notification
                     case ChestRarity.Legendary:
                         return ChestStatus.LegendaryChestClose;
                 }
+            }
 
             return ChestStatus.Unknown;
         }

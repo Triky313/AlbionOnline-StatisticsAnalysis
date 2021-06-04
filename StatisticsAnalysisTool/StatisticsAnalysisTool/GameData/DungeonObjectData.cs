@@ -16,25 +16,10 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.GameData
 {
-    public static class LootChestData
+    public static class DungeonObjectData
     {
         public static IEnumerable<LootChest> LootChests;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public static ChestType GetChestType(string value)
-        {
-            if (value.Contains("BOOKCHEST"))
-            {
-                return ChestType.BookChest;
-            }
-
-            if (value.Contains("CHEST") || value.Contains("AVALON"))
-            {
-                return ChestType.Chest;
-            }
-
-            return ChestType.Unknown;
-        }
 
         public static DungeonMode GetDungeonMode(string value)
         {
@@ -43,22 +28,21 @@ namespace StatisticsAnalysisTool.GameData
                 return DungeonMode.Corrupted;
             }
 
-            if (value.Contains("HELL_"))
+            if (value.Contains("HELL_") || value.Contains("HELLGATE"))
             {
                 return DungeonMode.HellGate;
             }
 
-            if (value.Contains("MORGANA_SOLO_CHEST") || value.Contains("KEEPER_SOLO_CHEST") || value.Contains("HERETIC_SOLO_CHEST") ||
-                value.Contains("UNDEAD_SOLO_CHEST")
+            if (value.Contains("MORGANA_SOLO_CHEST") || value.Contains("KEEPER_SOLO_CHEST") || value.Contains("HERETIC_SOLO_CHEST") || value.Contains("UNDEAD_SOLO_CHEST")
                 || value.Contains("MORGANA_SOLO_BOOKCHEST") || value.Contains("KEEPER_SOLO_BOOKCHEST") || value.Contains("HERETIC_SOLO_BOOKCHEST") ||
-                value.Contains("UNDEAD_SOLO_BOOKCHEST"))
+                value.Contains("UNDEAD_SOLO_BOOKCHEST") || value.Contains("GENERAL_SHRINE_COMBAT_BUFF"))
             {
                 return DungeonMode.Solo;
             }
 
             if (value.Contains("MORGANA_CHEST") || value.Contains("KEEPER_CHEST") || value.Contains("HERETIC_CHEST") || value.Contains("UNDEAD_CHEST")
                 || value.Contains("MORGANA_BOOKCHEST") || value.Contains("KEEPER_BOOKCHEST") || value.Contains("HERETIC_BOOKCHEST") ||
-                value.Contains("UNDEAD_BOOKCHEST"))
+                value.Contains("UNDEAD_BOOKCHEST") || value.Contains("SHRINE_SILVER_STANDARD") || value.Contains("SHRINE_FAME_STANDARD"))
             {
                 return DungeonMode.Standard;
             }
@@ -69,36 +53,6 @@ namespace StatisticsAnalysisTool.GameData
             }
 
             return DungeonMode.Unknown;
-        }
-
-        public static ChestRarity GetChestRarity(string value)
-        {
-            if (value.Contains("BOOKCHEST_STANDARD") || value.Contains("CHEST_STANDARD") || value.Contains("AVALON") && value.Contains("STANDARD"))
-            {
-                return ChestRarity.Standard;
-            }
-
-            if (value.Contains("BOOKCHEST_UNCOMMON") || value.Contains("CHEST_UNCOMMON") || value.Contains("CHEST_BOSS_UNCOMMON") || value.Contains("AVALON") && value.Contains("UNCOMMON"))
-            {
-                return ChestRarity.Uncommon;
-            }
-
-            if (value.Contains("BOOKCHEST_RARE") || value.Contains("CHEST_RARE") || value.Contains("CHEST_BOSS_RARE") || value.Contains("AVALON") && value.Contains("RARE"))
-            {
-                return ChestRarity.Rare;
-            }
-
-            if (value.Contains("BOOKCHEST_LEGENDARY") || value.Contains("CHEST_LEGENDARY") || value.Contains("CHEST_BOSS_LEGENDARY") || value.Contains("AVALON") && value.Contains("LEGENDARY"))
-            {
-                return ChestRarity.Legendary;
-            }
-
-            return ChestRarity.Unknown;
-        }
-
-        public static bool IsBossChest(string value)
-        {
-            return value.Contains("BOSS");
         }
 
         public static Faction GetFaction(string value)
@@ -170,6 +124,110 @@ namespace StatisticsAnalysisTool.GameData
             if (await GetLootChestListFromWebAsync(url)) LootChests = GetLootChestDataFromLocal();
             return LootChests != null && !LootChests.IsNullOrEmpty();
         }
+
+        public static DungeonEventObjectType GetDungeonEventObjectType(string value)
+        {
+            if (value.Contains("SHRINE_COMBAT"))
+            {
+                return DungeonEventObjectType.CombatShrine;
+            }
+
+            if (value.Contains("SHRINE_SILVER"))
+            {
+                return DungeonEventObjectType.SilverShrine;
+            }
+
+            if (value.Contains("SHRINE_FAME"))
+            {
+                return DungeonEventObjectType.FameShrine;
+            }
+
+            if (value.Contains("BOOKCHEST"))
+            {
+                return DungeonEventObjectType.BookChest;
+            }
+
+            if (value.Contains("CHEST") || value.Contains("AVALON"))
+            {
+                return DungeonEventObjectType.Chest;
+            }
+
+            return DungeonEventObjectType.Unknown;
+        }
+
+        #region Chest
+
+        public static ChestRarity GetChestRarity(string value)
+        {
+            if (value.Contains("BOOKCHEST_STANDARD") || value.Contains("CHEST_STANDARD") || value.Contains("AVALON") && value.Contains("STANDARD"))
+            {
+                return ChestRarity.Standard;
+            }
+
+            if (value.Contains("BOOKCHEST_UNCOMMON") || value.Contains("CHEST_UNCOMMON") || value.Contains("CHEST_BOSS_UNCOMMON") || value.Contains("AVALON") && value.Contains("UNCOMMON"))
+            {
+                return ChestRarity.Uncommon;
+            }
+
+            if (value.Contains("BOOKCHEST_RARE") || value.Contains("CHEST_RARE") || value.Contains("CHEST_BOSS_RARE") || value.Contains("AVALON") && value.Contains("RARE"))
+            {
+                return ChestRarity.Rare;
+            }
+
+            if (value.Contains("BOOKCHEST_LEGENDARY") || value.Contains("CHEST_LEGENDARY") || value.Contains("CHEST_BOSS_LEGENDARY") || value.Contains("AVALON") && value.Contains("LEGENDARY"))
+            {
+                return ChestRarity.Legendary;
+            }
+
+            return ChestRarity.Unknown;
+        }
+
+        public static bool IsBossChest(string value)
+        {
+            return value.Contains("BOSS");
+        }
+
+
+        #endregion
+
+        #region Shrine
+
+        public static ShrineBuff GetShrineBuff(string value)
+        {
+            if (value.Contains("SILVER"))
+            {
+                return ShrineBuff.Silver;
+            }
+
+            if (value.Contains("FAME"))
+            {
+                return ShrineBuff.Fame;
+            }
+
+            if (value.Contains("COMBAT"))
+            {
+                return ShrineBuff.Combat;
+            }
+
+            return ShrineBuff.Unknown;
+        }
+
+        public static ShrineType GetShrineType(string value)
+        {
+            if (value.Contains("STANDARD"))
+            {
+                return ShrineType.Standard;
+            }
+
+            if (value.Contains("COMBAT"))
+            {
+                return ShrineType.Combat;
+            }
+
+            return ShrineType.Unknown;
+        }
+
+        #endregion
 
         #region Helper methods
 

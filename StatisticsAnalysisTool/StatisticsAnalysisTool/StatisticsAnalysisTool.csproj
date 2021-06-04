@@ -189,10 +189,12 @@
     <Compile Include="Enumerations\GameObjectSubType.cs" />
     <Compile Include="Enumerations\GameObjectType.cs" />
     <Compile Include="Enumerations\HealthChangeType.cs" />
+    <Compile Include="Enumerations\ShrineBuff.cs" />
+    <Compile Include="Enumerations\ShrineType.cs" />
     <Compile Include="Models\MainStatObject.cs" />
     <Compile Include="Models\EquipmentItem.cs" />
     <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
-    <Compile Include="Models\NetworkModel\DungeonChestObject.cs" />
+    <Compile Include="Models\NetworkModel\DungeonEventObject.cs" />
     <Compile Include="Models\NetworkModel\DungeonObject.cs" />
     <Compile Include="Models\NetworkModel\TimeCollectObject.cs" />
     <Compile Include="Models\NetworkModel\GameObject.cs" />
@@ -224,6 +226,7 @@
     <Compile Include="Network\Handler\LeaveEventHandler.cs" />
     <Compile Include="Network\Handler\CharacterEquipmentChangedEventHandler.cs" />
     <Compile Include="Network\Handler\NewMobEventHandler.cs" />
+    <Compile Include="Network\Handler\UseShrineEventHandler.cs" />
     <Compile Include="Network\Handler\PartyMakeLeaderEventHandler.cs" />
     <Compile Include="Network\Handler\NewShrineEventHandler.cs" />
     <Compile Include="Network\Handler\InCombatStateUpdateEventHandler.cs" />
@@ -238,13 +241,14 @@
     <Compile Include="Network\Notification\FactionFlagPointsNotificationFragment.cs" />
     <Compile Include="Enumerations\HandlerType.cs" />
     <Compile Include="Network\Notification\SilverNotificationFragment.cs" />
+    <Compile Include="Network\Operations\Responses\UseShrineOperation.cs" />
     <Compile Include="Network\Operations\Responses\PartyMakeLeaderResponse.cs" />
     <Compile Include="Network\Time\GameTimeStamp.cs" />
-    <Compile Include="GameData\LootChestData.cs" />
+    <Compile Include="GameData\DungeonObjectData.cs" />
     <Compile Include="GameData\WorldData.cs" />
     <Compile Include="Network\Controller\TrackingController.cs" />
     <Compile Include="Enumerations\ChestStatus.cs" />
-    <Compile Include="Enumerations\ChestType.cs" />
+    <Compile Include="Enumerations\DungeonEventObjectType.cs" />
     <Compile Include="Enumerations\AttributeStatOperator.cs" />
     <Compile Include="Enumerations\EventCodes.cs" />
     <Compile Include="Enumerations\OperationCodes.cs" />
@@ -268,7 +272,7 @@
     <Compile Include="Network\Handler\TestHandler2.cs" />
     <Compile Include="Network\Handler\TestHandler.cs" />
     <Compile Include="Network\Handler\DiedEventHandler.cs" />
-    <Compile Include="Network\Notification\DungeonChestFragment.cs" />
+    <Compile Include="Network\Notification\DungeonEventObjectFragment.cs" />
     <Compile Include="Network\Notification\DungeonNotificationFragment.cs" />
     <Compile Include="Enumerations\DungeonStatus.cs" />
     <Compile Include="Enumerations\ChestRarity.cs" />
@@ -509,6 +513,15 @@
     <Resource Include="Resources\factionflag_martlock.png" />
     <Resource Include="Resources\factionflag_thetford.png" />
     <Resource Include="Resources\shields.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\shrine_fame.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\shrine_silver.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\shrine_combat_buff.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="Sounds\alert1.wav">
