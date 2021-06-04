@@ -672,7 +672,9 @@
                     </Grid>
                 </DockPanel>
             </StackPanel>
-            <!--<Button Content="Delete" Margin="0 2 20 2" MinWidth="75" HorizontalAlignment="Right" Command="{Binding Remove}" CommandParameter="true"></Button>-->
+            <!--<Grid Margin="0 2 20 2" Height="20" Width="20" HorizontalAlignment="Right">
+                <fa5:ImageAwesome Icon="Solid_Trash" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="FilterReset_MouseUp" />
+            </Grid>-->
         </Grid>
     </DataTemplate>
 
