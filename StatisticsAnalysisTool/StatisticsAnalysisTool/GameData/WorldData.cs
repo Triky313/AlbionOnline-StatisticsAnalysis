@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -92,6 +93,8 @@ namespace StatisticsAnalysisTool.GameData
             if (index.ToUpper().Contains("EXPEDITION")) return MapType.Expedition;
 
             if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
+
+            Debug.Print($"GetMapType unknown: {index}");
 
             return MapType.Unknown;
         }
