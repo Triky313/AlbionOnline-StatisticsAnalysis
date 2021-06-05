@@ -116,6 +116,18 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
+        public static void WriteLineForWarning(Type declaringType, string message)
+        {
+            if (HasConsole)
+            {
+                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {message}".Pastel(_warnColor));
+                if (!string.IsNullOrEmpty(message))
+                {
+                    Console.WriteLine($"{message}".Pastel(_warnColor));
+                }
+            }
+        }
+
         public static void WriteLineForError(Type declaringType, Exception e)
         {
             if (HasConsole)

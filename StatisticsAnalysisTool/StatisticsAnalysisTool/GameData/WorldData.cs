@@ -95,6 +95,8 @@ namespace StatisticsAnalysisTool.GameData
             if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
 
             Debug.Print($"GetMapType unknown: {index}");
+            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, $"MapType unknown: {index}");
+            Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - MapType unknown: {index}");
 
             return MapType.Unknown;
         }
