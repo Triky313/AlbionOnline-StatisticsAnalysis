@@ -127,7 +127,7 @@ namespace StatisticsAnalysisTool.Common
                 }
             }
         }
-
+        
         public static void WriteLineForError(Type declaringType, Exception e)
         {
             if (HasConsole)

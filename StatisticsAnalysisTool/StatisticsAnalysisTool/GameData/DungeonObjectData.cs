@@ -245,9 +245,9 @@ namespace StatisticsAnalysisTool.GameData
                         Encoding.UTF8);
                 return JsonConvert.DeserializeObject<LootChestRoot>(localItemString).LootChests.LootChest;
             }
-            catch
+            catch (Exception e)
             {
-                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, null);
+                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, e);
                 return new List<LootChest>();
             }
         }
