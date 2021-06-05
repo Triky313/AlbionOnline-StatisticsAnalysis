@@ -216,6 +216,9 @@ namespace StatisticsAnalysisTool.Network.Controller
                     dun.Faction = Faction.HellGate;
                     dun.Mode = DungeonMode.HellGate;
                     return;
+                case MapType.Expedition:
+                    dun.Mode = DungeonMode.Expedition;
+                    return;
                 default:
                     return;
             }
@@ -316,7 +319,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private bool IsClusterADungeonCluster(List<DungeonObject> dungeons, MapType mapType, Guid? mapGuid)
         {
-            if ((mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate) || mapGuid == null)
+            if ((mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate && mapType != MapType.Expedition) || mapGuid == null)
             {
                 if (_lastGuid != null)
                 {
@@ -572,7 +575,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         private void IsDungeonDoneCheck(MapType mapType)
         {
             if (_lastGuid != null && _currentGuid == null && _dungeons.Any(x => x.GuidList.Contains((Guid)_lastGuid))
-                                  && (mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate))
+                                  && (mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate && mapType != MapType.Expedition))
             {
                 var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid) _lastGuid) && x.DungeonEventObjects.Any(y => y.IsBossChest));
                 if (dun != null)

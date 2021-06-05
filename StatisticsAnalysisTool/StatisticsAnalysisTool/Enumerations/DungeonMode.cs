@@ -7,6 +7,7 @@
         Standard,
         Avalon,
         HellGate,
-        Corrupted
+        Corrupted,
+        Expedition
     }
 }

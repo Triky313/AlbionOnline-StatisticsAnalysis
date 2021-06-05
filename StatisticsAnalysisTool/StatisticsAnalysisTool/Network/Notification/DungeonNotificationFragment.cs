@@ -529,6 +529,8 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         [JsonIgnore] public string TranslationNumberOfDungeonFloors => LanguageController.Translation("NUMBER_OF_DUNGEON_FLOORS");
 
+        [JsonIgnore] public string TranslationExpedition => LanguageController.Translation("EXPEDITION");
+
         [JsonIgnore] public string TranslationSolo => LanguageController.Translation("SOLO");
 
         [JsonIgnore] public string TranslationStandard => LanguageController.Translation("STANDARD");

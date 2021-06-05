@@ -40,7 +40,7 @@ namespace StatisticsAnalysisTool.GameData
                 if (splitName.Length > 1 && index.ToLower().Contains('@'))
                 {
                     var mapType = GetMapType(splitName[0]);
-                    if ((mapType == MapType.RandomDungeon || mapType == MapType.CorruptedDungeon || mapType == MapType.HellGate) && !string.IsNullOrEmpty(splitName[1]))
+                    if ((mapType == MapType.RandomDungeon || mapType == MapType.CorruptedDungeon || mapType == MapType.HellGate || mapType == MapType.Expedition) && !string.IsNullOrEmpty(splitName[1]))
                     {
                         var mapGuid = new Guid(splitName[1]);
                         return mapGuid;

@@ -83,6 +83,8 @@
     <Color x:Key="Tracking.Off">#FF616172</Color>
 
     <!-- Faction colors -->
+    <Color x:Key="Dungeon.Mode.Expedition.1">#B857DB</Color>
+    <Color x:Key="Dungeon.Mode.Expedition.2">#8329A3</Color>
     <Color x:Key="Dungeon.Mode.HellGate.1">#EF1527</Color>
     <Color x:Key="Dungeon.Mode.HellGate.2">#9C1C26</Color>
     <Color x:Key="Dungeon.Mode.Corrupted.1">#FF662E</Color>

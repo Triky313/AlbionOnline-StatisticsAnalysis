@@ -469,6 +469,17 @@
 
     <Style x:Key="DungeonNotificationFragment.Grid.DungeonMode" TargetType="Grid">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Expedition}">
+                <Setter Property="ToolTip" Value="{Binding TranslationExpedition}"></Setter>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="{StaticResource Dungeon.Mode.Expedition.1}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Dungeon.Mode.Expedition.2}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.HellGate}">
                 <Setter Property="ToolTip" Value="{Binding TranslationSolo}"></Setter>
                 <Setter Property="Background">
