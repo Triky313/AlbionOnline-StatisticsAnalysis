@@ -23,6 +23,11 @@ namespace StatisticsAnalysisTool.GameData
 
         public static DungeonMode GetDungeonMode(string value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return DungeonMode.Unknown;
+            }
+
             if (value.Contains("CORRUPTED"))
             {
                 return DungeonMode.Corrupted;
