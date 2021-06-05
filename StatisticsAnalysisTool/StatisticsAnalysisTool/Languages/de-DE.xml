@@ -369,7 +369,7 @@
   <translation name="OPENED_RARE_CHESTS">Geöffnete Truhen (Selten)</translation>
   <translation name="OPENED_LEGENDARY_CHESTS">Geöffnete Truhen (Legendär)</translation>
 
-  <translation name="MAIN_TRACKER_DESCRIPTION_1">Der Fame den der Tracker trackt, ist der echte gesamt Fame. Heißt also, mit Premium und Satchel Fame. Fame im Profil eines Spielers, ist der normale Fame, ohne Premium oder sonstiger Sonder-Fame.</translation>
+  <translation name="MAIN_TRACKER_DESCRIPTION_1">Der Ruhm den der Tracker trackt, ist der echte gesamt Ruhm. Heißt also, mit Premium und Satchel Ruhm. Ruhm im Profil eines Spielers, ist der normale Ruhm, ohne Premium oder sonstiger Sonder-Fame.</translation>
   <translation name="DAMAGE_METER_DESCRIPTION_1">Damit Schaden von anderen Spielern in der Party erkannt wird, muss das Tool zuvor aktiviert sein und dann ein Spieler die Party verlassen oder ihr beitreten.</translation>
 
   <translation name="SORT_BY_DAMAGE">Nach Schaden sortieren</translation>
@@ -385,4 +385,7 @@
   <translation name="OPEN_OR_CLOSE_DEBUG_CONSOLE">Debug-Konsole öffnen oder schließen</translation>
   <translation name="CREATE_DESKTOP_SHORTCUT">Desktop-Verknüpfung erstellen</translation>
   <translation name="FAVORITE">Favorit</translation>
+  <translation name="SILVER_SHRINE">Silber Schrein</translation>
+  <translation name="FAME_SHRINE">Ruhm Schrein</translation>
+  <translation name="COMBAT_BUFF">Kampf Buff</translation>
 </translations>
