@@ -1,9 +1,19 @@
 ﻿using StatisticsAnalysisTool.Common;
+using System;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
     public class MarketOffer
     {
+        public MarketOffer()
+        {
+            CreatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public DateTime CreatedAt { get; }
+        public DateTime UpdatedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
         public long Id { get; set; }
         public FixPoint UnitPriceSilver { get; set; }
         public FixPoint TotalPriceSilver { get; set; }
