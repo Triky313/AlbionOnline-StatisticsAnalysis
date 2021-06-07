@@ -196,6 +196,7 @@
     <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
     <Compile Include="Models\NetworkModel\DungeonEventObject.cs" />
     <Compile Include="Models\NetworkModel\DungeonObject.cs" />
+    <Compile Include="Models\NetworkModel\MarketOffer.cs" />
     <Compile Include="Models\NetworkModel\TimeCollectObject.cs" />
     <Compile Include="Models\NetworkModel\GameObject.cs" />
     <Compile Include="Models\NetworkModel\PlayerGameObject.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Network\Events\SiegeCampClaimStartEvent.cs" />
     <Compile Include="Network\Events\PartyChangedOrderEvent.cs" />
     <Compile Include="Network\Events\PartyDisbandedEvent.cs" />
+    <Compile Include="Network\Operations\Responses\AuctionGetOffersOperation.cs" />
     <Compile Include="Network\Events\UpdateCurrencyEvent.cs" />
     <Compile Include="Network\Events\UpdateFactionStandingEvent.cs" />
     <Compile Include="Network\Handler\ActiveSpellEffectsUpdateEventHandler.cs" />
@@ -226,6 +228,7 @@
     <Compile Include="Network\Handler\LeaveEventHandler.cs" />
     <Compile Include="Network\Handler\CharacterEquipmentChangedEventHandler.cs" />
     <Compile Include="Network\Handler\NewMobEventHandler.cs" />
+    <Compile Include="Network\Handler\AuctionGetOffersEventHandler.cs" />
     <Compile Include="Network\Handler\UseShrineEventHandler.cs" />
     <Compile Include="Network\Handler\PartyMakeLeaderEventHandler.cs" />
     <Compile Include="Network\Handler\NewShrineEventHandler.cs" />

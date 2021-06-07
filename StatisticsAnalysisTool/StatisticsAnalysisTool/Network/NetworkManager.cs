@@ -32,6 +32,8 @@ namespace StatisticsAnalysisTool.Network
                 _mainWindowViewModel = mainWindowViewModel;
                 builder = ReceiverBuilder.Create();
 
+                builder.AddResponseHandler(new AuctionGetOffersEventHandler(trackingController));
+
                 builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
                 builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
                 builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController));

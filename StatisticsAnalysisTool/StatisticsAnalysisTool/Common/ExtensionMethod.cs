@@ -137,6 +137,13 @@ namespace StatisticsAnalysisTool.Common
             return value as float? ?? value as double? ?? 0;
         }
 
+        public static List<string> ObjectToList(this object value)
+        {
+            var list = new List<string>();
+            list.AddRange(value as string[] ?? new[] { "" });
+            return list;
+        }
+
         public static double ToPositive(this double value)
         {
             return value > 0 ? value : -value;
