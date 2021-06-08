@@ -16,29 +16,62 @@
             <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
             <Button Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
         </Grid>
-        <StackPanel Margin="10,75,0,39" HorizontalAlignment="Left" Width="250">
-            <Label Content="{Binding Translation.Language, FallbackValue=LANGUAGE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,5,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.UpdateItemListByDays, FallbackValue=UPDATE__ITEM__LIST__BY__DAYS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.ItemListSourceUrl, FallbackValue=ITEM_LIST_SOURCE_URL}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,16,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.FullItemInformationUpdateCycleDays, FallbackValue=FULL__ITEM__INFO__UPDATE__CYCLE__DAYS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
-            <Label Content="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,3,0,0" VerticalAlignment="Top" />
-        </StackPanel>
-        <StackPanel Margin="265,75,0,39">
-            <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" Margin="0,5,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200" />
-            <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="200" Height="26" />
-            <ComboBox ItemsSource="{Binding UpdateItemListByDays}" SelectedItem="{Binding UpdateItemListByDaysSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="200" Height="26" />
-            <TextBox Text="{Binding ItemListSourceUrl}" Height="40" Margin="0,5,10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-            <CheckBox IsChecked="{Binding IsOpenItemWindowInNewWindowChecked}" Height="21" VerticalContentAlignment="Center" Margin="0,8,10,0" />
-            <CheckBox IsChecked="{Binding ShowInfoWindowOnStartChecked}" Height="21" VerticalContentAlignment="Center" Margin="0,10,10,0" />
-            <TextBox Text="{Binding FullItemInformationUpdateCycleDays, FallbackValue=90}" Height="26" Margin="0,6,10,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-            <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="FileName" SelectedValuePath="FilePath" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="200" Height="26" />
-            <Button Content="{Binding Translation.OpenToolDirectory, FallbackValue=OPEN__TOOL__DIRECTORY}" Margin="0,5,10,2" Height="24" VerticalAlignment="Bottom" Click="OpenToolDirectory_Click" />
-            <Button Content="{Binding Translation.CreateDesktopShortcut, FallbackValue=CREATE__DESKTOP__SHORTCUT}" Margin="0,5,10,2" Height="24" VerticalAlignment="Bottom" Click="CreateDesktopShortcut_Click" />
-            <Button Content="{Binding Translation.OpenCloseDebugConsole, FallbackValue=OPEN__CLOSE__DEBUG__CONSOLE}" Margin="0,5,10,0" Height="24" VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
-        </StackPanel>
-        <Button Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="10,0,0,10" Width="110" Height="24" VerticalAlignment="Bottom" Click="BtnSave_Click" />
+
+        <Grid Margin="0,75,0,0">
+            <ScrollViewer>
+                <StackPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.Language, FallbackValue=LANGUAGE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.UpdateItemListByDays, FallbackValue=UPDATE__ITEM__LIST__BY__DAYS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding UpdateItemListByDays}" SelectedItem="{Binding UpdateItemListByDaysSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.ItemListSourceUrl, FallbackValue=ITEM_LIST_SOURCE_URL}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding ItemListSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <CheckBox IsChecked="{Binding IsOpenItemWindowInNewWindowChecked}" Height="21" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <CheckBox IsChecked="{Binding ShowInfoWindowOnStartChecked}" Height="21" VerticalContentAlignment="Center"  />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.FullItemInformationUpdateCycleDays, FallbackValue=FULL__ITEM__INFO__UPDATE__CYCLE__DAYS}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding FullItemInformationUpdateCycleDays, FallbackValue=90}" Height="26" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="FileName" SelectedValuePath="FilePath" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,5,0">
+                        <Label MinWidth="300"/>
+                        <Button Content="{Binding Translation.OpenToolDirectory, FallbackValue=OPEN__TOOL__DIRECTORY}" Height="24" VerticalAlignment="Bottom" Click="OpenToolDirectory_Click" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,5,0">
+                        <Label MinWidth="300"/>
+                        <Button Content="{Binding Translation.CreateDesktopShortcut, FallbackValue=CREATE__DESKTOP__SHORTCUT}" Height="24" VerticalAlignment="Bottom" Click="CreateDesktopShortcut_Click" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,5,0">
+                        <Label MinWidth="300"/>
+                        <Button Content="{Binding Translation.OpenCloseDebugConsole, FallbackValue=OPEN__CLOSE__DEBUG__CONSOLE}" Height="24" VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
+                    </DockPanel>
+                    <!--<DockPanel Margin="0,5,0,0">
+
+                    </DockPanel>-->
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <Grid Background="{StaticResource SolidColorBrush.Background.Second}" Height="44" VerticalAlignment="Bottom">
+            <Button Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="10,10,0,10" Width="110" Click="BtnSave_Click" />
+        </Grid>
     </Grid>
 </Window>
