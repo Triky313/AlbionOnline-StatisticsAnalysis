@@ -460,5 +460,68 @@ namespace StatisticsAnalysisTool.Properties {
                 this["FavoriteItemsFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/prices/")]
+        public string CityPricesApiUrlDefault {
+            get {
+                return ((string)(this["CityPricesApiUrlDefault"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/history/")]
+        public string CityPricesHistoryApiUrlDefault {
+            get {
+                return ((string)(this["CityPricesHistoryApiUrlDefault"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/Gold")]
+        public string GoldStatsApiUrlDefault {
+            get {
+                return ((string)(this["GoldStatsApiUrlDefault"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/history/")]
+        public string CityPricesHistoryApiUrl {
+            get {
+                return ((string)(this["CityPricesHistoryApiUrl"]));
+            }
+            set {
+                this["CityPricesHistoryApiUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/prices/")]
+        public string CityPricesApiUrl {
+            get {
+                return ((string)(this["CityPricesApiUrl"]));
+            }
+            set {
+                this["CityPricesApiUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/Gold")]
+        public string GoldStatsApiUrl {
+            get {
+                return ((string)(this["GoldStatsApiUrl"]));
+            }
+            set {
+                this["GoldStatsApiUrl"] = value;
+            }
+        }
     }
 }

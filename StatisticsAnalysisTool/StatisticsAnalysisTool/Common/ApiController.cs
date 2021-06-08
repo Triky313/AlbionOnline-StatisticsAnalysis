@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,7 +90,7 @@ namespace StatisticsAnalysisTool.Common
         /// <exception cref="TooManyRequestsException"></exception>
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
         {
-            var url = "https://www.albion-online-data.com/api/v2/stats/prices/";
+            var url = Settings.Default.CityPricesApiUrl ?? Settings.Default.CityPricesApiUrlDefault;
             url += uniqueName;
 
             if (locations?.Count >= 1)
@@ -149,7 +150,7 @@ namespace StatisticsAnalysisTool.Common
             if (qualities?.Count > 0)
                 qualitiesString = string.Join(",", qualities);
 
-            var url = "https://www.albion-online-data.com/api/v2/stats/history/";
+            var url = Settings.Default.CityPricesHistoryApiUrl ?? Settings.Default.CityPricesHistoryApiUrlDefault;
             url += uniqueName;
             url += $"?locations={locationsString}";
             url += $"&date={date:M-d-yy}";
@@ -270,10 +271,7 @@ namespace StatisticsAnalysisTool.Common
         {
             var checkedDateTime = dateTime != null ? dateTime.ToString() : string.Empty;
 
-            var url = "https://www.albion-online-data.com/api/v2/stats/Gold?" +
-                      $"date={checkedDateTime}" +
-                      $"&count={count}";
-
+            var url = $"{Settings.Default.GoldStatsApiUrl ?? Settings.Default.GoldStatsApiUrlDefault}?date={checkedDateTime}&count={count}";
             using (var client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromSeconds(timeout);

@@ -387,4 +387,8 @@
   <translation name="SILVER_SHRINE">Silver Shrine</translation>
   <translation name="FAME_SHRINE">Fame Shrine</translation>
   <translation name="COMBAT_BUFF">Combat Buff</translation>
+
+  <translation name="CITY_PRICES_API_URL">City prices API URL</translation>
+  <translation name="CITY_PRICES_HISTORY_API_URL">City prices history API URL</translation>
+  <translation name="GOLD_STATS_API_URL">Gold stats API URL</translation>
 </translations>
