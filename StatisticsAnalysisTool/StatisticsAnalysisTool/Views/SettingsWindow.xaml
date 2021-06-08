@@ -17,7 +17,7 @@
             <Button Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
         </Grid>
 
-        <Grid Margin="0,75,0,0">
+        <Grid Margin="0,75,0,44">
             <ScrollViewer>
                 <StackPanel>
                     <DockPanel Margin="0,5,0,0">
@@ -64,9 +64,19 @@
                         <Label MinWidth="300"/>
                         <Button Content="{Binding Translation.OpenCloseDebugConsole, FallbackValue=OPEN__CLOSE__DEBUG__CONSOLE}" Height="24" VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
                     </DockPanel>
-                    <!--<DockPanel Margin="0,5,0,0">
 
-                    </DockPanel>-->
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.CityPricesApiUrl, FallbackValue=CITY__PRICES__API__URL}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding CityPricesApiUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.CityPricesHistoryApiUrl, FallbackValue=CITY__PRICES__HISTORY__API__URL}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding CityPricesHistoryApiUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.GoldStatsApiUrl, FallbackValue=GOLD__STATS__API__URL}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding GoldStatsApiUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
                 </StackPanel>
             </ScrollViewer>
         </Grid>

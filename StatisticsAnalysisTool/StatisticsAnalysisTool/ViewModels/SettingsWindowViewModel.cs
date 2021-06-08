@@ -30,6 +30,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isOpenItemWindowInNewWindowChecked;
         private bool _showInfoWindowOnStartChecked;
         private SettingsWindowTranslation _translation;
+        private string _cityPricesApiUrl;
+        private string _cityPricesHistoryApiUrl;
+        private string _goldStatsApiUrl;
 
         public SettingsWindowViewModel(SettingsWindow settingsWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -100,6 +103,14 @@ namespace StatisticsAnalysisTool.ViewModels
             AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.FileName == Settings.Default.SelectedAlertSound);
 
             #endregion
+
+            #region Api urls
+
+            CityPricesApiUrl = Settings.Default.CityPricesApiUrl;
+            CityPricesHistoryApiUrl = Settings.Default.CityPricesHistoryApiUrl;
+            GoldStatsApiUrl = Settings.Default.GoldStatsApiUrl;
+
+            #endregion
         }
 
         public void SaveSettings()
@@ -114,6 +125,10 @@ namespace StatisticsAnalysisTool.ViewModels
 
             LanguageController.CurrentCultureInfo = new CultureInfo(LanguagesSelection.FileName);
             LanguageController.SetLanguage();
+
+            Settings.Default.CityPricesApiUrl = string.IsNullOrEmpty(CityPricesApiUrl) ? Settings.Default.CityPricesApiUrlDefault : CityPricesApiUrl;
+            Settings.Default.CityPricesHistoryApiUrl = string.IsNullOrEmpty(CityPricesHistoryApiUrl) ? Settings.Default.CityPricesHistoryApiUrlDefault : CityPricesHistoryApiUrl;
+            Settings.Default.GoldStatsApiUrl = string.IsNullOrEmpty(GoldStatsApiUrl) ? Settings.Default.GoldStatsApiUrlDefault : GoldStatsApiUrl;
 
             SetAppSettingsAndTranslations();
 
@@ -260,12 +275,35 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool ShowInfoWindowOnStartChecked
-        {
+        public bool ShowInfoWindowOnStartChecked {
             get => _showInfoWindowOnStartChecked;
+            set {
+                _showInfoWindowOnStartChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string CityPricesApiUrl {
+            get => _cityPricesApiUrl;
             set
             {
-                _showInfoWindowOnStartChecked = value;
+                _cityPricesApiUrl = value;
+                OnPropertyChanged();
+            }
+        }
+        public string CityPricesHistoryApiUrl {
+            get => _cityPricesHistoryApiUrl;
+            set
+            {
+                _cityPricesHistoryApiUrl = value;
+                OnPropertyChanged();
+            }
+        }
+        public string GoldStatsApiUrl {
+            get => _goldStatsApiUrl;
+            set
+            {
+                _goldStatsApiUrl = value;
                 OnPropertyChanged();
             }
         }

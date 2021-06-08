@@ -18,5 +18,8 @@ namespace StatisticsAnalysisTool.Models
         public string OpenToolDirectory => LanguageController.Translation("OPEN_TOOL_DIRECTORY");
         public string OpenCloseDebugConsole => LanguageController.Translation("OPEN_OR_CLOSE_DEBUG_CONSOLE");
         public string CreateDesktopShortcut => LanguageController.Translation("CREATE_DESKTOP_SHORTCUT");
+        public string CityPricesApiUrl => LanguageController.Translation("CITY_PRICES_API_URL");
+        public string CityPricesHistoryApiUrl => LanguageController.Translation("CITY_PRICES_HISTORY_API_URL");
+        public string GoldStatsApiUrl => LanguageController.Translation("GOLD_STATS_API_URL");
     }
 }

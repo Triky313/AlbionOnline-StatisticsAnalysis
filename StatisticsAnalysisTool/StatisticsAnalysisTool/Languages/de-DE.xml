@@ -388,4 +388,8 @@
   <translation name="SILVER_SHRINE">Silber Schrein</translation>
   <translation name="FAME_SHRINE">Ruhm Schrein</translation>
   <translation name="COMBAT_BUFF">Kampf Buff</translation>
+
+  <translation name="CITY_PRICES_API_URL">Stadt Preise API URL</translation>
+  <translation name="CITY_PRICES_HISTORY_API_URL">Stadt Preise Historie API URL</translation>
+  <translation name="GOLD_STATS_API_URL">Gold Stats API URL</translation>
 </translations>

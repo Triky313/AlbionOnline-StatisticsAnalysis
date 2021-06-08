@@ -113,5 +113,23 @@
     <Setting Name="FavoriteItemsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">FavoriteItems.json</Value>
     </Setting>
+    <Setting Name="CityPricesApiUrlDefault" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/prices/</Value>
+    </Setting>
+    <Setting Name="CityPricesHistoryApiUrlDefault" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/history/</Value>
+    </Setting>
+    <Setting Name="GoldStatsApiUrlDefault" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/Gold</Value>
+    </Setting>
+    <Setting Name="CityPricesHistoryApiUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/history/</Value>
+    </Setting>
+    <Setting Name="CityPricesApiUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/prices/</Value>
+    </Setting>
+    <Setting Name="GoldStatsApiUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/Gold</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
