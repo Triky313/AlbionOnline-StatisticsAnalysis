@@ -79,11 +79,6 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 {
                     AllianceName = string.IsNullOrEmpty(parameters[70].ToString()) ? string.Empty : parameters[70].ToString();
                 }
-
-                if (parameters.ContainsKey(92))
-                {
-                    CurrentDailyBonusPoints = parameters[92].ObjectToLong();
-                }
             }
             catch (Exception e)
             {
@@ -107,6 +102,5 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
         public string MainMapIndex { get; set; }
         public int PlayTimeInSeconds { get; set; }
         public string AllianceName { get; }
-        public long? CurrentDailyBonusPoints { get; }
     }
 }

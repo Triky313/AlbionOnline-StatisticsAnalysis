@@ -1,5 +1,5 @@
-﻿using System;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
+using System;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
@@ -17,6 +17,5 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public string MainMapIndex { get; set; }
         public int? PlayTimeInSeconds { get; set; }
         public string AllianceName { get; set; }
-        public long? CurrentDailyBonusPoints { get; set; }
     }
 }

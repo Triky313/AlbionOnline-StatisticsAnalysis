@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Network.Time;
 using StatisticsAnalysisTool.ViewModels;
@@ -85,6 +86,11 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (_mainWindowViewModel.IsDamageMeterResetByMapChangeActive)
             {
                 CombatController.ResetDamageMeter();
+            }
+
+            if (mapType == MapType.RandomDungeon)
+            {
+                _mainWindowViewModel.DungeonCloseTimer = new DungeonCloseTimer();
             }
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");

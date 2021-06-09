@@ -123,6 +123,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _mainTrackerTimer;
         private Visibility _isMainTrackerPopupVisible = Visibility.Hidden;
         private bool _isShowOnlyFavoritesActive;
+        private DungeonCloseTimer _dungeonCloseTimer;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1151,6 +1152,15 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _mainTrackerTimer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DungeonCloseTimer DungeonCloseTimer {
+            get => _dungeonCloseTimer;
+            set
+            {
+                _dungeonCloseTimer = value;
                 OnPropertyChanged();
             }
         }

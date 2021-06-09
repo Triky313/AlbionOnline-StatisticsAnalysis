@@ -39,7 +39,6 @@ namespace StatisticsAnalysisTool.Network.Handler
                 MainMapIndex = value.MainMapIndex,
                 PlayTimeInSeconds = value.PlayTimeInSeconds,
                 AllianceName = value.AllianceName,
-                CurrentDailyBonusPoints = value.CurrentDailyBonusPoints
             };
 
             _mainWindowViewModel.TrackingUsername = value.Username;
