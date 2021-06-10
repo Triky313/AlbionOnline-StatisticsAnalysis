@@ -391,4 +391,7 @@
   <translation name="CITY_PRICES_API_URL">City prices API URL</translation>
   <translation name="CITY_PRICES_HISTORY_API_URL">City prices history API URL</translation>
   <translation name="GOLD_STATS_API_URL">Gold stats API URL</translation>
+
+  <translation name="SAFE">Safe</translation>
+  <translation name="DUNGEON_TIMER">Dungeon Timer</translation>
 </translations>

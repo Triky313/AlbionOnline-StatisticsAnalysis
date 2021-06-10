@@ -307,6 +307,11 @@
                                 </StackPanel>
                             </Border>
                         </StackPanel>
+                        <StackPanel Margin="355,0,0,0" HorizontalAlignment="Left" Width="150" Height="100" VerticalAlignment="Top">
+                            <DockPanel Height="50" VerticalAlignment="Top">
+                                <ContentControl Content="{Binding DungeonCloseTimer}" />
+                            </DockPanel>
+                        </StackPanel>
                         <ScrollViewer Margin="0,105,0,0">
                             <ItemsControl ItemsSource="{Binding TrackingDungeons}"/>
                         </ScrollViewer>
@@ -328,7 +333,7 @@
                         <Grid Height="20" Width="20" Margin="0,5,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
                             <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                         </Grid>
-                        
+
                         <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,31,0,0" VerticalAlignment="Top"/>
                         <ScrollViewer Margin="0,35,0,0">
                             <ItemsControl ItemsSource="{Binding DamageMeter, IsAsync=True, Mode=OneWay}"/>

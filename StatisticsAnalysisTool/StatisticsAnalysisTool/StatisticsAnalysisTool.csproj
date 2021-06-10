@@ -196,6 +196,7 @@
     <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
     <Compile Include="Models\NetworkModel\DungeonEventObject.cs" />
     <Compile Include="Models\NetworkModel\DungeonObject.cs" />
+    <Compile Include="Models\NetworkModel\DungeonCloseTimer.cs" />
     <Compile Include="Models\NetworkModel\TimeCollectObject.cs" />
     <Compile Include="Models\NetworkModel\GameObject.cs" />
     <Compile Include="Models\NetworkModel\PlayerGameObject.cs" />

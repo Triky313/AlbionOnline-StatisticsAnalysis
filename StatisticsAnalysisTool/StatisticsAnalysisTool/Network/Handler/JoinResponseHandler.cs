@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -39,13 +40,17 @@ namespace StatisticsAnalysisTool.Network.Handler
                 MainMapIndex = value.MainMapIndex,
                 PlayTimeInSeconds = value.PlayTimeInSeconds,
                 AllianceName = value.AllianceName,
-                CurrentDailyBonusPoints = value.CurrentDailyBonusPoints
             };
 
             _mainWindowViewModel.TrackingUsername = value.Username;
             _mainWindowViewModel.TrackingGuildName = value.GuildName;
             _mainWindowViewModel.TrackingAllianceName = value.AllianceName;
             _mainWindowViewModel.TrackingCurrentMapName = WorldData.GetUniqueNameOrDefault(value.MapIndex);
+
+            _mainWindowViewModel.DungeonCloseTimer = new DungeonCloseTimer
+            {
+                IsVisible = Visibility.Hidden
+            };
 
             if (value.Guid != null && value.UserObjectId != null)
             {

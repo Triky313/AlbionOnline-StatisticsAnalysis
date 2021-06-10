@@ -190,6 +190,9 @@ namespace StatisticsAnalysisTool.Network
 
                     var duration = _startTime - DateTime.UtcNow;
                     _mainWindowViewModel.MainTrackerTimer = duration.ToString("hh\\:mm\\:ss");
+
+                    _mainWindowViewModel?.DungeonCloseTimer?.UpdateTimer();
+
                     await Task.Delay(1000);
                 }
             });

@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Windows;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Controller
@@ -82,6 +83,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     || (!_mainWindowViewModel.TrackingDungeons.Any(x => x.GuidList.Contains((Guid)mapGuid))))
                 {
                     _dungeons.Insert(0, CreateNewDungeon(mainMapIndex, currentGuid));
+                    UpdateDungeonTimer(mapType);
 
                     _lastGuid = mapGuid;
 
@@ -100,6 +102,24 @@ namespace StatisticsAnalysisTool.Network.Controller
             catch
             {
                 _currentGuid = null;
+            }
+        }
+
+        private void UpdateDungeonTimer(MapType mapType)
+        {
+            if (mapType == MapType.RandomDungeon)
+            {
+                _mainWindowViewModel.DungeonCloseTimer = new DungeonCloseTimer
+                {
+                    IsVisible = Visibility.Visible
+                };
+            }
+            else
+            {
+                _mainWindowViewModel.DungeonCloseTimer = new DungeonCloseTimer
+                {
+                    IsVisible = Visibility.Hidden
+                };
             }
         }
 
