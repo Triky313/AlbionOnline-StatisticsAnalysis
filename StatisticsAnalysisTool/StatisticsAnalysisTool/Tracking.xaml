@@ -1123,38 +1123,43 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type networkModel:DungeonCloseTimer}">
-        <Grid>
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="{x:Type Grid}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                <Label Content="{Binding TimerString, FallbackValue=00:00:00}" />
-            </Grid>
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="{x:Type Grid}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                <Label FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Green.2}" Content="{Binding TranslationSave}" />
-            </Grid>
-        </Grid>
+        <Border Visibility="{Binding IsVisible }" Style="{StaticResource Tracking.Information.Border}">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
+                <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationDungeonTimer, FallbackValue=DUNGEON__TIMER}"></Label>
+                <Grid>
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Label Content="{Binding TimerString, FallbackValue=00:00:00}" />
+                    </Grid>
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Label FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Green.2}" Content="{Binding TranslationSafe, FallbackValue=SAFE}" />
+                    </Grid>
+                </Grid>
+            </StackPanel>
+        </Border>
     </DataTemplate>
 
 </ResourceDictionary>

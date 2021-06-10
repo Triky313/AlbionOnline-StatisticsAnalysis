@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
@@ -11,6 +12,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         private string _timerString;
         private bool _isDungeonClosed;
         private readonly DateTime _endTime;
+        private Visibility _isVisible;
 
         public DungeonCloseTimer()
         {
@@ -36,19 +38,29 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
                 OnPropertyChanged();
             }
         }
+
+        public Visibility IsVisible {
+            get => _isVisible;
+            set
+            {
+                _isVisible = value;
+                OnPropertyChanged();
+            }
+        }
         
         public void UpdateTimer()
         {
             var duration = _endTime - DateTime.UtcNow;
             TimerString = duration.ToString("hh\\:mm\\:ss");
 
-            if (duration.Seconds <= 0)
+            if (duration.TotalSeconds <= 0)
             {
                 IsDungeonClosed = true;
             }
         }
 
-        public string TranslationSave => LanguageController.Translation("SAFE");
+        public string TranslationSafe => LanguageController.Translation("SAFE");
+        public string TranslationDungeonTimer => LanguageController.Translation("DUNGEON_TIMER");
 
         public event PropertyChangedEventHandler PropertyChanged;
 
