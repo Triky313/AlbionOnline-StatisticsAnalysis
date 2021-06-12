@@ -710,6 +710,13 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void ResetDamageMeter()
         {
+            var dialogWindow = new DialogWindow();
+            dialogWindow.Show();
+
+            var result = DialogWindow.ShowDialog("Dialogwindow Title", bool response);
+
+
+            if (dialogWindow.) {}
             _trackingController.CombatController.ResetDamageMeter();
         }
 
