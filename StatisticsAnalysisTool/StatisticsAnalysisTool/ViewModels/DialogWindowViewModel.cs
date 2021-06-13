@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Annotations;
+using StatisticsAnalysisTool.Models;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -8,6 +9,7 @@ namespace StatisticsAnalysisTool.ViewModels
     {
         private string _title;
         private string _message;
+        private DialogWindowTranslation _dialogWindowTranslation = new DialogWindowTranslation();
 
         public DialogWindowViewModel(string title, string message)
         {
@@ -31,6 +33,14 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _message;
             set {
                 _message = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DialogWindowTranslation Translation {
+            get => _dialogWindowTranslation;
+            set {
+                _dialogWindowTranslation = value;
                 OnPropertyChanged();
             }
         }

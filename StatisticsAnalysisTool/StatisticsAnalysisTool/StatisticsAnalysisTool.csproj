@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -204,6 +204,7 @@
     <Compile Include="Models\NetworkModel\LocalUserData.cs" />
     <Compile Include="Models\NetworkModel\PartyMemberCircle.cs" />
     <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
+    <Compile Include="Models\DialogWindowTranslation.cs" />
     <Compile Include="Models\SpellEffect.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
     <Compile Include="Network\Controller\DungeonController.cs" />

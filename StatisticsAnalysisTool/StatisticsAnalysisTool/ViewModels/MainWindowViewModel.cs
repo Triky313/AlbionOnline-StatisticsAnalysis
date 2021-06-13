@@ -710,7 +710,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void ResetDamageMeter()
         {
-            var dialog = new DialogWindow("testTitle", "hello");
+            var dialog = new DialogWindow(LanguageController.Translation("RESET_DAMAGE_METER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DAMAGE_METER"));
             var dialogResult = dialog.ShowDialog();
 
             if (dialogResult != null && dialogResult == true)

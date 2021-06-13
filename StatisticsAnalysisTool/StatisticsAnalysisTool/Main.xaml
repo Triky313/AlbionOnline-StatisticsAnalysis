@@ -5,10 +5,16 @@
     <!-- Base font size -->
     <system:Double x:Key="BaseFontSize">12</system:Double>
 
-    <!--Global colors -->
+    <!-- Global background colors -->
     <Color x:Key="Background.First">#FF36363F</Color>
     <Color x:Key="Background.Second">#FF2B2B33</Color>
     <Color x:Key="Background.Third">#FF202026</Color>
+
+    <!-- Global background colors 2 -->
+    <Color x:Key="Background.Colors.4">#FF636373</Color>
+    <Color x:Key="Background.Colors.5">#FF565666</Color>
+    <Color x:Key="Background.Colors.6">#FF4B4B59</Color>
+
 
     <!-- Item level colors -->
     <Color x:Key="Item.Level.Color.0">#FFb1b0ae</Color>
@@ -114,6 +120,9 @@
     <SolidColorBrush x:Key="SolidColorBrush.Background.First" Color="{StaticResource Background.First}" />
     <SolidColorBrush x:Key="SolidColorBrush.Background.Second" Color="{StaticResource Background.Second}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Background.Third" Color="{StaticResource Background.Third}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.Color.4" Color="{StaticResource Background.Colors.4}" />
+    <SolidColorBrush x:Key="SolidColorBrush.Background.Color.5" Color="{StaticResource Background.Colors.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.Color.6" Color="{StaticResource Background.Colors.6}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Color.Button.First" Color="{StaticResource Color.Blue.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Second" Color="{StaticResource Color.Blue.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Third" Color="{StaticResource Color.Blue.3}"/>

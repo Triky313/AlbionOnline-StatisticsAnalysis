@@ -394,4 +394,6 @@
 
   <translation name="SAFE">Safe</translation>
   <translation name="DUNGEON_TIMER">Dungeon Timer</translation>
+  <translation name="RESET_DAMAGE_METER">Reset Damage Meter</translation>
+  <translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Are you sure you want to reset the Damage Meter?</translation>
 </translations>

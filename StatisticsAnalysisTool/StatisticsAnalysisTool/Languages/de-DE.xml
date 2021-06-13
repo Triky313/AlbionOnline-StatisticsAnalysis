@@ -395,4 +395,6 @@
 
   <translation name="SAFE">Sicher</translation>
   <translation name="DUNGEON_TIMER">Dungeon Timer</translation>
+  <translation name="RESET_DAMAGE_METER">Schadensanzeige zurücksetzen</translation>
+  <translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Schadensanzeige wirklich zurücksetzen?</translation>
 </translations>
