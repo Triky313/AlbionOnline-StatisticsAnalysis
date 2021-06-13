@@ -1,38 +1,48 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using MvvmDialogs;
-using System.Windows.Input;
+﻿using StatisticsAnalysisTool.Annotations;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
-    public class DialogWindowViewModel : ViewModelBase, IModalDialogViewModel
+    public class DialogWindowViewModel : INotifyPropertyChanged
     {
-        private string text;
-        private bool? dialogResult;
+        private string _title;
+        private string _message;
 
-        public DialogWindowViewModel()
+        public DialogWindowViewModel(string title, string message)
         {
-            OkCommand = new RelayCommand(Ok);
+            Title = title;
+            Message = message;
         }
 
-        public string Text {
-            get => text;
-            set => Set(nameof(Text), ref text, value);
-        }
+        public bool Canceled { get; set; }
 
-        public ICommand OkCommand { get; }
+        #region Binding
 
-        public bool? DialogResult {
-            get => dialogResult;
-            private set => Set(nameof(DialogResult), ref dialogResult, value);
-        }
-
-        private void Ok()
-        {
-            if (!string.IsNullOrEmpty(Text))
-            {
-                DialogResult = true;
+        public string Title {
+            get => _title;
+            set {
+                _title = value;
+                OnPropertyChanged();
             }
+        }
+
+        public string Message {
+            get => _message;
+            set {
+                _message = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

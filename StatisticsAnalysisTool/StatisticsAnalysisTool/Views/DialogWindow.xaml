@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d"
-        Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="200" Width="500" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False">
+        Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="200" Width="500" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Topmost="True" ShowInTaskbar="False" ResizeMode="NoResize">
     <Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
@@ -16,15 +16,14 @@
             <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left">
                 <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
             </Grid>
-            <Label Content="{Binding Translation.Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold" />
+            <Label Content="{Binding Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold" />
             <Separator Margin="10,30,10,0" VerticalAlignment="Top" />
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
-            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
         </Grid>
         <Grid Margin="10,38,10,54">
-            <TextBlock Text="{Binding Text, FallbackValue=TEXT}" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+            <TextBlock Text="{Binding Message, FallbackValue=MESSAGE}" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
         </Grid>
-        <Button Content="{Binding YES, FallbackValue=YES}" Command="{Binding OkCommand}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" Margin="10,0,0,10" HorizontalAlignment="Left" Style="{StaticResource Style.Button.Attention}"></Button>
-        <Button Content="{Binding NO, FallbackValue=NO}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" Margin="0,0,10,10" HorizontalAlignment="Right"></Button>
+        <Button Content="{Binding YES, FallbackValue=YES}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" Margin="10,0,0,10" HorizontalAlignment="Left" Style="{StaticResource Style.Button.Attention}" Click="BtnOk_Click" />
+        <Button Content="{Binding NO, FallbackValue=NO}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" Margin="0,0,10,10" HorizontalAlignment="Right" Click="BtnCancel_Click" />
     </Grid>
 </Window>

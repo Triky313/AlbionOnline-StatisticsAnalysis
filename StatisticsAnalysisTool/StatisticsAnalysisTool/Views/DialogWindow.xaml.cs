@@ -9,17 +9,36 @@ namespace StatisticsAnalysisTool.Views
     /// </summary>
     public partial class DialogWindow
     {
-        public DialogWindow()
+        public readonly DialogWindowViewModel DialogWindowViewModel;
+
+        public DialogWindow(string title, string message)
         {
             InitializeComponent();
 
-            var dialogWindowViewModel = new DialogWindowViewModel();
-            DataContext = dialogWindowViewModel;
+            DialogWindowViewModel = new DialogWindowViewModel(title, message);
+            DataContext = DialogWindowViewModel;
         }
-        
-        private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
 
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogWindowViewModel.Canceled = true;
+            DialogResult = false;
+            Close();
+        }
+
+        private void BtnOk_Click(object sender, RoutedEventArgs e)
+        {
+            DialogWindowViewModel.Canceled = false;
+            DialogResult = true;
+            Close();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogWindowViewModel.Canceled = true;
+            DialogResult = false;
+            Close();
+        }
 
         private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -35,7 +54,10 @@ namespace StatisticsAnalysisTool.Views
                 return;
             }
 
-            if (e.ClickCount == 2 && WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
+            if (e.ClickCount == 2 && WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+            }
         }
     }
 }
