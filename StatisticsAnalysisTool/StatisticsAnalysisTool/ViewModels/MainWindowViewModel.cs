@@ -721,7 +721,13 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void ResetDungeons()
         {
-            _trackingController.DungeonController.ResetDungeons();
+            var dialog = new DialogWindow(LanguageController.Translation("RESET_DUNGEON_TRACKER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER"));
+            var dialogResult = dialog.ShowDialog();
+
+            if (dialogResult != null && dialogResult == true)
+            {
+                _trackingController.DungeonController.ResetDungeons();
+            }
         }
 
         public void ResetDungeonCounters()
