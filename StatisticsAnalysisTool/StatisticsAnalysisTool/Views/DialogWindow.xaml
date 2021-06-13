@@ -1,0 +1,32 @@
+﻿<Window x:Class="StatisticsAnalysisTool.Views.DialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        mc:Ignorable="d"
+        Title="{Binding Title, FallbackValue=TITLE}" Height="200" Width="500" AllowsTransparency="True" WindowStartupLocation="CenterScreen" 
+        Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Color.6}" FontSize="{StaticResource BaseFontSize}" 
+        WindowStyle="None" Topmost="True" ShowInTaskbar="False" ResizeMode="NoResize">
+    <Grid>
+        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}" />
+        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}" />
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Blue.2}" />
+        <Grid ZIndex="1" Height="33" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.Color.6}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}" />
+            <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}" />
+            <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}" />
+            <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+            </Grid>
+            <Label Content="{Binding Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold" />
+            <Separator Margin="10,30,10,0" VerticalAlignment="Top" />
+            <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
+        </Grid>
+        <Grid Margin="10,38,10,54">
+            <TextBlock Text="{Binding Message, FallbackValue=MESSAGE}" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+        </Grid>
+        <Button Content="{Binding Translation.Yes, FallbackValue=YES}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" Margin="10,0,0,10" HorizontalAlignment="Left" Style="{StaticResource Style.Button.Attention}" Click="BtnOk_Click" />
+        <Button Content="{Binding Translation.No, FallbackValue=NO}" FontSize="18" FontWeight="Bold" Height="34" Width="200" VerticalAlignment="Bottom" Margin="0,0,10,10" HorizontalAlignment="Right" Click="BtnCancel_Click" />
+    </Grid>
+</Window>

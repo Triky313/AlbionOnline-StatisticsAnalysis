@@ -1,14 +1,20 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <!-- Base font size -->
     <system:Double x:Key="BaseFontSize">12</system:Double>
 
-    <!--Global colors -->
+    <!-- Global background colors -->
     <Color x:Key="Background.First">#FF36363F</Color>
     <Color x:Key="Background.Second">#FF2B2B33</Color>
     <Color x:Key="Background.Third">#FF202026</Color>
+
+    <!-- Global background colors 2 -->
+    <Color x:Key="Background.Colors.4">#FF636373</Color>
+    <Color x:Key="Background.Colors.5">#FF565666</Color>
+    <Color x:Key="Background.Colors.6">#FF4B4B59</Color>
+
 
     <!-- Item level colors -->
     <Color x:Key="Item.Level.Color.0">#FFb1b0ae</Color>
@@ -71,8 +77,15 @@
     <Color x:Key="ControlNormalColor">#FF0e89b1</Color>
     <Color x:Key="ControlMouseOverColor">#ff3da2ca</Color>
     <Color x:Key="DisabledControlColor">#FF4B4B59</Color>
-    <Color x:Key="DisabledForegroundColor">#FFBFBFBF</Color>
     <Color x:Key="ControlPressedColor">#ff57b6e0</Color>
+
+    <!-- Attention button colors -->
+    <Color x:Key="Button.Attention.Color.Normal">#FFb00e29</Color>
+    <Color x:Key="Button.Attention.Color.MouseOver">#ffC93C54</Color>
+    <Color x:Key="Button.Attention.Color.Disabled">#FF594B4B</Color>
+    <Color x:Key="Button.Attention.Color.Pressed">#ffE0586E</Color>
+
+    <Color x:Key="Button.Attention.Color.DisabledForeground">#FFBFBFBF</Color>
 
     <!-- Pvp/Pve colors -->
     <Color x:Key="Text.Color.Pvp">#ffe05761</Color>
@@ -107,6 +120,9 @@
     <SolidColorBrush x:Key="SolidColorBrush.Background.First" Color="{StaticResource Background.First}" />
     <SolidColorBrush x:Key="SolidColorBrush.Background.Second" Color="{StaticResource Background.Second}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Background.Third" Color="{StaticResource Background.Third}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.Color.4" Color="{StaticResource Background.Colors.4}" />
+    <SolidColorBrush x:Key="SolidColorBrush.Background.Color.5" Color="{StaticResource Background.Colors.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.Color.6" Color="{StaticResource Background.Colors.6}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Color.Button.First" Color="{StaticResource Color.Blue.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Second" Color="{StaticResource Color.Blue.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Color.Button.Third" Color="{StaticResource Color.Blue.3}"/>
@@ -667,7 +683,68 @@
                                         </ColorAnimationUsingKeyFrames>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
                                                 Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledForegroundColor}" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Button.Attention.Color.DisabledForeground}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter Margin="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            RecognizesAccessKey="True" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="Style.Button.Attention">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
+        <Setter Property="MinHeight" Value="18px" />
+        <Setter Property="MinWidth"  Value="40px" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border TextBlock.Foreground="{TemplateBinding Foreground}" x:Name="Border">
+                        <Border.Background>
+                            <SolidColorBrush  Color="{DynamicResource Button.Attention.Color.Normal}" />
+                        </Border.Background>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                    <VisualTransition GeneratedDuration="0" To="Pressed" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                Storyboard.TargetName="Border">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Button.Attention.Color.MouseOver}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                Storyboard.TargetName="Border">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Button.Attention.Color.Pressed}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                Storyboard.TargetName="Border">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Button.Attention.Color.Disabled}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
+                                                Storyboard.TargetName="Border">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Button.Attention.Color.DisabledForeground}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

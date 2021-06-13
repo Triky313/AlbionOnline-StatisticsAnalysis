@@ -204,6 +204,7 @@
     <Compile Include="Models\NetworkModel\LocalUserData.cs" />
     <Compile Include="Models\NetworkModel\PartyMemberCircle.cs" />
     <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
+    <Compile Include="Models\DialogWindowTranslation.cs" />
     <Compile Include="Models\SpellEffect.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
     <Compile Include="Network\Controller\DungeonController.cs" />
@@ -343,11 +344,15 @@
     </Compile>
     <Compile Include="Models\DungeonStats.cs" />
     <Compile Include="Network\Time\GameTimeSpan.cs" />
+    <Compile Include="ViewModels\DialogWindowViewModel.cs" />
     <Compile Include="ViewModels\InfoWindowViewModel.cs" />
     <Compile Include="Models\ItemAlertWindowTranslation.cs" />
     <Compile Include="ViewModels\ItemWindowViewModel.cs" />
     <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
     <Compile Include="Models\AlertInfos.cs" />
+    <Compile Include="Views\DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>
@@ -373,6 +378,10 @@
     <Page Include="Main.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\InfoWindow.xaml">
       <SubType>Designer</SubType>
