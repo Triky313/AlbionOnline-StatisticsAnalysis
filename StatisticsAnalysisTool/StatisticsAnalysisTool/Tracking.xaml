@@ -752,7 +752,7 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:DungeonEventObjectType.CombatShrine}">
                                     <Setter Property="Source" Value="Resources/shrine_combat_buff.png" />
-                                    <Setter Property="ToolTip" Value="{Binding TranslationCombatShrine}" />
+                                    <Setter Property="ToolTip" Value="{Binding TranslationCombatBuff}" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:DungeonEventObjectType.SilverShrine}">
                                     <Setter Property="Source" Value="Resources/shrine_silver.png" />

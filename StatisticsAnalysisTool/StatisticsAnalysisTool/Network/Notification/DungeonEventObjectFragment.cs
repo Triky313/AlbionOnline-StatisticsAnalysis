@@ -142,7 +142,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         public string TranslationBookChest => LanguageController.Translation("BOOK_CHEST");
 
         [JsonIgnore] 
-        public string TranslationCombatShrine => LanguageController.Translation("COMBAT_SHRINE");
+        public string TranslationCombatBuff => LanguageController.Translation("COMBAT_BUFF");
 
         [JsonIgnore] 
         public string TranslationSilverShrine => LanguageController.Translation("SILVER_SHRINE");
