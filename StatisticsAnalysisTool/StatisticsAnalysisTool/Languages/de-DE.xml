@@ -344,7 +344,6 @@
   <translation name="KILLDED_BY">getötet von</translation>
   <translation name="DUNGEON">Dungeon</translation>
   <translation name="ARENA">Arena</translation>
-  <translation name="EXPEDITION">Expedition</translation>
   <translation name="CORRUPTED_LAIR">Korrumpierte Dungeon</translation>
   <translation name="ISLAND">Insel</translation>
   <translation name="HIDEOUT">Unterschlupf</translation>
@@ -395,7 +394,6 @@
 
   <translation name="SAFE">Sicher</translation>
   <translation name="DUNGEON_TIMER">Dungeon Timer</translation>
-  <translation name="RESET_DAMAGE_METER">Schadensanzeige zurücksetzen</translation>
   <translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Schadensanzeige wirklich zurücksetzen?</translation>
   <translation name="RESET_DUNGEON_TRACKER">Dungeon Tracker zurücksetzen</translation>
   <translation name="SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER">Dungeon Tracker wirklich zurücksetzen?</translation>
