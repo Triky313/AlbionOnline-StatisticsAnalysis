@@ -313,7 +313,7 @@
                             </DockPanel>
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Right" Width="250" Height="100" VerticalAlignment="Top">
-                            <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="200" Margin="0,5,0,5" Click="BtnDungeonTrackingReset_Click" />
+                            <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="200" Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
                         </StackPanel>
                         <ScrollViewer Margin="0,105,0,0">
                             <ItemsControl ItemsSource="{Binding TrackingDungeons}"/>
@@ -327,7 +327,7 @@
                                 <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterSort}" SelectedItem="{Binding DamageMeterSortSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
                             </StackPanel>
                         </Grid>
-                        <Grid Margin="0,0,30,0" HorizontalAlignment="Right" Width="450" Height="32" VerticalAlignment="Top">
+                        <Grid Margin="0,0,30,0" HorizontalAlignment="Right" Width="450" Height="30" VerticalAlignment="Top">
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
                                 <CheckBox IsChecked="{Binding IsDamageMeterResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
                                           HorizontalContentAlignment="Left" Margin="5,3,10,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="auto" MaxWidth="250"/>
