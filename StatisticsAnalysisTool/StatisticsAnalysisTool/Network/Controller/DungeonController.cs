@@ -49,13 +49,13 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             if (!IsClusterADungeonCluster(_dungeons, mapType, mapGuid))
             {
-                SetOrUpdateDungeonDataToUi();
+                SetOrUpdateDungeonsDataToUi();
                 return;
             }
 
             if (mapGuid == null)
             {
-                SetOrUpdateDungeonDataToUi();
+                SetOrUpdateDungeonsDataToUi();
                 return;
             }
 
@@ -75,7 +75,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
                     SetDungeonInformation(currentGuid, mapType);
-                    SetOrUpdateDungeonDataToUi();
+                    SetOrUpdateDungeonsDataToUi();
                     return;
                 }
 
@@ -90,14 +90,14 @@ namespace StatisticsAnalysisTool.Network.Controller
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
                     SetDungeonInformation(currentGuid, mapType);
-                    SetOrUpdateDungeonDataToUi();
+                    SetOrUpdateDungeonsDataToUi();
                     return;
                 }
 
                 SetCurrentDungeonActive(_dungeons, currentGuid);
                 _lastGuid = currentGuid;
 
-                SetOrUpdateDungeonDataToUi();
+                SetOrUpdateDungeonsDataToUi();
             }
             catch
             {
@@ -524,7 +524,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        public void SetOrUpdateDungeonDataToUi()
+        public void SetOrUpdateDungeonsDataToUi()
         {
             _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
             _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
@@ -532,10 +532,10 @@ namespace StatisticsAnalysisTool.Network.Controller
             var counter = 0;
             foreach (var dungeon in _dungeons.Where(x => x.GuidList.Count > 0).OrderBy(x => x.EnterDungeonFirstTime))
             {
-                _mainWindow.Dispatcher?.Invoke(() =>
-                {
+                Application.Current.Dispatcher.Invoke(delegate {
                     var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
-                        x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime == dungeon.EnterDungeonFirstTime);
+                       x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime == dungeon.EnterDungeonFirstTime);
+
                     if (uiDungeon != null)
                     {
                         uiDungeon.SetValues(dungeon);
@@ -550,7 +550,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 });
             }
 
-            _mainWindow.Dispatcher?.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(delegate
             {
                 SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
                 CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
@@ -560,10 +560,11 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void UpdateDungeonDataUi(DungeonObject dungeon)
         {
-            _mainWindow.Dispatcher?.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(delegate
             {
-                var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
-                    x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
+                var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => 
+                    x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
+
                 uiDungeon?.SetValues(dungeon);
             });
         }
