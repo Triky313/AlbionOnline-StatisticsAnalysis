@@ -8,7 +8,6 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,17 +25,15 @@ namespace StatisticsAnalysisTool.Network.Controller
         private const int _maxDungeons = 9999;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly TrackingController _trackingController;
         private Guid? _currentGuid;
         private Guid? _lastGuid;
         private List<DungeonObject> _dungeons = new List<DungeonObject>();
 
-        public DungeonController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
+        public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
             _trackingController = trackingController;
-            _mainWindow = mainWindow;
             _mainWindowViewModel = mainWindowViewModel;
         }
 
@@ -47,15 +44,15 @@ namespace StatisticsAnalysisTool.Network.Controller
             LeaveDungeonCheck(mapType);
             IsDungeonDoneCheck(mapType);
 
-            if (!IsClusterADungeonCluster(_dungeons, mapType, mapGuid))
+            if (!IsClusterDungeonCluster(_dungeons, mapType, mapGuid))
             {
-                SetOrUpdateDungeonDataToUi();
+                SetOrUpdateDungeonsDataUi();
                 return;
             }
 
             if (mapGuid == null)
             {
-                SetOrUpdateDungeonDataToUi();
+                SetOrUpdateDungeonsDataUi();
                 return;
             }
 
@@ -75,7 +72,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
                     SetDungeonInformation(currentGuid, mapType);
-                    SetOrUpdateDungeonDataToUi();
+                    SetOrUpdateDungeonsDataUi();
                     return;
                 }
 
@@ -90,19 +87,22 @@ namespace StatisticsAnalysisTool.Network.Controller
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
                     SetDungeonInformation(currentGuid, mapType);
-                    SetOrUpdateDungeonDataToUi();
+                    SetOrUpdateDungeonsDataUi();
                     return;
                 }
 
                 SetCurrentDungeonActive(_dungeons, currentGuid);
                 _lastGuid = currentGuid;
 
-                SetOrUpdateDungeonDataToUi();
+                SetOrUpdateDungeonsDataUi();
             }
             catch
             {
                 _currentGuid = null;
             }
+
+            SetDungeonStatsDay();
+            SetDungeonStatsTotal();
         }
 
         private void UpdateDungeonTimer(MapType mapType)
@@ -126,7 +126,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         public void ResetDungeons()
         {
             _dungeons.Clear();
-            _mainWindow.Dispatcher?.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(delegate
             {
                 _mainWindowViewModel?.TrackingDungeons?.Clear();
             });
@@ -192,6 +192,9 @@ namespace StatisticsAnalysisTool.Network.Controller
                     Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 }
             }
+
+            SetDungeonStatsDay();
+            SetDungeonStatsTotal();
         }
 
         private DungeonObject CreateNewDungeon(string mainMapIndex, Guid guid)
@@ -337,7 +340,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        private bool IsClusterADungeonCluster(List<DungeonObject> dungeons, MapType mapType, Guid? mapGuid)
+        private bool IsClusterDungeonCluster(List<DungeonObject> dungeons, MapType mapType, Guid? mapGuid)
         {
             if ((mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate && mapType != MapType.Expedition) || mapGuid == null)
             {
@@ -369,34 +372,39 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
+        private void ResetAllBestValues(ObservableCollection<DungeonNotificationFragment> dungeons)
+        {
+            dungeons.Where(x =>
+                x?.IsBestFame == true ||
+                x?.IsBestReSpec == true ||
+                x?.IsBestSilver == true ||
+                x?.IsBestFactionFlags == true ||
+                x?.IsBestFactionCoins == true ||
+                x?.IsBestFamePerHour == true ||
+                x?.IsBestReSpecPerHour == true ||
+                x?.IsBestSilverPerHour == true ||
+                x?.IsBestFactionFlagsPerHour == true ||
+                x?.IsBestFactionCoinsPerHour == true
+            ).ToList().ForEach(x =>
+            {
+                x.IsBestFame = false;
+                x.IsBestReSpec = false;
+                x.IsBestSilver = false;
+                x.IsBestFactionFlags = false;
+                x.IsBestFactionCoins = false;
+                x.IsBestFamePerHour = false;
+                x.IsBestReSpecPerHour = false;
+                x.IsBestSilverPerHour = false;
+                x.IsBestFactionFlagsPerHour = false;
+                x.IsBestFactionCoinsPerHour = false;
+            });
+        }
+
         private void CalculateBestDungeonValues(ObservableCollection<DungeonNotificationFragment> dungeons)
         {
             try
             {
-                dungeons.Where(x =>
-                    x?.IsBestFame == true ||
-                    x?.IsBestReSpec == true ||
-                    x?.IsBestSilver == true ||
-                    x?.IsBestFactionFlags == true ||
-                    x?.IsBestFactionCoins == true ||
-                    x?.IsBestFamePerHour == true ||
-                    x?.IsBestReSpecPerHour == true ||
-                    x?.IsBestSilverPerHour == true || 
-                    x?.IsBestFactionFlagsPerHour == true || 
-                    x?.IsBestFactionCoinsPerHour == true
-                ).ToList().ForEach(x =>
-                {
-                    x.IsBestFame = false;
-                    x.IsBestReSpec = false;
-                    x.IsBestSilver = false;
-                    x.IsBestFactionFlags = false;
-                    x.IsBestFactionCoins = false;
-                    x.IsBestFamePerHour = false;
-                    x.IsBestReSpecPerHour = false;
-                    x.IsBestSilverPerHour = false;
-                    x.IsBestFactionFlagsPerHour = false;
-                    x.IsBestFactionCoinsPerHour = false;
-                });
+                ResetAllBestValues(dungeons);
 
                 if (dungeons.Any(x => x?.Status == DungeonStatus.Done && x.Fame > 0))
                 {
@@ -524,7 +532,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        public void SetOrUpdateDungeonDataToUi()
+        public void SetOrUpdateDungeonsDataUi()
         {
             _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
             _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
@@ -532,10 +540,10 @@ namespace StatisticsAnalysisTool.Network.Controller
             var counter = 0;
             foreach (var dungeon in _dungeons.Where(x => x.GuidList.Count > 0).OrderBy(x => x.EnterDungeonFirstTime))
             {
-                _mainWindow.Dispatcher?.Invoke(() =>
-                {
+                Application.Current.Dispatcher.Invoke(delegate {
                     var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
-                        x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime == dungeon.EnterDungeonFirstTime);
+                       x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime == dungeon.EnterDungeonFirstTime);
+
                     if (uiDungeon != null)
                     {
                         uiDungeon.SetValues(dungeon);
@@ -550,20 +558,24 @@ namespace StatisticsAnalysisTool.Network.Controller
                 });
             }
 
-            _mainWindow.Dispatcher?.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(delegate
             {
                 SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
                 CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
                 _mainWindowViewModel?.TrackingDungeons?.OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderByDescending(x => x.DungeonNumber).ToList());
             });
+
+            SetDungeonStatsDay();
+            SetDungeonStatsTotal();
         }
 
         public void UpdateDungeonDataUi(DungeonObject dungeon)
         {
-            _mainWindow.Dispatcher?.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(delegate
             {
-                var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
-                    x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
+                var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => 
+                    x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
+
                 uiDungeon?.SetValues(dungeon);
             });
         }
