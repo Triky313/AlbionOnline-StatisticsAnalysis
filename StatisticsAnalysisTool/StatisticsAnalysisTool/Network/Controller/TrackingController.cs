@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
             EntityController = new EntityController(_mainWindow, mainWindowViewModel);
-            DungeonController = new DungeonController(this, _mainWindow, mainWindowViewModel);
+            DungeonController = new DungeonController(this, mainWindowViewModel);
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
             CountUpTimer = new CountUpTimer(mainWindowViewModel);
         }

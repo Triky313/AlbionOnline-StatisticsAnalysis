@@ -671,7 +671,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _trackingController?.DungeonController?.LoadDungeonFromFile();
             _trackingController?.DungeonController?.SetDungeonStatsDay();
             _trackingController?.DungeonController?.SetDungeonStatsTotal();
-            _trackingController?.DungeonController?.SetOrUpdateDungeonsDataToUi();
+            _trackingController?.DungeonController?.SetOrUpdateDungeonsDataUi();
 
             _trackingController?.CountUpTimer.Start();
 
