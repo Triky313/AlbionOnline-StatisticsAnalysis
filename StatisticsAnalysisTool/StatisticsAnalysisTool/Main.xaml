@@ -1279,4 +1279,21 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Grid unfold bar -->
+    <GradientStopCollection  x:Key="DarkBackgroundStops">
+        <GradientStop Color="{StaticResource Background.Second}" Offset="1"/>
+        <GradientStop Color="#FF36363F" Offset="0" />
+    </GradientStopCollection>
+
+    <Style TargetType="Grid" x:Key="Grid.Unfold.Bar" >
+        <Setter Property="Height" Value="20" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" GradientStops="{StaticResource DarkBackgroundStops}" Opacity="0.75"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

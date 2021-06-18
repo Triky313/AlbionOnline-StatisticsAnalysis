@@ -124,6 +124,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _isMainTrackerPopupVisible = Visibility.Hidden;
         private bool _isShowOnlyFavoritesActive;
         private DungeonCloseTimer _dungeonCloseTimer;
+        private double _dungeonStatsGridHeight;
+        private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
+        private Thickness _dungeonStatsScrollViewerMargin = new Thickness(0, 120, 0, 0);
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -255,14 +258,20 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void ToggleAlertSender(object sender)
         {
-            if (sender == null) return;
+            if (sender == null)
+            {
+                return;
+            }
 
             try
             {
                 var imageAwesome = (ImageAwesome) sender;
                 var item = (Item) imageAwesome.DataContext;
 
-                if (item.AlertModeMinSellPriceIsUndercutPrice <= 0) return;
+                if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
+                {
+                    return;
+                }
 
                 item.IsAlertActive = AlertManager.ToggleAlert(ref item);
                 ItemsView.Refresh();
@@ -476,6 +485,26 @@ namespace StatisticsAnalysisTool.ViewModels
                 Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
                 var catchItemWindow = new ItemWindow(item);
                 catchItemWindow.Show();
+            }
+        }
+
+        private bool IsDungeonStatsGridUnfold;
+
+        public void DungeonStatsGridToggle()
+        {
+            if (IsDungeonStatsGridUnfold)
+            {
+                DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
+                DungeonStatsGridHeight = 120;
+                DungeonStatsScrollViewerMargin = new Thickness(0, 120, 0, 0);
+                IsDungeonStatsGridUnfold = false;
+            }
+            else
+            {
+                DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleUp;
+                DungeonStatsGridHeight = 220;
+                DungeonStatsScrollViewerMargin = new Thickness(0,220,0,0);
+                IsDungeonStatsGridUnfold = true;
             }
         }
 
@@ -1197,15 +1226,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<TrackingNotification> DebugTrackingNotifications {
-            get => _debugTrackingNotifications;
-            set
-            {
-                _debugTrackingNotifications = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
         {
             get => _trackingDungeons;
@@ -1670,6 +1690,33 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _fullItemInformationExistLocal = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double DungeonStatsGridHeight {
+            get => _dungeonStatsGridHeight;
+            set
+            {
+                _dungeonStatsGridHeight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Thickness DungeonStatsScrollViewerMargin {
+            get => _dungeonStatsScrollViewerMargin;
+            set
+            {
+                _dungeonStatsScrollViewerMargin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public EFontAwesomeIcon DungeonStatsGridButtonIcon {
+            get => _dungeonStatsGridButtonIcon;
+            set
+            {
+                _dungeonStatsGridButtonIcon = value;
                 OnPropertyChanged();
             }
         }
