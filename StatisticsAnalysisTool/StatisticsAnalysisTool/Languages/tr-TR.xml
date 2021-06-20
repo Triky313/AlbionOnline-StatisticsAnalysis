@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<translations>
+  <translation name="LANGUAGE">Dil</translation>
+  <translation name="REFRESH_RATE">Yenileme Hızı</translation>
+  <translation name="UPDATE_ITEM_LIST_BY_DAYS">İtem listesini günlere göre güncelle: </translation>
+  <translation name="SETTINGS">Ayarlar</translation>
+  <translation name="SAVE">Kaydet</translation>
+  <translation name="CITY">Şehir</translation>
+  <translation name="SELL_PRICE_MIN">MIN Satış Ücreti</translation>
+  <translation name="SELL_PRICE_MIN_DATE">MIN Satış Ücreti Tarihi</translation>
+  <translation name="SELL_PRICE_MAX">MAKS Satış Ücreti</translation>
+  <translation name="SELL_PRICE_MAX_DATE">MAKS Satış Ücreti Tarihi</translation>
+  <translation name="BUY_PRICE_MIN">MIN Alış Ücreti</translation>
+  <translation name="BUY_PRICE_MIN_DATE">MIN Alış Ücreti Tarihi</translation>
+  <translation name="BUY_PRICE_MAX">MAKS Alış Ücreti</translation>
+  <translation name="BUY_PRICE_MAX_DATE">MAKS Alış Ücreti Tarihi</translation>
+  <translation name="LAST_UPDATE">Son güncelleme</translation>
+  <translation name="SHOW_VILLAGES">Köyleri göster</translation>
+  <translation name="AUTO_UPDATE_DATA">Otomatik veri güncellemesi</translation>
+  <translation name="DIFFERENT_CALCULATION">Farklı hesaplama</translation>
+  <translation name="ERROR_PRICES_CAN_NOT_BE_LOADED">HATA: Fiyat yüklenemiyor</translation>
+  <translation name="ERROR_NO_ITEM_INFO">HATA: Item bilgisi yok</translation>
+  <translation name="ERROR_GENERAL_ERROR">HATA: Genel hata.</translation>
+  <translation name="BOUGHT_FOR">Fiyata alındı</translation>
+  <translation name="SELL_FOR">Fiyata satıldı</translation>
+  <translation name="UNKNOWN_ITEM_NAME">Bilinmeyen item ismi</translation>
+  <translation name="NORMAL">Normal</translation>
+  <translation name="GOOD">Good</translation>
+  <translation name="OUTSTANDING">Outstanding</translation>
+  <translation name="EXCELLENT">Excellent</translation>
+  <translation name="MASTERPIECE">Masterpiece</translation>
+  <translation name="MIN_PROFIT">Min Kar</translation>
+  <translation name="ALL">Hepsi</translation>
+  <translation name="ICON">İkon</translation>
+  <translation name="NAME">İsim</translation>
+  <translation name="TIER">Tier</translation>
+  <translation name="LEVEL">Seviye</translation>
+  <translation name="QUALITY">Kalite</translation>
+  <translation name="COSTS">Maliyetler</translation>
+  <translation name="REVENUE">Gelir</translation>
+  <translation name="REVENUE_WITHOUT_FEE">Vergisiz gelir</translation>
+  <translation name="PROFIT">Kazanç</translation>
+  <translation name="PURCHASE_CITY">Alınacak şehir</translation>
+  <translation name="DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE">Dil dosyasında çift değer var</translation>
+  <translation name="EVERY_DAY">Her gün</translation>
+  <translation name="EVERY_3_DAYS">3 günde bir</translation>
+  <translation name="EVERY_7_DAYS">7 günde bir</translation>
+  <translation name="EVERY_14_DAYS">14 günde bir</translation>
+  <translation name="EVERY_28_DAYS">28 günde bir</translation>
+  <translation name="5_SECONDS">5 Saniye</translation>
+  <translation name="10_SECONDS">10 Saniye</translation>
+  <translation name="30_SECONDS">30 Saniye</translation>
+  <translation name="60_SECONDS">60 Saniye</translation>
+  <translation name="5_MINUTES">5 Dakika</translation>
+  <translation name="MIN_PROFIT_TOOLTIP">Bir itemin oluşturması gereken minimum karı belirtir.</translation>
+  <translation name="REMOVE">Kaldır</translation>
+  <translation name="ITEM_LIST_SOURCE_URL">İtem listesi kaynak URL'si</translation>
+  <translation name="ITEM_LIST_CAN_NOT_BE_LOADED">İtem listesi yüklenemiyor.</translation>
+  <translation name="ERROR">Hata</translation>
+  <translation name="NOTE">Not</translation>
+  <translation name="DEFAULT_ITEMLIST_HAS_BEEN_LOADED">Varsayılan item listesi yüklendi.</translation>
+  <translation name="SHOW_BLACKZONE_OUTPOSTS">Siyah bölge outpostlarını göster</translation>
+  <translation name="ID">Id</translation>
+  <translation name="AVERAGE_ITEM_POWER">Ortalama item gücü</translation>
+  <translation name="GUILD_NAME">Lonca ismi</translation>
+  <translation name="GUILD_ID">Lonca id'si</translation>
+  <translation name="ALLIANCE_NAME">Birlik ismi</translation>
+  <translation name="ALLIANCE_ID">Birlik id'si</translation>
+  <translation name="DEATH_FAME">Ölüm fame'i</translation>
+  <translation name="KILL_FAME">Öldürme fame'i</translation>
+  <translation name="FAME_RATIO">Fame oranı</translation>
+  <translation name="TOTAL_KILLS">Toplam öldürdürme</translation>
+  <translation name="GVG_KILLS">GVG öldürmelerin</translation>
+  <translation name="GVG_WON">Kazandığın GVG'ler</translation>
+  <translation name="CRYSTAL_LEAGUE">Kristal Ligi</translation>
+  <translation name="TOTAL">Toplam</translation>
+  <translation name="ROYAL">Royal</translation>
+  <translation name="OUTLANDS">Outlands</translation>
+  <translation name="HELLGATE">Hellgate</translation>
+  <translation name="EXPEDITION">Expedition</translation>
+  <translation name="CRAFTING">Üretmek</translation>
+  <translation name="GATHERING">Toplamak</translation>
+  <translation name="MAINHAND">Ana silah</translation>
+  <translation name="HEAD">Kafalık</translation>
+  <translation name="SHOES">Ayakkabılar</translation>
+  <translation name="BAG">Çanta</translation>
+  <translation name="CAPE">Pelerin</translation>
+  <translation name="FOOD">Yemek</translation>
+  <translation name="PLAYER">Oyuncu</translation>
+  <translation name="GENERAL_INFORMATION">Genel Bilgi</translation>
+  <translation name="PVP">PvP</translation>
+  <translation name="PVE">PvE</translation>
+  <translation name="LOAD">Yükle</translation>
+  <translation name="UPDATE">Güncelle</translation>
+  <translation name="NUMBER_OF_VALUES">Değer sayısı</translation>
+  <translation name="GOLD">Altın</translation>
+  <translation name="OPEN_ITEM_WINDOW_IN_NEW_WINDOW">İtem penceresini yeni pencerede aç</translation>
+  <translation name="TAB_ALL_QUALITY_TOOLTIP_DESCRIPTION">Bir öğenin tüm kalitedeki fiyatlarını gösterir</translation>
+  <translation name="MAIN">Ana</translation>
+  <translation name="HISTORY">Geçmiş</translation>
+  <translation name="SHOW_NOT_AGAIN">Bir daha gösterme</translation>
+  <translation name="SHOW_INFO_WINDOW_ON_START">Başlangıçta bilgi penceresini göster</translation>
+  <translation name="NEW_FEATURE">Yeni özellik</translation>
+  <translation name="FEATURE_DESCRIPTION">Yeni özellik - Hasar Metresi &#x0a;</translation>
+  <translation name="EQUIPABLE">Giyilebilir</translation>
+  <translation name="STACKABLE">İstiflenebilir</translation>
+  <translation name="SHOW_IN_MARKET_PLACE">Pazar yerinde göster</translation>
+  <translation name="ITEM_TYPE">İtem tipi</translation>
+  <translation name="INFORMATION">Bilgi</translation>
+  <translation name="YES">Evet</translation>
+  <translation name="NO">Hayır</translation>
+  <translation name="CATEGORY_NAME">Kategori ismi</translation>
+  <translation name="FULL_ITEM_INFORMATION_EXIST_LOCAL">Tam İtem Bilgileri yerel olarak mevcuttur</translation>
+  <translation name="LAST_FULL_INFORMATION_UPDATE">Son Tam Bilgi Güncellemesi</translation>
+  <translation name="CATEGORY">Kategori</translation>
+  <translation name="PARENT_CATEGORY">Üst kategori</translation>
+  <translation name="FULL_ITEM_INFO_SEARCH">Tam item bilgisi araması</translation>
+  <translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Tam Ürün Bilgisi Güncelleme Döngüsü Günleri</translation>
+  <translation name="LOAD_FULL_ITEM_INFO">Tam item bilgisini yükle</translation>
+  <translation name="UNKNOWN">Bilinmeyen</translation>
+
+  <translation name="CLOTH_ARMOR">Cloth Armor</translation>
+  <translation name="CLOTH_HELMET">Cloth Helmet</translation>
+  <translation name="CLOTH_SHOES">Cloth Shoes</translation>
+  <translation name="LEATHER_ARMOR">Leather Armor</translation>
+  <translation name="LEATHER_HELMET">Leather Helmet</translation>
+  <translation name="LEATHER_SHOES">Leather Shoes</translation>
+  <translation name="PLATE_ARMOR">Plate Armor</translation>
+  <translation name="PLATE_HELMET">Plate Helmet</translation>
+  <translation name="PLATE_SHOES">Plate Shoes</translation>
+  <translation name="UNIQUE_ARMOR">Unique Armor</translation>
+  <translation name="UNIQUE_HELMET">Unique Helmet</translation>
+  <translation name="UNIQUE_SHOES">Unique Shoes</translation>
+
+  <translation name="ARMOR_ARTEFACT">Armor Artefact</translation>
+  <translation name="MAGIC_ARTEFACT">Magic Artefact</translation>
+  <translation name="MELEE_ARTEFACT">Melee Artefact</translation>
+  <translation name="OFFHAND_ARTEFACT">Offhand Artefact</translation>
+  <translation name="RANGED_ARTEFACT">Ranged Artefact</translation>
+
+  <translation name="BEASTHEART">Beast Heart</translation>
+  <translation name="MOUNTAINHEART">Mountain Heart</translation>
+  <translation name="ROCKHEART">Rock Heart</translation>
+  <translation name="TREEHEART">Tree Heart</translation>
+  <translation name="VINEHEART">Vine Heart</translation>
+
+  <translation name="COOKED">Cooked</translation>
+  <translation name="FISH">Fish</translation>
+  <translation name="FISHING_BAIT">Fishing Bait</translation>
+  <translation name="MAPS">Maps</translation>
+  <translation name="OTHER">Other</translation>
+  <translation name="POTION">Potion</translation>
+  <translation name="SKILL_BOOK">Skill Book</translation>
+  <translation name="VANITY">Vanity</translation>
+
+  <translation name="ANIMALS">Animals</translation>
+  <translation name="SEED">Seed</translation>
+
+  <translation name="BANNER">Banner</translation>
+  <translation name="BED">Bed</translation>
+  <translation name="CHEST">Chest</translation>
+  <translation name="DECORATION_FURNITURE">DecorationFurniture</translation>
+  <translation name="FLAG">Flag</translation>
+  <translation name="HERETIC_FURNITURE">HereticFurniture</translation>
+  <translation name="KEEPER_FURNITURE">KeeperFurniture</translation>
+  <translation name="MORGANA_FURNITURE">MorganaFurniture</translation>
+  <translation name="TABLE">Table</translation>
+  <translation name="REPAIR_KIT">RepairKit</translation>
+  <translation name="UNIQUE">Unique</translation>
+
+  <translation name="FIBERGATHERER_ARMOR">Fibergatherer Armor</translation>
+  <translation name="FIBERGATHERER_HELMET">Fibergatherer Helmet</translation>
+  <translation name="FIBERGATHERER_SHOES">Fibergatherer Shoes</translation>
+  <translation name="FIBERGATHERER_BACKPACK">Fibergatherer Backpack</translation>
+
+  <translation name="FISHGATHERER_ARMOR">Fishgatherer Armor</translation>
+  <translation name="FISHGATHERER_HELMET">Fishgatherer Helmet</translation>
+  <translation name="FISHGATHERER_SHOES">Fishgatherer Shoes</translation>
+  <translation name="FISHGATHERER_BACKPACK">Fishgatherer Backpack</translation>
+
+  <translation name="HIDEGATHERER_ARMOR">Hidegatherer Armor</translation>
+  <translation name="HIDEGATHERER_HELMET">Hidegatherer Helmet</translation>
+  <translation name="HIDEGATHERER_SHOES">Hidegatherer Shoes</translation>
+  <translation name="HIDEGATHERERR_BACKPACK">Hidegatherer Backpack</translation>
+
+  <translation name="OREGATHERER_ARMOR">Oregatherer Armor</translation>
+  <translation name="OREGATHERER_HELMET">Oregatherer Helmet</translation>
+  <translation name="OREGATHERER_SHOES">Oregatherer Shoes</translation>
+  <translation name="OREGATHERER_BACKPACK">Oregatherer Backpack</translation>
+
+  <translation name="ROCKGATHERER_ARMOR">Rockgatherer Armor</translation>
+  <translation name="ROCKGATHERER_HELMET">Rockgatherer Helmet</translation>
+  <translation name="ROCKGATHERER_SHOES">Rockgatherer Shoes</translation>
+  <translation name="ROCKGATHERER_BACKPACK">Rockgatherer Backpack</translation>
+
+  <translation name="WOODGATHERER_ARMOR">Woodgatherer Armor</translation>
+  <translation name="WOODGATHERER_HELMET">Woodgatherer Helmet</translation>
+  <translation name="WOODGATHERER_SHOES">Woodgatherer Shoes</translation>
+  <translation name="WOODGATHERER_BACKPACK">Woodgatherer Backpack</translation>
+
+  <translation name="BRIDGEWATCH">Bridgewatch</translation>
+  <translation name="CAERLEON">Caerleon</translation>
+  <translation name="FORT_STERLING">Fort Sterling</translation>
+  <translation name="LYMHURST">Lymhurst</translation>
+  <translation name="MARTLOCK">Martlock</translation>
+  <translation name="THETFORD">Thetford</translation>
+
+  <translation name="ARCANE_STAFF">Arcane Staff</translation>
+  <translation name="CURSE_STAFF">Curse Staff</translation>
+  <translation name="FIRE_STAFF">Fire Staff</translation>
+  <translation name="FROST_STAFF">Frost Staff</translation>
+  <translation name="HOLY_STAFF">Holy Staff</translation>
+  <translation name="NATURE_STAFF">Nature Staff</translation>
+
+  <translation name="ESSENCE">Essence</translation>
+  <translation name="RELIC">Relic</translation>
+  <translation name="RUNE">Rune</translation>
+  <translation name="SOUL">Soul</translation>
+
+  <translation name="AXE">Axe</translation>
+  <translation name="DAGGER">Dagger</translation>
+  <translation name="HAMMER">Hammer</translation>
+  <translation name="MACE">Mace</translation>
+  <translation name="QUARTER_STAFF">Quarter Staff</translation>
+  <translation name="SPEAR">Spear</translation>
+  <translation name="SWORD">Sword</translation>
+
+  <translation name="ARMORED_HORSE">Armored Horse</translation>
+  <translation name="OX">Ox</translation>
+  <translation name="RARE_MOUNT">Rare Mount</translation>
+  <translation name="RIDING_HORSE">Riding Horse</translation>
+
+  <translation name="BOOK">Book</translation>
+  <translation name="HORN">Horn</translation>
+  <translation name="ORB">Orb</translation>
+  <translation name="SHIELD">Shield</translation>
+  <translation name="TORCH">Torch</translation>
+  <translation name="TOTEM">Totem</translation>
+  <translation name="TRASH">Trash</translation>
+
+  <translation name="FARMING">Farming</translation>
+  <translation name="JOURNAL">Journal</translation>
+
+  <translation name="BOW">Bow</translation>
+  <translation name="CROSSBOW">Crossbow</translation>
+
+  <translation name="CLOTH">Cloth</translation>
+  <translation name="FIBER">Fiber</translation>
+  <translation name="HIDE">Hide</translation>
+  <translation name="LEATHER">Leather</translation>
+  <translation name="METALBAR">Metalbar</translation>
+  <translation name="ORE">Ore</translation>
+  <translation name="WOOD">Wood</translation>
+  <translation name="PLANKS">Planks</translation>
+  <translation name="ROCK">Rock</translation>
+  <translation name="STONEBLOCK">Stoneblock</translation>
+
+  <translation name="ARENA_SIGILS">Arena Sigils</translation>
+  <translation name="EVENT">Event</translation>
+  <translation name="ROYAL_SIGILS">Royal Sigils</translation>
+
+  <translation name="DEMOLITION_HAMMER">Demolition Hammer</translation>
+  <translation name="FISHING">Fishing</translation>
+  <translation name="PICKAXE">Pickaxe</translation>
+  <translation name="SICKLE">Sickle</translation>
+  <translation name="SKINNING_KNIFE">Skinning Knife</translation>
+  <translation name="STONE_HAMMER">Stone Hammer</translation>
+  <translation name="WOOD_AXE">Wood Axe</translation>
+
+  <translation name="FIBER_TROPHY">Fiber Trophy</translation>
+  <translation name="FISH_TROPHY">Fish Trophy</translation>
+  <translation name="GENERAL_TROPHY">General Trophy</translation>
+  <translation name="HIDE_TROPHY">Hide Trophy</translation>
+  <translation name="MERCENARY_TROPHY">Mercenary Trophy</translation>
+  <translation name="ORE_TROPHY">Ore Trophy</translation>
+  <translation name="ROCK_TROPHY">Rock Trophy</translation>
+  <translation name="WOOD_TROPHY">Wood Trophy</translation>
+
+  <translation name="ACCESSORIES">Accessories</translation>
+  <translation name="ARMOR">Armor</translation>
+  <translation name="ARTEFACT">Artifact</translation>
+  <translation name="CITY_RESOURCES">City Resources</translation>
+  <translation name="CONSUMABLE">Consumable</translation>
+
+  <translation name="FARMABLE">Ekilebilir</translation>
+  <translation name="FURNITURE">Ev eşyası</translation>
+  <translation name="GATHERING_GEAR">Toplama Ekipmanı</translation>
+  <translation name="LUXURY_GOODS">Lüks mallar</translation>
+  <translation name="MAGIC">Büyü</translation>
+
+  <translation name="MATERIALS">Materyaller</translation>
+  <translation name="MELEE">Yakın dövüş</translation>
+  <translation name="MOUNT">Binek</translation>
+  <translation name="OFFHAND">İkincil Silah</translation>
+  <translation name="PRODUCT">Ürün</translation>
+
+  <translation name="RANGED">Uzak Menzilli</translation>
+  <translation name="RESOURCE">Kaynak</translation>
+  <translation name="TOKEN">Simge</translation>
+  <translation name="TOOL">Eşya</translation>
+  <translation name="TROPHIES">Kupalar</translation>
+
+  <translation name="WEIGHT">Ağırlık</translation>
+  <translation name="ITEM_POWER">İtem gücü</translation>
+  <translation name="DURABILITY">Dayanıklılık</translation>
+  <translation name="REAL_MONEY_PRICE">Gerçek para fiyatı</translation>
+  <translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Çok fazla istek, birkaç pencereyi kapatın veya birkaç dakika bekleyin.</translation>
+
+  <translation name="ALARM_SOUND_USED">Kullanılan alarm sesi</translation>
+  <translation name="ITEM_PRICE_UNDERCUT">Ürün fiyatı düşürüldü</translation>
+  <translation name="THE_PRICE_OF">Fiyatı</translation>
+  <translation name="IN">İçinde</translation>
+  <translation name="SHOW_ONLY_ITEMS_WITH_ALERT_ON">Yalnızca uyarısı açık olan itemleri göster</translation>
+  <translation name="SHOW_ONLY_FAVORITES">Yalnızca favorileri göster</translation>
+  <translation name="HAS_BEEN_UNDERCUT">Fiyatı düşürüldü</translation>
+  <translation name="IS_ALERT_ACTIVATE">Uyarı etkinleştirildi mi</translation>
+  <translation name="UNDERCUTTING_PRICE">Fiyat düşürme miktarı</translation>
+  <translation name="AVERAGE_PRICES">Ortalama ücret</translation>
+  <translation name="AVERAGE_PRICES_TOOLTIP">Min satış ücreti | Maks satış ücreti | Min alış ücreti | Maks alış ücreti</translation>
+
+  <translation name="TRACKING">İzleme</translation>
+  <translation name="IS_TRACKING_ACTIVE">İzleme etkin mi (Yeşil - AÇIK | Gri - KAPALI)</translation>
+  <translation name="USERNAME">Kullanıcı İsmi</translation>
+  <translation name="GUILD">Lonca</translation>
+  <translation name="ALLIANCE">Birlik</translation>
+  <translation name="RESET_TRACKING_COUNTER">İzleme sayacını sıfırla</translation>
+  <translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">NPcap'ı yüklediğinizden emin olun. https://nmap.org/npcap</translation>
+  <translation name="PACKET_HANDLER_ERROR_MESSAGE">Bir hata oluştu, izlemenin yeniden başlatılması gerekiyor.</translation>
+  <translation name="YOU_HAVE">Sizde olan</translation>
+  <translation name="FAME">Fame</translation>
+  <translation name="GAINED">kazanılan.</translation>
+  <translation name="MAP_CHANGE_RESET">Harita değişikliği sıfırlama</translation>
+  <translation name="TOTAL_FAME">Toplam Fame</translation>
+  <translation name="TOTAL_SILVER">Toplam Gümüş</translation>
+  <translation name="TOTAL_RESPEC">Toplam Yeniden Puanlama</translation>
+  <translation name="SILVER">Gümüş</translation>
+
+  <translation name="MINUTES">Dakikalar</translation>
+  <translation name="HOURS">Saatler</translation>
+  <translation name="DAYS">Günler</translation>
+  <translation name="OVER_A_YEAR">Bir yıldan fazla</translation>
+  <translation name="CURRENT_MAP">Şu anki harita</translation>
+  <translation name="KILLDED_BY">Tarafından öldürüldü</translation>
+  <translation name="DUNGEON">Zindan</translation>
+  <translation name="ARENA">Arena</translation>
+  <translation name="CORRUPTED_LAIR">Corrupted Lair</translation>
+  <translation name="HIDEOUT">Saklanma Yeri</translation>
+  <translation name="DAY">Gün</translation>
+  <translation name="RESET_DUNGEON_TRACKING">Zindan İzlemesini Sıfırla</translation>
+  <translation name="SOLO">Solo</translation>
+  <translation name="KILLED_BY">tarafından öldürüldü</translation>
+  <translation name="DUNGEON_FAME">Zindan Fame'i</translation>
+  <translation name="DUNGEON_RUN_TIME">Zindanı bitirme süresi</translation>
+  <translation name="DAMAGE_METER">Hasar metre</translation>
+  <translation name="RESET_DAMAGE_METER">Hasar metresini sıfırla</translation>
+
+  <translation name="STANDARD">Standart</translation>
+  <translation name="UNCOMMON">Yaygın olmayan</translation>
+  <translation name="RARE">Nadir</translation>
+  <translation name="LEGENDARY">Efsanevi</translation>
+  <translation name="BOSS_CHEST">Patron-Sandığı</translation>
+  <translation name="BOOK_CHEST">Kitap-Sandığı</translation>
+  <translation name="ENTERED_DUNGEON">Zindana girdi</translation>
+  <translation name="OPENED_STANDARD_CHESTS">Açılmış Standart Sandıklar</translation>
+  <translation name="OPENED_UNCOMMON_CHESTS">Açılmış Yaygın Olmayan Sandıklar</translation>
+  <translation name="OPENED_RARE_CHESTS">Açılmış Nadir Sandıklar</translation>
+  <translation name="OPENED_LEGENDARY_CHESTS">Açılmış Efsanevi Sandıklar</translation>
+
+  <translation name="MAIN_TRACKER_DESCRIPTION_1">İzleyicinin izlediği şöhret, gerçek genel şöhrettir. Bu, Premium ve Satchel Fame ile anlamına gelir. Bir oyuncunun profilindeki şöhret, premium veya başka bir özel şöhret olmaksızın normal şöhrettir.</translation>
+  <translation name="DAMAGE_METER_DESCRIPTION_1">Partideki diğer oyunculardan gelen hasarın fark edilmesi için önce aracın etkinleştirilmesi ve ardından bir oyuncunun partiden ayrılması veya gruba katılması gerekir.</translation>
+
+  <translation name="SORT_BY_DAMAGE">Hasara göre sırala</translation>
+  <translation name="SORT_BY_DPS">DPS'e göre sırala</translation>
+  <translation name="SORT_BY_NAME">İsme göre sırala</translation>
+  <translation name="SORT_BY_HEAL">İyileştirmeye göre sırala</translation>
+  <translation name="SORT_BY_HPS">HPS'e göre sırala</translation>
+  <translation name="FACTION_FLAG_POINTS">Faction Flag Puanları</translation>
+  <translation name="FACTION_POINTS">Faction Puanları</translation>
+  <translation name="NUMBER_OF_DUNGEON_FLOORS">Zindan kat sayısı</translation>
+  <translation name="TOOL_DIRECTORY">Araç Dizini</translation>
+  <translation name="OPEN_TOOL_DIRECTORY">Araç Dizinini Aç</translation>
+  <translation name="OPEN_OR_CLOSE_DEBUG_CONSOLE">Hata ayıklama konsolunu aç veya kapat</translation>
+  <translation name="CREATE_DESKTOP_SHORTCUT">Masaüstü kısayolu oluşturun</translation>
+  <translation name="FAVORITE">Favorilere Al</translation>
+  <translation name="SILVER_SHRINE">Gümüş Shrine'ı</translation>
+  <translation name="FAME_SHRINE">Fame Shrine'ı</translation>
+  <translation name="COMBAT_BUFF">Combat Buff'ı</translation>
+
+  <translation name="CITY_PRICES_API_URL">Şehir fiyatları API URL'si</translation>
+  <translation name="CITY_PRICES_HISTORY_API_URL">Şehir fiyatları geçmişi API URL'si</translation>
+  <translation name="GOLD_STATS_API_URL">Altın istatistikleri API URL'si</translation>
+
+  <translation name="SAFE">Güvenli</translation>
+  <translation name="DUNGEON_TIMER">Zindan Zamanlayıcısı</translation>
+  <translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Hasar Ölçer'i sıfırlamak istediğinizden emin misiniz?</translation>
+  <translation name="RESET_DUNGEON_TRACKER">Hasar Ölçer'i sıfırla</translation>
+  <translation name="SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER">Zindan İzleyiciy'i sıfırlamak istediğinizden emin misiniz?</translation>
+</translations>
