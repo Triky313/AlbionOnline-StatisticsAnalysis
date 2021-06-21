@@ -1122,7 +1122,6 @@
         </Grid>
     </DataTemplate>
 
-    <!-- TODO: Error: 40 : BindingExpression path error:-->
     <DataTemplate DataType="{x:Type models:DungeonStats}">
         <Border Style="{StaticResource Tracking.Information.Border}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
@@ -1163,18 +1162,18 @@
                     <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationFame, FallbackValue=DUNGEON__FAME}">
                         <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                     </Grid>
-                    <Label Content="{Binding Fame, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" 
-                           Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                    <Label Content="{Binding Fame, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" 
+                           Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
                     <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationReSpec, FallbackValue=DUNGEON__FAME}">
                         <Image Source="Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                     </Grid>
-                    <Label Content="{Binding ReSpec, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" 
-                           Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                    <Label Content="{Binding ReSpec, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" 
+                           Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
                     <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationSilver, FallbackValue=DUNGEON__FAME}">
                         <Image Source="Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                     </Grid>
-                    <Label Content="{Binding Silver, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" 
-                           Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                    <Label Content="{Binding Silver, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" 
+                           Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
                 </DockPanel>
             </StackPanel>
         </Border>
