@@ -1122,42 +1122,60 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type networkModel:DungeonCloseTimer}">
-        <Border Visibility="{Binding IsVisible }" Style="{StaticResource Tracking.Information.Border}">
+    <!-- TODO: Error: 40 : BindingExpression path error:-->
+    <DataTemplate DataType="{x:Type models:DungeonStats}">
+        <Border Style="{StaticResource Tracking.Information.Border}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
-                <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationDungeonTimer, FallbackValue=DUNGEON__TIMER}"></Label>
-                <Grid>
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="{x:Type Grid}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        <Label Content="{Binding TimerString, FallbackValue=00:00:00}" />
+                <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationTitle, FallbackValue=TOTAL}" FontWeight="Bold"></Label>
+                <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Style="{StaticResource Icon.Dungeon}"/>
                     </Grid>
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="{x:Type Grid}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        <Label FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Green.2}" Content="{Binding TranslationSafe, FallbackValue=SAFE}" />
+                    <Label Content="{Binding EnteredDungeon, FallbackValue='0'}" ContentStringFormat="{}{0}" 
+                           ToolTip="{Binding TranslationEnteredDungeon}" MinWidth="40" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" 
+                           Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Style="{StaticResource Icon.Chest.Standard.Close}"/>
                     </Grid>
-                </Grid>
+                    <Label Content="{Binding OpenedStandardChests, FallbackValue='0'}" ContentStringFormat="{}{0}" 
+                           ToolTip="{Binding TranslationOpenedStandardChests}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" 
+                           Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Style="{StaticResource Icon.Chest.Uncommon.Close}"/>
+                    </Grid>
+                    <Label Content="{Binding OpenedUncommonChests, FallbackValue='0'}" ContentStringFormat="{}{0}" 
+                           ToolTip="{Binding TranslationOpenedUncommonChests}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" 
+                           Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Style="{StaticResource Icon.Chest.Rare.Close}"/>
+                    </Grid>
+                    <Label Content="{Binding OpenedRareChests, FallbackValue='0'}" ContentStringFormat="{}{0}" 
+                           ToolTip="{Binding TranslationOpenedRareChests}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" 
+                           Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Style="{StaticResource Icon.Chest.Legendary.Close}"/>
+                    </Grid>
+                    <Label Content="{Binding OpenedLegendaryChests, FallbackValue='0'}" ContentStringFormat="{}{0}" 
+                           ToolTip="{Binding TranslationOpenedLegendaryChests}" MinWidth="50" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" 
+                           Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
+                </DockPanel>
+                <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationFame, FallbackValue=DUNGEON__FAME}">
+                        <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
+                    </Grid>
+                    <Label Content="{Binding Fame, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" 
+                           Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationReSpec, FallbackValue=DUNGEON__FAME}">
+                        <Image Source="Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
+                    </Grid>
+                    <Label Content="{Binding ReSpec, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" 
+                           Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationSilver, FallbackValue=DUNGEON__FAME}">
+                        <Image Source="Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
+                    </Grid>
+                    <Label Content="{Binding Silver, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" 
+                           Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                </DockPanel>
             </StackPanel>
         </Border>
     </DataTemplate>
