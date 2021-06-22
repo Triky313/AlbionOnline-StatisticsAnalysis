@@ -1,6 +1,5 @@
 ﻿using StatisticsAnalysisTool.ViewModels;
 using System;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Common
@@ -21,7 +20,6 @@ namespace StatisticsAnalysisTool.Common
 
         public void Execute(object parameter)
         {
-            Debug.Print($"ENTFERNT: {(string)parameter}");
             _mainWindowViewModel.TrackingController.DungeonController.RemoveDungeon((string)parameter);
         }
 

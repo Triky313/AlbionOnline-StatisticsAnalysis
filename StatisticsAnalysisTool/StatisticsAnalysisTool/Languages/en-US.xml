@@ -396,5 +396,7 @@
   <translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Are you sure you want to reset the Damage Meter?</translation>
   <translation name="RESET_DUNGEON_TRACKER">Reset Dungeon Tracker</translation>
   <translation name="SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER">Are you sure you want to reset the Dungeon Tracker?</translation>
+  <translation name="REMOVE_DUNGEON">Remove Dungeon</translation>
+  <translation name="SURE_YOU_WANT_TO_REMOVE_DUNGEON">Are you sure you want to remove the Dungeon?</translation>
   <translation name="RESPEC">Respec</translation>
 </translations>

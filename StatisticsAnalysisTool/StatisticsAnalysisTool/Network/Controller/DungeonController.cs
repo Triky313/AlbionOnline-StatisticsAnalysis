@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -200,14 +201,18 @@ namespace StatisticsAnalysisTool.Network.Controller
         public void RemoveDungeon(string dungeonHash)
         {
             var dungeon = _dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
-            var dungeonFragment = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
-            if (dungeon != null)
+
+            if (dungeon == null)
+            {
+                return;
+            }
+            
+            var dialog = new DialogWindow(LanguageController.Translation("REMOVE_DUNGEON"), LanguageController.Translation("SURE_YOU_WANT_TO_REMOVE_DUNGEON"));
+            var dialogResult = dialog.ShowDialog();
+
+            if (dialogResult != null && dialogResult == true)
             {
                 _dungeons.Remove(dungeon);
-                Application.Current.Dispatcher.Invoke(delegate {
-                    _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
-                });
-
                 SetOrUpdateDungeonsDataUi();
             }
         }
@@ -580,7 +585,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
             var counter = 0;
-            foreach (var dungeon in _dungeons.Where(x => x.GuidList.Count > 0).OrderBy(x => x.EnterDungeonFirstTime))
+            var filteredDungeons = _dungeons.Where(x => x.GuidList.Count > 0).OrderBy(x => x.EnterDungeonFirstTime).ToList();
+            foreach (var dungeon in filteredDungeons)
             {
                 Application.Current.Dispatcher.Invoke(delegate {
                     var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
@@ -600,15 +606,34 @@ namespace StatisticsAnalysisTool.Network.Controller
                 });
             }
 
+            RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons);
+            SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
+            CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
+
             Application.Current.Dispatcher.Invoke(delegate
             {
-                SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
-                CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
                 _mainWindowViewModel?.TrackingDungeons?.OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderByDescending(x => x.DungeonNumber).ToList());
             });
 
             SetDungeonStatsDay();
             SetDungeonStatsTotal();
+        }
+
+        private void RemoveLeftOverDungeonNotificationFragments(ObservableCollection<DungeonNotificationFragment> dungeonNotificationFragments)
+        {
+            foreach (var dungeonFragment in dungeonNotificationFragments.ToList())
+            {
+                var dungeonObject = _dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonFragment.DungeonHash));
+
+                if (dungeonObject != null)
+                {
+                    continue;
+                }
+                Application.Current.Dispatcher.Invoke(delegate
+                {
+                    _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
+                });
+            }
         }
 
         public void UpdateDungeonDataUi(DungeonObject dungeon)
