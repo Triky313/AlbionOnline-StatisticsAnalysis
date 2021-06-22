@@ -106,7 +106,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Brush _trackerActivationToggleColor;
         private EFontAwesomeIcon _trackerActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private string _trackingAllianceName;
-        private TrackingController _trackingController;
+        public TrackingController TrackingController;
         private string _trackingCurrentMapName;
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
         private string _trackingGuildName;
@@ -690,28 +690,28 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            if (_trackingController == null)
+            if (TrackingController == null)
             {
-                _trackingController = new TrackingController(this, _mainWindow);
+                TrackingController = new TrackingController(this, _mainWindow);
             }
 
-            _trackingController?.RegisterEvents();
-            _trackingController?.DungeonController?.LoadDungeonFromFile();
-            _trackingController?.DungeonController?.SetDungeonStatsDay();
-            _trackingController?.DungeonController?.SetDungeonStatsTotal();
-            _trackingController?.DungeonController?.SetOrUpdateDungeonsDataUi();
+            TrackingController?.RegisterEvents();
+            TrackingController?.DungeonController?.LoadDungeonFromFile();
+            TrackingController?.DungeonController?.SetDungeonStatsDay();
+            TrackingController?.DungeonController?.SetDungeonStatsTotal();
+            TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUi();
 
-            _trackingController?.CountUpTimer.Start();
+            TrackingController?.CountUpTimer.Start();
 
-            IsTrackingActive = NetworkManager.StartNetworkCapture(this, _trackingController);
+            IsTrackingActive = NetworkManager.StartNetworkCapture(this, TrackingController);
             Console.WriteLine(@"### Start Tracking...");
         }
 
         public void StopTracking()
         {
-            _trackingController?.DungeonController?.SaveDungeonsInFile();
-            _trackingController?.UnregisterEvents();
-            _trackingController?.CountUpTimer?.Stop();
+            TrackingController?.DungeonController?.SaveDungeonsInFile();
+            TrackingController?.UnregisterEvents();
+            TrackingController?.CountUpTimer?.Stop();
 
             NetworkManager.StopNetworkCapture();
 
@@ -733,7 +733,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void ResetMainCounters()
         {
-            _trackingController?.CountUpTimer?.Reset();
+            TrackingController?.CountUpTimer?.Reset();
         }
 
         public void ResetDamageMeter()
@@ -743,7 +743,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (dialogResult != null && dialogResult == true)
             {
-                _trackingController.CombatController.ResetDamageMeter();
+                TrackingController.CombatController.ResetDamageMeter();
             }
         }
 
@@ -754,7 +754,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (dialogResult != null && dialogResult == true)
             {
-                _trackingController.DungeonController.ResetDungeons();
+                TrackingController.DungeonController.ResetDungeons();
             }
         }
 

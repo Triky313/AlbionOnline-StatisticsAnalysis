@@ -197,6 +197,21 @@ namespace StatisticsAnalysisTool.Network.Controller
             SetDungeonStatsTotal();
         }
 
+        public void RemoveDungeon(string dungeonHash)
+        {
+            var dungeon = _dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
+            var dungeonFragment = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
+            if (dungeon != null)
+            {
+                _dungeons.Remove(dungeon);
+                Application.Current.Dispatcher.Invoke(delegate {
+                    _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
+                });
+
+                SetOrUpdateDungeonsDataUi();
+            }
+        }
+
         private DungeonObject CreateNewDungeon(string mainMapIndex, Guid guid)
         {
             var dungeon = new DungeonObject()
@@ -578,7 +593,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     }
                     else
                     {
-                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
+                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime, _mainWindowViewModel);
                         dunFragment.SetValues(dungeon);
                         _mainWindowViewModel?.TrackingDungeons?.Add(dunFragment);
                     }

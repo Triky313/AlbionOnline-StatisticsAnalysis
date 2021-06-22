@@ -3,12 +3,14 @@ using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
@@ -53,15 +55,19 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isBestFactionCoins;
         private CityFaction _cityFaction;
         private int _numberOfDungeonFloors;
-        public string DungeonHash => $"{EnterDungeonFirstTime}{string.Join(",", GuidList)}";
+        private string _diedMessage;
+        public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
 
-        public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
+        public ICommand RemoveDungeonCommand { get; set; }
+
+        public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime, MainWindowViewModel mainWindowViewModel)
         {
             DungeonNumber = dungeonNumber;
             MainMapIndex = mainMapIndex;
             GuidList = guidList;
             EnterDungeonFirstTime = enterDungeonFirstTime;
             Faction = Faction.Unknown;
+            RemoveDungeonCommand = new RemoveDungeonButtonClick(mainWindowViewModel);
         }
 
         public void SetValues(DungeonObject dungeonObject)
@@ -176,11 +182,19 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _diedInDungeon = value;
+                DiedMessage = $"{DiedName} {LanguageController.Translation("KILLED_BY")} {KilledBy}";
                 OnPropertyChanged();
             }
         }
 
-        public string DiedMessage => $"{DiedName} {LanguageController.Translation("KILLED_BY")} {KilledBy}";
+        public string DiedMessage {
+
+            get => _diedMessage;
+            set {
+                _diedMessage = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string DiedName
         {
@@ -538,7 +552,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonIgnore] public string TranslationAvalon => LanguageController.Translation("AVALON");
 
         [JsonIgnore] public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
         
         [NotifyPropertyChangedInvocator]

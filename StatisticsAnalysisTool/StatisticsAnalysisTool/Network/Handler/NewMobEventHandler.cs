@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             //if (value.ObjectId != null)
             //{
-            //    _trackingController.EntityController.AddEntity((long) value.ObjectId, string.Empty, GameObjectType.Mob, (GameObjectSubType) value.Type);
+            //    TrackingController.EntityController.AddEntity((long) value.ObjectId, string.Empty, GameObjectType.Mob, (GameObjectSubType) value.Type);
             //}
             await Task.CompletedTask;
         }

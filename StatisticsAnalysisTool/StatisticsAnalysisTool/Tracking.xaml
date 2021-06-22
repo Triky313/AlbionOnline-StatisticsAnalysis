@@ -8,6 +8,7 @@
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
+                    xmlns:statisticsAnalysisTool="clr-namespace:StatisticsAnalysisTool"
                     mc:Ignorable="d">
 
     <Style x:Key="LineFragmentImageStyle" TargetType="{x:Type Image}">
@@ -683,9 +684,12 @@
                     </Grid>
                 </DockPanel>
             </StackPanel>
-            <!--<Grid Margin="0 2 20 2" Height="20" Width="20" HorizontalAlignment="Right">
-                <fa5:ImageAwesome Icon="Solid_Trash" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="FilterReset_MouseUp" />
-            </Grid>-->
+            <Grid Margin="0 0 20 0" Height="30" Width="50" HorizontalAlignment="Right">
+                <Button Width="auto" Height="auto" Command="{Binding RemoveDungeonCommand}" 
+                        CommandParameter="{Binding DungeonHash}">
+                    <fa5:ImageAwesome Height="15" Width="15" Icon="Solid_Trash" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                </Button>
+            </Grid>
         </Grid>
     </DataTemplate>
 
