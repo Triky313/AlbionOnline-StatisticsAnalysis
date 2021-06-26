@@ -126,6 +126,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
         private double _dungeonStatsGridHeight = 82;
         private Thickness _dungeonStatsScrollViewerMargin = new Thickness(0, 82, 0, 0);
+        private bool IsDungeonStatsGridUnfold;
+        private DungeonStatsFilter _dungeonStatsFilter;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -487,8 +489,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        private bool IsDungeonStatsGridUnfold;
-
         public void DungeonStatsGridToggle()
         {
             if (IsDungeonStatsGridUnfold)
@@ -501,8 +501,8 @@ namespace StatisticsAnalysisTool.ViewModels
             else
             {
                 DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleUp;
-                DungeonStatsGridHeight = 180;
-                DungeonStatsScrollViewerMargin = new Thickness(0,180,0,0);
+                DungeonStatsGridHeight = 230;
+                DungeonStatsScrollViewerMargin = new Thickness(0,230,0,0);
                 IsDungeonStatsGridUnfold = true;
             }
         }
@@ -702,6 +702,8 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUi();
 
             TrackingController?.CountUpTimer.Start();
+
+            DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
 
             IsTrackingActive = NetworkManager.StartNetworkCapture(this, TrackingController);
             Console.WriteLine(@"### Start Tracking...");
@@ -1035,6 +1037,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _dungeonStatsTotal = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DungeonStatsFilter DungeonStatsFilter
+        {
+            get => _dungeonStatsFilter;
+            set
+            {
+                _dungeonStatsFilter = value;
                 OnPropertyChanged();
             }
         }

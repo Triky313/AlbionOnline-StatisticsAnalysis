@@ -23,6 +23,7 @@ namespace StatisticsAnalysisTool.Common
             _mainWindowViewModel.TrackingController.DungeonController.RemoveDungeon((string)parameter);
         }
 
+        // TODO: Fix
         public event EventHandler CanExecuteChanged;
     }
 }

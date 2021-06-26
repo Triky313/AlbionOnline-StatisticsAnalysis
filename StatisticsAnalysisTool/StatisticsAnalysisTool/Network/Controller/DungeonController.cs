@@ -12,6 +12,7 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -610,13 +611,48 @@ namespace StatisticsAnalysisTool.Network.Controller
             SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
             CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
 
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                _mainWindowViewModel?.TrackingDungeons?.OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderByDescending(x => x.DungeonNumber).ToList());
-            });
+            DungeonSortAndFiltering();
 
             SetDungeonStatsDay();
             SetDungeonStatsTotal();
+        }
+
+        private void DungeonSortAndFiltering()
+        {
+            var watch = Stopwatch.StartNew();
+
+            if (_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null)
+            {
+                Application.Current.Dispatcher.Invoke(delegate
+                {
+                    var filteredDungeons = _mainWindowViewModel?.TrackingDungeons?
+                        .Where(x => _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
+                        .ToList();
+
+                    if (filteredDungeons == null)
+                    {
+                        return;
+                    }
+
+                    _mainWindowViewModel.TrackingDungeons = new ObservableCollection<DungeonNotificationFragment>(filteredDungeons.ToList());
+                    _mainWindowViewModel?.TrackingDungeons?
+                        .OrderByReference(filteredDungeons?.OrderByDescending(x => x.DungeonNumber)
+                            .ToList());
+                });
+
+                Debug.Print(watch.ElapsedMilliseconds.ToString());
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                _mainWindowViewModel?.TrackingDungeons?
+                    .OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderByDescending(x => x.DungeonNumber)
+                        .ToList());
+            });
+
+            watch.Stop();
+            Debug.Print(watch.ElapsedMilliseconds.ToString());
         }
 
         private void RemoveLeftOverDungeonNotificationFragments(ObservableCollection<DungeonNotificationFragment> dungeonNotificationFragments)

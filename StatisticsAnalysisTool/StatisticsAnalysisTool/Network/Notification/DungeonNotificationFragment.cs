@@ -552,6 +552,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonIgnore] public string TranslationAvalon => LanguageController.Translation("AVALON");
 
         [JsonIgnore] public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
+
         
         public event PropertyChangedEventHandler PropertyChanged;
         

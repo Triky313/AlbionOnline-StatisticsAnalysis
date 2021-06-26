@@ -8,7 +8,6 @@
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
-                    xmlns:statisticsAnalysisTool="clr-namespace:StatisticsAnalysisTool"
                     mc:Ignorable="d">
 
     <Style x:Key="LineFragmentImageStyle" TargetType="{x:Type Image}">
@@ -1178,6 +1177,23 @@
                     </Grid>
                     <Label Content="{Binding Silver, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" 
                            Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                </DockPanel>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type models:DungeonStatsFilter}">
+        <Border Style="{StaticResource Tracking.Information.Border}">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
+                <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationFilter, FallbackValue=FILTER}" FontWeight="Bold"></Label>
+                <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                    <CheckBox Content="{Binding TranslationSolo}" Margin="5,0,5,0" IsChecked="{Binding SoloCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationGroup}" Margin="5,0,5,0" IsChecked="{Binding StandardCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationAva}" Margin="5,0,5,0" IsChecked="{Binding AvaCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationHg}" Margin="5,0,5,0" IsChecked="{Binding HgCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationCorrupted}" Margin="5,0,5,0" IsChecked="{Binding CorruptedCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationExpedition}" Margin="5,0,5,0" IsChecked="{Binding ExpeditionCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationUnknown}" Margin="5,0,5,0" IsChecked="{Binding UnknownCheckbox}"></CheckBox>
                 </DockPanel>
             </StackPanel>
         </Border>

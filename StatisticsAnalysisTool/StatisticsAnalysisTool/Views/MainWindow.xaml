@@ -256,10 +256,11 @@
                                 <StackPanel Height="auto" VerticalAlignment="Top" HorizontalAlignment="Left">
                                     <ContentPresenter Content="{Binding DungeonStatsTotal}"/>
                                     <ContentPresenter Content="{Binding DungeonStatsDay}"/>
+                                    <ContentPresenter Content="{Binding DungeonStatsFilter}"/>
                                 </StackPanel>
-                                <StackPanel HorizontalAlignment="Right" Width="250" Height="auto" VerticalAlignment="Top">
+                                <StackPanel HorizontalAlignment="Right" Width="250" Height="82" VerticalAlignment="Top">
                                     <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="80" Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
-                                    <DockPanel Height="50" VerticalAlignment="Top">
+                                    <DockPanel Height="auto" VerticalAlignment="Top">
                                         <ContentControl Content="{Binding DungeonCloseTimer}" />
                                     </DockPanel>
                                 </StackPanel>

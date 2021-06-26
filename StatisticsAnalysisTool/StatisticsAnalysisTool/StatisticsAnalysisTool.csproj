@@ -192,6 +192,7 @@
     <Compile Include="Enumerations\HealthChangeType.cs" />
     <Compile Include="Enumerations\ShrineBuff.cs" />
     <Compile Include="Enumerations\ShrineType.cs" />
+    <Compile Include="Models\DungeonStatsFilter.cs" />
     <Compile Include="Models\MainStatObject.cs" />
     <Compile Include="Models\EquipmentItem.cs" />
     <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
