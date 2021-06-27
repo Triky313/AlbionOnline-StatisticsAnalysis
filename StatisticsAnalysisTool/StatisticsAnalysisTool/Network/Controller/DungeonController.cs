@@ -12,7 +12,6 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -619,8 +618,6 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private void DungeonSortAndFiltering()
         {
-            var watch = Stopwatch.StartNew();
-
             if (_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null)
             {
                 Application.Current.Dispatcher.Invoke(delegate
@@ -640,7 +637,6 @@ namespace StatisticsAnalysisTool.Network.Controller
                             .ToList());
                 });
 
-                Debug.Print(watch.ElapsedMilliseconds.ToString());
                 return;
             }
 
@@ -650,9 +646,6 @@ namespace StatisticsAnalysisTool.Network.Controller
                     .OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderByDescending(x => x.DungeonNumber)
                         .ToList());
             });
-
-            watch.Stop();
-            Debug.Print(watch.ElapsedMilliseconds.ToString());
         }
 
         private void RemoveLeftOverDungeonNotificationFragments(ObservableCollection<DungeonNotificationFragment> dungeonNotificationFragments)
