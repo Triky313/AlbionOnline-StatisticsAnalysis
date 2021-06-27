@@ -620,17 +620,17 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             if (_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null)
             {
+                var filteredDungeons = _mainWindowViewModel?.TrackingDungeons?
+                    .Where(x => _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
+                    .ToList();
+
+                if (filteredDungeons == null)
+                {
+                    return;
+                }
+
                 Application.Current.Dispatcher.Invoke(delegate
                 {
-                    var filteredDungeons = _mainWindowViewModel?.TrackingDungeons?
-                        .Where(x => _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
-                        .ToList();
-
-                    if (filteredDungeons == null)
-                    {
-                        return;
-                    }
-
                     _mainWindowViewModel.TrackingDungeons = new ObservableCollection<DungeonNotificationFragment>(filteredDungeons.ToList());
                     _mainWindowViewModel?.TrackingDungeons?
                         .OrderByReference(filteredDungeons?.OrderByDescending(x => x.DungeonNumber)

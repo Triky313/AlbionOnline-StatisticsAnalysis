@@ -1187,13 +1187,20 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
                 <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationFilter, FallbackValue=FILTER}" FontWeight="Bold"></Label>
                 <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
-                    <CheckBox Content="{Binding TranslationSolo}" Margin="5,0,5,0" IsChecked="{Binding SoloCheckbox}"></CheckBox>
-                    <CheckBox Content="{Binding TranslationGroup}" Margin="5,0,5,0" IsChecked="{Binding StandardCheckbox}"></CheckBox>
-                    <CheckBox Content="{Binding TranslationAva}" Margin="5,0,5,0" IsChecked="{Binding AvaCheckbox}"></CheckBox>
-                    <CheckBox Content="{Binding TranslationHg}" Margin="5,0,5,0" IsChecked="{Binding HgCheckbox}"></CheckBox>
-                    <CheckBox Content="{Binding TranslationCorrupted}" Margin="5,0,5,0" IsChecked="{Binding CorruptedCheckbox}"></CheckBox>
-                    <CheckBox Content="{Binding TranslationExpedition}" Margin="5,0,5,0" IsChecked="{Binding ExpeditionCheckbox}"></CheckBox>
-                    <CheckBox Content="{Binding TranslationUnknown}" Margin="5,0,5,0" IsChecked="{Binding UnknownCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationSolo}" ToolTip="{Binding TranslationSoloDungeon}"
+                              Margin="5,0,5,0" IsChecked="{Binding SoloCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationStandard}" ToolTip="{Binding TranslationStandardDungeon}"
+                              Margin="5,0,5,0" IsChecked="{Binding StandardCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationAva}" ToolTip="{Binding TranslationAvalonianDungeon}"
+                              Margin="5,0,5,0" IsChecked="{Binding AvaCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationHg}" ToolTip="{Binding TranslationHellGate}"
+                              Margin="5,0,5,0" IsChecked="{Binding HgCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationCorrupted}" ToolTip="{Binding TranslationCorruptedDungeon}"
+                              Margin="5,0,5,0" IsChecked="{Binding CorruptedCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationExped}" ToolTip="{Binding TranslationExpedition}"
+                              Margin="5,0,5,0" IsChecked="{Binding ExpeditionCheckbox}"></CheckBox>
+                    <CheckBox Content="{Binding TranslationUnknown}" 
+                              Margin="5,0,5,0" IsChecked="{Binding UnknownCheckbox}"></CheckBox>
                 </DockPanel>
             </StackPanel>
         </Border>

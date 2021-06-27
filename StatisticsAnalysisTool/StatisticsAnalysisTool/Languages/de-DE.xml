@@ -344,7 +344,7 @@
   <translation name="KILLDED_BY">getötet von</translation>
   <translation name="DUNGEON">Dungeon</translation>
   <translation name="ARENA">Arena</translation>
-  <translation name="CORRUPTED_LAIR">Korrumpierte Dungeon</translation>
+  <translation name="CORRUPTED_LAIR">Korrumpierter Dungeon</translation>
   <translation name="ISLAND">Insel</translation>
   <translation name="HIDEOUT">Unterschlupf</translation>
   <translation name="DAY">Tag</translation>
@@ -400,4 +400,11 @@
   <translation name="REMOVE_DUNGEON">Dungeon entfernen</translation>
   <translation name="SURE_YOU_WANT_TO_REMOVE_DUNGEON">Dungeon wirklich entfernen?</translation>
   <translation name="RESPEC">Respec</translation>
+  <translation name="SOLO_DUNGEON">Solo Dungeon</translation>
+  <translation name="STANDARD_DUNGEON">Standard Dungeon</translation>
+  <translation name="AVA">Ava</translation>
+  <translation name="AVALONIAN_DUNGEON">Avalonischer Dungeon</translation>
+  <translation name="HG">HG</translation>
+  <translation name="EXPED">Exped.</translation>
+  <translation name="CORRUPTED">Corrupted</translation>
 </translations>

@@ -145,11 +145,17 @@ namespace StatisticsAnalysisTool.Models
 
         public string TranslationFilter => LanguageController.Translation("FILTER");
         public string TranslationSolo => LanguageController.Translation("SOLO");
-        public string TranslationGroup => LanguageController.Translation("GROUP");
+        public string TranslationSoloDungeon => LanguageController.Translation("SOLO_DUNGEON");
+        public string TranslationStandard => LanguageController.Translation("STANDARD");
+        public string TranslationStandardDungeon => LanguageController.Translation("STANDARD_DUNGEON");
         public string TranslationAva => LanguageController.Translation("AVA");
+        public string TranslationAvalonianDungeon => LanguageController.Translation("AVALONIAN_DUNGEON");
         public string TranslationHg => LanguageController.Translation("HG");
-        public string TranslationCorrupted => LanguageController.Translation("Corrupted");
-        public string TranslationExpedition => LanguageController.Translation("Expedition");
+        public string TranslationHellGate => LanguageController.Translation("HELLGATE");
+        public string TranslationCorrupted => LanguageController.Translation("CORRUPTED");
+        public string TranslationCorruptedDungeon => LanguageController.Translation("CORRUPTED_LAIR");
+        public string TranslationExped => LanguageController.Translation("EXPED");
+        public string TranslationExpedition => LanguageController.Translation("EXPEDITION");
         public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
 
 

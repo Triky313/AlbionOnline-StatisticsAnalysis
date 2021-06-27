@@ -399,4 +399,11 @@
   <translation name="REMOVE_DUNGEON">Remove Dungeon</translation>
   <translation name="SURE_YOU_WANT_TO_REMOVE_DUNGEON">Are you sure you want to remove the Dungeon?</translation>
   <translation name="RESPEC">Respec</translation>
+  <translation name="SOLO_DUNGEON">Solo Dungeon</translation>
+  <translation name="STANDARD_DUNGEON">Standard Dungeon</translation>
+  <translation name="AVA">Ava</translation>
+  <translation name="AVALONIAN_DUNGEON">Avalonian Dungeon</translation>
+  <translation name="HG">HG</translation>
+  <translation name="EXPED">Exped.</translation>
+  <translation name="CORRUPTED">Corrupted</translation>
 </translations>
