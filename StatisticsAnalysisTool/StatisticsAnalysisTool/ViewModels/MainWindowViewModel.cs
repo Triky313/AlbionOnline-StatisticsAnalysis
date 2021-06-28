@@ -491,18 +491,21 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void DungeonStatsGridToggle()
         {
+            var unfoldGridHeight = 290;
+            var foldGridHeight = 82;
+
             if (IsDungeonStatsGridUnfold)
             {
                 DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
-                DungeonStatsGridHeight = 82;
-                DungeonStatsScrollViewerMargin = new Thickness(0, 82, 0, 0);
+                DungeonStatsGridHeight = foldGridHeight;
+                DungeonStatsScrollViewerMargin = new Thickness(0, foldGridHeight, 0, 0);
                 IsDungeonStatsGridUnfold = false;
             }
             else
             {
                 DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleUp;
-                DungeonStatsGridHeight = 230;
-                DungeonStatsScrollViewerMargin = new Thickness(0,230,0,0);
+                DungeonStatsGridHeight = unfoldGridHeight;
+                DungeonStatsScrollViewerMargin = new Thickness(0, unfoldGridHeight, 0,0);
                 IsDungeonStatsGridUnfold = true;
             }
         }
