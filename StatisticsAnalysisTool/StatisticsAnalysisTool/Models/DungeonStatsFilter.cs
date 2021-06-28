@@ -32,6 +32,9 @@ namespace StatisticsAnalysisTool.Models
         public DungeonStatsFilter(TrackingController trackingController)
         {
             _trackingController = trackingController;
+
+            _trackingController.DungeonController.SetDungeonStatsDay();
+            _trackingController.DungeonController.SetDungeonStatsTotal();
         }
 
         public bool? SoloCheckbox {

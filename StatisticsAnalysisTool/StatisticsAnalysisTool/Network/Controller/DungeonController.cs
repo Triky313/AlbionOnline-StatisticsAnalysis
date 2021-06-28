@@ -270,36 +270,43 @@ namespace StatisticsAnalysisTool.Network.Controller
         private int GetChests(DateTime? chestIsNewerAsDateTime, ChestRarity rarity)
         {
             var dungeons = _dungeons.Where(x => (x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null) 
-                                                && (_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode)));
+                                                && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null 
+                                                     && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode)) 
+                                                    || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null));
+
             return dungeons.Select(dun => dun.DungeonEventObjects.Where(x => x.Rarity == rarity)).Select(filteredChests => filteredChests.Count()).Sum();
         }
 
         private double GetFame(DateTime? dateTime)
         {
             return _dungeons.Where(x => (x.EnterDungeonFirstTime > dateTime || dateTime == null)
-                                        && (_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null 
-                                            && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))).Select(x => x.Fame).Sum();
+                                        && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null
+                                             && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
+                                            || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null)).Select(x => x.Fame).Sum();
         }
 
         private double GetReSpec(DateTime? dateTime)
         {
             return _dungeons.Where(x => x.EnterDungeonFirstTime > dateTime || dateTime == null
-                && (_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null 
-                    && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))).Select(x => x.ReSpec).Sum();
+                && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null
+                     && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
+                    || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null)).Select(x => x.ReSpec).Sum();
         }
 
         private double GetSilver(DateTime? dateTime)
         {
             return _dungeons.Where(x => x.EnterDungeonFirstTime > dateTime || dateTime == null
-                && (_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null 
-                    && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))).Select(x => x.Silver).Sum();
+                && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null
+                     && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
+                    || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null)).Select(x => x.Silver).Sum();
         }
 
         public int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
         {
-            return _dungeons.Count(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime
-                                        && (_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null 
-                                            && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode)));
+            return _dungeons.Count(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime 
+                                        && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null 
+                                             && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode)) 
+                                            || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null));
         }
 
         public void SetDungeonStatsDay()
