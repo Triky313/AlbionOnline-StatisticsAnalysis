@@ -180,6 +180,7 @@
     <Compile Include="Common\Shortcut\IShellLink.cs" />
     <Compile Include="Common\Shortcut\ShellLink.cs" />
     <Compile Include="Common\Shortcut\ShortcutController.cs" />
+    <Compile Include="Common\Converters\TrackerIconConverter.cs" />
     <Compile Include="Enumerations\GameLanguage.cs" />
     <Compile Include="Common\ProgressBarSmoother.cs" />
     <Compile Include="Enumerations\ClusterType.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Enumerations\HealthChangeType.cs" />
     <Compile Include="Enumerations\ShrineBuff.cs" />
     <Compile Include="Enumerations\ShrineType.cs" />
+    <Compile Include="Enumerations\TrackingIconType.cs" />
     <Compile Include="Models\DungeonStatsFilter.cs" />
     <Compile Include="Models\MainStatObject.cs" />
     <Compile Include="Models\EquipmentItem.cs" />

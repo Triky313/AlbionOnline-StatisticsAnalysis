@@ -93,6 +93,7 @@
 
     <!-- Tracking colors -->
     <Color x:Key="Tracking.On">#FF1F9E6E</Color>
+    <Color x:Key="Tracking.Partially">#FFD9A900</Color>
     <Color x:Key="Tracking.Off">#FF616172</Color>
 
     <!-- Faction colors -->
@@ -176,6 +177,8 @@
     <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Background" Color="{StaticResource Color.Red.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Border" Color="{StaticResource Color.Red.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Button" Color="{StaticResource Color.Red.3}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Tracking.Off" Color="{StaticResource Tracking.Off}"/>
 
     <!-- ######################################################################################### -->
 

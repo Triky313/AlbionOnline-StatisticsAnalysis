@@ -320,7 +320,7 @@
   <translation name="AVERAGE_PRICES_TOOLTIP">Verk.-Preis min | Verk.-Preis max | Kauf-Preis min | Kauf-Preis max</translation>
 
   <translation name="TRACKING">Tracking</translation>
-  <translation name="IS_TRACKING_ACTIVE">Ist tracken aktiv? (Grün - AN | Grau - AUS)</translation>
+  <translation name="IS_TRACKING_ACTIVE">Ist tracken aktiv? (Grün - AN | Gelb - Teilweise | Grau - AUS)</translation>
   <translation name="USERNAME">USERNAME</translation>
   <translation name="GUILD">GILDE</translation>
   <translation name="ALLIANCE">ALLIANZ</translation>

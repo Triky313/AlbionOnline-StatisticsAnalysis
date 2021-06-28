@@ -41,6 +41,8 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public ClusterInfo CurrentCluster { get; private set; }
 
+        #region Trigger events
+
         public void RegisterEvents()
         {
             EntityController.OnHealthUpdate += DamageMeterUpdate;
@@ -51,27 +53,19 @@ namespace StatisticsAnalysisTool.Network.Controller
             EntityController.OnHealthUpdate -= DamageMeterUpdate;
         }
 
-        #region Trigger events
-
         public void DamageMeterUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType,
             EffectOrigin effectOrigin, long causerId, int causingSpellType)
         {
             CombatController.AddDamageAsync(causerId, healthChange);
         }
 
+        public event Action<ClusterInfo> OnChangeCluster;
+
         #endregion
 
-        public bool IsMainWindowNull()
-        {
-            if (_mainWindow != null) return false;
-
-            Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType}: _mainWindow is null.");
-            return true;
-        }
+        public bool ExistIndispensableInfos => CurrentCluster != null && EntityController.ExistLocalEntity();
 
         #region Cluster
-
-        public event Action<ClusterInfo> OnChangeCluster;
 
         public void SetNewCluster(MapType mapType, Guid? mapGuid, string clusterIndex, string mainClusterIndex)
         {
@@ -106,7 +100,19 @@ namespace StatisticsAnalysisTool.Network.Controller
         }
 
         #endregion
-        
+
+        #region Tracking Controller Helper
+
+        public bool IsMainWindowNull()
+        {
+            if (_mainWindow != null) return false;
+
+            Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType}: _mainWindow is null.");
+            return true;
+        }
+
+        #endregion
+
         #region Notifications
 
         public void AddNotification(TrackingNotification item)

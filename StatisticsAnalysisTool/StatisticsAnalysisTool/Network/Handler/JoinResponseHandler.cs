@@ -61,8 +61,17 @@ namespace StatisticsAnalysisTool.Network.Handler
             _trackingController.DungeonController?.AddDungeon(value.MapType, value.DungeonGuid, value.MainMapIndex);
 
             ResetFameCounterByMapChangeIfActive();
+            SetTrackingIconColor();
 
             await Task.CompletedTask;
+        }
+
+        private void SetTrackingIconColor()
+        {
+            if (_trackingController.ExistIndispensableInfos)
+            {
+                _mainWindowViewModel.TrackingIconColor = TrackingIconType.On;
+            }
         }
 
         private void ResetFameCounterByMapChangeIfActive()

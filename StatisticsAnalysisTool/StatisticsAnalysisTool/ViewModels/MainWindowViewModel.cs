@@ -1,4 +1,4 @@
-﻿using FontAwesome5;
+using FontAwesome5;
 using LiveCharts;
 using LiveCharts.Wpf;
 using log4net;
@@ -128,6 +128,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Thickness _dungeonStatsScrollViewerMargin = new Thickness(0, 82, 0, 0);
         private bool IsDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
+        private TrackingIconType _trackingIconColor;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1263,9 +1264,19 @@ namespace StatisticsAnalysisTool.ViewModels
                 var colorOff = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.Normal"]);
                 TrackerActivationToggleColor = _isTrackingActive ? colorOn : colorOff;
 
-                var trackingIconColorOn = new SolidColorBrush((Color) Application.Current.Resources["Tracking.On"]);
-                var trackingIconColorOff = new SolidColorBrush((Color) Application.Current.Resources["Tracking.Off"]);
-                TrackingIconColor = _isTrackingActive ? trackingIconColorOn : trackingIconColorOff;
+                if (_isTrackingActive && !TrackingController.ExistIndispensableInfos)
+                {
+                    TrackingIconColor = TrackingIconType.Partially;
+                }
+                else if(_isTrackingActive && TrackingController.ExistIndispensableInfos)
+                {
+                    TrackingIconColor = TrackingIconType.On;
+                }
+                else if(!_isTrackingActive)
+                {
+                    TrackingIconColor = TrackingIconType.Off;
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -1290,12 +1301,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Brush TrackingIconColor
+        public TrackingIconType TrackingIconColor
         {
-            get => _trackerActivationToggleColor ?? new SolidColorBrush((Color) Application.Current.Resources["Tracking.Off"]);
+            get => _trackingIconColor;
             set
             {
-                _trackerActivationToggleColor = value;
+                _trackingIconColor = value;
                 OnPropertyChanged();
             }
         }

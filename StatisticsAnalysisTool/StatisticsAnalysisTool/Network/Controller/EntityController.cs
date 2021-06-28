@@ -81,6 +81,11 @@ namespace StatisticsAnalysisTool.Network.Controller
                 x.Value.ObjectSubType == GameObjectSubType.LocalPlayer || _knownPartyEntities.ContainsKey(x.Key))) entity.Value.ObjectId = null;
         }
 
+        public bool ExistLocalEntity()
+        {
+            return _knownEntities?.Any(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer) ?? false;
+        }
+
         public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
         {
             return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
@@ -151,7 +156,10 @@ namespace StatisticsAnalysisTool.Network.Controller
         public bool IsUserInParty(long objectId)
         {
             var entity = _knownEntities.FirstOrDefault(x => x.Value.ObjectId == objectId);
-            if (entity.Value == null) return false;
+            if (entity.Value == null)
+            {
+                return false;
+            }
 
             return _knownPartyEntities.Any(x => x.Value == entity.Value.Name);
         }
