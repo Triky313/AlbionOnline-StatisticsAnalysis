@@ -16,6 +16,9 @@ namespace StatisticsAnalysisTool.Models
         private double _reSpec;
         private double _silver;
         private string _translationTitle;
+        private double _fameAverage;
+        private double _reSpecAverage;
+        private double _silverAverage;
 
         public int EnteredDungeon
         {
@@ -72,6 +75,8 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _fame = value;
+
+                FameAverage = (value / EnteredDungeon).ToShortNumber(99999999.99);
                 OnPropertyChanged();
             }
         }
@@ -81,6 +86,7 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _reSpec = value;
+                ReSpecAverage = (value / EnteredDungeon).ToShortNumber(99999999.99);
                 OnPropertyChanged();
             }
         }
@@ -90,6 +96,34 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _silver = value;
+                SilverAverage = (value / EnteredDungeon).ToShortNumber(99999999.99);
+                OnPropertyChanged();
+            }
+        }
+
+        public double FameAverage {
+            get => _fameAverage;
+            set
+            {
+                _fameAverage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double ReSpecAverage {
+            get => _reSpecAverage;
+            set
+            {
+                _reSpecAverage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double SilverAverage {
+            get => _silverAverage;
+            set
+            {
+                _silverAverage = value;
                 OnPropertyChanged();
             }
         }
@@ -111,6 +145,9 @@ namespace StatisticsAnalysisTool.Models
         public string TranslationFame => LanguageController.Translation("FAME");
         public string TranslationReSpec => LanguageController.Translation("RESPEC");
         public string TranslationSilver => LanguageController.Translation("SILVER");
+        public string TranslationAverageFame => LanguageController.Translation("AVERAGE_FAME");
+        public string TranslationAverageReSpec => LanguageController.Translation("AVERAGE_RESPEC");
+        public string TranslationAverageSilver => LanguageController.Translation("AVERAGE_SILVER");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

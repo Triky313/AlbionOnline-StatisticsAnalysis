@@ -34,13 +34,33 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                if (double.IsNaN(num)) return "0";
+                if (double.IsNaN(num))
+                {
+                    return "0";
+                }
 
                 return double.IsInfinity(num) ? double.MaxValue.ToString(CultureInfo.InvariantCulture) : GetShortNumber((decimal) num);
             }
             catch (OverflowException)
             {
                 return double.MaxValue.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
+        public static double ToShortNumber(this double num, double maxNumber = double.MaxValue)
+        {
+            try
+            {
+                if (double.IsNaN(num))
+                {
+                    return maxNumber;
+                }
+
+                return double.IsInfinity(num) ? maxNumber : num;
+            }
+            catch (OverflowException)
+            {
+                return maxNumber;
             }
         }
 

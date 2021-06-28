@@ -1162,20 +1162,43 @@
                            Margin="0,0, 0,0" HorizontalAlignment="Left"></Label>
                 </DockPanel>
                 <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
-                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationFame, FallbackValue=DUNGEON__FAME}">
+                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" 
+                          ToolTip="{Binding TranslationFame, FallbackValue=TOTAL__FAME}">
                         <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                     </Grid>
                     <Label Content="{Binding Fame, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" 
                            Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
-                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationReSpec, FallbackValue=DUNGEON__FAME}">
+                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" 
+                          ToolTip="{Binding TranslationReSpec, FallbackValue=TOTAL__RESPEC}">
                         <Image Source="Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                     </Grid>
                     <Label Content="{Binding ReSpec, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" 
                            Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
-                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationSilver, FallbackValue=DUNGEON__FAME}">
+                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" 
+                          ToolTip="{Binding TranslationSilver, FallbackValue=TOTAL__SILVER}">
                         <Image Source="Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                     </Grid>
                     <Label Content="{Binding Silver, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" 
+                           Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                </DockPanel>
+                <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" 
+                          ToolTip="{Binding TranslationAverageFame, FallbackValue=AVERAGE__FAME}">
+                        <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
+                    </Grid>
+                    <Label Content="{Binding FameAverage, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" 
+                           Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" 
+                          ToolTip="{Binding TranslationAverageReSpec, FallbackValue=AVERAGE__RESPEC}">
+                        <Image Source="Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
+                    </Grid>
+                    <Label Content="{Binding ReSpecAverage, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" 
+                           Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
+                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" 
+                          ToolTip="{Binding TranslationAverageSilver, FallbackValue=AVERAGE__SILVER}">
+                        <Image Source="Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
+                    </Grid>
+                    <Label Content="{Binding SilverAverage, FallbackValue='0'}" ContentStringFormat="{}{0:N0}" 
                            Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
                 </DockPanel>
             </StackPanel>
