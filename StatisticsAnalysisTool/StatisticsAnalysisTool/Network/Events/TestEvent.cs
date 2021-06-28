@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Albion.Network;
+using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Albion.Network;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -18,7 +20,10 @@ namespace StatisticsAnalysisTool.Network.Events
             Debug.Print("----- ChangeCluster -----");
             try
             {
-                foreach (var parameter in parameters) Debug.Print($"{parameter}");
+                foreach (var parameter in parameters)
+                {
+                    Debug.Print($"{parameter}");
+                }
 
                 if (parameters.ContainsKey(0)) ClusterName = string.IsNullOrEmpty(parameters[0].ToString()) ? string.Empty : parameters[0].ToString();
 
@@ -30,7 +35,7 @@ namespace StatisticsAnalysisTool.Network.Events
             }
             catch (Exception e)
             {
-                Debug.Print(e.Message);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
     }

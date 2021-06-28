@@ -6,7 +6,6 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -94,7 +93,6 @@ namespace StatisticsAnalysisTool.GameData
 
             if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
 
-            Debug.Print($"GetMapType unknown: {index}");
             ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, $"MapType unknown: {index}");
             Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - MapType unknown: {index}");
 

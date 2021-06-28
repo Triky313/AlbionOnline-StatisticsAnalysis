@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Network.Time;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -21,7 +22,6 @@ namespace StatisticsAnalysisTool.Network.Events
 
             try
             {
-                Debug.Print("--- PartySilverGained (Event) ---");
                 foreach (var parameter in parameters) Debug.Print($"{parameter}");
 
                 if (parameters.ContainsKey(0)) TimeStamp = new GameTimeStamp(parameters[0].ObjectToLong() ?? 0);
@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool.Network.Events
             }
             catch (Exception e)
             {
-                Debug.Print(e.Message);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
     }

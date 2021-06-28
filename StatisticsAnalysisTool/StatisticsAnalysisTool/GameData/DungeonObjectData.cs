@@ -7,7 +7,6 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -97,7 +96,7 @@ namespace StatisticsAnalysisTool.GameData
                 return Faction.Avalon;
             }
 
-            Debug.Print($"GetFaction Unknown: {value}");
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType, $"GetFaction Unknown: {value}", ConsoleManager.EventMapChangeColor);
             return Faction.Unknown;
         }
 

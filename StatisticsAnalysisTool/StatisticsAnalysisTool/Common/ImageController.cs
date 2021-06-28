@@ -1,22 +1,30 @@
-﻿using System;
-using System.Diagnostics;
+﻿using log4net;
+using StatisticsAnalysisTool.Properties;
+using System;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common
 {
     internal class ImageController
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly string ImageDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ImageResources);
 
         public static BitmapImage GetItemImage(string uniqueName = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
         {
             try
             {
+                if (string.IsNullOrEmpty(uniqueName))
+                {
+                    return new BitmapImage(new Uri(
+                        @"pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/" + "Resources/Trash.png",
+                        UriKind.Absolute));
+                }
+
                 BitmapImage image;
                 var localFilePath = Path.Combine(ImageDir, uniqueName);
 
@@ -78,7 +86,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                Debug.Print($"SetImage: {e.Message}");
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - SetImage: {e.Message}");
                 return null;
             }
         }
@@ -101,7 +110,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                Debug.Print($"SetImage: {e.Message}");
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - SetImage: {e.Message}");
                 return null;
             }
         }

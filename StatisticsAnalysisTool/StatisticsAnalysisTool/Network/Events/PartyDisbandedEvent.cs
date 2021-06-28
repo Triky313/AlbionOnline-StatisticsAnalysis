@@ -2,7 +2,7 @@
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -31,7 +31,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
             catch (Exception e)
             {
-                Debug.Print(e.Message);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
     }

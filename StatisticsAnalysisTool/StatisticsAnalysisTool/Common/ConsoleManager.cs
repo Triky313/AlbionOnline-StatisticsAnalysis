@@ -91,16 +91,17 @@ namespace StatisticsAnalysisTool.Common
             Console.SetError(TextWriter.Null);
         }
 
-        private const string _errorColor = "#ca3431";
-        private const string _warnColor = "#faa627";
-        private const string _eventColor = "#248A84";
-        private const string _eventMapChangeColor = "#0279be";
+        public const string ErrorColor = "#ca3431";
+        public const string WarnColor = "#faa627";
+        public const string EventColor = "#248A84";
+        public const string EventMapChangeColor = "#0279be";
+        public const string NormalColor = "#ffffff";
 
         public static void WriteLineForNetworkHandler(string name, Dictionary<byte, object> parameters)
         {
             if (HasConsole)
             {
-                Console.WriteLine($@"[{DateTime.UtcNow}] {name}: ".Pastel(_eventColor) + $@"{JsonConvert.SerializeObject(parameters)}");
+                Console.WriteLine($@"[{DateTime.UtcNow}] {name}: ".Pastel(EventColor) + $@"{JsonConvert.SerializeObject(parameters)}");
             }
         }
 
@@ -108,10 +109,10 @@ namespace StatisticsAnalysisTool.Common
         {
             if (HasConsole)
             {
-                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {e.Message}".Pastel(_warnColor));
+                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {e.Message}".Pastel(WarnColor));
                 if (!string.IsNullOrEmpty(e.StackTrace))
                 {
-                    Console.WriteLine($"{e.StackTrace}".Pastel(_warnColor));
+                    Console.WriteLine($"{e.StackTrace}".Pastel(WarnColor));
                 }
             }
         }
@@ -120,10 +121,10 @@ namespace StatisticsAnalysisTool.Common
         {
             if (HasConsole)
             {
-                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {message}".Pastel(_warnColor));
+                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {message}".Pastel(WarnColor));
                 if (!string.IsNullOrEmpty(message))
                 {
-                    Console.WriteLine($"{message}".Pastel(_warnColor));
+                    Console.WriteLine($"{message}".Pastel(WarnColor));
                 }
             }
         }
@@ -132,16 +133,16 @@ namespace StatisticsAnalysisTool.Common
         {
             if (HasConsole)
             {
-                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {e.Message}".Pastel(_errorColor));
-                Console.WriteLine($"{e.StackTrace}".Pastel(_errorColor));
+                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {e.Message}".Pastel(ErrorColor));
+                Console.WriteLine($"{e.StackTrace}".Pastel(ErrorColor));
             }
         }
 
-        public static void WriteLineForMessage(Type declaringType, string message)
+        public static void WriteLineForMessage(Type declaringType, string message, string color = NormalColor)
         {
             if (HasConsole)
             {
-                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {message}".Pastel(_eventMapChangeColor));
+                Console.WriteLine($@"[{DateTime.UtcNow}] {declaringType}: {message}".Pastel(color));
             }
         }
     }

@@ -89,7 +89,8 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
             ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType,
-                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
+                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'",
+                ConsoleManager.EventMapChangeColor);
 
             OnChangeCluster?.Invoke(CurrentCluster);
         }
