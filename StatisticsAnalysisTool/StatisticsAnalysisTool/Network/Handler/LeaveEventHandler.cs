@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             //if (value.ObjectId != null)
             //{
-            //    _trackingController.EntityController.RemoveEntity((long)value.ObjectId);
+            //    TrackingController.EntityController.RemoveEntity((long)value.ObjectId);
             //}
             await Task.CompletedTask;
         }

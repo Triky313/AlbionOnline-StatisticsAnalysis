@@ -252,5 +252,10 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.IsMainTrackerPopupVisible = Visibility.Hidden;
         }
+
+        private void MouseUp_FoldUnfoldDungeonStats(object sender, MouseEventArgs e)
+        {
+            _mainWindowViewModel.DungeonStatsGridToggle();
+        }
     }
 }

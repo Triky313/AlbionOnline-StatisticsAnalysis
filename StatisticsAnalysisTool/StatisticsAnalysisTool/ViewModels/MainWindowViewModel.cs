@@ -106,12 +106,11 @@ namespace StatisticsAnalysisTool.ViewModels
         private Brush _trackerActivationToggleColor;
         private EFontAwesomeIcon _trackerActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private string _trackingAllianceName;
-        private TrackingController _trackingController;
+        public TrackingController TrackingController;
         private string _trackingCurrentMapName;
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
         private string _trackingGuildName;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
-        private ObservableCollection<TrackingNotification> _debugTrackingNotifications = new ObservableCollection<TrackingNotification>();
         private string _trackingUsername;
         private MainWindowTranslation _translation;
         private string _updateTranslation;
@@ -124,6 +123,11 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _isMainTrackerPopupVisible = Visibility.Hidden;
         private bool _isShowOnlyFavoritesActive;
         private DungeonCloseTimer _dungeonCloseTimer;
+        private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
+        private double _dungeonStatsGridHeight = 82;
+        private Thickness _dungeonStatsScrollViewerMargin = new Thickness(0, 82, 0, 0);
+        private bool IsDungeonStatsGridUnfold;
+        private DungeonStatsFilter _dungeonStatsFilter;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -255,14 +259,20 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void ToggleAlertSender(object sender)
         {
-            if (sender == null) return;
+            if (sender == null)
+            {
+                return;
+            }
 
             try
             {
                 var imageAwesome = (ImageAwesome) sender;
                 var item = (Item) imageAwesome.DataContext;
 
-                if (item.AlertModeMinSellPriceIsUndercutPrice <= 0) return;
+                if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
+                {
+                    return;
+                }
 
                 item.IsAlertActive = AlertManager.ToggleAlert(ref item);
                 ItemsView.Refresh();
@@ -479,6 +489,24 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public void DungeonStatsGridToggle()
+        {
+            if (IsDungeonStatsGridUnfold)
+            {
+                DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
+                DungeonStatsGridHeight = 82;
+                DungeonStatsScrollViewerMargin = new Thickness(0, 82, 0, 0);
+                IsDungeonStatsGridUnfold = false;
+            }
+            else
+            {
+                DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleUp;
+                DungeonStatsGridHeight = 230;
+                DungeonStatsScrollViewerMargin = new Thickness(0,230,0,0);
+                IsDungeonStatsGridUnfold = true;
+            }
+        }
+
         #endregion
 
         #region Full Item Information
@@ -662,28 +690,30 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            if (_trackingController == null)
+            if (TrackingController == null)
             {
-                _trackingController = new TrackingController(this, _mainWindow);
+                TrackingController = new TrackingController(this, _mainWindow);
             }
 
-            _trackingController?.RegisterEvents();
-            _trackingController?.DungeonController?.LoadDungeonFromFile();
-            _trackingController?.DungeonController?.SetDungeonStatsDay();
-            _trackingController?.DungeonController?.SetDungeonStatsTotal();
-            _trackingController?.DungeonController?.SetOrUpdateDungeonsDataUi();
+            TrackingController?.RegisterEvents();
+            TrackingController?.DungeonController?.LoadDungeonFromFile();
+            TrackingController?.DungeonController?.SetDungeonStatsDay();
+            TrackingController?.DungeonController?.SetDungeonStatsTotal();
+            TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUi();
 
-            _trackingController?.CountUpTimer.Start();
+            TrackingController?.CountUpTimer.Start();
 
-            IsTrackingActive = NetworkManager.StartNetworkCapture(this, _trackingController);
+            DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
+
+            IsTrackingActive = NetworkManager.StartNetworkCapture(this, TrackingController);
             Console.WriteLine(@"### Start Tracking...");
         }
 
         public void StopTracking()
         {
-            _trackingController?.DungeonController?.SaveDungeonsInFile();
-            _trackingController?.UnregisterEvents();
-            _trackingController?.CountUpTimer?.Stop();
+            TrackingController?.DungeonController?.SaveDungeonsInFile();
+            TrackingController?.UnregisterEvents();
+            TrackingController?.CountUpTimer?.Stop();
 
             NetworkManager.StopNetworkCapture();
 
@@ -705,7 +735,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void ResetMainCounters()
         {
-            _trackingController?.CountUpTimer?.Reset();
+            TrackingController?.CountUpTimer?.Reset();
         }
 
         public void ResetDamageMeter()
@@ -715,7 +745,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (dialogResult != null && dialogResult == true)
             {
-                _trackingController.CombatController.ResetDamageMeter();
+                TrackingController.CombatController.ResetDamageMeter();
             }
         }
 
@@ -726,7 +756,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (dialogResult != null && dialogResult == true)
             {
-                _trackingController.DungeonController.ResetDungeons();
+                TrackingController.DungeonController.ResetDungeons();
             }
         }
 
@@ -1011,6 +1041,16 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public DungeonStatsFilter DungeonStatsFilter
+        {
+            get => _dungeonStatsFilter;
+            set
+            {
+                _dungeonStatsFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string TrackingUsername
         {
             get => _trackingUsername;
@@ -1193,15 +1233,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingNotifications = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<TrackingNotification> DebugTrackingNotifications {
-            get => _debugTrackingNotifications;
-            set
-            {
-                _debugTrackingNotifications = value;
                 OnPropertyChanged();
             }
         }
@@ -1670,6 +1701,33 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _fullItemInformationExistLocal = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double DungeonStatsGridHeight {
+            get => _dungeonStatsGridHeight;
+            set
+            {
+                _dungeonStatsGridHeight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Thickness DungeonStatsScrollViewerMargin {
+            get => _dungeonStatsScrollViewerMargin;
+            set
+            {
+                _dungeonStatsScrollViewerMargin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public EFontAwesomeIcon DungeonStatsGridButtonIcon {
+            get => _dungeonStatsGridButtonIcon;
+            set
+            {
+                _dungeonStatsGridButtonIcon = value;
                 OnPropertyChanged();
             }
         }

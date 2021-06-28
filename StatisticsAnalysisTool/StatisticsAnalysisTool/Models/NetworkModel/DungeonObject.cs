@@ -32,7 +32,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         public CityFaction CityFaction { get; set; } = CityFaction.Unknown;
 
         [JsonIgnore]
-        public string DungeonHash => $"{EnterDungeonFirstTime}{string.Join(",", GuidList)}";
+        public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
         
         private double? _lastReSpecValue;
         
@@ -105,6 +105,5 @@ namespace StatisticsAnalysisTool.Network.Notification
                 DungeonRunTimes.Remove(time);
             }
         }
-        
     }
 }

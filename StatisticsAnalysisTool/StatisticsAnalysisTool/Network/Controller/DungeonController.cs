@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -197,6 +198,25 @@ namespace StatisticsAnalysisTool.Network.Controller
             SetDungeonStatsTotal();
         }
 
+        public void RemoveDungeon(string dungeonHash)
+        {
+            var dungeon = _dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
+
+            if (dungeon == null)
+            {
+                return;
+            }
+            
+            var dialog = new DialogWindow(LanguageController.Translation("REMOVE_DUNGEON"), LanguageController.Translation("SURE_YOU_WANT_TO_REMOVE_DUNGEON"));
+            var dialogResult = dialog.ShowDialog();
+
+            if (dialogResult != null && dialogResult == true)
+            {
+                _dungeons.Remove(dungeon);
+                SetOrUpdateDungeonsDataUi();
+            }
+        }
+
         private DungeonObject CreateNewDungeon(string mainMapIndex, Guid guid)
         {
             var dungeon = new DungeonObject()
@@ -249,29 +269,72 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private int GetChests(DateTime? chestIsNewerAsDateTime, ChestRarity rarity)
         {
-            var dungeons = _dungeons.Where(x => x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null);
+            var dungeons = _dungeons.Where(x => (x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null) 
+                                                && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null 
+                                                     && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode)) 
+                                                    || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null));
+
             return dungeons.Select(dun => dun.DungeonEventObjects.Where(x => x.Rarity == rarity)).Select(filteredChests => filteredChests.Count()).Sum();
+        }
+
+        private double GetFame(DateTime? dateTime)
+        {
+            return _dungeons.Where(x => (x.EnterDungeonFirstTime > dateTime || dateTime == null)
+                                        && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null
+                                             && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
+                                            || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null)).Select(x => x.Fame).Sum();
+        }
+
+        private double GetReSpec(DateTime? dateTime)
+        {
+            return _dungeons.Where(x => x.EnterDungeonFirstTime > dateTime || dateTime == null
+                && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null
+                     && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
+                    || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null)).Select(x => x.ReSpec).Sum();
+        }
+
+        private double GetSilver(DateTime? dateTime)
+        {
+            return _dungeons.Where(x => x.EnterDungeonFirstTime > dateTime || dateTime == null
+                && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null
+                     && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
+                    || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null)).Select(x => x.Silver).Sum();
         }
 
         public int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
         {
-            return _dungeons.Count(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime);
+            return _dungeons.Count(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime 
+                                        && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null 
+                                             && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode)) 
+                                            || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null));
         }
 
         public void SetDungeonStatsDay()
         {
+            _mainWindowViewModel.DungeonStatsDay.TranslationTitle = LanguageController.Translation("DAY");
+
             _mainWindowViewModel.DungeonStatsDay.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Standard);
             _mainWindowViewModel.DungeonStatsDay.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Uncommon);
             _mainWindowViewModel.DungeonStatsDay.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Rare);
             _mainWindowViewModel.DungeonStatsDay.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Legendary);
+
+            _mainWindowViewModel.DungeonStatsDay.Fame = GetFame(DateTime.UtcNow.AddDays(-1));
+            _mainWindowViewModel.DungeonStatsDay.ReSpec = GetReSpec(DateTime.UtcNow.AddDays(-1));
+            _mainWindowViewModel.DungeonStatsDay.Silver = GetSilver(DateTime.UtcNow.AddDays(-1));
         }
 
         public void SetDungeonStatsTotal()
         {
+            _mainWindowViewModel.DungeonStatsTotal.TranslationTitle = LanguageController.Translation("TOTAL");
+
             _mainWindowViewModel.DungeonStatsTotal.OpenedStandardChests = GetChests(null, ChestRarity.Standard);
             _mainWindowViewModel.DungeonStatsTotal.OpenedUncommonChests = GetChests(null, ChestRarity.Uncommon);
             _mainWindowViewModel.DungeonStatsTotal.OpenedRareChests = GetChests(null, ChestRarity.Rare);
             _mainWindowViewModel.DungeonStatsTotal.OpenedLegendaryChests = GetChests(null, ChestRarity.Legendary);
+
+            _mainWindowViewModel.DungeonStatsTotal.Fame = GetFame(null);
+            _mainWindowViewModel.DungeonStatsTotal.ReSpec = GetReSpec(null);
+            _mainWindowViewModel.DungeonStatsTotal.Silver = GetSilver(null);
         }
 
         public void SetDiedIfInDungeon(DiedObject dieObject)
@@ -538,7 +601,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
             var counter = 0;
-            foreach (var dungeon in _dungeons.Where(x => x.GuidList.Count > 0).OrderBy(x => x.EnterDungeonFirstTime))
+            var filteredDungeons = _dungeons.Where(x => x.GuidList.Count > 0).OrderBy(x => x.EnterDungeonFirstTime).ToList();
+            foreach (var dungeon in filteredDungeons)
             {
                 Application.Current.Dispatcher.Invoke(delegate {
                     var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
@@ -551,22 +615,70 @@ namespace StatisticsAnalysisTool.Network.Controller
                     }
                     else
                     {
-                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
+                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime, _mainWindowViewModel);
                         dunFragment.SetValues(dungeon);
                         _mainWindowViewModel?.TrackingDungeons?.Add(dunFragment);
                     }
                 });
             }
 
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
-                CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
-                _mainWindowViewModel?.TrackingDungeons?.OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderByDescending(x => x.DungeonNumber).ToList());
-            });
+            RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons);
+            SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
+            CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
+
+            DungeonSortAndFiltering();
 
             SetDungeonStatsDay();
             SetDungeonStatsTotal();
+        }
+
+        private void DungeonSortAndFiltering()
+        {
+            if (_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null)
+            {
+                var filteredDungeons = _mainWindowViewModel?.TrackingDungeons?
+                    .Where(x => _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
+                    .ToList();
+
+                if (filteredDungeons == null)
+                {
+                    return;
+                }
+
+                Application.Current.Dispatcher.Invoke(delegate
+                {
+                    _mainWindowViewModel.TrackingDungeons = new ObservableCollection<DungeonNotificationFragment>(filteredDungeons.ToList());
+                    _mainWindowViewModel?.TrackingDungeons?
+                        .OrderByReference(filteredDungeons.OrderByDescending(x => x.DungeonNumber)
+                            .ToList());
+                });
+
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                _mainWindowViewModel?.TrackingDungeons?
+                    .OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderByDescending(x => x.DungeonNumber)
+                        .ToList());
+            });
+        }
+
+        private void RemoveLeftOverDungeonNotificationFragments(ObservableCollection<DungeonNotificationFragment> dungeonNotificationFragments)
+        {
+            foreach (var dungeonFragment in dungeonNotificationFragments.ToList())
+            {
+                var dungeonObject = _dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonFragment.DungeonHash));
+
+                if (dungeonObject != null)
+                {
+                    continue;
+                }
+                Application.Current.Dispatcher.Invoke(delegate
+                {
+                    _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
+                });
+            }
         }
 
         public void UpdateDungeonDataUi(DungeonObject dungeon)

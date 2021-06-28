@@ -1279,4 +1279,11 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Grid unfold bar -->
+    <Style TargetType="Grid" x:Key="Grid.Unfold.Bar" >
+        <Setter Property="Height" Value="20" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
 </ResourceDictionary>
