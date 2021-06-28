@@ -20,18 +20,21 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
             try
             {
                 Debug.Print("---------- UserInformation (Response) ----------");
-                
+                ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType, "---------- UserInformation (Response) ----------", ConsoleManager.EventMapChangeColor);
+
                 UserObjectId = null;
                 if (parameters.ContainsKey(0))
                 {
                     UserObjectId = parameters[0].ObjectToLong();
                     Debug.Print($"Local user ObjectId: {UserObjectId}");
+                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType, $"Local user ObjectId: {UserObjectId}", ConsoleManager.EventMapChangeColor);
                 }
 
                 if (parameters.ContainsKey(1))
                 {
                     Guid = parameters[1].ObjectToGuid();
                     Debug.Print($"Local user Guid: {Guid}");
+                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType, $"Local user Guid: {Guid}", ConsoleManager.EventMapChangeColor);
                 }
 
                 if (parameters.ContainsKey(2)) Username = parameters[2].ToString();

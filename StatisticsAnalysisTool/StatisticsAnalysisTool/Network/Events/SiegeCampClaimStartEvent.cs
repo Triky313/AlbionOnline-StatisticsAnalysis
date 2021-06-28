@@ -2,7 +2,7 @@
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -16,11 +16,14 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             try
             {
-                if (parameters.ContainsKey(2)) Username = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();
+                if (parameters.ContainsKey(2))
+                {
+                    Username = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();
+                }
             }
             catch (Exception e)
             {
-                Debug.Print(e.Message);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
     }

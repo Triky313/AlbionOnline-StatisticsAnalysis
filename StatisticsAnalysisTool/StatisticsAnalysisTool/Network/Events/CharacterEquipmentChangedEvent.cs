@@ -3,7 +3,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -38,7 +38,7 @@ namespace StatisticsAnalysisTool.Network.Events
             }
             catch (Exception e)
             {
-                Debug.Print(e.Message);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
 

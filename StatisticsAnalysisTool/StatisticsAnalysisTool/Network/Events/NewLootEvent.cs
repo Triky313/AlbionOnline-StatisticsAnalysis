@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using Albion.Network;
+﻿using Albion.Network;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -9,6 +12,8 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public NewLootEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
+            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+
             try
             {
                 Debug.Print($"{parameters[0]} {parameters[1]} {parameters[2]} {parameters[3]} {parameters[4]} {parameters[5]} {parameters[6]}");
@@ -25,8 +30,9 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 Debug.Print($"NewLoot - Id: {container.Id}, Type: {container.Type}");
             }
-            catch
+            catch(Exception e)
             {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }
 
