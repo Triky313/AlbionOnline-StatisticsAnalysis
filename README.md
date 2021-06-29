@@ -11,13 +11,13 @@ A tool for easy reading of auction house data, Tracking of Dungeons and a Damage
 ![Image of this Application](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/blob/master/StatisticsAnalysisTool.png?raw=true)
 
 ## DOWNLOAD AND START THE PROGRAM
-### Windows 10
-# Download here: [StatisticsAnalysis-AlbionOnline-v3.7.2.zip](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/3.7.2/StatisticsAnalysis-AlbionOnline-v3.7.2.zip)
+### Windows 10 Download
+# [StatisticsAnalysis-AlbionOnline-v3.7.2.zip](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/3.7.2/StatisticsAnalysis-AlbionOnline-v3.7.2.zip)
 Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click.
 
 ## Installation
  - General -> Minimal .Net Framework 4.8, you can download it [here](https://dotnet.microsoft.com/download).
- - For Tracking -> NPcap: https://nmap.org/npcap/
+ - For Tracking -> NPcap: [https://nmap.org/npcap](https://nmap.org/npcap/)
  
 ## Is This Allowed
 https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Software-and-Network-Traffic-aka-do-not-cheat-Update-16-45-U/
@@ -70,6 +70,8 @@ Copy the en-US file and change everything, then all APP-CODES should be availabl
 <translation name = "EVERY_3_DAYS">HERE YOUR TEXT</translation>
 ```
 
+## This website
+[triky313.github.io/AlbionOnline-StatisticsAnalysis](https://triky313.github.io/AlbionOnline-StatisticsAnalysis/)
 
 ## DONATION & BACKERS
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/N4N81FD7A)
