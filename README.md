@@ -8,7 +8,7 @@
 
 A tool for easy reading of auction house data, Tracking of Dungeons and a Damage Meter for the game Albion Online
 
-![Image of this Application](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/blob/master/StatisticsAnalysisTool.png)
+![Image of this Application](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/blob/master/StatisticsAnalysisTool.png?raw=true)
 
 ## DOWNLOAD AND START THE PROGRAM
 ### Windows 10
