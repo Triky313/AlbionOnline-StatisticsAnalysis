@@ -12,8 +12,7 @@ A tool for easy reading of auction house data, Tracking of Dungeons and a Damage
 
 ## DOWNLOAD AND START THE PROGRAM
 ### Windows 10
-:pushpin: **Download here**: [StatisticsAnalysis-AlbionOnline-v3.0.0.zip](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/3.0.0/StatisticsAnalysis-AlbionOnline-v3.0.0.zip)
-
+# Download here: [StatisticsAnalysis-AlbionOnline-v3.7.2.zip](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/3.7.2/StatisticsAnalysis-AlbionOnline-v3.7.2.zip)
 Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click.
 
 ## Installation
