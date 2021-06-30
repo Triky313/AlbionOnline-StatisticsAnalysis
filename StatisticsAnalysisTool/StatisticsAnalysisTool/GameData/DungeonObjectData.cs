@@ -188,7 +188,7 @@ namespace StatisticsAnalysisTool.GameData
 
         public static bool IsBossChest(string value)
         {
-            return value.Contains("BOSS");
+            return !value.Contains("BOSS_BUFF") && value.Contains("BOSS");
         }
 
 
