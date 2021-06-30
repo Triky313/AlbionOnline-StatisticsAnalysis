@@ -151,7 +151,7 @@ namespace StatisticsAnalysisTool.GameData
                 return DungeonEventObjectType.BookChest;
             }
 
-            if (value.Contains("CHEST") || value.Contains("AVALON"))
+            if (value.Contains("CHEST") || value.Contains("AVALON") || value.Contains("HELL_STD_PVP") || value.Contains("HELL_HRD_PVP"))
             {
                 return DungeonEventObjectType.Chest;
             }
@@ -163,22 +163,22 @@ namespace StatisticsAnalysisTool.GameData
 
         public static ChestRarity GetChestRarity(string value)
         {
-            if (value.Contains("BOOKCHEST_STANDARD") || value.Contains("CHEST_STANDARD") || (value.Contains("AVALON") && value.Contains("STANDARD")))
+            if (value.Contains("BOOKCHEST_STANDARD") || value.Contains("CHEST_STANDARD") || value.Contains("NORMAL_STANDARD") || (value.Contains("AVALON") && value.Contains("STANDARD")))
             {
                 return ChestRarity.Standard;
             }
 
-            if (value.Contains("BOOKCHEST_UNCOMMON") || value.Contains("CHEST_UNCOMMON") || value.Contains("CHEST_BOSS_UNCOMMON") || (value.Contains("AVALON") && value.Contains("UNCOMMON")))
+            if (value.Contains("BOOKCHEST_UNCOMMON") || value.Contains("CHEST_UNCOMMON") || value.Contains("NORMAL_UNCOMMON") || value.Contains("CHEST_BOSS_UNCOMMON") || (value.Contains("AVALON") && value.Contains("UNCOMMON")))
             {
                 return ChestRarity.Uncommon;
             }
 
-            if (value.Contains("BOOKCHEST_RARE") || value.Contains("CHEST_RARE") || value.Contains("CHEST_BOSS_RARE") || (value.Contains("AVALON") && value.Contains("RARE")))
+            if (value.Contains("BOOKCHEST_RARE") || value.Contains("CHEST_RARE") || value.Contains("NORMAL_RARE") || value.Contains("CHEST_BOSS_RARE") || (value.Contains("AVALON") && value.Contains("RARE")))
             {
                 return ChestRarity.Rare;
             }
 
-            if (value.Contains("BOOKCHEST_LEGENDARY") || value.Contains("CHEST_LEGENDARY") || value.Contains("CHEST_BOSS_LEGENDARY") || (value.Contains("AVALON") && value.Contains("LEGENDARY")))
+            if (value.Contains("BOOKCHEST_LEGENDARY") || value.Contains("CHEST_LEGENDARY") || value.Contains("NORMAL_LEGENDARY") || value.Contains("CHEST_BOSS_LEGENDARY") || (value.Contains("AVALON") && value.Contains("LEGENDARY")))
             {
                 return ChestRarity.Legendary;
             }
