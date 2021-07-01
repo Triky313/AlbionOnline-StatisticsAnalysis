@@ -673,7 +673,10 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void TrackerActivationToggle()
         {
-            if (!IsReadyToTracking()) return;
+            if (!IsReadyToTracking())
+            {
+                return;
+            }
 
             IsTrackingActive = !IsTrackingActive;
 
@@ -1264,11 +1267,11 @@ namespace StatisticsAnalysisTool.ViewModels
                 var colorOff = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.Normal"]);
                 TrackerActivationToggleColor = _isTrackingActive ? colorOn : colorOff;
 
-                if (_isTrackingActive && !TrackingController.ExistIndispensableInfos)
+                if (_isTrackingActive && TrackingController != null && !TrackingController.ExistIndispensableInfos)
                 {
                     TrackingIconColor = TrackingIconType.Partially;
                 }
-                else if(_isTrackingActive && TrackingController.ExistIndispensableInfos)
+                else if(_isTrackingActive && TrackingController != null && TrackingController.ExistIndispensableInfos)
                 {
                     TrackingIconColor = TrackingIconType.On;
                 }
