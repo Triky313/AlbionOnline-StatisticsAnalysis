@@ -25,11 +25,11 @@
         CastHits,
         ChannelingEnded,
         AttackBuilding,
-        InventoryPutItem,
+        InventoryPutItem, //  map[0:652 1:6 2:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 3:17 252:23] (0: ObjectId, 2: UserId)
         InventoryDeleteItem,
         NewCharacter,
-        NewEquipmentItem,
-        NewSimpleItem,
+        NewEquipmentItem, //  map[0:657 1:2036 2:1 4:28169331 5:Apolo540 6:3 7:90000000 8:[] 9:[0] 252:26] (0: ObjectId, 1: ItemId, 5: CrafterName)
+        NewSimpleItem, //  map[0:505 1:7006 2:1 3:true 4:29033970 252:27] (0: ObjectId, 1: ItemId, 2: Amount)
         NewFurnitureItem,
         NewJournalItem,
         NewLaborerItem,
@@ -91,7 +91,7 @@
         RegenerationPlayerComboChanged,
         DurabilityChanged,
         NewLoot,
-        AttachItemContainer,
+        AttachItemContainer, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
         DetachItemContainer,
         InvalidateItemContainer,
         LockItemContainer,

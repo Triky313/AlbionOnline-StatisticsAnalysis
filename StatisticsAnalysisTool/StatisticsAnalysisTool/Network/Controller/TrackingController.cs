@@ -28,6 +28,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         public CombatController CombatController;
         public DungeonController DungeonController;
         public EntityController EntityController;
+        public LootController LootController;
         
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
@@ -36,6 +37,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             EntityController = new EntityController(_mainWindow, mainWindowViewModel);
             DungeonController = new DungeonController(this, mainWindowViewModel);
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
+            LootController = new LootController(this, _mainWindow, mainWindowViewModel);
             CountUpTimer = new CountUpTimer(mainWindowViewModel);
         }
 

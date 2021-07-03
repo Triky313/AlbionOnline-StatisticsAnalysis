@@ -18,10 +18,12 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(NewEquipmentItemEvent value)
         {
+            _trackingController.LootController.AddDiscoveredLoot(value.Loot);
+
             _trackingController.EntityController.AddEquipmentItem(new EquipmentItem
             {
-                ItemIndex = value.ItemIndex,
-                SpellDictionary = value.SpellDictionary
+                ItemIndex = value.Loot.ItemId,
+                SpellDictionary = value.Loot.SpellDictionary
             });
             await Task.CompletedTask;
         }
