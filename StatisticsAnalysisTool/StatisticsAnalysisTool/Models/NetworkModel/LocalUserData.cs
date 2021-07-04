@@ -7,6 +7,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
     {
         public long? UserObjectId { get; set; }
         public Guid? Guid { get; set; }
+        public Guid? InteractGuid { get; set; }
         public string Username { get; set; }
         public FixPoint? LearningPoints { get; set; }
         public double? Reputation { get; set; }

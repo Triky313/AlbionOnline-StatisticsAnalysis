@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class InventoryPutItemEventHandler : EventPacketHandler<InventoryPutItemEvent>
+    public class InventoryDeleteItemEventHandler : EventPacketHandler<InventoryDeleteItemEvent>
     {
         private readonly TrackingController _trackingController;
 
-        public InventoryPutItemEventHandler(TrackingController trackingController) : base((int) EventCodes.InventoryPutItem)
+        public InventoryDeleteItemEventHandler(TrackingController trackingController) : base((int) EventCodes.InventoryDeleteItem)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(InventoryPutItemEvent value)
+        protected override async Task OnActionAsync(InventoryDeleteItemEvent value)
         {
-            _trackingController.LootController.AddPutLoot(value.ObjectId, value.InteractGuid);
             await Task.CompletedTask;
         }
     }

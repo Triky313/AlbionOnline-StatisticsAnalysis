@@ -6,12 +6,10 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class InventoryPutItemEvent : BaseEvent
+    public class InventoryDeleteItemEvent : BaseEvent
     {
-        public long? ObjectId { get; }
-        public Guid? InteractGuid { get; }
-
-        public InventoryPutItemEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public long? ObjectId { get; set; }
+        public InventoryDeleteItemEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
@@ -21,16 +19,9 @@ namespace StatisticsAnalysisTool.Network.Events
                 {
                     ObjectId = parameters[0].ObjectToLong();
                 }
-
-                if (parameters.ContainsKey(2))
-                {
-                    InteractGuid = parameters[2].ObjectToGuid();
-                }
             }
             catch (Exception e)
             {
-                ObjectId = null;
-                InteractGuid = null;
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
             }
         }

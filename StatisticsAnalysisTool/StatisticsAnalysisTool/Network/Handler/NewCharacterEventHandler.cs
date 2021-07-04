@@ -20,7 +20,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (value.Guid != null && value.ObjectId != null)
             {
-                _trackingController.EntityController.AddEntity((long) value.ObjectId, (Guid) value.Guid, value.Name, GameObjectType.Player, GameObjectSubType.Player);
+                _trackingController.EntityController.AddEntity((long) value.ObjectId, (Guid) value.Guid, null, value.Name, GameObjectType.Player, GameObjectSubType.Player);
             }
 
             await Task.CompletedTask;

@@ -31,11 +31,25 @@ namespace StatisticsAnalysisTool.Network.Controller
             _discoveredLoot.Add(loot);
         }
 
-        public void AddPutLoot(long? objectId, Guid? playerGuid)
+        public void RemoveDiscoveredLoot(long? objectId)
         {
-            if (objectId != null && playerGuid != null)
+            var removeLoot = _discoveredLoot.FirstOrDefault(x => x.ItemId == objectId);
+            if (objectId != null && removeLoot != null)
             {
-                _putLoot.Add((long) objectId, (Guid) playerGuid);
+                _discoveredLoot.Remove(removeLoot);
+            }
+        }
+
+        public void AddPutLoot(long? objectId, Guid? interactGuid)
+        {
+            if (_trackingController.EntityController.GetLocalEntity()?.Value.InteractGuid != interactGuid)
+            {
+                return;
+            }
+
+            if (objectId != null && interactGuid != null && !_putLoot.ContainsKey((long)objectId))
+            {
+                _putLoot.Add((long) objectId, (Guid)interactGuid);
             }
 
             LootMerge();
