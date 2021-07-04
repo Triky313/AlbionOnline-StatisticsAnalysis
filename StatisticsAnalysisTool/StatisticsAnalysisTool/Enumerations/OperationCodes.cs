@@ -31,7 +31,7 @@
         ChannelingCancel,
         AttackBuildingStart,
         InventoryDestroyItem,
-        InventoryMoveItem,
+        InventoryMoveItem, // map[0:4 1:[39 -87 28 -11 -124 -89 51 72 -111 -18 117 74 87 91 -56 72] 2:14 4:[39 -87 28 -11 -124 -89 51 72 -111 -18 117 74 87 91 -56 72] 5:14 253:29]
         InventoryRecoverItem,
         InventoryRecoverAllItems,
         InventorySplitStack,
@@ -303,7 +303,7 @@
         ClaimPaymentTransaction,
         ChangeUseFlag,
         ClientPerformanceStats,
-        ExtendedHardwareStats,
+        ExtendedHardwareStats = 303, //  map[0:NVIDIA GeForce RTX 3090 1:AMD Ryzen 7 2700X Eight-Core Processor  2:Windows 10  (10.0.0) 64bit 3:3693 4:24348 5:16293 6:DE-DE 7:Custom 8:1746 10:-1 253:303]
         ClientLowMemoryWarning,
         TerritoryClaimStart,
         TerritoryClaimCancel,
@@ -393,6 +393,14 @@
         GetNextOpenWorldAttackScheduleTime,
         RecoverVaultFromHideout,
         GetGuildEnergyDrainInfo,
-        ChannelingUpdate
+        ChannelingUpdate,
+        Unknown394,
+        Unknown395,
+        Unknown396,
+        Unknown397,
+        Unknown398,
+        Unknown399,
+        Unknown400,
+        OpenItemWindow,
     }
 }
