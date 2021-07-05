@@ -1,10 +1,11 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace StatisticsAnalysisTool.Network.Controller
@@ -17,13 +18,25 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private readonly Dictionary<long, Guid> _putLoot = new Dictionary<long, Guid>();
         private readonly List<DiscoveredLoot> _discoveredLoot = new List<DiscoveredLoot>();
-        private readonly List<Loot> LootedItems = new List<Loot>();
+
+        private readonly List<Loot> _lootedItems = new List<Loot>();
 
         public LootController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
             _trackingController = trackingController;
             _mainWindow = mainWindow;
             _mainWindowViewModel = mainWindowViewModel;
+        }
+
+        public void AddLoot(Loot loot)
+        {
+            if (loot == null)
+            {
+                return;
+            }
+
+            _lootedItems.Add(loot);
+            _trackingController.AddNotification(SetNotification(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
         }
 
         public void AddDiscoveredLoot(DiscoveredLoot loot)
@@ -81,23 +94,27 @@ namespace StatisticsAnalysisTool.Network.Controller
 
                     var loot = new Loot()
                     {
-                        BodyName = discoveredLoot.BodyName,
+                        LootedBody = discoveredLoot.BodyName,
                         IsTrash = ItemController.IsTrash(discoveredLoot.ItemId),
                         Item = ItemController.GetItemByIndex(discoveredLoot.ItemId),
                         ItemId = discoveredLoot.ItemId,
                         LooterName = discoveredLoot.LooterName,
-                        ObjectId = discoveredLoot.ObjectId,
                         Quantity = discoveredLoot.Quantity
                     };
 
-                    LootedItems.Add(loot);
-
-                    Debug.Print($"{loot.Item.LocalizedName} | Quantity: {loot.Quantity} | ObjId: {loot.ObjectId}");
-
+                    AddLoot(loot);
                     _discoveredLoot.Remove(discoveredLoot);
                 }
                 
             }
+        }
+
+        private TrackingNotification SetNotification(string looter, string lootedPlayer, Item item, int quantity)
+        {
+            return new TrackingNotification(DateTime.Now, new List<LineFragment>
+            {
+                new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity)
+            });
         }
     }
 }

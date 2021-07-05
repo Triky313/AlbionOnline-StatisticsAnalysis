@@ -259,11 +259,11 @@
         Unknown254,
         Unknown255,
         Unknown256,
-        Unknown257,
+        OtherGrabbedLoot, // map[0:4584 1:rxdc 2:Yoopo04 3:true 4:460 5:6 252:257] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity)
         Unknown258,
         InCombatStateUpdate = 259, // <- 1 = true; player hits enemy | 2 = true; enemy hits player
-        OtherGrabbedLoot,
-        SiegeCampClaimStart,
+        Unknown260,
+        SiegeCampClaimStart = 261,
         SiegeCampClaimCancel,
         SiegeCampClaimFinished,
         SiegeCampScheduleResult,

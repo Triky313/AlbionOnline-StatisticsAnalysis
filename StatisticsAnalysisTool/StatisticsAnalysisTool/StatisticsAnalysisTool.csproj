@@ -221,6 +221,7 @@
     <Compile Include="Network\Events\ActiveSpellEffectsUpdateEvent.cs" />
     <Compile Include="Network\Events\InventoryPutItemEvent.cs" />
     <Compile Include="Network\Events\InventoryDeleteItemEvent.cs" />
+    <Compile Include="Network\Events\OtherGrabbedLootEvent.cs" />
     <Compile Include="Network\Events\NewEquipmentItemEvent.cs" />
     <Compile Include="Network\Events\HealthUpdateEvent.cs" />
     <Compile Include="Network\Events\LeaveEvent.cs" />
@@ -233,8 +234,10 @@
     <Compile Include="Network\Events\PartyDisbandedEvent.cs" />
     <Compile Include="Network\Handler\InventoryPutItemEventHandler.cs" />
     <Compile Include="Network\Handler\InventoryDeleteItemEventHandler.cs" />
+    <Compile Include="Network\Handler\OtherGrabbedLootEventHandler.cs" />
     <Compile Include="Network\Handler\NewSimpleItemEventHandler.cs" />
     <Compile Include="Network\Events\NewSimpleItemEvent.cs" />
+    <Compile Include="Network\Notification\OtherGrabbedLootNotificationFragment.cs" />
     <Compile Include="Network\Operations\Responses\UseLootChestResponse.cs" />
     <Compile Include="Network\Events\UpdateCurrencyEvent.cs" />
     <Compile Include="Network\Events\UpdateFactionStandingEvent.cs" />

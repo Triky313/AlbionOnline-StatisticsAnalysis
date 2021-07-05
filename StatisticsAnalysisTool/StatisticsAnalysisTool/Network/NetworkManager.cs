@@ -35,6 +35,7 @@ namespace StatisticsAnalysisTool.Network
                 //builder.AddResponseHandler(new UseLootChestEventHandler(trackingController));
                 builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
                 builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
+                builder.AddEventHandler(new OtherGrabbedLootEventHandler(trackingController));
                 builder.AddEventHandler(new InventoryDeleteItemEventHandler(trackingController));
                 builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
                 builder.AddEventHandler(new TakeSilverEventHandler(trackingController));

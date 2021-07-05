@@ -11,11 +11,11 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
     {
         public DiscoveredLoot Loot;
 
-        private readonly long? _objectId;
-        private readonly string _deadPlayer;
-        private readonly string _looter;
-        private readonly int _quantity;
-        private readonly int _itemId;
+        //private readonly long? _objectId;
+        //private readonly string _deadPlayer;
+        //private readonly string _looter;
+        //private readonly int _quantity;
+        //private readonly int _itemId;
 
         public UseLootChestResponse(Dictionary<byte, object> parameters) : base(parameters)
         {
@@ -54,7 +54,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 //    {
                 //        ObjectId = (long)_objectId,
                 //        ItemId = _itemId,
-                //        BodyName = _deadPlayer,
+                //        LootedBody = _deadPlayer,
                 //        LooterName = _looter,
                 //        Quantity = _quantity
                 //        //Item = ItemController.GetItemByIndex(_itemId),
