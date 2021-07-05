@@ -28,6 +28,11 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void AddDiscoveredLoot(DiscoveredLoot loot)
         {
+            if (_discoveredLoot.Exists(x => x.ObjectId == loot.ObjectId))
+            {
+                return;
+            }
+
             _discoveredLoot.Add(loot);
         }
 
@@ -42,7 +47,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void AddPutLoot(long? objectId, Guid? interactGuid)
         {
-            if (_trackingController.EntityController.GetLocalEntity()?.Value.InteractGuid != interactGuid)
+            if (_trackingController.EntityController.GetLocalEntity()?.Value?.InteractGuid != interactGuid)
             {
                 return;
             }
@@ -65,12 +70,12 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             foreach (var lootedObject in _putLoot)
             {
-                if (!_discoveredLoot.Exists(x => x.ItemId == lootedObject.Key))
+                if (!_discoveredLoot.Exists(x => x.ObjectId == lootedObject.Key))
                 {
                     continue;
                 }
 
-                var discoveredLoot = _discoveredLoot.FirstOrDefault(x => x.ItemId == lootedObject.Key);
+                var discoveredLoot = _discoveredLoot.FirstOrDefault(x => x.ObjectId == lootedObject.Key);
                 if (discoveredLoot != null)
                 {
 
