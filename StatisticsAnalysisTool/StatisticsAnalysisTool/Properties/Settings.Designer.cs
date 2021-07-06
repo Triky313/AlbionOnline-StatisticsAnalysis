@@ -523,5 +523,41 @@ namespace StatisticsAnalysisTool.Properties {
                 this["GoldStatsApiUrl"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MainTrackerFilterLoot {
+            get {
+                return ((bool)(this["MainTrackerFilterLoot"]));
+            }
+            set {
+                this["MainTrackerFilterLoot"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MainTrackerFilterSilver {
+            get {
+                return ((bool)(this["MainTrackerFilterSilver"]));
+            }
+            set {
+                this["MainTrackerFilterSilver"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MainTrackerFilterFame {
+            get {
+                return ((bool)(this["MainTrackerFilterFame"]));
+            }
+            set {
+                this["MainTrackerFilterFame"] = value;
+            }
+        }
     }
 }

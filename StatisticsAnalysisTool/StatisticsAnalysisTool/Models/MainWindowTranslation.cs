@@ -48,5 +48,8 @@ namespace StatisticsAnalysisTool.Models
         public string SortByHps => LanguageController.Translation("SORT_BY_HPS");
         public string Settings => LanguageController.Translation("SETTINGS");
         public string Favorite => LanguageController.Translation("FAVORITE");
+        public string Loot => LanguageController.Translation("LOOT");
+        public string Fame => LanguageController.Translation("FAME");
+        public string Silver => LanguageController.Translation("SILVER");
     }
 }

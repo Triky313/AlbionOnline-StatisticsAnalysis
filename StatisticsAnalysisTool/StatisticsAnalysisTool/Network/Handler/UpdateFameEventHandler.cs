@@ -39,7 +39,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                 new FameNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, totalPlayerFame, totalGainedFame,
                     LanguageController.Translation("FAME"), PvpPveType.Pve, zoneFame, premiumFame, satchelFame,
                     LanguageController.Translation("GAINED"))
-            });
+            }, NotificationType.Fame);
         }
     }
 }

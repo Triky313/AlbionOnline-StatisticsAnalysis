@@ -131,5 +131,14 @@
     <Setting Name="GoldStatsApiUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/Gold</Value>
     </Setting>
+    <Setting Name="MainTrackerFilterLoot" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MainTrackerFilterSilver" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MainTrackerFilterFame" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

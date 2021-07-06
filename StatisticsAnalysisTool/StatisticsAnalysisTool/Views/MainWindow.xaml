@@ -230,6 +230,14 @@
             <TabControl IsEnabled="{Binding IsTrackingActive, FallbackValue=true}" Margin="10,136,10,35" BorderThickness="0 1 0 0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}">
                 <TabItem Header="{Binding Translation.Tracking, FallbackValue=TRACKING}">
                     <Grid>
+                        <Grid Height="20" Width="auto" Margin="0,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <StackPanel Orientation="Horizontal">
+                                <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Width="20" Height="20" Margin="0,0,5,0" />
+                                <CheckBox IsChecked="{Binding IsTrackingFilteredLoot, FallbackValue=true}" Content="{Binding Translation.Loot, FallbackValue=LOOT}" Margin="5,0,5,0" />
+                                <CheckBox IsChecked="{Binding IsTrackingFilteredFame, FallbackValue=true}" Content="{Binding Translation.Fame, FallbackValue=FAME}" Margin="5,0,5,0" />
+                                <CheckBox IsChecked="{Binding IsTrackingFilteredSilver, FallbackValue=true}" Content="{Binding Translation.Silver, FallbackValue=SILVER}" Margin="5,0,5,0" />
+                            </StackPanel>
+                        </Grid>
                         <Grid Height="20" Width="20" Margin="0,8,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="OpenMainTrackerInfoPopup_MouseEnter" MouseLeave="CloseMainTrackerInfoPopup_MouseLeave">
                             <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                         </Grid>

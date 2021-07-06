@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
@@ -111,7 +112,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
                 new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity)
-            });
+            }, NotificationType.Loot);
         }
     }
 }

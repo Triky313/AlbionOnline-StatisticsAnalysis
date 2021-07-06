@@ -32,7 +32,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 new FactionFlagPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, cityFaction, GainedFractionPoints, 
                     BonusPremiumGainedFractionPoints, LanguageController.Translation("FACTION_FLAG_POINTS"), LanguageController.Translation("GAINED")),
-            });
+            }, NotificationType.Faction);
         }
     }
 }
