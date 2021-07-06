@@ -225,7 +225,7 @@
 
     <DataTemplate DataType="{x:Type notification:OtherGrabbedLootNotificationFragment}">
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding Looter, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock Text="{Binding Looter, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Blue.3}"/>
             <TextBlock Text="{Binding LootedTranslation, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
 
             <TextBlock Text="{Binding Quantity, StringFormat='{}{0}x '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
@@ -233,7 +233,7 @@
             <TextBlock Text="{Binding Item.LocalizedName, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
 
             <TextBlock Text="{Binding FromTranslation, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
-            <TextBlock Text="{Binding LootedPlayer, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock Text="{Binding LootedPlayer, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Blue.3}"/>
         </StackPanel>
     </DataTemplate>
 

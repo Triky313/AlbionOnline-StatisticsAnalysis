@@ -13,6 +13,7 @@ namespace StatisticsAnalysisTool.Network.Events
 
         private readonly string _lootedBody;
         private readonly string _looterName;
+        private readonly bool _isSilver;
         private readonly int _itemId;
         private readonly int _quantity;
 
@@ -32,6 +33,11 @@ namespace StatisticsAnalysisTool.Network.Events
                     _looterName = parameters[2].ToString();
                 }
 
+                if (parameters.ContainsKey(3))
+                {
+                    _isSilver = parameters[3].ObjectToBool();
+                }
+
                 if (parameters.ContainsKey(4))
                 {
                     _itemId = parameters[4].ObjectToInt();
@@ -49,6 +55,7 @@ namespace StatisticsAnalysisTool.Network.Events
                     Item = ItemController.GetItemByIndex(_itemId),
                     ItemId = _itemId,
                     LooterName = _looterName,
+                    IsSilver = _isSilver,
                     Quantity = _quantity
                 };
             }

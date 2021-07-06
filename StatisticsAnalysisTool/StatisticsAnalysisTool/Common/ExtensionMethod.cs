@@ -152,6 +152,11 @@ namespace StatisticsAnalysisTool.Common
             return value as byte? ?? 0;
         }
 
+        public static bool ObjectToBool(this object value)
+        {
+            return value as bool? ?? false;
+        }
+
         public static double ObjectToDouble(this object value)
         {
             return value as float? ?? value as double? ?? 0;

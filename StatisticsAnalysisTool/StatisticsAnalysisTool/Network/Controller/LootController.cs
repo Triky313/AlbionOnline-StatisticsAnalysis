@@ -19,8 +19,6 @@ namespace StatisticsAnalysisTool.Network.Controller
         private readonly Dictionary<long, Guid> _putLoot = new Dictionary<long, Guid>();
         private readonly List<DiscoveredLoot> _discoveredLoot = new List<DiscoveredLoot>();
 
-        private readonly List<Loot> _lootedItems = new List<Loot>();
-
         public LootController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
             _trackingController = trackingController;
@@ -30,12 +28,11 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void AddLoot(Loot loot)
         {
-            if (loot == null)
+            if (loot == null || loot.IsSilver || loot.IsTrash)
             {
                 return;
             }
 
-            _lootedItems.Add(loot);
             _trackingController.AddNotification(SetNotification(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
         }
 
@@ -70,7 +67,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 _putLoot.Add((long) objectId, (Guid)interactGuid);
             }
 
-            LootMerge();
+            //LootMerge();
         }
 
         public void ResetViewedLootLists()
