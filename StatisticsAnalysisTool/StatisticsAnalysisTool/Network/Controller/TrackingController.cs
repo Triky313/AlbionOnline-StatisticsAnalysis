@@ -41,7 +41,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             EntityController = new EntityController(_mainWindow, mainWindowViewModel);
             DungeonController = new DungeonController(this, mainWindowViewModel);
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
-            LootController = new LootController(this, _mainWindow, mainWindowViewModel);
+            LootController = new LootController(this);
             CountUpTimer = new CountUpTimer(mainWindowViewModel);
         }
 

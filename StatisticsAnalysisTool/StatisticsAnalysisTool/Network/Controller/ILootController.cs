@@ -7,7 +7,6 @@ namespace StatisticsAnalysisTool.Network.Controller
     {
         public void AddLoot(Loot loot);
         public void AddDiscoveredLoot(DiscoveredLoot loot);
-        public void RemoveDiscoveredLoot(long? objectId);
         public void AddPutLoot(long? objectId, Guid? playerGuid);
         public void ResetViewedLootLists();
     }

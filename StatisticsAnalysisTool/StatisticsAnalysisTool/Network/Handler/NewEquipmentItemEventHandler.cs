@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(NewEquipmentItemEvent value)
         {
-            _trackingController.LootController.AddDiscoveredLoot(value.Loot);
+            //_trackingController.LootController.AddDiscoveredLoot(value.Loot);
 
             _trackingController.EntityController.AddEquipmentItem(new EquipmentItem
             {

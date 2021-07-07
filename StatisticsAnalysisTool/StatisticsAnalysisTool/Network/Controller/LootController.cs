@@ -3,8 +3,6 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
-using StatisticsAnalysisTool.ViewModels;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,18 +11,14 @@ namespace StatisticsAnalysisTool.Network.Controller
 {
     public class LootController : ILootController
     {
-        private readonly MainWindow _mainWindow;
-        private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly TrackingController _trackingController;
 
         private readonly Dictionary<long, Guid> _putLoot = new Dictionary<long, Guid>();
         private readonly List<DiscoveredLoot> _discoveredLoot = new List<DiscoveredLoot>();
 
-        public LootController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
+        public LootController(TrackingController trackingController)
         {
             _trackingController = trackingController;
-            _mainWindow = mainWindow;
-            _mainWindowViewModel = mainWindowViewModel;
         }
 
         public void AddLoot(Loot loot)
@@ -46,16 +40,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             _discoveredLoot.Add(loot);
         }
-
-        public void RemoveDiscoveredLoot(long? objectId)
-        {
-            var removeLoot = _discoveredLoot.FirstOrDefault(x => x.ItemId == objectId);
-            if (objectId != null && removeLoot != null)
-            {
-                _discoveredLoot.Remove(removeLoot);
-            }
-        }
-
+        
         public void AddPutLoot(long? objectId, Guid? interactGuid)
         {
             if (_trackingController.EntityController.GetLocalEntity()?.Value?.InteractGuid != interactGuid)
@@ -68,7 +53,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 _putLoot.Add((long) objectId, (Guid)interactGuid);
             }
 
-            //LootMerge();
+            LootMerge();
         }
 
         public void ResetViewedLootLists()

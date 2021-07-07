@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(InventoryPutItemEvent value)
         {
-            _trackingController.LootController.AddPutLoot(value.ObjectId, value.InteractGuid);
+            //_trackingController.LootController.AddPutLoot(value.ObjectId, value.InteractGuid);
             await Task.CompletedTask;
         }
     }

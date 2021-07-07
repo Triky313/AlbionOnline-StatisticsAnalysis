@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(NewSimpleItemEvent value)
         {
-            _trackingController.LootController.AddDiscoveredLoot(value.Loot);
+            //_trackingController.LootController.AddDiscoveredLoot(value.Loot);
             await Task.CompletedTask;
         }
     }
