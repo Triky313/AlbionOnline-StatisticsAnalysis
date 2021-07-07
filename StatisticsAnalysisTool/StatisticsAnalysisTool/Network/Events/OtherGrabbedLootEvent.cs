@@ -25,12 +25,12 @@ namespace StatisticsAnalysisTool.Network.Events
             {
                 if (parameters.ContainsKey(1))
                 {
-                    _lootedBody = parameters[1].ToString();
+                    _lootedBody = MobController.IsMob(parameters[1].ToString()) ? LanguageController.Translation("MOB") : parameters[1].ToString();
                 }
 
                 if (parameters.ContainsKey(2))
                 {
-                    _looterName = MobController.IsMob(parameters[2].ToString()) ? LanguageController.Translation("MOB") : parameters[2].ToString();
+                    _looterName = parameters[2].ToString();
                 }
 
                 if (parameters.ContainsKey(3))
