@@ -30,7 +30,7 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (parameters.ContainsKey(2))
                 {
-                    _looterName = parameters[2].ToString();
+                    _looterName = MobController.IsMob(parameters[2].ToString()) ? LanguageController.Translation("MOB") : parameters[2].ToString();
                 }
 
                 if (parameters.ContainsKey(3))
