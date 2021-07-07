@@ -130,12 +130,8 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             _notifications.Insert(0, item);
 
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                _mainWindowViewModel.TrackingNotifications.Insert(0, item);
-            });
-
             RemovesUnnecessaryNotifications();
+            FilterNotification();
         }
 
         public void RemovesUnnecessaryNotifications()
