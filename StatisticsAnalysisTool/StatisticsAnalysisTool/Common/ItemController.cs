@@ -86,7 +86,7 @@ namespace StatisticsAnalysisTool.Common
         public static bool IsTrash(int index)
         {
             var item = Items.FirstOrDefault(i => i.Index == index);
-            if (item != null && item.LocalizedName.Contains("TRASH"))
+            if (item != null && item.UniqueName.Contains("TRASH"))
             {
                 return true;
             }
