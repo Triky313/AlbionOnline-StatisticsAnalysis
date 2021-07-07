@@ -243,7 +243,7 @@
                         </Grid>
                         <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,30,0,0" VerticalAlignment="Top"/>
                         <ScrollViewer Margin="0,35,0,0">
-                            <ItemsControl ItemsSource="{Binding TrackingNotifications}" />
+                            <ItemsControl ItemsSource="{Binding TrackingNotifications, IsAsync=True, Mode=OneWay}" />
                         </ScrollViewer>
                         <Grid Visibility="{Binding IsMainTrackerPopupVisible, FallbackValue=Hidden}" Margin="0,33,0,0" Background="{StaticResource SolidColorBrush.Background.Second}">
                             <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
@@ -279,7 +279,7 @@
                             </Grid>
                         </Grid>
                         <ScrollViewer Margin="{Binding DungeonStatsScrollViewerMargin, FallbackValue='0,82,0,0'}">
-                            <ItemsControl ItemsSource="{Binding TrackingDungeons}"/>
+                            <ItemsControl ItemsSource="{Binding TrackingDungeons, IsAsync=True, Mode=OneWay}"/>
                         </ScrollViewer>
                     </Grid>
                 </TabItem>
