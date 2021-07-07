@@ -131,7 +131,11 @@ namespace StatisticsAnalysisTool.Network.Controller
             _notifications.Insert(0, item);
 
             RemovesUnnecessaryNotifications();
-            FilterNotification();
+
+            if (_notificationTypeFilters.Contains(item.Type))
+            {
+                FilterNotification();
+            }
         }
 
         public void RemovesUnnecessaryNotifications()
