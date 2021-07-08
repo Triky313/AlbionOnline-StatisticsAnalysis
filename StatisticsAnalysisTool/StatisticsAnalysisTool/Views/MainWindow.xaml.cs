@@ -229,5 +229,10 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.DungeonStatsGridToggle();
         }
+
+        private void BtnTrackingNotificationsReset_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel.ResetTrackingNotifications();
+        }
     }
 }

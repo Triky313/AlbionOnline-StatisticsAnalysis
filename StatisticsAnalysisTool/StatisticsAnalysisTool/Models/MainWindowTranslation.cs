@@ -51,5 +51,6 @@ namespace StatisticsAnalysisTool.Models
         public string Loot => LanguageController.Translation("LOOT");
         public string Fame => LanguageController.Translation("FAME");
         public string Silver => LanguageController.Translation("SILVER");
+        public string ResetTrackingNotifications => LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS");
     }
 }

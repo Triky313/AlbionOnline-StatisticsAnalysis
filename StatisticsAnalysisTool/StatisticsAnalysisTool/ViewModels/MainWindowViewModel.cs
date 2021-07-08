@@ -744,10 +744,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            if (TrackingController == null)
-            {
-                TrackingController = new TrackingController(this, _mainWindow);
-            }
+            TrackingController ??= new TrackingController(this, _mainWindow);
 
             TrackingController?.RegisterEvents();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
@@ -811,6 +808,18 @@ namespace StatisticsAnalysisTool.ViewModels
             if (dialogResult != null && dialogResult == true)
             {
                 TrackingController.DungeonController.ResetDungeons();
+            }
+        }
+
+        public void ResetTrackingNotifications()
+        {
+            var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
+            var dialogResult = dialog.ShowDialog();
+
+            if (dialogResult != null && dialogResult == true)
+            {
+                TrackingNotifications.Clear();
+                TrackingController.ClearNotifications();
             }
         }
 

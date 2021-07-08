@@ -413,4 +413,6 @@
   <translation name="FROM">from</translation>
   <translation name="LOOT">Loot</translation>
   <translation name="MOB">Mob</translation>
+  <translation name="RESET_TRACKING_NOTIFICATIONS">Reset Tracking Notifications</translation>
+  <translation name="SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS">Are you sure you want to reset the Tracking Notifications?</translation>
 </translations>

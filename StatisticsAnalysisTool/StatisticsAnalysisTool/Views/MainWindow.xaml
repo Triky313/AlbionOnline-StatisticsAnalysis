@@ -238,8 +238,13 @@
                                 <CheckBox IsChecked="{Binding IsTrackingFilteredSilver, FallbackValue=true}" Content="{Binding Translation.Silver, FallbackValue=SILVER}" Margin="5,0,5,0" />
                             </StackPanel>
                         </Grid>
-                        <Grid Height="20" Width="20" Margin="0,8,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="OpenMainTrackerInfoPopup_MouseEnter" MouseLeave="CloseMainTrackerInfoPopup_MouseLeave">
-                            <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Grid Height="30" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                                <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="200" Margin="0,0,0,0" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
+                                <Grid Height="20" Width="20" Margin="5,3,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="OpenMainTrackerInfoPopup_MouseEnter" MouseLeave="CloseMainTrackerInfoPopup_MouseLeave">
+                                    <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,0,0,0" />
+                                </Grid>
+                            </StackPanel>
                         </Grid>
                         <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,30,0,0" VerticalAlignment="Top"/>
                         <ScrollViewer Margin="0,35,0,0">

@@ -172,6 +172,11 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
+        public void ClearNotifications()
+        {
+            _notifications.Clear();
+        }
+
         public void FilterNotification()
         {
             var filteredNotifications = _notifications?
@@ -191,6 +196,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                         .ToList());
             });
         }
+
         private static DateTime? GetLowestDate(List<TrackingNotification> items)
         {
             if (items.IsNullOrEmpty()) return null;
