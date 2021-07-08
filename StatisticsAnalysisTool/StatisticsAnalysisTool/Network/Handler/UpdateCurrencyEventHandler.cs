@@ -35,7 +35,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 new FactionPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, cityFaction, GainedFractionPoints, 
                     BonusPremiumGainedFractionPoints, LanguageController.Translation("FACTION_POINTS"), LanguageController.Translation("GAINED")),
-            });
+            }, NotificationType.Silver);
         }
     }
 }

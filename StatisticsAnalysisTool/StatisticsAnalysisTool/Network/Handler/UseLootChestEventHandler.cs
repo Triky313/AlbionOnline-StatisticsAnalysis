@@ -2,23 +2,23 @@
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Operations.Responses;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class ChangeClusterResponseHandler : ResponsePacketHandler<ChangeClusterResponse>
+    public class UseLootChestEventHandler : ResponsePacketHandler<UseLootChestResponse>
     {
         private readonly TrackingController _trackingController;
 
-        public ChangeClusterResponseHandler(TrackingController trackingController) : base((int) OperationCodes.ChangeCluster)
+        public UseLootChestEventHandler(TrackingController trackingController) : base((int) OperationCodes.UseLootChest)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(ChangeClusterResponse value)
+        protected override async Task OnActionAsync(UseLootChestResponse value)
         {
-            _trackingController.EntityController.RemoveAllEntities();
-            _trackingController.LootController.ResetViewedLootLists();
+            Debug.Print($"Loot: {value.Loot.LooterName}");
             await Task.CompletedTask;
         }
     }

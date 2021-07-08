@@ -13,6 +13,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         }
 
         public Guid UserGuid { get; set; }
+        public Guid? InteractGuid { get; set; }
         public string Name { get; set; } = "Unknown";
         public CharacterEquipment CharacterEquipment { get; set; } = null;
         public DateTime? CombatStart { get; set; }

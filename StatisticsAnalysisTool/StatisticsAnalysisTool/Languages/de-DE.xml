@@ -410,4 +410,10 @@
   <translation name="AVERAGE_FAME">Durchschnittlicher Ruhm</translation>
   <translation name="AVERAGE_RESPEC">Durchschnittliche Respec</translation>
   <translation name="AVERAGE_SILVER">Durchschnittliches Silber</translation>
+  <translation name="LOOTED">geplündert</translation>
+  <translation name="FROM">von</translation>
+  <translation name="LOOT">Loot</translation>
+  <translation name="MOB">Mob</translation>
+  <translation name="RESET_TRACKING_NOTIFICATIONS">Tracking Benachrichtigungen zurücksetzen</translation>
+  <translation name="SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS">Tracking Benachrichtigungen wirklich zurücksetzen?</translation>
 </translations>

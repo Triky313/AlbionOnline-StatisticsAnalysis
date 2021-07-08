@@ -30,6 +30,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 UserObjectId = value.UserObjectId,
                 Guid = value.Guid,
+                InteractGuid = value.InteractGuid,
                 Username = value.Username,
                 LearningPoints = value.LearningPoints,
                 Reputation = value.Reputation,
@@ -52,9 +53,9 @@ namespace StatisticsAnalysisTool.Network.Handler
                 IsVisible = Visibility.Hidden
             };
 
-            if (value.Guid != null && value.UserObjectId != null)
+            if (value.Guid != null && value.InteractGuid  != null && value.UserObjectId != null)
             {
-                _trackingController.EntityController.AddEntity((long) value.UserObjectId, (Guid) value.Guid, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
+                _trackingController.EntityController.AddEntity((long) value.UserObjectId, (Guid) value.Guid, (Guid) value.InteractGuid, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
                 _trackingController.EntityController.AddToParty((Guid) value.Guid, value.Username);
             }
 

@@ -685,6 +685,11 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void UpdateDungeonDataUi(DungeonObject dungeon)
         {
+            if (dungeon == null)
+            {
+                return;
+            }
+
             Application.Current.Dispatcher.Invoke(delegate
             {
                 var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => 

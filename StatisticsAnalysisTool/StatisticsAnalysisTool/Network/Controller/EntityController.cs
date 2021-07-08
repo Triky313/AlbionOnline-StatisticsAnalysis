@@ -35,16 +35,17 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public event Action<GameObject> OnAddEntity;
 
-        public void AddEntity(long objectId, Guid userGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
+        public void AddEntity(long objectId, Guid userGuid, Guid? interactGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
         {
             PlayerGameObject gameObject;
-
+            
             if (_knownEntities.TryRemove(userGuid, out var oldEntity))
                 gameObject = new PlayerGameObject(objectId)
                 {
                     Name = name,
                     ObjectType = objectType,
                     UserGuid = userGuid,
+                    InteractGuid = interactGuid,
                     ObjectSubType = objectSubType,
                     CharacterEquipment = oldEntity.CharacterEquipment,
                     CombatStart = oldEntity.CombatStart,
@@ -90,7 +91,6 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
         }
-
         public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
         {
             return onlyInParty ? _knownEntities.Where(x => IsUserInParty(x.Value.Name)).ToList() : _knownEntities.ToList();

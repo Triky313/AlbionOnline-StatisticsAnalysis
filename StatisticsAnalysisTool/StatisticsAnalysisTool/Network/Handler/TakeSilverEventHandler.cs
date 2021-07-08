@@ -61,7 +61,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 new SilverNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, totalGainedSilver, 
                     LanguageController.Translation("SILVER"), cluster, premium, clusterTax, LanguageController.Translation("GAINED"))
-            });
+            }, NotificationType.Silver);
         }
     }
 }

@@ -129,6 +129,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool IsDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
         private TrackingIconType _trackingIconColor;
+        private bool _isTrackingFilteredLoot = true;
+        private bool _isTrackingFilteredFame = true;
+        private bool _isTrackingFilteredSilver = true;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -437,6 +440,50 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 StartTracking();
             }
+
+            IsTrackingFilteredLoot = Settings.Default.MainTrackerFilterLoot;
+            IsTrackingFilteredSilver = Settings.Default.MainTrackerFilterSilver;
+            IsTrackingFilteredFame = Settings.Default.MainTrackerFilterFame;
+        }
+
+        #endregion
+
+        #region Save Settings
+
+        public void SaveSettings(WindowState windowState, Rect restoreBounds, double height, double width)
+        {
+            #region Tracking
+
+            Settings.Default.IsTrackingResetByMapChangeActive = IsTrackingResetByMapChangeActive;
+            Settings.Default.IsTrackingActiveAtToolStart = IsTrackingActive;
+
+            Settings.Default.MainTrackerFilterLoot = IsTrackingFilteredLoot;
+            Settings.Default.MainTrackerFilterSilver = IsTrackingFilteredSilver;
+            Settings.Default.MainTrackerFilterFame = IsTrackingFilteredFame;
+
+            #endregion
+
+            #region Window
+
+            if (windowState == WindowState.Maximized)
+            {
+                Settings.Default.MainWindowHeight = restoreBounds.Height;
+                Settings.Default.MainWindowWidth = restoreBounds.Width;
+                Settings.Default.MainWindowMaximized = true;
+            }
+            else
+            {
+                Settings.Default.MainWindowHeight = height;
+                Settings.Default.MainWindowWidth = width;
+                Settings.Default.MainWindowMaximized = false;
+            }
+
+            #endregion
+
+            Settings.Default.Save();
+
+            ItemController.SaveFavoriteItemsToLocalFile();
+            ItemController.SaveItemInformationLocal();
         }
 
         #endregion
@@ -697,10 +744,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            if (TrackingController == null)
-            {
-                TrackingController = new TrackingController(this, _mainWindow);
-            }
+            TrackingController ??= new TrackingController(this, _mainWindow);
 
             TrackingController?.RegisterEvents();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
@@ -764,6 +808,18 @@ namespace StatisticsAnalysisTool.ViewModels
             if (dialogResult != null && dialogResult == true)
             {
                 TrackingController.DungeonController.ResetDungeons();
+            }
+        }
+
+        public void ResetTrackingNotifications()
+        {
+            var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
+            var dialogResult = dialog.ShowDialog();
+
+            if (dialogResult != null && dialogResult == true)
+            {
+                TrackingNotifications.Clear();
+                TrackingController.ClearNotifications();
             }
         }
 
@@ -942,6 +998,66 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isMainTrackerPopupVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingFilteredLoot {
+            get => _isTrackingFilteredLoot;
+            set
+            {
+                _isTrackingFilteredLoot = value;
+
+                if (_isTrackingFilteredLoot)
+                {
+                    TrackingController.AddFilterType(NotificationType.Loot);
+                }
+                else
+                {
+                    TrackingController.RemoveFilterType(NotificationType.Loot);
+                }
+
+                TrackingController.FilterNotification();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingFilteredFame {
+            get => _isTrackingFilteredFame;
+            set
+            {
+                _isTrackingFilteredFame = value;
+
+                if (_isTrackingFilteredFame)
+                {
+                    TrackingController.AddFilterType(NotificationType.Fame);
+                }
+                else
+                {
+                    TrackingController.RemoveFilterType(NotificationType.Fame);
+                }
+
+                TrackingController.FilterNotification();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingFilteredSilver {
+            get => _isTrackingFilteredSilver;
+            set
+            {
+                _isTrackingFilteredSilver = value;
+
+                if (_isTrackingFilteredSilver)
+                {
+                    TrackingController.AddFilterType(NotificationType.Silver);
+                }
+                else
+                {
+                    TrackingController.RemoveFilterType(NotificationType.Silver);
+                }
+
+                TrackingController.FilterNotification();
                 OnPropertyChanged();
             }
         }

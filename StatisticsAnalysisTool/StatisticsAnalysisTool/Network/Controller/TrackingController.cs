@@ -9,10 +9,12 @@ using StatisticsAnalysisTool.Network.Time;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Controller
 {
@@ -28,7 +30,10 @@ namespace StatisticsAnalysisTool.Network.Controller
         public CombatController CombatController;
         public DungeonController DungeonController;
         public EntityController EntityController;
-        
+        public LootController LootController;
+        private readonly List<NotificationType> _notificationTypeFilters = new List<NotificationType>();
+        private readonly List<TrackingNotification> _notifications = new List<TrackingNotification>();
+
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
             _mainWindowViewModel = mainWindowViewModel;
@@ -36,6 +41,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             EntityController = new EntityController(_mainWindow, mainWindowViewModel);
             DungeonController = new DungeonController(this, mainWindowViewModel);
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
+            LootController = new LootController(this);
             CountUpTimer = new CountUpTimer(mainWindowViewModel);
         }
 
@@ -117,46 +123,44 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public void AddNotification(TrackingNotification item)
         {
-            if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null)
+            if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null || _notifications == null)
             {
                 return;
             }
 
-            if (_mainWindow.Dispatcher.CheckAccess())
-            {
-                _mainWindowViewModel.TrackingNotifications.Insert(0, item);
-            }
-            else
-            {
-                _mainWindow.Dispatcher.Invoke(delegate { _mainWindowViewModel.TrackingNotifications.Insert(0, item); });
-            }
+            _notifications.Insert(0, item);
 
             RemovesUnnecessaryNotifications();
+
+            if (_notificationTypeFilters.Contains(item.Type))
+            {
+                FilterNotification();
+            }
         }
 
         public void RemovesUnnecessaryNotifications()
         {
-            if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null) return;
+            if (IsMainWindowNull() || _notifications == null) return;
 
             try
             {
                 while (true)
                 {
-                    if (_mainWindowViewModel.TrackingNotifications?.Count <= _maxNotifications) break;
+                    if (_notifications?.Count <= _maxNotifications) break;
 
-                    var dateTime = GetLowestDate(_mainWindowViewModel.TrackingNotifications);
+                    var dateTime = GetLowestDate(_notifications);
                     if (dateTime != null)
                     {
-                        var removableItem = _mainWindowViewModel.TrackingNotifications?.FirstOrDefault(x => x.DateTime == dateTime);
+                        var removableItem = _notifications?.FirstOrDefault(x => x.DateTime == dateTime);
                         if (removableItem != null)
                         {
                             if (_mainWindow.Dispatcher.CheckAccess())
                             {
-                                _mainWindowViewModel.TrackingNotifications.Remove(removableItem);
+                                _notifications.Remove(removableItem);
                             }
                             else
                             {
-                                _mainWindow.Dispatcher.Invoke(delegate { _mainWindowViewModel.TrackingNotifications.Remove(removableItem); });
+                                _mainWindow.Dispatcher.Invoke(delegate { _notifications.Remove(removableItem); });
                             }
                         }
                     }
@@ -168,7 +172,32 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        private static DateTime? GetLowestDate(ObservableCollection<TrackingNotification> items)
+        public void ClearNotifications()
+        {
+            _notifications.Clear();
+        }
+
+        public void FilterNotification()
+        {
+            var filteredNotifications = _notifications?
+                .Where(x => _notificationTypeFilters.Contains(x.Type))
+                .ToList();
+
+            if (filteredNotifications == null)
+            {
+                return;
+            }
+
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                _mainWindowViewModel.TrackingNotifications = new ObservableCollection<TrackingNotification>(filteredNotifications.ToList());
+                _mainWindowViewModel?.TrackingNotifications?
+                    .OrderByReference(filteredNotifications.OrderByDescending(x => x.DateTime)
+                        .ToList());
+            });
+        }
+
+        private static DateTime? GetLowestDate(List<TrackingNotification> items)
         {
             if (items.IsNullOrEmpty()) return null;
 
@@ -181,6 +210,22 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 Log.Error(nameof(GetLowestDate), e);
                 return null;
+            }
+        }
+
+        public void AddFilterType(NotificationType notificationType)
+        {
+            if (!_notificationTypeFilters.Exists(x => x == notificationType))
+            {
+                _notificationTypeFilters.Add(notificationType);
+            }
+        }
+
+        public void RemoveFilterType(NotificationType notificationType)
+        {
+            if (_notificationTypeFilters.Exists(x => x == notificationType))
+            {
+                _notificationTypeFilters.Remove(notificationType);
             }
         }
 

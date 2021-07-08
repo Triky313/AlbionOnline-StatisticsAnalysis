@@ -1,8 +1,6 @@
 ﻿using FontAwesome5;
-using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -124,38 +122,12 @@ namespace StatisticsAnalysisTool.Views
         
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            #region Tracking
+            _mainWindowViewModel.SaveSettings(WindowState, RestoreBounds, Height, Width);
 
-            if (_mainWindowViewModel != null)
+            if (_mainWindowViewModel.IsTrackingActive)
             {
-                Settings.Default.IsTrackingResetByMapChangeActive = _mainWindowViewModel.IsTrackingResetByMapChangeActive;
-                Settings.Default.IsTrackingActiveAtToolStart = _mainWindowViewModel.IsTrackingActive;
-
-                if (_mainWindowViewModel.IsTrackingActive)
-                {
-                    _mainWindowViewModel.StopTracking();
-                }
+                _mainWindowViewModel.StopTracking();
             }
-
-            #endregion
-
-            if (WindowState == WindowState.Maximized)
-            {
-                Settings.Default.MainWindowHeight = RestoreBounds.Height;
-                Settings.Default.MainWindowWidth = RestoreBounds.Width;
-                Settings.Default.MainWindowMaximized = true;
-            }
-            else
-            {
-                Settings.Default.MainWindowHeight = Height;
-                Settings.Default.MainWindowWidth = Width;
-                Settings.Default.MainWindowMaximized = false;
-            }
-            
-            Settings.Default.Save();
-
-            ItemController.SaveFavoriteItemsToLocalFile();
-            ItemController.SaveItemInformationLocal();
         }
 
         private async void BtnPlayerModeSave_Click(object sender, RoutedEventArgs e)
@@ -256,6 +228,11 @@ namespace StatisticsAnalysisTool.Views
         private void MouseUp_FoldUnfoldDungeonStats(object sender, MouseEventArgs e)
         {
             _mainWindowViewModel.DungeonStatsGridToggle();
+        }
+
+        private void BtnTrackingNotificationsReset_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel.ResetTrackingNotifications();
         }
     }
 }

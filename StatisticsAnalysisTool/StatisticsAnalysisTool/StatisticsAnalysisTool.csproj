@@ -44,6 +44,7 @@
     </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -54,6 +55,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>StatisticsAnalysisTool.App</StartupObject>
@@ -67,7 +69,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
@@ -77,7 +79,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
@@ -176,6 +178,7 @@
     <Compile Include="Common\ExtensionMethod.cs" />
     <Compile Include="Common\FixPoint.cs" />
     <Compile Include="Common\FactionWarfareController.cs" />
+    <Compile Include="Common\MobController.cs" />
     <Compile Include="Common\RemoveDungeonButtonClick.cs" />
     <Compile Include="Common\Shortcut\IShellLink.cs" />
     <Compile Include="Common\Shortcut\ShellLink.cs" />
@@ -191,6 +194,7 @@
     <Compile Include="Enumerations\GameObjectSubType.cs" />
     <Compile Include="Enumerations\GameObjectType.cs" />
     <Compile Include="Enumerations\HealthChangeType.cs" />
+    <Compile Include="Enumerations\NotificationType.cs" />
     <Compile Include="Enumerations\ShrineBuff.cs" />
     <Compile Include="Enumerations\ShrineType.cs" />
     <Compile Include="Enumerations\TrackingIconType.cs" />
@@ -198,6 +202,7 @@
     <Compile Include="Models\MainStatObject.cs" />
     <Compile Include="Models\EquipmentItem.cs" />
     <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
+    <Compile Include="Models\NetworkModel\DiscoveredLoot.cs" />
     <Compile Include="Models\NetworkModel\DungeonEventObject.cs" />
     <Compile Include="Models\NetworkModel\DungeonObject.cs" />
     <Compile Include="Models\NetworkModel\DungeonCloseTimer.cs" />
@@ -212,8 +217,13 @@
     <Compile Include="Models\SpellEffect.cs" />
     <Compile Include="Network\Controller\CombatController.cs" />
     <Compile Include="Network\Controller\DungeonController.cs" />
+    <Compile Include="Network\Controller\ILootController.cs" />
+    <Compile Include="Network\Controller\LootController.cs" />
     <Compile Include="Network\Controller\EntityController.cs" />
     <Compile Include="Network\Events\ActiveSpellEffectsUpdateEvent.cs" />
+    <Compile Include="Network\Events\InventoryPutItemEvent.cs" />
+    <Compile Include="Network\Events\InventoryDeleteItemEvent.cs" />
+    <Compile Include="Network\Events\OtherGrabbedLootEvent.cs" />
     <Compile Include="Network\Events\NewEquipmentItemEvent.cs" />
     <Compile Include="Network\Events\HealthUpdateEvent.cs" />
     <Compile Include="Network\Events\LeaveEvent.cs" />
@@ -224,6 +234,13 @@
     <Compile Include="Network\Events\SiegeCampClaimStartEvent.cs" />
     <Compile Include="Network\Events\PartyChangedOrderEvent.cs" />
     <Compile Include="Network\Events\PartyDisbandedEvent.cs" />
+    <Compile Include="Network\Handler\InventoryPutItemEventHandler.cs" />
+    <Compile Include="Network\Handler\InventoryDeleteItemEventHandler.cs" />
+    <Compile Include="Network\Handler\OtherGrabbedLootEventHandler.cs" />
+    <Compile Include="Network\Handler\NewSimpleItemEventHandler.cs" />
+    <Compile Include="Network\Events\NewSimpleItemEvent.cs" />
+    <Compile Include="Network\Notification\OtherGrabbedLootNotificationFragment.cs" />
+    <Compile Include="Network\Operations\Responses\UseLootChestResponse.cs" />
     <Compile Include="Network\Events\UpdateCurrencyEvent.cs" />
     <Compile Include="Network\Events\UpdateFactionStandingEvent.cs" />
     <Compile Include="Network\Handler\ActiveSpellEffectsUpdateEventHandler.cs" />
@@ -232,6 +249,7 @@
     <Compile Include="Network\Handler\LeaveEventHandler.cs" />
     <Compile Include="Network\Handler\CharacterEquipmentChangedEventHandler.cs" />
     <Compile Include="Network\Handler\NewMobEventHandler.cs" />
+    <Compile Include="Network\Handler\UseLootChestEventHandler.cs" />
     <Compile Include="Network\Handler\UseShrineEventHandler.cs" />
     <Compile Include="Network\Handler\PartyMakeLeaderEventHandler.cs" />
     <Compile Include="Network\Handler\NewShrineEventHandler.cs" />

@@ -83,6 +83,17 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
+        public static bool IsTrash(int index)
+        {
+            var item = Items.FirstOrDefault(i => i.Index == index);
+            if (item != null && item.UniqueName.Contains("TRASH"))
+            {
+                return true;
+            }
+
+            return item == null;
+        }
+        
         public static int GetItemLevel(string uniqueName)
         {
             if (uniqueName == null || !uniqueName.Contains("@")) return 0;

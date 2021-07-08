@@ -37,7 +37,10 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                     ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType, $"Local user Guid: {Guid}", ConsoleManager.EventMapChangeColor);
                 }
 
-                if (parameters.ContainsKey(2)) Username = parameters[2].ToString();
+                if (parameters.ContainsKey(2))
+                {
+                    Username = parameters[2].ToString();
+                }
 
                 if (parameters.ContainsKey(8))
                 {
@@ -61,6 +64,12 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(38) && parameters[38] != null && parameters[38] is long[] reSpecArray && reSpecArray.Length > 1)
                 {
                     ReSpecPoints = FixPoint.FromInternalValue(reSpecArray[1]);
+                }
+
+                if (parameters.ContainsKey(47))
+                {
+                    InteractGuid = parameters[47].ObjectToGuid();
+                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType, $"Local interact object Guid: {InteractGuid}", ConsoleManager.EventMapChangeColor);
                 }
 
                 if (parameters.ContainsKey(51))
@@ -101,6 +110,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
         public FixPoint ReSpecPoints { get; }
         public FixPoint Silver { get; }
         public FixPoint Gold { get; }
+        public Guid? InteractGuid { get; }
         public string GuildName { get; }
         public string MainMapIndex { get; set; }
         public int PlayTimeInSeconds { get; set; }

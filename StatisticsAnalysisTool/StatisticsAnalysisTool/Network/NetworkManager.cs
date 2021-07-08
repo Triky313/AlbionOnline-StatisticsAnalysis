@@ -32,6 +32,12 @@ namespace StatisticsAnalysisTool.Network
                 _mainWindowViewModel = mainWindowViewModel;
                 builder = ReceiverBuilder.Create();
 
+                //builder.AddResponseHandler(new UseLootChestEventHandler(trackingController));
+                builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
+                builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
+                builder.AddEventHandler(new OtherGrabbedLootEventHandler(trackingController));
+                builder.AddEventHandler(new InventoryDeleteItemEventHandler(trackingController));
+                builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
                 builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
                 builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
                 builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController));
@@ -53,7 +59,6 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new NewMobEventHandler(trackingController));
                 builder.AddEventHandler(new LeaveEventHandler(trackingController));
                 builder.AddEventHandler(new CharacterEquipmentChangedEventHandler(trackingController));
-                builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
                 builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
                 builder.AddEventHandler(new PartySilverGainedEventHandler(trackingController));
                 builder.AddEventHandler(new UpdateFactionStandingEventHandler(trackingController));
