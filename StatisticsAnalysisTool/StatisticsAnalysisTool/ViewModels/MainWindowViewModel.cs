@@ -1010,14 +1010,14 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 if (_isTrackingFilteredLoot)
                 {
-                    TrackingController.AddFilterType(NotificationType.Loot);
+                    TrackingController?.AddFilterType(NotificationType.Loot);
                 }
                 else
                 {
-                    TrackingController.RemoveFilterType(NotificationType.Loot);
+                    TrackingController?.RemoveFilterType(NotificationType.Loot);
                 }
 
-                TrackingController.FilterNotification();
+                TrackingController?.FilterNotification();
                 OnPropertyChanged();
             }
         }
@@ -1030,14 +1030,14 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 if (_isTrackingFilteredFame)
                 {
-                    TrackingController.AddFilterType(NotificationType.Fame);
+                    TrackingController?.AddFilterType(NotificationType.Fame);
                 }
                 else
                 {
-                    TrackingController.RemoveFilterType(NotificationType.Fame);
+                    TrackingController?.RemoveFilterType(NotificationType.Fame);
                 }
 
-                TrackingController.FilterNotification();
+                TrackingController?.FilterNotification();
                 OnPropertyChanged();
             }
         }
@@ -1050,14 +1050,14 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 if (_isTrackingFilteredSilver)
                 {
-                    TrackingController.AddFilterType(NotificationType.Silver);
+                    TrackingController?.AddFilterType(NotificationType.Silver);
                 }
                 else
                 {
-                    TrackingController.RemoveFilterType(NotificationType.Silver);
+                    TrackingController?.RemoveFilterType(NotificationType.Silver);
                 }
 
-                TrackingController.FilterNotification();
+                TrackingController?.FilterNotification();
                 OnPropertyChanged();
             }
         }
