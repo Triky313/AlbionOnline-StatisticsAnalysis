@@ -818,7 +818,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (dialogResult != null && dialogResult == true)
             {
-                TrackingNotifications.Clear();
                 TrackingController.ClearNotifications();
             }
         }

@@ -1,5 +1,4 @@
 using log4net;
-using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
@@ -134,47 +133,35 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             if (_notificationTypeFilters.Contains(item.Type))
             {
-                FilterNotification();
+                Application.Current.Dispatcher.Invoke(delegate
+                {
+                    _mainWindowViewModel.TrackingNotifications.Insert(0, item);
+                });
             }
         }
 
         public void RemovesUnnecessaryNotifications()
         {
-            if (IsMainWindowNull() || _notifications == null) return;
 
-            try
+            foreach (var notification in _notifications.OrderBy(x => x.DateTime))
             {
-                while (true)
+                if (_notifications?.Count <= _maxNotifications)
                 {
-                    if (_notifications?.Count <= _maxNotifications) break;
-
-                    var dateTime = GetLowestDate(_notifications);
-                    if (dateTime != null)
-                    {
-                        var removableItem = _notifications?.FirstOrDefault(x => x.DateTime == dateTime);
-                        if (removableItem != null)
-                        {
-                            if (_mainWindow.Dispatcher.CheckAccess())
-                            {
-                                _notifications.Remove(removableItem);
-                            }
-                            else
-                            {
-                                _mainWindow.Dispatcher.Invoke(delegate { _notifications.Remove(removableItem); });
-                            }
-                        }
-                    }
+                    break;
                 }
-            }
-            catch (Exception e)
-            {
-                Log.Error(nameof(RemovesUnnecessaryNotifications), e);
+
+                _notifications.Remove(notification);
             }
         }
 
         public void ClearNotifications()
         {
             _notifications.Clear();
+
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                _mainWindowViewModel.TrackingNotifications.Clear();
+            });
         }
 
         public void FilterNotification()
@@ -190,29 +177,13 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             Application.Current.Dispatcher.Invoke(delegate
             {
-                _mainWindowViewModel.TrackingNotifications = new ObservableCollection<TrackingNotification>(filteredNotifications.ToList());
+                _mainWindowViewModel.TrackingNotifications = new ObservableCollection<TrackingNotification>(filteredNotifications);
                 _mainWindowViewModel?.TrackingNotifications?
                     .OrderByReference(filteredNotifications.OrderByDescending(x => x.DateTime)
                         .ToList());
             });
         }
-
-        private static DateTime? GetLowestDate(List<TrackingNotification> items)
-        {
-            if (items.IsNullOrEmpty()) return null;
-
-            try
-            {
-                var lowestDate = items.Select(x => x.DateTime).Min();
-                return lowestDate;
-            }
-            catch (ArgumentNullException e)
-            {
-                Log.Error(nameof(GetLowestDate), e);
-                return null;
-            }
-        }
-
+        
         public void AddFilterType(NotificationType notificationType)
         {
             if (!_notificationTypeFilters.Exists(x => x == notificationType))

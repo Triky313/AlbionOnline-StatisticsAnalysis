@@ -11,10 +11,13 @@ namespace StatisticsAnalysisTool.Network.Notification
             DateTime = dateTime;
             Fragments = fragments;
             Type = type;
+            InstanceId = Guid.NewGuid();
         }
 
         public DateTime DateTime { get; }
         public IEnumerable<LineFragment> Fragments { get; }
         public NotificationType Type { get; }
+
+        public Guid InstanceId { get; }
     }
 }
