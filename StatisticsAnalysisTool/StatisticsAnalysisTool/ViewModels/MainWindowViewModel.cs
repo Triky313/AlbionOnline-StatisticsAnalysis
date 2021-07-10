@@ -132,6 +132,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingFilteredLoot = true;
         private bool _isTrackingFilteredFame = true;
         private bool _isTrackingFilteredSilver = true;
+        private int _partyMemberNumber;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1580,6 +1581,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _partyMemberCircles = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int PartyMemberNumber 
+        {
+            get => _partyMemberNumber;
+            set
+            {
+                _partyMemberNumber = value;
                 OnPropertyChanged();
             }
         }

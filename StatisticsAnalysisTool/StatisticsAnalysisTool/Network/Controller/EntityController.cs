@@ -10,6 +10,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Controller
 {
@@ -141,10 +142,11 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private void SetPartyMemberUi()
         {
-            _mainWindow.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(delegate
             {
                 _mainWindowViewModel.PartyMemberCircles.Clear();
-                foreach (var member in _knownPartyEntities) _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle {Name = member.Value});
+                foreach (var member in _knownPartyEntities) _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle { Name = member.Value });
+                _mainWindowViewModel.PartyMemberNumber = _knownPartyEntities.Count;
             });
         }
 

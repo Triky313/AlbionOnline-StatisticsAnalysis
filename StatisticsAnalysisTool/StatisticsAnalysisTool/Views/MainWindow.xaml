@@ -215,6 +215,7 @@
             </Grid>
             <Grid Height="30" VerticalAlignment="Top" Margin="10,101,0,0" HorizontalAlignment="Left" Width="500">
                 <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding PartyMemberNumber, FallbackValue=0}"></Label>
                     <Grid Height="20" Width="20" Margin="0,0,5,0" VerticalAlignment="Center">
                         <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                     </Grid>
