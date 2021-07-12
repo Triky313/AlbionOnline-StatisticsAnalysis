@@ -527,18 +527,6 @@ namespace StatisticsAnalysisTool.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterLoot {
-            get {
-                return ((bool)(this["MainTrackerFilterLoot"]));
-            }
-            set {
-                this["MainTrackerFilterLoot"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool MainTrackerFilterSilver {
             get {
                 return ((bool)(this["MainTrackerFilterSilver"]));
@@ -557,6 +545,66 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["MainTrackerFilterFame"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MainTrackerFilterEquipmentLoot {
+            get {
+                return ((bool)(this["MainTrackerFilterEquipmentLoot"]));
+            }
+            set {
+                this["MainTrackerFilterEquipmentLoot"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MainTrackerFilterConsumableLoot {
+            get {
+                return ((bool)(this["MainTrackerFilterConsumableLoot"]));
+            }
+            set {
+                this["MainTrackerFilterConsumableLoot"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MainTrackerFilterSimpleLoot {
+            get {
+                return ((bool)(this["MainTrackerFilterSimpleLoot"]));
+            }
+            set {
+                this["MainTrackerFilterSimpleLoot"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MainTrackerFilterUnknownLoot {
+            get {
+                return ((bool)(this["MainTrackerFilterUnknownLoot"]));
+            }
+            set {
+                this["MainTrackerFilterUnknownLoot"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MainTrackerFilterFaction {
+            get {
+                return ((bool)(this["MainTrackerFilterFaction"]));
+            }
+            set {
+                this["MainTrackerFilterFaction"] = value;
             }
         }
     }

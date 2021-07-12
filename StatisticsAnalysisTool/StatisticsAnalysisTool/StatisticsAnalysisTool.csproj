@@ -194,6 +194,7 @@
     <Compile Include="Enumerations\GameObjectSubType.cs" />
     <Compile Include="Enumerations\GameObjectType.cs" />
     <Compile Include="Enumerations\HealthChangeType.cs" />
+    <Compile Include="Enumerations\ItemType.cs" />
     <Compile Include="Enumerations\NotificationType.cs" />
     <Compile Include="Enumerations\ShrineBuff.cs" />
     <Compile Include="Enumerations\ShrineType.cs" />

@@ -94,6 +94,33 @@ namespace StatisticsAnalysisTool.Common
             return item == null;
         }
         
+        public static ItemType GetItemType(int index)
+        {
+            var item = Items?.FirstOrDefault(i => i.Index == index);
+            var itemType = !string.IsNullOrEmpty(item?.FullItemInformation?.ItemType) ? item?.FullItemInformation?.ItemType : "UNKNOWN";
+            switch (itemType)
+            {
+                case "WEAPON":
+                    return ItemType.Weapon;
+                case "EQUIPMENT":
+                    return ItemType.Equipment;
+                case "SIMPLE":
+                    return ItemType.Simple;
+                case "FARMABLE":
+                    return ItemType.Farmable;
+                case "CONSUMABLE":
+                    return ItemType.Consumable;
+                case "CONSUMABLEFROMINVENTORY":
+                    return ItemType.ConsumableFromInventory;
+                case "JOURNAL":
+                    return ItemType.Journal;
+                case "LABOURERCONTRACT":
+                    return ItemType.LabourerContract;
+                default:
+                    return ItemType.Unknown;
+            }
+        }
+
         public static int GetItemLevel(string uniqueName)
         {
             if (uniqueName == null || !uniqueName.Contains("@")) return 0;

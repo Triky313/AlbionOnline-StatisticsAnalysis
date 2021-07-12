@@ -129,9 +129,13 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool IsDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
         private TrackingIconType _trackingIconColor;
-        private bool _isTrackingFilteredLoot = true;
+        private bool _isTrackingFilteredEquipmentLoot = true;
+        private bool _isTrackingFilteredConsumableLoot = true;
+        private bool _isTrackingFilteredSimpleLoot = true;
+        private bool _isTrackingFilteredUnknownLoot = true;
         private bool _isTrackingFilteredFame = true;
         private bool _isTrackingFilteredSilver = true;
+        private bool _isTrackingFilteredFaction = true;
         private int _partyMemberNumber;
 
         public MainWindowViewModel(MainWindow mainWindow)
@@ -442,9 +446,13 @@ namespace StatisticsAnalysisTool.ViewModels
                 StartTracking();
             }
 
-            IsTrackingFilteredLoot = Settings.Default.MainTrackerFilterLoot;
             IsTrackingFilteredSilver = Settings.Default.MainTrackerFilterSilver;
             IsTrackingFilteredFame = Settings.Default.MainTrackerFilterFame;
+            IsTrackingFilteredFaction = Settings.Default.MainTrackerFilterFaction;
+            IsTrackingFilteredEquipmentLoot = Settings.Default.MainTrackerFilterEquipmentLoot;
+            IsTrackingFilteredConsumableLoot = Settings.Default.MainTrackerFilterConsumableLoot;
+            IsTrackingFilteredSimpleLoot = Settings.Default.MainTrackerFilterSimpleLoot;
+            IsTrackingFilteredUnknownLoot = Settings.Default.MainTrackerFilterUnknownLoot;
         }
 
         #endregion
@@ -458,9 +466,14 @@ namespace StatisticsAnalysisTool.ViewModels
             Settings.Default.IsTrackingResetByMapChangeActive = IsTrackingResetByMapChangeActive;
             Settings.Default.IsTrackingActiveAtToolStart = IsTrackingActive;
 
-            Settings.Default.MainTrackerFilterLoot = IsTrackingFilteredLoot;
             Settings.Default.MainTrackerFilterSilver = IsTrackingFilteredSilver;
             Settings.Default.MainTrackerFilterFame = IsTrackingFilteredFame;
+            Settings.Default.MainTrackerFilterFaction = IsTrackingFilteredFaction;
+
+            Settings.Default.MainTrackerFilterEquipmentLoot = IsTrackingFilteredEquipmentLoot;
+            Settings.Default.MainTrackerFilterConsumableLoot = IsTrackingFilteredConsumableLoot;
+            Settings.Default.MainTrackerFilterSimpleLoot = IsTrackingFilteredSimpleLoot;
+            Settings.Default.MainTrackerFilterUnknownLoot = IsTrackingFilteredUnknownLoot;
 
             #endregion
 
@@ -1002,19 +1015,79 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsTrackingFilteredLoot {
-            get => _isTrackingFilteredLoot;
+        public bool IsTrackingFilteredEquipmentLoot {
+            get => _isTrackingFilteredEquipmentLoot;
             set
             {
-                _isTrackingFilteredLoot = value;
+                _isTrackingFilteredEquipmentLoot = value;
 
-                if (_isTrackingFilteredLoot)
+                if (_isTrackingFilteredEquipmentLoot)
                 {
-                    TrackingController?.AddFilterType(NotificationType.Loot);
+                    TrackingController?.AddFilterType(NotificationType.EquipmentLoot);
                 }
                 else
                 {
-                    TrackingController?.RemoveFilterType(NotificationType.Loot);
+                    TrackingController?.RemoveFilterType(NotificationType.EquipmentLoot);
+                }
+
+                TrackingController?.FilterNotification();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingFilteredConsumableLoot {
+            get => _isTrackingFilteredConsumableLoot;
+            set
+            {
+                _isTrackingFilteredConsumableLoot = value;
+
+                if (_isTrackingFilteredConsumableLoot)
+                {
+                    TrackingController?.AddFilterType(NotificationType.ConsumableLoot);
+                }
+                else
+                {
+                    TrackingController?.RemoveFilterType(NotificationType.ConsumableLoot);
+                }
+
+                TrackingController?.FilterNotification();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingFilteredSimpleLoot {
+            get => _isTrackingFilteredSimpleLoot;
+            set
+            {
+                _isTrackingFilteredSimpleLoot = value;
+
+                if (_isTrackingFilteredSimpleLoot)
+                {
+                    TrackingController?.AddFilterType(NotificationType.SimpleLoot);
+                }
+                else
+                {
+                    TrackingController?.RemoveFilterType(NotificationType.SimpleLoot);
+                }
+
+                TrackingController?.FilterNotification();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingFilteredUnknownLoot {
+            get => _isTrackingFilteredUnknownLoot;
+            set
+            {
+                _isTrackingFilteredUnknownLoot = value;
+
+                if (_isTrackingFilteredUnknownLoot)
+                {
+                    TrackingController?.AddFilterType(NotificationType.UnknownLoot);
+                }
+                else
+                {
+                    TrackingController?.RemoveFilterType(NotificationType.UnknownLoot);
                 }
 
                 TrackingController?.FilterNotification();
@@ -1055,6 +1128,26 @@ namespace StatisticsAnalysisTool.ViewModels
                 else
                 {
                     TrackingController?.RemoveFilterType(NotificationType.Silver);
+                }
+
+                TrackingController?.FilterNotification();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingFilteredFaction {
+            get => _isTrackingFilteredFaction;
+            set
+            {
+                _isTrackingFilteredFaction = value;
+
+                if (_isTrackingFilteredFaction)
+                {
+                    TrackingController?.AddFilterType(NotificationType.Faction);
+                }
+                else
+                {
+                    TrackingController?.RemoveFilterType(NotificationType.Faction);
                 }
 
                 TrackingController?.FilterNotification();

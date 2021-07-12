@@ -94,10 +94,27 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         private TrackingNotification SetNotification(string looter, string lootedPlayer, Item item, int quantity)
         {
+            var itemType = ItemController.GetItemType(item.Index);
+
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
                 new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity)
-            }, NotificationType.Loot);
+            }, GetNotificationType(itemType));
+        }
+
+        private NotificationType GetNotificationType(ItemType itemType)
+        {
+            switch (itemType)
+            {
+                case ItemType.Weapon:
+                    return NotificationType.EquipmentLoot;
+                case ItemType.Consumable:
+                    return NotificationType.ConsumableLoot;
+                case ItemType.Simple:
+                    return NotificationType.SimpleLoot;
+                default:
+                    return NotificationType.UnknownLoot;
+            }
         }
     }
 }

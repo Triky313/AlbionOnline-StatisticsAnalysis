@@ -5,7 +5,10 @@
         Unknown,
         Fame,
         Silver,
-        Loot,
-        Faction
+        Faction,
+        EquipmentLoot,
+        ConsumableLoot,
+        SimpleLoot,
+        UnknownLoot
     }
 }

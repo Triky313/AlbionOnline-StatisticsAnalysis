@@ -51,6 +51,11 @@ namespace StatisticsAnalysisTool.Models
         public string Loot => LanguageController.Translation("LOOT");
         public string Fame => LanguageController.Translation("FAME");
         public string Silver => LanguageController.Translation("SILVER");
+        public string Faction => LanguageController.Translation("FACTION");
         public string ResetTrackingNotifications => LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS");
+        public string EquipmentLoot => LanguageController.Translation("EQUIPMENT_LOOT");
+        public string ConsumableLoot => LanguageController.Translation("CONSUMABLE_LOOT");
+        public string SimpleLoot => LanguageController.Translation("SIMPLE_LOOT");
+        public string UnknownLoot => LanguageController.Translation("UNKNOWN_LOOT");
     }
 }

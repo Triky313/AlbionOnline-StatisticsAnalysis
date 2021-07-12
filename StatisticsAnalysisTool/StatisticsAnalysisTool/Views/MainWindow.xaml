@@ -231,14 +231,6 @@
             <TabControl IsEnabled="{Binding IsTrackingActive, FallbackValue=true}" Margin="10,136,10,35" BorderThickness="0 1 0 0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}">
                 <TabItem Header="{Binding Translation.Tracking, FallbackValue=TRACKING}">
                     <Grid>
-                        <Grid Height="20" Width="auto" Margin="0,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <StackPanel Orientation="Horizontal">
-                                <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Width="20" Height="20" Margin="0,0,5,0" />
-                                <CheckBox IsChecked="{Binding IsTrackingFilteredLoot, FallbackValue=true}" Content="{Binding Translation.Loot, FallbackValue=LOOT}" Margin="5,0,5,0" />
-                                <CheckBox IsChecked="{Binding IsTrackingFilteredFame, FallbackValue=true}" Content="{Binding Translation.Fame, FallbackValue=FAME}" Margin="5,0,5,0" />
-                                <CheckBox IsChecked="{Binding IsTrackingFilteredSilver, FallbackValue=true}" Content="{Binding Translation.Silver, FallbackValue=SILVER}" Margin="5,0,5,0" />
-                            </StackPanel>
-                        </Grid>
                         <Grid Height="30" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Right" VerticalAlignment="Top">
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
                                 <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="200" Margin="0,0,0,0" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
@@ -247,8 +239,24 @@
                                 </Grid>
                             </StackPanel>
                         </Grid>
-                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,30,0,0" VerticalAlignment="Top"/>
-                        <ScrollViewer Margin="0,35,0,0">
+                        <Grid Height="58" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                           <StackPanel Orientation="Vertical" Height="58">
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                    <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Width="20" Height="20" Margin="0,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredFame, FallbackValue=true}" Content="{Binding Translation.Fame, FallbackValue=FAME}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredSilver, FallbackValue=true}" Content="{Binding Translation.Silver, FallbackValue=SILVER}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredFaction, FallbackValue=true}" Content="{Binding Translation.Faction, FallbackValue=FACTION}" Margin="5,0,5,0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="25,5,0,5">
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredEquipmentLoot, FallbackValue=true}" Content="{Binding Translation.EquipmentLoot, FallbackValue=EQUIPMENT__LOOT}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredConsumableLoot, FallbackValue=true}" Content="{Binding Translation.ConsumableLoot, FallbackValue=CONSUMABLE__LOOT}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredSimpleLoot, FallbackValue=true}" Content="{Binding Translation.SimpleLoot, FallbackValue=SIMPLE__LOOT}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredUnknownLoot, FallbackValue=true}" Content="{Binding Translation.UnknownLoot, FallbackValue=UNKNOWN__LOOT}" Margin="5,0,5,0" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,60,0,0" VerticalAlignment="Top"/>
+                        <ScrollViewer Margin="0,65,0,0">
                             <ItemsControl ItemsSource="{Binding TrackingNotifications, IsAsync=True, Mode=OneWay}" />
                         </ScrollViewer>
                         <Grid Visibility="{Binding IsMainTrackerPopupVisible, FallbackValue=Hidden}" Margin="0,33,0,0" Background="{StaticResource SolidColorBrush.Background.Second}">

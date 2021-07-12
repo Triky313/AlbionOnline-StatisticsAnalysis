@@ -416,4 +416,9 @@
   <translation name="MOB">Mob</translation>
   <translation name="RESET_TRACKING_NOTIFICATIONS">Tracking Benachrichtigungen zurücksetzen</translation>
   <translation name="SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS">Tracking Benachrichtigungen wirklich zurücksetzen?</translation>
+  <translation name="EQUIPMENT_LOOT">Ausrüstbare Beute</translation>
+  <translation name="CONSUMABLE_LOOT">Verbrauchbare Beute</translation>
+  <translation name="SIMPLE_LOOT">Einfache Beute</translation>
+  <translation name="UNKNOWN_LOOT">Unbekannte Beute</translation>
+  <translation name="FACTION">Fraktion</translation>
 </translations>
