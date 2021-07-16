@@ -235,7 +235,7 @@
                     </ItemsControl>
                 </StackPanel>
             </Grid>
-            <Grid ZIndex="1" Visibility="{Binding IsMainTrackerPopupVisible, FallbackValue=Visible}" Margin="0,58,0,35" Background="{StaticResource SolidColorBrush.Background.Second}">
+            <Grid ZIndex="1" Visibility="{Binding IsMainTrackerPopupVisible, FallbackValue=Hidden}" Margin="0,58,0,35" Background="{StaticResource SolidColorBrush.Background.Second}">
                 <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                     <DockPanel Margin="0,5,0,10">
                         <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
