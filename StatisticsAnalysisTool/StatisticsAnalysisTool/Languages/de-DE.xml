@@ -423,4 +423,6 @@
   <translation name="SIMPLE_LOOT">Einfache Beute</translation>
   <translation name="UNKNOWN_LOOT">Unbekannte Beute</translation>
   <translation name="FACTION">Fraktion</translation>
+  <translation name="RESET_PARTY">Party zurücksetzen</translation>
+  <translation name="SURE_YOU_WANT_TO_RESET_THE_PARTY">Party wirklich zurücksetzen?</translation>
 </translations>

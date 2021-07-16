@@ -422,4 +422,6 @@
   <translation name="SIMPLE_LOOT">Simple Loot</translation>
   <translation name="UNKNOWN_LOOT">Unknown Loot</translation>
   <translation name="FACTION">Faction</translation>
+  <translation name="RESET_PARTY">Reset Party</translation>
+  <translation name="SURE_YOU_WANT_TO_RESET_THE_PARTY">Are you sure you want to reset the Party?</translation>
 </translations>

@@ -129,13 +129,21 @@ namespace StatisticsAnalysisTool.Network.Controller
             {
                 _knownPartyEntities.TryAdd(member.Key, member.Value.Name);
             }
+
+            SetPartyMemberUi();
         }
 
         public void SetParty(Dictionary<Guid, string> party, bool resetPartyBefore = false)
         {
-            if (resetPartyBefore) ResetPartyMember();
+            if (resetPartyBefore)
+            {
+                ResetPartyMember();
+            }
 
-            foreach (var member in party) AddToParty(member.Key, member.Value);
+            foreach (var member in party)
+            {
+                AddToParty(member.Key, member.Value);
+            }
 
             SetPartyMemberUi();
         }
