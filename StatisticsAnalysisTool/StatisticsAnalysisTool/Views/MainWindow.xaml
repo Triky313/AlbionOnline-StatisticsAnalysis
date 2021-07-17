@@ -260,9 +260,9 @@
             <TabControl IsEnabled="{Binding IsTrackingActive, FallbackValue=true}" Margin="10,136,10,35" BorderThickness="0 1 0 0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}">
                 <TabItem Header="{Binding Translation.Tracking, FallbackValue=TRACKING}">
                     <Grid>
-                        <Grid Height="30" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <Grid Height="30" Width="auto" Margin="0,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Top">
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
-                                <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="200" Margin="0,0,0,0" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
+                                <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="250" Margin="0,0,0,0" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
                             </StackPanel>
                         </Grid>
                         <Grid Height="58" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
