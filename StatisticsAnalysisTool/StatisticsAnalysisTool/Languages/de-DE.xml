@@ -368,7 +368,9 @@
   <translation name="OPENED_RARE_CHESTS">Geöffnete Truhen (Selten)</translation>
   <translation name="OPENED_LEGENDARY_CHESTS">Geöffnete Truhen (Legendär)</translation>
 
-  <translation name="MAIN_TRACKER_DESCRIPTION_1">Der Ruhm den der Tracker trackt, ist der echte gesamt Ruhm. Heißt also, mit Premium und Satchel Ruhm. Ruhm im Profil eines Spielers, ist der normale Ruhm, ohne Premium oder sonstiger Sonder-Fame.</translation>
+  <translation name="MAIN_TRACKER_DESCRIPTION_1">Damit der Tracker einwandfrei funktioniert, muss das wifi icon grün sein. Um diesen Status zu erreichen muss mit dem Charakter einmalig die Map im Spiel gewechselt werden.</translation>
+  <translation name="MAIN_TRACKER_DESCRIPTION_2">Tritt einer Party bei oder lade welche in die Party ein, damit sich die Partyliste aktualisiert. Dabei ist es nicht wichtig, ob Du selber oder eine andere Person Spieler in die Gruppe einlädt.</translation>
+  <translation name="MAIN_TRACKER_DESCRIPTION_3">Der Ruhm den der Tracker trackt, ist der echte gesamt Ruhm. Heißt also, mit Premium und Satchel Ruhm. Ruhm im Profil eines Spielers, ist der normale Ruhm, ohne Premium oder sonstiger Sonder-Fame.</translation>
   <translation name="DAMAGE_METER_DESCRIPTION_1">Damit Schaden von anderen Spielern in der Party erkannt wird, muss das Tool zuvor aktiviert sein und dann ein Spieler die Party verlassen oder ihr beitreten.</translation>
 
   <translation name="SORT_BY_DAMAGE">Nach Schaden sortieren</translation>
@@ -421,4 +423,6 @@
   <translation name="SIMPLE_LOOT">Einfache Beute</translation>
   <translation name="UNKNOWN_LOOT">Unbekannte Beute</translation>
   <translation name="FACTION">Fraktion</translation>
+  <translation name="RESET_PARTY">Party zurücksetzen</translation>
+  <translation name="SURE_YOU_WANT_TO_RESET_THE_PARTY">Party wirklich zurücksetzen?</translation>
 </translations>

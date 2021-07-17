@@ -234,5 +234,10 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.ResetTrackingNotifications();
         }
+
+        private void PartyIcon_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _mainWindowViewModel.ResetParty();
+        }
     }
 }

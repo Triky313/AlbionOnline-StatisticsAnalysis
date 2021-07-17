@@ -367,7 +367,9 @@
   <translation name="OPENED_RARE_CHESTS">Opened rare chests</translation>
   <translation name="OPENED_LEGENDARY_CHESTS">Opened legendary chests</translation>
 
-  <translation name="MAIN_TRACKER_DESCRIPTION_1">The fame that the tracker tracks is the real overall fame. So that means with Premium and Satchel Fame. Fame in the profile of a player is the normal fame, without premium or other special fame.</translation>
+  <translation name="MAIN_TRACKER_DESCRIPTION_1">For the tracker to work properly, the wifi icon must be green. In order to achieve this status, the map must be changed once in the game with the character.</translation>
+  <translation name="MAIN_TRACKER_DESCRIPTION_2">Join a party or invite some to the party to update the party list. It is not important whether you yourself or someone else invites players into the group.</translation>
+  <translation name="MAIN_TRACKER_DESCRIPTION_3">The fame that the tracker tracks is the real overall fame. So that means with Premium and Satchel Fame. Fame in the profile of a player is the normal fame, without premium or other special fame.</translation>
   <translation name="DAMAGE_METER_DESCRIPTION_1">In order for damage from other players in the party to be recognized, the tool must first be activated and then a player must leave or join the party.</translation>
 
   <translation name="SORT_BY_DAMAGE">Sort by damage</translation>
@@ -420,4 +422,6 @@
   <translation name="SIMPLE_LOOT">Simple Loot</translation>
   <translation name="UNKNOWN_LOOT">Unknown Loot</translation>
   <translation name="FACTION">Faction</translation>
+  <translation name="RESET_PARTY">Reset Party</translation>
+  <translation name="SURE_YOU_WANT_TO_RESET_THE_PARTY">Are you sure you want to reset the Party?</translation>
 </translations>
