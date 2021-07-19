@@ -15,6 +15,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         public bool IsPremiumBonus;
         public FixPoint SatchelFame;
         public int UsedItemType;
+        public bool IsBonusFactorActive;
 
         public FixPoint TotalPlayerFame { get; }
         public FixPoint Multiplier { get; }
@@ -55,6 +56,8 @@ namespace StatisticsAnalysisTool.Network.Handler
                 {
                     BonusFactor = parameters[6] as float? ?? 1;
                     BonusFactorInPercent = (BonusFactor - 1) * 100;
+
+                    IsBonusFactorActive = (BonusFactorInPercent > 0);
                 }
 
                 if (parameters.ContainsKey(2))

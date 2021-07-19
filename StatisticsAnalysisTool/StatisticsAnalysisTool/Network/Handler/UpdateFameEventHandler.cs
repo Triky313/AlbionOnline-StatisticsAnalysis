@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
             _trackingController.AddNotification(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame.DoubleValue,
-                value.ZoneFame.DoubleValue, value.PremiumFame.DoubleValue, value.SatchelFame.DoubleValue, value.IsPremiumBonus));
+                value.ZoneFame.DoubleValue, value.PremiumFame.DoubleValue, value.SatchelFame.DoubleValue, value.IsBonusFactorActive, value.BonusFactorInPercent));
             _countUpTimer.Add(ValueType.Fame, value.TotalGainedFame.DoubleValue);
             _trackingController.DungeonController?.AddValueToDungeon(value.TotalGainedFame.DoubleValue, ValueType.Fame);
 
@@ -32,12 +32,12 @@ namespace StatisticsAnalysisTool.Network.Handler
         }
 
         private TrackingNotification SetPveFameNotification(double totalPlayerFame, double totalGainedFame, double zoneFame, double premiumFame,
-            double satchelFame, bool isMobFame)
+            double satchelFame, bool isBonusFactorActive, double bonusFactorInPercent)
         {
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
                 new FameNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, totalPlayerFame, totalGainedFame,
-                    LanguageController.Translation("FAME"), PvpPveType.Pve, zoneFame, premiumFame, satchelFame,
+                    LanguageController.Translation("FAME"), PvpPveType.Pve, zoneFame, premiumFame, satchelFame, isBonusFactorActive, bonusFactorInPercent, 
                     LanguageController.Translation("GAINED"))
             }, NotificationType.Fame);
         }

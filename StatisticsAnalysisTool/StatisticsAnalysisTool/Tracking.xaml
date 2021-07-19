@@ -137,8 +137,27 @@
             <TextBlock Text="{Binding Premium, StringFormat='{}{0:N0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
 
             <Image Source="Resources/satchel.png" Style="{StaticResource LineFragmentImageStyle}" />
-            <TextBlock Text="{Binding Satchel, StringFormat='{}{0:N0}) '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
-            <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+            
+            <TextBlock Text="{Binding Satchel, StringFormat='{}{0:N0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+
+            <TextBlock>
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Text" Value="{Binding BonusFactorInPercent, StringFormat='{} +{0}%'}"/>
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsBonusFactorActive}" Value="true">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsBonusFactorActive}" Value="false">
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <TextBlock Text="{Binding EndText, StringFormat='{}) {0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
         </StackPanel>
     </DataTemplate>
 
