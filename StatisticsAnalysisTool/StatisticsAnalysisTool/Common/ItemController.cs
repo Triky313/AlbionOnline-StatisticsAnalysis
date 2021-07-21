@@ -296,25 +296,22 @@ namespace StatisticsAnalysisTool.Common
 
         private static async Task<bool> GetItemListFromWebAsync(string url)
         {
-            using (var client = new HttpClient())
+            using var client = new HttpClient
             {
-                client.Timeout = TimeSpan.FromSeconds(30);
-                try
-                {
-                    using (var response = await client.GetAsync(url))
-                    {
-                        using (var content = response.Content)
-                        {
-                            var fileString = await content.ReadAsStringAsync();
-                            File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", fileString, Encoding.UTF8);
-                            return true;
-                        }
-                    }
-                }
-                catch
-                {
-                    return false;
-                }
+                Timeout = TimeSpan.FromSeconds(90)
+            };
+            try
+            {
+                using var response = await client.GetAsync(url);
+                using var content = response.Content;
+
+                var fileString = await content.ReadAsStringAsync();
+                File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", fileString, Encoding.UTF8);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
