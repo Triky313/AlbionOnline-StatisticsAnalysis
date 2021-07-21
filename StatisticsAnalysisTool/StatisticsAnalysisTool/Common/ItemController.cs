@@ -97,7 +97,7 @@ namespace StatisticsAnalysisTool.Common
         public static ItemType GetItemType(int index)
         {
             var item = Items?.FirstOrDefault(i => i.Index == index);
-            var itemType = !string.IsNullOrEmpty(item?.FullItemInformation?.ItemType) ? item?.FullItemInformation?.ItemType : "UNKNOWN";
+            var itemType = !string.IsNullOrEmpty(item?.FullItemInformation?.ItemType) ? item.FullItemInformation?.ItemType : "UNKNOWN";
             switch (itemType)
             {
                 case "WEAPON":
