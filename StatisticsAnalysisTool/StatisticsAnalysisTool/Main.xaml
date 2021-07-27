@@ -563,6 +563,7 @@
 
     <!-- Window Button Style -->
     <Style TargetType="{x:Type Button}" x:Key="WindowButtonStyle">
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="FontFamily" Value="Webdings"/>
         <Setter Property="FontSize" Value="20" />
