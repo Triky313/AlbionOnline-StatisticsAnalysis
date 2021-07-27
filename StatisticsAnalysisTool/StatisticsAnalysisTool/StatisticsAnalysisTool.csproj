@@ -200,6 +200,7 @@
     <Compile Include="Enumerations\ShrineType.cs" />
     <Compile Include="Enumerations\TrackingIconType.cs" />
     <Compile Include="Models\DungeonStatsFilter.cs" />
+    <Compile Include="Models\DamageMeterWindowTranslation.cs" />
     <Compile Include="Models\MainStatObject.cs" />
     <Compile Include="Models\EquipmentItem.cs" />
     <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
@@ -367,12 +368,16 @@
     </Compile>
     <Compile Include="Models\DungeonStats.cs" />
     <Compile Include="Network\Time\GameTimeSpan.cs" />
+    <Compile Include="ViewModels\DamageMeterWindowViewModel.cs" />
     <Compile Include="ViewModels\DialogWindowViewModel.cs" />
     <Compile Include="ViewModels\InfoWindowViewModel.cs" />
     <Compile Include="Models\ItemAlertWindowTranslation.cs" />
     <Compile Include="ViewModels\ItemWindowViewModel.cs" />
     <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
     <Compile Include="Models\AlertInfos.cs" />
+    <Compile Include="Views\DamageMeterWindow.xaml.cs">
+      <DependentUpon>DamageMeterWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
@@ -401,6 +406,10 @@
     <Page Include="Main.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DamageMeterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DialogWindow.xaml">
       <SubType>Designer</SubType>
