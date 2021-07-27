@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="450" Width="650" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowChrome}">
+        Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="450" Width="650" MinHeight="250" MinWidth="400" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowChrome}">
     <Grid>
         <Grid ZIndex="1" Height="33" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.Second}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Label Content="{Binding Translation.Title, FallbackValue=TITLE}" Margin="0,0,91,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold" />
