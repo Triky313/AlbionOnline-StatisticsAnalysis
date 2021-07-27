@@ -239,5 +239,10 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.ResetParty();
         }
+
+        private void OpenDamageMeterWindow_MouseEnter(object sender, MouseButtonEventArgs e)
+        {
+            _mainWindowViewModel.OpenDamageMeterWindow();
+        }
     }
 }

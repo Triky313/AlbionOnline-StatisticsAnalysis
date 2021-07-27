@@ -523,6 +523,28 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public void OpenDamageMeterWindow()
+        {
+            try
+            {
+                if (Utilities.IsWindowOpen<DamageMeterWindow>())
+                {
+                    var existItemWindow = Application.Current.Windows.OfType<DamageMeterWindow>().FirstOrDefault();
+                    existItemWindow?.Activate();
+                }
+                else
+                {
+                    var itemWindow = new DamageMeterWindow(DamageMeter);
+                    itemWindow.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+            }
+        }
+
         public static void OpenItemWindow(Item item)
         {
             if (string.IsNullOrEmpty(item?.UniqueName))

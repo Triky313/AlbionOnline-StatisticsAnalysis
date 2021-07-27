@@ -471,6 +471,21 @@
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
     </Style>
 
+    <!-- Primary Window -->
+    <Style x:Key="WindowChrome" TargetType="Window">
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness" Value="1,1,1,1" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.First}"/>
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}"/>
+        <Setter Property="FontSize" Value="{StaticResource BaseFontSize}"/>
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="Focusable" Value="False"/>
+    </Style>
+
     <!-- Hotbar Grid -->
     <Style x:Key="HotbarGrid" TargetType="Grid">
         <Setter Property="Height" Value="150"/>
