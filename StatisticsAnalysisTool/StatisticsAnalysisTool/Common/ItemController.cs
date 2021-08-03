@@ -457,9 +457,9 @@ namespace StatisticsAnalysisTool.Common
         {
             if (items == null) return;
 
-            foreach (var item in items)
+            foreach (var item in items.ToList())
             {
-                var itemInformation = _itemInformationList.FirstOrDefault(x => x.UniqueName == item?.UniqueName);
+                var itemInformation = _itemInformationList.ToList().FirstOrDefault(x => x.UniqueName == item?.UniqueName);
                 item.FullItemInformation = itemInformation;
             }
         }
