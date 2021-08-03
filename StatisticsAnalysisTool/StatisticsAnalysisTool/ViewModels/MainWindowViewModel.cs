@@ -919,6 +919,37 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public void CopyDamageMeterToClipboard()
+        {
+            var output = string.Empty;
+            var counter = 1;
+
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Damage)
+            {
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}\n") ?? "");
+            }
+
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Dps)
+            {
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:P} DPS\n") ?? "");
+            }
+
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Heal)
+            {
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Heal} Heal\n") ?? "");
+            }
+
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Hps)
+            {
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:P} HPS\n") ?? "");
+            }
+
+            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
+            {
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage} | {entity.Dps:P} DPS\n") ?? "");
+            }
+        }
+
         #endregion
 
         #region Item View Filters

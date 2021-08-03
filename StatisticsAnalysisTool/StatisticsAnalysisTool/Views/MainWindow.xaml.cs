@@ -240,9 +240,14 @@ namespace StatisticsAnalysisTool.Views
             _mainWindowViewModel.ResetParty();
         }
 
-        private void OpenDamageMeterWindow_MouseEnter(object sender, MouseButtonEventArgs e)
+        private void OpenDamageMeterWindow_MouseUp(object sender, MouseButtonEventArgs e)
         {
             _mainWindowViewModel.OpenDamageMeterWindow();
+        }
+
+        private void CopyDamageMeterToClipboard_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _mainWindowViewModel.CopyDamageMeterToClipboard();
         }
     }
 }
