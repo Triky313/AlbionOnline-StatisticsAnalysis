@@ -926,12 +926,12 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Damage)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n") ?? "");
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Dps)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:P} DPS\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n") ?? "");
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Heal)
@@ -941,12 +941,12 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Hps)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:P} HPS\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n") ?? "");
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage} | {entity.Dps:P} DPS\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n") ?? "");
             }
         }
 
