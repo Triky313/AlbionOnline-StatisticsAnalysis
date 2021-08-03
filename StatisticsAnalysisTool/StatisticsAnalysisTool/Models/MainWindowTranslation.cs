@@ -59,5 +59,7 @@ namespace StatisticsAnalysisTool.Models
         public string ConsumableLoot => LanguageController.Translation("CONSUMABLE_LOOT");
         public string SimpleLoot => LanguageController.Translation("SIMPLE_LOOT");
         public string UnknownLoot => LanguageController.Translation("UNKNOWN_LOOT");
+        public string OpenExtendedDamageMeterWindow => LanguageController.Translation("OPEN_EXTENDED_DAMAGE_METER_WINDOW");
+        public string CopyToClipboard => LanguageController.Translation("COPY_TO_CLIPBOARD");
     }
 }
