@@ -96,6 +96,13 @@
     <Color x:Key="Tracking.Partially">#FFD9A900</Color>
     <Color x:Key="Tracking.Off">#FF616172</Color>
 
+    <!-- Cluster type colors -->
+    <Color x:Key="Cluster.SafeArea">#FF4B6EA0</Color>
+    <Color x:Key="Cluster.Yellow">#FFf4b126</Color>
+    <Color x:Key="Cluster.Red">#FFD81320</Color>
+    <Color x:Key="Cluster.Black">#FF202026</Color>
+    <Color x:Key="Cluster.Avalon">#ffEBC55C</Color>
+
     <!-- Faction colors -->
     <Color x:Key="Dungeon.Mode.Expedition.1">#B857DB</Color>
     <Color x:Key="Dungeon.Mode.Expedition.2">#8329A3</Color>

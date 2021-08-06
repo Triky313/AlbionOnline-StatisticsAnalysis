@@ -20,6 +20,7 @@ namespace StatisticsAnalysisTool.Network.Controller
     public class TrackingController
     {
         private const int _maxNotifications = 1000;
+        private const int _maxEnteredCluster = 500;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly MainWindow _mainWindow;
@@ -51,11 +52,13 @@ namespace StatisticsAnalysisTool.Network.Controller
         public void RegisterEvents()
         {
             EntityController.OnHealthUpdate += DamageMeterUpdate;
+            OnChangeCluster += UpdateClusterTracking;
         }
 
         public void UnregisterEvents()
         {
             EntityController.OnHealthUpdate -= DamageMeterUpdate;
+            OnChangeCluster -= UpdateClusterTracking;
         }
 
         public void DamageMeterUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType,
@@ -75,6 +78,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         public void SetNewCluster(MapType mapType, Guid? mapGuid, string clusterIndex, string mainClusterIndex)
         {
             CurrentCluster = WorldData.GetClusterInfoByIndex(clusterIndex, mainClusterIndex, mapType, mapGuid);
+            CurrentCluster.Entered = DateTime.UtcNow;
 
             if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName))
             {
@@ -102,6 +106,28 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             _lastClusterHash = newClusterHash;
             return true;
+        }
+
+        private void UpdateClusterTracking(ClusterInfo currentCluster)
+        {
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                _mainWindowViewModel.EnteredCluster.Insert(0, currentCluster);
+                RemovesClusterIfMoreThanLimit();
+            });
+        }
+        
+        public void RemovesClusterIfMoreThanLimit()
+        {
+            foreach (var cluster in _mainWindowViewModel.EnteredCluster.OrderBy(x => x.Entered))
+            {
+                if (_mainWindowViewModel.EnteredCluster?.Count <= _maxEnteredCluster)
+                {
+                    break;
+                }
+
+                _mainWindowViewModel.EnteredCluster.Remove(cluster);
+            }
         }
 
         #endregion

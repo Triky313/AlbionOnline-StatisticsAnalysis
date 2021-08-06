@@ -6,6 +6,7 @@
         SafeArea,
         Yellow,
         Red,
-        Black
+        Black,
+        AvalonTunnel
     }
 }

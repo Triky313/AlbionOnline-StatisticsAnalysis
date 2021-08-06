@@ -184,6 +184,7 @@
     <Compile Include="Common\Shortcut\ShellLink.cs" />
     <Compile Include="Common\Shortcut\ShortcutController.cs" />
     <Compile Include="Common\Converters\TrackerIconConverter.cs" />
+    <Compile Include="Enumerations\AvalonTunnelType.cs" />
     <Compile Include="Enumerations\GameLanguage.cs" />
     <Compile Include="Common\ProgressBarSmoother.cs" />
     <Compile Include="Enumerations\ClusterType.cs" />

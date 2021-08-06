@@ -61,5 +61,6 @@ namespace StatisticsAnalysisTool.Models
         public string UnknownLoot => LanguageController.Translation("UNKNOWN_LOOT");
         public string OpenExtendedDamageMeterWindow => LanguageController.Translation("OPEN_EXTENDED_DAMAGE_METER_WINDOW");
         public string CopyToClipboard => LanguageController.Translation("COPY_TO_CLIPBOARD");
+        public string MapTracking => LanguageController.Translation("MAP_TRACKING");
     }
 }

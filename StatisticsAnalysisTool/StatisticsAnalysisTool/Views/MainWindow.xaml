@@ -354,6 +354,13 @@
                         </Grid>
                     </Grid>
                 </TabItem>
+                <TabItem Header="{Binding Translation.MapTracking, FallbackValue=MAP_TRACKING}">
+                    <Grid>
+                        <ScrollViewer Margin="0,0,0,0">
+                            <ItemsControl ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"/>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
                 <!--<TabItem Header="{Binding Translation.Settings, FallbackValue=SETTINGS}">
                     <Grid>
                         <ScrollViewer Margin="0,10,0,0">
