@@ -137,6 +137,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingFilteredSilver = true;
         private bool _isTrackingFilteredFaction = true;
         private int _partyMemberNumber;
+        private ObservableCollection<ClusterInfo> _enteredCluster = new ObservableCollection<ClusterInfo>();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1247,6 +1248,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _damageMeter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<ClusterInfo> EnteredCluster
+        {
+            get => _enteredCluster;
+            set
+            {
+                _enteredCluster = value;
                 OnPropertyChanged();
             }
         }

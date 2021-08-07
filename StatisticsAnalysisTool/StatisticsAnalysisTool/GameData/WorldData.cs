@@ -25,7 +25,10 @@ namespace StatisticsAnalysisTool.GameData
             var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;
             var splitName = name?.Split(new[] {"@"}, StringSplitOptions.None);
 
-            if (splitName != null && splitName.Length > 0 && name.ToLower().Contains('@')) return GetMapNameByMapType(GetMapType(splitName[1]));
+            if (splitName != null && splitName.Length > 0 && name.ToLower().Contains('@'))
+            {
+                return GetMapNameByMapType(GetMapType(splitName[1]));
+            }
 
             return name;
         }
@@ -149,6 +152,8 @@ namespace StatisticsAnalysisTool.GameData
 
         public static ClusterType GetClusterType(string type)
         {
+            if (IsAvalonClusterTunnel(type)) return ClusterType.AvalonTunnel;
+
             if (type.ToUpper().Contains("SAFEAREA")) return ClusterType.SafeArea;
 
             if (type.ToUpper().Contains("YELLOW")) return ClusterType.Yellow;
@@ -158,6 +163,42 @@ namespace StatisticsAnalysisTool.GameData
             if (type.ToUpper().Contains("BLACK")) return ClusterType.Black;
 
             return ClusterType.Unknown;
+        }
+
+        public static AvalonTunnelType GetTunnelType(string type)
+        {
+            if (type.ToUpper().Contains("TUNNEL_BLACK_LOW")) return AvalonTunnelType.TunnelBlackLow;
+
+            if (type.ToUpper().Contains("TUNNEL_BLACK_MEDIUM")) return AvalonTunnelType.TunnelBlackMedium;
+
+            if (type.ToUpper().Contains("TUNNEL_BLACK_HIGH")) return AvalonTunnelType.TunnelBlackHigh;
+
+            if (type.ToUpper().Contains("TUNNEL_LOW")) return AvalonTunnelType.TunnelLow;
+
+            if (type.ToUpper().Contains("TUNNEL_MEDIUM")) return AvalonTunnelType.TunnelMedium;
+
+            if (type.ToUpper().Contains("TUNNEL_HIGH")) return AvalonTunnelType.TunnelHigh;
+
+            if (type.ToUpper().Contains("TUNNEL_DEEP")) return AvalonTunnelType.TunnelDeep;
+
+            if (type.ToUpper().Contains("TUNNEL_ROYAL")) return AvalonTunnelType.TunnelRoyal;
+
+            if (type.ToUpper().Contains("TUNNEL_HIDEOUT")) return AvalonTunnelType.TunnelHideout;
+
+            return AvalonTunnelType.Unknown;
+        }
+
+        public static bool IsAvalonClusterTunnel(string type)
+        {
+            return type.ToUpper().Contains("TUNNEL_BLACK_LOW") 
+                   || (type.ToUpper().Contains("TUNNEL_BLACK_MEDIUM")) 
+                   || (type.ToUpper().Contains("TUNNEL_BLACK_HIGH")) 
+                   || (type.ToUpper().Contains("TUNNEL_LOW"))
+                   || (type.ToUpper().Contains("TUNNEL_MEDIUM"))
+                   || (type.ToUpper().Contains("TUNNEL_HIGH"))
+                   || (type.ToUpper().Contains("TUNNEL_DEEP"))
+                   || (type.ToUpper().Contains("TUNNEL_ROYAL"))
+                   || (type.ToUpper().Contains("TUNNEL_HIDEOUT"));
         }
 
         #region Helper methods

@@ -1059,7 +1059,7 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-
+    
     <!-- Damage meter -->
     <DataTemplate DataType="{x:Type notification:DamageMeterFragment}">
         <Grid>
@@ -1304,6 +1304,106 @@
                 </DockPanel>
             </StackPanel>
         </Border>
+    </DataTemplate>
+
+    <!-- ClusterInfo -->
+    <DataTemplate DataType="{x:Type models:ClusterInfo}">
+        <Grid>
+            <Grid Margin="0,0,0,2">
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.SafeArea}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
+                                            <GradientStop Color="{StaticResource Cluster.SafeArea}" Offset="0.0" />
+                                            <GradientStop Color="{StaticResource Background.First}" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.Yellow}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
+                                            <GradientStop Color="{StaticResource Cluster.Yellow}" Offset="0.0" />
+                                            <GradientStop Color="{StaticResource Background.First}" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.Red}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
+                                            <GradientStop Color="{StaticResource Cluster.Red}" Offset="0.0" />
+                                            <GradientStop Color="{StaticResource Background.First}" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.Black}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
+                                            <GradientStop Color="{StaticResource Cluster.Black}" Offset="0.0" />
+                                            <GradientStop Color="{StaticResource Background.First}" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.AvalonTunnel}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
+                                            <GradientStop Color="{StaticResource Cluster.Avalon}" Offset="0.0" />
+                                            <GradientStop Color="{StaticResource Background.First}" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.Unknown}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
+                                            <GradientStop Color="{StaticResource Cluster.Black}" Offset="0.0" />
+                                            <GradientStop Color="{StaticResource Background.First}" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <StackPanel Orientation="Horizontal">
+                    <Label MinWidth="135" VerticalAlignment="Center" FontSize="12" Margin="0 0 5 0" Foreground="{StaticResource Progressbar.Foreground.Text}">
+                        <Label.Content>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                        <Binding Path="Entered" FallbackValue="00.00.0000 00:00:00" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Label.Content>
+                    </Label>
+                    <Label Content="{Binding UniqueName}" FontSize="12" Foreground="{StaticResource Progressbar.Foreground.Text}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0" />
+                    <Label Content="{Binding  AvalonTunnelType}" FontSize="12" Foreground="{StaticResource Progressbar.Foreground.Text}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AvalonTunnelType}" Value="{x:Static enumerations:AvalonTunnelType.Unknown}">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                        <Setter Property="Width" Value="0" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </DataTemplate>
 
 </ResourceDictionary>
