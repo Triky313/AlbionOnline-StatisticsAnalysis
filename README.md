@@ -1,8 +1,10 @@
 # AlbionOnline - Statistics Analysis
-[![Github All Releases](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases) 
+[![Github All Releases](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/Triky313/AlbionOnline-StatisticsAnalysis)
 [![Github All Releases](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases) 
 [![Azure DevOps builds](https://img.shields.io/azure-devops/build/triky313/6a04e3a7-7acd-43e1-b81f-c117253b16de/1)](https://triky313.visualstudio.com/AlbionOnline-StatisticsAnalysis/_build?definitionId=1) 
 ![Lines of code](https://img.shields.io/tokei/lines/github/Triky313/AlbionOnline-StatisticsAnalysis) 
+[![GitHub issues](https://img.shields.io/github/issues/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues)
 [![Discord](https://img.shields.io/badge/discord-join-blueviolet)](https://discord.gg/6dGTvuF5nJ) 
 [![Donate](https://img.shields.io/badge/paypal-donate-1e477a)](https://www.paypal.me/schultzaaron) 
 
