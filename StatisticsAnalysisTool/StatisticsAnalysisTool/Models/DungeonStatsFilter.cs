@@ -127,7 +127,7 @@ namespace StatisticsAnalysisTool.Models
                 RemoveDungeonMode(dungeonMode);
             }
 
-            _trackingController?.DungeonController?.SetOrUpdateDungeonsDataUi();
+            _trackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
         }
 
         private void AddDungeonMode(DungeonMode dungeonMode)

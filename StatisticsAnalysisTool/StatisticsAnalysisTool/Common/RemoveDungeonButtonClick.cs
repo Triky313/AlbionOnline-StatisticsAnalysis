@@ -20,7 +20,7 @@ namespace StatisticsAnalysisTool.Common
 
         public void Execute(object parameter)
         {
-            _mainWindowViewModel.TrackingController.DungeonController.RemoveDungeon((string)parameter);
+            _mainWindowViewModel.TrackingController.DungeonController.RemoveDungeonAsync((string)parameter);
         }
 
         public event EventHandler CanExecuteChanged 
