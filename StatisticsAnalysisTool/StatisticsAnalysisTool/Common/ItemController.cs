@@ -343,8 +343,8 @@ namespace StatisticsAnalysisTool.Common
         public static void SaveFavoriteItemsToLocalFile()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
-            var favoriteItems = Items.Where(x => x.IsFavorite);
-            var toSaveFavoriteItems = favoriteItems.Select(x => x.UniqueName);
+            var favoriteItems = Items?.Where(x => x.IsFavorite);
+            var toSaveFavoriteItems = favoriteItems?.Select(x => x.UniqueName);
             var fileString = JsonConvert.SerializeObject(toSaveFavoriteItems);
 
             try
