@@ -596,7 +596,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (_lastGuid != null && _dungeons.Any(x => x.GuidList.Contains(currentGuid) && x.GuidList.Contains((Guid) _lastGuid)) && mapType != MapType.CorruptedDungeon)
             {
                 var dun = _dungeons?.First(x => x.GuidList.Contains(currentGuid));
-                dun?.AddEndTime(DateTime.UtcNow);
+                dun.AddEndTime(DateTime.UtcNow);
             }
         }
 
@@ -730,7 +730,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (_dungeons.Any(x => x.GuidList.Contains(currentGuid)))
             {
                 var dun = _dungeons?.First(x => x.GuidList.Contains(currentGuid));
-                dun?.AddStartTime(DateTime.UtcNow);
+                dun.AddStartTime(DateTime.UtcNow);
             }
         }
 
@@ -739,7 +739,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (_lastGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid) _lastGuid)) && mapType != MapType.RandomDungeon)
             {
                 var dun = _dungeons?.First(x => x.GuidList.Contains((Guid) _lastGuid));
-                dun?.AddEndTime(DateTime.UtcNow);
+                dun.AddEndTime(DateTime.UtcNow);
             }
         }
 
