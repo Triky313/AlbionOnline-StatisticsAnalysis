@@ -215,7 +215,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             var dialog = new DialogWindow(LanguageController.Translation("REMOVE_DUNGEON"), LanguageController.Translation("SURE_YOU_WANT_TO_REMOVE_DUNGEON"));
             var dialogResult = dialog.ShowDialog();
 
-            if (dialogResult != null && dialogResult == true)
+            if (dialogResult is true)
             {
                 _dungeons.Remove(dungeon);
                 await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
@@ -840,7 +840,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             try
             {
-                var toSaveDungeons = _dungeons.Where(x => x != null && x.Status == DungeonStatus.Done);
+                var toSaveDungeons = _dungeons.Where(x => x is { Status: DungeonStatus.Done });
                 var fileString = JsonConvert.SerializeObject(toSaveDungeons);
                 File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
             }

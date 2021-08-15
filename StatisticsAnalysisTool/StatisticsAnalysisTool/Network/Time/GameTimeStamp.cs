@@ -115,9 +115,8 @@ namespace StatisticsAnalysisTool.Network.Time
 
         public int CompareTo(object obj)
         {
-            if (!(obj is GameTimeStamp))
+            if (obj is not GameTimeStamp gameTimeStamp)
                 throw new ArgumentException();
-            var gameTimeStamp = (GameTimeStamp) obj;
             if (Ticks > gameTimeStamp.Ticks)
                 return 1;
             if (Ticks == gameTimeStamp.Ticks)
@@ -136,8 +135,8 @@ namespace StatisticsAnalysisTool.Network.Time
 
         public override bool Equals(object value)
         {
-            if (value is GameTimeStamp)
-                return ((GameTimeStamp) value).Ticks == Ticks;
+            if (value is GameTimeStamp gameTimeStamp)
+                return gameTimeStamp.Ticks == Ticks;
             throw new ArgumentException();
         }
 

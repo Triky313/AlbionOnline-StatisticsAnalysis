@@ -25,7 +25,7 @@ namespace StatisticsAnalysisTool.GameData
             var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;
             var splitName = name?.Split(new[] {"@"}, StringSplitOptions.None);
 
-            if (splitName != null && splitName.Length > 0 && name.ToLower().Contains('@'))
+            if (splitName is { Length: > 0 } && name.ToLower().Contains('@'))
             {
                 return GetMapNameByMapType(GetMapType(splitName[1]));
             }

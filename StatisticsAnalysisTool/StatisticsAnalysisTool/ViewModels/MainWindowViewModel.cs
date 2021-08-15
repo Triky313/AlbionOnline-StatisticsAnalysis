@@ -831,7 +831,7 @@ namespace StatisticsAnalysisTool.ViewModels
             var dialog = new DialogWindow(LanguageController.Translation("RESET_DAMAGE_METER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DAMAGE_METER"));
             var dialogResult = dialog.ShowDialog();
 
-            if (dialogResult != null && dialogResult == true)
+            if (dialogResult is true)
             {
                 TrackingController.CombatController.ResetDamageMeter();
             }
@@ -842,7 +842,7 @@ namespace StatisticsAnalysisTool.ViewModels
             var dialog = new DialogWindow(LanguageController.Translation("RESET_DUNGEON_TRACKER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER"));
             var dialogResult = dialog.ShowDialog();
 
-            if (dialogResult != null && dialogResult == true)
+            if (dialogResult is true)
             {
                 TrackingController.DungeonController.ResetDungeons();
             }
@@ -853,7 +853,7 @@ namespace StatisticsAnalysisTool.ViewModels
             var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
             var dialogResult = dialog.ShowDialog();
 
-            if (dialogResult != null && dialogResult == true)
+            if (dialogResult is true)
             {
                 TrackingController.ClearNotifications();
             }
@@ -864,7 +864,7 @@ namespace StatisticsAnalysisTool.ViewModels
             var dialog = new DialogWindow(LanguageController.Translation("RESET_PARTY"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_THE_PARTY"));
             var dialogResult = dialog.ShowDialog();
 
-            if (dialogResult != null && dialogResult == true)
+            if (dialogResult is true)
             {
                 TrackingController.EntityController.ResetPartyMember();
             }
@@ -1551,11 +1551,11 @@ namespace StatisticsAnalysisTool.ViewModels
                 var colorOff = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.Normal"]);
                 TrackerActivationToggleColor = _isTrackingActive ? colorOn : colorOff;
 
-                if (_isTrackingActive && TrackingController != null && !TrackingController.ExistIndispensableInfos)
+                if (_isTrackingActive && TrackingController is { ExistIndispensableInfos: false })
                 {
                     TrackingIconColor = TrackingIconType.Partially;
                 }
-                else if(_isTrackingActive && TrackingController != null && TrackingController.ExistIndispensableInfos)
+                else if(_isTrackingActive && TrackingController is { ExistIndispensableInfos: true })
                 {
                     TrackingIconColor = TrackingIconType.On;
                 }

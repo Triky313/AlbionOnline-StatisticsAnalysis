@@ -57,10 +57,8 @@ namespace StatisticsAnalysisTool.Common
             {
                 var encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create((BitmapImage) sender));
-                using (var fileStream = new FileStream(localFilePath, FileMode.Create))
-                {
-                    encoder.Save(fileStream);
-                }
+                using var fileStream = new FileStream(localFilePath, FileMode.Create);
+                encoder.Save(fileStream);
             };
         }
 

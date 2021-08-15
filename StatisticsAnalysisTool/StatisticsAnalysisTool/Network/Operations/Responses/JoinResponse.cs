@@ -61,7 +61,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
                 if (parameters.ContainsKey(36)) Reputation = parameters[36].ObjectToDouble();
 
-                if (parameters.ContainsKey(38) && parameters[38] != null && parameters[38] is long[] reSpecArray && reSpecArray.Length > 1)
+                if (parameters.ContainsKey(38) && parameters[38] != null && parameters[38] is long[] { Length: > 1 } reSpecArray)
                 {
                     ReSpecPoints = FixPoint.FromInternalValue(reSpecArray[1]);
                 }
