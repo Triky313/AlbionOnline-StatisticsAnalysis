@@ -1,6 +1,5 @@
 ﻿using log4net;
 using Newtonsoft.Json;
-using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -8,6 +7,7 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -118,15 +118,15 @@ namespace StatisticsAnalysisTool.GameData
                 if (fileDateTime.AddDays(Settings.Default.UpdateWorldDataByDays) < DateTime.Now)
                 {
                     if (await GetLootChestListFromWebAsync(url)) LootChests = GetLootChestDataFromLocal();
-                    return LootChests != null && !LootChests.IsNullOrEmpty();
+                    return LootChests?.Count() > 0;
                 }
 
                 LootChests = GetLootChestDataFromLocal();
-                return LootChests != null && !LootChests.IsNullOrEmpty();
+                return LootChests?.Count() > 0;
             }
 
             if (await GetLootChestListFromWebAsync(url)) LootChests = GetLootChestDataFromLocal();
-            return LootChests != null && !LootChests.IsNullOrEmpty();
+            return LootChests?.Count() > 0;
         }
 
         public static DungeonEventObjectType GetDungeonEventObjectType(string value)

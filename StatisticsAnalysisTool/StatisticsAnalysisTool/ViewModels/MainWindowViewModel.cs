@@ -2,7 +2,6 @@ using FontAwesome5;
 using LiveCharts;
 using LiveCharts.Wpf;
 using log4net;
-using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
@@ -200,7 +199,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
-            if (!currentGoldPrice.IsNullOrEmpty())
+            if (currentGoldPrice.Count > 0)
             {
                 CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ??
                                             new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
