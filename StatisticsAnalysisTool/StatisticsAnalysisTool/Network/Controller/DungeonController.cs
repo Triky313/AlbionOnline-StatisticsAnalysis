@@ -12,10 +12,12 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
@@ -40,20 +42,20 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public LocalUserData LocalUserData { get; set; }
 
-        public void AddDungeon(MapType mapType, Guid? mapGuid, string mainMapIndex)
+        public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid, string mainMapIndex)
         {
             LeaveDungeonCheck(mapType);
             IsDungeonDoneCheck(mapType);
 
             if (!IsClusterDungeonCluster(_dungeons, mapType, mapGuid))
             {
-                SetOrUpdateDungeonsDataUi();
+                await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
                 return;
             }
 
             if (mapGuid == null)
             {
-                SetOrUpdateDungeonsDataUi();
+                await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
                 return;
             }
 
@@ -73,7 +75,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
                     SetDungeonInformation(currentGuid, mapType);
-                    SetOrUpdateDungeonsDataUi();
+                    await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
                     return;
                 }
 
@@ -90,14 +92,14 @@ namespace StatisticsAnalysisTool.Network.Controller
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
                     SetDungeonInformation(currentGuid, mapType);
-                    SetOrUpdateDungeonsDataUi();
+                    await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
                     return;
                 }
 
                 SetCurrentDungeonActive(_dungeons, currentGuid);
                 _lastGuid = currentGuid;
 
-                SetOrUpdateDungeonsDataUi();
+                await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
             }
             catch
             {
@@ -126,10 +128,11 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
         }
 
-        public void ResetDungeons()
+        public async void ResetDungeons()
         {
             _dungeons.Clear();
-            Application.Current.Dispatcher.Invoke(delegate
+            
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindowViewModel?.TrackingDungeons?.Clear();
             });
@@ -200,7 +203,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             SetDungeonStatsTotal();
         }
 
-        public void RemoveDungeon(string dungeonHash)
+        public async void RemoveDungeonAsync(string dungeonHash)
         {
             var dungeon = _dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
 
@@ -212,10 +215,10 @@ namespace StatisticsAnalysisTool.Network.Controller
             var dialog = new DialogWindow(LanguageController.Translation("REMOVE_DUNGEON"), LanguageController.Translation("SURE_YOU_WANT_TO_REMOVE_DUNGEON"));
             var dialogResult = dialog.ShowDialog();
 
-            if (dialogResult != null && dialogResult == true)
+            if (dialogResult is true)
             {
                 _dungeons.Remove(dungeon);
-                SetOrUpdateDungeonsDataUi();
+                await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
             }
         }
 
@@ -593,12 +596,14 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (_lastGuid != null && _dungeons.Any(x => x.GuidList.Contains(currentGuid) && x.GuidList.Contains((Guid) _lastGuid)) && mapType != MapType.CorruptedDungeon)
             {
                 var dun = _dungeons?.First(x => x.GuidList.Contains(currentGuid));
-                dun?.AddEndTime(DateTime.UtcNow);
+                dun.AddEndTime(DateTime.UtcNow);
             }
         }
 
-        public void SetOrUpdateDungeonsDataUi()
+        public async Task SetOrUpdateDungeonsDataUiAsync()
         {
+            var timer = Stopwatch.StartNew();
+
             _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
             _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
@@ -606,7 +611,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             var filteredDungeons = _dungeons.Where(x => x.GuidList.Count > 0).OrderBy(x => x.EnterDungeonFirstTime).ToList();
             foreach (var dungeon in filteredDungeons)
             {
-                Application.Current.Dispatcher.Invoke(delegate {
+                await Application.Current.Dispatcher.InvokeAsync(() =>
+                {
                     var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
                        x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime == dungeon.EnterDungeonFirstTime);
 
@@ -624,7 +630,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                 });
             }
 
-            RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons);
+            await RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons).ConfigureAwait(false);
             SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
             CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
 
@@ -632,6 +638,11 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             SetDungeonStatsDay();
             SetDungeonStatsTotal();
+
+            timer.Stop();
+            var timespan = timer.Elapsed;
+
+            Debug.Print("SetOrUpdateDungeonsDataUiAsync: " + "{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
         }
 
         private void DungeonSortAndFiltering()
@@ -666,8 +677,11 @@ namespace StatisticsAnalysisTool.Network.Controller
             });
         }
 
-        private void RemoveLeftOverDungeonNotificationFragments(ObservableCollection<DungeonNotificationFragment> dungeonNotificationFragments)
+        private async Task RemoveLeftOverDungeonNotificationFragments(ObservableCollection<DungeonNotificationFragment> dungeonNotificationFragments)
         {
+            var timer = Stopwatch.StartNew();
+
+            // TODO: To slow?
             foreach (var dungeonFragment in dungeonNotificationFragments.ToList())
             {
                 var dungeonObject = _dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonFragment.DungeonHash));
@@ -676,11 +690,17 @@ namespace StatisticsAnalysisTool.Network.Controller
                 {
                     continue;
                 }
-                Application.Current.Dispatcher.Invoke(delegate
+
+                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
                 });
             }
+
+            timer.Stop();
+            var timespan = timer.Elapsed;
+
+            Debug.Print("RemoveLeftOverDungeonNotificationFragments: " + "{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
         }
 
         public void UpdateDungeonDataUi(DungeonObject dungeon)
@@ -710,7 +730,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (_dungeons.Any(x => x.GuidList.Contains(currentGuid)))
             {
                 var dun = _dungeons?.First(x => x.GuidList.Contains(currentGuid));
-                dun?.AddStartTime(DateTime.UtcNow);
+                dun.AddStartTime(DateTime.UtcNow);
             }
         }
 
@@ -719,7 +739,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             if (_lastGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid) _lastGuid)) && mapType != MapType.RandomDungeon)
             {
                 var dun = _dungeons?.First(x => x.GuidList.Contains((Guid) _lastGuid));
-                dun?.AddEndTime(DateTime.UtcNow);
+                dun.AddEndTime(DateTime.UtcNow);
             }
         }
 
@@ -820,7 +840,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             try
             {
-                var toSaveDungeons = _dungeons.Where(x => x != null && x.Status == DungeonStatus.Done);
+                var toSaveDungeons = _dungeons.Where(x => x is { Status: DungeonStatus.Done });
                 var fileString = JsonConvert.SerializeObject(toSaveDungeons);
                 File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
             }

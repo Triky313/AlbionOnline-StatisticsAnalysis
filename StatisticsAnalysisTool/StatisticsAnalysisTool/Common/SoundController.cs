@@ -36,10 +36,7 @@ namespace StatisticsAnalysisTool.Common
                 return;
             }
 
-            if (AlertSounds == null)
-            {
-                AlertSounds = new List<FileInformation>();
-            }
+            AlertSounds ??= new List<FileInformation>();
 
             foreach (var file in files)
             {

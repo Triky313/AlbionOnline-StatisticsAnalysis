@@ -181,10 +181,7 @@ namespace StatisticsAnalysisTool.Common
                 return;
             }
 
-            if (LanguageFiles == null)
-            {
-                LanguageFiles = new List<FileInformation>();
-            }
+            LanguageFiles ??= new List<FileInformation>();
 
             foreach (var file in files)
             {

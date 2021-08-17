@@ -343,8 +343,8 @@ namespace StatisticsAnalysisTool.Common
         public static void SaveFavoriteItemsToLocalFile()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
-            var favoriteItems = Items.Where(x => x.IsFavorite);
-            var toSaveFavoriteItems = favoriteItems.Select(x => x.UniqueName);
+            var favoriteItems = Items?.Where(x => x.IsFavorite);
+            var toSaveFavoriteItems = favoriteItems?.Select(x => x.UniqueName);
             var fileString = JsonConvert.SerializeObject(toSaveFavoriteItems);
 
             try
@@ -428,24 +428,25 @@ namespace StatisticsAnalysisTool.Common
 
             var itemInformationString = JsonConvert.SerializeObject(list);
 
-            using (var writer = new StreamWriter(FullItemInformationFilePath))
-            {
-                writer.Write(itemInformationString);
-            }
+            using var writer = new StreamWriter(FullItemInformationFilePath);
+            writer.Write(itemInformationString);
         }
 
         public static async Task GetItemInformationListFromLocalAsync()
         {
             await Task.Run(() =>
             {
-                if (_itemInformationList != null && _itemInformationList.Count > 0) return;
+                if (_itemInformationList is { Count: > 0 })
+                {
+                    return;
+                }
 
                 if (File.Exists(FullItemInformationFilePath))
-                    using (var streamReader = new StreamReader(FullItemInformationFilePath, Encoding.UTF8))
-                    {
-                        var readContents = streamReader.ReadToEnd();
-                        _itemInformationList = JsonConvert.DeserializeObject<ObservableCollection<ItemInformation>>(readContents);
-                    }
+                {
+                    using var streamReader = new StreamReader(FullItemInformationFilePath, Encoding.UTF8);
+                    var readContents = streamReader.ReadToEnd();
+                    _itemInformationList = JsonConvert.DeserializeObject<ObservableCollection<ItemInformation>>(readContents);
+                }
                 else
                     _itemInformationList = new ObservableCollection<ItemInformation>();
 

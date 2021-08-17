@@ -37,9 +37,11 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
 
         public int CompareTo(object obj)
         {
-            if (!(obj is long)) return -1;
+            if (obj is not long dmg)
+            {
+                return -1;
+            }
 
-            var dmg = (long) obj;
             if (Damage > dmg) return 1;
 
             if (Damage == dmg) return 0;

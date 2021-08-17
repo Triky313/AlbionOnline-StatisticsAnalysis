@@ -25,7 +25,7 @@ namespace StatisticsAnalysisTool.GameData
             var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;
             var splitName = name?.Split(new[] {"@"}, StringSplitOptions.None);
 
-            if (splitName != null && splitName.Length > 0 && name.ToLower().Contains('@'))
+            if (splitName is { Length: > 0 } && name.ToLower().Contains('@'))
             {
                 return GetMapNameByMapType(GetMapType(splitName[1]));
             }
@@ -119,7 +119,11 @@ namespace StatisticsAnalysisTool.GameData
 
                 if (fileDateTime.AddDays(Settings.Default.UpdateWorldDataByDays) < DateTime.Now)
                 {
-                    if (await GetWorldListFromWebAsync(url)) MapData = GetWorldDataFromLocal();
+                    if (await GetWorldListFromWebAsync(url))
+                    {
+                        MapData = GetWorldDataFromLocal();
+                    }
+
                     return MapData?.Count > 0;
                 }
 
@@ -127,7 +131,11 @@ namespace StatisticsAnalysisTool.GameData
                 return MapData?.Count > 0;
             }
 
-            if (await GetWorldListFromWebAsync(url)) MapData = GetWorldDataFromLocal();
+            if (await GetWorldListFromWebAsync(url))
+            {
+                MapData = GetWorldDataFromLocal();
+            }
+
             return MapData?.Count > 0;
         }
 
@@ -208,7 +216,7 @@ namespace StatisticsAnalysisTool.GameData
             try
             {
                 var localItemString =
-                    File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName),
+                    File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.WorldDataDirectoryName, Settings.Default.WorldDataFileName),
                         Encoding.UTF8);
                 return ConvertItemJsonObjectToMapData(JsonConvert.DeserializeObject<ObservableCollection<WorldJsonObject>>(localItemString));
             }
@@ -234,28 +242,31 @@ namespace StatisticsAnalysisTool.GameData
 
         private static async Task<bool> GetWorldListFromWebAsync(string url)
         {
-            using (var client = new HttpClient())
+            using var client = new HttpClient
             {
-                client.Timeout = TimeSpan.FromSeconds(30);
-                try
-                {
-                    using (var response = await client.GetAsync(url))
-                    {
-                        using (var content = response.Content)
-                        {
-                            var fileString = await content.ReadAsStringAsync();
-                            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName),
-                                fileString, Encoding.UTF8);
-                            return true;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    return false;
-                }
+                Timeout = TimeSpan.FromSeconds(120)
+            };
+
+            try
+            {
+                using var response = await client.GetAsync(url);
+                using var content = response.Content;
+
+                var fileString = await content.ReadAsStringAsync();
+                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName), fileString, Encoding.UTF8);
+                return true;
+            }
+            catch (HttpRequestException e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e.InnerException);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e.InnerException);
+                return false;
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                return false;
             }
         }
 

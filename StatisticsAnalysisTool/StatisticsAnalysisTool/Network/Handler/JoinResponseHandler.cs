@@ -59,7 +59,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                 _trackingController.EntityController.AddToParty((Guid) value.Guid, value.Username);
             }
 
-            _trackingController.DungeonController?.AddDungeon(value.MapType, value.DungeonGuid, value.MainMapIndex);
+            _trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.DungeonGuid, value.MainMapIndex).ConfigureAwait(false);
 
             ResetFameCounterByMapChangeIfActive();
             SetTrackingIconColor();

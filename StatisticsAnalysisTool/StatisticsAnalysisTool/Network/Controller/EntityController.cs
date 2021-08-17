@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Time;
 using StatisticsAnalysisTool.ViewModels;
-using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -16,19 +15,17 @@ namespace StatisticsAnalysisTool.Network.Controller
 {
     public class EntityController
     {
-        private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new ConcurrentDictionary<Guid, PlayerGameObject>();
-        private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new ConcurrentDictionary<Guid, string>();
-        private readonly MainWindow _mainWindow;
+        private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
+        private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new();
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private readonly ObservableCollection<EquipmentItem> _newEquipmentItems = new ObservableCollection<EquipmentItem>();
-        private readonly ObservableCollection<SpellEffect> _spellEffects = new ObservableCollection<SpellEffect>();
-        private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new ConcurrentDictionary<long, CharacterEquipmentData>();
+        private readonly ObservableCollection<EquipmentItem> _newEquipmentItems = new();
+        private readonly ObservableCollection<SpellEffect> _spellEffects = new();
+        private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new();
         private double _lastLocalEntityGuildTaxInPercent;
         private double _lastLocalEntityClusterTaxInPercent;
 
-        public EntityController(MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
+        public EntityController(MainWindowViewModel mainWindowViewModel)
         {
-            _mainWindow = mainWindow;
             _mainWindowViewModel = mainWindowViewModel;
         }
 

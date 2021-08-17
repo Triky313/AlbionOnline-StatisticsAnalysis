@@ -607,5 +607,14 @@ namespace StatisticsAnalysisTool.Properties {
                 this["MainTrackerFilterFaction"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("GameFiles")]
+        public string WorldDataDirectoryName {
+            get {
+                return ((string)(this["WorldDataDirectoryName"]));
+            }
+        }
     }
 }

@@ -237,79 +237,79 @@
 
     <DataTemplate DataType="{x:Type notification:CombatNotificationFragment}">
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding CauserName, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
-            <TextBlock Text="{Binding Damage, StringFormat='{}{0:N0} '}" Foreground="{StaticResource SolidColorBrush.Blue.2}"/>
-            <TextBlock Text="{Binding TargetName, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock Text="{Binding CauserName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock Text="{Binding Damage, IsAsync=True, StringFormat='{}{0:N0} '}" Foreground="{StaticResource SolidColorBrush.Blue.2}"/>
+            <TextBlock Text="{Binding TargetName, IsAsync=True, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
         </StackPanel>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type notification:OtherGrabbedLootNotificationFragment}">
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding Looter, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Blue.3}"/>
-            <TextBlock Text="{Binding LootedTranslation, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock Text="{Binding Looter, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Blue.3}"/>
+            <TextBlock Text="{Binding LootedTranslation, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
 
-            <TextBlock Text="{Binding Quantity, StringFormat='{}{0}x '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
-            <Image Source="{Binding Item.Icon}" Width="25" Height="25" Stretch="Fill" />
-            <TextBlock Text="{Binding Item.LocalizedName, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock Text="{Binding Quantity, IsAsync=True, StringFormat='{}{0}x '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <Image Source="{Binding Item.Icon, IsAsync=True}" Width="25" Height="25" Stretch="Fill" />
+            <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
 
-            <TextBlock Text="{Binding FromTranslation, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
-            <TextBlock Text="{Binding LootedPlayer, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Blue.3}"/>
+            <TextBlock Text="{Binding FromTranslation, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock Text="{Binding LootedPlayer, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Blue.3}"/>
         </StackPanel>
     </DataTemplate>
 
     <Style x:Key="DungeonNotificationFragment.Faction" TargetType="StackPanel">
         <Setter Property="VerticalAlignment" Value="Top"></Setter>
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Unknown}">
+            <DataTrigger Binding="{Binding Faction, IsAsync=True}" Value="{x:Static enumerations:Faction.Unknown}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <ImageBrush Stretch="None" ImageSource="Resources/faction_unknown_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Heretic}">
+            <DataTrigger Binding="{Binding Faction, IsAsync=True}" Value="{x:Static enumerations:Faction.Heretic}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <ImageBrush Stretch="None" ImageSource="Resources/faction_heretic_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Undead}">
+            <DataTrigger Binding="{Binding Faction, IsAsync=True}" Value="{x:Static enumerations:Faction.Undead}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <ImageBrush Stretch="None" ImageSource="Resources/faction_undead_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Keeper}">
+            <DataTrigger Binding="{Binding Faction, IsAsync=True}" Value="{x:Static enumerations:Faction.Keeper}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <ImageBrush Stretch="None" ImageSource="Resources/faction_keeper_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.40"/>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Morgana}">
+            <DataTrigger Binding="{Binding Faction, IsAsync=True}" Value="{x:Static enumerations:Faction.Morgana}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <ImageBrush Stretch="None" ImageSource="Resources/faction_morgana_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Avalon}">
+            <DataTrigger Binding="{Binding Faction, IsAsync=True}" Value="{x:Static enumerations:Faction.Avalon}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <ImageBrush Stretch="None" ImageSource="Resources/faction_avalon_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.HellGate}">
+            <DataTrigger Binding="{Binding Faction, IsAsync=True}" Value="{x:Static enumerations:Faction.HellGate}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <ImageBrush Stretch="None" ImageSource="Resources/hellgate_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Faction}" Value="{x:Static enumerations:Faction.Corrupted}">
+            <DataTrigger Binding="{Binding Faction, IsAsync=True}" Value="{x:Static enumerations:Faction.Corrupted}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <ImageBrush Stretch="None" ImageSource="Resources/corrupted_banner.png" AlignmentY="Center" AlignmentX="Left" Opacity="0.25"/>
@@ -495,10 +495,10 @@
         <Setter Property="Height" Value="16" />
         <Setter Property="Margin" Value="2" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding DiedInDungeon}" Value="false">
+            <DataTrigger Binding="{Binding DiedInDungeon, IsAsync=True}" Value="false">
                 <Setter Property="Visibility" Value="Hidden" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding DiedInDungeon}" Value="true">
+            <DataTrigger Binding="{Binding DiedInDungeon, IsAsync=True}" Value="true">
                 <Setter Property="Visibility" Value="Visible" />
             </DataTrigger>
         </Style.Triggers>
@@ -506,8 +506,8 @@
 
     <Style x:Key="DungeonNotificationFragment.Grid.DungeonMode" TargetType="Grid">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Expedition}">
-                <Setter Property="ToolTip" Value="{Binding TranslationExpedition}"></Setter>
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Expedition}">
+                <Setter Property="ToolTip" Value="{Binding TranslationExpedition, IsAsync=True}"></Setter>
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -517,8 +517,8 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.HellGate}">
-                <Setter Property="ToolTip" Value="{Binding TranslationSolo}"></Setter>
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.HellGate}">
+                <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"></Setter>
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -528,8 +528,8 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Corrupted}">
-                <Setter Property="ToolTip" Value="{Binding TranslationSolo}"></Setter>
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Corrupted}">
+                <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"></Setter>
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -539,8 +539,8 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Solo}">
-                <Setter Property="ToolTip" Value="{Binding TranslationSolo}"></Setter>
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Solo}">
+                <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"></Setter>
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -550,8 +550,8 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Standard}">
-                <Setter Property="ToolTip" Value="{Binding TranslationStandard}"></Setter>
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Standard}">
+                <Setter Property="ToolTip" Value="{Binding TranslationStandard, IsAsync=True}"></Setter>
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -561,8 +561,8 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Avalon}">
-                <Setter Property="ToolTip" Value="{Binding TranslationAvalon}"></Setter>
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Avalon}">
+                <Setter Property="ToolTip" Value="{Binding TranslationAvalon, IsAsync=True}"></Setter>
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -572,7 +572,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Mode}" Value="{x:Static enumerations:DungeonMode.Unknown}">
+            <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Unknown}">
                 <Setter Property="ToolTip" Value="{Binding TranslationUnknown}"></Setter>
                 <Setter Property="Background" Value="{StaticResource SolidColorBrush.Dungeon.Mode.Unknown}" />
             </DataTrigger>
@@ -599,7 +599,7 @@
                     <Grid Height="72">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal" Height="24" Margin="0">
-                                <Label Content="{Binding DungeonNumber, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="38" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+                                <Label Content="{Binding DungeonNumber, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="38" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
                                 <Label MinWidth="135" VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource Solid.Color.Text.Normal}">
                                     <Label.Content>
                                         <TextBlock>
@@ -611,10 +611,10 @@
                                         </TextBlock>
                                     </Label.Content>
                                 </Label>
-                                <Label Content="{Binding MainMapName, FallbackValue=UNKNOWN}" Style="{StaticResource DungeonNotificationFragment.MainMapName}" MinWidth="138" />
+                                <Label Content="{Binding MainMapName, IsAsync=True, FallbackValue=UNKNOWN}" Style="{StaticResource DungeonNotificationFragment.MainMapName}" MinWidth="138" />
                                 <Grid Margin="5 0 20 0">
                                     <StackPanel Orientation="Horizontal" MinWidth="210">
-                                        <ItemsControl ItemsSource="{Binding DungeonChests}">
+                                        <ItemsControl ItemsSource="{Binding DungeonChests, IsAsync=True}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <UniformGrid Rows="1"/>
@@ -629,7 +629,7 @@
                                 <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__RUN__TIME}">
                                     <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                                 </Grid>
-                                <Label Content="{Binding RunTimeString, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="3 0 10 0" MinWidth="55">
+                                <Label Content="{Binding RunTimeString, IsAsync=True, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="3 0 10 0" MinWidth="55">
                                     <Label.Style>
                                         <Style TargetType="Label">
                                             <Style.Triggers>
@@ -653,68 +653,68 @@
                                 <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
                                     <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                                 </Grid>
-                                <Label Content="{Binding Fame, FallbackValue=999.999.999}" 
+                                <Label Content="{Binding Fame, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
 
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Image Source="Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                                 </Grid>
-                                <Label Content="{Binding ReSpec, FallbackValue=999.999.999}" 
+                                <Label Content="{Binding ReSpec, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestReSpec}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
 
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Image Source="Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                                 </Grid>
-                                <Label Content="{Binding Silver, FallbackValue=999.999.999}" 
+                                <Label Content="{Binding Silver, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestSilver}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="75" />
 
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
                                     <Image Source="Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                                 </Grid>
-                                <Label Content="{Binding FamePerHour, FallbackValue=999.999.999}" 
+                                <Label Content="{Binding FamePerHour, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFamePerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
 
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Image Source="Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                                 </Grid>
-                                <Label Content="{Binding ReSpecPerHour, FallbackValue=999.999.999}" 
+                                <Label Content="{Binding ReSpecPerHour, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestReSpecPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
 
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Image Source="Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                                 </Grid>
-                                <Label Content="{Binding SilverPerHour, FallbackValue=999.999.999}" 
+                                <Label Content="{Binding SilverPerHour, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestSilverPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Height="24">
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,2,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
                                     <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
                                 </Grid>
-                                <Label Content="{Binding FactionFlags, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                <Label Content="{Binding FactionFlags, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionFlags}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="82" />
 
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
                                     <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
                                 </Grid>
-                                <Label Content="{Binding FactionFlagsPerHour, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                <Label Content="{Binding FactionFlagsPerHour, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
                                        ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionFlagsPerHour}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80" />
 
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
                                     <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
                                 </Grid>
-                                <Label Content="{Binding FactionCoins, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                <Label Content="{Binding FactionCoins, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionCoins}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85" />
 
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
                                     <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
                                 </Grid>
-                                <Label Content="{Binding FactionCoinsPerHour, FallbackValue=999.999.999}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                <Label Content="{Binding FactionCoinsPerHour, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
                                        ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionCoinsPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205" />
 
                                 <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}">
                                     <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
                                 </Grid>
-                                <Label Content="{Binding NumberOfDungeonFloors, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55" />
+                                <Label Content="{Binding NumberOfDungeonFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55" />
                             </StackPanel>
                         </StackPanel>
                     </Grid>
@@ -731,35 +731,35 @@
 
     <Style x:Key="DungeonEventObjectFragment.Image.Chest" TargetType="Image">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.StandardChestClose}">
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.StandardChestClose}">
                 <Setter Property="Source" Value="Resources/chest_close_standard.png" />
                 <Setter Property="ToolTip" Value="{Binding TranslationStandard}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.StandardChestOpen}">
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.StandardChestOpen}">
                 <Setter Property="Source" Value="Resources/chest_open_standard.png" />
                 <Setter Property="ToolTip" Value="{Binding TranslationStandard}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.UncommonChestClose}">
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.UncommonChestClose}">
                 <Setter Property="Source" Value="Resources/chest_close_uncommon.png" />
                 <Setter Property="ToolTip" Value="{Binding TranslationUncommon}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.UncommonChestOpen}">
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.UncommonChestOpen}">
                 <Setter Property="Source" Value="Resources/chest_open_uncommon.png" />
                 <Setter Property="ToolTip" Value="{Binding TranslationUncommon}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.RareChestClose}">
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.RareChestClose}">
                 <Setter Property="Source" Value="Resources/chest_close_rare.png" />
                 <Setter Property="ToolTip" Value="{Binding TranslationRare}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.RareChestOpen}">
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.RareChestOpen}">
                 <Setter Property="Source" Value="Resources/chest_open_rare.png" />
                 <Setter Property="ToolTip" Value="{Binding TranslationRare}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.LegendaryChestClose}">
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.LegendaryChestClose}">
                 <Setter Property="Source" Value="Resources/chest_close_legendary.png" />
                 <Setter Property="ToolTip" Value="{Binding TranslationLegendary}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enumerations:ChestStatus.LegendaryChestOpen}">
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.LegendaryChestOpen}">
                 <Setter Property="Source" Value="Resources/chest_open_legendary.png" />
                 <Setter Property="ToolTip" Value="{Binding TranslationLegendary}" />
             </DataTrigger>
@@ -773,13 +773,13 @@
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Visibility" Value="Hidden" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:DungeonEventObjectType.CombatShrine}">
+                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.CombatShrine}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:DungeonEventObjectType.SilverShrine}">
+                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.SilverShrine}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:DungeonEventObjectType.FameShrine}">
+                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.FameShrine}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -790,15 +790,15 @@
                     <Image.Style>
                         <Style TargetType="Image">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:DungeonEventObjectType.CombatShrine}">
+                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.CombatShrine}">
                                     <Setter Property="Source" Value="Resources/shrine_combat_buff.png" />
                                     <Setter Property="ToolTip" Value="{Binding TranslationCombatBuff}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:DungeonEventObjectType.SilverShrine}">
+                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.SilverShrine}">
                                     <Setter Property="Source" Value="Resources/shrine_silver.png" />
                                     <Setter Property="ToolTip" Value="{Binding TranslationSilverShrine}" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:DungeonEventObjectType.FameShrine}">
+                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.FameShrine}">
                                     <Setter Property="Source" Value="Resources/shrine_fame.png" />
                                     <Setter Property="ToolTip" Value="{Binding TranslationFameShrine}" />
                                 </DataTrigger>
@@ -813,10 +813,10 @@
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Visibility" Value="Hidden" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:DungeonEventObjectType.BookChest}">
+                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.BookChest}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:DungeonEventObjectType.Chest}">
+                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.Chest}">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -828,7 +828,7 @@
                     <Image.Style>
                         <Style TargetType="Image">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsBossChest}" Value="true">
+                                <DataTrigger Binding="{Binding IsBossChest, IsAsync=True}" Value="true">
                                     <Setter Property="Source" Value="Resources/boss.png"/>
                                     <Setter Property="ToolTip" Value="{Binding TranslationBossChest}"/>
                                 </DataTrigger>
@@ -840,7 +840,7 @@
                     <Image.Style>
                         <Style TargetType="Image">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Type}" Value="{x:Static enumerations:DungeonEventObjectType.BookChest}">
+                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.BookChest}">
                                     <Setter Property="Source" Value="Resources/book.png"/>
                                     <Setter Property="ToolTip" Value="{Binding TranslationBookChest}"/>
                                 </DataTrigger>
