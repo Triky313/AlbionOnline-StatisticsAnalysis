@@ -66,7 +66,7 @@ namespace StatisticsAnalysisTool.Common
 
         private static void InvalidateOutAndError()
         {
-            // TODO: Umbauen
+            // TODO: Refactoring
             //var type = typeof(Console);
 
             //var _out = type.GetField("_out", BindingFlags.Static | BindingFlags.NonPublic);

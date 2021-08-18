@@ -53,7 +53,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
-            Process.Start(e.Uri.AbsoluteUri);
+            Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

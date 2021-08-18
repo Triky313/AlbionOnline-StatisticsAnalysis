@@ -45,7 +45,7 @@ namespace StatisticsAnalysisTool.Views
         {
             try
             {
-                Process.Start(_settingsWindowViewModel.ToolDirectory);
+                Process.Start(new ProcessStartInfo { FileName = _settingsWindowViewModel.ToolDirectory, UseShellExecute = true });
             }
             catch (Exception exception)
             {
