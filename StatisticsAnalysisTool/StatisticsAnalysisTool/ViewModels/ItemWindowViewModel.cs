@@ -1,6 +1,4 @@
 ﻿using FontAwesome5;
-using LiveCharts;
-using LiveCharts.Wpf;
 using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Exceptions;
@@ -10,7 +8,6 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -63,7 +60,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _refreshIconTooltipText;
         private bool _refreshSpin;
         private bool _runUpdate = true;
-        private SeriesCollection _seriesCollectionHistory;
+        //private SeriesCollection _seriesCollectionHistory;
         private bool _showBlackZoneOutpostsChecked;
         private bool _showVillagesChecked;
         private ItemWindowTranslation _translation;
@@ -283,33 +280,34 @@ namespace StatisticsAnalysisTool.ViewModels
             SetHistoryChart(historyItemPrices);
         }
 
+        // ReSharper disable once UnusedParameter.Local
         private void SetHistoryChart(List<MarketHistoriesResponse> historyItemPrices)
         {
-            var date = new List<string>();
-            var seriesCollectionHistory = new SeriesCollection();
+            //var date = new List<string>();
+            //var seriesCollectionHistory = new SeriesCollection();
 
-            foreach (var marketHistory in historyItemPrices)
-            {
-                var amount = new ChartValues<int>();
-                foreach (var data in marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
-                {
-                    if (!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
-                        date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+            //foreach (var marketHistory in historyItemPrices)
+            //{
+            //    var amount = new ChartValues<int>();
+            //    foreach (var data in marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
+            //    {
+            //        if (!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
+            //            date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
 
-                    amount.Add(data.AveragePrice);
-                }
+            //        amount.Add(data.AveragePrice);
+            //    }
 
-                seriesCollectionHistory.Add(new LineSeries
-                {
-                    Title = Locations.GetName(Locations.GetName(marketHistory?.Location)),
-                    Values = amount,
-                    Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
-                    Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false)
-                });
-            }
+            //    seriesCollectionHistory.Add(new LineSeries
+            //    {
+            //        Title = Locations.GetName(Locations.GetName(marketHistory?.Location)),
+            //        Values = amount,
+            //        Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
+            //        Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false)
+            //    });
+            //}
 
-            LabelsHistory = date.ToArray();
-            SeriesCollectionHistory = seriesCollectionHistory;
+            //LabelsHistory = date.ToArray();
+            //SeriesCollectionHistory = seriesCollectionHistory;
         }
 
         #region Prices
@@ -871,15 +869,15 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public SeriesCollection SeriesCollectionHistory
-        {
-            get => _seriesCollectionHistory;
-            set
-            {
-                _seriesCollectionHistory = value;
-                OnPropertyChanged();
-            }
-        }
+        //public SeriesCollection SeriesCollectionHistory
+        //{
+        //    get => _seriesCollectionHistory;
+        //    set
+        //    {
+        //        _seriesCollectionHistory = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         public string[] LabelsHistory
         {

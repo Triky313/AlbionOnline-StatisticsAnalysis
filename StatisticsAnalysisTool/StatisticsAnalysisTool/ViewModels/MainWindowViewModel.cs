@@ -1,6 +1,6 @@
 using FontAwesome5;
-using LiveCharts;
-using LiveCharts.Wpf;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 using log4net;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
@@ -73,7 +73,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private ICollectionView _itemsView;
         private Dictionary<ItemTier, string> _itemTiers = new Dictionary<ItemTier, string>();
         private Visibility _itemTiersVisibility;
-        private string[] _labels;
+        private List<Axis> _xAxes;
+        private List<Axis> _yAxes;
         private Visibility _loadFullItemInfoButtonVisibility;
         private string _loadFullItemInfoProBarCounter;
         private Visibility _loadFullItemInfoProBarGridVisibility;
@@ -94,7 +95,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ItemLevel _selectedItemLevel;
         private ParentCategory _selectedItemParentCategories;
         private ItemTier _selectedItemTier;
-        private SeriesCollection _seriesCollection;
+        private ObservableCollection<ISeries> _series;
         private string _famePerHour = "0";
         private string _reSpecPointsPerHour = "0";
         private string _silverPerHour = "0";
@@ -171,7 +172,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Modes.Add(new ModeStruct {Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal});
             Modes.Add(new ModeStruct {Name = LanguageController.Translation("TRACKING"), ViewMode = ViewMode.Tracking});
             Modes.Add(new ModeStruct {Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player});
-            Modes.Add(new ModeStruct {Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold});
+            //Modes.Add(new ModeStruct {Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold});
             ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
 
             #endregion Set Modes to combobox
@@ -339,7 +340,7 @@ namespace StatisticsAnalysisTool.ViewModels
             viewModeGrid.Add(ViewMode.Normal, _mainWindow.GridNormalMode);
             viewModeGrid.Add(ViewMode.Tracking, _mainWindow.GridTrackingMode);
             viewModeGrid.Add(ViewMode.Player, _mainWindow.GridPlayerMode);
-            viewModeGrid.Add(ViewMode.Gold, _mainWindow.GridGoldMode);
+            //viewModeGrid.Add(ViewMode.Gold, _mainWindow.GridGoldMode);
         }
 
         public void SelectViewModeGrid()
@@ -705,47 +706,66 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public async void SetGoldChart(int count)
         {
-            var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true);
+            var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true) as IEnumerable<GoldResponseModel>;
+            var values = goldPriceList.Select(x => x.Price);
 
-            var date = new List<string>();
-            var amount = new ChartValues<int>();
-
-            foreach (var goldPrice in goldPriceList)
+            Series = new ObservableCollection<ISeries>
             {
-                date.Add(goldPrice.Timestamp.ToString("g", CultureInfo.CurrentCulture));
-                amount.Add(goldPrice.Price);
-            }
-
-            Labels = date.ToArray();
-
-            SeriesCollection = new SeriesCollection
-            {
-                new LineSeries
+                new ColumnSeries<int>
                 {
-                    Title = "Gold",
-                    Values = amount,
-                    Fill = (Brush) Application.Current.Resources["Solid.Color.Gold.Fill"],
-                    Stroke = (Brush) Application.Current.Resources["Solid.Color.Text.Gold"]
+                    Values = values
+                }
+            };
+
+            XAxes = new List<Axis>
+            {
+                new()
+                {
+                    IsVisible = true,
+                    MaxLimit = goldPriceList.Count(),
+                    //Labels = goldPriceList.Select(x => x.Timestamp.ToString(CultureInfo.CurrentCulture)) as IList<string>,
+                    ShowSeparatorLines = false
+                }
+            };
+
+            YAxes = new List<Axis>
+            {
+                new()
+                {
+                    IsVisible = true,
+                    MaxLimit = goldPriceList.Max(x => x.Price + 1),
+                    MinLimit = goldPriceList.Min(x => x.Price - 1),
+                    ShowSeparatorLines = false
                 }
             };
         }
 
-        public SeriesCollection SeriesCollection
+        public ObservableCollection<ISeries> Series
         {
-            get => _seriesCollection;
+            get => _series;
             set
             {
-                _seriesCollection = value;
+                _series = value;
                 OnPropertyChanged();
             }
         }
 
-        public string[] Labels
+        public List<Axis> XAxes 
         {
-            get => _labels;
+            get => _xAxes;
             set
             {
-                _labels = value;
+                _xAxes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<Axis> YAxes 
+        {
+            get => _yAxes;
+            set
+            {
+                _yAxes = value;
                 OnPropertyChanged();
             }
         }
