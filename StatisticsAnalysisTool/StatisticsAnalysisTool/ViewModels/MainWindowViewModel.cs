@@ -1,6 +1,4 @@
 using FontAwesome5;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
 using log4net;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
@@ -73,8 +71,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private ICollectionView _itemsView;
         private Dictionary<ItemTier, string> _itemTiers = new Dictionary<ItemTier, string>();
         private Visibility _itemTiersVisibility;
-        private List<Axis> _xAxes;
-        private List<Axis> _yAxes;
+        //private List<Axis> _xAxes;
+        //private List<Axis> _yAxes;
+        //private ObservableCollection<ISeries> _series;
         private Visibility _loadFullItemInfoButtonVisibility;
         private string _loadFullItemInfoProBarCounter;
         private Visibility _loadFullItemInfoProBarGridVisibility;
@@ -95,7 +94,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private ItemLevel _selectedItemLevel;
         private ParentCategory _selectedItemParentCategories;
         private ItemTier _selectedItemTier;
-        private ObservableCollection<ISeries> _series;
         private string _famePerHour = "0";
         private string _reSpecPointsPerHour = "0";
         private string _silverPerHour = "0";
@@ -704,71 +702,73 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Gold (Gold Mode)
 
+#pragma warning disable 1998
         public async void SetGoldChart(int count)
+#pragma warning restore 1998
         {
-            var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true) as IEnumerable<GoldResponseModel>;
-            var values = goldPriceList.Select(x => x.Price);
+            //var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true) as IEnumerable<GoldResponseModel>;
+            //var values = goldPriceList.Select(x => x.Price);
 
-            Series = new ObservableCollection<ISeries>
-            {
-                new ColumnSeries<int>
-                {
-                    Values = values
-                }
-            };
+            //Series = new ObservableCollection<ISeries>
+            //{
+            //    new ColumnSeries<int>
+            //    {
+            //        Values = values
+            //    }
+            //};
 
-            XAxes = new List<Axis>
-            {
-                new()
-                {
-                    IsVisible = true,
-                    MaxLimit = goldPriceList.Count(),
-                    //Labels = goldPriceList.Select(x => x.Timestamp.ToString(CultureInfo.CurrentCulture)) as IList<string>,
-                    ShowSeparatorLines = false
-                }
-            };
+            //XAxes = new List<Axis>
+            //{
+            //    new()
+            //    {
+            //        IsVisible = true,
+            //        MaxLimit = goldPriceList.Count(),
+            //        //Labels = goldPriceList.Select(x => x.Timestamp.ToString(CultureInfo.CurrentCulture)) as IList<string>,
+            //        ShowSeparatorLines = false
+            //    }
+            //};
 
-            YAxes = new List<Axis>
-            {
-                new()
-                {
-                    IsVisible = true,
-                    MaxLimit = goldPriceList.Max(x => x.Price + 1),
-                    MinLimit = goldPriceList.Min(x => x.Price - 1),
-                    ShowSeparatorLines = false
-                }
-            };
+            //YAxes = new List<Axis>
+            //{
+            //    new()
+            //    {
+            //        IsVisible = true,
+            //        MaxLimit = goldPriceList.Max(x => x.Price + 1),
+            //        MinLimit = goldPriceList.Min(x => x.Price - 1),
+            //        ShowSeparatorLines = false
+            //    }
+            //};
         }
 
-        public ObservableCollection<ISeries> Series
-        {
-            get => _series;
-            set
-            {
-                _series = value;
-                OnPropertyChanged();
-            }
-        }
+        //public ObservableCollection<ISeries> Series
+        //{
+        //    get => _series;
+        //    set
+        //    {
+        //        _series = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
-        public List<Axis> XAxes 
-        {
-            get => _xAxes;
-            set
-            {
-                _xAxes = value;
-                OnPropertyChanged();
-            }
-        }
+        //public List<Axis> XAxes 
+        //{
+        //    get => _xAxes;
+        //    set
+        //    {
+        //        _xAxes = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
-        public List<Axis> YAxes 
-        {
-            get => _yAxes;
-            set
-            {
-                _yAxes = value;
-                OnPropertyChanged();
-            }
-        }
+        //public List<Axis> YAxes 
+        //{
+        //    get => _yAxes;
+        //    set
+        //    {
+        //        _yAxes = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         #endregion Gold (Gold Mode)
 
