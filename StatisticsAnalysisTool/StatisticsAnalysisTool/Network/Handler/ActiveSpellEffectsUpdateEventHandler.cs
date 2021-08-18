@@ -2,7 +2,7 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Network.Controller;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Events;
 using System.Threading.Tasks;
 

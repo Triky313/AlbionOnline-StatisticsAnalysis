@@ -7,14 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StatisticsAnalysisTool.Network.Controller
+namespace StatisticsAnalysisTool.Network.Manager
 {
     public class LootController : ILootController
     {
         private readonly TrackingController _trackingController;
 
-        private readonly Dictionary<long, Guid> _putLoot = new Dictionary<long, Guid>();
-        private readonly List<DiscoveredLoot> _discoveredLoot = new List<DiscoveredLoot>();
+        private readonly Dictionary<long, Guid> _putLoot = new ();
+        private readonly List<DiscoveredLoot> _discoveredLoot = new ();
 
         public LootController(TrackingController trackingController)
         {

@@ -1,7 +1,7 @@
 ﻿using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 
-namespace StatisticsAnalysisTool.Network.Controller
+namespace StatisticsAnalysisTool.Network.Manager
 {
     public interface ILootController
     {

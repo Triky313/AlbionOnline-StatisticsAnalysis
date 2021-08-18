@@ -66,13 +66,21 @@ namespace StatisticsAnalysisTool.Views
         private void ImageAwesome_MouseEnter(object sender, MouseEventArgs e)
         {
             if (sender is ImageAwesome icon)
+            {
+#pragma warning disable CA1416 // Validate platform compatibility
                 icon.Spin = true;
+#pragma warning restore CA1416 // Validate platform compatibility
+            }
         }
 
         private void ImageAwesome_MouseLeave(object sender, MouseEventArgs e)
         {
             if (sender is ImageAwesome icon)
+            {
+#pragma warning disable CA1416 // Validate platform compatibility
                 icon.Spin = false;
+#pragma warning restore CA1416 // Validate platform compatibility
+            }
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -15,14 +15,14 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 
-namespace StatisticsAnalysisTool.Network.Controller
+namespace StatisticsAnalysisTool.Network.Manager
 {
     public class TrackingController
     {
         private const int _maxNotifications = 1000;
         private const int _maxEnteredCluster = 500;
 
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private string _lastClusterHash;
