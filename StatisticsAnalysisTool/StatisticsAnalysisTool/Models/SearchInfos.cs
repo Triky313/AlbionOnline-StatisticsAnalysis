@@ -1,76 +1,76 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models
 {
     public class GameInfoSearchResponse
     {
-        [JsonProperty(PropertyName = "guilds")]
+        [JsonPropertyName("guilds")]
         public List<SearchGuildResponse> SearchGuilds { get; set; }
 
-        [JsonProperty(PropertyName = "players")]
+        [JsonPropertyName("players")]
         public List<SearchPlayerResponse> SearchPlayer { get; set; }
     }
 
     public class SearchGuildResponse
     {
-        [JsonProperty(PropertyName = "Id")] public string Id { get; set; }
+        [JsonPropertyName("Id")] public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "Name")] public string Name { get; set; }
+        [JsonPropertyName("Name")] public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "AllianceId")]
+        [JsonPropertyName("AllianceId")]
         public string AllianceId { get; set; }
 
-        [JsonProperty(PropertyName = "AllianceName")]
+        [JsonPropertyName("AllianceName")]
         public string AllianceName { get; set; }
 
-        [JsonProperty(PropertyName = "KillFame")]
+        [JsonPropertyName("KillFame")]
         public ulong? KillFame { get; set; }
 
-        [JsonProperty(PropertyName = "DeathFame")]
+        [JsonPropertyName("DeathFame")]
         public ulong? DeathFame { get; set; }
     }
 
     public class SearchPlayerResponse
     {
-        [JsonProperty(PropertyName = "Id")] public string Id { get; set; }
+        [JsonPropertyName("Id")] public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "Name")] public string Name { get; set; }
+        [JsonPropertyName("Name")] public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "GuildId")]
+        [JsonPropertyName("GuildId")]
         public string GuildId { get; set; }
 
-        [JsonProperty(PropertyName = "GuildName")]
+        [JsonPropertyName("GuildName")]
         public string GuildName { get; set; }
 
-        [JsonProperty(PropertyName = "AllianceId")]
+        [JsonPropertyName("AllianceId")]
         public string AllianceId { get; set; }
 
-        [JsonProperty(PropertyName = "AllianceName")]
+        [JsonPropertyName("AllianceName")]
         public string AllianceName { get; set; }
 
-        [JsonProperty(PropertyName = "Avatar")]
+        [JsonPropertyName("Avatar")]
         public string Avatar { get; set; }
 
-        [JsonProperty(PropertyName = "AvatarRing")]
+        [JsonPropertyName("AvatarRing")]
         public string AvatarRing { get; set; }
 
-        [JsonProperty(PropertyName = "KillFame")]
+        [JsonPropertyName("KillFame")]
         public ulong? KillFame { get; set; }
 
-        [JsonProperty(PropertyName = "DeathFame")]
+        [JsonPropertyName("DeathFame")]
         public ulong? DeathFame { get; set; }
 
-        [JsonProperty(PropertyName = "FameRatio")]
+        [JsonPropertyName("FameRatio")]
         public double? FameRatio { get; set; }
 
-        [JsonProperty(PropertyName = "totalKills")]
+        [JsonPropertyName("totalKills")]
         public ulong? TotalKills { get; set; }
 
-        [JsonProperty(PropertyName = "gvgKills")]
+        [JsonPropertyName("gvgKills")]
         public ulong? GvgKills { get; set; }
 
-        [JsonProperty(PropertyName = "gvgWon")]
+        [JsonPropertyName("gvgWon")]
         public ulong? GvgWon { get; set; }
     }
 }

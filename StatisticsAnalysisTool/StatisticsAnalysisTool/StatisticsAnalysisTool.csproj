@@ -317,7 +317,6 @@
     <PackageReference Include="Autoupdater.NET.Official" Version="1.7.0" />
     <PackageReference Include="FontAwesome5" Version="2.1.4" />
     <PackageReference Include="log4net" Version="2.0.12" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="PacketDotNet" Version="1.2.0" />
     <PackageReference Include="Pastel" Version="2.1.0" />
     <PackageReference Include="SharpPcap" Version="5.4.0" />

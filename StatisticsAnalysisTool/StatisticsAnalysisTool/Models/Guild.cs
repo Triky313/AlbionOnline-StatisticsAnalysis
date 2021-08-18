@@ -1,5 +1,5 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.Models
         public object AllianceName { get; set; }
         public object Logo { get; set; }
 
-        [JsonProperty(PropertyName = "killFame")]
+        [JsonPropertyName("killFame")]
         public ulong KillFame { get; set; }
 
         public ulong DeathFame { get; set; }

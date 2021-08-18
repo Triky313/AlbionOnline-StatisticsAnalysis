@@ -417,8 +417,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (isItemListLoaded)
             {
-                ItemController.SetFavoriteItemsFromLocalFile();
-
+                await ItemController.SetFavoriteItemsFromLocalFileAsync();
                 await ItemController.GetItemInformationListFromLocalAsync();
                 IsFullItemInformationCompleteCheck();
 

@@ -1,5 +1,4 @@
 ﻿using log4net;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -11,6 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.GameData
@@ -242,7 +242,7 @@ namespace StatisticsAnalysisTool.GameData
                 var localItemString =
                     File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.LootChestDataFileName),
                         Encoding.UTF8);
-                return JsonConvert.DeserializeObject<LootChestRoot>(localItemString).LootChests.LootChest;
+                return JsonSerializer.Deserialize<LootChestRoot>(localItemString)?.LootChests.LootChest;
             }
             catch (Exception e)
             {

@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
@@ -11,7 +11,8 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         }
 
         public int ItemId { get; set; }
-        [JsonIgnore] public Item Item { get; set; }
+        [JsonIgnore] 
+        public Item Item { get; set; }
         public DateTime UtcPickupTime { get; }
         public int Quantity { get; set; }
         public string LootedBody { get; set; }

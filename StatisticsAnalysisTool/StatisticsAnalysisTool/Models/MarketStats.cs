@@ -1,28 +1,28 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models
 {
     public class MarketStatResponse
     {
-        [JsonProperty(PropertyName = "timestamps")]
+        [JsonPropertyName("timestamps")]
         public List<ulong> TimeStamps { get; set; }
 
-        [JsonProperty(PropertyName = "prices_min")]
+        [JsonPropertyName("prices_min")]
         public List<ulong> PricesMin { get; set; }
 
-        [JsonProperty(PropertyName = "prices_max")]
+        [JsonPropertyName("prices_max")]
         public List<ulong> PricesMax { get; set; }
 
-        [JsonProperty(PropertyName = "prices_avg")]
+        [JsonPropertyName("prices_avg")]
         public List<decimal> PricesAvg { get; set; }
     }
 
     public class MarketStatChartResponse
     {
-        [JsonProperty(PropertyName = "location")]
+        [JsonPropertyName("location")]
         public string Location { get; set; }
 
-        [JsonProperty(PropertyName = "data")] public MarketStatResponse Data { get; set; }
+        [JsonPropertyName("data")] public MarketStatResponse Data { get; set; }
     }
 }

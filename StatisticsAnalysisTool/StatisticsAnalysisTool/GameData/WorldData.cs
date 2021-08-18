@@ -1,5 +1,4 @@
 using log4net;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -11,6 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.GameData
@@ -215,10 +215,15 @@ namespace StatisticsAnalysisTool.GameData
         {
             try
             {
+                var options = new JsonSerializerOptions()
+                {
+                    ReadCommentHandling = JsonCommentHandling.Skip
+                };
+
                 var localItemString =
                     File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.WorldDataDirectoryName, Settings.Default.WorldDataFileName),
                         Encoding.UTF8);
-                return ConvertItemJsonObjectToMapData(JsonConvert.DeserializeObject<ObservableCollection<WorldJsonObject>>(localItemString));
+                return ConvertItemJsonObjectToMapData(JsonSerializer.Deserialize<ObservableCollection<WorldJsonObject>>(localItemString, options));
             }
             catch (Exception e)
             {

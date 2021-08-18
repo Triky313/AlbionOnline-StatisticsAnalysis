@@ -1,5 +1,4 @@
 ﻿using log4net;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
@@ -12,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -153,9 +153,15 @@ namespace StatisticsAnalysisTool.Common
                 try
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
+                    var alertSaveObjectList = JsonSerializer.Deserialize<List<AlertSaveObject>>(localItemString);
 
-                    foreach (var alert in JsonConvert.DeserializeObject<List<AlertSaveObject>>(localItemString))
-                        ActivateAlert(alert.UniqueName, alert.MinSellUndercutPrice);
+                    if (alertSaveObjectList != null)
+                    {
+                        foreach (var alert in alertSaveObjectList)
+                        {
+                            ActivateAlert(alert.UniqueName, alert.MinSellUndercutPrice);
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -169,7 +175,7 @@ namespace StatisticsAnalysisTool.Common
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ActiveAlertsFileName}";
             var activeItemAlerts = _alerts.Select(alert => new AlertSaveObject
                 {UniqueName = alert.Item.UniqueName, MinSellUndercutPrice = alert.AlertModeMinSellPriceIsUndercutPrice}).ToList();
-            var fileString = JsonConvert.SerializeObject(activeItemAlerts);
+            var fileString = JsonSerializer.Serialize(activeItemAlerts);
 
             try
             {

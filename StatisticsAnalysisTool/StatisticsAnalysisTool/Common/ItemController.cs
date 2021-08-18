@@ -1,5 +1,4 @@
 using log4net;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -12,6 +11,8 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -271,8 +272,15 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
+
+                var options = new JsonSerializerOptions()
+                {
+                    NumberHandling = JsonNumberHandling.AllowReadingFromString |
+                                     JsonNumberHandling.WriteAsString
+                };
+
                 var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", Encoding.UTF8);
-                return ConvertItemJsonObjectToItem(JsonConvert.DeserializeObject<ObservableCollection<ItemJsonObject>>(localItemString));
+                return ConvertItemJsonObjectToItem(JsonSerializer.Deserialize<ObservableCollection<ItemJsonObject>>(localItemString, options));
             }
             catch
             {
@@ -315,22 +323,26 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static void SetFavoriteItemsFromLocalFile()
+        public static async Task SetFavoriteItemsFromLocalFileAsync()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
             if (File.Exists(localFilePath))
             {
                 try
                 {
-                    var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                    foreach (var uniqueName in JsonConvert.DeserializeObject<List<string>>(localItemString))
-                    {
-                        var item = Items.FirstOrDefault(i => i.UniqueName == uniqueName);
-                        if (item != null)
+                    var localItemString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
+
+                    var favoriteItemList = JsonSerializer.Deserialize<List<string>>(localItemString);
+                    
+                    if (favoriteItemList != null)
+                        foreach (var uniqueName in favoriteItemList)
                         {
-                            item.IsFavorite = true;
+                            var item = Items.FirstOrDefault(i => i.UniqueName == uniqueName);
+                            if (item != null)
+                            {
+                                item.IsFavorite = true;
+                            }
                         }
-                    }
                 }
                 catch (Exception e)
                 {
@@ -345,7 +357,7 @@ namespace StatisticsAnalysisTool.Common
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.FavoriteItemsFileName}";
             var favoriteItems = Items?.Where(x => x.IsFavorite);
             var toSaveFavoriteItems = favoriteItems?.Select(x => x.UniqueName);
-            var fileString = JsonConvert.SerializeObject(toSaveFavoriteItems);
+            var fileString = JsonSerializer.Serialize(toSaveFavoriteItems);
 
             try
             {
@@ -426,7 +438,7 @@ namespace StatisticsAnalysisTool.Common
             var list = _itemInformationList;
             if (list == null) return;
 
-            var itemInformationString = JsonConvert.SerializeObject(list);
+            var itemInformationString = JsonSerializer.Serialize(list);
 
             using var writer = new StreamWriter(FullItemInformationFilePath);
             writer.Write(itemInformationString);
@@ -445,7 +457,7 @@ namespace StatisticsAnalysisTool.Common
                 {
                     using var streamReader = new StreamReader(FullItemInformationFilePath, Encoding.UTF8);
                     var readContents = streamReader.ReadToEnd();
-                    _itemInformationList = JsonConvert.DeserializeObject<ObservableCollection<ItemInformation>>(readContents);
+                    _itemInformationList = JsonSerializer.Deserialize<ObservableCollection<ItemInformation>>(readContents);
                 }
                 else
                     _itemInformationList = new ObservableCollection<ItemInformation>();

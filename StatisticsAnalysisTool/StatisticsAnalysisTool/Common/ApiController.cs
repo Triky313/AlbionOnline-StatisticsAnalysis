@@ -1,5 +1,4 @@
 ﻿using log4net;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common
@@ -42,7 +42,7 @@ namespace StatisticsAnalysisTool.Common
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var itemInfo = JsonConvert.DeserializeObject<ItemInformation>(await content.ReadAsStringAsync());
+                    var itemInfo = JsonSerializer.Deserialize<ItemInformation>(await content.ReadAsStringAsync());
                     if (itemInfo != null)
                     {
                         itemInfo.HttpStatus = HttpStatusCode.OK;
@@ -115,7 +115,7 @@ namespace StatisticsAnalysisTool.Common
                 }
 
                 using var content = response.Content;
-                return JsonConvert.DeserializeObject<List<MarketResponse>>(await content.ReadAsStringAsync());
+                return JsonSerializer.Deserialize<List<MarketResponse>>(await content.ReadAsStringAsync());
             }
             catch (TooManyRequestsException)
             {
@@ -160,7 +160,7 @@ namespace StatisticsAnalysisTool.Common
                     throw new TooManyRequestsException();
                 }
 
-                return JsonConvert.DeserializeObject<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
+                return JsonSerializer.Deserialize<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
             }
             catch (TooManyRequestsException)
             {
@@ -186,7 +186,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 using var response = await client.GetAsync(url);
                 using var content = response.Content;
-                return JsonConvert.DeserializeObject<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
+                return JsonSerializer.Deserialize<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
             }
             catch (Exception e)
             {
@@ -207,7 +207,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 using var response = await client.GetAsync(url);
                 using var content = response.Content;
-                return JsonConvert.DeserializeObject<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ??
+                return JsonSerializer.Deserialize<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ??
                        gameInfoPlayerResponse;
             }
             catch (Exception e)
@@ -256,7 +256,7 @@ namespace StatisticsAnalysisTool.Common
                 using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 var contentString = await content.ReadAsStringAsync();
-                return string.IsNullOrEmpty(contentString) ? new List<GoldResponseModel>() : JsonConvert.DeserializeObject<List<GoldResponseModel>>(contentString);
+                return string.IsNullOrEmpty(contentString) ? new List<GoldResponseModel>() : JsonSerializer.Deserialize<List<GoldResponseModel>>(contentString);
             }
             catch (Exception e)
             {

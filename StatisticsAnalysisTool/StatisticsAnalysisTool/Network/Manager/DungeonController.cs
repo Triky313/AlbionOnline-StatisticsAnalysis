@@ -1,5 +1,4 @@
 using log4net;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
@@ -16,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
@@ -817,7 +817,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 try
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                    var dungeons = JsonConvert.DeserializeObject<List<DungeonObject>>(localItemString) ?? new List<DungeonObject>();
+                    var dungeons = JsonSerializer.Deserialize<List<DungeonObject>>(localItemString) ?? new List<DungeonObject>();
                     _dungeons = dungeons;
                     return;
                 }
@@ -840,7 +840,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             try
             {
                 var toSaveDungeons = _dungeons.Where(x => x is { Status: DungeonStatus.Done });
-                var fileString = JsonConvert.SerializeObject(toSaveDungeons);
+                var fileString = JsonSerializer.Serialize(toSaveDungeons);
                 File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
             }
             catch (Exception e)
