@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class ApiController
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(string uniqueName)
         {
@@ -52,14 +52,14 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (TaskCanceledException ex)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, ex);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, ex);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
                 return null;
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return null;
             }
         }
@@ -116,13 +116,13 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (TooManyRequestsException)
             {
-                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, new TooManyRequestsException());
+                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
                 throw new TooManyRequestsException();
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return null;
             }
         }
@@ -161,13 +161,13 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (TooManyRequestsException)
             {
-                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, new TooManyRequestsException());
+                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
                 throw new TooManyRequestsException();
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return null;
             }
         }
@@ -187,8 +187,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return gameInfoSearchResponse;
             }
         }
@@ -209,8 +209,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return gameInfoPlayerResponse;
             }
         }
@@ -234,8 +234,8 @@ namespace StatisticsAnalysisTool.Common
         //        }
         //        catch (Exception e)
         //        {
-        //            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-        //            Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+        //            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+        //            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         //            return null;
         //        }
         //    }
@@ -257,8 +257,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return new List<GoldResponseModel>();
             }
         }

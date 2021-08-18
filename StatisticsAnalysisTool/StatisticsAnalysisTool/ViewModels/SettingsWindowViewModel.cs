@@ -22,7 +22,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private static FileSettingInformation _refreshRatesSelection;
         private static ObservableCollection<FileSettingInformation> _updateItemListByDays = new ObservableCollection<FileSettingInformation>();
         private static FileSettingInformation _updateItemListByDaysSelection;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
         private ObservableCollection<FileInformation> _alertSounds = new ObservableCollection<FileInformation>();
         private FileInformation _alertSoundSelection;
@@ -71,8 +71,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
                 catch (CultureNotFoundException e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
 
             LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.TextInfo.CultureName);

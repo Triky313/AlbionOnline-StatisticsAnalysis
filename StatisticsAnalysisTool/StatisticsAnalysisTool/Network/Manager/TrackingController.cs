@@ -91,7 +91,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType,
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
                 $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'",
                 ConsoleManager.EventMapChangeColor);
 
@@ -138,7 +138,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             if (_mainWindow != null) return false;
 
-            Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType}: _mainWindow is null.");
+            Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType}: _mainWindow is null.");
             return true;
         }
 

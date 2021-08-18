@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.Network
 {
     public class UpdateMoneyEvent : BaseEvent
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public UpdateMoneyEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
@@ -29,8 +29,8 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (ArgumentNullException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 

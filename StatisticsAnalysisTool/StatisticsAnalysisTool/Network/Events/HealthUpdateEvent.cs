@@ -11,7 +11,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class HealthUpdateEvent : BaseEvent
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         public long CauserId;
         public int CausingSpellType;
         public EffectOrigin EffectOrigin;
@@ -70,13 +70,13 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
             catch (ArgumentNullException ex)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, ex);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, ex);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
     }

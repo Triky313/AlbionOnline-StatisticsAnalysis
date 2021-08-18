@@ -30,7 +30,7 @@ namespace StatisticsAnalysisTool.ViewModels
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private static MainWindow _mainWindow;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
@@ -287,8 +287,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -539,8 +539,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -565,8 +565,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (ArgumentNullException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 var catchItemWindow = new ItemWindow(item);
                 catchItemWindow.Show();
             }
@@ -1047,8 +1047,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 

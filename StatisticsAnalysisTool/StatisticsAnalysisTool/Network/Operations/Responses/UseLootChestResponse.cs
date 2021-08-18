@@ -68,7 +68,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
     }

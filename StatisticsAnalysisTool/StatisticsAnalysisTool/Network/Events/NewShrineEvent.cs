@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class NewShrineEvent : BaseEvent
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         
         public NewShrineEvent(Dictionary<byte, object> parameters) : base(parameters)
         {

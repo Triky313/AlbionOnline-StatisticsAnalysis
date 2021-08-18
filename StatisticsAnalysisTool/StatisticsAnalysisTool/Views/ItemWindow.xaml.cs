@@ -16,7 +16,7 @@ namespace StatisticsAnalysisTool.Views
     {
 
         private readonly ItemWindowViewModel _itemWindowViewModel;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public ItemWindow(Item item)
         {

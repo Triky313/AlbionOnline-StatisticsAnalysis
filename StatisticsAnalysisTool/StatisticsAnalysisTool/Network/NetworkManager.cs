@@ -3,8 +3,8 @@ using log4net;
 using PacketDotNet;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Handler;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -147,12 +147,12 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (OverflowException ex)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, ex);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
                 Log.Error(nameof(PacketHandler), ex);
             }
             catch (Exception exc)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, exc);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, exc);
                 Log.Error(nameof(PacketHandler), exc);
             }
         }

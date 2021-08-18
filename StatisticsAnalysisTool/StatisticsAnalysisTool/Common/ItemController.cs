@@ -21,7 +21,7 @@ namespace StatisticsAnalysisTool.Common
 {
     public class ItemController
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static ObservableCollection<Item> Items;
 
@@ -334,8 +334,8 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().Name, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
                 }
             }
         }
@@ -353,8 +353,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().Name, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
             }
         }
 

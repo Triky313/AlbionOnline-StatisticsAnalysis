@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Common
 {
     public class AlertController
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly ObservableCollection<Alert> _alerts = new ObservableCollection<Alert>();
         private readonly ICollectionView _itemsView;
         private readonly MainWindow _mainWindow;
@@ -79,8 +79,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return false;
             }
         }
@@ -101,8 +101,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -123,8 +123,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -159,8 +159,8 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
         }
 
@@ -177,8 +177,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 

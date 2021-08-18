@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class InCombatStateUpdateEvent : BaseEvent
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         public bool InActiveCombat;
         public bool InPassiveCombat;
 
@@ -38,8 +38,8 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
     }

@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Network.Manager
     {
         private const int _maxDungeons = 9999;
 
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly TrackingController _trackingController;
         private Guid? _currentGuid;
@@ -155,8 +155,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
 
             SetDungeonStatsDay();
@@ -193,8 +193,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
             }
 
@@ -354,8 +354,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
             }
         }
@@ -383,8 +383,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -585,8 +585,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -802,8 +802,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
             catch (ArgumentNullException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return null;
             }
         }
@@ -823,8 +823,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                     _dungeons = new List<DungeonObject>();
                     return;
                 }
@@ -845,8 +845,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
     }

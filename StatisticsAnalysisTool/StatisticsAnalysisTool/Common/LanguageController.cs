@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Common
     {
         private static readonly Dictionary<string, string> _translations = new Dictionary<string, string>();
         private static CultureInfo _currentCultureInfo;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         public static List<FileInformation> LanguageFiles { get; set; }
 
         public static CultureInfo CurrentCultureInfo
@@ -33,8 +33,8 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
             }
         }
@@ -62,8 +62,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (CultureNotFoundException)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, new CultureNotFoundException());
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, new CultureNotFoundException());
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, new CultureNotFoundException());
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, new CultureNotFoundException());
                 MessageBox.Show("No culture info found!", Translation("ERROR"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
@@ -113,15 +113,15 @@ namespace StatisticsAnalysisTool.Common
             catch (ArgumentNullException e)
             {
                 MessageBox.Show(e.Message, Translation("ERROR"));
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return false;
             }
             catch (FileNotFoundException ex)
             {
                 MessageBox.Show("Language file not found. ", Translation("ERROR"), MessageBoxButton.OK, MessageBoxImage.Error);
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, ex);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, ex);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
                 return false;
             }
         }
@@ -139,8 +139,8 @@ namespace StatisticsAnalysisTool.Common
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, Translation("ERROR"));
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return false;
             }
 

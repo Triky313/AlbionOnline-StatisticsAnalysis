@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.GameData
     public static class DungeonObjectData
     {
         public static IEnumerable<LootChest> LootChests;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static DungeonMode GetDungeonMode(string value)
         {
@@ -96,7 +96,7 @@ namespace StatisticsAnalysisTool.GameData
                 return Faction.Avalon;
             }
 
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType, $"GetFaction Unknown: {value}", ConsoleManager.EventMapChangeColor);
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"GetFaction Unknown: {value}", ConsoleManager.EventMapChangeColor);
             return Faction.Unknown;
         }
 
@@ -246,7 +246,7 @@ namespace StatisticsAnalysisTool.GameData
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return new List<LootChest>();
             }
         }
@@ -267,8 +267,8 @@ namespace StatisticsAnalysisTool.GameData
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return false;
             }
         }

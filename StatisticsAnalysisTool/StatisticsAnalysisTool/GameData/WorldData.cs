@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.GameData
     public static class WorldData
     {
         public static ObservableCollection<ClusterInfo> MapData;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static string GetUniqueNameOrDefault(string index)
         {
@@ -96,8 +96,8 @@ namespace StatisticsAnalysisTool.GameData
 
             if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
 
-            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, $"MapType unknown: {index}");
-            Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - MapType unknown: {index}");
+            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, $"MapType unknown: {index}");
+            Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType} - MapType unknown: {index}");
 
             return MapType.Unknown;
         }
@@ -222,8 +222,8 @@ namespace StatisticsAnalysisTool.GameData
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return new ObservableCollection<ClusterInfo>();
             }
         }
@@ -258,14 +258,14 @@ namespace StatisticsAnalysisTool.GameData
             }
             catch (HttpRequestException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e.InnerException);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e.InnerException);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e.InnerException);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e.InnerException);
                 return false;
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return false;
             }
         }

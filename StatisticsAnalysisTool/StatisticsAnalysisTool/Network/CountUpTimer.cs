@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.Network
 {
     public class CountUpTimer
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private readonly MainWindowViewModel _mainWindowViewModel;
 
@@ -215,7 +215,7 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(GetType().Name, e);
             }
         }

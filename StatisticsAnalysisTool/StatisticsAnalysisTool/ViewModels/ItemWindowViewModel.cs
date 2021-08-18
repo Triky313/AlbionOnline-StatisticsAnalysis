@@ -29,7 +29,7 @@ namespace StatisticsAnalysisTool.ViewModels
             ToManyRequests
         }
 
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly ItemWindow _mainWindow;
         private List<MarketQualityObject> _allQualityPricesList;
         private string _averagePrices;
@@ -951,8 +951,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (Exception ex)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, ex);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, ex);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
             }
         }
 
