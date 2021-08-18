@@ -20,7 +20,7 @@ namespace StatisticsAnalysisTool.Network
         private static IPhotonReceiver _receiver;
         public static ReceiverBuilder builder;
         private static MainWindowViewModel _mainWindowViewModel;
-        private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
+        private static readonly List<ICaptureDevice> _capturedDevices = new();
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static bool IsNetworkCaptureRunning => _capturedDevices.Where(device => device.Started).Any(device => device.Started);

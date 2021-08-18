@@ -31,7 +31,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly TrackingController _trackingController;
         private Guid? _currentGuid;
         private Guid? _lastGuid;
-        private List<DungeonObject> _dungeons = new List<DungeonObject>();
+        private List<DungeonObject> _dungeons = new();
 
         public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {

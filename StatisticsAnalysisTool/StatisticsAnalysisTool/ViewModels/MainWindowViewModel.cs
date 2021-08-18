@@ -34,18 +34,18 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
-        private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
+        private readonly Dictionary<ViewMode, Grid> viewModeGrid = new();
         private Visibility _allianceInformationVisibility;
         private double _allianceInfoWidth;
         private int _currentGoldPrice;
         private string _currentGoldPriceTimestamp;
         private Visibility _currentMapInformationVisibility;
         private double _currentMapInfoWidth;
-        private ObservableCollection<DamageMeterFragment> _damageMeter = new ObservableCollection<DamageMeterFragment>();
-        private List<DamageMeterSortStruct> _damageMeterSort = new List<DamageMeterSortStruct>();
+        private ObservableCollection<DamageMeterFragment> _damageMeter = new();
+        private List<DamageMeterSortStruct> _damageMeterSort = new();
         private DamageMeterSortStruct _damageMeterSortSelection;
-        private DungeonStats _dungeonStatsDay = new DungeonStats();
-        private DungeonStats _dungeonStatsTotal = new DungeonStats();
+        private DungeonStats _dungeonStatsDay = new();
+        private DungeonStats _dungeonStatsTotal = new();
         private string _errorBarText;
         private Visibility _errorBarVisibility;
         private string _fullItemInformationExistLocal;
@@ -61,15 +61,15 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingActive;
         private bool _isTrackingResetByMapChangeActive;
         private bool _isTxtSearchEnabled;
-        private Dictionary<Category, string> _itemCategories = new Dictionary<Category, string>();
+        private Dictionary<Category, string> _itemCategories = new();
         private Visibility _itemCategoriesVisibility;
         private string _itemCounterString;
-        private Dictionary<ItemLevel, string> _itemLevels = new Dictionary<ItemLevel, string>();
+        private Dictionary<ItemLevel, string> _itemLevels = new();
         private Visibility _itemLevelsVisibility;
-        private Dictionary<ParentCategory, string> _itemParentCategories = new Dictionary<ParentCategory, string>();
+        private Dictionary<ParentCategory, string> _itemParentCategories = new();
         private Visibility _itemParentCategoriesVisibility;
         private ICollectionView _itemsView;
-        private Dictionary<ItemTier, string> _itemTiers = new Dictionary<ItemTier, string>();
+        private Dictionary<ItemTier, string> _itemTiers = new();
         private Visibility _itemTiersVisibility;
         //private List<Axis> _xAxes;
         //private List<Axis> _yAxes;
@@ -83,11 +83,11 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _loadIconVisibility;
         private string _loadTranslation;
         private int _localImageCounter;
-        private ObservableCollection<ModeStruct> _modes = new ObservableCollection<ModeStruct>();
+        private ObservableCollection<ModeStruct> _modes = new();
         private ModeStruct _modeSelection;
         private string _numberOfValuesTranslation;
-        private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new ObservableCollection<PartyMemberCircle>();
-        private PlayerModeTranslation _playerModeTranslation = new PlayerModeTranslation();
+        private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new();
+        private PlayerModeTranslation _playerModeTranslation = new();
         private string _savedPlayerInformationName;
         private string _searchText;
         private Category _selectedItemCategories;
@@ -106,9 +106,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _trackingAllianceName;
         public TrackingController TrackingController;
         private string _trackingCurrentMapName;
-        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
+        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
         private string _trackingGuildName;
-        private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
+        private ObservableCollection<TrackingNotification> _trackingNotifications = new();
         private string _trackingUsername;
         private MainWindowTranslation _translation;
         private string _updateTranslation;
@@ -116,14 +116,14 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _usernameInfoWidth;
         private DateTime? activateWaitTimer;
         public AlertController AlertManager;
-        private ObservableCollection<MainStatObject> _factionPointStats = new ObservableCollection<MainStatObject>() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
+        private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
         private Visibility _isMainTrackerPopupVisible = Visibility.Hidden;
         private bool _isShowOnlyFavoritesActive;
         private DungeonCloseTimer _dungeonCloseTimer;
         private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
         private double _dungeonStatsGridHeight = 82;
-        private Thickness _dungeonStatsScrollViewerMargin = new Thickness(0, 82, 0, 0);
+        private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
         private bool IsDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
         private TrackingIconType _trackingIconColor;
@@ -135,7 +135,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingFilteredSilver = true;
         private bool _isTrackingFilteredFaction = true;
         private int _partyMemberNumber;
-        private ObservableCollection<ClusterInfo> _enteredCluster = new ObservableCollection<ClusterInfo>();
+        private ObservableCollection<ClusterInfo> _enteredCluster = new();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -946,27 +946,27 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Damage)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Dps)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n"));
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Heal)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Heal} Heal\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Heal} Heal\n"));
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Hps)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n"));
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
             }
         }
 

@@ -53,10 +53,10 @@ namespace StatisticsAnalysisTool.Common
             if (!DirectoryController.CreateDirectoryWhenNotExists(ImageDir) && !Directory.Exists(ImageDir))
                 return;
 
-            image.DownloadCompleted += (sender, args) =>
+            image.DownloadCompleted += (sender, _) =>
             {
                 var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create((BitmapImage) sender));
+                encoder.Frames.Add(BitmapFrame.Create(((BitmapImage) sender)!));
                 using var fileStream = new FileStream(localFilePath, FileMode.Create);
                 encoder.Save(fileStream);
             };

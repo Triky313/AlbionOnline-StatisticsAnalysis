@@ -36,7 +36,7 @@ namespace StatisticsAnalysisTool.Common
         {
             if (IsAlertInCollection(item.UniqueName) || !IsSpaceInAlertsCollection()) return;
 
-            _alerts.CollectionChanged += delegate(object sender, NotifyCollectionChangedEventArgs e)
+            _alerts.CollectionChanged += delegate(object _, NotifyCollectionChangedEventArgs e)
             {
                 if (e.Action == NotifyCollectionChangedAction.Add) SaveActiveAlertsToLocalFile();
             };
@@ -49,7 +49,7 @@ namespace StatisticsAnalysisTool.Common
 
         private void Remove(string uniqueName)
         {
-            _alerts.CollectionChanged += delegate(object sender, NotifyCollectionChangedEventArgs e)
+            _alerts.CollectionChanged += delegate(object _, NotifyCollectionChangedEventArgs e)
             {
                 if (e.Action == NotifyCollectionChangedAction.Remove) SaveActiveAlertsToLocalFile();
             };

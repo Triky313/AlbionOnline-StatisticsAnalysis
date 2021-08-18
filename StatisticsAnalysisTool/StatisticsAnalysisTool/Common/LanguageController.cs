@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class LanguageController
     {
-        private static readonly Dictionary<string, string> _translations = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> _translations = new();
         private static CultureInfo _currentCultureInfo;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         public static List<FileInformation> LanguageFiles { get; set; }

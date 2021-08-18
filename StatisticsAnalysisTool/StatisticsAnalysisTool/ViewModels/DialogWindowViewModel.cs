@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.ViewModels
     {
         private string _title;
         private string _message;
-        private DialogWindowTranslation _dialogWindowTranslation = new DialogWindowTranslation();
+        private DialogWindowTranslation _dialogWindowTranslation = new();
 
         public DialogWindowViewModel(string title, string message)
         {

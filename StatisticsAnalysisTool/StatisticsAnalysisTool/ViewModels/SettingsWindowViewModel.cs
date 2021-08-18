@@ -16,15 +16,15 @@ namespace StatisticsAnalysisTool.ViewModels
     {
         private static SettingsWindow _settingsWindow;
         private static string _itemListSourceUrl;
-        private static ObservableCollection<FileInformation> _languages = new ObservableCollection<FileInformation>();
+        private static ObservableCollection<FileInformation> _languages = new();
         private static FileInformation _languagesSelection;
-        private static ObservableCollection<FileSettingInformation> _refreshRates = new ObservableCollection<FileSettingInformation>();
+        private static ObservableCollection<FileSettingInformation> _refreshRates = new();
         private static FileSettingInformation _refreshRatesSelection;
-        private static ObservableCollection<FileSettingInformation> _updateItemListByDays = new ObservableCollection<FileSettingInformation>();
+        private static ObservableCollection<FileSettingInformation> _updateItemListByDays = new();
         private static FileSettingInformation _updateItemListByDaysSelection;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private ObservableCollection<FileInformation> _alertSounds = new ObservableCollection<FileInformation>();
+        private ObservableCollection<FileInformation> _alertSounds = new();
         private FileInformation _alertSoundSelection;
         private int _fullItemInformationUpdateCycleDays;
         private bool _isOpenItemWindowInNewWindowChecked;

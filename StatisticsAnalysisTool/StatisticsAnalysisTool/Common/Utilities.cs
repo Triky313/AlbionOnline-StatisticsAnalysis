@@ -17,10 +17,10 @@ namespace StatisticsAnalysisTool.Common
             AutoUpdater.Start(Settings.Default.AutoUpdateConfigUrl);
             AutoUpdater.DownloadPath = Environment.CurrentDirectory;
             AutoUpdater.RunUpdateAsAdmin = false;
-            AutoUpdater.ApplicationExitEvent += AutoUpdater_ApplicationExitEvent;
+            AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExit;
         }
 
-        private static void AutoUpdater_ApplicationExitEvent()
+        private static void AutoUpdaterApplicationExit()
         {
             Thread.Sleep(5000);
             Application.Current.Shutdown();

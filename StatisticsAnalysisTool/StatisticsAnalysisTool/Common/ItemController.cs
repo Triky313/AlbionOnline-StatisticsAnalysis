@@ -306,7 +306,7 @@ namespace StatisticsAnalysisTool.Common
                 using var content = response.Content;
 
                 var fileString = await content.ReadAsStringAsync();
-                File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", fileString, Encoding.UTF8);
+                await File.WriteAllTextAsync($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", fileString, Encoding.UTF8);
                 return true;
             }
             catch

@@ -31,8 +31,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         public DungeonController DungeonController;
         public EntityController EntityController;
         public LootController LootController;
-        private readonly List<NotificationType> _notificationTypeFilters = new List<NotificationType>();
-        private readonly List<TrackingNotification> _notifications = new List<TrackingNotification>();
+        private readonly List<NotificationType> _notificationTypeFilters = new();
+        private readonly List<TrackingNotification> _notifications = new();
 
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {

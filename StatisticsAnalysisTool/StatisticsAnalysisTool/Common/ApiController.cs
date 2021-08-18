@@ -43,8 +43,11 @@ namespace StatisticsAnalysisTool.Common
                 if (response.IsSuccessStatusCode)
                 {
                     var itemInfo = JsonConvert.DeserializeObject<ItemInformation>(await content.ReadAsStringAsync());
-                    itemInfo.HttpStatus = HttpStatusCode.OK;
-                    return itemInfo;
+                    if (itemInfo != null)
+                    {
+                        itemInfo.HttpStatus = HttpStatusCode.OK;
+                        return itemInfo;
+                    }
                 }
 
                 emptyItemInfo.HttpStatus = response.StatusCode;
