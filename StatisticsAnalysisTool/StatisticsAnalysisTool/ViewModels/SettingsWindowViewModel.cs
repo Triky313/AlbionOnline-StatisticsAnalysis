@@ -99,7 +99,11 @@ namespace StatisticsAnalysisTool.ViewModels
             #region Alert Sounds
 
             AlertSounds.Clear();
-            foreach (var sound in SoundController.AlertSounds) AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
+            foreach (var sound in SoundController.AlertSounds)
+            {
+                AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
+            }
+
             AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.FileName == Settings.Default.SelectedAlertSound);
 
             #endregion

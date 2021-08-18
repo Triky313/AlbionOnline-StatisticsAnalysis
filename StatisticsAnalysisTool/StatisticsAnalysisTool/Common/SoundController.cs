@@ -12,12 +12,12 @@ namespace StatisticsAnalysisTool.Common
 {
     public class SoundController
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        public static List<FileInformation> AlertSounds { get; set; }
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+        public static List<FileInformation> AlertSounds { get; set; } = new();
 
         public static void InitializeSoundFilesFromDirectory()
         {
-            if (AlertSounds != null)
+            if (AlertSounds?.Count > 0)
             {
                 return;
             }

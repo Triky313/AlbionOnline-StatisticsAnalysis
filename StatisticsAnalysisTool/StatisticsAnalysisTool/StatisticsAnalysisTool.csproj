@@ -59,34 +59,46 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Update="GameFiles\lootchests.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="GameFiles\world.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Resource Include="Languages\de-DE.xml">
+    <Content Include="GameFiles\lootchests.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Languages\en-US.xml">
+    </Content>
+    <Content Include="GameFiles\world.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Languages\pt-BR.xml">
+    </Content>
+    <Content Include="Languages\de-DE.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Languages\ru-RU.xml">
+    </Content>
+    <Content Include="Languages\en-US.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Languages\tr-TR.xml">
+    </Content>
+    <Content Include="Languages\pt-BR.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Languages\zh-CN.xml">
+    </Content>
+    <Content Include="Languages\ru-RU.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
+    <Content Include="Languages\tr-TR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Languages\zh-CN.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\alert1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\alert2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\alert3.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\alert4.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Resources\alert_window_background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -154,7 +166,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\feature_image.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\book.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -162,20 +174,48 @@
     <Resource Include="Resources\faction_unknown_banner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\corrupted_banner.png" />
-    <Resource Include="Resources\hellgate_banner.png" />
-    <Resource Include="Resources\factioncoin_bridgewatch.png" />
-    <Resource Include="Resources\factioncoin_caerleon.png" />
-    <Resource Include="Resources\factioncoin_fortsterling.png" />
-    <Resource Include="Resources\factioncoin_lymhurst.png" />
-    <Resource Include="Resources\factioncoin_martlock.png" />
-    <Resource Include="Resources\factioncoin_thetford.png" />
-    <Resource Include="Resources\factionflag_bridgewatch.png" />
-    <Resource Include="Resources\factionflag_caerleon.png" />
-    <Resource Include="Resources\factionflag_fortsterling.png" />
-    <Resource Include="Resources\factionflag_lymhurst.png" />
-    <Resource Include="Resources\factionflag_martlock.png" />
-    <Resource Include="Resources\factionflag_thetford.png" />
+    <Resource Include="Resources\corrupted_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\hellgate_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_bridgewatch.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_caerleon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_fortsterling.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_lymhurst.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_martlock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_thetford.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_bridgewatch.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_caerleon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_fortsterling.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_lymhurst.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_martlock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_thetford.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\shields.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -217,10 +257,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\goldchest.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\gold.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Trash.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -228,16 +268,16 @@
     <Resource Include="ao-update-check.xml" />
     <Resource Include="logo.ico" />
     <Resource Include="Resources\level3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\level2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\level1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\level0.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\t8.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -288,12 +328,18 @@
     <Compile Remove="Network\SilverCountUpTimer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="GameFiles\lootchests.json" />
+    <None Remove="GameFiles\world.json" />
     <None Remove="Languages\de-DE.xml" />
     <None Remove="Languages\en-US.xml" />
     <None Remove="Languages\pt-BR.xml" />
     <None Remove="Languages\ru-RU.xml" />
     <None Remove="Languages\tr-TR.xml" />
     <None Remove="Languages\zh-CN.xml" />
+    <None Remove="Sounds\alert1.wav" />
+    <None Remove="Sounds\alert2.wav" />
+    <None Remove="Sounds\alert3.wav" />
+    <None Remove="Sounds\alert4.wav" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
