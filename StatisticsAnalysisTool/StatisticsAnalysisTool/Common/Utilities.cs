@@ -4,7 +4,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -17,12 +17,12 @@ namespace StatisticsAnalysisTool.Common
             AutoUpdater.Start(Settings.Default.AutoUpdateConfigUrl);
             AutoUpdater.DownloadPath = Environment.CurrentDirectory;
             AutoUpdater.RunUpdateAsAdmin = false;
-            AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExit;
+            AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExitAsync;
         }
 
-        private static void AutoUpdaterApplicationExit()
+        private static async void AutoUpdaterApplicationExitAsync()
         {
-            Thread.Sleep(5000);
+            await Task.Delay(5000);
             Application.Current.Shutdown();
         }
 

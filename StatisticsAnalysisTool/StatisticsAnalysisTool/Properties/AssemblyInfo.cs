@@ -1,6 +1,7 @@
-﻿using log4net.Config;
+using log4net.Config;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Windows;
 
 // Allgemeine Informationen über eine Assembly werden über die folgenden
@@ -14,6 +15,7 @@ using System.Windows;
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: SupportedOSPlatform("windows7.0")]
 
 // Log4net
 [assembly: XmlConfigurator(ConfigFile = "Log4Net.config", Watch = true)]
