@@ -1,6 +1,5 @@
 using log4net;
 using Newtonsoft.Json;
-using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
@@ -792,14 +791,14 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public static DateTime? GetLowestDate(List<DungeonObject> items)
         {
-            if (items.IsNullOrEmpty())
+            if (items?.Count <= 0)
             {
                 return null;
             }
 
             try
             {
-                return items.Select(x => x.EnterDungeonFirstTime).Min();
+                return items?.Select(x => x.EnterDungeonFirstTime).Min();
             }
             catch (ArgumentNullException e)
             {

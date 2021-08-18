@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+// ReSharper disable UnusedParameter.Local
 
 namespace StatisticsAnalysisTool.Views
 {
@@ -145,6 +146,7 @@ namespace StatisticsAnalysisTool.Views
             await _mainWindowViewModel.SetComparedPlayerModeInfoValues();
         }
 
+        // ReSharper disable once UnusedMember.Local
         private void TxtBoxGoldModeAmountValues_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
@@ -155,7 +157,8 @@ namespace StatisticsAnalysisTool.Views
             e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        // ReSharper disable once UnusedMember.Local
+        private void LoadGoldPrice_Click(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(_mainWindowViewModel.TextBoxGoldModeNumberOfValues, out var numberOfValues))
             {

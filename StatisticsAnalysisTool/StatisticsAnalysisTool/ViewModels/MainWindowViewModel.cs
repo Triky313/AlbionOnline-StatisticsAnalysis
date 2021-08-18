@@ -1,8 +1,5 @@
 using FontAwesome5;
-using LiveCharts;
-using LiveCharts.Wpf;
 using log4net;
-using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
@@ -74,7 +71,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private ICollectionView _itemsView;
         private Dictionary<ItemTier, string> _itemTiers = new Dictionary<ItemTier, string>();
         private Visibility _itemTiersVisibility;
-        private string[] _labels;
+        //private List<Axis> _xAxes;
+        //private List<Axis> _yAxes;
+        //private ObservableCollection<ISeries> _series;
         private Visibility _loadFullItemInfoButtonVisibility;
         private string _loadFullItemInfoProBarCounter;
         private Visibility _loadFullItemInfoProBarGridVisibility;
@@ -95,7 +94,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private ItemLevel _selectedItemLevel;
         private ParentCategory _selectedItemParentCategories;
         private ItemTier _selectedItemTier;
-        private SeriesCollection _seriesCollection;
         private string _famePerHour = "0";
         private string _reSpecPointsPerHour = "0";
         private string _silverPerHour = "0";
@@ -172,7 +170,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Modes.Add(new ModeStruct {Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal});
             Modes.Add(new ModeStruct {Name = LanguageController.Translation("TRACKING"), ViewMode = ViewMode.Tracking});
             Modes.Add(new ModeStruct {Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player});
-            Modes.Add(new ModeStruct {Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold});
+            //Modes.Add(new ModeStruct {Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold});
             ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
 
             #endregion Set Modes to combobox
@@ -200,7 +198,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
-            if (!currentGoldPrice.IsNullOrEmpty())
+            if (currentGoldPrice.Count > 0)
             {
                 CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ??
                                             new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
@@ -340,7 +338,7 @@ namespace StatisticsAnalysisTool.ViewModels
             viewModeGrid.Add(ViewMode.Normal, _mainWindow.GridNormalMode);
             viewModeGrid.Add(ViewMode.Tracking, _mainWindow.GridTrackingMode);
             viewModeGrid.Add(ViewMode.Player, _mainWindow.GridPlayerMode);
-            viewModeGrid.Add(ViewMode.Gold, _mainWindow.GridGoldMode);
+            //viewModeGrid.Add(ViewMode.Gold, _mainWindow.GridGoldMode);
         }
 
         public void SelectViewModeGrid()
@@ -704,52 +702,73 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Gold (Gold Mode)
 
+#pragma warning disable 1998
         public async void SetGoldChart(int count)
+#pragma warning restore 1998
         {
-            var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true);
+            //var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true) as IEnumerable<GoldResponseModel>;
+            //var values = goldPriceList.Select(x => x.Price);
 
-            var date = new List<string>();
-            var amount = new ChartValues<int>();
+            //Series = new ObservableCollection<ISeries>
+            //{
+            //    new ColumnSeries<int>
+            //    {
+            //        Values = values
+            //    }
+            //};
 
-            foreach (var goldPrice in goldPriceList)
-            {
-                date.Add(goldPrice.Timestamp.ToString("g", CultureInfo.CurrentCulture));
-                amount.Add(goldPrice.Price);
-            }
+            //XAxes = new List<Axis>
+            //{
+            //    new()
+            //    {
+            //        IsVisible = true,
+            //        MaxLimit = goldPriceList.Count(),
+            //        //Labels = goldPriceList.Select(x => x.Timestamp.ToString(CultureInfo.CurrentCulture)) as IList<string>,
+            //        ShowSeparatorLines = false
+            //    }
+            //};
 
-            Labels = date.ToArray();
-
-            SeriesCollection = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Title = "Gold",
-                    Values = amount,
-                    Fill = (Brush) Application.Current.Resources["Solid.Color.Gold.Fill"],
-                    Stroke = (Brush) Application.Current.Resources["Solid.Color.Text.Gold"]
-                }
-            };
+            //YAxes = new List<Axis>
+            //{
+            //    new()
+            //    {
+            //        IsVisible = true,
+            //        MaxLimit = goldPriceList.Max(x => x.Price + 1),
+            //        MinLimit = goldPriceList.Min(x => x.Price - 1),
+            //        ShowSeparatorLines = false
+            //    }
+            //};
         }
 
-        public SeriesCollection SeriesCollection
-        {
-            get => _seriesCollection;
-            set
-            {
-                _seriesCollection = value;
-                OnPropertyChanged();
-            }
-        }
+        //public ObservableCollection<ISeries> Series
+        //{
+        //    get => _series;
+        //    set
+        //    {
+        //        _series = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
-        public string[] Labels
-        {
-            get => _labels;
-            set
-            {
-                _labels = value;
-                OnPropertyChanged();
-            }
-        }
+        //public List<Axis> XAxes 
+        //{
+        //    get => _xAxes;
+        //    set
+        //    {
+        //        _xAxes = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
+
+        //public List<Axis> YAxes 
+        //{
+        //    get => _yAxes;
+        //    set
+        //    {
+        //        _yAxes = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         #endregion Gold (Gold Mode)
 
