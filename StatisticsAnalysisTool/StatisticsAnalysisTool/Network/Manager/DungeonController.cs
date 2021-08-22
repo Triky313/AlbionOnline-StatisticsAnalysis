@@ -637,8 +637,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             SetDungeonStatsDay();
             SetDungeonStatsTotal();
-
-            timer.Stop();
+            
             var timespan = timer.Elapsed;
 
             Debug.Print("SetOrUpdateDungeonsDataUiAsync: " + "{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
@@ -695,8 +694,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
                 });
             }
-
-            timer.Stop();
+            
             var timespan = timer.Elapsed;
 
             Debug.Print("RemoveLeftOverDungeonNotificationFragments: " + "{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);

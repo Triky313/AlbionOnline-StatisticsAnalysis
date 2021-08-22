@@ -306,7 +306,7 @@ namespace StatisticsAnalysisTool.Common
         {
             using var client = new HttpClient
             {
-                Timeout = TimeSpan.FromSeconds(90)
+                Timeout = TimeSpan.FromSeconds(300)
             };
             try
             {
