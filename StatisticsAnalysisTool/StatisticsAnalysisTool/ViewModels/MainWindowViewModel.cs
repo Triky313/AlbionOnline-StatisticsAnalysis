@@ -136,6 +136,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingFilteredFaction = true;
         private int _partyMemberNumber;
         private ObservableCollection<ClusterInfo> _enteredCluster = new();
+        private bool _isItemSearchCheckboxesEnabled;
+        private bool _isFilterResetEnabled;
+        private Visibility _gridTryToLoadTheItemListAgainVisibility;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -406,32 +409,42 @@ namespace StatisticsAnalysisTool.ViewModels
 
             SetUiElements();
 
+            ShowInfoWindow();
+            TextBoxGoldModeNumberOfValues = "10";
+
+            await InitItemListAsync().ConfigureAwait(false);
+        }
+
+        public async Task InitItemListAsync()
+        {
             IsTxtSearchEnabled = false;
+            IsItemSearchCheckboxesEnabled = false;
+            IsFilterResetEnabled = false;
             LoadIconVisibility = Visibility.Visible;
+            GridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
 
             var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
             if (!isItemListLoaded)
             {
-                MessageBox.Show(LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"), LanguageController.Translation("ERROR"));
+                SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"));
+                GridTryToLoadTheItemListAgainVisibility = Visibility.Visible;
+
+                return;
             }
 
-            if (isItemListLoaded)
-            {
-                await ItemController.SetFavoriteItemsFromLocalFileAsync();
-                await ItemController.GetItemInformationListFromLocalAsync();
-                IsFullItemInformationCompleteCheck();
+            await ItemController.SetFavoriteItemsFromLocalFileAsync();
+            await ItemController.GetItemInformationListFromLocalAsync();
+            IsFullItemInformationCompleteCheck();
 
-                ItemsView = new ListCollectionView(ItemController.Items);
-                InitAlerts();
+            ItemsView = new ListCollectionView(ItemController.Items);
+            InitAlerts();
 
-                LoadIconVisibility = Visibility.Hidden;
-                IsTxtSearchEnabled = true;
+            LoadIconVisibility = Visibility.Hidden;
+            IsFilterResetEnabled = true;
+            IsItemSearchCheckboxesEnabled = true;
+            IsTxtSearchEnabled = true;
 
-                _mainWindow.Dispatcher?.Invoke(() => { _mainWindow.TxtSearch.Focus(); });
-            }
-
-            ShowInfoWindow();
-            TextBoxGoldModeNumberOfValues = "10";
+            _mainWindow.Dispatcher?.Invoke(() => { _mainWindow.TxtSearch.Focus(); });
         }
 
         private async void InitTracking()
@@ -1944,6 +1957,26 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public bool IsItemSearchCheckboxesEnabled 
+        {
+            get => _isItemSearchCheckboxesEnabled;
+            set
+            {
+                _isItemSearchCheckboxesEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsFilterResetEnabled 
+        {
+            get => _isFilterResetEnabled;
+            set
+            {
+                _isFilterResetEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsDamageMeterResetByMapChangeActive
         {
             get => _isDamageMeterResetByMapChangeActive;
@@ -2096,6 +2129,16 @@ namespace StatisticsAnalysisTool.ViewModels
             get => _factionPointStats;
             set {
                 _factionPointStats = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility GridTryToLoadTheItemListAgainVisibility 
+        {
+            get => _gridTryToLoadTheItemListAgainVisibility;
+            set
+            {
+                _gridTryToLoadTheItemListAgainVisibility = value;
                 OnPropertyChanged();
             }
         }

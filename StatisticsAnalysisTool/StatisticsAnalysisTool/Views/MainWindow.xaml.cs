@@ -246,6 +246,11 @@ namespace StatisticsAnalysisTool.Views
             _mainWindowViewModel.ResetTrackingNotifications();
         }
 
+        private void BtnTryToLoadTheItemListAgain_Click(object sender, RoutedEventArgs e)
+        {
+            _ = _mainWindowViewModel.InitItemListAsync().ConfigureAwait(false);
+        }
+
         private void PartyIcon_MouseUp(object sender, MouseButtonEventArgs e)
         {
             _mainWindowViewModel.ResetParty();

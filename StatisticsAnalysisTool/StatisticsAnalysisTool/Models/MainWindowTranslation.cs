@@ -62,5 +62,6 @@ namespace StatisticsAnalysisTool.Models
         public string OpenExtendedDamageMeterWindow => LanguageController.Translation("OPEN_EXTENDED_DAMAGE_METER_WINDOW");
         public string CopyToClipboard => LanguageController.Translation("COPY_TO_CLIPBOARD");
         public string MapTracking => LanguageController.Translation("MAP_TRACKING");
+        public string TryDownloadingTheItemListAgain => LanguageController.Translation("TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN");
     }
 }

@@ -225,10 +225,10 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<bool> GetItemListFromJsonAsync()
         {
-            var url = Settings.Default.ItemListSourceUrl;
+            var url = GetItemListSourceUrlIfExist();
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
 
-            if (!GetItemListSourceUrlIfExist(ref url))
+            if (string.IsNullOrEmpty(url))
             {
                 return false;
             }
@@ -239,7 +239,10 @@ namespace StatisticsAnalysisTool.Common
 
                 if (fileDateTime.AddDays(Settings.Default.UpdateItemListByDays) < DateTime.Now)
                 {
-                    if (await GetItemListFromWebAsync(url)) Items = GetItemListFromLocal();
+                    if (await GetItemListFromWebAsync(url))
+                    {
+                        Items = GetItemListFromLocal();
+                    }
                     return Items?.Count > 0;
                 }
 
@@ -247,32 +250,35 @@ namespace StatisticsAnalysisTool.Common
                 return Items?.Count > 0;
             }
 
-            if (await GetItemListFromWebAsync(url)) Items = GetItemListFromLocal();
+            if (await GetItemListFromWebAsync(url))
+            {
+                Items = GetItemListFromLocal();
+            }
             return Items?.Count > 0;
         }
 
-        private static bool GetItemListSourceUrlIfExist(ref string url)
+        private static string GetItemListSourceUrlIfExist()
         {
-            if (string.IsNullOrEmpty(Settings.Default.ItemListSourceUrl))
-            {
-                url = Settings.Default.DefaultItemListSourceUrl;
-                if (string.IsNullOrEmpty(url))
-                {
-                    return false;
-                }
+            var url = Settings.Default.ItemListSourceUrl ?? string.Empty;
 
-                Settings.Default.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
-                MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
+            if (string.IsNullOrEmpty(url))
+            {
+                url = Settings.Default.DefaultItemListSourceUrl ?? string.Empty;
+
+                if (!string.IsNullOrEmpty(url))
+                {
+                    Settings.Default.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
+                    MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
+                }
             }
 
-            return true;
+            return url;
         }
 
         private static ObservableCollection<Item> GetItemListFromLocal()
         {
             try
             {
-
                 var options = new JsonSerializerOptions()
                 {
                     NumberHandling = JsonNumberHandling.AllowReadingFromString |
@@ -284,7 +290,24 @@ namespace StatisticsAnalysisTool.Common
             }
             catch
             {
+                DeleteItemList();
                 return new ObservableCollection<Item>();
+            }
+        }
+
+        private static void DeleteItemList()
+        {
+            if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}"))
+            {
+                try
+                {
+                    File.Delete($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
+                }
+                catch (Exception e)
+                {
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
+                }
             }
         }
 
