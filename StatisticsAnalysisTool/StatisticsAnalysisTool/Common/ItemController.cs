@@ -37,7 +37,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static Item GetItemByIndex(int index)
         {
-            return Items.FirstOrDefault(i => i.Index == index);
+            return Items?.FirstOrDefault(i => i.Index == index);
         }
 
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
