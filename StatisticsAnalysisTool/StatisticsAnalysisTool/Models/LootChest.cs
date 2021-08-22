@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models
 {
     public class LootChest
     {
-        [JsonProperty(PropertyName = "@uniquename")]
+        [JsonPropertyName("@uniquename")]
         public string UniqueName { get; set; }
 
-        [JsonProperty(PropertyName = "@faction")]
+        [JsonPropertyName("@faction")]
         public string Faction { get; set; }
     }
 }

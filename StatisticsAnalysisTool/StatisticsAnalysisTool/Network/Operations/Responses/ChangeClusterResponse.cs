@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 {
     public class ChangeClusterResponse : BaseOperation
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public string ClusterMap;
 

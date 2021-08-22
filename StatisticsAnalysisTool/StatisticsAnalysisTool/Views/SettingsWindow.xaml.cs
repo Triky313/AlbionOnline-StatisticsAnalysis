@@ -1,6 +1,9 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using log4net;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Shortcut;
+using System;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace StatisticsAnalysisTool.Views
 {
@@ -14,6 +17,7 @@ namespace StatisticsAnalysisTool.Views
     public partial class SettingsWindow
     {
         private readonly SettingsWindowViewModel _settingsWindowViewModel;
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public SettingsWindow(MainWindowViewModel mainWindowViewModel)
         {
@@ -39,7 +43,16 @@ namespace StatisticsAnalysisTool.Views
 
         private void OpenToolDirectory_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(_settingsWindowViewModel.ToolDirectory);
+            try
+            {
+                Process.Start(new ProcessStartInfo { FileName = _settingsWindowViewModel.ToolDirectory, UseShellExecute = true });
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, LanguageController.Translation("ERROR"));
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
+            }
         }
 
         private void CreateDesktopShortcut_Click(object sender, RoutedEventArgs e)

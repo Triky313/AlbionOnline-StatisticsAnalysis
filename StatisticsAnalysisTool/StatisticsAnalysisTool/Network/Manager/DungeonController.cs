@@ -1,6 +1,4 @@
 using log4net;
-using Newtonsoft.Json;
-using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
@@ -17,22 +15,23 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
-namespace StatisticsAnalysisTool.Network.Controller
+namespace StatisticsAnalysisTool.Network.Manager
 {
     public class DungeonController
     {
         private const int _maxDungeons = 9999;
 
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly TrackingController _trackingController;
         private Guid? _currentGuid;
         private Guid? _lastGuid;
-        private List<DungeonObject> _dungeons = new List<DungeonObject>();
+        private List<DungeonObject> _dungeons = new();
 
         public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
@@ -156,8 +155,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
 
             SetDungeonStatsDay();
@@ -194,8 +193,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
             }
 
@@ -355,8 +354,8 @@ namespace StatisticsAnalysisTool.Network.Controller
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
             }
         }
@@ -384,8 +383,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -586,8 +585,8 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -638,8 +637,7 @@ namespace StatisticsAnalysisTool.Network.Controller
 
             SetDungeonStatsDay();
             SetDungeonStatsTotal();
-
-            timer.Stop();
+            
             var timespan = timer.Elapsed;
 
             Debug.Print("SetOrUpdateDungeonsDataUiAsync: " + "{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
@@ -696,8 +694,7 @@ namespace StatisticsAnalysisTool.Network.Controller
                     _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
                 });
             }
-
-            timer.Stop();
+            
             var timespan = timer.Elapsed;
 
             Debug.Print("RemoveLeftOverDungeonNotificationFragments: " + "{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
@@ -792,19 +789,19 @@ namespace StatisticsAnalysisTool.Network.Controller
 
         public static DateTime? GetLowestDate(List<DungeonObject> items)
         {
-            if (items.IsNullOrEmpty())
+            if (items?.Count <= 0)
             {
                 return null;
             }
 
             try
             {
-                return items.Select(x => x.EnterDungeonFirstTime).Min();
+                return items?.Select(x => x.EnterDungeonFirstTime).Min();
             }
             catch (ArgumentNullException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return null;
             }
         }
@@ -818,14 +815,14 @@ namespace StatisticsAnalysisTool.Network.Controller
                 try
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                    var dungeons = JsonConvert.DeserializeObject<List<DungeonObject>>(localItemString) ?? new List<DungeonObject>();
+                    var dungeons = JsonSerializer.Deserialize<List<DungeonObject>>(localItemString) ?? new List<DungeonObject>();
                     _dungeons = dungeons;
                     return;
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                     _dungeons = new List<DungeonObject>();
                     return;
                 }
@@ -841,13 +838,13 @@ namespace StatisticsAnalysisTool.Network.Controller
             try
             {
                 var toSaveDungeons = _dungeons.Where(x => x is { Status: DungeonStatus.Done });
-                var fileString = JsonConvert.SerializeObject(toSaveDungeons);
+                var fileString = JsonSerializer.Serialize(toSaveDungeons);
                 File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
     }

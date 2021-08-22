@@ -2,7 +2,7 @@
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Network.Controller;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.ViewModels;
 using System;

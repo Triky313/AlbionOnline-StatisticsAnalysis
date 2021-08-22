@@ -1,5 +1,4 @@
 ﻿using log4net;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -9,13 +8,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common
 {
     public static class ApiController
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(string uniqueName)
         {
@@ -42,9 +42,12 @@ namespace StatisticsAnalysisTool.Common
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var itemInfo = JsonConvert.DeserializeObject<ItemInformation>(await content.ReadAsStringAsync());
-                    itemInfo.HttpStatus = HttpStatusCode.OK;
-                    return itemInfo;
+                    var itemInfo = JsonSerializer.Deserialize<ItemInformation>(await content.ReadAsStringAsync());
+                    if (itemInfo != null)
+                    {
+                        itemInfo.HttpStatus = HttpStatusCode.OK;
+                        return itemInfo;
+                    }
                 }
 
                 emptyItemInfo.HttpStatus = response.StatusCode;
@@ -52,14 +55,14 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (TaskCanceledException ex)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, ex);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, ex);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
                 return null;
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return null;
             }
         }
@@ -112,17 +115,17 @@ namespace StatisticsAnalysisTool.Common
                 }
 
                 using var content = response.Content;
-                return JsonConvert.DeserializeObject<List<MarketResponse>>(await content.ReadAsStringAsync());
+                return JsonSerializer.Deserialize<List<MarketResponse>>(await content.ReadAsStringAsync());
             }
             catch (TooManyRequestsException)
             {
-                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, new TooManyRequestsException());
+                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
                 throw new TooManyRequestsException();
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return null;
             }
         }
@@ -157,17 +160,17 @@ namespace StatisticsAnalysisTool.Common
                     throw new TooManyRequestsException();
                 }
 
-                return JsonConvert.DeserializeObject<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
+                return JsonSerializer.Deserialize<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
             }
             catch (TooManyRequestsException)
             {
-                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, new TooManyRequestsException());
+                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
                 throw new TooManyRequestsException();
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return null;
             }
         }
@@ -183,12 +186,12 @@ namespace StatisticsAnalysisTool.Common
             {
                 using var response = await client.GetAsync(url);
                 using var content = response.Content;
-                return JsonConvert.DeserializeObject<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
+                return JsonSerializer.Deserialize<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return gameInfoSearchResponse;
             }
         }
@@ -204,13 +207,13 @@ namespace StatisticsAnalysisTool.Common
             {
                 using var response = await client.GetAsync(url);
                 using var content = response.Content;
-                return JsonConvert.DeserializeObject<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ??
+                return JsonSerializer.Deserialize<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ??
                        gameInfoPlayerResponse;
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return gameInfoPlayerResponse;
             }
         }
@@ -234,8 +237,8 @@ namespace StatisticsAnalysisTool.Common
         //        }
         //        catch (Exception e)
         //        {
-        //            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-        //            Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+        //            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+        //            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         //            return null;
         //        }
         //    }
@@ -253,12 +256,12 @@ namespace StatisticsAnalysisTool.Common
                 using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 var contentString = await content.ReadAsStringAsync();
-                return string.IsNullOrEmpty(contentString) ? new List<GoldResponseModel>() : JsonConvert.DeserializeObject<List<GoldResponseModel>>(contentString);
+                return string.IsNullOrEmpty(contentString) ? new List<GoldResponseModel>() : JsonSerializer.Deserialize<List<GoldResponseModel>>(contentString);
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return new List<GoldResponseModel>();
             }
         }

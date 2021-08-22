@@ -1,6 +1,5 @@
 ﻿using Albion.Network;
 using log4net;
-using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public FixPoint? CurrentReSpecPoints { get; }
 
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public UpdateReSpecPointsEvent(Dictionary<byte, object> parameters) : base(parameters)
         {
@@ -28,7 +27,7 @@ namespace StatisticsAnalysisTool.Network.Events
                     {
                         var reSpecPointsArray = ((int[])parameters[0]).ToDictionary();
 
-                        if (!reSpecPointsArray.IsNullOrEmpty() && reSpecPointsArray.ContainsKey(1))
+                        if (reSpecPointsArray?.Count > 0 && reSpecPointsArray.ContainsKey(1))
                         {
                             CurrentReSpecPoints = FixPoint.FromInternalValue(reSpecPointsArray[1].ObjectToLong() ?? 0);
                         }
@@ -37,7 +36,7 @@ namespace StatisticsAnalysisTool.Network.Events
                     {
                         var reSpecPointsArray = ((long[])parameters[0]).ToDictionary();
 
-                        if (!reSpecPointsArray.IsNullOrEmpty() && reSpecPointsArray.ContainsKey(1))
+                        if (reSpecPointsArray?.Count > 0 && reSpecPointsArray.ContainsKey(1))
                         {
                             CurrentReSpecPoints = FixPoint.FromInternalValue(reSpecPointsArray[1].ObjectToLong() ?? 0);
                         }
@@ -46,13 +45,13 @@ namespace StatisticsAnalysisTool.Network.Events
             }
             catch (ArgumentNullException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
             catch (InvalidCastException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
     }

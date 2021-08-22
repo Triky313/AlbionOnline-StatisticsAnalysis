@@ -11,7 +11,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace StatisticsAnalysisTool.Network.Controller
+#pragma warning disable UA0002 // Types should be upgraded
+namespace StatisticsAnalysisTool.Network.Manager
+#pragma warning restore UA0002 // Types should be upgraded
 {
     public class CombatController
     {

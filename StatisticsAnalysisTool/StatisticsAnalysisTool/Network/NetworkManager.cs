@@ -3,8 +3,8 @@ using log4net;
 using PacketDotNet;
 using SharpPcap;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Network.Controller;
 using StatisticsAnalysisTool.Network.Handler;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -20,8 +20,8 @@ namespace StatisticsAnalysisTool.Network
         private static IPhotonReceiver _receiver;
         public static ReceiverBuilder builder;
         private static MainWindowViewModel _mainWindowViewModel;
-        private static readonly List<ICaptureDevice> _capturedDevices = new List<ICaptureDevice>();
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly List<ICaptureDevice> _capturedDevices = new();
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static bool IsNetworkCaptureRunning => _capturedDevices.Where(device => device.Started).Any(device => device.Started);
 
@@ -76,8 +76,8 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
                 _mainWindowViewModel.StopTracking();
                 return false;
@@ -100,8 +100,8 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
                 _mainWindowViewModel.StopTracking();
                 return false;
@@ -147,12 +147,12 @@ namespace StatisticsAnalysisTool.Network
             }
             catch (OverflowException ex)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, ex);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
                 Log.Error(nameof(PacketHandler), ex);
             }
             catch (Exception exc)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, exc);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, exc);
                 Log.Error(nameof(PacketHandler), exc);
             }
         }

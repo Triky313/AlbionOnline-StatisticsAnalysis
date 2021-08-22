@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UseShrineOperation : BaseOperation
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public UseShrineOperation(Dictionary<byte, object> parameters) : base(parameters)
         {
@@ -26,8 +26,8 @@ namespace StatisticsAnalysisTool.Network.Handler
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
     }

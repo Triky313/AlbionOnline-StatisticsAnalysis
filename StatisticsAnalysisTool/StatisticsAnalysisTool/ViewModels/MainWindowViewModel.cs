@@ -1,8 +1,5 @@
 using FontAwesome5;
-using LiveCharts;
-using LiveCharts.Wpf;
 using log4net;
-using PcapDotNet.Base;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
@@ -10,7 +7,7 @@ using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network;
-using StatisticsAnalysisTool.Network.Controller;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
@@ -33,22 +30,22 @@ namespace StatisticsAnalysisTool.ViewModels
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private static MainWindow _mainWindow;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
-        private readonly Dictionary<ViewMode, Grid> viewModeGrid = new Dictionary<ViewMode, Grid>();
+        private readonly Dictionary<ViewMode, Grid> viewModeGrid = new();
         private Visibility _allianceInformationVisibility;
         private double _allianceInfoWidth;
         private int _currentGoldPrice;
         private string _currentGoldPriceTimestamp;
         private Visibility _currentMapInformationVisibility;
         private double _currentMapInfoWidth;
-        private ObservableCollection<DamageMeterFragment> _damageMeter = new ObservableCollection<DamageMeterFragment>();
-        private List<DamageMeterSortStruct> _damageMeterSort = new List<DamageMeterSortStruct>();
+        private ObservableCollection<DamageMeterFragment> _damageMeter = new();
+        private List<DamageMeterSortStruct> _damageMeterSort = new();
         private DamageMeterSortStruct _damageMeterSortSelection;
-        private DungeonStats _dungeonStatsDay = new DungeonStats();
-        private DungeonStats _dungeonStatsTotal = new DungeonStats();
+        private DungeonStats _dungeonStatsDay = new();
+        private DungeonStats _dungeonStatsTotal = new();
         private string _errorBarText;
         private Visibility _errorBarVisibility;
         private string _fullItemInformationExistLocal;
@@ -64,17 +61,19 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingActive;
         private bool _isTrackingResetByMapChangeActive;
         private bool _isTxtSearchEnabled;
-        private Dictionary<Category, string> _itemCategories = new Dictionary<Category, string>();
+        private Dictionary<Category, string> _itemCategories = new();
         private Visibility _itemCategoriesVisibility;
         private string _itemCounterString;
-        private Dictionary<ItemLevel, string> _itemLevels = new Dictionary<ItemLevel, string>();
+        private Dictionary<ItemLevel, string> _itemLevels = new();
         private Visibility _itemLevelsVisibility;
-        private Dictionary<ParentCategory, string> _itemParentCategories = new Dictionary<ParentCategory, string>();
+        private Dictionary<ParentCategory, string> _itemParentCategories = new();
         private Visibility _itemParentCategoriesVisibility;
         private ICollectionView _itemsView;
-        private Dictionary<ItemTier, string> _itemTiers = new Dictionary<ItemTier, string>();
+        private Dictionary<ItemTier, string> _itemTiers = new();
         private Visibility _itemTiersVisibility;
-        private string[] _labels;
+        //private List<Axis> _xAxes;
+        //private List<Axis> _yAxes;
+        //private ObservableCollection<ISeries> _series;
         private Visibility _loadFullItemInfoButtonVisibility;
         private string _loadFullItemInfoProBarCounter;
         private Visibility _loadFullItemInfoProBarGridVisibility;
@@ -84,18 +83,17 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _loadIconVisibility;
         private string _loadTranslation;
         private int _localImageCounter;
-        private ObservableCollection<ModeStruct> _modes = new ObservableCollection<ModeStruct>();
+        private ObservableCollection<ModeStruct> _modes = new();
         private ModeStruct _modeSelection;
         private string _numberOfValuesTranslation;
-        private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new ObservableCollection<PartyMemberCircle>();
-        private PlayerModeTranslation _playerModeTranslation = new PlayerModeTranslation();
+        private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new();
+        private PlayerModeTranslation _playerModeTranslation = new();
         private string _savedPlayerInformationName;
         private string _searchText;
         private Category _selectedItemCategories;
         private ItemLevel _selectedItemLevel;
         private ParentCategory _selectedItemParentCategories;
         private ItemTier _selectedItemTier;
-        private SeriesCollection _seriesCollection;
         private string _famePerHour = "0";
         private string _reSpecPointsPerHour = "0";
         private string _silverPerHour = "0";
@@ -108,9 +106,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _trackingAllianceName;
         public TrackingController TrackingController;
         private string _trackingCurrentMapName;
-        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new ObservableCollection<DungeonNotificationFragment>();
+        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
         private string _trackingGuildName;
-        private ObservableCollection<TrackingNotification> _trackingNotifications = new ObservableCollection<TrackingNotification>();
+        private ObservableCollection<TrackingNotification> _trackingNotifications = new();
         private string _trackingUsername;
         private MainWindowTranslation _translation;
         private string _updateTranslation;
@@ -118,14 +116,14 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _usernameInfoWidth;
         private DateTime? activateWaitTimer;
         public AlertController AlertManager;
-        private ObservableCollection<MainStatObject> _factionPointStats = new ObservableCollection<MainStatObject>() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
+        private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
         private Visibility _isMainTrackerPopupVisible = Visibility.Hidden;
         private bool _isShowOnlyFavoritesActive;
         private DungeonCloseTimer _dungeonCloseTimer;
         private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
         private double _dungeonStatsGridHeight = 82;
-        private Thickness _dungeonStatsScrollViewerMargin = new Thickness(0, 82, 0, 0);
+        private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
         private bool IsDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
         private TrackingIconType _trackingIconColor;
@@ -137,7 +135,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingFilteredSilver = true;
         private bool _isTrackingFilteredFaction = true;
         private int _partyMemberNumber;
-        private ObservableCollection<ClusterInfo> _enteredCluster = new ObservableCollection<ClusterInfo>();
+        private ObservableCollection<ClusterInfo> _enteredCluster = new();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -172,7 +170,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Modes.Add(new ModeStruct {Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal});
             Modes.Add(new ModeStruct {Name = LanguageController.Translation("TRACKING"), ViewMode = ViewMode.Tracking});
             Modes.Add(new ModeStruct {Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player});
-            Modes.Add(new ModeStruct {Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold});
+            //Modes.Add(new ModeStruct {Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold});
             ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
 
             #endregion Set Modes to combobox
@@ -200,7 +198,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
             CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
-            if (!currentGoldPrice.IsNullOrEmpty())
+            if (currentGoldPrice.Count > 0)
             {
                 CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ??
                                             new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
@@ -289,8 +287,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -340,7 +338,7 @@ namespace StatisticsAnalysisTool.ViewModels
             viewModeGrid.Add(ViewMode.Normal, _mainWindow.GridNormalMode);
             viewModeGrid.Add(ViewMode.Tracking, _mainWindow.GridTrackingMode);
             viewModeGrid.Add(ViewMode.Player, _mainWindow.GridPlayerMode);
-            viewModeGrid.Add(ViewMode.Gold, _mainWindow.GridGoldMode);
+            //viewModeGrid.Add(ViewMode.Gold, _mainWindow.GridGoldMode);
         }
 
         public void SelectViewModeGrid()
@@ -419,8 +417,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (isItemListLoaded)
             {
-                ItemController.SetFavoriteItemsFromLocalFile();
-
+                await ItemController.SetFavoriteItemsFromLocalFileAsync();
                 await ItemController.GetItemInformationListFromLocalAsync();
                 IsFullItemInformationCompleteCheck();
 
@@ -541,8 +538,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -567,8 +564,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (ArgumentNullException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 var catchItemWindow = new ItemWindow(item);
                 catchItemWindow.Show();
             }
@@ -704,52 +701,73 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Gold (Gold Mode)
 
+#pragma warning disable 1998
         public async void SetGoldChart(int count)
+#pragma warning restore 1998
         {
-            var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true);
+            //var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true) as IEnumerable<GoldResponseModel>;
+            //var values = goldPriceList.Select(x => x.Price);
 
-            var date = new List<string>();
-            var amount = new ChartValues<int>();
+            //Series = new ObservableCollection<ISeries>
+            //{
+            //    new ColumnSeries<int>
+            //    {
+            //        Values = values
+            //    }
+            //};
 
-            foreach (var goldPrice in goldPriceList)
-            {
-                date.Add(goldPrice.Timestamp.ToString("g", CultureInfo.CurrentCulture));
-                amount.Add(goldPrice.Price);
-            }
+            //XAxes = new List<Axis>
+            //{
+            //    new()
+            //    {
+            //        IsVisible = true,
+            //        MaxLimit = goldPriceList.Count(),
+            //        //Labels = goldPriceList.Select(x => x.Timestamp.ToString(CultureInfo.CurrentCulture)) as IList<string>,
+            //        ShowSeparatorLines = false
+            //    }
+            //};
 
-            Labels = date.ToArray();
-
-            SeriesCollection = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Title = "Gold",
-                    Values = amount,
-                    Fill = (Brush) Application.Current.Resources["Solid.Color.Gold.Fill"],
-                    Stroke = (Brush) Application.Current.Resources["Solid.Color.Text.Gold"]
-                }
-            };
+            //YAxes = new List<Axis>
+            //{
+            //    new()
+            //    {
+            //        IsVisible = true,
+            //        MaxLimit = goldPriceList.Max(x => x.Price + 1),
+            //        MinLimit = goldPriceList.Min(x => x.Price - 1),
+            //        ShowSeparatorLines = false
+            //    }
+            //};
         }
 
-        public SeriesCollection SeriesCollection
-        {
-            get => _seriesCollection;
-            set
-            {
-                _seriesCollection = value;
-                OnPropertyChanged();
-            }
-        }
+        //public ObservableCollection<ISeries> Series
+        //{
+        //    get => _series;
+        //    set
+        //    {
+        //        _series = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
-        public string[] Labels
-        {
-            get => _labels;
-            set
-            {
-                _labels = value;
-                OnPropertyChanged();
-            }
-        }
+        //public List<Axis> XAxes 
+        //{
+        //    get => _xAxes;
+        //    set
+        //    {
+        //        _xAxes = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
+
+        //public List<Axis> YAxes 
+        //{
+        //    get => _yAxes;
+        //    set
+        //    {
+        //        _yAxes = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         #endregion Gold (Gold Mode)
 
@@ -927,27 +945,27 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Damage)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Dps)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n"));
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Heal)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Heal} Heal\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Heal} Heal\n"));
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Hps)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n"));
             }
 
             if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
             {
-                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n") ?? "");
+                Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
             }
         }
 
@@ -1028,8 +1046,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 

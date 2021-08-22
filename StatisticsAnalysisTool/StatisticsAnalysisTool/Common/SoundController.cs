@@ -12,12 +12,12 @@ namespace StatisticsAnalysisTool.Common
 {
     public class SoundController
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        public static List<FileInformation> AlertSounds { get; set; }
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+        public static List<FileInformation> AlertSounds { get; set; } = new();
 
         public static void InitializeSoundFilesFromDirectory()
         {
-            if (AlertSounds != null)
+            if (AlertSounds?.Count > 0)
             {
                 return;
             }
@@ -57,8 +57,8 @@ namespace StatisticsAnalysisTool.Common
             catch (Exception e) when (e is InvalidOperationException || e is UriFormatException || e is FileNotFoundException ||
                                       e is ArgumentException)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -71,8 +71,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e) when (e is ArgumentException)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return string.Empty;
             }
         }

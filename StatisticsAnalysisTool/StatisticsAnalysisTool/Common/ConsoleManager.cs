@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
-using Pastel;
+﻿using Pastel;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Text.Json;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -68,21 +66,22 @@ namespace StatisticsAnalysisTool.Common
 
         private static void InvalidateOutAndError()
         {
-            var type = typeof(Console);
+            // TODO: Refactoring
+            //var type = typeof(Console);
 
-            var _out = type.GetField("_out", BindingFlags.Static | BindingFlags.NonPublic);
-            var _error = type.GetField("_error", BindingFlags.Static | BindingFlags.NonPublic);
-            var _InitializeStdOutError = type.GetMethod("InitializeStdOutError", BindingFlags.Static | BindingFlags.NonPublic);
+            //var _out = type.GetField("_out", BindingFlags.Static | BindingFlags.NonPublic);
+            //var _error = type.GetField("_error", BindingFlags.Static | BindingFlags.NonPublic);
+            //var _InitializeStdOutError = type.GetMethod("InitializeStdOutError", BindingFlags.Static | BindingFlags.NonPublic);
 
-            Debug.Assert(_out != null);
-            Debug.Assert(_error != null);
+            //Debug.Assert(_out != null);
+            //Debug.Assert(_error != null);
 
-            Debug.Assert(_InitializeStdOutError != null);
+            //Debug.Assert(_InitializeStdOutError != null);
 
-            _out.SetValue(null, null);
-            _error.SetValue(null, null);
+            //_out.SetValue(null, null);
+            //_error.SetValue(null, null);
 
-            _InitializeStdOutError.Invoke(null, new object[] { true });
+            //_InitializeStdOutError.Invoke(null, new object[] { true });
         }
 
         private static void SetOutAndErrorNull()
@@ -101,7 +100,7 @@ namespace StatisticsAnalysisTool.Common
         {
             if (HasConsole)
             {
-                Console.WriteLine($@"[{DateTime.UtcNow}] {name}: ".Pastel(EventColor) + $@"{JsonConvert.SerializeObject(parameters)}");
+                Console.WriteLine($@"[{DateTime.UtcNow}] {name}: ".Pastel(EventColor) + $@"{JsonSerializer.Serialize(parameters)}");
             }
         }
 

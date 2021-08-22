@@ -1,13 +1,14 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models
 {
     public class GoldResponseModel
     {
-        [JsonProperty(PropertyName = "price")] public int Price { get; set; }
-
-        [JsonProperty(PropertyName = "timestamp")]
+        [JsonPropertyName("price")]
+        public int Price { get; set; }
+        
+        [JsonPropertyName("timestamp")]
         public DateTime Timestamp { get; set; }
     }
 }

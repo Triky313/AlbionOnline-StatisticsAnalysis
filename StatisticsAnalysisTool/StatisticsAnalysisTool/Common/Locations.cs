@@ -7,7 +7,7 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class Locations
     {
-        public static readonly Dictionary<Location, string> Names = new Dictionary<Location, string>
+        public static readonly Dictionary<Location, string> Names = new()
         {
             {Location.Thetford, "Thetford"},
             {Location.SwampCross, "Swamp Cross"},
@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Common
             {Location.MorganasRest, "Morgana's Rest"}
         };
 
-        public static readonly Dictionary<Location, string> ParameterNames = new Dictionary<Location, string>
+        public static readonly Dictionary<Location, string> ParameterNames = new()
         {
             {Location.Thetford, "Thetford"},
             {Location.SwampCross, "Swamp Cross"},

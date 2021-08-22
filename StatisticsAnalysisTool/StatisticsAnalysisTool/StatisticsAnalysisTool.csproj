@@ -1,21 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{02F8395A-F9F6-4D53-AF2F-D83F6B8F8ADD}</ProjectGuid>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>StatisticsAnalysisTool</RootNamespace>
-    <AssemblyName>StatisticsAnalysisTool</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>false</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -30,31 +18,19 @@
     <ApplicationVersion>0.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -64,408 +40,66 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
     <LangVersion>latest</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
     <LangVersion>latest</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Albion.Network, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Albion.Network.5.0.0\lib\netstandard2.0\Albion.Network.dll</HintPath>
-    </Reference>
-    <Reference Include="AutoUpdater.NET, Version=1.6.3.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autoupdater.NET.Official.1.6.3\lib\net45\AutoUpdater.NET.dll</HintPath>
-    </Reference>
-    <Reference Include="FontAwesome5, Version=2.1.0.0, Culture=neutral, PublicKeyToken=9cfaf01297a008f8, processorArchitecture=MSIL">
-      <HintPath>..\packages\FontAwesome5.2.1.0\lib\net472\FontAwesome5.dll</HintPath>
-    </Reference>
-    <Reference Include="FontAwesome5.Net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=9cfaf01297a008f8, processorArchitecture=MSIL">
-      <HintPath>..\packages\FontAwesome5.2.1.0\lib\net472\FontAwesome5.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
-    </Reference>
-    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.11\lib\net45\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="PacketDotNet, Version=1.2.0.0, Culture=neutral, PublicKeyToken=451414c7667b2a58, processorArchitecture=MSIL">
-      <HintPath>..\packages\PacketDotNet.1.2.0\lib\net45\PacketDotNet.dll</HintPath>
-    </Reference>
-    <Reference Include="Pastel, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pastel.2.1.0\lib\netstandard2.0\Pastel.dll</HintPath>
-    </Reference>
-    <Reference Include="PcapDotNet.Base, Version=0.10.0.20588, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
-      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="PcapDotNet.Core, Version=0.10.0.20632, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=x86">
-      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="PcapDotNet.Core.Extensions, Version=0.10.0.20638, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
-      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Core.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="PcapDotNet.Packets, Version=0.10.0.20603, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
-      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Packets.dll</HintPath>
-    </Reference>
-    <Reference Include="PhotonPackageParser, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PhotonPackageParser.4.1.0\lib\netstandard2.0\PhotonPackageParser.dll</HintPath>
-    </Reference>
-    <Reference Include="Protocol16, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PhotonPackageParser.4.1.0\lib\netstandard2.0\Protocol16.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpPcap, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpPcap.5.4.0\lib\netstandard2.0\SharpPcap.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Common\AlertController.cs" />
-    <Compile Include="Common\ConsoleManager.cs" />
-    <Compile Include="Common\Converter.cs" />
-    <Compile Include="Common\ExtensionMethod.cs" />
-    <Compile Include="Common\FixPoint.cs" />
-    <Compile Include="Common\FactionWarfareController.cs" />
-    <Compile Include="Common\MobController.cs" />
-    <Compile Include="Common\RemoveDungeonButtonClick.cs" />
-    <Compile Include="Common\Shortcut\IShellLink.cs" />
-    <Compile Include="Common\Shortcut\ShellLink.cs" />
-    <Compile Include="Common\Shortcut\ShortcutController.cs" />
-    <Compile Include="Common\Converters\TrackerIconConverter.cs" />
-    <Compile Include="Enumerations\AvalonTunnelType.cs" />
-    <Compile Include="Enumerations\GameLanguage.cs" />
-    <Compile Include="Common\ProgressBarSmoother.cs" />
-    <Compile Include="Enumerations\ClusterType.cs" />
-    <Compile Include="Enumerations\DamageMeterSort.cs" />
-    <Compile Include="Enumerations\EffectOrigin.cs" />
-    <Compile Include="Enumerations\EffectType.cs" />
-    <Compile Include="Enumerations\CityFaction.cs" />
-    <Compile Include="Enumerations\GameObjectSubType.cs" />
-    <Compile Include="Enumerations\GameObjectType.cs" />
-    <Compile Include="Enumerations\HealthChangeType.cs" />
-    <Compile Include="Enumerations\ItemType.cs" />
-    <Compile Include="Enumerations\NotificationType.cs" />
-    <Compile Include="Enumerations\ShrineBuff.cs" />
-    <Compile Include="Enumerations\ShrineType.cs" />
-    <Compile Include="Enumerations\TrackingIconType.cs" />
-    <Compile Include="Models\DungeonStatsFilter.cs" />
-    <Compile Include="Models\DamageMeterWindowTranslation.cs" />
-    <Compile Include="Models\MainStatObject.cs" />
-    <Compile Include="Models\EquipmentItem.cs" />
-    <Compile Include="Models\NetworkModel\CharacterEquipment.cs" />
-    <Compile Include="Models\NetworkModel\DiscoveredLoot.cs" />
-    <Compile Include="Models\NetworkModel\DungeonEventObject.cs" />
-    <Compile Include="Models\NetworkModel\DungeonObject.cs" />
-    <Compile Include="Models\NetworkModel\DungeonCloseTimer.cs" />
-    <Compile Include="Models\NetworkModel\TimeCollectObject.cs" />
-    <Compile Include="Models\NetworkModel\GameObject.cs" />
-    <Compile Include="Models\NetworkModel\PlayerGameObject.cs" />
-    <Compile Include="Models\NetworkModel\HealthUpdate.cs" />
-    <Compile Include="Models\NetworkModel\LocalUserData.cs" />
-    <Compile Include="Models\NetworkModel\PartyMemberCircle.cs" />
-    <Compile Include="Models\NetworkModel\ValuePerHour.cs" />
-    <Compile Include="Models\DialogWindowTranslation.cs" />
-    <Compile Include="Models\SpellEffect.cs" />
-    <Compile Include="Network\Controller\CombatController.cs" />
-    <Compile Include="Network\Controller\DungeonController.cs" />
-    <Compile Include="Network\Controller\ILootController.cs" />
-    <Compile Include="Network\Controller\LootController.cs" />
-    <Compile Include="Network\Controller\EntityController.cs" />
-    <Compile Include="Network\Events\ActiveSpellEffectsUpdateEvent.cs" />
-    <Compile Include="Network\Events\InventoryPutItemEvent.cs" />
-    <Compile Include="Network\Events\InventoryDeleteItemEvent.cs" />
-    <Compile Include="Network\Events\OtherGrabbedLootEvent.cs" />
-    <Compile Include="Network\Events\NewEquipmentItemEvent.cs" />
-    <Compile Include="Network\Events\HealthUpdateEvent.cs" />
-    <Compile Include="Network\Events\LeaveEvent.cs" />
-    <Compile Include="Network\Events\CharacterEquipmentChangedEvent.cs" />
-    <Compile Include="Network\Events\NewMobEvent.cs" />
-    <Compile Include="Network\Events\NewShrineEvent.cs" />
-    <Compile Include="Network\Events\InCombatStateUpdateEvent.cs" />
-    <Compile Include="Network\Events\SiegeCampClaimStartEvent.cs" />
-    <Compile Include="Network\Events\PartyChangedOrderEvent.cs" />
-    <Compile Include="Network\Events\PartyDisbandedEvent.cs" />
-    <Compile Include="Network\Handler\InventoryPutItemEventHandler.cs" />
-    <Compile Include="Network\Handler\InventoryDeleteItemEventHandler.cs" />
-    <Compile Include="Network\Handler\OtherGrabbedLootEventHandler.cs" />
-    <Compile Include="Network\Handler\NewSimpleItemEventHandler.cs" />
-    <Compile Include="Network\Events\NewSimpleItemEvent.cs" />
-    <Compile Include="Network\Notification\OtherGrabbedLootNotificationFragment.cs" />
-    <Compile Include="Network\Operations\Responses\UseLootChestResponse.cs" />
-    <Compile Include="Network\Events\UpdateCurrencyEvent.cs" />
-    <Compile Include="Network\Events\UpdateFactionStandingEvent.cs" />
-    <Compile Include="Network\Handler\ActiveSpellEffectsUpdateEventHandler.cs" />
-    <Compile Include="Network\Handler\NewEquipmentItemEventHandler.cs" />
-    <Compile Include="Network\Handler\HealthUpdateEventHandler.cs" />
-    <Compile Include="Network\Handler\LeaveEventHandler.cs" />
-    <Compile Include="Network\Handler\CharacterEquipmentChangedEventHandler.cs" />
-    <Compile Include="Network\Handler\NewMobEventHandler.cs" />
-    <Compile Include="Network\Handler\UseLootChestEventHandler.cs" />
-    <Compile Include="Network\Handler\UseShrineEventHandler.cs" />
-    <Compile Include="Network\Handler\PartyMakeLeaderEventHandler.cs" />
-    <Compile Include="Network\Handler\NewShrineEventHandler.cs" />
-    <Compile Include="Network\Handler\InCombatStateUpdateEventHandler.cs" />
-    <Compile Include="Network\Handler\SiegeCampClaimStartEventHandler.cs" />
-    <Compile Include="Network\Handler\PartyChangedOrderEventHandler.cs" />
-    <Compile Include="Network\Handler\PartyDisbandedEventHandler.cs" />
-    <Compile Include="Network\Handler\UpdateCurrencyEventHandler.cs" />
-    <Compile Include="Network\Handler\UpdateFactionStandingEventHandler.cs" />
-    <Compile Include="Network\Notification\CombatNotificationFragment.cs" />
-    <Compile Include="Network\Notification\DamageMeterFragment.cs" />
-    <Compile Include="Network\Notification\FactionPointsNotificationFragment.cs" />
-    <Compile Include="Network\Notification\FactionFlagPointsNotificationFragment.cs" />
-    <Compile Include="Enumerations\HandlerType.cs" />
-    <Compile Include="Network\Notification\SilverNotificationFragment.cs" />
-    <Compile Include="Network\Operations\Responses\UseShrineOperation.cs" />
-    <Compile Include="Network\Operations\Responses\PartyMakeLeaderResponse.cs" />
-    <Compile Include="Network\Time\GameTimeStamp.cs" />
-    <Compile Include="GameData\DungeonObjectData.cs" />
-    <Compile Include="GameData\WorldData.cs" />
-    <Compile Include="Network\Controller\TrackingController.cs" />
-    <Compile Include="Enumerations\ChestStatus.cs" />
-    <Compile Include="Enumerations\DungeonEventObjectType.cs" />
-    <Compile Include="Enumerations\AttributeStatOperator.cs" />
-    <Compile Include="Enumerations\EventCodes.cs" />
-    <Compile Include="Enumerations\OperationCodes.cs" />
-    <Compile Include="Enumerations\ValueType.cs" />
-    <Compile Include="Models\LootChest.cs" />
-    <Compile Include="Models\LootChestRoot.cs" />
-    <Compile Include="Models\LootChests.cs" />
-    <Compile Include="Models\ClusterInfo.cs" />
-    <Compile Include="Models\NetworkModel\DiedObject.cs" />
-    <Compile Include="Models\WorldJsonObject.cs" />
-    <Compile Include="Network\Events\DiedEvent.cs" />
-    <Compile Include="Network\Events\NewLootChestEvent.cs" />
-    <Compile Include="Network\Events\LootChestOpenedEvent.cs" />
-    <Compile Include="Network\Events\TestEvent3.cs" />
-    <Compile Include="Network\Events\TestEvent2.cs" />
-    <Compile Include="Network\Events\TestEvent.cs" />
-    <Compile Include="Network\Handler\NewLootChestEventHandler.cs" />
-    <Compile Include="Network\Handler\LootChestOpenedEventHandler.cs" />
-    <Compile Include="Network\Handler\ChangeClusterResponseHandler.cs" />
-    <Compile Include="Network\Handler\TestHandler3.cs" />
-    <Compile Include="Network\Handler\TestHandler2.cs" />
-    <Compile Include="Network\Handler\TestHandler.cs" />
-    <Compile Include="Network\Handler\DiedEventHandler.cs" />
-    <Compile Include="Network\Notification\DungeonEventObjectFragment.cs" />
-    <Compile Include="Network\Notification\DungeonNotificationFragment.cs" />
-    <Compile Include="Enumerations\DungeonStatus.cs" />
-    <Compile Include="Enumerations\ChestRarity.cs" />
-    <Compile Include="Enumerations\DungeonMode.cs" />
-    <Compile Include="Enumerations\Faction.cs" />
-    <Compile Include="Network\Operations\Responses\ChangeClusterResponse.cs" />
-    <Compile Include="Network\CountUpTimer.cs" />
-    <Compile Include="Models\NetworkModel\Container.cs" />
-    <Compile Include="Models\NetworkModel\Loot.cs" />
-    <Compile Include="Enumerations\PvpPveType.cs" />
-    <Compile Include="Network\Notification\TrackingNotification.cs" />
-    <Compile Include="Network\Events\UpdateMoneyEvent.cs" />
-    <Compile Include="Common\SoundController.cs" />
-    <Compile Include="Exceptions\TooManyRequestsException.cs" />
-    <Compile Include="Common\Alert.cs" />
-    <Compile Include="Models\CategoryComboboxObject.cs" />
-    <Compile Include="Common\Formatting.cs" />
-    <Compile Include="Common\FrequentlyValues.cs" />
-    <Compile Include="Common\ApiController.cs" />
-    <Compile Include="Common\ItemController.cs" />
-    <Compile Include="Common\CategoryController.cs" />
-    <Compile Include="Models\CategoryObject.cs" />
-    <Compile Include="Models\FileInformation.cs" />
-    <Compile Include="Models\GoldModels.cs" />
-    <Compile Include="Models\ItemJsonObject.cs" />
-    <Compile Include="Models\ItemCategoryTree.cs" />
-    <Compile Include="Models\ItemInformationModels.cs" />
-    <Compile Include="Models\InfoWindowTranslation.cs" />
-    <Compile Include="Models\MainWindowTranslation.cs" />
-    <Compile Include="Models\ItemWindowTranslation.cs" />
-    <Compile Include="Models\MarketHistoriesResponse.cs" />
-    <Compile Include="Models\MarketHistoryResponse.cs" />
-    <Compile Include="Models\PlayerModeInformationModel.cs" />
-    <Compile Include="Models\SettingsWindowTranslation.cs" />
-    <Compile Include="Models\PlayerModeTranslation.cs" />
-    <Compile Include="Models\Guild.cs" />
-    <Compile Include="Models\GameInfoPlayers.cs" />
-    <Compile Include="Models\SearchInfos.cs" />
-    <Compile Include="Models\MarketOrder.cs" />
-    <Compile Include="Models\MarketStats.cs" />
-    <Compile Include="Models\WeaponCategories.cs" />
-    <Compile Include="Network\Events\UpdateFameEvent.cs" />
-    <Compile Include="Network\Operations\Responses\JoinResponse.cs" />
-    <Compile Include="Network\Handler\UpdateMoneyEventHandler.cs" />
-    <Compile Include="Network\Handler\UpdateFameEventHandler.cs" />
-    <Compile Include="Network\Notification\FameNotificationFragment.cs" />
-    <Compile Include="Network\Notification\LineFragment.cs" />
-    <Compile Include="Network\Notification\TextFragment.cs" />
-    <Compile Include="Network\Operations\MoveOperation.cs" />
-    <Compile Include="Network\Handler\JoinResponseHandler.cs" />
-    <Compile Include="Network\NetworkManager.cs" />
-    <Compile Include="Network\Events\UpdateReSpecPointsEvent.cs" />
-    <Compile Include="Network\Events\PartySilverGainedEvent.cs" />
-    <Compile Include="Network\Events\TakeSilverEvent.cs" />
-    <Compile Include="Network\Events\NewLootEvent.cs" />
-    <Compile Include="Network\Events\NewCharacterEvent.cs" />
-    <Compile Include="Network\Handler\UpdateReSpecPointsEventHandler.cs" />
-    <Compile Include="Network\Handler\PartySilverGainedEventHandler.cs" />
-    <Compile Include="Network\Handler\TakeSilverEventHandler.cs" />
-    <Compile Include="Network\Handler\NewLootEventHandler.cs" />
-    <Compile Include="Network\Handler\NewCharacterEventHandler.cs" />
-    <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DungeonStats.cs" />
-    <Compile Include="Network\Time\GameTimeSpan.cs" />
-    <Compile Include="ViewModels\DamageMeterWindowViewModel.cs" />
-    <Compile Include="ViewModels\DialogWindowViewModel.cs" />
-    <Compile Include="ViewModels\InfoWindowViewModel.cs" />
-    <Compile Include="Models\ItemAlertWindowTranslation.cs" />
-    <Compile Include="ViewModels\ItemWindowViewModel.cs" />
-    <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
-    <Compile Include="Models\AlertInfos.cs" />
-    <Compile Include="Views\DamageMeterWindow.xaml.cs">
-      <DependentUpon>DamageMeterWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DialogWindow.xaml.cs">
-      <DependentUpon>DialogWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\InfoWindow.xaml.cs">
-      <DependentUpon>InfoWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ItemAlertWindow.xaml.cs">
-      <DependentUpon>ItemAlertWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\ItemAlertWindowViewModel.cs" />
-    <Compile Include="Views\SettingsWindow.xaml.cs">
-      <DependentUpon>SettingsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Common\DirectoryController.cs" />
-    <Compile Include="Common\ImageController.cs" />
-    <Compile Include="Common\LanguageController.cs" />
-    <Compile Include="Common\Utilities.cs" />
-    <Compile Include="Common\WebDownload.cs">
+    <Compile Update="Common\WebDownload.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Page Include="Tracking.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Main.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\DamageMeterWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DialogWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\InfoWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ItemAlertWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ItemWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\ItemWindow.xaml.cs">
-      <DependentUpon>ItemWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Common\Locations.cs" />
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Views\SettingsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Models\ItemData.cs" />
-    <Compile Include="Models\Item.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="GameFiles\lootchests.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="GameFiles\world.json">
+    <Content Include="GameFiles\lootchests.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <Content Include="GameFiles\world.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Languages\de-DE.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Languages\en-US.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Languages\pt-BR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Languages\ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Languages\tr-TR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Languages\zh-CN.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\alert1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\alert2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\alert3.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\alert4.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Resources\alert_window_background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -533,7 +167,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\feature_image.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\book.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -541,20 +175,48 @@
     <Resource Include="Resources\faction_unknown_banner.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\corrupted_banner.png" />
-    <Resource Include="Resources\hellgate_banner.png" />
-    <Resource Include="Resources\factioncoin_bridgewatch.png" />
-    <Resource Include="Resources\factioncoin_caerleon.png" />
-    <Resource Include="Resources\factioncoin_fortsterling.png" />
-    <Resource Include="Resources\factioncoin_lymhurst.png" />
-    <Resource Include="Resources\factioncoin_martlock.png" />
-    <Resource Include="Resources\factioncoin_thetford.png" />
-    <Resource Include="Resources\factionflag_bridgewatch.png" />
-    <Resource Include="Resources\factionflag_caerleon.png" />
-    <Resource Include="Resources\factionflag_fortsterling.png" />
-    <Resource Include="Resources\factionflag_lymhurst.png" />
-    <Resource Include="Resources\factionflag_martlock.png" />
-    <Resource Include="Resources\factionflag_thetford.png" />
+    <Resource Include="Resources\corrupted_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\hellgate_banner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_bridgewatch.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_caerleon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_fortsterling.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_lymhurst.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_martlock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factioncoin_thetford.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_bridgewatch.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_caerleon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_fortsterling.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_lymhurst.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_martlock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\factionflag_thetford.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\shields.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -567,40 +229,6 @@
     <Resource Include="Resources\shrine_combat_buff.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Languages\tr-TR.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\zh-CN.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Sounds\alert1.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Sounds\alert2.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Sounds\alert3.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Sounds\alert4.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Content Include="log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Albion-Api-Doku-And-Useful-Things.txt" />
@@ -630,39 +258,27 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\goldchest.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\gold.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Trash.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="ao-update-check.xml" />
-    <Content Include="Languages\pt-BR.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\ru-RU.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\de-DE.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\en-US.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Resource Include="logo.ico" />
     <Resource Include="Resources\level3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\level2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\level1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\level0.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\t8.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -689,6 +305,43 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.241603">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Albion.Network" Version="5.0.0" />
+    <PackageReference Include="Autoupdater.NET.Official" Version="1.7.0" />
+    <PackageReference Include="FontAwesome5" Version="2.1.4" />
+    <PackageReference Include="log4net" Version="2.0.12" />
+    <PackageReference Include="PacketDotNet" Version="1.2.0" />
+    <PackageReference Include="Pastel" Version="2.1.0" />
+    <PackageReference Include="SharpPcap" Version="5.4.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Models\StatPricesTotal.cs" />
+    <Compile Remove="Network\Handler\JoinHandler.cs" />
+    <Compile Remove="Network\SilverCountUpTimer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="GameFiles\lootchests.json" />
+    <None Remove="GameFiles\world.json" />
+    <None Remove="Languages\de-DE.xml" />
+    <None Remove="Languages\en-US.xml" />
+    <None Remove="Languages\pt-BR.xml" />
+    <None Remove="Languages\ru-RU.xml" />
+    <None Remove="Languages\tr-TR.xml" />
+    <None Remove="Languages\zh-CN.xml" />
+    <None Remove="Sounds\alert1.wav" />
+    <None Remove="Sounds\alert2.wav" />
+    <None Remove="Sounds\alert3.wav" />
+    <None Remove="Sounds\alert4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 </Project>

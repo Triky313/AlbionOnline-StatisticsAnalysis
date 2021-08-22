@@ -1,5 +1,4 @@
 ﻿using log4net;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
@@ -12,12 +11,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 
 namespace StatisticsAnalysisTool.Common
 {
     public class AlertController
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly ObservableCollection<Alert> _alerts = new ObservableCollection<Alert>();
         private readonly ICollectionView _itemsView;
         private readonly MainWindow _mainWindow;
@@ -36,7 +36,7 @@ namespace StatisticsAnalysisTool.Common
         {
             if (IsAlertInCollection(item.UniqueName) || !IsSpaceInAlertsCollection()) return;
 
-            _alerts.CollectionChanged += delegate(object sender, NotifyCollectionChangedEventArgs e)
+            _alerts.CollectionChanged += delegate(object _, NotifyCollectionChangedEventArgs e)
             {
                 if (e.Action == NotifyCollectionChangedAction.Add) SaveActiveAlertsToLocalFile();
             };
@@ -49,7 +49,7 @@ namespace StatisticsAnalysisTool.Common
 
         private void Remove(string uniqueName)
         {
-            _alerts.CollectionChanged += delegate(object sender, NotifyCollectionChangedEventArgs e)
+            _alerts.CollectionChanged += delegate(object _, NotifyCollectionChangedEventArgs e)
             {
                 if (e.Action == NotifyCollectionChangedAction.Remove) SaveActiveAlertsToLocalFile();
             };
@@ -79,8 +79,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return false;
             }
         }
@@ -101,8 +101,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -123,8 +123,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
@@ -153,14 +153,20 @@ namespace StatisticsAnalysisTool.Common
                 try
                 {
                     var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
+                    var alertSaveObjectList = JsonSerializer.Deserialize<List<AlertSaveObject>>(localItemString);
 
-                    foreach (var alert in JsonConvert.DeserializeObject<List<AlertSaveObject>>(localItemString))
-                        ActivateAlert(alert.UniqueName, alert.MinSellUndercutPrice);
+                    if (alertSaveObjectList != null)
+                    {
+                        foreach (var alert in alertSaveObjectList)
+                        {
+                            ActivateAlert(alert.UniqueName, alert.MinSellUndercutPrice);
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
         }
 
@@ -169,7 +175,7 @@ namespace StatisticsAnalysisTool.Common
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ActiveAlertsFileName}";
             var activeItemAlerts = _alerts.Select(alert => new AlertSaveObject
                 {UniqueName = alert.Item.UniqueName, MinSellUndercutPrice = alert.AlertModeMinSellPriceIsUndercutPrice}).ToList();
-            var fileString = JsonConvert.SerializeObject(activeItemAlerts);
+            var fileString = JsonSerializer.Serialize(activeItemAlerts);
 
             try
             {
@@ -177,8 +183,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 

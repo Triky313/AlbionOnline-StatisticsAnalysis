@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.Common
 {
     public class Alert
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindow _mainWindow;
         private int _alertModeMinSellPriceIsUndercutPrice;
         private bool _isEventActive;
@@ -95,13 +95,13 @@ namespace StatisticsAnalysisTool.Common
                 }
                 catch (FileNotFoundException e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
                 catch (TooManyRequestsException e)
                 {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                    Log.Warn(MethodBase.GetCurrentMethod().DeclaringType, e);
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                     return;
                 }
         }

@@ -1,5 +1,4 @@
 using log4net;
-using Newtonsoft.Json;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -11,6 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.GameData
@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.GameData
     public static class WorldData
     {
         public static ObservableCollection<ClusterInfo> MapData;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static string GetUniqueNameOrDefault(string index)
         {
@@ -96,8 +96,8 @@ namespace StatisticsAnalysisTool.GameData
 
             if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
 
-            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, $"MapType unknown: {index}");
-            Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - MapType unknown: {index}");
+            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, $"MapType unknown: {index}");
+            Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType} - MapType unknown: {index}");
 
             return MapType.Unknown;
         }
@@ -215,15 +215,20 @@ namespace StatisticsAnalysisTool.GameData
         {
             try
             {
+                var options = new JsonSerializerOptions()
+                {
+                    ReadCommentHandling = JsonCommentHandling.Skip
+                };
+
                 var localItemString =
                     File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.WorldDataDirectoryName, Settings.Default.WorldDataFileName),
                         Encoding.UTF8);
-                return ConvertItemJsonObjectToMapData(JsonConvert.DeserializeObject<ObservableCollection<WorldJsonObject>>(localItemString));
+                return ConvertItemJsonObjectToMapData(JsonSerializer.Deserialize<ObservableCollection<WorldJsonObject>>(localItemString, options));
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return new ObservableCollection<ClusterInfo>();
             }
         }
@@ -258,14 +263,14 @@ namespace StatisticsAnalysisTool.GameData
             }
             catch (HttpRequestException e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e.InnerException);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e.InnerException);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e.InnerException);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e.InnerException);
                 return false;
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return false;
             }
         }

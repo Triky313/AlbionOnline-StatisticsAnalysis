@@ -1,6 +1,4 @@
 ﻿using log4net;
-using Newtonsoft.Json;
-using PcapDotNet.Base;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -8,9 +6,11 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.GameData
@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.GameData
     public static class DungeonObjectData
     {
         public static IEnumerable<LootChest> LootChests;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static DungeonMode GetDungeonMode(string value)
         {
@@ -96,7 +96,7 @@ namespace StatisticsAnalysisTool.GameData
                 return Faction.Avalon;
             }
 
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType, $"GetFaction Unknown: {value}", ConsoleManager.EventMapChangeColor);
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"GetFaction Unknown: {value}", ConsoleManager.EventMapChangeColor);
             return Faction.Unknown;
         }
 
@@ -118,15 +118,15 @@ namespace StatisticsAnalysisTool.GameData
                 if (fileDateTime.AddDays(Settings.Default.UpdateWorldDataByDays) < DateTime.Now)
                 {
                     if (await GetLootChestListFromWebAsync(url)) LootChests = GetLootChestDataFromLocal();
-                    return LootChests != null && !LootChests.IsNullOrEmpty();
+                    return LootChests?.Count() > 0;
                 }
 
                 LootChests = GetLootChestDataFromLocal();
-                return LootChests != null && !LootChests.IsNullOrEmpty();
+                return LootChests?.Count() > 0;
             }
 
             if (await GetLootChestListFromWebAsync(url)) LootChests = GetLootChestDataFromLocal();
-            return LootChests != null && !LootChests.IsNullOrEmpty();
+            return LootChests?.Count() > 0;
         }
 
         public static DungeonEventObjectType GetDungeonEventObjectType(string value)
@@ -242,11 +242,11 @@ namespace StatisticsAnalysisTool.GameData
                 var localItemString =
                     File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.LootChestDataFileName),
                         Encoding.UTF8);
-                return JsonConvert.DeserializeObject<LootChestRoot>(localItemString).LootChests.LootChest;
+                return JsonSerializer.Deserialize<LootChestRoot>(localItemString)?.LootChests.LootChest;
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return new List<LootChest>();
             }
         }
@@ -267,8 +267,8 @@ namespace StatisticsAnalysisTool.GameData
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return false;
             }
         }

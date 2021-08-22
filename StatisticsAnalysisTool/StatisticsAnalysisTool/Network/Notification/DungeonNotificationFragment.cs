@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using StatisticsAnalysisTool.Annotations;
+﻿using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Input;
 

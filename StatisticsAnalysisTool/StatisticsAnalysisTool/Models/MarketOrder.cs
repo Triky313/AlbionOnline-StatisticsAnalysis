@@ -1,44 +1,44 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Windows;
-using Newtonsoft.Json;
-using StatisticsAnalysisTool.Common;
 using Formatting = StatisticsAnalysisTool.Common.Formatting;
 
 namespace StatisticsAnalysisTool.Models
 {
     public class MarketResponse
     {
-        [JsonProperty(PropertyName = "item_id")]
+        [JsonPropertyName("item_id")]
         public string ItemTypeId { get; set; }
 
-        [JsonProperty(PropertyName = "city")] public string City { get; set; }
+        [JsonPropertyName("city")] public string City { get; set; }
 
-        [JsonProperty(PropertyName = "quality")]
+        [JsonPropertyName("quality")]
         public int QualityLevel { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_min")]
+        [JsonPropertyName("sell_price_min")]
         public ulong SellPriceMin { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_min_date")]
+        [JsonPropertyName("sell_price_min_date")]
         public DateTime SellPriceMinDate { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_max")]
+        [JsonPropertyName("sell_price_max")]
         public ulong SellPriceMax { get; set; }
 
-        [JsonProperty(PropertyName = "sell_price_max_date")]
+        [JsonPropertyName("sell_price_max_date")]
         public DateTime SellPriceMaxDate { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_min")]
+        [JsonPropertyName("buy_price_min")]
         public ulong BuyPriceMin { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_min_date")]
+        [JsonPropertyName("buy_price_min_date")]
         public DateTime BuyPriceMinDate { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_max")]
+        [JsonPropertyName("buy_price_max")]
         public ulong BuyPriceMax { get; set; }
 
-        [JsonProperty(PropertyName = "buy_price_max_date")]
+        [JsonPropertyName("buy_price_max_date")]
         public DateTime BuyPriceMaxDate { get; set; }
     }
 

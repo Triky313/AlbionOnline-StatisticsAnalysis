@@ -15,14 +15,14 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 
-namespace StatisticsAnalysisTool.Network.Controller
+namespace StatisticsAnalysisTool.Network.Manager
 {
     public class TrackingController
     {
         private const int _maxNotifications = 1000;
         private const int _maxEnteredCluster = 500;
 
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private string _lastClusterHash;
@@ -31,8 +31,8 @@ namespace StatisticsAnalysisTool.Network.Controller
         public DungeonController DungeonController;
         public EntityController EntityController;
         public LootController LootController;
-        private readonly List<NotificationType> _notificationTypeFilters = new List<NotificationType>();
-        private readonly List<TrackingNotification> _notifications = new List<TrackingNotification>();
+        private readonly List<NotificationType> _notificationTypeFilters = new();
+        private readonly List<TrackingNotification> _notifications = new();
 
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
@@ -91,7 +91,7 @@ namespace StatisticsAnalysisTool.Network.Controller
             }
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod().DeclaringType,
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
                 $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'",
                 ConsoleManager.EventMapChangeColor);
 
@@ -138,7 +138,7 @@ namespace StatisticsAnalysisTool.Network.Controller
         {
             if (_mainWindow != null) return false;
 
-            Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType}: _mainWindow is null.");
+            Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType}: _mainWindow is null.");
             return true;
         }
 

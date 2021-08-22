@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+// ReSharper disable UnusedParameter.Local
 
 namespace StatisticsAnalysisTool.Views
 {
@@ -65,13 +66,21 @@ namespace StatisticsAnalysisTool.Views
         private void ImageAwesome_MouseEnter(object sender, MouseEventArgs e)
         {
             if (sender is ImageAwesome icon)
+            {
+#pragma warning disable CA1416 // Validate platform compatibility
                 icon.Spin = true;
+#pragma warning restore CA1416 // Validate platform compatibility
+            }
         }
 
         private void ImageAwesome_MouseLeave(object sender, MouseEventArgs e)
         {
             if (sender is ImageAwesome icon)
+            {
+#pragma warning disable CA1416 // Validate platform compatibility
                 icon.Spin = false;
+#pragma warning restore CA1416 // Validate platform compatibility
+            }
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -117,7 +126,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            Process.Start(e.Uri.AbsoluteUri);
+            Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
         }
         
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -145,6 +154,7 @@ namespace StatisticsAnalysisTool.Views
             await _mainWindowViewModel.SetComparedPlayerModeInfoValues();
         }
 
+        // ReSharper disable once UnusedMember.Local
         private void TxtBoxGoldModeAmountValues_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
@@ -155,7 +165,8 @@ namespace StatisticsAnalysisTool.Views
             e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        // ReSharper disable once UnusedMember.Local
+        private void LoadGoldPrice_Click(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(_mainWindowViewModel.TextBoxGoldModeNumberOfValues, out var numberOfValues))
             {

@@ -5,7 +5,7 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class FrequentlyValues
     {
-        public static readonly Dictionary<ItemTier, string> ItemTiers = new Dictionary<ItemTier, string>
+        public static readonly Dictionary<ItemTier, string> ItemTiers = new()
         {
             {ItemTier.Unknown, string.Empty},
             {ItemTier.T1, "Tier 1"},
@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Common
             {ItemTier.T8, "Tier 8"}
         };
 
-        public static readonly Dictionary<ItemLevel, string> ItemLevels = new Dictionary<ItemLevel, string>
+        public static readonly Dictionary<ItemLevel, string> ItemLevels = new()
         {
             {ItemLevel.Unknown, string.Empty},
             {ItemLevel.Level0, "0"},
@@ -27,7 +27,7 @@ namespace StatisticsAnalysisTool.Common
             {ItemLevel.Level3, "3"}
         };
 
-        public static readonly Dictionary<ItemQuality, int> ItemQualities = new Dictionary<ItemQuality, int>
+        public static readonly Dictionary<ItemQuality, int> ItemQualities = new()
         {
             {ItemQuality.Unknown, -1},
             {ItemQuality.Normal, 1},
@@ -37,7 +37,7 @@ namespace StatisticsAnalysisTool.Common
             {ItemQuality.Masterpiece, 5}
         };
 
-        public static readonly Dictionary<GameLanguage, string> GameLanguages = new Dictionary<GameLanguage, string>
+        public static readonly Dictionary<GameLanguage, string> GameLanguages = new()
         {
             {GameLanguage.UnitedStates, "EN-US"},
             {GameLanguage.Germany, "DE-DE"},

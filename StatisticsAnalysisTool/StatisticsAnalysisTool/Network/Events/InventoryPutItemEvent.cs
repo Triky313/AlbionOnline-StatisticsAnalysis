@@ -31,7 +31,7 @@ namespace StatisticsAnalysisTool.Network.Events
             {
                 ObjectId = null;
                 InteractGuid = null;
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
     }

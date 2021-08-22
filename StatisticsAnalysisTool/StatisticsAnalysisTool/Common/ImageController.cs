@@ -11,7 +11,7 @@ namespace StatisticsAnalysisTool.Common
 {
     internal class ImageController
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private static readonly string ImageDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ImageResources);
 
         public static BitmapImage GetItemImage(string uniqueName = null, int pixelHeight = 100, int pixelWidth = 100, bool freeze = false)
@@ -53,10 +53,10 @@ namespace StatisticsAnalysisTool.Common
             if (!DirectoryController.CreateDirectoryWhenNotExists(ImageDir) && !Directory.Exists(ImageDir))
                 return;
 
-            image.DownloadCompleted += (sender, args) =>
+            image.DownloadCompleted += (sender, _) =>
             {
                 var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create((BitmapImage) sender));
+                encoder.Frames.Add(BitmapFrame.Create(((BitmapImage) sender)!));
                 using var fileStream = new FileStream(localFilePath, FileMode.Create);
                 encoder.Save(fileStream);
             };
@@ -84,8 +84,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - SetImage: {e.Message}");
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType} - SetImage: {e.Message}");
                 return null;
             }
         }
@@ -108,8 +108,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch (Exception e)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod().DeclaringType, e);
-                Log.Error($"{MethodBase.GetCurrentMethod().DeclaringType} - SetImage: {e.Message}");
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType} - SetImage: {e.Message}");
                 return null;
             }
         }

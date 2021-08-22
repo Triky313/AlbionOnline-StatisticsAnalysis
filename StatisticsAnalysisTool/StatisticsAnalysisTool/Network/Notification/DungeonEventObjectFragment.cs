@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using StatisticsAnalysisTool.Annotations;
+﻿using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
