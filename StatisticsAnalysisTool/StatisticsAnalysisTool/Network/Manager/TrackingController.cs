@@ -64,7 +64,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void DamageMeterUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType,
             EffectOrigin effectOrigin, long causerId, int causingSpellType)
         {
-            CombatController.AddDamageAsync(causerId, healthChange);
+            CombatController.AddDamageAsync(objectId, causerId, healthChange, newHealthValue);
         }
 
         public event Action<ClusterInfo> OnChangeCluster;
@@ -89,6 +89,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 CombatController.ResetDamageMeter();
             }
+
+            CombatController.LastPlayersHealth.Clear();
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
             ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,

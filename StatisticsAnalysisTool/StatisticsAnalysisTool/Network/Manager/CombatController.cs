@@ -36,7 +36,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Damage Meter methods
 
-        public async void AddDamageAsync(long causerId, double healthChange)
+        public async void AddDamageAsync(long objectId, long causerId, double healthChange, double newHealthValue)
         {
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
 
@@ -47,24 +47,29 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             if (GetHealthChangeType(healthChange) == HealthChangeType.Damage)
             {
-                var damageValue = (int)Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
-                if (damageValue <= 0)
+                var damageChangeValue = (int)Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
+                if (damageChangeValue <= 0)
                 {
                     return;
                 }
 
-                gameObject.Value.Value.Damage += damageValue;
+                gameObject.Value.Value.Damage += damageChangeValue;
             }
 
             if (GetHealthChangeType(healthChange) == HealthChangeType.Heal)
             {
-                var healValue = healthChange;
-                if (healValue <= 0)
+                var healChangeValue = healthChange;
+                if (healChangeValue <= 0)
                 {
                     return;
                 }
 
-                gameObject.Value.Value.Heal += (int)Math.Round(healValue, MidpointRounding.AwayFromZero);
+                if (IsMaxHealthReached(objectId, newHealthValue))
+                {
+                    return;
+                }
+
+                gameObject.Value.Value.Heal += (int)Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
             }
 
             if (gameObject.Value.Value?.CombatStart == null)
@@ -75,6 +80,32 @@ namespace StatisticsAnalysisTool.Network.Manager
             if (IsUiUpdateAllowed())
             {
                 await UpdateDamageMeterUiAsync(_trackingController.EntityController.GetAllEntities(true));
+            }
+        }
+
+        public Dictionary<long, double> LastPlayersHealth = new();
+
+        public bool IsMaxHealthReached(long objectId, double newHealthValue)
+        {
+            var playerHealth = LastPlayersHealth?.FirstOrDefault(x => x.Key == objectId);
+            if (playerHealth?.Value.CompareTo(newHealthValue) == 0)
+            {
+                return true;
+            }
+
+            SetLastPlayersHealth(objectId, newHealthValue);
+            return false;
+        }
+        
+        private void SetLastPlayersHealth(long key, double value)
+        {
+            if (LastPlayersHealth.ContainsKey(key))
+            {
+                LastPlayersHealth[key] = value;
+            }
+            else
+            {
+                LastPlayersHealth.Add(key, value);
             }
         }
 
@@ -160,7 +191,9 @@ namespace StatisticsAnalysisTool.Network.Manager
         private async Task AddDamageMeterFragmentAsync(KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
             List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
-            if (healthChangeObject.Value == null || double.IsNaN(healthChangeObject.Value.Damage) || healthChangeObject.Value.Damage <= 0)
+            if (healthChangeObject.Value == null 
+                || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal)) 
+                || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0))
             {
                 return;
             }
