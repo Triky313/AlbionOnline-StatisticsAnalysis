@@ -48,7 +48,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                     CharacterEquipment = oldEntity.CharacterEquipment,
                     CombatStart = oldEntity.CombatStart,
                     CombatTime = oldEntity.CombatTime,
-                    Damage = oldEntity.Damage
+                    Damage = oldEntity.Damage,
+                    Heal = oldEntity.Heal
                 };
             else
                 gameObject = new PlayerGameObject(objectId)
