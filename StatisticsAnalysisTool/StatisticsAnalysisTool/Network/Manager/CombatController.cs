@@ -191,7 +191,9 @@ namespace StatisticsAnalysisTool.Network.Manager
         private async Task AddDamageMeterFragmentAsync(KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
             List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
-            if (healthChangeObject.Value == null || double.IsNaN(healthChangeObject.Value.Damage) || healthChangeObject.Value.Damage <= 0)
+            if (healthChangeObject.Value == null 
+                || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal)) 
+                || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0))
             {
                 return;
             }
