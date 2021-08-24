@@ -83,32 +83,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        public Dictionary<long, double> LastPlayersHealth = new();
-
-        public bool IsMaxHealthReached(long objectId, double newHealthValue)
-        {
-            var playerHealth = LastPlayersHealth?.FirstOrDefault(x => x.Key == objectId);
-            if (playerHealth?.Value.CompareTo(newHealthValue) == 0)
-            {
-                return true;
-            }
-
-            SetLastPlayersHealth(objectId, newHealthValue);
-            return false;
-        }
-        
-        private void SetLastPlayersHealth(long key, double value)
-        {
-            if (LastPlayersHealth.ContainsKey(key))
-            {
-                LastPlayersHealth[key] = value;
-            }
-            else
-            {
-                LastPlayersHealth.Add(key, value);
-            }
-        }
-
         private static bool IsUiUpdateActive;
 
         public async Task UpdateDamageMeterUiAsync(List<KeyValuePair<Guid, PlayerGameObject>> entities)
@@ -227,6 +201,32 @@ namespace StatisticsAnalysisTool.Network.Manager
             _trackingController.EntityController.ResetEntitiesDamageStartTime();
 
             _mainWindow?.Dispatcher?.InvokeAsync(() => { _mainWindowViewModel?.DamageMeter?.Clear(); });
+        }
+
+        public Dictionary<long, double> LastPlayersHealth = new();
+
+        public bool IsMaxHealthReached(long objectId, double newHealthValue)
+        {
+            var playerHealth = LastPlayersHealth?.FirstOrDefault(x => x.Key == objectId);
+            if (playerHealth?.Value.CompareTo(newHealthValue) == 0)
+            {
+                return true;
+            }
+
+            SetLastPlayersHealth(objectId, newHealthValue);
+            return false;
+        }
+
+        private void SetLastPlayersHealth(long key, double value)
+        {
+            if (LastPlayersHealth.ContainsKey(key))
+            {
+                LastPlayersHealth[key] = value;
+            }
+            else
+            {
+                LastPlayersHealth.Add(key, value);
+            }
         }
 
         private HealthChangeType GetHealthChangeType(double healthChange) => healthChange <= 0 ? HealthChangeType.Damage : HealthChangeType.Heal;
