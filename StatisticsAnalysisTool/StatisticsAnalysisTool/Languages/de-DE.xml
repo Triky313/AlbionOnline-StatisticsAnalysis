@@ -430,4 +430,5 @@
   <translation name="MAP_TRACKING">Kartenverfolgung</translation>
   <translation name="TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN">Herunterladen der Itemlist erneut versuchen</translation>
   <translation name="DAMAGE_METER_ON_OFF">Schadensanzeige - AN/AUS</translation>
+  <translation name="TRACKER_ON_OFF">Tracker - AN/AUS</translation>
 </translations>

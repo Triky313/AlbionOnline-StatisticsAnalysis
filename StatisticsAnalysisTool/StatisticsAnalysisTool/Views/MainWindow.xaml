@@ -133,7 +133,11 @@
                 <DockPanel Margin="0,0,0,0" Height="Auto" VerticalAlignment="Top">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Height="auto" Width="50">
                         <Grid Margin="0,0,0,0" HorizontalAlignment="Left" Height="auto" Width="40" VerticalAlignment="Center">
-                            <fa5:ImageAwesome Visibility="Visible" Icon="{Binding TrackerActivationToggleIcon, FallbackValue=Solid_ToggleOff}" Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" MouseUp="TrackingModeActiveToggle_MouseUp" />
+                            <fa5:ImageAwesome Visibility="Visible" 
+                                              ToolTip="{Binding Translation.TrackerOnOff, FallbackValue=TRACKER__ON__OFF}"
+                                              Icon="{Binding TrackerActivationToggleIcon, FallbackValue=Solid_ToggleOff}" 
+                                              Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" 
+                                              MouseUp="TrackingModeActiveToggle_MouseUp" />
                         </Grid>
                     </StackPanel>
                     <Border Width="{Binding UsernameInfoWidth, FallbackValue=NaN}" Visibility="{Binding UsernameInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
