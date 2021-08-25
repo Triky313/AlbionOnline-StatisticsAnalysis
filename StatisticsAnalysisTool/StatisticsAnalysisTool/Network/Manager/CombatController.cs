@@ -12,9 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-#pragma warning disable UA0002 // Types should be upgraded
 namespace StatisticsAnalysisTool.Network.Manager
-#pragma warning restore UA0002 // Types should be upgraded
 {
     public class CombatController
     {
@@ -90,8 +88,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             IsUiUpdateActive = true;
 
-            var highestDamage = GetHighestDamage(entities);
-            var highestHeal = GetHighestHeal(entities);
+            var highestDamage = entities.GetHighestDamage();
+            var highestHeal = entities.GetHighestHeal();
             _trackingController.EntityController.DetectUsedWeapon();
 
             foreach (var healthChangeObject in entities)
@@ -142,7 +140,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             if (healthChangeObject.Value != null)
             {
-                fragment.DamagePercentage = GetDamagePercentage(entities, healthChangeObject.Value.Damage);
+                fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObject.Value.Damage);
             }
 
             // Heal
@@ -159,7 +157,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             if (healthChangeObject.Value != null)
             {
-                fragment.HealPercentage = GetDamagePercentage(entities, healthChangeObject.Value.Heal);
+                fragment.HealPercentage = entities.GetDamagePercentage(healthChangeObject.Value.Heal);
             }
         }
 
@@ -181,12 +179,12 @@ namespace StatisticsAnalysisTool.Network.Manager
                 Damage = healthChangeObject.Value.Damage.ToShortNumberString(),
                 Dps = healthChangeObject.Value.Dps,
                 DamageInPercent = (double)healthChangeObject.Value.Damage / highestDamage * 100,
-                DamagePercentage = GetDamagePercentage(entities, healthChangeObject.Value.Damage),
+                DamagePercentage = entities.GetDamagePercentage(healthChangeObject.Value.Damage),
 
                 Heal = healthChangeObject.Value.Heal.ToShortNumberString(),
                 Hps = healthChangeObject.Value.Hps,
                 HealInPercent = (double)healthChangeObject.Value.Heal / highestHeal * 100,
-                HealPercentage = GetHealPercentage(entities, healthChangeObject.Value.Heal),
+                HealPercentage = entities.GetHealPercentage(healthChangeObject.Value.Heal),
 
                 Name = healthChangeObject.Value.Name,
                 CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, healthChangeObject.Value?.CharacterEquipment?.MainHand)
@@ -263,29 +261,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             return false;
         }
-
-        private long GetHighestDamage(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
-        {
-            return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.Damage);
-        }
-
-        private long GetHighestHeal(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects)
-        {
-            return playerObjects.Count <= 0 ? 0 : playerObjects.Max(x => x.Value.Heal);
-        }
-
-        private double GetDamagePercentage(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerDamage)
-        {
-            var totalDamage = playerObjects.Sum(x => x.Value.Damage);
-            return 100.00 / totalDamage * playerDamage;
-        }
-
-        private double GetHealPercentage(List<KeyValuePair<Guid, PlayerGameObject>> playerObjects, double playerHeal)
-        {
-            var totalHeal = playerObjects.Sum(x => x.Value.Heal);
-            return 100.00 / totalHeal * playerHeal;
-        }
-
+        
         #endregion
 
         #region Combat Mode / Combat Timer
@@ -299,20 +275,32 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void AddCombatTime(long objectId, bool inActiveCombat, bool inPassiveCombat)
         {
-            if (!_trackingController.EntityController.IsUserInParty(objectId)) return;
+            if (!_trackingController.EntityController.IsUserInParty(objectId))
+            {
+                return;
+            }
 
             var playerObject = _trackingController.EntityController.GetEntity(objectId);
 
-            if (playerObject?.Value == null) return;
+            if (playerObject?.Value == null)
+            {
+                return;
+            }
 
-            if ((inActiveCombat || inPassiveCombat) && playerObject.Value.Value.CombatTimes.Any(x => x?.EndTime == null)) return;
+            if ((inActiveCombat || inPassiveCombat) && playerObject.Value.Value.CombatTimes.Any(x => x?.EndTime == null))
+            {
+                return;
+            }
 
             if (inActiveCombat || inPassiveCombat) playerObject.Value.Value.AddCombatTime(new TimeCollectObject(DateTime.UtcNow));
 
             if (!inActiveCombat && !inPassiveCombat)
             {
                 var combatTime = playerObject.Value.Value.CombatTimes.FirstOrDefault(x => x.EndTime == null);
-                if (combatTime != null) combatTime.EndTime = DateTime.UtcNow;
+                if (combatTime != null)
+                {
+                    combatTime.EndTime = DateTime.UtcNow;
+                }
             }
         }
 
