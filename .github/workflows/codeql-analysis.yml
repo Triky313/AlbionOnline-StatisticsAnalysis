@@ -55,7 +55,7 @@ jobs:
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Release build
-      run: dotnet build StatisticsAnalysisTool.csproj --configuration Release
+      run: dotnet build ./StatisticsAnalysisTool/StatisticsAnalysisTool/StatisticsAnalysisTool.csproj --configuration Release
 
     # - name: Run unit tests
     #  run: dotnet test ./tests/LiveChartsCore.UnitTesting
