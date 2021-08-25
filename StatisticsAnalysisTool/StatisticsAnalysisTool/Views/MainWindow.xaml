@@ -32,7 +32,7 @@
                 <fa5:ImageAwesome Icon="Solid_Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
             </Grid>
         </Grid>
-        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
+        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">
             <TextBox x:Name="TxtSearch" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="22" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" />
             <Grid Margin="235,11,0,0" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left" IsEnabled="{Binding IsFilterResetEnabled, FallbackValue=false}">
                 <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="FilterReset_MouseUp" />
@@ -128,7 +128,7 @@
             </Grid>
             <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
         </Grid>
-        <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Hidden">
+        <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Visible">
             <Grid Margin="10,10,255,0" Height="45" VerticalAlignment="Top">
                 <DockPanel Margin="0,0,0,0" Height="Auto" VerticalAlignment="Top">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Height="auto" Width="50">
@@ -323,6 +323,13 @@
                     <Grid>
                         <Grid Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Grid Height="20" Width="30" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <fa5:ImageAwesome Visibility="Visible" 
+                                                      ToolTip="{Binding Translation.DamageMeterOnOff, FallbackValue=DAMAGE__METER__ON__OFF}"
+                                                      Icon="{Binding DamageMeterActivationToggleIcon, FallbackValue=Solid_ToggleOff}" 
+                                                      Foreground="{Binding DamageMeterActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" 
+                                                      MouseUp="DamageMeterModeActiveToggle_MouseUp" />
+                                </Grid>
                                 <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterSort}" SelectedItem="{Binding DamageMeterSortSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
                             </StackPanel>
                         </Grid>
@@ -343,8 +350,8 @@
                             </StackPanel>
                         </Grid>
 
-                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,31,0,0" VerticalAlignment="Top"/>
-                        <ScrollViewer Margin="0,35,0,0">
+                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,61,0,0" VerticalAlignment="Top"/>
+                        <ScrollViewer Margin="0,65,0,0">
                             <ItemsControl ItemsSource="{Binding DamageMeter, IsAsync=True, Mode=OneWay}"/>
                         </ScrollViewer>
 

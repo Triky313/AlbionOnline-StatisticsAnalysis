@@ -354,7 +354,7 @@
   <translation name="DUNGEON_FAME">Dungeon Ruhm</translation>
   <translation name="DUNGEON_RUN_TIME">Dungeon Laufzeit</translation>
   <translation name="DAMAGE_METER">Schadensanzeige</translation>
-  <translation name="RESET_DAMAGE_METER">Damage Meter zurücksetzen</translation>
+  <translation name="RESET_DAMAGE_METER">Schadensanzeige zurücksetzen</translation>
 
   <translation name="STANDARD">Standard</translation>
   <translation name="UNCOMMON">Ungewöhnlich</translation>
@@ -429,4 +429,5 @@
   <translation name="COPY_TO_CLIPBOARD">In Zwischenablage kopieren</translation>
   <translation name="MAP_TRACKING">Kartenverfolgung</translation>
   <translation name="TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN">Herunterladen der Itemlist erneut versuchen</translation>
+  <translation name="DAMAGE_METER_ON_OFF">Schadensanzeige - AN/AUS</translation>
 </translations>

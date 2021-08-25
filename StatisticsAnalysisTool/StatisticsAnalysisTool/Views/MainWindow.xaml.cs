@@ -265,5 +265,10 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.CopyDamageMeterToClipboard();
         }
+
+        private void DamageMeterModeActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _mainWindowViewModel.DamageMeterActivationToggle();
+        }
     }
 }

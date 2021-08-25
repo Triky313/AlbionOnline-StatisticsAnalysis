@@ -616,5 +616,17 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((string)(this["WorldDataDirectoryName"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsDamageMeterTrackingActive {
+            get {
+                return ((bool)(this["IsDamageMeterTrackingActive"]));
+            }
+            set {
+                this["IsDamageMeterTrackingActive"] = value;
+            }
+        }
     }
 }

@@ -20,6 +20,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly TrackingController _trackingController;
 
+        public bool IsDamageMeterActive { get; set; } = false;
+
         public CombatController(TrackingController trackingController, MainWindow mainWindow, MainWindowViewModel mainWindowViewModel)
         {
             _trackingController = trackingController;
@@ -37,6 +39,11 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async void AddDamageAsync(long objectId, long causerId, double healthChange, double newHealthValue)
         {
+            if (!IsDamageMeterActive)
+            {
+                return;
+            }
+
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
 
             if (gameObject == null || gameObject.Value.Value?.ObjectType != GameObjectType.Player || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name))

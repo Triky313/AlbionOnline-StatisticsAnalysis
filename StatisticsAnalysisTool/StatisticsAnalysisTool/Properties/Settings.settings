@@ -155,5 +155,8 @@
     <Setting Name="WorldDataDirectoryName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">GameFiles</Value>
     </Setting>
+    <Setting Name="IsDamageMeterTrackingActive" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

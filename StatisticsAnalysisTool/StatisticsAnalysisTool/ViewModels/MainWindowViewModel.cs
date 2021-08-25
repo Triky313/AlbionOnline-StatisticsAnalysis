@@ -139,6 +139,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isItemSearchCheckboxesEnabled;
         private bool _isFilterResetEnabled;
         private Visibility _gridTryToLoadTheItemListAgainVisibility;
+        private EFontAwesomeIcon _damageMeterActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
+        private Brush _damageMeterActivationToggleColor;
+        private bool _isDamageMeterTrackingActive;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -464,6 +467,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingFilteredConsumableLoot = Settings.Default.MainTrackerFilterConsumableLoot;
             IsTrackingFilteredSimpleLoot = Settings.Default.MainTrackerFilterSimpleLoot;
             IsTrackingFilteredUnknownLoot = Settings.Default.MainTrackerFilterUnknownLoot;
+            IsDamageMeterTrackingActive = Settings.Default.IsDamageMeterTrackingActive;
         }
 
         #endregion
@@ -485,6 +489,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Settings.Default.MainTrackerFilterConsumableLoot = IsTrackingFilteredConsumableLoot;
             Settings.Default.MainTrackerFilterSimpleLoot = IsTrackingFilteredSimpleLoot;
             Settings.Default.MainTrackerFilterUnknownLoot = IsTrackingFilteredUnknownLoot;
+            Settings.Default.IsDamageMeterTrackingActive = IsDamageMeterTrackingActive;
 
             #endregion
 
@@ -980,6 +985,11 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 Clipboard.SetText(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
             }
+        }
+
+        public void DamageMeterActivationToggle()
+        {
+            IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
         }
 
         #endregion
@@ -1625,6 +1635,39 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingIconColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsDamageMeterTrackingActive {
+            get => _isDamageMeterTrackingActive;
+            set {
+                _isDamageMeterTrackingActive = value;
+
+                TrackingController.CombatController.IsDamageMeterActive = _isDamageMeterTrackingActive;
+
+                DamageMeterActivationToggleIcon = _isDamageMeterTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
+
+                var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
+                var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+                DamageMeterActivationToggleColor = _isDamageMeterTrackingActive ? colorOn : colorOff;
+                
+                OnPropertyChanged();
+            }
+        }
+
+        public EFontAwesomeIcon DamageMeterActivationToggleIcon {
+            get => _damageMeterActivationToggleIcon;
+            set {
+                _damageMeterActivationToggleIcon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Brush DamageMeterActivationToggleColor {
+            get => _damageMeterActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+            set {
+                _damageMeterActivationToggleColor = value;
                 OnPropertyChanged();
             }
         }
