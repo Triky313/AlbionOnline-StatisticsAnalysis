@@ -17,7 +17,7 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
-    public class TrackingController
+    public class TrackingController : ITrackingController
     {
         private const int _maxNotifications = 1000;
         private const int _maxEnteredCluster = 500;
@@ -138,7 +138,10 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public bool IsMainWindowNull()
         {
-            if (_mainWindow != null) return false;
+            if (_mainWindow != null)
+            {
+                return false;
+            }
 
             Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType}: _mainWindow is null.");
             return true;
