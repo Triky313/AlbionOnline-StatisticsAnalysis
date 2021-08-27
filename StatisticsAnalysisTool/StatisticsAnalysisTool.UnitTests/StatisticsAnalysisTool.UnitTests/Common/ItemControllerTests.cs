@@ -10,6 +10,8 @@ namespace StatisticsAnalysisTool.UnitTests.Common
         [SetUp]
         public void Setup()
         {
+            var app = new App(); //magically sets Application.Current
+            app.InitializeComponent(); //parses the app.xaml and loads the resources
         }
 
         [Test]
@@ -29,7 +31,8 @@ namespace StatisticsAnalysisTool.UnitTests.Common
             ItemController.Items = itemList;
 
             var expectedItem = ItemController.GetItemByIndex(11);
-            Assert.Equals(receivedItem1, expectedItem);
+
+            Assert.Contains(expectedItem, itemList);
         }
     }
 }

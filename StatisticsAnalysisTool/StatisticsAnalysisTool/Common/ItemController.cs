@@ -29,7 +29,7 @@ namespace StatisticsAnalysisTool.Common
         private static readonly string FullItemInformationFilePath =
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FullItemInformationFileName);
 
-        private static ObservableCollection<ItemInformation> _itemInformationList = new ObservableCollection<ItemInformation>();
+        private static ObservableCollection<ItemInformation> _itemInformationList = new ();
 
         public static readonly Brush ToggleOnColor = new SolidColorBrush((Color) Application.Current.Resources["Color.Blue.2"]);
 
