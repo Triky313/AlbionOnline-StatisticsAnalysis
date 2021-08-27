@@ -57,8 +57,8 @@ jobs:
     - name: Release build
       run: dotnet build ./StatisticsAnalysisTool/StatisticsAnalysisTool/StatisticsAnalysisTool.csproj --configuration Release
 
-    # - name: Run unit tests
-    #  run: dotnet test ./tests/LiveChartsCore.UnitTesting
+    - name: Run unit tests
+      run: dotnet test ./StatisticsAnalysisTool/StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests.csproj
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
