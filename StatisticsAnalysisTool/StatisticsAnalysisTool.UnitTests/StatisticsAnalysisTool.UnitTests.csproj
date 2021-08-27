@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\StatisticsAnalysisTool\StatisticsAnalysisTool.csproj" />
+    <ProjectReference Include="..\StatisticsAnalysisTool\StatisticsAnalysisTool.csproj" />
   </ItemGroup>
 
 </Project>

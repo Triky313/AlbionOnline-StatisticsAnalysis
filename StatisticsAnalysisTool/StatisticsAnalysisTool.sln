@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatisticsAnalysisTool", "StatisticsAnalysisTool\StatisticsAnalysisTool.csproj", "{02F8395A-F9F6-4D53-AF2F-D83F6B8F8ADD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.UnitTests", "StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests.csproj", "{F42D6642-53EF-4395-96BE-AE57020F7528}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsAnalysisTool.UnitTests", "StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests.csproj", "{F42D6642-53EF-4395-96BE-AE57020F7528}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
