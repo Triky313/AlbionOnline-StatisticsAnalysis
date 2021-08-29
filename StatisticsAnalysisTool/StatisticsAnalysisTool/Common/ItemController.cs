@@ -241,18 +241,18 @@ namespace StatisticsAnalysisTool.Common
                 {
                     if (await GetItemListFromWebAsync(url))
                     {
-                        Items = GetItemListFromLocal();
+                        Items = await GetItemListFromLocal();
                     }
                     return Items?.Count > 0;
                 }
 
-                Items = GetItemListFromLocal();
+                Items = await GetItemListFromLocal();
                 return Items?.Count > 0;
             }
 
             if (await GetItemListFromWebAsync(url))
             {
-                Items = GetItemListFromLocal();
+                Items = await GetItemListFromLocal();
             }
             return Items?.Count > 0;
         }
@@ -275,7 +275,7 @@ namespace StatisticsAnalysisTool.Common
             return url;
         }
 
-        private static ObservableCollection<Item> GetItemListFromLocal()
+        private static async Task<ObservableCollection<Item>> GetItemListFromLocal()
         {
             try
             {
@@ -284,8 +284,8 @@ namespace StatisticsAnalysisTool.Common
                     NumberHandling = JsonNumberHandling.AllowReadingFromString |
                                      JsonNumberHandling.WriteAsString
                 };
-
-                var localItemString = File.ReadAllText($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", Encoding.UTF8);
+                
+                var localItemString = await File.ReadAllTextAsync($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", Encoding.UTF8);
                 return ConvertItemJsonObjectToItem(JsonSerializer.Deserialize<ObservableCollection<ItemJsonObject>>(localItemString, options));
             }
             catch
