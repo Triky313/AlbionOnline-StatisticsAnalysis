@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonIgnore]
         public List<TimeCollectObject> DungeonRunTimes { get; } = new ();
         public int TotalRunTimeInSeconds { get; set; }
-        public List<Guid> GuidList { get; set; } = new List<Guid>();
+        public List<Guid> GuidList { get; set; } = new ();
         public DateTime EnterDungeonFirstTime { get; set; }
         public string MainMapIndex { get; set; }
         public List<DungeonEventObject> DungeonEventObjects { get; set; } = new ();
