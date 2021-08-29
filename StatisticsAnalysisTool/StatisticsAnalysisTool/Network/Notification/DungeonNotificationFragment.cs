@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using System.Windows;
@@ -73,8 +72,6 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public void SetValues(DungeonObject dungeonObject)
         {
-            var watch = Stopwatch.StartNew();
-
             TotalRunTimeInSeconds = dungeonObject.TotalRunTimeInSeconds;
             DiedInDungeon = dungeonObject.DiedInDungeon;
             DiedName = dungeonObject.DiedName;
@@ -107,9 +104,6 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
 
             DungeonChests = dungeonsChestFragments;
-            
-            var elapsedMs = watch.ElapsedMilliseconds;
-            Debug.Print($"DunHash: {DungeonHash} \t {elapsedMs} ms");
         }
 
         bool loadingTriggered;
