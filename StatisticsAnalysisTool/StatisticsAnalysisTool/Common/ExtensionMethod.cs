@@ -33,6 +33,12 @@ namespace StatisticsAnalysisTool.Common
             return $"{span.Hours:00}:{span.Minutes:00}:{span.Seconds:00}";
         }
 
+        public static string ToTimerString(this int seconds)
+        {
+            var span = new TimeSpan(0,0,0, seconds);
+            return $"{span.Hours:00}:{span.Minutes:00}:{span.Seconds:00}";
+        }
+
         #region Object to
 
         public static Guid? ObjectToGuid(this object value)

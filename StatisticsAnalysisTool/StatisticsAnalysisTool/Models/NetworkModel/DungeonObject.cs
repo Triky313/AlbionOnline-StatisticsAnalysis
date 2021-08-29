@@ -12,12 +12,12 @@ namespace StatisticsAnalysisTool.Network.Notification
     public class DungeonObject
     {
         [JsonIgnore]
-        public List<TimeCollectObject> DungeonRunTimes { get; } = new List<TimeCollectObject>();
-        public TimeSpan TotalRunTime { get; set; }
+        public List<TimeCollectObject> DungeonRunTimes { get; } = new ();
+        public int TotalRunTimeInSeconds { get; set; }
         public List<Guid> GuidList { get; set; } = new List<Guid>();
         public DateTime EnterDungeonFirstTime { get; set; }
         public string MainMapIndex { get; set; }
-        public List<DungeonEventObject> DungeonEventObjects { get; set; } = new List<DungeonEventObject>();
+        public List<DungeonEventObject> DungeonEventObjects { get; set; } = new ();
         public DungeonStatus Status { get; set; }
         public double Fame { get; set; }
         public double ReSpec { get; set; }
@@ -101,7 +101,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         {
             foreach (var time in DungeonRunTimes.Where(x => x.EndTime != null).ToList())
             {
-                TotalRunTime += time.TimeSpan;
+                TotalRunTimeInSeconds += (int)time.TimeSpan.TotalSeconds;
                 DungeonRunTimes.Remove(time);
             }
         }

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using System.Windows;
@@ -19,7 +20,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _diedInDungeon;
         private string _diedName;
         private string _killedBy;
-        private ObservableCollection<DungeonEventObjectFragment> _dungeonChests = new ObservableCollection<DungeonEventObjectFragment>();
+        private ObservableCollection<DungeonEventObjectFragment> _dungeonChests = new ();
         private DateTime _enterDungeonFirstTime;
         private Faction _faction = Faction.Unknown;
         private double _fame;
@@ -42,7 +43,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private double _silver;
         private double _silverPerHour;
         private DungeonStatus _status;
-        private TimeSpan _totalRunTime;
+        private int _totalRunTimeInSeconds;
         private int _dungeonNumber;
         private double _factionCoinsPerHour;
         private double _factionFlagsPerHour;
@@ -72,11 +73,12 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public void SetValues(DungeonObject dungeonObject)
         {
-            TotalRunTime = dungeonObject.TotalRunTime;
+            var watch = Stopwatch.StartNew();
+
+            TotalRunTimeInSeconds = dungeonObject.TotalRunTimeInSeconds;
             DiedInDungeon = dungeonObject.DiedInDungeon;
             DiedName = dungeonObject.DiedName;
             KilledBy = dungeonObject.KilledBy;
-            TotalRunTime = dungeonObject.TotalRunTime;
             Faction = dungeonObject.Faction;
             Fame = dungeonObject.Fame;
             ReSpec = dungeonObject.ReSpec;
@@ -105,6 +107,27 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
 
             DungeonChests = dungeonsChestFragments;
+            
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Debug.Print($"DunHash: {DungeonHash} \t {elapsedMs} ms");
+        }
+
+        bool loadingTriggered;
+
+        void TriggerLoadIfNecessary()
+        {
+            if (!loadingTriggered)
+            {
+                loadingTriggered = true;
+
+                // This block will called before your item will be displayed
+                // Due to the loadingTriggered-member it is called only once.
+                // Start here the asynchronous loading of the data
+                // In virtualizing lists, this block is only called if the item
+                // will be visible to the user (he scrolls to this item)
+
+                //LoadAsync();
+            }
         }
 
         public ObservableCollection<DungeonEventObjectFragment> DungeonChests
@@ -118,7 +141,10 @@ namespace StatisticsAnalysisTool.Network.Notification
         }
 
         public int DungeonNumber {
-            get => _dungeonNumber;
+            get {
+                TriggerLoadIfNecessary();
+                return _dungeonNumber;
+            }
             set
             {
                 _dungeonNumber = value;
@@ -236,13 +262,13 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public TimeSpan TotalRunTime
+        public int TotalRunTimeInSeconds
         {
-            get => _totalRunTime;
+            get => _totalRunTimeInSeconds;
             set
             {
-                _totalRunTime = value;
-                RunTimeString = value.Ticks <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).ToTimerString() : value.ToTimerString();
+                _totalRunTimeInSeconds = value;
+                RunTimeString = value.ToTimerString() ?? "0";
                 NumberOfDungeonFloors = GuidList?.Count ?? 0;
                 OnPropertyChanged();
             }
@@ -274,7 +300,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             private set
             {
                 _fame = value;
-                FamePerHour = Utilities.GetValuePerHourToDouble(Fame, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
+                FamePerHour = Utilities.GetValuePerHourToDouble(Fame, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
                 OnPropertyChanged();
             }
         }
@@ -285,7 +311,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             private set
             {
                 _reSpec = value;
-                ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
+                ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
                 OnPropertyChanged();
             }
         }
@@ -296,7 +322,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             private set
             {
                 _silver = value;
-                SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
+                SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
                 OnPropertyChanged();
             }
         }
@@ -306,7 +332,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             private set
             {
                 _factionFlags = value;
-                FactionFlagsPerHour = Utilities.GetValuePerHourToDouble(FactionFlags, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
+                FactionFlagsPerHour = Utilities.GetValuePerHourToDouble(FactionFlags, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
                 OnPropertyChanged();
             }
         }
@@ -316,7 +342,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             private set
             {
                 _factionCoins = value;
-                FactionCoinsPerHour = Utilities.GetValuePerHourToDouble(FactionCoins, TotalRunTime.Ticks <= 0 ? DateTime.UtcNow - EnterDungeonFirstTime : TotalRunTime);
+                FactionCoinsPerHour = Utilities.GetValuePerHourToDouble(FactionCoins, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
 
                 if (FactionCoins > 0 && IsFactionWarfareVisible == Visibility.Hidden)
                 {

@@ -43,16 +43,21 @@ namespace StatisticsAnalysisTool.Common
             return Formatting.CurrentDateTimeFormat(value);
         }
 
-        public static string GetValuePerHourInShort(double value, TimeSpan time)
+        public static string GetValuePerHourInShort(double value, TimeSpan span)
         {
-            return Formatting.ToStringShort(value / (time.TotalSeconds / 60 / 60));
+            return Formatting.ToStringShort(GetValuePerHourToDouble(value, (int)span.TotalSeconds));
         }
 
-        public static double GetValuePerHourToDouble(double value, TimeSpan time)
+        public static string GetValuePerHourInShort(double value, int seconds)
+        {
+            return Formatting.ToStringShort(GetValuePerHourToDouble(value, seconds));
+        }
+
+        public static double GetValuePerHourToDouble(double value, int seconds)
         {
             try
             {
-                return value / (time.TotalSeconds / 60 / 60);
+                return value / seconds / 60 / 60;
             }
             catch (OverflowException)
             {

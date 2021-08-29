@@ -429,8 +429,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             if (dungeons?.Any(x => x.Status == DungeonStatus.Done && x.DungeonChests.Any(y => y?.IsBossChest == true)) == true)
             {
                 dungeons.Where(x => x?.IsBestTime == true).ToList().ForEach(x => x.IsBestTime = false);
-                var min = dungeons.Where(x => x?.DungeonChests.Any(y => y.IsBossChest) == true).Select(x => x.TotalRunTime).Min();
-                var bestTimeDungeon = dungeons.FirstOrDefault(x => x.TotalRunTime == min);
+                var min = dungeons.Where(x => x?.DungeonChests.Any(y => y.IsBossChest) == true).Select(x => x.TotalRunTimeInSeconds).Min();
+                var bestTimeDungeon = dungeons.FirstOrDefault(x => x.TotalRunTimeInSeconds == min);
 
                 if (bestTimeDungeon != null)
                 {
