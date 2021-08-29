@@ -1642,6 +1642,11 @@ namespace StatisticsAnalysisTool.ViewModels
         public bool IsDamageMeterTrackingActive {
             get => _isDamageMeterTrackingActive;
             set {
+                if (TrackingController?.CombatController == null)
+                {
+                    return;
+                }
+
                 _isDamageMeterTrackingActive = value;
 
                 TrackingController.CombatController.IsDamageMeterActive = _isDamageMeterTrackingActive;
