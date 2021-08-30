@@ -1154,7 +1154,7 @@
     </Style>
 
     <DataTemplate DataType="{x:Type networkModel:DungeonCloseTimer}">
-        <Border Visibility="{Binding IsVisible }" Style="{StaticResource Tracking.Information.Border}">
+        <Border Visibility="{Binding IsVisible}" Style="{StaticResource Tracking.Information.Border}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
                 <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationDungeonTimer, FallbackValue=DUNGEON__TIMER}"></Label>
                 <Grid>

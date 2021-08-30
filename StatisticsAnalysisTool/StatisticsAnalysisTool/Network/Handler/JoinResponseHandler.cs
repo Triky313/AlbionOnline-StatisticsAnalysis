@@ -50,7 +50,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             _mainWindowViewModel.DungeonCloseTimer = new DungeonCloseTimer
             {
-                IsVisible = Visibility.Hidden
+                IsVisible = Visibility.Collapsed
             };
 
             if (value.Guid != null && value.InteractGuid  != null && value.UserObjectId != null)

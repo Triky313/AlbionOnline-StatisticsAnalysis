@@ -306,12 +306,12 @@
                                     <ContentPresenter Content="{Binding DungeonStatsDay}"/>
                                     <ContentPresenter Content="{Binding DungeonStatsFilter}"/>
                                 </StackPanel>
-                                <StackPanel HorizontalAlignment="Right" Width="250" Height="82" VerticalAlignment="Top">
-                                    <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="80" Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
-                                    <Button Content="{Binding Translation.DeleteSelectedDungeons, FallbackValue=DELETE__SELECTED__DUNGEONS}" Height="26" MaxWidth="500" MinWidth="80" Margin="0,2,0,5" Click="BtnDeleteSelectedDungeons_Click" />
+                                <StackPanel HorizontalAlignment="Right" Width="250" Height="123" VerticalAlignment="Top">
                                     <DockPanel Height="auto" VerticalAlignment="Top">
                                         <ContentControl Content="{Binding DungeonCloseTimer}" />
                                     </DockPanel>
+                                    <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="80" Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
+                                    <Button Content="{Binding Translation.DeleteSelectedDungeons, FallbackValue=DELETE__SELECTED__DUNGEONS}" Height="26" MaxWidth="500" MinWidth="80" Margin="0,2,0,5" Click="BtnDeleteSelectedDungeons_Click" />
                                 </StackPanel>
                             </Grid>
                             <Grid Style="{StaticResource Grid.Unfold.Bar}" ZIndex="2">

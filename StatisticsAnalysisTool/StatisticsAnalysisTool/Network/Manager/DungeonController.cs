@@ -122,7 +122,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 _mainWindowViewModel.DungeonCloseTimer = new DungeonCloseTimer
                 {
-                    IsVisible = Visibility.Hidden
+                    IsVisible = Visibility.Collapsed
                 };
             }
         }
