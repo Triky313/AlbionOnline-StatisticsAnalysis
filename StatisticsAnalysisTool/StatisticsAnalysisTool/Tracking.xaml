@@ -721,10 +721,7 @@
                 </DockPanel>
             </StackPanel>
             <Grid Margin="0 0 20 0" Height="30" Width="50" HorizontalAlignment="Right">
-                <Button Width="auto" Height="auto" Command="{Binding RemoveDungeonCommand}" 
-                        CommandParameter="{Binding DungeonHash}">
-                    <fa5:ImageAwesome Height="15" Width="15" Icon="Solid_Trash" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                </Button>
+                <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion}" ToolTip="{Binding TranslationSelectToDelete}" />
             </Grid>
         </Grid>
     </DataTemplate>

@@ -430,4 +430,8 @@
   <translation name="TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN">Try downloading the item list again</translation>
   <translation name="DAMAGE_METER_ON_OFF">Damage Meter - ON/OFF</translation>
   <translation name="TRACKER_ON_OFF">Tracker - ON/OFF</translation>
+  <translation name="DELETE_SELECTED_DUNGEONS">Delete selected dungeons</translation>
+  <translation name="SELECT_TO_DELETE">Select to delete</translation>
+  <translation name="DELETE_SELECTED_DUNGEONS">Delete selected dungeons</translation>
+  <translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS">Are you sure you want to delete selected dungeons?</translation>
 </translations>

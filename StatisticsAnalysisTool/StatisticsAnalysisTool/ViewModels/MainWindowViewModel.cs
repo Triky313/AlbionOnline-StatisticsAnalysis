@@ -906,6 +906,18 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public void DeleteSelectedDungeons()
+        {
+            var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS"));
+            var dialogResult = dialog.ShowDialog();
+
+            if (dialogResult is true)
+            {
+                var selectedDungeons = TrackingDungeons.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.DungeonHash);
+                TrackingController.DungeonController.RemoveDungeonByHashAsync(selectedDungeons);
+            }
+        }
+
         public void ResetDungeonCounters()
         {
             DungeonStatsTotal.EnteredDungeon = 0;
@@ -991,7 +1003,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
         }
-
+        
         #endregion
 
         #region Item View Filters

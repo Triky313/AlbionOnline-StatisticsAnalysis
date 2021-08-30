@@ -431,4 +431,8 @@
   <translation name="TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN">Herunterladen der Itemlist erneut versuchen</translation>
   <translation name="DAMAGE_METER_ON_OFF">Schadensanzeige - AN/AUS</translation>
   <translation name="TRACKER_ON_OFF">Tracker - AN/AUS</translation>
+  <translation name="DELETE_SELECTED_DUNGEONS">Ausgewählte Dungeons löschen</translation>
+  <translation name="SELECT_TO_DELETE">Zum löschen auswählen</translation>
+  <translation name="DELETE_SELECTED_DUNGEONS">Ausgewählte Dungeons löschen</translation>
+  <translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS">Ausgewählte Dungeons wirklich löschen?</translation>
 </translations>

@@ -210,6 +210,11 @@ namespace StatisticsAnalysisTool.Views
             _mainWindowViewModel.ResetDungeons();
         }
 
+        private void BtnDeleteSelectedDungeons_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel.DeleteSelectedDungeons();
+        }
+
         private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel.ErrorBarVisibility = Visibility.Hidden;

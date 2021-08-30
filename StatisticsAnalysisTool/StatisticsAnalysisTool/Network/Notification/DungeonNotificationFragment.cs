@@ -2,7 +2,6 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +9,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using System.Windows;
-using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
@@ -56,18 +54,17 @@ namespace StatisticsAnalysisTool.Network.Notification
         private CityFaction _cityFaction;
         private int _numberOfDungeonFloors;
         private string _diedMessage;
+        private bool? _isSelectedForDeletion = false;
+
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
-
-        public ICommand RemoveDungeonCommand { get; set; }
-
-        public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime, MainWindowViewModel mainWindowViewModel)
+        
+        public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
         {
             DungeonNumber = dungeonNumber;
             MainMapIndex = mainMapIndex;
             GuidList = guidList;
             EnterDungeonFirstTime = enterDungeonFirstTime;
             Faction = Faction.Unknown;
-            RemoveDungeonCommand = new RemoveDungeonButtonClick(mainWindowViewModel);
         }
 
         public void SetValues(DungeonObject dungeonObject)
@@ -105,25 +102,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 
             DungeonChests = dungeonsChestFragments;
         }
-
-        bool loadingTriggered;
-
-        void TriggerLoadIfNecessary()
-        {
-            if (!loadingTriggered)
-            {
-                loadingTriggered = true;
-
-                // This block will called before your item will be displayed
-                // Due to the loadingTriggered-member it is called only once.
-                // Start here the asynchronous loading of the data
-                // In virtualizing lists, this block is only called if the item
-                // will be visible to the user (he scrolls to this item)
-
-                //LoadAsync();
-            }
-        }
-
+        
         public ObservableCollection<DungeonEventObjectFragment> DungeonChests
         {
             get => _dungeonChests;
@@ -135,10 +114,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         }
 
         public int DungeonNumber {
-            get {
-                TriggerLoadIfNecessary();
-                return _dungeonNumber;
-            }
+            get => _dungeonNumber;
             set
             {
                 _dungeonNumber = value;
@@ -556,6 +532,18 @@ namespace StatisticsAnalysisTool.Network.Notification
                 OnPropertyChanged();
             }
         }
+
+        public bool? IsSelectedForDeletion 
+        {
+            get => _isSelectedForDeletion;
+            set
+            {
+                _isSelectedForDeletion = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore] public string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
 
         [JsonIgnore] public string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
 

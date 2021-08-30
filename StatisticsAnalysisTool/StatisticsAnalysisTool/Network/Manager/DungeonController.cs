@@ -622,7 +622,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     }
                     else
                     {
-                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime, _mainWindowViewModel);
+                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
                         dunFragment.SetValues(dungeon);
                         _mainWindowViewModel?.TrackingDungeons?.Add(dunFragment);
                     }
@@ -640,7 +640,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             
             var timespan = timer.Elapsed;
 
-            Debug.Print("SetOrUpdateDungeonsDataUiAsync: " + "{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
+            Debug.Print("SetOrUpdateDungeonsDataUiAsync: " + "{0:00}:{1:00}:{2:0000}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds);
         }
 
         private void DungeonSortAndFiltering()
@@ -698,6 +698,21 @@ namespace StatisticsAnalysisTool.Network.Manager
             var timespan = timer.Elapsed;
 
             Debug.Print("RemoveLeftOverDungeonNotificationFragments: " + "{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
+        }
+
+        public async void RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
+        {
+            _dungeons.RemoveAll(x => dungeonHash.Contains(x.DungeonHash));
+
+            foreach (var dungeonFragment in _mainWindowViewModel?.TrackingDungeons?.ToList() ?? new List<DungeonNotificationFragment>())
+            {
+                await Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
+                });
+            }
+
+            await SetOrUpdateDungeonsDataUiAsync();
         }
 
         public void UpdateDungeonDataUi(DungeonObject dungeon)

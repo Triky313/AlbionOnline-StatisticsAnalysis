@@ -65,5 +65,6 @@ namespace StatisticsAnalysisTool.Models
         public string TryDownloadingTheItemListAgain => LanguageController.Translation("TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN");
         public string DamageMeterOnOff => LanguageController.Translation("DAMAGE_METER_ON_OFF");
         public string TrackerOnOff => LanguageController.Translation("TRACKER_ON_OFF");
+        public string DeleteSelectedDungeons => LanguageController.Translation("DELETE_SELECTED_DUNGEONS");
     }
 }
