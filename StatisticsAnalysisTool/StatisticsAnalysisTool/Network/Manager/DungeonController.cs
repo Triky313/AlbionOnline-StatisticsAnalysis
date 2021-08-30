@@ -122,7 +122,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 _mainWindowViewModel.DungeonCloseTimer = new DungeonCloseTimer
                 {
-                    IsVisible = Visibility.Hidden
+                    IsVisible = Visibility.Collapsed
                 };
             }
         }
@@ -441,18 +441,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void ResetAllBestValues(ObservableCollection<DungeonNotificationFragment> dungeons)
         {
-            dungeons.Where(x =>
-                x?.IsBestFame == true ||
-                x?.IsBestReSpec == true ||
-                x?.IsBestSilver == true ||
-                x?.IsBestFactionFlags == true ||
-                x?.IsBestFactionCoins == true ||
-                x?.IsBestFamePerHour == true ||
-                x?.IsBestReSpecPerHour == true ||
-                x?.IsBestSilverPerHour == true ||
-                x?.IsBestFactionFlagsPerHour == true ||
-                x?.IsBestFactionCoinsPerHour == true
-            ).ToList().ForEach(x =>
+            dungeons?.ToList().ForEach(x =>
             {
                 x.IsBestFame = false;
                 x.IsBestReSpec = false;
@@ -610,26 +599,27 @@ namespace StatisticsAnalysisTool.Network.Manager
             var filteredDungeons = _dungeons.Where(x => x.GuidList.Count > 0).OrderBy(x => x.EnterDungeonFirstTime).ToList();
             foreach (var dungeon in filteredDungeons)
             {
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
-                       x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime == dungeon.EnterDungeonFirstTime);
+                var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
+                    x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime == dungeon.EnterDungeonFirstTime);
 
-                    if (uiDungeon != null)
+                if (uiDungeon != null)
+                {
+                    uiDungeon.SetValues(dungeon);
+                    uiDungeon.DungeonNumber = ++counter;
+                }
+                else
+                {
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        uiDungeon.SetValues(dungeon);
-                        uiDungeon.DungeonNumber = ++counter;
-                    }
-                    else
-                    {
-                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
+                        var dunFragment =
+                            new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
                         dunFragment.SetValues(dungeon);
                         _mainWindowViewModel?.TrackingDungeons?.Add(dunFragment);
-                    }
-                });
+                    });
+                }
             }
-
-            await RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons).ConfigureAwait(false);
+            
+            await RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons?.ToAsyncEnumerable()).ConfigureAwait(false);
             SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
             CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
 
@@ -639,7 +629,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             SetDungeonStatsTotal();
             
             var timespan = timer.Elapsed;
-
             Debug.Print("SetOrUpdateDungeonsDataUiAsync: " + "{0:00}:{1:00}:{2:0000}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds);
         }
 
@@ -675,16 +664,13 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
-        private async Task RemoveLeftOverDungeonNotificationFragments(ObservableCollection<DungeonNotificationFragment> dungeonNotificationFragments)
+        private async Task RemoveLeftOverDungeonNotificationFragments(IAsyncEnumerable<DungeonNotificationFragment> dungeonNotificationFragments)
         {
-            var timer = Stopwatch.StartNew();
-
-            // TODO: To slow?
-            foreach (var dungeonFragment in dungeonNotificationFragments.ToList())
+            await foreach (var dungeonFragment in dungeonNotificationFragments)
             {
-                var dungeonObject = _dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonFragment.DungeonHash));
+                var dungeonObject = _dungeons.Select(x => x.DungeonHash).FirstOrDefault(x => x.Contains(dungeonFragment.DungeonHash));
 
-                if (dungeonObject != null)
+                if (!string.IsNullOrEmpty(dungeonObject))
                 {
                     continue;
                 }
@@ -694,10 +680,6 @@ namespace StatisticsAnalysisTool.Network.Manager
                     _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
                 });
             }
-            
-            var timespan = timer.Elapsed;
-
-            Debug.Print("RemoveLeftOverDungeonNotificationFragments: " + "{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
         }
 
         public async void RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
@@ -722,13 +704,10 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => 
-                    x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
+            var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x =>
+                x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
 
-                uiDungeon?.SetValues(dungeon);
-            });
+            uiDungeon?.SetValues(dungeon);
         }
 
         private void AddMapToExistDungeon(List<DungeonObject> dungeons, Guid currentGuid, Guid lastGuid)

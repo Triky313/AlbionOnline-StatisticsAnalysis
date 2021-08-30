@@ -123,6 +123,8 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        public string Hash => $"{Id}{UniqueName}";
+
         [JsonIgnore] 
         public string TranslationStandard => LanguageController.Translation("STANDARD");
 

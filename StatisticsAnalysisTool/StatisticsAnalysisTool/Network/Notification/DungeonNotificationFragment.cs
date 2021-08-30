@@ -2,10 +2,12 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using System.Windows;
@@ -83,24 +85,45 @@ namespace StatisticsAnalysisTool.Network.Notification
             Mode = dungeonObject.Mode;
             Status = dungeonObject.Status;
 
-            var dungeonsChestFragments = new ObservableCollection<DungeonEventObjectFragment>();
-            foreach (var dungeonEventObject in dungeonObject.DungeonEventObjects)
-            {
-                dungeonsChestFragments.Add(new DungeonEventObjectFragment()
-                {
-                    Id = dungeonEventObject.Id,
-                    IsBossChest = dungeonEventObject.IsBossChest,
-                    IsChestOpen = dungeonEventObject.IsOpen,
-                    Opened = dungeonEventObject.Opened,
-                    Rarity = dungeonEventObject.Rarity,
-                    Type = dungeonEventObject.ObjectType,
-                    UniqueName = dungeonEventObject.UniqueName,
-                    ShrineType = dungeonEventObject.ShrineType,
-                    ShrineBuff = dungeonEventObject.ShrineBuff
-                });
-            }
+            UpdateChests(dungeonObject.DungeonEventObjects.ToAsyncEnumerable());
+        }
 
-            DungeonChests = dungeonsChestFragments;
+        private async void UpdateChests(IAsyncEnumerable<DungeonEventObject> dungeonEventObjects)
+        {
+            await foreach (var dungeonEventObject in dungeonEventObjects)
+            {
+                var dungeon = DungeonChests?.FirstOrDefault(x => x.Hash == dungeonEventObject.Hash);
+
+                if (dungeon != null)
+                {
+                    dungeon.IsBossChest = dungeonEventObject.IsBossChest;
+                    dungeon.IsChestOpen = dungeonEventObject.IsOpen;
+                    dungeon.Opened = dungeonEventObject.Opened;
+                    dungeon.Rarity = dungeonEventObject.Rarity;
+                    dungeon.Type = dungeonEventObject.ObjectType;
+                    dungeon.UniqueName = dungeonEventObject.UniqueName;
+                    dungeon.ShrineType = dungeonEventObject.ShrineType;
+                    dungeon.ShrineBuff = dungeonEventObject.ShrineBuff;
+                }
+                else
+                {
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    {
+                        DungeonChests?.Add(new DungeonEventObjectFragment()
+                        {
+                            Id = dungeonEventObject.Id,
+                            IsBossChest = dungeonEventObject.IsBossChest,
+                            IsChestOpen = dungeonEventObject.IsOpen,
+                            Opened = dungeonEventObject.Opened,
+                            Rarity = dungeonEventObject.Rarity,
+                            Type = dungeonEventObject.ObjectType,
+                            UniqueName = dungeonEventObject.UniqueName,
+                            ShrineType = dungeonEventObject.ShrineType,
+                            ShrineBuff = dungeonEventObject.ShrineBuff
+                        });
+                    });
+                }
+            }
         }
         
         public ObservableCollection<DungeonEventObjectFragment> DungeonChests

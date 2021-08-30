@@ -320,6 +320,7 @@
     <PackageReference Include="PacketDotNet" Version="1.2.0" />
     <PackageReference Include="Pastel" Version="2.1.0" />
     <PackageReference Include="SharpPcap" Version="5.4.0" />
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
