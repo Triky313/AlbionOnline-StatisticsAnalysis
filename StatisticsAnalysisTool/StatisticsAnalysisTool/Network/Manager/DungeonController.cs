@@ -628,8 +628,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                     }
                 });
             }
-
-            await RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons).ConfigureAwait(false);
+            
+            await RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons.ToAsyncEnumerable()).ConfigureAwait(false);
             SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
             CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
 
@@ -675,16 +675,13 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
-        private async Task RemoveLeftOverDungeonNotificationFragments(ObservableCollection<DungeonNotificationFragment> dungeonNotificationFragments)
+        private async Task RemoveLeftOverDungeonNotificationFragments(IAsyncEnumerable<DungeonNotificationFragment> dungeonNotificationFragments)
         {
-            var timer = Stopwatch.StartNew();
-
-            // TODO: To slow?
-            foreach (var dungeonFragment in dungeonNotificationFragments.ToList())
+            await foreach (var dungeonFragment in dungeonNotificationFragments)
             {
-                var dungeonObject = _dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonFragment.DungeonHash));
+                var dungeonObject = _dungeons.Select(x => x.DungeonHash).FirstOrDefault(x => x.Contains(dungeonFragment.DungeonHash));
 
-                if (dungeonObject != null)
+                if (!string.IsNullOrEmpty(dungeonObject))
                 {
                     continue;
                 }
@@ -694,10 +691,6 @@ namespace StatisticsAnalysisTool.Network.Manager
                     _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
                 });
             }
-            
-            var timespan = timer.Elapsed;
-
-            Debug.Print("RemoveLeftOverDungeonNotificationFragments: " + "{0:00}:{1:00}:{2:00}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds / 10);
         }
 
         public async void RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
