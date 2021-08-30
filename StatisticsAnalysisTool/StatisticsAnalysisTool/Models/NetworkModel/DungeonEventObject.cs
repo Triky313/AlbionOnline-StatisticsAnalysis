@@ -17,5 +17,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
 
         public ShrineBuff ShrineBuff => DungeonObjectData.GetShrineBuff(UniqueName);
         public ShrineType ShrineType => DungeonObjectData.GetShrineType(UniqueName);
+
+        public string Hash => $"{Id}{UniqueName}";
     }
 }

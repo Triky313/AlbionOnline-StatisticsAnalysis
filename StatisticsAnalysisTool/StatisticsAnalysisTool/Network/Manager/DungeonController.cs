@@ -610,26 +610,27 @@ namespace StatisticsAnalysisTool.Network.Manager
             var filteredDungeons = _dungeons.Where(x => x.GuidList.Count > 0).OrderBy(x => x.EnterDungeonFirstTime).ToList();
             foreach (var dungeon in filteredDungeons)
             {
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
-                       x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime == dungeon.EnterDungeonFirstTime);
+                var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
+                    x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime == dungeon.EnterDungeonFirstTime);
 
-                    if (uiDungeon != null)
+                if (uiDungeon != null)
+                {
+                    uiDungeon.SetValues(dungeon);
+                    uiDungeon.DungeonNumber = ++counter;
+                }
+                else
+                {
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        uiDungeon.SetValues(dungeon);
-                        uiDungeon.DungeonNumber = ++counter;
-                    }
-                    else
-                    {
-                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
+                        var dunFragment =
+                            new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
                         dunFragment.SetValues(dungeon);
                         _mainWindowViewModel?.TrackingDungeons?.Add(dunFragment);
-                    }
-                });
+                    });
+                }
             }
             
-            await RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons.ToAsyncEnumerable()).ConfigureAwait(false);
+            await RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons?.ToAsyncEnumerable()).ConfigureAwait(false);
             SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
             CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
 
@@ -715,13 +716,10 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => 
-                    x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
+            var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x =>
+                x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
 
-                uiDungeon?.SetValues(dungeon);
-            });
+            uiDungeon?.SetValues(dungeon);
         }
 
         private void AddMapToExistDungeon(List<DungeonObject> dungeons, Guid currentGuid, Guid lastGuid)

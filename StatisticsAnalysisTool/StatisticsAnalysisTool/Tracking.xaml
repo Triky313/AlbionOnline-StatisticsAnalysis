@@ -624,7 +624,7 @@
                                     </StackPanel>
                                 </Grid>
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-20 0 0 0" ToolTip="{Binding DiedMessage}">
-                                    <Image Source="Resources/skull.png" Style="{StaticResource DungeonNotificationFragment.Image.Skull}" />
+                                    <Image Source="Resources/skull.png" Visibility="Hidden" Style="{StaticResource DungeonNotificationFragment.Image.Skull}" />
                                 </Grid>
                                 <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__RUN__TIME}">
                                     <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
