@@ -441,18 +441,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void ResetAllBestValues(ObservableCollection<DungeonNotificationFragment> dungeons)
         {
-            dungeons.Where(x =>
-                x?.IsBestFame == true ||
-                x?.IsBestReSpec == true ||
-                x?.IsBestSilver == true ||
-                x?.IsBestFactionFlags == true ||
-                x?.IsBestFactionCoins == true ||
-                x?.IsBestFamePerHour == true ||
-                x?.IsBestReSpecPerHour == true ||
-                x?.IsBestSilverPerHour == true ||
-                x?.IsBestFactionFlagsPerHour == true ||
-                x?.IsBestFactionCoinsPerHour == true
-            ).ToList().ForEach(x =>
+            dungeons?.ToList().ForEach(x =>
             {
                 x.IsBestFame = false;
                 x.IsBestReSpec = false;
@@ -640,7 +629,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             SetDungeonStatsTotal();
             
             var timespan = timer.Elapsed;
-
             Debug.Print("SetOrUpdateDungeonsDataUiAsync: " + "{0:00}:{1:00}:{2:0000}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds);
         }
 
