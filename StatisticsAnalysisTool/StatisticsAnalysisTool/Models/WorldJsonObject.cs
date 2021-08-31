@@ -12,5 +12,8 @@ namespace StatisticsAnalysisTool.Models
 
         [JsonPropertyName("Type")] 
         public string Type { get; set; }
+
+        [JsonPropertyName("File")] 
+        public string File { get; set; }
     }
 }

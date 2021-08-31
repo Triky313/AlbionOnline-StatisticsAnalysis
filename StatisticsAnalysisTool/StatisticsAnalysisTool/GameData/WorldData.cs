@@ -160,6 +160,11 @@ namespace StatisticsAnalysisTool.GameData
 
         public static Tier GetTier(string value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return Tier.Unknown;
+            }
+
             if ("_T1_".Contains(value))
             {
                 return Tier.T1;
@@ -265,9 +270,7 @@ namespace StatisticsAnalysisTool.GameData
                     ReadCommentHandling = JsonCommentHandling.Skip
                 };
 
-                var localItemString =
-                    File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.WorldDataDirectoryName, Settings.Default.WorldDataFileName),
-                        Encoding.UTF8);
+                var localItemString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.WorldDataDirectoryName, Settings.Default.WorldDataFileName), Encoding.UTF8);
                 return ConvertItemJsonObjectToMapData(JsonSerializer.Deserialize<ObservableCollection<WorldJsonObject>>(localItemString, options));
             }
             catch (Exception e)
@@ -284,7 +287,8 @@ namespace StatisticsAnalysisTool.GameData
             {
                 Index = item.Index,
                 UniqueName = item.UniqueName,
-                Type = item.Type
+                Type = item.Type,
+                File = item.File
             }).ToList();
 
             return new ObservableCollection<ClusterInfo>(result);
@@ -294,7 +298,7 @@ namespace StatisticsAnalysisTool.GameData
         {
             using var client = new HttpClient
             {
-                Timeout = TimeSpan.FromSeconds(120)
+                Timeout = TimeSpan.FromSeconds(300)
             };
 
             try
