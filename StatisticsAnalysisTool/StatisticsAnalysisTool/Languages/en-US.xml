@@ -434,4 +434,16 @@
   <translation name="SELECT_TO_DELETE">Select to delete</translation>
   <translation name="DELETE_SELECTED_DUNGEONS">Delete selected dungeons</translation>
   <translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS">Are you sure you want to delete selected dungeons?</translation>
+  <translation name="FIRST_STEPS">First steps</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME">What do I have to do so that I can track my game?</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_1">1. You need Windows 10 or higher!</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_2">2. Download and install the Npcap installer: </translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_3">3. Start the Statistics Analyses Tool (Restart once)</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_4">4. Start the Game</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_5">5. Select Tracking from the drop-down menu</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_6">6. Click on the large ON/OFF button to start tracking. If the button is blue and the circle is on the right, tracking is activated.</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_7">7. If the tracker does not yet have all the important information, the wifi icon is yellow. In order for it to turn green, your character has to change a map once in the game. (e.g. Martlock to Eldon Hill)</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_8">8. If the wifi icon is green and your character name can be seen, the tracker is fully functional - Done!</translation>
+  <translation name="DESC_UPDATE_MARKET_PRICES_TITLE">How do I update item prices myself?</translation>
+  <translation name="DESC_UPDATE_MARKET_PRICES_1">In order to be able to update the prices of an item yourself, you have to install Albion Online Data Project: </translation>
 </translations>

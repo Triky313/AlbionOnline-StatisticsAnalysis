@@ -435,4 +435,16 @@
   <translation name="SELECT_TO_DELETE">Zum löschen auswählen</translation>
   <translation name="DELETE_SELECTED_DUNGEONS">Ausgewählte Dungeons löschen</translation>
   <translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS">Ausgewählte Dungeons wirklich löschen?</translation>
+  <translation name="FIRST_STEPS">Erste Schritte</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME">Was muss ich tun, damit ich mein Spiel tracken kann?</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_1">1. Du benötigst Windows 10 oder höher!</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_2">2. Lade und installiere Npcap (installer): </translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_3">3. Starte das Statistics Analyses Tool (Noch einmal neu starten)</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_4">4. Starte das Spiel (Albion Online)</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_5">5. Wähle Tracking im Drop-Down Menü aus</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_6">6. Klicke auf den großen AN/AUS Knopf um das Tracking zu starten. Ist der Knopf blau und der Kreis auf der rechten Seite, ist das Tracking aktiviert.</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_7">7. Wenn der Tracker noch nicht alle benötigten Informationen zum tracken hat, ist das WLAN Symbol gelb. Das WLAN Symbol färbt sich grün, sobald du mit deinem Charakter einmal eine Map gewechselt hast. (z.B. von Martlock nach Eldon Hill)</translation>
+  <translation name="DESCRIPTION_TRACK_MY_GAME_DETAILS_8">8. Ist das WLAN Symbol grün und dein Charaktername ist im Tool zu sehen, ist der Tracker voll funktionsfähig - Fertig!</translation>
+  <translation name="DESC_UPDATE_MARKET_PRICES_TITLE">Wie aktualisiere ich Item Preise selber?</translation>
+  <translation name="DESC_UPDATE_MARKET_PRICES_1">Um die Preise eines Items selber aktualisieren zu können, musst du Albion Online Data Project installieren: </translation>
 </translations>

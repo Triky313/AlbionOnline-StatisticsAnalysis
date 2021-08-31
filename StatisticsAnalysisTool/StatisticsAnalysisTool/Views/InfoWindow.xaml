@@ -21,12 +21,51 @@
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
         </Grid>
-        <Grid Margin="0,33">
-            <TextBlock Text="{Binding Translation.FeatureDescription, FallbackValue=FEATURE_DESCRIPTION}" FontSize="20" Foreground="{StaticResource Solid.Color.Text.Gold}" TextAlignment="Center" Margin="10,10,10,272" TextWrapping="Wrap" />
-            <Image Source="../Resources/feature_image.png" Margin="0,115,0,-5" />
+        <Grid Margin="10,33,0,33">
+            <ScrollViewer>
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource InfoWindow.TextBlock.Title}" Text="{Binding Translation.DescriptionTrackMyGame, FallbackValue=DESCRIPTION__TRACK__MY__GAME}" />
+                        <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails1, FallbackValue=DESCRIPTION_STEP_1}" />
+                        <TextBlock>
+                            <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}"  Text="{Binding Translation.DescriptionTrackMyGameDetails2, FallbackValue=DESCRIPTION_STEP_2}" />
+                            <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}">
+                                <Hyperlink NavigateUri="https://nmap.org/npcap/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" RequestNavigate="Hyperlink_RequestNavigate">https://nmap.org/npcap/</Hyperlink>
+                            </TextBlock>
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails3, FallbackValue=DESCRIPTION_STEP_3}" />
+                        <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails4, FallbackValue=DESCRIPTION_STEP_4}" />
+                        <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails5, FallbackValue=DESCRIPTION_STEP_5}" />
+                        <Image Source="../Resources/tracker_description_tracker.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />
+                        <TextBlock/>
+                        <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails6, FallbackValue=DESCRIPTION_STEP_6}" />
+                        <Image Source="../Resources/tracker_description_activate_tracker.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />
+                        <TextBlock/>
+                        <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails7, FallbackValue=DESCRIPTION_STEP_7}" />
+                        <Image Source="../Resources/tracker_description_wifi_icon.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />
+                        <TextBlock/>
+                        <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails8, FallbackValue=DESCRIPTION_STEP_8}" />
+                        <Image Source="../Resources/tracker_description_done.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />
+                        <TextBlock/>
+                        <TextBlock/>
+
+                        <TextBlock Style="{StaticResource InfoWindow.TextBlock.Title}" Text="{Binding Translation.DescUpdateMarketPricesTitle, FallbackValue=DESC_UPDATE_MARKET_PRICES_TITLE}" />
+                        <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescUpdateMarketPrices1, FallbackValue=DESC_UPDATE_MARKET_PRICES_1}" />
+                        <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}">
+                            <Hyperlink NavigateUri="https://www.albion-online-data.com/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" RequestNavigate="Hyperlink_RequestNavigate">https://www.albion-online-data.com/</Hyperlink>
+                        </TextBlock>
+                        <TextBlock/>
+                        <TextBlock/>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
         </Grid>
+        <Separator Background="{StaticResource SolidColorBrush.Background.Third}" Height="4" Margin="0,0,0,31" VerticalAlignment="Bottom" />
         <Grid Height="33" VerticalAlignment="Bottom">
-            <CheckBox Content="{Binding Translation.ShowNotAgainContent, FallbackValue=SHOW__NOT__AGAIN}" IsChecked="{Binding ShowNotAgainChecked, FallbackValue=false}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="Auto" />
+            <CheckBox Content="{Binding Translation.ShowNotAgainContent, FallbackValue=SHOW__NOT__AGAIN}" 
+                      IsChecked="{Binding ShowNotAgainChecked, FallbackValue=false}" 
+                      Foreground="{StaticResource SolidColorBrush.Foreground.First}" 
+                      HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="10,0,0,5" VerticalAlignment="Bottom" Width="Auto" />
         </Grid>
     </Grid>
 </Window>
