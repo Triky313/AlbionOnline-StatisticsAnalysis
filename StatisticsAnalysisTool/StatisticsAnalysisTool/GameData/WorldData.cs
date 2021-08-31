@@ -158,6 +158,51 @@ namespace StatisticsAnalysisTool.GameData
             return MapData?.FirstOrDefault(x => x.Index == index)?.Type;
         }
 
+        public static Tier GetTier(string value)
+        {
+            if ("_T1_".Contains(value))
+            {
+                return Tier.T1;
+            }
+
+            if ("_T2_".Contains(value))
+            {
+                return Tier.T2;
+            }
+
+            if ("_T3_".Contains(value))
+            {
+                return Tier.T3;
+            }
+
+            if ("_T4_".Contains(value))
+            {
+                return Tier.T4;
+            }
+
+            if ("_T5_".Contains(value))
+            {
+                return Tier.T5;
+            }
+
+            if ("_T6_".Contains(value))
+            {
+                return Tier.T6;
+            }
+
+            if ("_T7_".Contains(value))
+            {
+                return Tier.T7;
+            }
+
+            if ("_T8_".Contains(value))
+            {
+                return Tier.T8;
+            }
+
+            return Tier.Unknown;
+        }
+
         public static ClusterType GetClusterType(string type)
         {
             if (IsAvalonClusterTunnel(type)) return ClusterType.AvalonTunnel;
@@ -210,7 +255,7 @@ namespace StatisticsAnalysisTool.GameData
         }
 
         #region Helper methods
-
+        
         private static ObservableCollection<ClusterInfo> GetWorldDataFromLocal()
         {
             try
