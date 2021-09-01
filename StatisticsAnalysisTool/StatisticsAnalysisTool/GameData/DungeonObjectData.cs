@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -46,7 +46,7 @@ namespace StatisticsAnalysisTool.GameData
 
             if (value.Contains("MORGANA_CHEST") || value.Contains("KEEPER_CHEST") || value.Contains("HERETIC_CHEST") || value.Contains("UNDEAD_CHEST")
                 || value.Contains("MORGANA_BOOKCHEST") || value.Contains("KEEPER_BOOKCHEST") || value.Contains("HERETIC_BOOKCHEST") ||
-                value.Contains("UNDEAD_BOOKCHEST") || value.Contains("SHRINE_SILVER_STANDARD") || value.Contains("SHRINE_FAME_STANDARD"))
+                value.Contains("UNDEAD_BOOKCHEST"))
             {
                 return DungeonMode.Standard;
             }
