@@ -164,7 +164,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             if (healthChangeObject.Value != null)
             {
-                fragment.HealPercentage = entities.GetDamagePercentage(healthChangeObject.Value.Heal);
+                fragment.HealPercentage = entities.GetHealPercentage(healthChangeObject.Value.Heal);
             }
         }
 
