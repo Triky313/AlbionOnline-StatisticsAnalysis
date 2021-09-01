@@ -1,4 +1,4 @@
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -218,7 +218,7 @@ namespace StatisticsAnalysisTool.GameData
 
         public static ShrineType GetShrineType(string value)
         {
-            if (value.Contains("STANDARD"))
+            if (!value.Contains("AVALON") && value.Contains("STANDARD"))
             {
                 return ShrineType.Standard;
             }
