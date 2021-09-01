@@ -95,10 +95,7 @@ namespace StatisticsAnalysisTool.GameData
             if (index.ToUpper().Contains("EXPEDITION")) return MapType.Expedition;
 
             if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
-
-            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, $"MapType unknown: {index}");
-            Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType} - MapType unknown: {index}");
-
+            
             return MapType.Unknown;
         }
 
