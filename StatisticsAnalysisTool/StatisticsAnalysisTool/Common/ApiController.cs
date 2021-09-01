@@ -22,7 +22,7 @@ namespace StatisticsAnalysisTool.Common
             var url = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
 
             using var client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(120);
+            client.Timeout = TimeSpan.FromSeconds(300);
 
             try
             {
