@@ -254,13 +254,13 @@ namespace StatisticsAnalysisTool.GameData
         private static async Task<bool> GetLootChestListFromWebAsync(string url)
         {
             using var client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(120);
+            client.Timeout = TimeSpan.FromSeconds(300);
             try
             {
                 using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 var fileString = await content.ReadAsStringAsync();
-                File.WriteAllText(
+                await File.WriteAllTextAsync(
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.LootChestDataFileName), fileString,
                     Encoding.UTF8);
                 return true;

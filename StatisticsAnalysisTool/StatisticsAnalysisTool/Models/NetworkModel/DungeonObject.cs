@@ -84,7 +84,7 @@ namespace StatisticsAnalysisTool.Network.Notification
                 DungeonRunTimes.Add(new TimeCollectObject(time));
             }
 
-            SetCombatTimeSpan();
+            SetTotalRunTimeInSeconds();
         }
 
         public void AddEndTime(DateTime time)
@@ -93,11 +93,11 @@ namespace StatisticsAnalysisTool.Network.Notification
             if (dun != null && dun.StartTime < time)
             {
                 dun.EndTime = time;
-                SetCombatTimeSpan();
+                SetTotalRunTimeInSeconds();
             }
         }
 
-        private void SetCombatTimeSpan()
+        private void SetTotalRunTimeInSeconds()
         {
             foreach (var time in DungeonRunTimes.Where(x => x.EndTime != null).ToList())
             {

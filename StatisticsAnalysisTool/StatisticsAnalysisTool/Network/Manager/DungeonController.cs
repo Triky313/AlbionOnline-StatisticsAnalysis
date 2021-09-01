@@ -63,9 +63,6 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             try
             {
-                AddDungeonRunIfNextMap(currentGuid, mapType);
-                SetNewStartTimeWhenOneMoreTimeEnter(currentGuid);
-
                 if (_lastGuid != null && !_dungeons.Any(x => x.GuidList.Contains(currentGuid)) && mapType != MapType.CorruptedDungeon)
                 {
                     AddMapToExistDungeon(_dungeons, currentGuid, (Guid) _lastGuid);
@@ -74,9 +71,13 @@ namespace StatisticsAnalysisTool.Network.Manager
                     RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
                     SetCurrentDungeonActive(_dungeons, currentGuid);
                     SetDungeonInformation(currentGuid, mapType);
+                    AddDungeonRunIfNextMap(currentGuid, mapType);
+
                     await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
                     return;
                 }
+
+                AddDungeonRunIfNextMap(currentGuid, mapType);
 
                 if (_lastGuid == null 
                     && !_mainWindowViewModel.TrackingDungeons.Any(x => x.GuidList.Contains((Guid) mapGuid)) 
@@ -584,7 +585,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             if (_lastGuid != null && _dungeons.Any(x => x.GuidList.Contains(currentGuid) && x.GuidList.Contains((Guid) _lastGuid)) && mapType != MapType.CorruptedDungeon)
             {
                 var dun = _dungeons?.First(x => x.GuidList.Contains(currentGuid));
-                dun.AddEndTime(DateTime.UtcNow);
+                dun.AddStartTime(DateTime.UtcNow);
             }
         }
 
@@ -715,16 +716,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             var dun = dungeons?.First(x => x.GuidList.Contains(lastGuid));
             dun?.GuidList.Add(currentGuid);
         }
-
-        private void SetNewStartTimeWhenOneMoreTimeEnter(Guid currentGuid)
-        {
-            if (_dungeons.Any(x => x.GuidList.Contains(currentGuid)))
-            {
-                var dun = _dungeons?.First(x => x.GuidList.Contains(currentGuid));
-                dun.AddStartTime(DateTime.UtcNow);
-            }
-        }
-
+        
         private void LeaveDungeonCheck(MapType mapType)
         {
             if (_lastGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid) _lastGuid)) && mapType != MapType.RandomDungeon)
