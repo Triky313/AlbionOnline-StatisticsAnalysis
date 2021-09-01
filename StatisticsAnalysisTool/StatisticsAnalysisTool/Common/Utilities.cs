@@ -45,19 +45,15 @@ namespace StatisticsAnalysisTool.Common
 
         public static string GetValuePerHourInShort(double value, TimeSpan span)
         {
-            return Formatting.ToStringShort(GetValuePerHourToDouble(value, (int)span.TotalSeconds));
+            return Formatting.ToStringShort(GetValuePerHourToDouble(value, span.TotalSeconds));
         }
-
-        public static string GetValuePerHourInShort(double value, int seconds)
-        {
-            return Formatting.ToStringShort(GetValuePerHourToDouble(value, seconds));
-        }
-
-        public static double GetValuePerHourToDouble(double value, int seconds)
+        
+        public static double GetValuePerHourToDouble(double value, double seconds)
         {
             try
             {
-                return value / seconds / 60 / 60;
+                var hours = seconds / 60d / 60d;
+                return value / hours;
             }
             catch (OverflowException)
             {

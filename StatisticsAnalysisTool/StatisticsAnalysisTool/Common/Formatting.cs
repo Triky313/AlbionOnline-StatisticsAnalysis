@@ -48,7 +48,10 @@ namespace StatisticsAnalysisTool.Common
                 return (num / 100f).ToString("#.00'K'", CultureInfo.CurrentCulture);
             }
 
-            if (num < 1000) return num.ToString("N0", CultureInfo.CurrentCulture);
+            if (num < 1000)
+            {
+                return num.ToString("N0", CultureInfo.CurrentCulture);
+            }
 
             if (num < 10000)
             {

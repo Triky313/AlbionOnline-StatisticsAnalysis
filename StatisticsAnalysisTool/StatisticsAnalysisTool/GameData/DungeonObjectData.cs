@@ -46,7 +46,7 @@ namespace StatisticsAnalysisTool.GameData
 
             if (value.Contains("MORGANA_CHEST") || value.Contains("KEEPER_CHEST") || value.Contains("HERETIC_CHEST") || value.Contains("UNDEAD_CHEST")
                 || value.Contains("MORGANA_BOOKCHEST") || value.Contains("KEEPER_BOOKCHEST") || value.Contains("HERETIC_BOOKCHEST") ||
-                value.Contains("UNDEAD_BOOKCHEST") || value.Contains("SHRINE_SILVER_STANDARD") || value.Contains("SHRINE_FAME_STANDARD"))
+                value.Contains("UNDEAD_BOOKCHEST"))
             {
                 return DungeonMode.Standard;
             }
@@ -218,7 +218,7 @@ namespace StatisticsAnalysisTool.GameData
 
         public static ShrineType GetShrineType(string value)
         {
-            if (value.Contains("STANDARD"))
+            if (!value.Contains("AVALON") && value.Contains("STANDARD"))
             {
                 return ShrineType.Standard;
             }
@@ -254,13 +254,13 @@ namespace StatisticsAnalysisTool.GameData
         private static async Task<bool> GetLootChestListFromWebAsync(string url)
         {
             using var client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(120);
+            client.Timeout = TimeSpan.FromSeconds(300);
             try
             {
                 using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 var fileString = await content.ReadAsStringAsync();
-                File.WriteAllText(
+                await File.WriteAllTextAsync(
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.LootChestDataFileName), fileString,
                     Encoding.UTF8);
                 return true;
