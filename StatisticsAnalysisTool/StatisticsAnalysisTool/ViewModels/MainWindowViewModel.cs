@@ -142,6 +142,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private EFontAwesomeIcon _damageMeterActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private Brush _damageMeterActivationToggleColor;
         private bool _isDamageMeterTrackingActive;
+        private DungeonNotificationFragment _currentActiveDungeon;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -821,8 +822,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
             TrackingController?.RegisterEvents();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
-            TrackingController?.DungeonController?.SetDungeonStatsDay();
-            TrackingController?.DungeonController?.SetDungeonStatsTotal();
+            TrackingController?.DungeonController?.SetDungeonStatsDayUi();
+            TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
 
             TrackingController?.CountUpTimer.Start();
@@ -1587,6 +1588,14 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingDungeons = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DungeonNotificationFragment CurrentActiveDungeon {
+            get => _currentActiveDungeon;
+            set {
+                _currentActiveDungeon = value;
                 OnPropertyChanged();
             }
         }

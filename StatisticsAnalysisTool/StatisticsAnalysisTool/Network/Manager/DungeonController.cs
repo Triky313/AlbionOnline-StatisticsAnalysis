@@ -30,7 +30,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly TrackingController _trackingController;
         private Guid? _currentGuid;
-        private Guid? _lastGuid;
+        private Guid? _lastMapGuid;
         private List<DungeonObject> _dungeons = new();
 
         public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
@@ -43,74 +43,49 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid, string mainMapIndex)
         {
-            LeaveDungeonCheck(mapType);
-            IsDungeonDoneCheck(mapType);
+            UpdateDungeonSaveTimerUi();
 
-            if (!IsClusterDungeonCluster(_dungeons, mapType, mapGuid))
+            _currentGuid = mapGuid;
+
+            // Last map is a dungeon, add new map
+            if (IsDungeonCluster(mapType, mapGuid) && ExistDungeon(_lastMapGuid) && mapType != MapType.CorruptedDungeon)
             {
-                await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
-                return;
-            }
-
-            if (mapGuid == null)
-            {
-                await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
-                return;
-            }
-
-            _currentGuid = (Guid)mapGuid;
-            var currentGuid = (Guid)_currentGuid;
-
-            try
-            {
-                if (_lastGuid != null && !_dungeons.Any(x => x.GuidList.Contains(currentGuid)) && mapType != MapType.CorruptedDungeon)
+                if (AddClusterToExistDungeon(_dungeons, mapGuid, _lastMapGuid, out var currentDungeon))
                 {
-                    AddMapToExistDungeon(_dungeons, currentGuid, (Guid) _lastGuid);
-                    _lastGuid = currentGuid;
-
-                    RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
-                    SetCurrentDungeonActive(_dungeons, currentGuid);
-                    SetDungeonInformation(currentGuid, mapType);
-                    AddDungeonRunIfNextMap(currentGuid, mapType);
-
-                    await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
-                    return;
+                    currentDungeon.AddTimer(DateTime.UtcNow);
                 }
-
-                AddDungeonRunIfNextMap(currentGuid, mapType);
-
-                if (_lastGuid == null 
-                    && !_mainWindowViewModel.TrackingDungeons.Any(x => x.GuidList.Contains((Guid) mapGuid)) 
-                    || (!_mainWindowViewModel.TrackingDungeons.Any(x => x.GuidList.Contains((Guid) mapGuid)))
-                    || (!_mainWindowViewModel.TrackingDungeons.Any(x => x.GuidList.Contains((Guid)mapGuid)) && mapType == MapType.CorruptedDungeon))
-                {
-                    _dungeons.Insert(0, CreateNewDungeon(mainMapIndex, currentGuid));
-                    UpdateDungeonTimer(mapType);
-
-                    _lastGuid = mapGuid;
-
-                    RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
-                    SetCurrentDungeonActive(_dungeons, currentGuid);
-                    SetDungeonInformation(currentGuid, mapType);
-                    await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
-                    return;
-                }
-
-                SetCurrentDungeonActive(_dungeons, currentGuid);
-                _lastGuid = currentGuid;
-
-                await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
             }
-            catch
+            // Add new dungeon
+            else if (mapGuid != null && IsDungeonCluster(mapType, mapGuid) && !ExistDungeon(_lastMapGuid))
             {
-                _currentGuid = null;
+                UpdateDungeonSaveTimerUi(mapType);
+
+                _dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
+
+                var newDungeon = new DungeonObject(mainMapIndex, (Guid)mapGuid, DungeonStatus.Active);
+                SetDungeonInformation(newDungeon, mapType);
+
+                _dungeons.Insert(0, newDungeon);
+            }
+            // Make last dungeon done
+            else if (mapGuid == null && ExistDungeon(_lastMapGuid))
+            {
+                var lastDungeon = GetDungeon(_lastMapGuid);
+                lastDungeon.EndTimer();
+                lastDungeon.Status = DungeonStatus.Done;
             }
 
-            SetDungeonStatsDay();
-            SetDungeonStatsTotal();
+            RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
+
+            _lastMapGuid = mapGuid;
+
+            await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
+
+            SetDungeonStatsDayUi();
+            SetDungeonStatsTotalUi();
         }
 
-        private void UpdateDungeonTimer(MapType mapType)
+        private void UpdateDungeonSaveTimerUi(MapType mapType = MapType.Unknown)
         {
             if (mapType == MapType.RandomDungeon)
             {
@@ -131,7 +106,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public async void ResetDungeons()
         {
             _dungeons.Clear();
-            
+
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindowViewModel?.TrackingDungeons?.Clear();
@@ -143,7 +118,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             if (_currentGuid != null)
                 try
                 {
-                    var dun = GetCurrentDungeon((Guid) _currentGuid);
+                    var dun = GetDungeon((Guid)_currentGuid);
                     var chest = dun?.DungeonEventObjects?.FirstOrDefault(x => x.Id == id);
 
                     if (chest == null)
@@ -160,8 +135,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                     Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
 
-            SetDungeonStatsDay();
-            SetDungeonStatsTotal();
+            SetDungeonStatsDayUi();
+            SetDungeonStatsTotalUi();
         }
 
         public void SetDungeonEventObjectInformation(int id, string uniqueName)
@@ -170,7 +145,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 try
                 {
-                    var dun = GetCurrentDungeon((Guid) _currentGuid);
+                    var dun = GetDungeon((Guid)_currentGuid);
                     if (dun == null || _currentGuid == null || dun.DungeonEventObjects?.Any(x => x.Id == id) == true)
                     {
                         return;
@@ -199,8 +174,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
             }
 
-            SetDungeonStatsDay();
-            SetDungeonStatsTotal();
+            SetDungeonStatsDayUi();
+            SetDungeonStatsTotalUi();
         }
 
         public async void RemoveDungeonAsync(string dungeonHash)
@@ -211,7 +186,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 return;
             }
-            
+
             var dialog = new DialogWindow(LanguageController.Translation("REMOVE_DUNGEON"), LanguageController.Translation("SURE_YOU_WANT_TO_REMOVE_DUNGEON"));
             var dialogResult = dialog.ShowDialog();
 
@@ -221,52 +196,37 @@ namespace StatisticsAnalysisTool.Network.Manager
                 await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
             }
         }
-
-        private DungeonObject CreateNewDungeon(string mainMapIndex, Guid guid)
+        
+        private DungeonObject GetDungeon(Guid? guid)
         {
-            var dungeon = new DungeonObject()
-            {
-                MainMapIndex = mainMapIndex,
-                EnterDungeonFirstTime = DateTime.UtcNow
-            };
-            
-            dungeon.GuidList.Add(guid);
-            dungeon.AddStartTime(DateTime.UtcNow);
-
-            if (dungeon.Mode == DungeonMode.Unknown)
-            {
-                dungeon.Mode = DungeonObjectData.GetDungeonMode(mainMapIndex);
-            }
-
-            return dungeon;
+            return guid == null ? null : _dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid)guid));
         }
-
-        private DungeonObject GetCurrentDungeon(Guid guid)
+        
+        private static void SetDungeonInformation(DungeonObject dungeon, MapType mapType)
         {
-            return _dungeons.FirstOrDefault(x => x.GuidList.Contains(guid));
-        }
-
-        private void SetDungeonInformation(Guid guid, MapType mapType)
-        {
-            var dun = GetCurrentDungeon(guid);
-            if (dun == null)
-            {
-                return;
-            }
-
             switch (mapType)
             {
                 case MapType.CorruptedDungeon:
-                    dun.Faction = Faction.Corrupted;
-                    dun.Mode = DungeonMode.Corrupted;
+                    dungeon.Faction = Faction.Corrupted;
+                    dungeon.Mode = DungeonMode.Corrupted;
                     return;
                 case MapType.HellGate:
-                    dun.Faction = Faction.HellGate;
-                    dun.Mode = DungeonMode.HellGate;
+                    dungeon.Faction = Faction.HellGate;
+                    dungeon.Mode = DungeonMode.HellGate;
                     return;
                 case MapType.Expedition:
-                    dun.Mode = DungeonMode.Expedition;
+                    dungeon.Mode = DungeonMode.Expedition;
                     return;
+                case MapType.RandomDungeon:
+                    break;
+                case MapType.Island:
+                    break;
+                case MapType.Hideout:
+                    break;
+                case MapType.Arena:
+                    break;
+                case MapType.Unknown:
+                    break;
                 default:
                     return;
             }
@@ -274,9 +234,9 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private int GetChests(DateTime? chestIsNewerAsDateTime, ChestRarity rarity)
         {
-            var dungeons = _dungeons.Where(x => (x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null) 
-                                                && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null 
-                                                     && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode)) 
+            var dungeons = _dungeons.Where(x => (x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null)
+                                                && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null
+                                                     && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
                                                     || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null));
 
             return dungeons.Select(dun => dun.DungeonEventObjects.Where(x => x.Rarity == rarity)).Select(filteredChests => filteredChests.Count()).Sum();
@@ -308,13 +268,13 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
         {
-            return _dungeons.Count(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime 
-                                        && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null 
-                                             && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode)) 
+            return _dungeons.Count(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime
+                                        && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null
+                                             && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
                                             || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null));
         }
 
-        public void SetDungeonStatsDay()
+        public void SetDungeonStatsDayUi()
         {
             _mainWindowViewModel.DungeonStatsDay.TranslationTitle = LanguageController.Translation("DAY");
 
@@ -328,7 +288,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel.DungeonStatsDay.Silver = GetSilver(DateTime.UtcNow.AddDays(-1));
         }
 
-        public void SetDungeonStatsTotal()
+        public void SetDungeonStatsTotalUi()
         {
             _mainWindowViewModel.DungeonStatsTotal.TranslationTitle = LanguageController.Translation("TOTAL");
 
@@ -361,24 +321,29 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private void RemoveDungeonsAfterCertainNumber(List<DungeonObject> dungeons, int amount)
+        private void RemoveDungeonsAfterCertainNumber(List<DungeonObject> dungeons, int dungeonLimit)
         {
-            if (_trackingController.IsMainWindowNull() || dungeons == null) return;
+            if (_trackingController.IsMainWindowNull())
+            {
+                return;
+            }
 
             try
             {
-                while (true)
-                {
-                    if (dungeons.Count <= amount) break;
+                var toDelete = dungeons?.Count - dungeonLimit;
 
+                if (toDelete <= 0)
+                {
+                    return;
+                }
+
+                for (var i = toDelete; i <= 0; i--)
+                {
                     var dateTime = GetLowestDate(dungeons);
                     if (dateTime != null)
                     {
                         var removableItem = dungeons.FirstOrDefault(x => x.EnterDungeonFirstTime == dateTime);
-                        if (removableItem != null)
-                        {
-                            dungeons.Remove(removableItem);
-                        }
+                        dungeons.Remove(removableItem);
                     }
                 }
             }
@@ -388,43 +353,17 @@ namespace StatisticsAnalysisTool.Network.Manager
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
-
-        private void SetCurrentDungeonActive(List<DungeonObject> dungeons, Guid? guid)
+        
+        private bool ExistDungeon(Guid? mapGuid)
         {
-            if (_dungeons.Count <= 0)
-            {
-                return;
-            }
-
-            dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
-
-            if (guid != null)
-            {
-                var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)guid));
-                if (dun != null)
-                {
-                    dun.Status = DungeonStatus.Active;
-                }
-            }
+            return mapGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid)mapGuid));
         }
-
-        private bool IsClusterDungeonCluster(List<DungeonObject> dungeons, MapType mapType, Guid? mapGuid)
+        
+        private bool IsDungeonCluster(MapType mapType, Guid? mapGuid)
         {
-            if ((mapType != MapType.RandomDungeon && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate && mapType != MapType.Expedition) || mapGuid == null)
-            {
-                if (_lastGuid != null)
-                {
-                    SetCurrentDungeonActive(dungeons, null);
-                }
-
-                _currentGuid = null;
-                _lastGuid = null;
-                return false;
-            }
-
-            return true;
+            return mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition && mapGuid != null;
         }
-
+        
         private void SetBestDungeonTime(ObservableCollection<DungeonNotificationFragment> dungeons)
         {
             if (dungeons?.Any(x => x.Status == DungeonStatus.Done && x.DungeonChests.Any(y => y?.IsBossChest == true)) == true)
@@ -579,16 +518,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
-
-        private void AddDungeonRunIfNextMap(Guid currentGuid, MapType mapType)
-        {
-            if (_lastGuid != null && _dungeons.Any(x => x.GuidList.Contains(currentGuid) && x.GuidList.Contains((Guid) _lastGuid)) && mapType != MapType.CorruptedDungeon)
-            {
-                var dun = _dungeons?.First(x => x.GuidList.Contains(currentGuid));
-                dun.AddStartTime(DateTime.UtcNow);
-            }
-        }
-
+        
         public async Task SetOrUpdateDungeonsDataUiAsync()
         {
             var timer = Stopwatch.StartNew();
@@ -619,16 +549,16 @@ namespace StatisticsAnalysisTool.Network.Manager
                     });
                 }
             }
-            
+
             await RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons?.ToAsyncEnumerable()).ConfigureAwait(false);
             SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
             CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
 
             DungeonSortAndFiltering();
 
-            SetDungeonStatsDay();
-            SetDungeonStatsTotal();
-            
+            SetDungeonStatsDayUi();
+            SetDungeonStatsTotalUi();
+
             var timespan = timer.Elapsed;
             Debug.Print("SetOrUpdateDungeonsDataUiAsync: " + "{0:00}:{1:00}:{2:0000}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds);
         }
@@ -711,52 +641,26 @@ namespace StatisticsAnalysisTool.Network.Manager
             uiDungeon?.SetValues(dungeon);
         }
 
-        private void AddMapToExistDungeon(List<DungeonObject> dungeons, Guid currentGuid, Guid lastGuid)
+        private bool AddClusterToExistDungeon(List<DungeonObject> dungeons, Guid? currentGuid, Guid? lastGuid, out DungeonObject dungeon)
         {
-            var dun = dungeons?.First(x => x.GuidList.Contains(lastGuid));
-            dun?.GuidList.Add(currentGuid);
+            if (currentGuid != null && lastGuid != null)
+            {
+                var dun = dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)lastGuid));
+                dun?.GuidList.Add((Guid)currentGuid);
+
+                dungeon = dun;
+
+                return dungeons?.Any(x => x.GuidList.Contains((Guid)currentGuid)) ?? false;
+            }
+
+            dungeon = null;
+            return false;
         }
         
-        private void LeaveDungeonCheck(MapType mapType)
-        {
-            if (_lastGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid) _lastGuid)) && mapType != MapType.RandomDungeon)
-            {
-                var dun = _dungeons?.First(x => x.GuidList.Contains((Guid) _lastGuid));
-                dun.AddEndTime(DateTime.UtcNow);
-            }
-        }
-
-        private void IsDungeonDoneCheck(MapType mapType)
-        {
-            // TODO: Kann weg? Wird nicht wirklich genutzt.
-            if (_lastGuid != null && _currentGuid == null 
-                                  && _dungeons.Any(x => x.GuidList.Contains((Guid)_lastGuid))
-                                  && (mapType != MapType.RandomDungeon 
-                                      && mapType != MapType.CorruptedDungeon 
-                                      && mapType != MapType.HellGate 
-                                      && mapType != MapType.Expedition))
-            {
-                var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid) _lastGuid) && x.DungeonEventObjects.Any(y => y.IsBossChest));
-                if (dun != null)
-                {
-                    dun.Status = DungeonStatus.Done;
-                }
-            }
-
-            if (_lastGuid != null && _currentGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid)_lastGuid) && mapType == MapType.CorruptedDungeon))
-            {
-                var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)_lastGuid) && x.DungeonEventObjects.Any(y => y.IsBossChest));
-                if (dun != null)
-                {
-                    dun.Status = DungeonStatus.Done;
-                }
-            }
-        }
-
         public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
         {
             if (_currentGuid == null)
-            { 
+            {
                 return;
             }
 

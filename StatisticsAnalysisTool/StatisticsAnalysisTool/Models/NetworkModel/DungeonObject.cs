@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
@@ -30,12 +31,25 @@ namespace StatisticsAnalysisTool.Network.Notification
         public Faction Faction { get; set; } = Faction.Unknown;
         public DungeonMode Mode { get; set; } = DungeonMode.Unknown;
         public CityFaction CityFaction { get; set; } = CityFaction.Unknown;
-
         [JsonIgnore]
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
         
         private double? _lastReSpecValue;
-        
+
+        public DungeonObject()
+        {
+        }
+
+        public DungeonObject(string mainMapIndex, Guid guid, DungeonStatus status)
+        {
+            MainMapIndex = mainMapIndex;
+            EnterDungeonFirstTime = DateTime.UtcNow;
+            GuidList.Add(guid);
+            Status = status;
+            AddTimer(DateTime.UtcNow);
+            Mode = (Mode == DungeonMode.Unknown) ? DungeonObjectData.GetDungeonMode(mainMapIndex) : Mode;
+        }
+
         public void Add(double value, ValueType type, CityFaction cityFaction = CityFaction.Unknown)
         {
             switch (type)
@@ -68,7 +82,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
         
-        public void AddStartTime(DateTime time)
+        public void AddTimer(DateTime time)
         {
             if (DungeonRunTimes.Any(x => x.EndTime == null))
             {
@@ -87,12 +101,14 @@ namespace StatisticsAnalysisTool.Network.Notification
             SetTotalRunTimeInSeconds();
         }
 
-        public void AddEndTime(DateTime time)
+        public void EndTimer()
         {
+            var dateTime = DateTime.UtcNow;
+
             var dun = DungeonRunTimes.FirstOrDefault(x => x.EndTime == null);
-            if (dun != null && dun.StartTime < time)
+            if (dun != null && dun.StartTime < dateTime)
             {
-                dun.EndTime = time;
+                dun.EndTime = dateTime;
                 SetTotalRunTimeInSeconds();
             }
         }
