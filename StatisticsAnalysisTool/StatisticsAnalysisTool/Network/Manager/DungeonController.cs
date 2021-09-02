@@ -139,14 +139,14 @@ namespace StatisticsAnalysisTool.Network.Manager
             SetDungeonStatsTotalUi();
         }
 
-        public void SetDungeonEventObjectInformation(int id, string uniqueName)
+        public async Task SetDungeonEventObjectInformationAsync(int id, string uniqueName)
         {
             if (_currentGuid != null && uniqueName != null)
             {
                 try
                 {
                     var dun = GetDungeon((Guid)_currentGuid);
-                    if (dun == null || _currentGuid == null || dun.DungeonEventObjects?.Any(x => x.Id == id) == true)
+                    if (dun == null || dun.DungeonEventObjects?.Any(x => x.Id == id) == true)
                     {
                         return;
                     }
@@ -166,6 +166,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                     {
                         dun.Mode = DungeonObjectData.GetDungeonMode(uniqueName);
                     }
+
+                    await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -173,9 +175,6 @@ namespace StatisticsAnalysisTool.Network.Manager
                     Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
             }
-
-            SetDungeonStatsDayUi();
-            SetDungeonStatsTotalUi();
         }
 
         public async void RemoveDungeonAsync(string dungeonHash)
@@ -521,6 +520,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         
         public async Task SetOrUpdateDungeonsDataUiAsync()
         {
+            // TODO: Updates verbessern
             var timer = Stopwatch.StartNew();
 
             _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
@@ -542,8 +542,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        var dunFragment =
-                            new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
+                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
                         dunFragment.SetValues(dungeon);
                         _mainWindowViewModel?.TrackingDungeons?.Add(dunFragment);
                     });
@@ -643,7 +642,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private bool AddClusterToExistDungeon(List<DungeonObject> dungeons, Guid? currentGuid, Guid? lastGuid, out DungeonObject dungeon)
         {
-            if (currentGuid != null && lastGuid != null)
+            if (currentGuid != null && lastGuid != null && dungeons?.Any(x => x.GuidList.Contains((Guid)currentGuid)) != true)
             {
                 var dun = dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)lastGuid));
                 dun?.GuidList.Add((Guid)currentGuid);
