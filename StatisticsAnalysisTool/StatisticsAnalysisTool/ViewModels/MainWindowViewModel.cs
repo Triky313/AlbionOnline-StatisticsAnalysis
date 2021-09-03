@@ -142,6 +142,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private EFontAwesomeIcon _damageMeterActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private Brush _damageMeterActivationToggleColor;
         private bool _isDamageMeterTrackingActive;
+        private ListCollectionView _trackingDungeonsCollectionView;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -468,6 +469,13 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingFilteredSimpleLoot = Settings.Default.MainTrackerFilterSimpleLoot;
             IsTrackingFilteredUnknownLoot = Settings.Default.MainTrackerFilterUnknownLoot;
             IsDamageMeterTrackingActive = Settings.Default.IsDamageMeterTrackingActive;
+
+            TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
+            if (TrackingDungeonsCollectionView != null)
+            {
+                TrackingDungeonsCollectionView.IsLiveSorting = true;
+                TrackingDungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
+            }
         }
 
         #endregion
@@ -821,8 +829,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
             TrackingController?.RegisterEvents();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
-            TrackingController?.DungeonController?.SetDungeonStatsDay();
-            TrackingController?.DungeonController?.SetDungeonStatsTotal();
+            TrackingController?.DungeonController?.SetDungeonStatsDayUi();
+            TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
 
             TrackingController?.CountUpTimer.Start();
@@ -1003,7 +1011,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
         }
-        
+
         #endregion
 
         #region Item View Filters
@@ -1570,7 +1578,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public ObservableCollection<TrackingNotification> TrackingNotifications
         {
             get => _trackingNotifications;
@@ -1587,6 +1595,15 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingDungeons = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public ListCollectionView TrackingDungeonsCollectionView {
+            get => _trackingDungeonsCollectionView;
+            set
+            {
+                _trackingDungeonsCollectionView = value;
                 OnPropertyChanged();
             }
         }

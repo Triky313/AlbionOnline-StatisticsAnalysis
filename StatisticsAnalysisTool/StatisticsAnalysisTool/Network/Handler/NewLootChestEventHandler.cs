@@ -1,7 +1,7 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(NewLootChestEvent value)
         {
-            _trackingController.DungeonController?.SetDungeonEventObjectInformation(value.Id, value.UniqueName);
+            _trackingController?.DungeonController?.SetDungeonEventObjectInformationAsync(value.Id, value.UniqueName).ConfigureAwait(false);
             await Task.CompletedTask;
         }
     }

@@ -16,7 +16,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(NewShrineEvent value)
         {
-            _trackingController.DungeonController?.SetDungeonEventObjectInformation(value.Id, value.UniqueName);
+            _trackingController.DungeonController?.SetDungeonEventObjectInformationAsync(value.Id, value.UniqueName).ConfigureAwait(false);
             await Task.CompletedTask;
         }
     }
