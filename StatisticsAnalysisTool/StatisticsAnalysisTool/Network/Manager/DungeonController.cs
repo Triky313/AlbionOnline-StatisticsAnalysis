@@ -10,10 +10,10 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -520,87 +520,85 @@ namespace StatisticsAnalysisTool.Network.Manager
         
         public async Task SetOrUpdateDungeonsDataUiAsync()
         {
-            // TODO: Updates verbessern
-            var timer = Stopwatch.StartNew();
-
             _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
             _mainWindowViewModel.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
 
-            var counter = 0;
-            var filteredDungeons = _dungeons.Where(x => x.GuidList.Count > 0).OrderBy(x => x.EnterDungeonFirstTime).ToList();
-            foreach (var dungeon in filteredDungeons)
+            var orderedDungeon = _dungeons.OrderBy(x => x.EnterDungeonFirstTime).ToList();
+            foreach (var dungeonObject in orderedDungeon)
             {
-                var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(
-                    x => x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime == dungeon.EnterDungeonFirstTime);
-
-                if (uiDungeon != null)
+                var dungeonFragment = _mainWindowViewModel.TrackingDungeons.FirstOrDefault(x => x.DungeonHash == dungeonObject.DungeonHash);
+                if (dungeonFragment != null && IsDungeonDifferenceToAnother(dungeonObject, dungeonFragment))
                 {
-                    uiDungeon.SetValues(dungeon);
-                    uiDungeon.DungeonNumber = ++counter;
+                    dungeonFragment.SetValues(dungeonObject);
+                    dungeonFragment.DungeonNumber = orderedDungeon.IndexOf(dungeonObject);
                 }
-                else
+                else if(dungeonFragment == null)
                 {
                     await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        var dunFragment = new DungeonNotificationFragment(++counter, dungeon.GuidList, dungeon.MainMapIndex, dungeon.EnterDungeonFirstTime);
-                        dunFragment.SetValues(dungeon);
-                        _mainWindowViewModel?.TrackingDungeons?.Add(dunFragment);
+                        var index = orderedDungeon.IndexOf(dungeonObject);
+                        var dunFragment = new DungeonNotificationFragment(index, dungeonObject.GuidList, dungeonObject.MainMapIndex, dungeonObject.EnterDungeonFirstTime);
+                        dunFragment.SetValues(dungeonObject);
+                        _mainWindowViewModel?.TrackingDungeons.Insert(index, dunFragment);
                     });
                 }
             }
+            
+            await RemoveLeftOverDungeonNotificationFragments().ConfigureAwait(false);
 
-            await RemoveLeftOverDungeonNotificationFragments(_mainWindowViewModel?.TrackingDungeons?.ToAsyncEnumerable()).ConfigureAwait(false);
             SetBestDungeonTime(_mainWindowViewModel?.TrackingDungeons);
             CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons);
 
-            DungeonSortAndFiltering();
+            await DungeonUiFilteringAsync();
 
             SetDungeonStatsDayUi();
             SetDungeonStatsTotalUi();
-
-            var timespan = timer.Elapsed;
-            Debug.Print("SetOrUpdateDungeonsDataUiAsync: " + "{0:00}:{1:00}:{2:0000}", timespan.Minutes, timespan.Seconds, timespan.Milliseconds);
         }
 
-        private void DungeonSortAndFiltering()
+        private static bool IsDungeonDifferenceToAnother(DungeonObject dungeonObject, DungeonNotificationFragment dungeonNotificationFragment)
         {
-            if (_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null)
+            if (dungeonObject.TotalRunTimeInSeconds != dungeonNotificationFragment.TotalRunTimeInSeconds 
+                || !dungeonObject.GuidList.SequenceEqual(dungeonNotificationFragment.GuidList) 
+                || dungeonObject.DungeonEventObjects.Count != dungeonNotificationFragment.DungeonChests.Count
+                || dungeonObject.Status != dungeonNotificationFragment.Status
+                || Math.Abs(dungeonObject.Fame - dungeonNotificationFragment.Fame) > 0.0d
+                || Math.Abs(dungeonObject.ReSpec - dungeonNotificationFragment.ReSpec) > 0.0d
+                || Math.Abs(dungeonObject.Silver - dungeonNotificationFragment.Silver) > 0.0d
+                || Math.Abs(dungeonObject.FactionCoins - dungeonNotificationFragment.FactionCoins) > 0.0d
+                || Math.Abs(dungeonObject.FactionFlags - dungeonNotificationFragment.FactionFlags) > 0.0d
+                || dungeonObject.DiedInDungeon != dungeonNotificationFragment.DiedInDungeon
+                || dungeonObject.Faction != dungeonNotificationFragment.Faction
+                || dungeonObject.Mode != dungeonNotificationFragment.Mode
+                || dungeonObject.CityFaction != dungeonNotificationFragment.CityFaction)
             {
-                var filteredDungeons = _mainWindowViewModel?.TrackingDungeons?
-                    .Where(x => _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
-                    .ToList();
-
-                if (filteredDungeons == null)
-                {
-                    return;
-                }
-
-                Application.Current.Dispatcher.Invoke(delegate
-                {
-                    _mainWindowViewModel.TrackingDungeons = new ObservableCollection<DungeonNotificationFragment>(filteredDungeons.ToList());
-                    _mainWindowViewModel?.TrackingDungeons?
-                        .OrderByReference(filteredDungeons.OrderByDescending(x => x.DungeonNumber)
-                            .ToList());
-                });
-
-                return;
+                return true;
             }
 
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                _mainWindowViewModel?.TrackingDungeons?
-                    .OrderByReference(_mainWindowViewModel?.TrackingDungeons?.OrderByDescending(x => x.DungeonNumber)
-                        .ToList());
-            });
+            return false;
         }
 
-        private async Task RemoveLeftOverDungeonNotificationFragments(IAsyncEnumerable<DungeonNotificationFragment> dungeonNotificationFragments)
+        private async Task DungeonUiFilteringAsync()
         {
-            await foreach (var dungeonFragment in dungeonNotificationFragments)
+            await _mainWindowViewModel?.TrackingDungeons?.Where(x => !_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status != DungeonStatus.Active)
+                ?.ToAsyncEnumerable().ForEachAsync(d =>
+                {
+                    d.Visibility = Visibility.Collapsed;
+                });
+            
+            await _mainWindowViewModel?.TrackingDungeons?
+                .Where(x => _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
+                ?.ToAsyncEnumerable().ForEachAsync(d =>
+                {
+                    d.Visibility = Visibility.Visible;
+                });
+        }
+        
+        private async Task RemoveLeftOverDungeonNotificationFragments()
+        {
+            await foreach (var dungeonFragment in _mainWindowViewModel?.TrackingDungeons?.ToAsyncEnumerable().ConfigureAwait(false) ?? new ConfiguredCancelableAsyncEnumerable<DungeonNotificationFragment>())
             {
-                var dungeonObject = _dungeons.Select(x => x.DungeonHash).FirstOrDefault(x => x.Contains(dungeonFragment.DungeonHash));
-
-                if (!string.IsNullOrEmpty(dungeonObject))
+                var dungeonObjectFound = _dungeons.Select(x => x.DungeonHash).Contains(dungeonFragment.DungeonHash);
+                if (dungeonObjectFound)
                 {
                     continue;
                 }

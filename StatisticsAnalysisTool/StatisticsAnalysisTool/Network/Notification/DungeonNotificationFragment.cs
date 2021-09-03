@@ -57,9 +57,10 @@ namespace StatisticsAnalysisTool.Network.Notification
         private int _numberOfDungeonFloors;
         private string _diedMessage;
         private bool? _isSelectedForDeletion = false;
+        private Visibility _visibility;
 
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
-        
+
         public DungeonNotificationFragment(int dungeonNumber, List<Guid> guidList, string mainMapIndex, DateTime enterDungeonFirstTime)
         {
             DungeonNumber = dungeonNumber;
@@ -141,6 +142,14 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _dungeonNumber = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility Visibility {
+            get => _visibility;
+            set {
+                _visibility = value;
                 OnPropertyChanged();
             }
         }

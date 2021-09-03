@@ -320,11 +320,8 @@
                                 <Separator Margin="0,19,0,0" Background="{StaticResource SolidColorBrush.Blue.3}" />
                             </Grid>
                         </Grid>
-                        <Grid Height="72" Margin="0,82,0,0" VerticalAlignment="Top">
-                            <ContentControl Content="{Binding CurrentActiveDungeon}" />
-                        </Grid>
-                        <ScrollViewer Margin="0,154,0,0">
-                            <ItemsControl ItemsSource="{Binding TrackingDungeons, IsAsync=True, Mode=OneWay}" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingStackPanel.IsVirtualizing="True" />
+                        <ScrollViewer Margin="{Binding DungeonStatsScrollViewerMargin, FallbackValue='0,82,0,0'}">
+                            <ItemsControl ItemsSource="{Binding TrackingDungeonsCollectionView, IsAsync=True, Mode=OneWay}" />
                         </ScrollViewer>
                     </Grid>
                 </TabItem>
