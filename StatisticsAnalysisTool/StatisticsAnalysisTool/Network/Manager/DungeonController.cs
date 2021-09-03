@@ -365,13 +365,20 @@ namespace StatisticsAnalysisTool.Network.Manager
         
         private async Task SetBestDungeonTimeAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
         {
-            await dungeons.Where(x => x?.IsBestTime == true).ForEachAsync(x => x.IsBestTime = false).ConfigureAwait(false);
-            var bestTime = await dungeons.Where(x => x?.DungeonChests?.Any(y => y.IsBossChest) == true).MinAsync(x => x.TotalRunTimeInSeconds).ConfigureAwait(false);
-            var bestTimeDungeon = await dungeons.FirstOrDefaultAsync(x => x.TotalRunTimeInSeconds == bestTime);
-
-            if (bestTimeDungeon != null)
+            try
             {
-                bestTimeDungeon.IsBestTime = true;
+                await dungeons.Where(x => x?.IsBestTime == true).ForEachAsync(x => x.IsBestTime = false).ConfigureAwait(false);
+                var bestTime = await dungeons.Where(x => x?.DungeonChests?.Any(y => y?.IsBossChest ?? false) == true).MinAsync(x => x?.TotalRunTimeInSeconds).ConfigureAwait(false);
+                var bestTimeDungeon = await dungeons.FirstOrDefaultAsync(x => x.TotalRunTimeInSeconds == bestTime);
+
+                if (bestTimeDungeon != null)
+                {
+                    bestTimeDungeon.IsBestTime = true;
+                }
+            }
+            catch
+            {
+                // ignore
             }
         }
 
