@@ -1431,6 +1431,7 @@
                             </TextBlock>
                         </Label.Content>
                     </Label>
+                    <Label Content="{Binding TierString}" FontSize="12" Foreground="{StaticResource Weapon.Foreground.Text}" MinWidth="30" MaxWidth="30" Margin="10,0, 0, 0" />
                     <Label Content="{Binding UniqueName}" FontSize="12" Foreground="{StaticResource Weapon.Foreground.Text}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0" />
                     <Label Content="{Binding  AvalonTunnelType}" FontSize="12" Foreground="{StaticResource Weapon.Foreground.Text}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0">
                         <Label.Style>

@@ -18,5 +18,25 @@ namespace StatisticsAnalysisTool.Models
         public bool IsAvalonClusterTunnel => WorldData.IsAvalonClusterTunnel(Type);
         public AvalonTunnelType AvalonTunnelType => WorldData.GetTunnelType(Type);
         public Tier Tier => WorldData.GetTier(File);
+
+        public string TierString 
+        {
+            get
+            {
+                return Tier switch
+                {
+                    Tier.T1 => "I",
+                    Tier.T2 => "II",
+                    Tier.T3 => "III",
+                    Tier.T4 => "IV",
+                    Tier.T5 => "V",
+                    Tier.T6 => "VI",
+                    Tier.T7 => "VII",
+                    Tier.T8 => "VIII",
+                    Tier.Unknown => "?",
+                    _ => "?"
+                };
+            }
+        }
     }
 }

@@ -110,9 +110,9 @@ namespace StatisticsAnalysisTool.Network.Manager
             return true;
         }
 
-        private void UpdateClusterTracking(ClusterInfo currentCluster)
+        private async void UpdateClusterTracking(ClusterInfo currentCluster)
         {
-            Application.Current.Dispatcher.Invoke(delegate
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindowViewModel.EnteredCluster.Insert(0, currentCluster);
                 RemovesClusterIfMoreThanLimit();

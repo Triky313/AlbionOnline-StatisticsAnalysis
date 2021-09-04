@@ -146,13 +146,19 @@ namespace StatisticsAnalysisTool.GameData
                 UniqueName = GetUniqueNameOrDefault(clusterIndex),
                 MapType = mapType,
                 Type = GetTypeByIndex(clusterIndex) ?? GetTypeByIndex(mainClusterIndex) ?? string.Empty,
-                Guid = guid
+                Guid = guid,
+                File = GetFileByIndex(clusterIndex) ?? GetTypeByIndex(mainClusterIndex) ?? string.Empty
             };
         }
 
         public static string GetTypeByIndex(string index)
         {
             return MapData?.FirstOrDefault(x => x.Index == index)?.Type;
+        }
+
+        public static string GetFileByIndex(string index)
+        {
+            return MapData?.FirstOrDefault(x => x.Index == index)?.File;
         }
 
         public static Tier GetTier(string value)
@@ -162,42 +168,42 @@ namespace StatisticsAnalysisTool.GameData
                 return Tier.Unknown;
             }
 
-            if ("_T1_".Contains(value))
+            if (value.Contains("_T1_"))
             {
                 return Tier.T1;
             }
 
-            if ("_T2_".Contains(value))
+            if (value.Contains("_T2_"))
             {
                 return Tier.T2;
             }
 
-            if ("_T3_".Contains(value))
+            if (value.Contains("_T3_"))
             {
                 return Tier.T3;
             }
 
-            if ("_T4_".Contains(value))
+            if (value.Contains("_T4_"))
             {
                 return Tier.T4;
             }
 
-            if ("_T5_".Contains(value))
+            if (value.Contains("_T5_"))
             {
                 return Tier.T5;
             }
 
-            if ("_T6_".Contains(value))
+            if (value.Contains("_T6_"))
             {
                 return Tier.T6;
             }
 
-            if ("_T7_".Contains(value))
+            if (value.Contains("_T7_"))
             {
                 return Tier.T7;
             }
 
-            if ("_T8_".Contains(value))
+            if (value.Contains("_T8_"))
             {
                 return Tier.T8;
             }
