@@ -355,7 +355,4 @@
     <None Remove="Sounds\alert3.wav" />
     <None Remove="Sounds\alert4.wav" />
   </ItemGroup>
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
 </Project>
