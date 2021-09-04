@@ -365,6 +365,11 @@ namespace StatisticsAnalysisTool.Network.Manager
         
         private async Task SetBestDungeonTimeAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
         {
+            if (await dungeons.CountAsync() <= 0)
+            {
+                return;
+            }
+
             try
             {
                 await dungeons.Where(x => x?.IsBestTime == true).ForEachAsync(x => x.IsBestTime = false).ConfigureAwait(false);
@@ -402,94 +407,91 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private async Task CalculateBestDungeonValues(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
         {
-            try
+            if (await dungeons.CountAsync() <= 0)
             {
-                await ResetAllBestValuesAsync(dungeons);
-
-                var highestFame = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Fame > 0).Select(x => x.Fame).MaxAsync();
-                var bestDungeonFame = await dungeons.FirstOrDefaultAsync(x => x.Fame.CompareTo(highestFame) == 0);
-
-                if (bestDungeonFame != null)
-                {
-                    bestDungeonFame.IsBestFame = true;
-                }
-
-                var highestReSpec = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpec > 0).Select(x => x.ReSpec).MaxAsync();
-                var bestDungeonReSpec = await dungeons.FirstOrDefaultAsync(x => x.ReSpec.CompareTo(highestReSpec) == 0);
-
-                if (bestDungeonReSpec != null)
-                {
-                    bestDungeonReSpec.IsBestReSpec = true;
-                }
-
-                var highestSilver = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Silver > 0).Select(x => x.Silver).MaxAsync();
-                var bestDungeonSilver = await dungeons.FirstOrDefaultAsync(x => x.Silver.CompareTo(highestSilver) == 0);
-
-                if (bestDungeonSilver != null)
-                {
-                    bestDungeonSilver.IsBestSilver = true;
-                }
-
-                var highestFactionFlags = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionFlags > 0).Select(x => x.FactionFlags).MaxAsync();
-                var bestDungeonFlags = await dungeons.FirstOrDefaultAsync(x => x.FactionFlags.CompareTo(highestFactionFlags) == 0);
-
-                if (bestDungeonFlags != null)
-                {
-                    bestDungeonFlags.IsBestFactionFlags = true;
-                }
-
-                var highestFactionCoins = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionCoins > 0).Select(x => x.FactionCoins).MaxAsync();
-                var bestDungeonCoins = await dungeons.FirstOrDefaultAsync(x => x.FactionCoins.CompareTo(highestFactionCoins) == 0);
-
-                if (bestDungeonCoins != null)
-                {
-                    bestDungeonCoins.IsBestFactionCoins = true;
-                }
-
-                var highestFamePerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0).Select(x => x.FamePerHour).MaxAsync();
-                var bestDungeonFamePerHour = await dungeons.FirstOrDefaultAsync(x => x.FamePerHour.CompareTo(highestFamePerHour) == 0);
-
-                if (bestDungeonFamePerHour != null)
-                {
-                    bestDungeonFamePerHour.IsBestFamePerHour = true;
-                }
-
-                var highestReSpecPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpecPerHour > 0).Select(x => x.ReSpecPerHour).MaxAsync();
-                var bestDungeonReSpecPerHour = await dungeons.FirstOrDefaultAsync(x => x.ReSpecPerHour.CompareTo(highestReSpecPerHour) == 0);
-
-                if (bestDungeonReSpecPerHour != null)
-                {
-                    bestDungeonReSpecPerHour.IsBestReSpecPerHour = true;
-                }
-
-                var highestSilverPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.SilverPerHour > 0).Select(x => x.SilverPerHour).MaxAsync();
-                var bestDungeonSilverPerHour = await dungeons.FirstOrDefaultAsync(x => x.SilverPerHour.CompareTo(highestSilverPerHour) == 0);
-
-                if (bestDungeonSilverPerHour != null)
-                {
-                    bestDungeonSilverPerHour.IsBestSilverPerHour = true;
-                }
-
-                var highestFactionFlagsPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionFlagsPerHour > 0).Select(x => x.FactionFlagsPerHour).MaxAsync();
-                var bestDungeonFactionFlagsPerHour = await dungeons.FirstOrDefaultAsync(x => x.FactionFlagsPerHour.CompareTo(highestFactionFlagsPerHour) == 0);
-
-                if (bestDungeonFactionFlagsPerHour != null)
-                {
-                    bestDungeonFactionFlagsPerHour.IsBestFactionFlagsPerHour = true;
-                }
-
-                var highestFactionCoinsPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionCoinsPerHour > 0).Select(x => x.FactionCoinsPerHour).MaxAsync();
-                var bestDungeonFactionCoinsPerHour = await dungeons.FirstOrDefaultAsync(x => x.FactionCoinsPerHour.CompareTo(highestFactionCoinsPerHour) == 0);
-
-                if (bestDungeonFactionCoinsPerHour != null)
-                {
-                    bestDungeonFactionCoinsPerHour.IsBestFactionCoinsPerHour = true;
-                }
+                return;
             }
-            catch (Exception e)
+
+            await ResetAllBestValuesAsync(dungeons);
+
+            var highestFame = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Fame > 0).Select(x => x.Fame).MaxAsync();
+            var bestDungeonFame = await dungeons.FirstOrDefaultAsync(x => x.Fame.CompareTo(highestFame) == 0);
+
+            if (bestDungeonFame != null)
             {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                bestDungeonFame.IsBestFame = true;
+            }
+
+            var highestReSpec = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpec > 0).Select(x => x.ReSpec).MaxAsync();
+            var bestDungeonReSpec = await dungeons.FirstOrDefaultAsync(x => x.ReSpec.CompareTo(highestReSpec) == 0);
+
+            if (bestDungeonReSpec != null)
+            {
+                bestDungeonReSpec.IsBestReSpec = true;
+            }
+
+            var highestSilver = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Silver > 0).Select(x => x.Silver).MaxAsync();
+            var bestDungeonSilver = await dungeons.FirstOrDefaultAsync(x => x.Silver.CompareTo(highestSilver) == 0);
+
+            if (bestDungeonSilver != null)
+            {
+                bestDungeonSilver.IsBestSilver = true;
+            }
+
+            var highestFactionFlags = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionFlags > 0).Select(x => x.FactionFlags).MaxAsync();
+            var bestDungeonFlags = await dungeons.FirstOrDefaultAsync(x => x.FactionFlags.CompareTo(highestFactionFlags) == 0);
+
+            if (bestDungeonFlags != null)
+            {
+                bestDungeonFlags.IsBestFactionFlags = true;
+            }
+
+            var highestFactionCoins = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionCoins > 0).Select(x => x.FactionCoins).MaxAsync();
+            var bestDungeonCoins = await dungeons.FirstOrDefaultAsync(x => x.FactionCoins.CompareTo(highestFactionCoins) == 0);
+
+            if (bestDungeonCoins != null)
+            {
+                bestDungeonCoins.IsBestFactionCoins = true;
+            }
+
+            var highestFamePerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0).Select(x => x.FamePerHour).MaxAsync();
+            var bestDungeonFamePerHour = await dungeons.FirstOrDefaultAsync(x => x.FamePerHour.CompareTo(highestFamePerHour) == 0);
+
+            if (bestDungeonFamePerHour != null)
+            {
+                bestDungeonFamePerHour.IsBestFamePerHour = true;
+            }
+
+            var highestReSpecPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpecPerHour > 0).Select(x => x.ReSpecPerHour).MaxAsync();
+            var bestDungeonReSpecPerHour = await dungeons.FirstOrDefaultAsync(x => x.ReSpecPerHour.CompareTo(highestReSpecPerHour) == 0);
+
+            if (bestDungeonReSpecPerHour != null)
+            {
+                bestDungeonReSpecPerHour.IsBestReSpecPerHour = true;
+            }
+
+            var highestSilverPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.SilverPerHour > 0).Select(x => x.SilverPerHour).MaxAsync();
+            var bestDungeonSilverPerHour = await dungeons.FirstOrDefaultAsync(x => x.SilverPerHour.CompareTo(highestSilverPerHour) == 0);
+
+            if (bestDungeonSilverPerHour != null)
+            {
+                bestDungeonSilverPerHour.IsBestSilverPerHour = true;
+            }
+
+            var highestFactionFlagsPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionFlagsPerHour > 0).Select(x => x.FactionFlagsPerHour).MaxAsync();
+            var bestDungeonFactionFlagsPerHour = await dungeons.FirstOrDefaultAsync(x => x.FactionFlagsPerHour.CompareTo(highestFactionFlagsPerHour) == 0);
+
+            if (bestDungeonFactionFlagsPerHour != null)
+            {
+                bestDungeonFactionFlagsPerHour.IsBestFactionFlagsPerHour = true;
+            }
+
+            var highestFactionCoinsPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionCoinsPerHour > 0).Select(x => x.FactionCoinsPerHour).MaxAsync();
+            var bestDungeonFactionCoinsPerHour = await dungeons.FirstOrDefaultAsync(x => x.FactionCoinsPerHour.CompareTo(highestFactionCoinsPerHour) == 0);
+
+            if (bestDungeonFactionCoinsPerHour != null)
+            {
+                bestDungeonFactionCoinsPerHour.IsBestFactionCoinsPerHour = true;
             }
         }
         
