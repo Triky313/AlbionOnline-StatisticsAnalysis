@@ -76,6 +76,9 @@
     <Content Include="Languages\en-US.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Languages\es-ES.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Languages\pt-BR.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -342,6 +345,7 @@
     <None Remove="GameFiles\world.json" />
     <None Remove="Languages\de-DE.xml" />
     <None Remove="Languages\en-US.xml" />
+    <None Remove="Languages\es-ES.xml" />
     <None Remove="Languages\pt-BR.xml" />
     <None Remove="Languages\ru-RU.xml" />
     <None Remove="Languages\tr-TR.xml" />
