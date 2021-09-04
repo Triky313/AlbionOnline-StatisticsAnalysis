@@ -237,13 +237,7 @@
                     <Grid Height="20" Width="20" Margin="0,0,5,0" VerticalAlignment="Center">
                         <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="PartyIcon_MouseUp" />
                     </Grid>
-                    <ItemsControl ItemsSource="{Binding PartyMemberCircles}" Margin="0,0,0,3" VerticalAlignment="Center">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding PartyMemberCircles}" Style="{StaticResource PartyMember.ItemsControl}"/>
                 </StackPanel>
             </Grid>
             <Grid ZIndex="1" Visibility="{Binding IsMainTrackerPopupVisible, FallbackValue=Hidden}" Margin="0,58,0,35" Background="{StaticResource SolidColorBrush.Background.Second}">

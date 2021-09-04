@@ -903,14 +903,14 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public void ResetParty()
+        public async Task ResetPartyAsync()
         {
             var dialog = new DialogWindow(LanguageController.Translation("RESET_PARTY"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_THE_PARTY"));
             var dialogResult = dialog.ShowDialog();
 
             if (dialogResult is true)
             {
-                TrackingController.EntityController.ResetPartyMember();
+                await TrackingController.EntityController.ResetPartyMemberAsync();
             }
         }
 

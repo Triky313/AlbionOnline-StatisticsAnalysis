@@ -56,7 +56,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             if (value.Guid != null && value.InteractGuid  != null && value.UserObjectId != null)
             {
                 _trackingController.EntityController.AddEntity((long) value.UserObjectId, (Guid) value.Guid, (Guid) value.InteractGuid, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
-                _trackingController.EntityController.AddToParty((Guid) value.Guid, value.Username);
+                await _trackingController.EntityController.AddToPartyAsync((Guid) value.Guid, value.Username);
             }
 
             _trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.DungeonGuid, value.MainMapIndex).ConfigureAwait(false);

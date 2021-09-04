@@ -258,7 +258,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void PartyIcon_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            _mainWindowViewModel.ResetParty();
+            _ = _mainWindowViewModel.ResetPartyAsync();
         }
 
         private void OpenDamageMeterWindow_MouseUp(object sender, MouseButtonEventArgs e)

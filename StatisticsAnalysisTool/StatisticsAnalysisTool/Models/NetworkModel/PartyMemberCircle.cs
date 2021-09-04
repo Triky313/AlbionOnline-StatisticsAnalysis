@@ -1,12 +1,16 @@
-﻿using System.ComponentModel;
+﻿using StatisticsAnalysisTool.Annotations;
+using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Annotations;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
     public class PartyMemberCircle : INotifyPropertyChanged
     {
+        public Guid UserGuid { get; set; }
+
         private string _name;
+        private string _weaponCategoryId;
 
         public string Name
         {
@@ -14,6 +18,15 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             set
             {
                 _name = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public string WeaponCategoryId {
+            get => _weaponCategoryId;
+            set
+            {
+                _weaponCategoryId = value;
                 OnPropertyChanged();
             }
         }

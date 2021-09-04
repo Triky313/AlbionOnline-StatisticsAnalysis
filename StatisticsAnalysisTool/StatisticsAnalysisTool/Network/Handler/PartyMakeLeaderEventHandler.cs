@@ -17,8 +17,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(PartyMakeLeaderResponse value)
         {
-            _trackingController.EntityController.RemoveFromParty(value.Username);
-            await Task.CompletedTask;
+            await _trackingController.EntityController.RemoveFromParty(value.Username);
         }
     }
 }

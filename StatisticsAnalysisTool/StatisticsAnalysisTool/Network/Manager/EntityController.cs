@@ -9,6 +9,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager
@@ -104,23 +105,23 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Party
 
-        public void AddToParty(Guid guid, string username)
+        public async Task AddToPartyAsync(Guid guid, string username)
         {
             if (_knownPartyEntities.All(x => x.Key != guid)) _knownPartyEntities.TryAdd(guid, username);
 
-            SetPartyMemberUi();
+            await SetPartyMemberUiAsync();
         }
 
-        public void RemoveFromParty(string username)
+        public async Task RemoveFromParty(string username)
         {
             var partyMember = _knownPartyEntities.FirstOrDefault(x => x.Value == username);
 
             if (partyMember.Value != null) _knownPartyEntities.TryRemove(partyMember.Key, out _);
 
-            SetPartyMemberUi();
+            await SetPartyMemberUiAsync();
         }
 
-        public void ResetPartyMember()
+        public async Task ResetPartyMemberAsync()
         {
             _knownPartyEntities.Clear();
 
@@ -129,32 +130,46 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _knownPartyEntities.TryAdd(member.Key, member.Value.Name);
             }
 
-            SetPartyMemberUi();
+            await SetPartyMemberUiAsync();
         }
 
-        public void SetParty(Dictionary<Guid, string> party, bool resetPartyBefore = false)
+        public async Task SetPartyAsync(Dictionary<Guid, string> party, bool resetPartyBefore = false)
         {
             if (resetPartyBefore)
             {
-                ResetPartyMember();
+                await ResetPartyMemberAsync();
             }
 
             foreach (var member in party)
             {
-                AddToParty(member.Key, member.Value);
+                await AddToPartyAsync(member.Key, member.Value);
             }
 
-            SetPartyMemberUi();
+            await SetPartyMemberUiAsync();
         }
 
-        private void SetPartyMemberUi()
+        private async Task SetPartyMemberUiAsync()
         {
-            Application.Current.Dispatcher.Invoke(delegate
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindowViewModel.PartyMemberCircles.Clear();
-                foreach (var member in _knownPartyEntities) _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle { Name = member.Value });
+                foreach (var member in _knownPartyEntities) _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle
+                {
+                    Name = member.Value,
+                    UserGuid = member.Key
+                });
                 _mainWindowViewModel.PartyMemberNumber = _knownPartyEntities.Count;
             });
+        }
+
+        public void SetPartyCircleColor(Guid userGuid, string weaponCategoryId)
+        {
+            var memberObject = _mainWindowViewModel?.PartyMemberCircles?.FirstOrDefault(x => x.UserGuid == userGuid);
+            if (memberObject != null && memberObject?.WeaponCategoryId != weaponCategoryId)
+            {
+                memberObject.WeaponCategoryId = weaponCategoryId;
+            }
+
         }
 
         public bool IsUserInParty(string name)
