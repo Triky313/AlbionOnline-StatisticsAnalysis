@@ -996,83 +996,63 @@
 
     <!-- ##### Damage meter ##### -->
 
-    <SolidColorBrush x:Key="Progressbar.Foreground.Text" Color="#fafafa"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.Sword" Color="#FAA307"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.Spear" Color="#DAB10B"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.Quarterstaff" Color="#297A7A"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.NatureStaff" Color="#afafaf"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.Mace" Color="#D35F91"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.HolyStaff" Color="#afafaf"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.Hammer" Color="#7373D9"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.FrostStaff" Color="#4089d1"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.FireStaff" Color="#C9561D"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.Dagger" Color="#A2AD1F"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.CursedStaff" Color="#61358D"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.Crossbow" Color="#00576e"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.Bow" Color="#004D39"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.Axe" Color="#AD1F2A"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.ArcaneStaff" Color="#732653"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.UnknownWeaponType" Color="#555555"/>
-    <SolidColorBrush x:Key="Progressbar.Foreground.HealBar" Color="#00aa1a"/>
-
     <!-- Damage meter icon -->
     <Style TargetType="Image" x:Key="DamageMeter.Icon">
         <Setter Property="Height" Value="40"/>
         <Setter Property="Width" Value="40"/>
     </Style>
 
-    <!-- Damage meter progress bar colors -->
     <Style TargetType="ProgressBar" x:Key="DamageMeter.ProgressBar.Colors">
-        <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.UnknownWeaponType}" />
+        <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.UnknownWeaponType}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding CategoryId}" Value="sword">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Sword}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Sword}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="spear">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Spear}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Spear}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="quarterstaff">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Quarterstaff}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Quarterstaff}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="naturestaff">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.NatureStaff}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.NatureStaff}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="mace">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Mace}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Mace}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="holystaff">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.HolyStaff}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.HolyStaff}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="hammer">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Hammer}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Hammer}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="froststaff">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.FrostStaff}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.FrostStaff}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="firestaff">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.FireStaff}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.FireStaff}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="dagger">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Dagger}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Dagger}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="cursestaff">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.CursedStaff}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.CursedStaff}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="crossbow">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Crossbow}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Crossbow}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="bow">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Bow}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Bow}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="axe">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.Axe}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Axe}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="arcanestaff">
-                <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.ArcaneStaff}" />
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.ArcaneStaff}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
-    
+
     <!-- Damage meter -->
     <DataTemplate DataType="{x:Type notification:DamageMeterFragment}">
         <Grid>
@@ -1095,7 +1075,7 @@
                              Minimum="0" Maximum="100" Height="2" Margin="3,1,2,1" VerticalAlignment="Bottom" Background="#00FFFFFF" BorderThickness="0">
                     <ProgressBar.Style>
                         <Style TargetType="ProgressBar">
-                            <Setter Property="Foreground" Value="{StaticResource Progressbar.Foreground.HealBar}" />
+                            <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.HealBar}" />
                         </Style>
                     </ProgressBar.Style>
                 </ProgressBar>
@@ -1103,11 +1083,11 @@
                     <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
                     </Grid>
-                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DamagePercentage}" 
-                           ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"></Label>
-                    <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
-                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Damage}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
-                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"></Label>
+                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding DamagePercentage}" 
+                           ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"/>
+                    <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"/>
+                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding Damage}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
+                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"></Label>
                 </StackPanel>
             </Grid>
             <Grid>
@@ -1129,29 +1109,70 @@
                     <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
                     </Grid>
-                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding HealPercentage}" 
+                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding HealPercentage}" 
                            ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"></Label>
                     <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
-                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding Heal}" ContentStringFormat="{}{0:N0}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
-                    <Label Foreground="{StaticResource Progressbar.Foreground.Text}" Content="{Binding HpsString}" ContentStringFormat="{}{0:N0}/hps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"></Label>
+                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding Heal}" ContentStringFormat="{}{0:N0}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
+                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding HpsString}" ContentStringFormat="{}{0:N0}/hps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"></Label>
                 </StackPanel>
             </Grid>
         </Grid>
     </DataTemplate>
-    
-    <!-- Damage meter icon -->
-    <Style TargetType="fa5:ImageAwesome" x:Key="PartyMemberCircleStyle">
-        <Setter Property="Foreground">
-            <Setter.Value>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="{StaticResource Color.Green.2}" Offset="0.0" />
-                    <GradientStop Color="{StaticResource Color.Green.4}" Offset="1.0" />
-                </LinearGradientBrush>
-            </Setter.Value>
-        </Setter>
+
+    <Style TargetType="fa5:ImageAwesome" x:Key="Style.Party.Circle">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.Second}" />
+        <Setter Property="Icon" Value="Solid_UserCircle" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Name}" Value="Triky313">
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="sword">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Sword}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="spear">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Spear}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="quarterstaff">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Quarterstaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="naturestaff">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.NatureStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="mace">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Mace}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="holystaff">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.HolyStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="hammer">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Hammer}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="froststaff">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.FrostStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="firestaff">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.FireStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="dagger">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Dagger}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="cursestaff">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.CursedStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="crossbow">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Crossbow}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="bow">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Bow}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="axe">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Axe}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding WeaponCategoryId}" Value="arcanestaff">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.ArcaneStaff}" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Name}" Value="Rakaaria">
                 <Setter Property="Margin" Value="0,0,0,1" />
+                <Setter Property="ToolTip" Value="Much love for the best girl in the world!" />
+                <Setter Property="Icon" Value="Solid_Heart" />
                 <Setter Property="Foreground">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -1160,6 +1181,15 @@
                         </LinearGradientBrush>
                     </Setter.Value>
                 </Setter>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Red.3}"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Name}" Value="Triky313">
+                <Setter Property="Margin" Value="0,0,0,1" />
+                <Setter Property="Icon" Value="Solid_Font" />
                 <Setter Property="Effect">
                     <Setter.Value>
                         <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Red.3}"/>
@@ -1210,8 +1240,8 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type networkModel:PartyMemberCircle}">
-        <Grid Height="12" Width="12" Margin="2,4,2,0" VerticalAlignment="Top" ToolTip="{Binding Name}">
-            <fa5:ImageAwesome Icon="Solid_UserCircle" Style="{StaticResource PartyMemberCircleStyle}"/>
+        <Grid Height="14" Width="14" Margin="2,4,2,0" VerticalAlignment="Top" ToolTip="{Binding Name}">
+            <fa5:ImageAwesome Style="{StaticResource Style.Party.Circle}"/>
         </Grid>
     </DataTemplate>
 
@@ -1390,7 +1420,7 @@
                     </Style>
                 </Grid.Style>
                 <StackPanel Orientation="Horizontal">
-                    <Label MinWidth="135" VerticalAlignment="Center" FontSize="12" Margin="0 0 5 0" Foreground="{StaticResource Progressbar.Foreground.Text}">
+                    <Label MinWidth="135" VerticalAlignment="Center" FontSize="12" Margin="0 0 5 0" Foreground="{StaticResource Weapon.Foreground.Text}">
                         <Label.Content>
                             <TextBlock>
                                 <TextBlock.Text>
@@ -1401,8 +1431,8 @@
                             </TextBlock>
                         </Label.Content>
                     </Label>
-                    <Label Content="{Binding UniqueName}" FontSize="12" Foreground="{StaticResource Progressbar.Foreground.Text}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0" />
-                    <Label Content="{Binding  AvalonTunnelType}" FontSize="12" Foreground="{StaticResource Progressbar.Foreground.Text}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0">
+                    <Label Content="{Binding UniqueName}" FontSize="12" Foreground="{StaticResource Weapon.Foreground.Text}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0" />
+                    <Label Content="{Binding  AvalonTunnelType}" FontSize="12" Foreground="{StaticResource Weapon.Foreground.Text}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0">
                         <Label.Style>
                             <Style TargetType="{x:Type Label}">
                                 <Style.Triggers>
@@ -1418,5 +1448,17 @@
             </Grid>
         </Grid>
     </DataTemplate>
+
+    <Style TargetType="ItemsControl" x:Key="PartyMember.ItemsControl">
+        <Setter Property="Margin" Value="0,0,0,3"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

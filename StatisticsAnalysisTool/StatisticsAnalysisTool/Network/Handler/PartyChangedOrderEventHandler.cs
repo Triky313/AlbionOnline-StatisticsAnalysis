@@ -17,8 +17,10 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(PartyChangedOrderEvent value)
         {
-            if (value?.UserGuid != null) _trackingController.EntityController.AddToParty((Guid) value.UserGuid, value.Username);
-            await Task.CompletedTask;
+            if (value?.UserGuid != null)
+            {
+                await _trackingController.EntityController.AddToPartyAsync((Guid)value.UserGuid, value.Username);
+            }
         }
     }
 }

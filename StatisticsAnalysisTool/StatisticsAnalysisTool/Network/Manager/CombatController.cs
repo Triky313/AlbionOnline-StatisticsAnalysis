@@ -131,7 +131,10 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private async Task UpdateDamageMeterFragmentAsync(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject, List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
-            fragment.CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, healthChangeObject.Value?.CharacterEquipment?.MainHand);
+            var itemInfo = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, healthChangeObject.Value?.CharacterEquipment?.MainHand);
+            fragment.CauserMainHand = itemInfo;
+
+            // TODO: Sauber aufbauen
 
             // Damage
             if (healthChangeObject.Value?.Damage > 0)
@@ -165,6 +168,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             if (healthChangeObject.Value != null)
             {
                 fragment.HealPercentage = entities.GetHealPercentage(healthChangeObject.Value.Heal);
+
+                _trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, itemInfo?.FullItemInformation?.CategoryId);
             }
         }
 
@@ -179,6 +184,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             var mainHandItem = ItemController.GetItemByIndex(healthChangeObject.Value?.CharacterEquipment?.MainHand ?? 0);
+            var itemInfo = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, healthChangeObject.Value?.CharacterEquipment?.MainHand);
 
             var damageMeterFragment = new DamageMeterFragment
             {
@@ -194,10 +200,12 @@ namespace StatisticsAnalysisTool.Network.Manager
                 HealPercentage = entities.GetHealPercentage(healthChangeObject.Value.Heal),
 
                 Name = healthChangeObject.Value.Name,
-                CauserMainHand = await SetItemInfoIfSlotTypeMainHandAsync(mainHandItem, healthChangeObject.Value?.CharacterEquipment?.MainHand)
+                CauserMainHand = itemInfo
             };
 
             damageMeter.Add(damageMeterFragment);
+
+            _trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, itemInfo?.FullItemInformation?.CategoryId);
         }
 
         public void ResetDamageMeter()
@@ -239,7 +247,10 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private async Task<Item> SetItemInfoIfSlotTypeMainHandAsync(Item currentItem, int? newIndex)
         {
-            if (newIndex == null || newIndex <= 0) return currentItem;
+            if (newIndex is null or <= 0)
+            {
+                return currentItem;
+            }
 
             var item = ItemController.GetItemByIndex((int) newIndex);
             if (item == null) return currentItem;
