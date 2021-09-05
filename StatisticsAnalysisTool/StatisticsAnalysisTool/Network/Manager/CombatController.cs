@@ -267,11 +267,11 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private DateTime _lastDamageUiUpdate;
 
-        private bool IsUiUpdateAllowed()
+        private bool IsUiUpdateAllowed(int waitTimeInSeconds = 1)
         {
             var currentDateTime = DateTime.UtcNow;
             var difference = currentDateTime.Subtract(_lastDamageUiUpdate);
-            if (difference.Seconds >= 1 && !IsUiUpdateActive)
+            if (difference.Seconds >= waitTimeInSeconds && !IsUiUpdateActive)
             {
                 _lastDamageUiUpdate = currentDateTime;
                 return true;
