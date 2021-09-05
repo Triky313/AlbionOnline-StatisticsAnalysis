@@ -39,7 +39,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async void AddDamageAsync(long objectId, long causerId, double healthChange, double newHealthValue)
         {
-            if (!IsDamageMeterActive)
+            if (!IsDamageMeterActive || objectId == causerId)
             {
                 return;
             }
