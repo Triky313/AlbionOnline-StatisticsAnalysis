@@ -39,14 +39,17 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async void AddDamageAsync(long objectId, long causerId, double healthChange, double newHealthValue)
         {
-            if (!IsDamageMeterActive)
+            if (!IsDamageMeterActive || objectId == causerId)
             {
                 return;
             }
 
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
 
-            if (gameObject == null || gameObject.Value.Value?.ObjectType != GameObjectType.Player || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name))
+            if (gameObject?.Value == null 
+                || gameObject.Value.Value?.ObjectType != GameObjectType.Player 
+                || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name)
+                )
             {
                 return;
             }
@@ -85,7 +88,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             if (IsUiUpdateAllowed())
             {
-                await UpdateDamageMeterUiAsync(_mainWindowViewModel.DamageMeter, _trackingController.EntityController.GetAllEntities(true));
+                await UpdateDamageMeterUiAsync(_mainWindowViewModel.DamageMeter, _trackingController.EntityController.GetAllEntities());
             }
         }
 
@@ -107,20 +110,13 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
                 
                 var fragment = damageMeter.FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
-
                 if (fragment != null)
                 {
-                    await Application.Current.Dispatcher.Invoke(async delegate
-                    {
-                        await UpdateDamageMeterFragmentAsync(fragment, healthChangeObject, entities, highestDamage, highestHeal);
-                    });
+                    await UpdateDamageMeterFragmentAsync(fragment, healthChangeObject, entities, highestDamage, highestHeal);
                 }
                 else
                 {
-                    await Application.Current.Dispatcher.Invoke(async delegate
-                    {
-                        await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, highestDamage, highestHeal);
-                    });
+                    await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, highestDamage, highestHeal);
                 }
 
                 Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.SetDamageMeterSort());
@@ -133,9 +129,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             var itemInfo = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, healthChangeObject.Value?.CharacterEquipment?.MainHand);
             fragment.CauserMainHand = itemInfo;
-
-            // TODO: Sauber aufbauen
-
+            
             // Damage
             if (healthChangeObject.Value?.Damage > 0)
             {
@@ -147,12 +141,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 fragment.Dps = healthChangeObject.Value.Dps;
             }
-
-            if (healthChangeObject.Value != null)
-            {
-                fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObject.Value.Damage);
-            }
-
+            
             // Heal
             if (healthChangeObject.Value?.Heal > 0)
             {
@@ -165,8 +154,10 @@ namespace StatisticsAnalysisTool.Network.Manager
                 fragment.Hps = healthChangeObject.Value.Hps;
             }
 
+            // Generally
             if (healthChangeObject.Value != null)
             {
+                fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObject.Value.Damage);
                 fragment.HealPercentage = entities.GetHealPercentage(healthChangeObject.Value.Heal);
 
                 _trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, itemInfo?.FullItemInformation?.CategoryId);
@@ -203,7 +194,10 @@ namespace StatisticsAnalysisTool.Network.Manager
                 CauserMainHand = itemInfo
             };
 
-            damageMeter.Add(damageMeterFragment);
+            await Application.Current.Dispatcher.InvokeAsync(delegate
+            {
+                damageMeter.Add(damageMeterFragment);
+            });
 
             _trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, itemInfo?.FullItemInformation?.CategoryId);
         }
@@ -267,11 +261,11 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private DateTime _lastDamageUiUpdate;
 
-        private bool IsUiUpdateAllowed()
+        private bool IsUiUpdateAllowed(int waitTimeInSeconds = 1)
         {
             var currentDateTime = DateTime.UtcNow;
             var difference = currentDateTime.Subtract(_lastDamageUiUpdate);
-            if (difference.Seconds >= 1 && !IsUiUpdateActive)
+            if (difference.Seconds >= waitTimeInSeconds && !IsUiUpdateActive)
             {
                 _lastDamageUiUpdate = currentDateTime;
                 return true;
@@ -326,7 +320,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Debug methods
 
-        private static readonly Random _random = new Random(DateTime.Now.Millisecond);
+        private static readonly Random _random = new (DateTime.Now.Millisecond);
 
         private async void RunDamageMeterDebugAsync(int runs = 30)
         {
