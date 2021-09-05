@@ -79,7 +79,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _knownEntities.TryRemove(entity.Key, out _);
 
             foreach (var entity in _knownEntities.Where(x =>
-                x.Value.ObjectSubType == GameObjectSubType.LocalPlayer || _knownPartyEntities.ContainsKey(x.Key))) entity.Value.ObjectId = null;
+                x.Value.ObjectSubType == GameObjectSubType.LocalPlayer || _knownPartyEntities.ContainsKey(x.Key))) 
+                entity.Value.ObjectId = null;
         }
 
         public bool ExistLocalEntity()
@@ -165,7 +166,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void SetPartyCircleColor(Guid userGuid, string weaponCategoryId)
         {
             var memberObject = _mainWindowViewModel?.PartyMemberCircles?.FirstOrDefault(x => x.UserGuid == userGuid);
-            if (memberObject != null && memberObject?.WeaponCategoryId != weaponCategoryId)
+            if (memberObject != null && memberObject.WeaponCategoryId != weaponCategoryId)
             {
                 memberObject.WeaponCategoryId = weaponCategoryId;
             }
