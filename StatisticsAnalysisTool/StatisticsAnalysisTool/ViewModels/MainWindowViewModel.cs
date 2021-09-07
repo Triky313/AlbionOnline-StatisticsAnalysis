@@ -143,6 +143,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Brush _damageMeterActivationToggleColor;
         private bool _isDamageMeterTrackingActive;
         private ListCollectionView _trackingDungeonsCollectionView;
+        private bool _isTrackingFilteredSeasonPoints;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -468,6 +469,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingFilteredConsumableLoot = Settings.Default.MainTrackerFilterConsumableLoot;
             IsTrackingFilteredSimpleLoot = Settings.Default.MainTrackerFilterSimpleLoot;
             IsTrackingFilteredUnknownLoot = Settings.Default.MainTrackerFilterUnknownLoot;
+            IsTrackingFilteredSeasonPoints = Settings.Default.MainTrackerFilterSeasonPoints;
             IsDamageMeterTrackingActive = Settings.Default.IsDamageMeterTrackingActive;
 
             TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
@@ -492,6 +494,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Settings.Default.MainTrackerFilterSilver = IsTrackingFilteredSilver;
             Settings.Default.MainTrackerFilterFame = IsTrackingFilteredFame;
             Settings.Default.MainTrackerFilterFaction = IsTrackingFilteredFaction;
+            Settings.Default.MainTrackerFilterSeasonPoints = IsTrackingFilteredSeasonPoints;
 
             Settings.Default.MainTrackerFilterEquipmentLoot = IsTrackingFilteredEquipmentLoot;
             Settings.Default.MainTrackerFilterConsumableLoot = IsTrackingFilteredConsumableLoot;
@@ -1274,6 +1277,26 @@ namespace StatisticsAnalysisTool.ViewModels
                 else
                 {
                     TrackingController?.RemoveFilterType(NotificationType.Faction);
+                }
+
+                TrackingController?.FilterNotification();
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool IsTrackingFilteredSeasonPoints {
+            get => _isTrackingFilteredSeasonPoints;
+            set
+            {
+                _isTrackingFilteredSeasonPoints = value;
+
+                if (_isTrackingFilteredSeasonPoints)
+                {
+                    TrackingController?.AddFilterType(NotificationType.SeasonPoints);
+                }
+                else
+                {
+                    TrackingController?.RemoveFilterType(NotificationType.SeasonPoints);
                 }
 
                 TrackingController?.FilterNotification();

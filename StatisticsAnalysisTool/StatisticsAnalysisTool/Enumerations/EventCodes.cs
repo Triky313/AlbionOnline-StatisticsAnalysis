@@ -400,7 +400,7 @@
         SmartClusterQueueActiveInfo,
         SmartClusterQueueKickWarning,
         SmartClusterQueueInvite,
-        ReceivedGvgSeasonPoints,
+        ReceivedSeasonPoints = 399,
         TerritoryBonusLelUpdate,
         OpenWorldAttackScheduleStart,
         OpenWorldAttackScheduleFinished,

@@ -628,5 +628,17 @@ namespace StatisticsAnalysisTool.Properties {
                 this["IsDamageMeterTrackingActive"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MainTrackerFilterSeasonPoints {
+            get {
+                return ((bool)(this["MainTrackerFilterSeasonPoints"]));
+            }
+            set {
+                this["MainTrackerFilterSeasonPoints"] = value;
+            }
+        }
     }
 }

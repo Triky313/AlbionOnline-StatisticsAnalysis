@@ -62,6 +62,7 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
                 builder.AddEventHandler(new PartySilverGainedEventHandler(trackingController));
                 builder.AddEventHandler(new UpdateFactionStandingEventHandler(trackingController));
+                builder.AddEventHandler(new ReceivedSeasonPointsEventHandler(trackingController));
 
                 //builder.AddResponseHandler(new TestHandler());
                 //builder.AddEventHandler(new TestHandler2());
