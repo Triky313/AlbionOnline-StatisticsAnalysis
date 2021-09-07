@@ -123,6 +123,7 @@
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding FameText, StringFormat='{} {0} '}"/>
                         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Setter Property="FontWeight" Value="Bold"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding PvpPveType}" Value="{x:Static enumerations:PvpPveType.Pve}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
@@ -181,6 +182,7 @@
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding SilverText, StringFormat='{} {0} '}"/>
                         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Setter Property="FontWeight" Value="Bold"/>
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
@@ -213,7 +215,8 @@
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding ValueText, StringFormat='{} {0} '}"/>
-                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
+                        <Setter Property="FontWeight" Value="Bold"/>
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
@@ -233,7 +236,8 @@
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding ValueText, StringFormat='{} {0} '}"/>
-                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
+                        <Setter Property="FontWeight" Value="Bold"/>
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
@@ -253,7 +257,8 @@
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding ValueText, StringFormat='{} {0} '}"/>
-                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
+                        <Setter Property="FontWeight" Value="Bold"/>
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
