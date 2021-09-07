@@ -533,6 +533,7 @@
     </Style>
 
     <Style x:Key="DungeonNotificationFragment.Grid.DungeonMode" TargetType="Grid">
+        <Setter Property="Width" Value="27"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Expedition}">
                 <Setter Property="ToolTip" Value="{Binding TranslationExpedition, IsAsync=True}"></Setter>
@@ -568,7 +569,7 @@
                 </Setter>
             </DataTrigger>
             <DataTrigger Binding="{Binding Mode, IsAsync=True}" Value="{x:Static enumerations:DungeonMode.Solo}">
-                <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"></Setter>
+                <Setter Property="ToolTip" Value="{Binding TranslationSolo, IsAsync=True}"/>
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -637,7 +638,9 @@
             </Grid.Style>
             <StackPanel Orientation="Vertical" Style="{StaticResource DungeonNotificationFragment.Faction}">
                 <DockPanel>
-                    <Grid Width="5" HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
+                    <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}">
+                        <Label HorizontalContentAlignment="Center" Content="{Binding TierString}" ToolTip="{Binding Tier}"/>
+                    </Grid>
                     <Grid Height="72">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal" Height="24" Margin="0">

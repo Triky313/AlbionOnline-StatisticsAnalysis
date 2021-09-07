@@ -31,6 +31,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         public Faction Faction { get; set; } = Faction.Unknown;
         public DungeonMode Mode { get; set; } = DungeonMode.Unknown;
         public CityFaction CityFaction { get; set; } = CityFaction.Unknown;
+        public Tier Tier { get; set; } = Tier.Unknown;
         [JsonIgnore]
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
         

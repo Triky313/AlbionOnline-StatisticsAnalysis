@@ -63,7 +63,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
                 var newDungeon = new DungeonObject(mainMapIndex, (Guid)mapGuid, DungeonStatus.Active);
-                SetDungeonInformation(newDungeon, mapType);
+                SetDungeonMapType(newDungeon, mapType);
+                newDungeon.Tier = _trackingController.CurrentCluster.Tier;
 
                 _dungeons.Insert(0, newDungeon);
             }
@@ -201,7 +202,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             return guid == null ? null : _dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid)guid));
         }
         
-        private static void SetDungeonInformation(DungeonObject dungeon, MapType mapType)
+        private static void SetDungeonMapType(DungeonObject dungeon, MapType mapType)
         {
             switch (mapType)
             {

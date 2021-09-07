@@ -58,6 +58,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _diedMessage;
         private bool? _isSelectedForDeletion = false;
         private Visibility _visibility;
+        private Tier _tier = Tier.Unknown;
 
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
 
@@ -126,7 +127,25 @@ namespace StatisticsAnalysisTool.Network.Notification
                 }
             }
         }
-        
+
+        public string TierString {
+            get {
+                return Tier switch
+                {
+                    Tier.T1 => "I",
+                    Tier.T2 => "II",
+                    Tier.T3 => "III",
+                    Tier.T4 => "IV",
+                    Tier.T5 => "V",
+                    Tier.T6 => "VI",
+                    Tier.T7 => "VII",
+                    Tier.T8 => "VIII",
+                    Tier.Unknown => "?",
+                    _ => "?"
+                };
+            }
+        }
+
         public ObservableCollection<DungeonEventObjectFragment> DungeonChests
         {
             get => _dungeonChests;
@@ -183,6 +202,15 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        public Tier Tier {
+            get => _tier;
+            set
+            {
+                _tier = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public string MainMapIndex
         {
             get => _mainMapIndex;
