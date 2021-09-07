@@ -83,6 +83,12 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="Tracker.Icon.SeasonPoints" TargetType="{x:Type Image}">
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Source" Value="Resources/icon_daily_season_points.png"/>
+    </Style>
+
     <DataTemplate DataType="{x:Type notification:TrackingNotification}">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -174,7 +180,7 @@
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding SilverText, StringFormat='{} {0} '}"/>
-                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
@@ -207,7 +213,7 @@
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding ValueText, StringFormat='{} {0} '}"/>
-                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
@@ -227,7 +233,27 @@
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding ValueText, StringFormat='{} {0} '}"/>
-                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource Solid.Color.Text.Normal}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type notification:SeasonPointsNotificationFragment}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
+
+            <Image Style="{StaticResource Tracker.Icon.SeasonPoints}"/>
+            <TextBlock Text="{Binding GainedSeasonPoints, StringFormat='{} {0:N0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+
+            <TextBlock>
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Text" Value="{Binding ValueText, StringFormat='{} {0} '}"/>
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
                     </Style>
                 </TextBlock.Style>
             </TextBlock>

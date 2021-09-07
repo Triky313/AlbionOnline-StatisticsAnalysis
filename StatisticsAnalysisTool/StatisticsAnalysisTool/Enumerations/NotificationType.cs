@@ -9,6 +9,7 @@
         EquipmentLoot,
         ConsumableLoot,
         SimpleLoot,
-        UnknownLoot
+        UnknownLoot,
+        SeasonPoints
     }
 }
