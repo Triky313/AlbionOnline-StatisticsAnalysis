@@ -118,6 +118,12 @@
     <Color x:Key="Dungeon.Mode.Avalon.2">#ffeddaa7</Color>
     <Color x:Key="Dungeon.Mode.Unknown">#ff252525</Color>
 
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Expedition.1" Color="{StaticResource Dungeon.Mode.Expedition.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.HellGate.1" Color="{StaticResource Dungeon.Mode.HellGate.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Corrupted.1" Color="{StaticResource Dungeon.Mode.Corrupted.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Solo.1" Color="{StaticResource Dungeon.Mode.Solo.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Standard.1" Color="{StaticResource Dungeon.Mode.Standard.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Avalon.1" Color="{StaticResource Dungeon.Mode.Avalon.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Unknown" Color="{StaticResource Dungeon.Mode.Unknown}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pvp" Color="{StaticResource Text.Color.Pvp}"/>
