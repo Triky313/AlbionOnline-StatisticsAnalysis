@@ -86,6 +86,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             FactionFlags = dungeonObject.FactionFlags;
             Mode = dungeonObject.Mode;
             Status = dungeonObject.Status;
+            Tier = dungeonObject.Tier;
 
             UpdateChests(dungeonObject.DungeonEventObjects.ToAsyncEnumerable());
         }

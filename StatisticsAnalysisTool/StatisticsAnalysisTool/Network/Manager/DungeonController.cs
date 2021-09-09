@@ -39,9 +39,10 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel = mainWindowViewModel;
         }
 
+        // TODO: To Entity controller?
         public LocalUserData LocalUserData { get; set; }
 
-        public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid, string mainMapIndex)
+        public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid)
         {
             UpdateDungeonSaveTimerUi();
 
@@ -62,9 +63,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                 _dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
-                var newDungeon = new DungeonObject(mainMapIndex, (Guid)mapGuid, DungeonStatus.Active);
+                var newDungeon = new DungeonObject(_trackingController.CurrentCluster.MainClusterIndex, (Guid)mapGuid, DungeonStatus.Active, _trackingController.CurrentCluster.Tier);
                 SetDungeonMapType(newDungeon, mapType);
-                newDungeon.Tier = _trackingController.CurrentCluster.Tier;
 
                 _dungeons.Insert(0, newDungeon);
             }

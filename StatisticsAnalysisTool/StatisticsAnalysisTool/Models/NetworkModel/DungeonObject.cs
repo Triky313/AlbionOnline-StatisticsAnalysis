@@ -41,7 +41,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         {
         }
 
-        public DungeonObject(string mainMapIndex, Guid guid, DungeonStatus status)
+        public DungeonObject(string mainMapIndex, Guid guid, DungeonStatus status, Tier tier)
         {
             MainMapIndex = mainMapIndex;
             EnterDungeonFirstTime = DateTime.UtcNow;
@@ -49,6 +49,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             Status = status;
             AddTimer(DateTime.UtcNow);
             Mode = (Mode == DungeonMode.Unknown) ? DungeonObjectData.GetDungeonMode(mainMapIndex) : Mode;
+            Tier = tier;
         }
 
         public void Add(double value, ValueType type, CityFaction cityFaction = CityFaction.Unknown)

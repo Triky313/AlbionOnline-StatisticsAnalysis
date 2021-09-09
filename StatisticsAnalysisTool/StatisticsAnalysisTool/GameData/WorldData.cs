@@ -147,7 +147,7 @@ namespace StatisticsAnalysisTool.GameData
                 MapType = mapType,
                 Type = GetTypeByIndex(clusterIndex) ?? GetTypeByIndex(mainClusterIndex) ?? string.Empty,
                 Guid = guid,
-                File = GetFileByIndex(clusterIndex) ?? GetTypeByIndex(mainClusterIndex) ?? string.Empty
+                File = GetFileByIndex(clusterIndex) ?? GetFileByIndex(mainClusterIndex) ?? string.Empty
             };
         }
 
