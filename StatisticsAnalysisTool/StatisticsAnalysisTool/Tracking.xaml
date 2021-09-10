@@ -90,7 +90,7 @@
     </Style>
 
     <DataTemplate DataType="{x:Type notification:TrackingNotification}">
-        <Grid>
+        <Grid Visibility="{Binding Visibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />

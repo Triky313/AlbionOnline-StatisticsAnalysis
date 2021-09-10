@@ -562,8 +562,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     d.Visibility = Visibility.Collapsed;
                 });
             
-            await _mainWindowViewModel?.TrackingDungeons?
-                .Where(x => _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
+            await _mainWindowViewModel?.TrackingDungeons?.Where(x => _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
                 {

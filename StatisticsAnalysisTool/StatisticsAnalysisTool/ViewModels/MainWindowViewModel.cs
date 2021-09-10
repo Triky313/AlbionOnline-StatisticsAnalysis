@@ -1167,7 +1167,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.EquipmentLoot);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1187,7 +1187,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.ConsumableLoot);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1207,7 +1207,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.SimpleLoot);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1227,7 +1227,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.UnknownLoot);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1247,7 +1247,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Fame);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1267,7 +1267,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Silver);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1287,7 +1287,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Faction);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1307,7 +1307,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.SeasonPoints);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }

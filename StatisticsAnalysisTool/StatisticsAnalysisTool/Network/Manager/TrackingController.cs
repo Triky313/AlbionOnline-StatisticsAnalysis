@@ -9,7 +9,6 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +19,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 {
     public class TrackingController : ITrackingController
     {
-        private const int _maxNotifications = 3;
+        private const int _maxNotifications = 2000;
         private const int _maxEnteredCluster = 500;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
@@ -214,34 +213,27 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task ClearNotificationsAsync()
         {
-            _mainWindowViewModel.TrackingNotifications.Clear();
-
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindowViewModel.TrackingNotifications.Clear();
             });
         }
 
-        public void FilterNotification()
+        public async Task NotificationUiFilteringAsync()
         {
-            var filteredNotifications = _mainWindowViewModel.TrackingNotifications?
-                .Where(x => _notificationTypeFilters.Contains(x.Type))
-                .ToList();
-
-            if (filteredNotifications == null)
+            // ReSharper disable once ConstantConditionalAccessQualifier
+            await _mainWindowViewModel?.TrackingNotifications?.Where(x => !_notificationTypeFilters?.Contains(x.Type) ?? true)?.ToAsyncEnumerable().ForEachAsync(d =>
             {
-                return;
-            }
+                d.Visibility = Visibility.Collapsed;
+            });
 
-            Application.Current.Dispatcher.Invoke(delegate
+            // ReSharper disable once ConstantConditionalAccessQualifier
+            await _mainWindowViewModel?.TrackingNotifications?.Where(x => _notificationTypeFilters?.Contains(x.Type) ?? false)?.ToAsyncEnumerable().ForEachAsync(d =>
             {
-                _mainWindowViewModel.TrackingNotifications = new ObservableCollection<TrackingNotification>(filteredNotifications);
-                _mainWindowViewModel?.TrackingNotifications?
-                    .OrderByReference(filteredNotifications.OrderByDescending(x => x.DateTime)
-                        .ToList());
+                d.Visibility = Visibility.Visible;
             });
         }
-        
+
         public void AddFilterType(NotificationType notificationType)
         {
             if (!_notificationTypeFilters.Exists(x => x == notificationType))

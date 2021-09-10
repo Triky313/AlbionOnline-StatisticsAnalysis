@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         void ClearNotifications() { }
 
-        void FilterNotification() { }
+        void NotificationUiFilteringAsync() { }
 
         void AddFilterType(NotificationType notificationType) { }
 
