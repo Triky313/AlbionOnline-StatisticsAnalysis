@@ -93,7 +93,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         private async void UpdateChests(IAsyncEnumerable<DungeonEventObject> dungeonEventObjects)
         {
-            await foreach (var dungeonEventObject in dungeonEventObjects)
+            foreach (var dungeonEventObject in await dungeonEventObjects.ToListAsync().ConfigureAwait(false))
             {
                 var dungeon = DungeonChests?.FirstOrDefault(x => x.Hash == dungeonEventObject.Hash);
 

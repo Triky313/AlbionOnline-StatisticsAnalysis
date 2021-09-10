@@ -1,7 +1,7 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         public UpdateReSpecPointsEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateReSpecPoints)
         {
             _trackingController = trackingController;
-            _countUpTimer = _trackingController.CountUpTimer;
+            _countUpTimer = _trackingController?.CountUpTimer;
         }
 
         protected override async Task OnActionAsync(UpdateReSpecPointsEvent value)

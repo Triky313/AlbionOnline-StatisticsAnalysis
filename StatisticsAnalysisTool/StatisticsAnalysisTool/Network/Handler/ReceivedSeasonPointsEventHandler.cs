@@ -20,8 +20,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(ReceivedSeasonPointsEvent value)
         {
-            _trackingController.AddNotification(SetSeasonPointsNotification(value.SeasonPoints));
-            await Task.CompletedTask;
+            await _trackingController.AddNotificationAsync(SetSeasonPointsNotification(value.SeasonPoints));
         }
 
         private TrackingNotification SetSeasonPointsNotification(int seasonPoints)

@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -21,14 +22,14 @@ namespace StatisticsAnalysisTool.Network.Manager
             _trackingController = trackingController;
         }
 
-        public void AddLoot(Loot loot)
+        public async Task AddLootAsync(Loot loot)
         {
             if (loot == null || loot.IsSilver || loot.IsTrash)
             {
                 return;
             }
 
-            _trackingController.AddNotification(SetNotification(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
+            await _trackingController.AddNotificationAsync(SetNotification(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
         }
 
         public void AddDiscoveredLoot(DiscoveredLoot loot)
@@ -41,7 +42,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _discoveredLoot.Add(loot);
         }
         
-        public void AddPutLoot(long? objectId, Guid? interactGuid)
+        public async Task AddPutLootAsync(long? objectId, Guid? interactGuid)
         {
             if (_trackingController.EntityController.GetLocalEntity()?.Value?.InteractGuid != interactGuid)
             {
@@ -53,7 +54,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _putLoot.Add((long) objectId, (Guid)interactGuid);
             }
 
-            LootMerge();
+            await LootMergeAsync();
         }
 
         public void ResetViewedLootLists()
@@ -62,7 +63,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _discoveredLoot.Clear();
         }
 
-        private void LootMerge()
+        private async Task LootMergeAsync()
         {
             foreach (var lootedObject in _putLoot)
             {
@@ -85,7 +86,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                         Quantity = discoveredLoot.Quantity
                     };
 
-                    AddLoot(loot);
+                    await AddLootAsync(loot);
                     _discoveredLoot.Remove(discoveredLoot);
                 }
                 

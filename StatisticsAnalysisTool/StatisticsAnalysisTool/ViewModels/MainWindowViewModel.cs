@@ -144,6 +144,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isDamageMeterTrackingActive;
         private ListCollectionView _trackingDungeonsCollectionView;
         private bool _isTrackingFilteredSeasonPoints;
+        private ListCollectionView _trackingNotificationsCollectionView;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -457,6 +458,8 @@ namespace StatisticsAnalysisTool.ViewModels
             await WorldData.GetDataListFromJsonAsync();
             await DungeonObjectData.GetDataListFromJsonAsync();
 
+            TrackingController ??= new TrackingController(this, _mainWindow);
+
             if (Settings.Default.IsTrackingActiveAtToolStart)
             {
                 StartTracking();
@@ -477,6 +480,13 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 TrackingDungeonsCollectionView.IsLiveSorting = true;
                 TrackingDungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
+            }
+
+            TrackingNotificationsCollectionView = CollectionViewSource.GetDefaultView(TrackingNotifications) as ListCollectionView;
+            if (TrackingNotificationsCollectionView != null)
+            {
+                TrackingNotificationsCollectionView.IsLiveSorting = true;
+                TrackingNotificationsCollectionView.SortDescriptions.Add(new SortDescription(nameof(DateTime), ListSortDirection.Descending));
             }
         }
 
@@ -828,8 +838,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            TrackingController ??= new TrackingController(this, _mainWindow);
-
             TrackingController?.RegisterEvents();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
@@ -895,14 +903,14 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public void ResetTrackingNotifications()
+        public async Task ResetTrackingNotificationsAsync()
         {
             var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
             var dialogResult = dialog.ShowDialog();
 
             if (dialogResult is true)
             {
-                TrackingController.ClearNotifications();
+                await TrackingController.ClearNotificationsAsync().ConfigureAwait(false);
             }
         }
 
@@ -1627,6 +1635,15 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingDungeonsCollectionView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ListCollectionView TrackingNotificationsCollectionView {
+            get => _trackingNotificationsCollectionView;
+            set
+            {
+                _trackingNotificationsCollectionView = value;
                 OnPropertyChanged();
             }
         }

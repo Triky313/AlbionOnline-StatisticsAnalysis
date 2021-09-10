@@ -4,7 +4,6 @@
         xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
-        xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
         Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="800" Closing="Window_Closing">
     <Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
@@ -289,7 +288,7 @@
                         </Grid>
                         <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,60,0,0" VerticalAlignment="Top"/>
                         <ScrollViewer Margin="0,65,0,0">
-                            <ItemsControl ItemsSource="{Binding TrackingNotifications, IsAsync=True, Mode=OneWay}" VirtualizingStackPanel.IsVirtualizing="True" />
+                            <ItemsControl ItemsSource="{Binding TrackingNotificationsCollectionView, IsAsync=True, Mode=OneWay}" />
                         </ScrollViewer>
                     </Grid>
                 </TabItem>

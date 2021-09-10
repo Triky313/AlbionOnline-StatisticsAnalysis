@@ -1,7 +1,7 @@
 ﻿using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -17,8 +17,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         protected override async Task OnActionAsync(OtherGrabbedLootEvent value)
         {
-            _trackingController.LootController.AddLoot(value.Loot);
-            await Task.CompletedTask;
+            await _trackingController.LootController.AddLootAsync(value.Loot);
         }
     }
 }

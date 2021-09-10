@@ -47,12 +47,10 @@ namespace StatisticsAnalysisTool.Network.Handler
                     value.YieldAfterTax = yieldAfterGuildTaxAndClusterTax;
                 }
 
-                _trackingController.AddNotification(SetNotification(value.YieldAfterTax, value.ClusterYieldAfterTax, value.PremiumAfterTax, value.ClusterTax));
+                await _trackingController.AddNotificationAsync(SetNotification(value.YieldAfterTax, value.ClusterYieldAfterTax, value.PremiumAfterTax, value.ClusterTax));
                 _trackingController.CountUpTimer.Add(ValueType.Silver, value.YieldAfterTax.DoubleValue);
                 _trackingController.DungeonController?.AddValueToDungeon(value.YieldAfterTax.DoubleValue, ValueType.Silver);
             }
-
-            await Task.CompletedTask;
         }
 
         private TrackingNotification SetNotification(FixPoint totalGainedSilver, FixPoint cluster, FixPoint premium, FixPoint clusterTax)

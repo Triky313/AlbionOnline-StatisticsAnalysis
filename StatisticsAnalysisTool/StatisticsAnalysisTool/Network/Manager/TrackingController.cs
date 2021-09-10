@@ -13,13 +13,14 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
     public class TrackingController : ITrackingController
     {
-        private const int _maxNotifications = 1000;
+        private const int _maxNotifications = 3;
         private const int _maxEnteredCluster = 500;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
@@ -32,7 +33,6 @@ namespace StatisticsAnalysisTool.Network.Manager
         public EntityController EntityController;
         public LootController LootController;
         private readonly List<NotificationType> _notificationTypeFilters = new();
-        private readonly List<TrackingNotification> _notifications = new();
 
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
@@ -66,7 +66,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             CombatController.AddDamageAsync(objectId, causerId, healthChange, newHealthValue);
         }
-
+        
         public event Action<ClusterInfo> OnChangeCluster;
 
         #endregion
@@ -150,46 +150,73 @@ namespace StatisticsAnalysisTool.Network.Manager
         #endregion
 
         #region Notifications
-
-        public void AddNotification(TrackingNotification item)
+        
+        public async Task AddNotificationAsync(TrackingNotification item)
         {
-            if (IsMainWindowNull() || _mainWindowViewModel.TrackingNotifications == null || _notifications == null)
+            if (_mainWindowViewModel?.TrackingNotifications == null)
             {
                 return;
             }
-
-            _notifications.Insert(0, item);
-
-            RemovesUnnecessaryNotifications();
-
-            if (_notificationTypeFilters.Contains(item.Type))
+            
+            if (Application.Current.Dispatcher.CheckAccess())
             {
-                Application.Current.Dispatcher.Invoke(delegate
+                _mainWindowViewModel.TrackingNotifications.Insert(0, item);
+            }
+            else
+            {
+                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     _mainWindowViewModel.TrackingNotifications.Insert(0, item);
                 });
             }
+
+            await RemovesUnnecessaryNotificationsAsync();
+
+            //if (_notificationTypeFilters.Contains(item.Type))
+            //{
+            //    await Application.Current.Dispatcher.InvokeAsync(() =>
+            //    {
+            //        _mainWindowViewModel.TrackingNotifications.Insert(0, item);
+            //    });
+            //}
         }
-
-        public void RemovesUnnecessaryNotifications()
+        
+        public async Task RemovesUnnecessaryNotificationsAsync()
         {
-
-            foreach (var notification in _notifications.OrderBy(x => x.DateTime))
+            if (!IsRemovesUnnecessaryNotificationsActiveAllowed())
             {
-                if (_notifications?.Count <= _maxNotifications)
-                {
-                    break;
-                }
-
-                _notifications.Remove(notification);
+                return;
             }
+
+            _isRemovesUnnecessaryNotificationsActive = true;
+
+            var numberToBeRemoved = _mainWindowViewModel.TrackingNotifications.Count - _maxNotifications;
+            if (numberToBeRemoved > 0)
+            {
+                await foreach (var notification in _mainWindowViewModel.TrackingNotifications.OrderBy(x => x.DateTime).ToList().Take(numberToBeRemoved).ToAsyncEnumerable())
+                {
+                    if (Application.Current.Dispatcher.CheckAccess())
+                    {
+                        _mainWindowViewModel.TrackingNotifications.Remove(notification);
+                    }
+                    else
+                    {
+                        await Application.Current.Dispatcher.InvokeAsync(() =>
+                        {
+                            _mainWindowViewModel.TrackingNotifications.Remove(notification);
+                        });
+                    }
+                }
+            }
+
+            _isRemovesUnnecessaryNotificationsActive = false;
         }
 
-        public void ClearNotifications()
+        public async Task ClearNotificationsAsync()
         {
-            _notifications.Clear();
+            _mainWindowViewModel.TrackingNotifications.Clear();
 
-            Application.Current.Dispatcher.Invoke(delegate
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindowViewModel.TrackingNotifications.Clear();
             });
@@ -197,7 +224,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void FilterNotification()
         {
-            var filteredNotifications = _notifications?
+            var filteredNotifications = _mainWindowViewModel.TrackingNotifications?
                 .Where(x => _notificationTypeFilters.Contains(x.Type))
                 .ToList();
 
@@ -229,6 +256,22 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 _notificationTypeFilters.Remove(notificationType);
             }
+        }
+
+        private static bool _isRemovesUnnecessaryNotificationsActive;
+        private DateTime _lastRemovesUnnecessaryNotifications;
+
+        private bool IsRemovesUnnecessaryNotificationsActiveAllowed(int waitTimeInSeconds = 1)
+        {
+            var currentDateTime = DateTime.UtcNow;
+            var difference = currentDateTime.Subtract(_lastRemovesUnnecessaryNotifications);
+            if (difference.Seconds >= waitTimeInSeconds && !_isRemovesUnnecessaryNotificationsActive)
+            {
+                _lastRemovesUnnecessaryNotifications = currentDateTime;
+                return true;
+            }
+
+            return false;
         }
 
         #endregion

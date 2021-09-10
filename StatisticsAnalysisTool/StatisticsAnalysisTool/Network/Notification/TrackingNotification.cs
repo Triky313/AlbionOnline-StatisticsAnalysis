@@ -6,6 +6,10 @@ namespace StatisticsAnalysisTool.Network.Notification
 {
     public class TrackingNotification
     {
+        public TrackingNotification()
+        {
+        }
+
         public TrackingNotification(DateTime dateTime, IEnumerable<LineFragment> fragments, NotificationType type)
         {
             DateTime = dateTime;
@@ -17,7 +21,14 @@ namespace StatisticsAnalysisTool.Network.Notification
         public DateTime DateTime { get; }
         public IEnumerable<LineFragment> Fragments { get; }
         public NotificationType Type { get; }
-
         public Guid InstanceId { get; }
+
+        public string Hash => $"{DateTime.Ticks}-{Type}-{InstanceId}";
+
+        public int CompareTo(TrackingNotification value)
+        {
+            var compared = string.Compare(Hash, value.Hash, StringComparison.Ordinal);
+            return compared != 0 ? compared : -1;
+        }
     }
 }
