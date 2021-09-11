@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using log4net;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -6,20 +7,25 @@ using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
     public class LootController : ILootController
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly TrackingController _trackingController;
 
         private readonly Dictionary<long, Guid> _putLoot = new ();
         private readonly List<DiscoveredLoot> _discoveredLoot = new ();
+        private readonly List<LootLoggerObject> _lootLoggerObjects = new ();
 
         public LootController(TrackingController trackingController)
         {
             _trackingController = trackingController;
+
+            _ = AddTestLootNotificationsAsync(10);
         }
 
         public async Task AddLootAsync(Loot loot)
@@ -30,6 +36,14 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             await _trackingController.AddNotificationAsync(SetNotification(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
+
+            _lootLoggerObjects.Add(new LootLoggerObject()
+            {
+                BodyName = loot.LootedBody,
+                LooterName = loot.LooterName,
+                Quantity = loot.Quantity,
+                UniqueName = loot.Item.UniqueName
+            });
         }
 
         public void AddDiscoveredLoot(DiscoveredLoot loot)
@@ -93,13 +107,29 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
+        public string GetLootLoggerObjectsAsCsv()
+        {
+            try
+            {
+                return string.Join(";", _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                return string.Empty;
+            }
+        }
+
         private TrackingNotification SetNotification(string looter, string lootedPlayer, Item item, int quantity)
         {
+            // TODO: Full item info laden dann itemType festlegen
+
             var itemType = ItemController.GetItemType(item.Index);
 
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
-                new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity)
+                new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item.LocalizedName, ImageController.GetItemImage(item.UniqueName), quantity)
             }, GetNotificationType(itemType));
         }
 
@@ -117,5 +147,30 @@ namespace StatisticsAnalysisTool.Network.Manager
                     return NotificationType.UnknownLoot;
             }
         }
+
+        #region Debug methods
+
+        private static readonly Random _random = new(DateTime.Now.Millisecond);
+
+        private async Task AddTestLootNotificationsAsync(int notificationCounter)
+        {
+            for (var i = 0; i < notificationCounter; i++)
+            {
+                var randomItem = ItemController.GetItemByIndex(_random.Next(1, 7000));
+                await AddLootAsync(new Loot()
+                {
+                    LootedBody = TestMethods.GenerateName(8),
+                    IsTrash = ItemController.IsTrash(randomItem.Index),
+                    Item = ItemController.GetItemByIndex(randomItem.Index),
+                    ItemId = randomItem.Index,
+                    LooterName = TestMethods.GenerateName(8),
+                    IsSilver = false,
+                    Quantity = 1
+                });
+
+            }
+        }
+
+        #endregion
     }
 }

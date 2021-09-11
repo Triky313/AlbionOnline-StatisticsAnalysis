@@ -275,8 +275,8 @@
             <TextBlock Text="{Binding LootedTranslation, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
 
             <TextBlock Text="{Binding Quantity, IsAsync=True, StringFormat='{}{0}x '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
-            <Image Source="{Binding Item.Icon, IsAsync=True}" Width="25" Height="25" Stretch="Fill" />
-            <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
+            <Image Source="{Binding Icon, IsAsync=True}" Width="25" Height="25" Stretch="Fill" />
+            <TextBlock Text="{Binding LocalizedName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
 
             <TextBlock Text="{Binding FromTranslation, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource Solid.Color.Text.Normal}"/>
             <TextBlock Text="{Binding LootedPlayer, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Blue.3}"/>

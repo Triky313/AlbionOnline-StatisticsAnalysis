@@ -359,12 +359,12 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     CharacterEquipment = new CharacterEquipment
                     {
-                        MainHand = GetRandomWeaponIndex()
+                        MainHand = TestMethods.GetRandomWeaponIndex()
                     },
                     CombatTime = new TimeSpan(0, 0, 0, randomPlayer.RandomTime),
                     Damage = randomPlayer.Damage,
                     Heal = randomPlayer.Heal,
-                    Name = GenerateName(randomPlayer.Name),
+                    Name = TestMethods.GenerateName(randomPlayer.Name),
                     ObjectSubType = GameObjectSubType.Player,
                     ObjectType = GameObjectType.Player,
                     UserGuid = randomPlayer.CauserGuid
@@ -395,35 +395,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             public int ObjectId { get; set; }
             public int Name { get; set; }
             public int RandomTime { get; set; }
-        }
-
-        private static string GenerateName(int len)
-        {
-            string[] consonants = {"b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "l", "n", "p", "q", "r", "s", "sh", "zh", "t", "v", "w", "x"};
-            string[] vowels = {"a", "e", "i", "o", "u", "ae", "y"};
-            var Name = "";
-            Name += consonants[_random.Next(consonants.Length)].ToUpper();
-            Name += vowels[_random.Next(vowels.Length)];
-            var b = 2; //b tells how many times a new letter has been added. It's 2 right now because the first two letters are already in the name.
-            while (b < len)
-            {
-                Name += consonants[_random.Next(consonants.Length)];
-                b++;
-                Name += vowels[_random.Next(vowels.Length)];
-                b++;
-            }
-
-            return Name;
-        }
-
-        private static int GetRandomWeaponIndex()
-        {
-            var indexArray = new List<int> {6180, 5900, 6326, 5614, 6600, 5602, 6467, 5181, 5080, 5705, 4998, 4777, 4696, 6045, 0};
-
-            var index = _random.Next(indexArray.Count);
-            var itemIndex = indexArray[index];
-            indexArray.RemoveAt(index);
-            return itemIndex;
         }
 
         #endregion

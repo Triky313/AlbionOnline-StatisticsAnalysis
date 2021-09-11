@@ -1,5 +1,6 @@
 using FontAwesome5;
 using log4net;
+using Microsoft.Win32;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
@@ -16,6 +17,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -628,6 +630,30 @@ namespace StatisticsAnalysisTool.ViewModels
                 DungeonStatsGridHeight = unfoldGridHeight;
                 DungeonStatsScrollViewerMargin = new Thickness(0, unfoldGridHeight, 0,0);
                 IsDungeonStatsGridUnfold = true;
+            }
+        }
+
+        public void ExportLootToFile()
+        {
+            var dialog = new SaveFileDialog
+            {
+                FileName = $"log-{DateTime.UtcNow:yy-MMM-dd}",
+                DefaultExt = ".csv",
+                Filter = "CSV documents (.csv)|*.csv"
+            };
+
+            var result = dialog.ShowDialog();
+            if (result == true)
+            {
+                try
+                {
+                    File.WriteAllText(dialog.FileName, TrackingController.LootController.GetLootLoggerObjectsAsCsv());
+                }
+                catch (Exception e)
+                {
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                }
             }
         }
 

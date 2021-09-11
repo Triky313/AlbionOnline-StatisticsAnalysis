@@ -23,7 +23,6 @@ namespace StatisticsAnalysisTool.Models
         public int Level => ItemController.GetItemLevel(UniqueName);
         public int Tier => ItemController.GetItemTier(this);
         public BitmapImage Icon => _icon ??= ImageController.GetItemImage(UniqueName);
-
         public BitmapImage ExistFullItemInformationLocal => ItemController.ExistFullItemInformationLocal(UniqueName);
         public ItemInformation FullItemInformation { get; set; }
 

@@ -170,14 +170,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             await RemovesUnnecessaryNotificationsAsync();
-
-            //if (_notificationTypeFilters.Contains(item.Type))
-            //{
-            //    await Application.Current.Dispatcher.InvokeAsync(() =>
-            //    {
-            //        _mainWindowViewModel.TrackingNotifications.Insert(0, item);
-            //    });
-            //}
         }
         
         public async Task RemovesUnnecessaryNotificationsAsync()
