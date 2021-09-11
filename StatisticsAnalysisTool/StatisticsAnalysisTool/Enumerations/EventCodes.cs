@@ -401,7 +401,7 @@ namespace StatisticsAnalysisTool.Enumerations
         SmartClusterQueueKickWarning,
         SmartClusterQueueInvite,
         ReceivedSeasonPoints = 399,
-        TerritoryBonusLelUpdate,
+        TerritoryBonusLevelUpdate,
         OpenWorldAttackScheduleStart,
         OpenWorldAttackScheduleFinished,
         OpenWorldAttackScheduleCancel,
