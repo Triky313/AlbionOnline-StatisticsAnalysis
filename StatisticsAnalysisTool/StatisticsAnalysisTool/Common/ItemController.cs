@@ -95,10 +95,18 @@ namespace StatisticsAnalysisTool.Common
             return item == null;
         }
         
-        public static ItemType GetItemType(int index)
+        public static async Task<ItemType> GetItemTypeAsync(int index)
         {
             var item = Items?.FirstOrDefault(i => i.Index == index);
+
+            if (item != null)
+            {
+                var fullItemInfo = await GetFullItemInformationAsync(item);
+                item.FullItemInformation = fullItemInfo;
+            }
+
             var itemType = !string.IsNullOrEmpty(item?.FullItemInformation?.ItemType) ? item.FullItemInformation?.ItemType : "UNKNOWN";
+            
             switch (itemType)
             {
                 case "WEAPON":

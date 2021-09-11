@@ -35,7 +35,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            await _trackingController.AddNotificationAsync(SetNotification(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
+            await _trackingController.AddNotificationAsync(await SetNotificationAsync(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
 
             _lootLoggerObjects.Add(new LootLoggerObject()
             {
@@ -111,7 +111,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             try
             {
-                return string.Join(";", _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
+                return string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
             }
             catch (Exception e)
             {
@@ -121,11 +121,9 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private TrackingNotification SetNotification(string looter, string lootedPlayer, Item item, int quantity)
+        private async Task<TrackingNotification> SetNotificationAsync(string looter, string lootedPlayer, Item item, int quantity)
         {
-            // TODO: Full item info laden dann itemType festlegen
-
-            var itemType = ItemController.GetItemType(item.Index);
+            var itemType = await ItemController.GetItemTypeAsync(item.Index);
 
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
