@@ -131,19 +131,15 @@ namespace StatisticsAnalysisTool.Network.Manager
             }, GetNotificationType(itemType));
         }
 
-        private NotificationType GetNotificationType(ItemType itemType)
+        private static NotificationType GetNotificationType(ItemType itemType)
         {
-            switch (itemType)
+            return itemType switch
             {
-                case ItemType.Weapon:
-                    return NotificationType.EquipmentLoot;
-                case ItemType.Consumable:
-                    return NotificationType.ConsumableLoot;
-                case ItemType.Simple:
-                    return NotificationType.SimpleLoot;
-                default:
-                    return NotificationType.UnknownLoot;
-            }
+                ItemType.Weapon => NotificationType.EquipmentLoot,
+                ItemType.Consumable => NotificationType.ConsumableLoot,
+                ItemType.Simple => NotificationType.SimpleLoot,
+                _ => NotificationType.UnknownLoot,
+            };
         }
 
         #region Debug methods
