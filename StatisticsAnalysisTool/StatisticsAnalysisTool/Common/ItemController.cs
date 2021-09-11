@@ -125,6 +125,8 @@ namespace StatisticsAnalysisTool.Common
                     return ItemType.Journal;
                 case "LABOURERCONTRACT":
                     return ItemType.LabourerContract;
+                case "FURNITURE":
+                    return ItemType.Furniture;
                 default:
                     return ItemType.Unknown;
             }

@@ -10,6 +10,7 @@
         ConsumableFromInventory,
         Farmable,
         Journal,
-        LabourerContract
+        LabourerContract,
+        Furniture
     }
 }
