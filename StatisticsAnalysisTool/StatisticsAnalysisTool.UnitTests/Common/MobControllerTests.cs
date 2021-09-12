@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.UnitTests.Common
 {
+    [Parallelizable]
     public class MobControllerTests
     {
         [SetUp]
