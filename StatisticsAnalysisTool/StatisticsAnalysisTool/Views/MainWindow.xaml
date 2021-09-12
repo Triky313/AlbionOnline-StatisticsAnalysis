@@ -265,10 +265,10 @@
                 <TabItem Header="{Binding Translation.Tracking, FallbackValue=TRACKING}">
                     <Grid>
                         <Grid Height="65" Width="auto" HorizontalAlignment="Right" VerticalAlignment="Top">
-                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Vertical">
+                            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Vertical">
                                 <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="250" 
                                         Margin="0,2,0,5" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
-                                <Grid Height="24" Width="24" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                <Grid Height="26" Width="26" VerticalAlignment="Center" HorizontalAlignment="Right">
                                     <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}" 
                                                       Foreground="{StaticResource  SolidColorBrush.Green.3}" MouseUp="BtnExportLootToFile_MouseUp" />
                                 </Grid>
