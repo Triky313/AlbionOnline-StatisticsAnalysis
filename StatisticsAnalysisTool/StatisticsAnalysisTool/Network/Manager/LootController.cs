@@ -20,6 +20,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly List<DiscoveredLoot> _discoveredLoot = new ();
         private readonly List<LootLoggerObject> _lootLoggerObjects = new ();
 
+        private const int _maxLoot = 5000;
+
         public LootController(TrackingController trackingController)
         {
             _trackingController = trackingController;
@@ -37,8 +39,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             await _trackingController.AddNotificationAsync(SetNotificationAsync(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
-
-            // TODO: Max 5000 items, then erase
+            
             _lootLoggerObjects.Add(new LootLoggerObject()
             {
                 BodyName = loot.LootedBody,
@@ -46,6 +47,31 @@ namespace StatisticsAnalysisTool.Network.Manager
                 Quantity = loot.Quantity,
                 UniqueName = loot.Item.UniqueName
             });
+
+            await RemoveLootIfMoreThanLimitAsync(_maxLoot);
+        }
+
+        private async Task RemoveLootIfMoreThanLimitAsync(int limit)
+        {
+            try
+            {
+                var numberOfItemsToBeDeleted = _lootLoggerObjects.Count - limit;
+                if (numberOfItemsToBeDeleted <= 0)
+                {
+                    return;
+                }
+
+                var itemsToBeRemoved = (from loot in _lootLoggerObjects orderby loot.UtcPickupTime select loot).Take(numberOfItemsToBeDeleted);
+                await foreach (var item in itemsToBeRemoved.ToAsyncEnumerable())
+                {
+                    _lootLoggerObjects.Remove(item);
+                }
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            }
         }
 
         public void AddDiscoveredLoot(DiscoveredLoot loot)
@@ -130,7 +156,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity)
             }, item.Index);
         }
-
+        
         #region Debug methods
 
         private static readonly Random _random = new(DateTime.Now.Millisecond);
