@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Common
                 return numberX.CompareTo(numberY);
             }
 
-            return numberX.CompareTo(numberY);
+            return -1;
         }
     }
 }

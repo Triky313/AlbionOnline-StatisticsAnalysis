@@ -53,7 +53,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 //    Loot = new DiscoveredLoot()
                 //    {
                 //        ObjectId = (long)_objectId,
-                //        ItemId = _itemId,
+                //        ItemIndex = _itemId,
                 //        LootedBody = _deadPlayer,
                 //        LooterName = _looter,
                 //        Quantity = _quantity

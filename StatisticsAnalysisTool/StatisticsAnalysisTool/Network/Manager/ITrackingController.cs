@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Network.Time;
 using System;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -27,13 +28,13 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         bool IsMainWindowNull();
 
-        void AddNotification(TrackingNotification item) { }
+        Task AddNotificationAsync(TrackingNotification item);
 
         void RemovesUnnecessaryNotifications() { }
 
         void ClearNotifications() { }
 
-        void FilterNotification() { }
+        void NotificationUiFilteringAsync() { }
 
         void AddFilterType(NotificationType notificationType) { }
 

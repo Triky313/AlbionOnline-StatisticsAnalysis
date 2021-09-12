@@ -1,5 +1,6 @@
 using FontAwesome5;
 using log4net;
+using Microsoft.Win32;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
@@ -16,6 +17,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -144,6 +146,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isDamageMeterTrackingActive;
         private ListCollectionView _trackingDungeonsCollectionView;
         private bool _isTrackingFilteredSeasonPoints;
+        private ListCollectionView _trackingNotificationsCollectionView;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -457,6 +460,8 @@ namespace StatisticsAnalysisTool.ViewModels
             await WorldData.GetDataListFromJsonAsync();
             await DungeonObjectData.GetDataListFromJsonAsync();
 
+            TrackingController ??= new TrackingController(this, _mainWindow);
+
             if (Settings.Default.IsTrackingActiveAtToolStart)
             {
                 StartTracking();
@@ -477,6 +482,13 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 TrackingDungeonsCollectionView.IsLiveSorting = true;
                 TrackingDungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
+            }
+
+            TrackingNotificationsCollectionView = CollectionViewSource.GetDefaultView(TrackingNotifications) as ListCollectionView;
+            if (TrackingNotificationsCollectionView != null)
+            {
+                TrackingNotificationsCollectionView.IsLiveSorting = true;
+                TrackingNotificationsCollectionView.SortDescriptions.Add(new SortDescription(nameof(DateTime), ListSortDirection.Descending));
             }
         }
 
@@ -618,6 +630,30 @@ namespace StatisticsAnalysisTool.ViewModels
                 DungeonStatsGridHeight = unfoldGridHeight;
                 DungeonStatsScrollViewerMargin = new Thickness(0, unfoldGridHeight, 0,0);
                 IsDungeonStatsGridUnfold = true;
+            }
+        }
+
+        public void ExportLootToFile()
+        {
+            var dialog = new SaveFileDialog
+            {
+                FileName = $"log-{DateTime.UtcNow:yy-MMM-dd}",
+                DefaultExt = ".csv",
+                Filter = "CSV documents (.csv)|*.csv"
+            };
+
+            var result = dialog.ShowDialog();
+            if (result == true)
+            {
+                try
+                {
+                    File.WriteAllText(dialog.FileName, TrackingController.LootController.GetLootLoggerObjectsAsCsv());
+                }
+                catch (Exception e)
+                {
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                }
             }
         }
 
@@ -828,8 +864,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            TrackingController ??= new TrackingController(this, _mainWindow);
-
             TrackingController?.RegisterEvents();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
@@ -895,14 +929,15 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public void ResetTrackingNotifications()
+        public async Task ResetTrackingNotificationsAsync()
         {
             var dialog = new DialogWindow(LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS"));
             var dialogResult = dialog.ShowDialog();
 
             if (dialogResult is true)
             {
-                TrackingController.ClearNotifications();
+                await TrackingController.ClearNotificationsAsync().ConfigureAwait(false);
+                TrackingController.LootController.ClearLootLogger();
             }
         }
 
@@ -1159,7 +1194,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.EquipmentLoot);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1179,7 +1214,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.ConsumableLoot);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1199,7 +1234,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.SimpleLoot);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1219,7 +1254,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.UnknownLoot);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1239,7 +1274,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Fame);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1259,7 +1294,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Silver);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1279,7 +1314,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Faction);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1299,7 +1334,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.SeasonPoints);
                 }
 
-                TrackingController?.FilterNotification();
+                TrackingController?.NotificationUiFilteringAsync();
                 OnPropertyChanged();
             }
         }
@@ -1627,6 +1662,15 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingDungeonsCollectionView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ListCollectionView TrackingNotificationsCollectionView {
+            get => _trackingNotificationsCollectionView;
+            set
+            {
+                _trackingNotificationsCollectionView = value;
                 OnPropertyChanged();
             }
         }

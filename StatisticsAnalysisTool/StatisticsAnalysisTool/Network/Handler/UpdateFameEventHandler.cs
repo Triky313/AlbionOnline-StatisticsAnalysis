@@ -18,17 +18,15 @@ namespace StatisticsAnalysisTool.Network.Handler
         public UpdateFameEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateFame)
         {
             _trackingController = trackingController;
-            _countUpTimer = _trackingController.CountUpTimer;
+            _countUpTimer = _trackingController?.CountUpTimer;
         }
 
         protected override async Task OnActionAsync(UpdateFameEvent value)
         {
-            _trackingController.AddNotification(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame.DoubleValue,
+            await _trackingController.AddNotificationAsync(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame.DoubleValue,
                 value.ZoneFame.DoubleValue, value.PremiumFame.DoubleValue, value.SatchelFame.DoubleValue, value.IsBonusFactorActive, value.BonusFactorInPercent));
             _countUpTimer.Add(ValueType.Fame, value.TotalGainedFame.DoubleValue);
             _trackingController.DungeonController?.AddValueToDungeon(value.TotalGainedFame.DoubleValue, ValueType.Fame);
-
-            await Task.CompletedTask;
         }
 
         private TrackingNotification SetPveFameNotification(double totalPlayerFame, double totalGainedFame, double zoneFame, double premiumFame,

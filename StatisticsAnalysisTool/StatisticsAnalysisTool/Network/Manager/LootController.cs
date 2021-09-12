@@ -1,34 +1,84 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
+﻿using log4net;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
     public class LootController : ILootController
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly TrackingController _trackingController;
 
         private readonly Dictionary<long, Guid> _putLoot = new ();
         private readonly List<DiscoveredLoot> _discoveredLoot = new ();
+        private readonly List<LootLoggerObject> _lootLoggerObjects = new ();
+
+        private const int _maxLoot = 5000;
 
         public LootController(TrackingController trackingController)
         {
             _trackingController = trackingController;
+
+#if DEBUG
+            _ = AddTestLootNotificationsAsync(30);
+#endif
         }
 
-        public void AddLoot(Loot loot)
+        public async Task AddLootAsync(Loot loot)
         {
             if (loot == null || loot.IsSilver || loot.IsTrash)
             {
                 return;
             }
 
-            _trackingController.AddNotification(SetNotification(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
+            var item = ItemController.GetItemByIndex(loot.ItemIndex);
+
+            await _trackingController.AddNotificationAsync(SetNotificationAsync(loot.LooterName, loot.LootedBody, item, loot.Quantity));
+            
+            _lootLoggerObjects.Add(new LootLoggerObject()
+            {
+                BodyName = loot.LootedBody,
+                LooterName = loot.LooterName,
+                Quantity = loot.Quantity,
+                UniqueName = item.UniqueName
+            });
+
+            await RemoveLootIfMoreThanLimitAsync(_maxLoot);
+        }
+
+        private async Task RemoveLootIfMoreThanLimitAsync(int limit)
+        {
+            try
+            {
+                var numberOfItemsToBeDeleted = _lootLoggerObjects.Count - limit;
+                if (numberOfItemsToBeDeleted <= 0)
+                {
+                    return;
+                }
+
+                var itemsToBeRemoved = (from loot in _lootLoggerObjects orderby loot.UtcPickupTime select loot).Take(numberOfItemsToBeDeleted);
+                await foreach (var item in itemsToBeRemoved.ToAsyncEnumerable())
+                {
+                    _lootLoggerObjects.Remove(item);
+                }
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            }
+        }
+
+        public void ClearLootLogger()
+        {
+            _lootLoggerObjects.Clear();
         }
 
         public void AddDiscoveredLoot(DiscoveredLoot loot)
@@ -41,7 +91,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _discoveredLoot.Add(loot);
         }
         
-        public void AddPutLoot(long? objectId, Guid? interactGuid)
+        public async Task AddPutLootAsync(long? objectId, Guid? interactGuid)
         {
             if (_trackingController.EntityController.GetLocalEntity()?.Value?.InteractGuid != interactGuid)
             {
@@ -53,7 +103,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _putLoot.Add((long) objectId, (Guid)interactGuid);
             }
 
-            LootMerge();
+            await LootMergeAsync();
         }
 
         public void ResetViewedLootLists()
@@ -62,7 +112,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _discoveredLoot.Clear();
         }
 
-        private void LootMerge()
+        private async Task LootMergeAsync()
         {
             foreach (var lootedObject in _putLoot)
             {
@@ -79,42 +129,62 @@ namespace StatisticsAnalysisTool.Network.Manager
                     {
                         LootedBody = discoveredLoot.BodyName,
                         IsTrash = ItemController.IsTrash(discoveredLoot.ItemId),
-                        Item = ItemController.GetItemByIndex(discoveredLoot.ItemId),
-                        ItemId = discoveredLoot.ItemId,
+                        ItemIndex = discoveredLoot.ItemId,
                         LooterName = discoveredLoot.LooterName,
                         Quantity = discoveredLoot.Quantity
                     };
 
-                    AddLoot(loot);
+                    await AddLootAsync(loot);
                     _discoveredLoot.Remove(discoveredLoot);
                 }
                 
             }
         }
 
-        private TrackingNotification SetNotification(string looter, string lootedPlayer, Item item, int quantity)
+        public string GetLootLoggerObjectsAsCsv()
         {
-            var itemType = ItemController.GetItemType(item.Index);
+            try
+            {
+                return string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                return string.Empty;
+            }
+        }
 
+        private static TrackingNotification SetNotificationAsync(string looter, string lootedPlayer, Item item, int quantity)
+        {
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
                 new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity)
-            }, GetNotificationType(itemType));
+            }, item.Index);
         }
+        
+        #region Debug methods
 
-        private NotificationType GetNotificationType(ItemType itemType)
+        private static readonly Random _random = new(DateTime.Now.Millisecond);
+
+        private async Task AddTestLootNotificationsAsync(int notificationCounter)
         {
-            switch (itemType)
+            for (var i = 0; i < notificationCounter; i++)
             {
-                case ItemType.Weapon:
-                    return NotificationType.EquipmentLoot;
-                case ItemType.Consumable:
-                    return NotificationType.ConsumableLoot;
-                case ItemType.Simple:
-                    return NotificationType.SimpleLoot;
-                default:
-                    return NotificationType.UnknownLoot;
+                var randomItem = ItemController.GetItemByIndex(_random.Next(1, 7000));
+                await AddLootAsync(new Loot()
+                {
+                    LootedBody = TestMethods.GenerateName(8),
+                    IsTrash = ItemController.IsTrash(randomItem.Index),
+                    ItemIndex = randomItem.Index,
+                    LooterName = TestMethods.GenerateName(8),
+                    IsSilver = false,
+                    Quantity = 1
+                });
+                await Task.Delay(100);
             }
         }
+
+        #endregion
     }
 }

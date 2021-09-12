@@ -25,6 +25,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         private double _lastLocalEntityGuildTaxInPercent;
         private double _lastLocalEntityClusterTaxInPercent;
 
+        public LocalUserData LocalUserData { get; set; }
+
         public EntityController(MainWindowViewModel mainWindowViewModel)
         {
             _mainWindowViewModel = mainWindowViewModel;

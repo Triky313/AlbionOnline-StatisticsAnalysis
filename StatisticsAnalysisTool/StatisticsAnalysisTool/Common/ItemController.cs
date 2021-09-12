@@ -95,11 +95,19 @@ namespace StatisticsAnalysisTool.Common
             return item == null;
         }
         
-        public static ItemType GetItemType(int index)
+        public static async Task<ItemType> GetItemTypeAsync(int index)
         {
             var item = Items?.FirstOrDefault(i => i.Index == index);
+
+            if (item != null)
+            {
+                var fullItemInfo = await GetFullItemInformationAsync(item);
+                item.FullItemInformation = fullItemInfo;
+            }
+
             var itemType = !string.IsNullOrEmpty(item?.FullItemInformation?.ItemType) ? item.FullItemInformation?.ItemType : "UNKNOWN";
-            switch (itemType)
+            
+            switch (itemType.ToUpper())
             {
                 case "WEAPON":
                     return ItemType.Weapon;
@@ -117,6 +125,8 @@ namespace StatisticsAnalysisTool.Common
                     return ItemType.Journal;
                 case "LABOURERCONTRACT":
                     return ItemType.LabourerContract;
+                case "FURNITURE":
+                    return ItemType.Furniture;
                 default:
                     return ItemType.Unknown;
             }

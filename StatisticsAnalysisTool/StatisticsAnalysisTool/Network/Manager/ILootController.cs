@@ -1,13 +1,14 @@
 ﻿using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
     public interface ILootController
     {
-        public void AddLoot(Loot loot);
+        public Task AddLootAsync(Loot loot);
         public void AddDiscoveredLoot(DiscoveredLoot loot);
-        public void AddPutLoot(long? objectId, Guid? playerGuid);
+        public Task AddPutLootAsync(long? objectId, Guid? playerGuid);
         public void ResetViewedLootLists();
     }
 }

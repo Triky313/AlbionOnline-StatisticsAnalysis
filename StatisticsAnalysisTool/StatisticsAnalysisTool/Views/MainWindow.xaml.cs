@@ -248,7 +248,12 @@ namespace StatisticsAnalysisTool.Views
 
         private void BtnTrackingNotificationsReset_Click(object sender, RoutedEventArgs e)
         {
-            _mainWindowViewModel.ResetTrackingNotifications();
+            _ = _mainWindowViewModel.ResetTrackingNotificationsAsync();
+        }
+
+        private void BtnExportLootToFile_MouseUp(object sender, MouseEventArgs e)
+        {
+            _mainWindowViewModel.ExportLootToFile();
         }
 
         private void BtnTryToLoadTheItemListAgain_Click(object sender, RoutedEventArgs e)

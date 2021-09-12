@@ -11,7 +11,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public UpdateMoneyEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateMoney)
         {
-            _countUpTimer = trackingController.CountUpTimer;
+            _countUpTimer = trackingController?.CountUpTimer;
         }
 
         protected override async Task OnActionAsync(UpdateMoneyEvent value)

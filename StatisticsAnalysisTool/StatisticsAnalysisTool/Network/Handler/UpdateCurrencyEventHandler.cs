@@ -18,15 +18,14 @@ namespace StatisticsAnalysisTool.Network.Handler
         public UpdateCurrencyEventHandler(TrackingController trackingController) : base((int)EventCodes.UpdateCurrency)
         {
             _trackingController = trackingController;
-            _countUpTimer = _trackingController.CountUpTimer;
+            _countUpTimer = _trackingController?.CountUpTimer;
         }
 
         protected override async Task OnActionAsync(UpdateCurrencyEvent value)
         {
-            _trackingController.AddNotification(SetFactionPointsNotification(value.CityFaction, value.GainedFactionCoins.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
+            await _trackingController.AddNotificationAsync(SetFactionPointsNotification(value.CityFaction, value.GainedFactionCoins.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
             _countUpTimer.Add(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue, value.CityFaction);
             _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionCoins.DoubleValue, ValueType.FactionPoints, value.CityFaction);
-            await Task.CompletedTask;
         }
 
         private TrackingNotification SetFactionPointsNotification(CityFaction cityFaction, double GainedFractionPoints, double BonusPremiumGainedFractionPoints)

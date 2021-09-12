@@ -39,9 +39,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel = mainWindowViewModel;
         }
 
-        // TODO: To Entity controller?
-        public LocalUserData LocalUserData { get; set; }
-
         public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid)
         {
             UpdateDungeonSaveTimerUi();
@@ -304,7 +301,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void SetDiedIfInDungeon(DiedObject dieObject)
         {
-            if (_currentGuid != null && LocalUserData.Username != null && dieObject.DiedName == LocalUserData.Username)
+            if (_currentGuid != null && _trackingController.EntityController.LocalUserData.Username != null && dieObject.DiedName == _trackingController.EntityController.LocalUserData.Username)
             {
                 try
                 {
@@ -562,8 +559,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     d.Visibility = Visibility.Collapsed;
                 });
             
-            await _mainWindowViewModel?.TrackingDungeons?
-                .Where(x => _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
+            await _mainWindowViewModel?.TrackingDungeons?.Where(x => _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
                 {
