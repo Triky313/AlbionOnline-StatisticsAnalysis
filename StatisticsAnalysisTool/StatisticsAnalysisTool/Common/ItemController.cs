@@ -20,7 +20,7 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Common
 {
-    public class ItemController
+    public static class ItemController
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
