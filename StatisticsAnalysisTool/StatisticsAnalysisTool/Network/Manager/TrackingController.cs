@@ -156,7 +156,9 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 return;
             }
-            
+
+            SetNotificationFilteredVisibility(item);
+
             if (Application.Current.Dispatcher.CheckAccess())
             {
                 _mainWindowViewModel.TrackingNotifications.Insert(0, item);
@@ -224,6 +226,19 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 d.Visibility = Visibility.Visible;
             });
+        }
+
+        public void SetNotificationFilteredVisibility(TrackingNotification trackingNotification)
+        {
+            if (!IsNotificationFiltered(trackingNotification))
+            {
+                trackingNotification.Visibility = Visibility.Visible;
+            }
+        }
+
+        public bool IsNotificationFiltered(TrackingNotification trackingNotification)
+        {
+            return _notificationTypeFilters?.Exists(x => x == trackingNotification.Type) ?? false;
         }
 
         public void AddFilterType(NotificationType notificationType)

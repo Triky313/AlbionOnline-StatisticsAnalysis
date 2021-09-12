@@ -1,16 +1,17 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
     public class OtherGrabbedLootNotificationFragment : LineFragment
     {
-        public OtherGrabbedLootNotificationFragment(string looter, string lootedPlayer, string localizedName, BitmapImage icon, int quantity)
+        public OtherGrabbedLootNotificationFragment(string looter, string lootedPlayer, Item item, int quantity)
         {
             Looter = looter;
             LootedPlayer = lootedPlayer;
-            LocalizedName = localizedName;
-            Icon = icon;
+            LocalizedName = item.LocalizedName;
+            Icon = item.Icon;
             Quantity = quantity;
         }
         

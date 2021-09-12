@@ -1,6 +1,5 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
@@ -25,7 +24,9 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             _trackingController = trackingController;
 
-            _ = AddTestLootNotificationsAsync(10);
+#if DEBUG
+            _ = AddTestLootNotificationsAsync(30);
+#endif
         }
 
         public async Task AddLootAsync(Loot loot)
@@ -35,8 +36,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            await _trackingController.AddNotificationAsync(await SetNotificationAsync(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
+            await _trackingController.AddNotificationAsync(SetNotificationAsync(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
 
+            // TODO: Max 5000 items, then erase
             _lootLoggerObjects.Add(new LootLoggerObject()
             {
                 BodyName = loot.LootedBody,
@@ -121,25 +123,12 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private async Task<TrackingNotification> SetNotificationAsync(string looter, string lootedPlayer, Item item, int quantity)
+        private TrackingNotification SetNotificationAsync(string looter, string lootedPlayer, Item item, int quantity)
         {
-            var itemType = await ItemController.GetItemTypeAsync(item.Index);
-
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
-                new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item.LocalizedName, ImageController.GetItemImage(item.UniqueName), quantity)
-            }, GetNotificationType(itemType));
-        }
-
-        private static NotificationType GetNotificationType(ItemType itemType)
-        {
-            return itemType switch
-            {
-                ItemType.Weapon => NotificationType.EquipmentLoot,
-                ItemType.Consumable => NotificationType.ConsumableLoot,
-                ItemType.Simple => NotificationType.SimpleLoot,
-                _ => NotificationType.UnknownLoot,
-            };
+                new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity)
+            }, item.Index);
         }
 
         #region Debug methods
@@ -161,7 +150,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     IsSilver = false,
                     Quantity = 1
                 });
-
+                await Task.Delay(100);
             }
         }
 

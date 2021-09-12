@@ -1,19 +1,26 @@
 ﻿using StatisticsAnalysisTool.Annotations;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
     public class TrackingNotification : INotifyPropertyChanged
     {
-        private Visibility _visibility;
-
-        public TrackingNotification()
+        private Visibility _visibility = Visibility.Collapsed;
+        private NotificationType _type;
+        
+        public TrackingNotification(DateTime dateTime, IEnumerable<LineFragment> fragments, int itemIndex)
         {
+            DateTime = dateTime;
+            Fragments = fragments;
+            InstanceId = Guid.NewGuid();
+            _ = SetTypeAsync(itemIndex);
         }
 
         public TrackingNotification(DateTime dateTime, IEnumerable<LineFragment> fragments, NotificationType type)
@@ -26,7 +33,15 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public DateTime DateTime { get; }
         public IEnumerable<LineFragment> Fragments { get; }
-        public NotificationType Type { get; }
+
+        public NotificationType Type {
+            get => _type;
+            set {
+                _type = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Guid InstanceId { get; }
 
         public Visibility Visibility {
@@ -37,14 +52,22 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public string Hash => $"{DateTime.Ticks}-{Type}-{InstanceId}";
-
-        public int CompareTo(TrackingNotification value)
+        private async Task SetTypeAsync(int itemIndex)
         {
-            var compared = string.Compare(Hash, value.Hash, StringComparison.Ordinal);
-            return compared != 0 ? compared : -1;
+            Type = GetNotificationType(await ItemController.GetItemTypeAsync(itemIndex));
         }
 
+        private static NotificationType GetNotificationType(ItemType itemType)
+        {
+            return itemType switch
+            {
+                ItemType.Weapon => NotificationType.EquipmentLoot,
+                ItemType.Consumable => NotificationType.ConsumableLoot,
+                ItemType.Simple => NotificationType.SimpleLoot,
+                _ => NotificationType.UnknownLoot,
+            };
+        }
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

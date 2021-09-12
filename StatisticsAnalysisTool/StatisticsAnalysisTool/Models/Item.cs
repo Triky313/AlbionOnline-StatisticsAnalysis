@@ -31,7 +31,6 @@ namespace StatisticsAnalysisTool.Models
         public bool IsFavorite { get; set; }
         public EFontAwesomeIcon AlertToggle => IsAlertActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
         public Brush AlertToggleColor => IsAlertActive ? ItemController.ToggleOnColor : ItemController.ToggleOffColor;
-
         private string GetUniqueNameIfDebug()
         {
 #if DEBUG

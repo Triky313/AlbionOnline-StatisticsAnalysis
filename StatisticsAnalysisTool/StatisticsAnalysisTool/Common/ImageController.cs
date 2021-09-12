@@ -65,7 +65,9 @@ namespace StatisticsAnalysisTool.Common
         public static BitmapImage SetImage(string webPath, int pixelHeight, int pixelWidth, bool freeze)
         {
             if (webPath == null)
+            {
                 return null;
+            }
 
             try
             {
@@ -85,7 +87,7 @@ namespace StatisticsAnalysisTool.Common
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType} - SetImage: {e.Message}");
+                Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType}: {e.Message}");
                 return null;
             }
         }
@@ -109,7 +111,7 @@ namespace StatisticsAnalysisTool.Common
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType} - SetImage: {e.Message}");
+                Log.Error($"{MethodBase.GetCurrentMethod()?.DeclaringType}: {e.Message}");
                 return null;
             }
         }
