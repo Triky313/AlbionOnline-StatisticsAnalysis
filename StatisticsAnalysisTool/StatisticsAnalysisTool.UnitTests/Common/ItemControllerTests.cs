@@ -102,5 +102,31 @@ namespace StatisticsAnalysisTool.UnitTests.Common
             var result = ItemController.IsTrash(512);
             Assert.IsFalse(result);
         }
+
+        [Test]
+        public void GetItemLevel_WithValidValue_ReturnEqualValue()
+        {
+            var result = ItemController.GetItemLevel("T3_SWORD@2");
+            var result2 = ItemController.GetItemLevel("T3_SWORD@3");
+
+            var expected = 2;
+            var expected2 = 3;
+
+            Assert.AreEqual(expected, result, 0);
+            Assert.AreEqual(expected2, result2, 0);
+        }
+
+        [Test]
+        public void GetItemLevel_WithInvalidValue_ReturnEqualValue()
+        {
+            var result = ItemController.GetItemLevel("T3_SWORD");
+            var result2 = ItemController.GetItemLevel("T3_SWORD@a");
+
+            var expected = 0;
+            var expected2 = 0;
+
+            Assert.AreEqual(expected, result, 0);
+            Assert.AreEqual(expected2, result2, 0);
+        }
     }
 }
