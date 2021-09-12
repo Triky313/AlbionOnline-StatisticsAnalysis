@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             _trackingController.SetNewCluster(value.MapType, value.DungeonGuid, value.MapIndex, value.MainMapIndex);
 
-            _trackingController.DungeonController.LocalUserData = new LocalUserData
+            _trackingController.EntityController.LocalUserData = new LocalUserData
             {
                 UserObjectId = value.UserObjectId,
                 Guid = value.Guid,
