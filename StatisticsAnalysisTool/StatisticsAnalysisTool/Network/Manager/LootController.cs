@@ -38,14 +38,16 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            await _trackingController.AddNotificationAsync(SetNotificationAsync(loot.LooterName, loot.LootedBody, loot.Item, loot.Quantity));
+            var item = ItemController.GetItemByIndex(loot.ItemIndex);
+
+            await _trackingController.AddNotificationAsync(SetNotificationAsync(loot.LooterName, loot.LootedBody, item, loot.Quantity));
             
             _lootLoggerObjects.Add(new LootLoggerObject()
             {
                 BodyName = loot.LootedBody,
                 LooterName = loot.LooterName,
                 Quantity = loot.Quantity,
-                UniqueName = loot.Item.UniqueName
+                UniqueName = item.UniqueName
             });
 
             await RemoveLootIfMoreThanLimitAsync(_maxLoot);
@@ -72,6 +74,11 @@ namespace StatisticsAnalysisTool.Network.Manager
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
+        }
+
+        public void ClearLootLogger()
+        {
+            _lootLoggerObjects.Clear();
         }
 
         public void AddDiscoveredLoot(DiscoveredLoot loot)
@@ -122,8 +129,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     {
                         LootedBody = discoveredLoot.BodyName,
                         IsTrash = ItemController.IsTrash(discoveredLoot.ItemId),
-                        Item = ItemController.GetItemByIndex(discoveredLoot.ItemId),
-                        ItemId = discoveredLoot.ItemId,
+                        ItemIndex = discoveredLoot.ItemId,
                         LooterName = discoveredLoot.LooterName,
                         Quantity = discoveredLoot.Quantity
                     };
@@ -149,7 +155,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private TrackingNotification SetNotificationAsync(string looter, string lootedPlayer, Item item, int quantity)
+        private static TrackingNotification SetNotificationAsync(string looter, string lootedPlayer, Item item, int quantity)
         {
             return new TrackingNotification(DateTime.Now, new List<LineFragment>
             {
@@ -170,8 +176,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     LootedBody = TestMethods.GenerateName(8),
                     IsTrash = ItemController.IsTrash(randomItem.Index),
-                    Item = ItemController.GetItemByIndex(randomItem.Index),
-                    ItemId = randomItem.Index,
+                    ItemIndex = randomItem.Index,
                     LooterName = TestMethods.GenerateName(8),
                     IsSilver = false,
                     Quantity = 1

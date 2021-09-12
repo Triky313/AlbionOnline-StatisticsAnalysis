@@ -937,6 +937,7 @@ namespace StatisticsAnalysisTool.ViewModels
             if (dialogResult is true)
             {
                 await TrackingController.ClearNotificationsAsync().ConfigureAwait(false);
+                TrackingController.LootController.ClearLootLogger();
             }
         }
 
