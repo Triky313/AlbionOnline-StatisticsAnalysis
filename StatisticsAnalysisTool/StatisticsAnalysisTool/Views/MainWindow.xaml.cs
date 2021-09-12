@@ -251,7 +251,7 @@ namespace StatisticsAnalysisTool.Views
             _ = _mainWindowViewModel.ResetTrackingNotificationsAsync();
         }
 
-        private void BtnExportLootToFile_Click(object sender, RoutedEventArgs e)
+        private void BtnExportLootToFile_MouseUp(object sender, MouseEventArgs e)
         {
             _mainWindowViewModel.ExportLootToFile();
         }
