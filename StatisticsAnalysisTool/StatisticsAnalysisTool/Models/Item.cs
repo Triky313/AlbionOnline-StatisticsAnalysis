@@ -1,5 +1,6 @@
 ﻿using FontAwesome5;
 using StatisticsAnalysisTool.Common;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -22,7 +23,14 @@ namespace StatisticsAnalysisTool.Models
 
         public int Level => ItemController.GetItemLevel(UniqueName);
         public int Tier => ItemController.GetItemTier(this);
-        public BitmapImage Icon => _icon ??= ImageController.GetItemImage(UniqueName);
+
+        public BitmapImage Icon
+        {
+            get
+            {
+                return Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetItemImage(UniqueName));
+            }
+        }
         public BitmapImage ExistFullItemInformationLocal => ItemController.ExistFullItemInformationLocal(UniqueName);
         public ItemInformation FullItemInformation { get; set; }
 
