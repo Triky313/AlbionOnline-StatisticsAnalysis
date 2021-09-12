@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace StatisticsAnalysisTool.UnitTests.Common
 {
+    [Parallelizable]
     public class ItemControllerTests
     {
         [SetUp]
