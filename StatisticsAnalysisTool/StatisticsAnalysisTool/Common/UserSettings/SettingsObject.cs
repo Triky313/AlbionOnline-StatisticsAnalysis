@@ -13,5 +13,8 @@
         public string CityPricesApiUrl { get; set; } = "https://www.albion-online-data.com/api/v2/stats/prices/";
         public string CityPricesHistoryApiUrl { get; set; } = "https://www.albion-online-data.com/api/v2/stats/history/";
         public string GoldStatsApiUrl { get; set; } = "https://www.albion-online-data.com/api/v2/stats/Gold";
+        public double MainWindowHeight { get; set; } = 0;
+        public double MainWindowWidth { get; set; } = 0;
+        public bool MainWindowMaximized { get; set; } = false;
     }
 }

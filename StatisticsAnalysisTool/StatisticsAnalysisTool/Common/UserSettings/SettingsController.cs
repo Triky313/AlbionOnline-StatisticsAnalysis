@@ -5,7 +5,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common.UserSettings
 {
@@ -15,7 +14,7 @@ namespace StatisticsAnalysisTool.Common.UserSettings
 
         public static SettingsObject CurrentSettings = new();
 
-        public static async Task<bool> LoadAsync()
+        public static bool Load()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.SettingsFileName}";
 
@@ -23,7 +22,7 @@ namespace StatisticsAnalysisTool.Common.UserSettings
             {
                 try
                 {
-                    var settingsString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
+                    var settingsString = File.ReadAllText(localFilePath, Encoding.UTF8);
                     CurrentSettings = JsonSerializer.Deserialize<SettingsObject>(settingsString);
                     return true;
                 }
@@ -38,14 +37,14 @@ namespace StatisticsAnalysisTool.Common.UserSettings
             return false;
         }
 
-        public static async Task SaveAsync()
+        public static void Save()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.SettingsFileName}";
 
             try
             {
                 var fileString = JsonSerializer.Serialize(CurrentSettings);
-                await File.WriteAllTextAsync(localFilePath, fileString, Encoding.UTF8);
+                File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
             }
             catch (Exception e)
             {

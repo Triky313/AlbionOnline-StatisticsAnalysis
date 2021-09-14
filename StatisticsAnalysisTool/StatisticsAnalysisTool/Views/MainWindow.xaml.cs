@@ -1,5 +1,4 @@
 ﻿using FontAwesome5;
-using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
@@ -131,8 +130,6 @@ namespace StatisticsAnalysisTool.Views
         
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            _ = SettingsController.SaveAsync();
-
             _mainWindowViewModel.SaveSettings(WindowState, RestoreBounds, Height, Width);
 
             if (_mainWindowViewModel.IsTrackingActive)

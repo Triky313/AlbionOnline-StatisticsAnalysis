@@ -155,7 +155,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow = mainWindow;
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
-            InitUserSettings();
+            SettingsController.Load();
             InitViewModeGrids();
             UpgradeSettings();
             InitWindowSettings();
@@ -344,15 +344,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 Log.Fatal(nameof(OnUnhandledException), ex);
             }
         }
-
-        private void InitUserSettings()
-        {
-            _ = Task.Run(async () =>
-              {
-                  await SettingsController.LoadAsync();
-              });
-        }
-
+        
         #region View mode init
 
         private void InitViewModeGrids()
@@ -412,9 +404,9 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 #region Set MainWindow height and width and center window
 
-                _mainWindow.Height = Settings.Default.MainWindowHeight;
-                _mainWindow.Width = Settings.Default.MainWindowWidth;
-                if (Settings.Default.MainWindowMaximized) _mainWindow.WindowState = WindowState.Maximized;
+                _mainWindow.Height = SettingsController.CurrentSettings.MainWindowHeight;
+                _mainWindow.Width = SettingsController.CurrentSettings.MainWindowWidth;
+                if (SettingsController.CurrentSettings.MainWindowMaximized) _mainWindow.WindowState = WindowState.Maximized;
 
                 CenterWindowOnScreen();
 
@@ -512,6 +504,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             #region Tracking
 
+            //TODO: Neue Settings einstellen
             Settings.Default.IsTrackingResetByMapChangeActive = IsTrackingResetByMapChangeActive;
             Settings.Default.IsTrackingActiveAtToolStart = IsTrackingActive;
 
@@ -533,15 +526,15 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (windowState == WindowState.Maximized)
             {
-                Settings.Default.MainWindowHeight = restoreBounds.Height;
-                Settings.Default.MainWindowWidth = restoreBounds.Width;
-                Settings.Default.MainWindowMaximized = true;
+                SettingsController.CurrentSettings.MainWindowHeight = restoreBounds.Height;
+                SettingsController.CurrentSettings.MainWindowWidth = restoreBounds.Width;
+                SettingsController.CurrentSettings.MainWindowMaximized = true;
             }
             else
             {
-                Settings.Default.MainWindowHeight = height;
-                Settings.Default.MainWindowWidth = width;
-                Settings.Default.MainWindowMaximized = false;
+                SettingsController.CurrentSettings.MainWindowHeight = height;
+                SettingsController.CurrentSettings.MainWindowWidth = width;
+                SettingsController.CurrentSettings.MainWindowMaximized = false;
             }
 
             #endregion
@@ -550,6 +543,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
             ItemController.SaveFavoriteItemsToLocalFile();
             ItemController.SaveItemInformationLocal();
+
+            SettingsController.Save();
         }
 
         #endregion
