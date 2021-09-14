@@ -102,6 +102,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public bool IsEntityInParty(long objectId) => GetAllEntities(true).Any(x => x.Value.ObjectId == objectId);
 
+        public bool IsEntityInParty(string name) => GetAllEntities(true).Any(x => x.Value.Name == name);
+
         public KeyValuePair<Guid, PlayerGameObject>? GetLocalEntity() => _knownEntities?.FirstOrDefault(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer);
 
         #endregion

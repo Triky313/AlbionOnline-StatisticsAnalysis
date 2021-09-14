@@ -16,11 +16,13 @@ namespace StatisticsAnalysisTool.Network.Manager
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly TrackingController _trackingController;
 
-        private readonly Dictionary<long, Guid> _putLoot = new ();
-        private readonly List<DiscoveredLoot> _discoveredLoot = new ();
-        private readonly List<LootLoggerObject> _lootLoggerObjects = new ();
+        private readonly Dictionary<long, Guid> _putLoot = new();
+        private readonly List<DiscoveredLoot> _discoveredLoot = new();
+        private readonly List<LootLoggerObject> _lootLoggerObjects = new();
 
         private const int _maxLoot = 5000;
+
+        public bool IsPartyLootOnly;
 
         public LootController(TrackingController trackingController)
         {
@@ -33,6 +35,11 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task AddLootAsync(Loot loot)
         {
+            if (IsPartyLootOnly && !_trackingController.EntityController.IsEntityInParty(loot.LooterName) && !_trackingController.EntityController.IsEntityInParty(loot.LootedBody))
+            {
+                return;
+            }
+
             if (loot == null || loot.IsSilver || loot.IsTrash)
             {
                 return;
@@ -41,7 +48,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             var item = ItemController.GetItemByIndex(loot.ItemIndex);
 
             await _trackingController.AddNotificationAsync(SetNotificationAsync(loot.LooterName, loot.LootedBody, item, loot.Quantity));
-            
+
             _lootLoggerObjects.Add(new LootLoggerObject()
             {
                 BodyName = loot.LootedBody,

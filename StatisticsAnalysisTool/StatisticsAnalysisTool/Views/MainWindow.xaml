@@ -274,8 +274,8 @@
                                 </Grid>
                             </StackPanel>
                         </Grid>
-                        <Grid Height="58" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <StackPanel Orientation="Vertical" Height="58">
+                        <Grid Height="auto" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <StackPanel Orientation="Vertical" Height="90">
                                 <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                                     <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Width="20" Height="20" Margin="0,0,5,0" />
                                     <CheckBox IsChecked="{Binding IsTrackingFilteredFame, FallbackValue=true}" Content="{Binding Translation.Fame, FallbackValue=FAME}" Margin="5,0,5,0" />
@@ -289,10 +289,14 @@
                                     <CheckBox IsChecked="{Binding IsTrackingFilteredSimpleLoot, FallbackValue=true}" Content="{Binding Translation.SimpleLoot, FallbackValue=SIMPLE__LOOT}" Margin="5,0,5,0" />
                                     <CheckBox IsChecked="{Binding IsTrackingFilteredUnknownLoot, FallbackValue=true}" Content="{Binding Translation.UnknownLoot, FallbackValue=UNKNOWN__LOOT}" Margin="5,0,5,0" />
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                    <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Width="20" Height="20" Margin="0,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingPartyLootOnly, FallbackValue=true}" Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" Margin="5,0,5,0" />
+                                </StackPanel>
                             </StackPanel>
                         </Grid>
-                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,60,0,0" VerticalAlignment="Top"/>
-                        <ScrollViewer Margin="0,65,0,0">
+                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,94,0,0" VerticalAlignment="Top"/>
+                        <ScrollViewer Margin="0,97,0,0">
                             <ItemsControl ItemsSource="{Binding TrackingNotificationsCollectionView, IsAsync=True, Mode=OneWay}" />
                         </ScrollViewer>
                     </Grid>

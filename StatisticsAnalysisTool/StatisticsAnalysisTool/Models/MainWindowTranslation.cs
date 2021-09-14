@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -68,5 +68,6 @@ namespace StatisticsAnalysisTool.Models
         public string DeleteSelectedDungeons => LanguageController.Translation("DELETE_SELECTED_DUNGEONS");
         public string SeasonPoints => LanguageController.Translation("SEASON_POINTS");
         public string ExportLootToFile => LanguageController.Translation("EXPORT_LOOT_TO_FILE");
+        public string TrackPartyLootOnly => LanguageController.Translation("TRACK_PARTY_LOOT_ONLY");
     }
 }

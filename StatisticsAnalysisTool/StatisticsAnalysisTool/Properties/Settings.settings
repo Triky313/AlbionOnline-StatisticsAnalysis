@@ -161,5 +161,8 @@
     <Setting Name="MainTrackerFilterSeasonPoints" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="IsTrackingPartyLootOnly" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

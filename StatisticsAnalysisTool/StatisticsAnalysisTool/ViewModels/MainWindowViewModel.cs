@@ -147,6 +147,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ListCollectionView _trackingDungeonsCollectionView;
         private bool _isTrackingFilteredSeasonPoints;
         private ListCollectionView _trackingNotificationsCollectionView;
+        private bool _isTrackingPartyLootOnly;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -476,6 +477,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingFilteredUnknownLoot = Settings.Default.MainTrackerFilterUnknownLoot;
             IsTrackingFilteredSeasonPoints = Settings.Default.MainTrackerFilterSeasonPoints;
             IsDamageMeterTrackingActive = Settings.Default.IsDamageMeterTrackingActive;
+            IsTrackingPartyLootOnly = Settings.Default.IsTrackingPartyLootOnly;
 
             TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
             if (TrackingDungeonsCollectionView != null)
@@ -513,6 +515,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Settings.Default.MainTrackerFilterSimpleLoot = IsTrackingFilteredSimpleLoot;
             Settings.Default.MainTrackerFilterUnknownLoot = IsTrackingFilteredUnknownLoot;
             Settings.Default.IsDamageMeterTrackingActive = IsDamageMeterTrackingActive;
+            Settings.Default.IsTrackingPartyLootOnly = IsTrackingPartyLootOnly;
 
             #endregion
 
@@ -1170,7 +1173,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Visibility IsMainTrackerPopupVisible {
+        public Visibility IsMainTrackerPopupVisible
+        {
             get => _isMainTrackerPopupVisible;
             set
             {
@@ -1179,7 +1183,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsTrackingFilteredEquipmentLoot {
+        public bool IsTrackingFilteredEquipmentLoot
+        {
             get => _isTrackingFilteredEquipmentLoot;
             set
             {
@@ -1199,7 +1204,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsTrackingFilteredConsumableLoot {
+        public bool IsTrackingFilteredConsumableLoot
+        {
             get => _isTrackingFilteredConsumableLoot;
             set
             {
@@ -1219,7 +1225,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsTrackingFilteredSimpleLoot {
+        public bool IsTrackingFilteredSimpleLoot
+        {
             get => _isTrackingFilteredSimpleLoot;
             set
             {
@@ -1239,7 +1246,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsTrackingFilteredUnknownLoot {
+        public bool IsTrackingFilteredUnknownLoot
+        {
             get => _isTrackingFilteredUnknownLoot;
             set
             {
@@ -1255,6 +1263,18 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingPartyLootOnly
+        {
+            get => _isTrackingPartyLootOnly;
+            set
+            {
+                _isTrackingPartyLootOnly = value;
+                TrackingController.LootController.IsPartyLootOnly = _isTrackingPartyLootOnly;
+
                 OnPropertyChanged();
             }
         }
