@@ -63,11 +63,7 @@ namespace StatisticsAnalysisTool.Network
                 builder.AddEventHandler(new PartySilverGainedEventHandler(trackingController));
                 builder.AddEventHandler(new UpdateFactionStandingEventHandler(trackingController));
                 builder.AddEventHandler(new ReceivedSeasonPointsEventHandler(trackingController));
-
-                //builder.AddResponseHandler(new TestHandler());
-                //builder.AddEventHandler(new TestHandler2());
-                //builder.AddRequestHandler(new TestHandler3());
-
+                
                 builder.AddResponseHandler(new JoinResponseHandler(trackingController, _mainWindowViewModel));
 
                 _receiver = builder.Build();
@@ -111,15 +107,18 @@ namespace StatisticsAnalysisTool.Network
             return true;
         }
 
-        public static void StopNetworkCapture()
+        public static void StopNetworkCaptureAsync()
         {
             foreach (var device in _capturedDevices.Where(device => device.Started))
+            {
                 Task.Run(() =>
                 {
                     device.StopCapture();
                     device.Close();
                     builder = null;
                 });
+            }
+
             _capturedDevices.Clear();
         }
 
@@ -129,18 +128,22 @@ namespace StatisticsAnalysisTool.Network
             {
                 if (!device.Started)
                 {
-                    device.OnPacketArrival += PacketHandler;
-                    device.Open(DeviceMode.Promiscuous, 1000);
+                    device.Open(new DeviceConfiguration()
+                    {
+                        Mode = DeviceModes.Promiscuous,
+                        ReadTimeout = 1000
+                    });
+                    device.OnPacketArrival += Device_OnPacketArrival;
                     device.StartCapture();
                 }
             });
         }
-
-        private static void PacketHandler(object sender, CaptureEventArgs e)
+        
+        private static void Device_OnPacketArrival(object sender, PacketCapture e)
         {
             try
             {
-                var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data).Extract<UdpPacket>();
+                var packet = Packet.ParsePacket(e.GetPacket().LinkLayerType, e.GetPacket().Data).Extract<UdpPacket>();
                 if (packet != null && (packet.SourcePort == 5056 || packet.DestinationPort == 5056))
                 {
                     _receiver.ReceivePacket(packet.PayloadData);
@@ -149,12 +152,12 @@ namespace StatisticsAnalysisTool.Network
             catch (OverflowException ex)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-                Log.Error(nameof(PacketHandler), ex);
+                Log.Error(nameof(Device_OnPacketArrival), ex);
             }
             catch (Exception exc)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, exc);
-                Log.Error(nameof(PacketHandler), exc);
+                Log.Error(nameof(Device_OnPacketArrival), exc);
             }
         }
     }
