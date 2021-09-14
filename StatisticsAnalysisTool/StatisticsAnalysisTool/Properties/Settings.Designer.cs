@@ -652,5 +652,14 @@ namespace StatisticsAnalysisTool.Properties {
                 this["IsTrackingPartyLootOnly"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Settings.json")]
+        public string SettingsFileName {
+            get {
+                return ((string)(this["SettingsFileName"]));
+            }
+        }
     }
 }

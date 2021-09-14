@@ -1,4 +1,5 @@
 ﻿using log4net;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -26,7 +27,7 @@ namespace StatisticsAnalysisTool.Common
             set
             {
                 _currentCultureInfo = value;
-                Settings.Default.CurrentLanguageCultureName = value.TextInfo.CultureName;
+                SettingsController.CurrentSettings.CurrentLanguageCultureName = value.TextInfo.CultureName;
                 try
                 {
                     Thread.CurrentThread.CurrentUICulture = value;
@@ -45,8 +46,8 @@ namespace StatisticsAnalysisTool.Common
             {
                 if (CurrentCultureInfo == null)
                 {
-                    if (!string.IsNullOrEmpty(Settings.Default.CurrentLanguageCultureName))
-                        CurrentCultureInfo = new CultureInfo(Settings.Default.CurrentLanguageCultureName);
+                    if (!string.IsNullOrEmpty(SettingsController.CurrentSettings.CurrentLanguageCultureName))
+                        CurrentCultureInfo = new CultureInfo(SettingsController.CurrentSettings.CurrentLanguageCultureName);
                     else if (!string.IsNullOrEmpty(Settings.Default.DefaultLanguageCultureName))
                         CurrentCultureInfo = new CultureInfo(Settings.Default.DefaultLanguageCultureName);
                     else

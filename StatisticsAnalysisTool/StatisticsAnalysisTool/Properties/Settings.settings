@@ -164,5 +164,8 @@
     <Setting Name="IsTrackingPartyLootOnly" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="SettingsFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Settings.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

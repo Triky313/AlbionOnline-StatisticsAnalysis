@@ -3,6 +3,7 @@ using log4net;
 using Microsoft.Win32;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
@@ -154,6 +155,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow = mainWindow;
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
+            InitUserSettings();
             InitViewModeGrids();
             UpgradeSettings();
             InitWindowSettings();
@@ -341,6 +343,14 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 Log.Fatal(nameof(OnUnhandledException), ex);
             }
+        }
+
+        private void InitUserSettings()
+        {
+            _ = Task.Run(async () =>
+              {
+                  await SettingsController.LoadAsync();
+              });
         }
 
         #region View mode init
