@@ -356,12 +356,12 @@ namespace StatisticsAnalysisTool.Network.Manager
             return mapGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid)mapGuid));
         }
         
-        private bool IsDungeonCluster(MapType mapType, Guid? mapGuid)
+        private static bool IsDungeonCluster(MapType mapType, Guid? mapGuid)
         {
             return mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition && mapGuid != null;
         }
         
-        private async Task SetBestDungeonTimeAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
+        private static async Task SetBestDungeonTimeAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
         {
             if (await dungeons.CountAsync() <= 0)
             {
@@ -385,7 +385,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private async Task ResetAllBestValuesAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
+        private static async Task ResetAllBestValuesAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
         {
             // ReSharper disable once PossibleNullReferenceException
             await (dungeons?.ForEachAsync(x =>
@@ -403,7 +403,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             })).ConfigureAwait(false);
         }
 
-        private async Task CalculateBestDungeonValues(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
+        private static async Task CalculateBestDungeonValues(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
         {
             if (await dungeons.CountAsync() <= 0)
             {
@@ -612,7 +612,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             uiDungeon?.SetValues(dungeon);
         }
 
-        private bool AddClusterToExistDungeon(List<DungeonObject> dungeons, Guid? currentGuid, Guid? lastGuid, out DungeonObject dungeon)
+        private static bool AddClusterToExistDungeon(List<DungeonObject> dungeons, Guid? currentGuid, Guid? lastGuid, out DungeonObject dungeon)
         {
             if (currentGuid != null && lastGuid != null && dungeons?.Any(x => x.GuidList.Contains((Guid)currentGuid)) != true)
             {
