@@ -25,18 +25,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10000")]
-        public int RefreshRate {
-            get {
-                return ((int)(this["RefreshRate"]));
-            }
-            set {
-                this["RefreshRate"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Languages")]
         public string LanguageDirectoryName {
             get {
@@ -68,18 +56,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["ItemListFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7")]
-        public int UpdateItemListByDays {
-            get {
-                return ((int)(this["UpdateItemListByDays"]));
-            }
-            set {
-                this["UpdateItemListByDays"] = value;
             }
         }
         
@@ -167,19 +143,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/it" +
-            "ems.json")]
-        public string ItemListSourceUrl {
-            get {
-                return ((string)(this["ItemListSourceUrl"]));
-            }
-            set {
-                this["ItemListSourceUrl"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
@@ -225,48 +188,12 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CurrentLanguageCultureName {
-            get {
-                return ((string)(this["CurrentLanguageCultureName"]));
-            }
-            set {
-                this["CurrentLanguageCultureName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool IsOpenItemWindowInNewWindowChecked {
-            get {
-                return ((bool)(this["IsOpenItemWindowInNewWindowChecked"]));
-            }
-            set {
-                this["IsOpenItemWindowInNewWindowChecked"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/Triky313/AlbionOnline-StatisticsAnalysis")]
         public string GitHubRepoUrl {
             get {
                 return ((string)(this["GitHubRepoUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShowInfoWindowOnStartChecked {
-            get {
-                return ((bool)(this["ShowInfoWindowOnStartChecked"]));
-            }
-            set {
-                this["ShowInfoWindowOnStartChecked"] = value;
             }
         }
         
@@ -296,18 +223,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("90")]
-        public int FullItemInformationUpdateCycleDays {
-            get {
-                return ((int)(this["FullItemInformationUpdateCycleDays"]));
-            }
-            set {
-                this["FullItemInformationUpdateCycleDays"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Sounds")]
         public string SoundDirectoryName {
             get {
@@ -315,18 +230,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["SoundDirectoryName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SelectedAlertSound {
-            get {
-                return ((string)(this["SelectedAlertSound"]));
-            }
-            set {
-                this["SelectedAlertSound"] = value;
             }
         }
         
@@ -485,42 +388,6 @@ namespace StatisticsAnalysisTool.Properties {
         public string GoldStatsApiUrlDefault {
             get {
                 return ((string)(this["GoldStatsApiUrlDefault"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/history/")]
-        public string CityPricesHistoryApiUrl {
-            get {
-                return ((string)(this["CityPricesHistoryApiUrl"]));
-            }
-            set {
-                this["CityPricesHistoryApiUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/prices/")]
-        public string CityPricesApiUrl {
-            get {
-                return ((string)(this["CityPricesApiUrl"]));
-            }
-            set {
-                this["CityPricesApiUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/Gold")]
-        public string GoldStatsApiUrl {
-            get {
-                return ((string)(this["GoldStatsApiUrl"]));
-            }
-            set {
-                this["GoldStatsApiUrl"] = value;
             }
         }
         

@@ -1,7 +1,8 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -38,7 +39,7 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _showNotAgainChecked = value;
-                Settings.Default.ShowInfoWindowOnStartChecked = !_showNotAgainChecked;
+                SettingsController.CurrentSettings.IsInfoWindowShownOnStart = !_showNotAgainChecked;
                 OnPropertyChanged();
             }
         }

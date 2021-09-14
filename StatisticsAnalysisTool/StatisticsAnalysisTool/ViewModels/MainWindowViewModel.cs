@@ -568,7 +568,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void ShowInfoWindow()
         {
-            if (Settings.Default.ShowInfoWindowOnStartChecked)
+            if (SettingsController.CurrentSettings.IsInfoWindowShownOnStart)
             {
                 var infoWindow = new InfoWindow();
                 infoWindow.Show();
@@ -604,7 +604,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                if (!Settings.Default.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
+                if (!SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
                 {
                     var existItemWindow = Application.Current.Windows.OfType<ItemWindow>().FirstOrDefault();
                     existItemWindow?.InitializeItemWindow(item);

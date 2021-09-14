@@ -1,9 +1,9 @@
 ﻿using FontAwesome5;
 using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
@@ -210,7 +210,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
                     GetMainPriceStats();
                     SetQualityPriceStatsOnListView();
-                    await Task.Delay(Settings.Default.RefreshRate - 500);
+                    await Task.Delay(SettingsController.CurrentSettings.RefreshRate - 500);
                 }
             });
         }
