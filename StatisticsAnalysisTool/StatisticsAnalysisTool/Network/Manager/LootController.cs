@@ -137,7 +137,6 @@ namespace StatisticsAnalysisTool.Network.Manager
                     await AddLootAsync(loot);
                     _discoveredLoot.Remove(discoveredLoot);
                 }
-                
             }
         }
 

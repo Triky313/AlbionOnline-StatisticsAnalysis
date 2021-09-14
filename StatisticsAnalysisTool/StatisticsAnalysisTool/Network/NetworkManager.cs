@@ -107,7 +107,7 @@ namespace StatisticsAnalysisTool.Network
             return true;
         }
 
-        public static void StopNetworkCaptureAsync()
+        public static void StopNetworkCapture()
         {
             foreach (var device in _capturedDevices.Where(device => device.Started))
             {
