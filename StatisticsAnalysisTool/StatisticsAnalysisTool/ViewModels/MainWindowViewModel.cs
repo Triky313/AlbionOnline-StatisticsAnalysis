@@ -240,27 +240,27 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var sortByDamageStruct = new DamageMeterSortStruct
             {
-                Name = Translation.SortByDamage,
+                Name = MainWindowTranslation.SortByDamage,
                 DamageMeterSortType = DamageMeterSortType.Damage
             };
             var sortByDpsStruct = new DamageMeterSortStruct
             {
-                Name = Translation.SortByDps,
+                Name = MainWindowTranslation.SortByDps,
                 DamageMeterSortType = DamageMeterSortType.Dps
             };
             var sortByNameStruct = new DamageMeterSortStruct
             {
-                Name = Translation.SortByName,
+                Name = MainWindowTranslation.SortByName,
                 DamageMeterSortType = DamageMeterSortType.Name
             };
             var sortByHealStruct = new DamageMeterSortStruct
             {
-                Name = Translation.SortByHeal,
+                Name = MainWindowTranslation.SortByHeal,
                 DamageMeterSortType = DamageMeterSortType.Heal
             };
             var sortByHpsStruct = new DamageMeterSortStruct
             {
-                Name = Translation.SortByHps,
+                Name = MainWindowTranslation.SortByHps,
                 DamageMeterSortType = DamageMeterSortType.Hps
             };
 

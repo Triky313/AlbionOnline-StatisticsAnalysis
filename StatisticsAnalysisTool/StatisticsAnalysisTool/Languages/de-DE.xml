@@ -448,5 +448,5 @@
 	<translation name="DESC_UPDATE_MARKET_PRICES_1">Um die Preise eines Items selber aktualisieren zu können, musst du Albion Online Data Project installieren: </translation>
 	<translation name="SEASON_POINTS">Season Punkte</translation>
 	<translation name="EXPORT_LOOT_TO_FILE">Exportiere Loot in Datei</translation>
-	<translation name="TRACK_PARTY_LOOT_ONLY">Track party loot only</translation>
+	<translation name="TRACK_PARTY_LOOT_ONLY">Nur Party Beute tracken</translation>
 </translations>
