@@ -51,7 +51,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private DungeonStats _dungeonStatsTotal = new();
         private string _errorBarText;
         private Visibility _errorBarVisibility;
-        private string _fullItemInformationExistLocal;
         private Visibility _goldPriceVisibility;
         private Visibility _guildInformationVisibility;
         private double _guildInfoWidth;
@@ -1204,7 +1203,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.ConsumableLoot);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot = _isTrackingFilteredConsumableLoot;
                 OnPropertyChanged();
             }
@@ -1226,7 +1225,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.SimpleLoot);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot = _isTrackingFilteredSimpleLoot;
                 OnPropertyChanged();
             }
@@ -1248,7 +1247,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.UnknownLoot);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot = _isTrackingFilteredUnknownLoot;
                 OnPropertyChanged();
             }
@@ -1282,7 +1281,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Fame);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterFame = _isTrackingFilteredFame;
                 OnPropertyChanged();
             }
@@ -1303,7 +1302,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Silver);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterSilver = _isTrackingFilteredSilver;
                 OnPropertyChanged();
             }
@@ -1324,7 +1323,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Faction);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterFaction = _isTrackingFilteredFaction;
                 OnPropertyChanged();
             }
@@ -1345,7 +1344,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.SeasonPoints);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints = _isTrackingFilteredSeasonPoints;
                 OnPropertyChanged();
             }
@@ -2216,16 +2215,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string FullItemInformationExistLocal
-        {
-            get => _fullItemInformationExistLocal;
-            set
-            {
-                _fullItemInformationExistLocal = value;
-                OnPropertyChanged();
-            }
-        }
-
         public double DungeonStatsGridHeight {
             get => _dungeonStatsGridHeight;
             set
@@ -2332,10 +2321,10 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string DonateUrl => Settings.Default.DonateUrl;
-        public string DiscordUrl => Settings.Default.DiscordUrl;
-        public string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
-        public string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
+        public static string DonateUrl => Settings.Default.DonateUrl;
+        public static string DiscordUrl => Settings.Default.DiscordUrl;
+        public static string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
+        public static string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
