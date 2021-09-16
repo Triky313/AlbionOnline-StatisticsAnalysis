@@ -50,9 +50,6 @@
     <Setting Name="ActiveAlertsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">ActiveAlerts.json</Value>
     </Setting>
-    <Setting Name="IsTrackingActiveAtToolStart" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="WorldDataFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">world.json</Value>
     </Setting>
@@ -61,9 +58,6 @@
     </Setting>
     <Setting Name="UpdateWorldDataByDays" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">7</Value>
-    </Setting>
-    <Setting Name="IsTrackingResetByMapChangeActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="DungeonRunsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">DungeonRuns.json</Value>
@@ -89,38 +83,8 @@
     <Setting Name="GoldStatsApiUrlDefault" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/Gold</Value>
     </Setting>
-    <Setting Name="MainTrackerFilterSilver" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="MainTrackerFilterFame" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="MainTrackerFilterEquipmentLoot" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="MainTrackerFilterConsumableLoot" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="MainTrackerFilterSimpleLoot" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="MainTrackerFilterUnknownLoot" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="MainTrackerFilterFaction" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="WorldDataDirectoryName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">GameFiles</Value>
-    </Setting>
-    <Setting Name="IsDamageMeterTrackingActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="MainTrackerFilterSeasonPoints" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="IsTrackingPartyLootOnly" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SettingsFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Settings.json</Value>

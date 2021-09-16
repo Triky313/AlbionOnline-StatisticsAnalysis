@@ -238,7 +238,7 @@ namespace StatisticsAnalysisTool.ViewModels
             AllianceInformationVisibility = Visibility.Hidden;
             CurrentMapInformationVisibility = Visibility.Hidden;
 
-            IsTrackingResetByMapChangeActive = Settings.Default.IsTrackingResetByMapChangeActive;
+            IsTrackingResetByMapChangeActive = SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive;
 
             var sortByDamageStruct = new DamageMeterSortStruct
             {
@@ -465,21 +465,21 @@ namespace StatisticsAnalysisTool.ViewModels
 
             TrackingController ??= new TrackingController(this, _mainWindow);
 
-            if (Settings.Default.IsTrackingActiveAtToolStart)
+            if (SettingsController.CurrentSettings.IsTrackingActiveAtToolStart)
             {
                 StartTracking();
             }
 
-            IsTrackingFilteredSilver = Settings.Default.MainTrackerFilterSilver;
-            IsTrackingFilteredFame = Settings.Default.MainTrackerFilterFame;
-            IsTrackingFilteredFaction = Settings.Default.MainTrackerFilterFaction;
-            IsTrackingFilteredEquipmentLoot = Settings.Default.MainTrackerFilterEquipmentLoot;
-            IsTrackingFilteredConsumableLoot = Settings.Default.MainTrackerFilterConsumableLoot;
-            IsTrackingFilteredSimpleLoot = Settings.Default.MainTrackerFilterSimpleLoot;
-            IsTrackingFilteredUnknownLoot = Settings.Default.MainTrackerFilterUnknownLoot;
-            IsTrackingFilteredSeasonPoints = Settings.Default.MainTrackerFilterSeasonPoints;
-            IsDamageMeterTrackingActive = Settings.Default.IsDamageMeterTrackingActive;
-            IsTrackingPartyLootOnly = Settings.Default.IsTrackingPartyLootOnly;
+            IsTrackingFilteredSilver = SettingsController.CurrentSettings.IsMainTrackerFilterSilver;
+            IsTrackingFilteredFame = SettingsController.CurrentSettings.IsMainTrackerFilterFame;
+            IsTrackingFilteredFaction = SettingsController.CurrentSettings.IsMainTrackerFilterFaction;
+            IsTrackingFilteredEquipmentLoot = SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot;
+            IsTrackingFilteredConsumableLoot = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot;
+            IsTrackingFilteredSimpleLoot = SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot;
+            IsTrackingFilteredUnknownLoot = SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot;
+            IsTrackingFilteredSeasonPoints = SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints;
+            IsDamageMeterTrackingActive = SettingsController.CurrentSettings.IsDamageMeterTrackingActive;
+            IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
 
             TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
             if (TrackingDungeonsCollectionView != null)
@@ -504,21 +504,20 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             #region Tracking
 
-            //TODO: Neue Settings einstellen
-            Settings.Default.IsTrackingResetByMapChangeActive = IsTrackingResetByMapChangeActive;
-            Settings.Default.IsTrackingActiveAtToolStart = IsTrackingActive;
+            SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive = IsTrackingResetByMapChangeActive;
+            SettingsController.CurrentSettings.IsTrackingActiveAtToolStart = IsTrackingActive;
 
-            Settings.Default.MainTrackerFilterSilver = IsTrackingFilteredSilver;
-            Settings.Default.MainTrackerFilterFame = IsTrackingFilteredFame;
-            Settings.Default.MainTrackerFilterFaction = IsTrackingFilteredFaction;
-            Settings.Default.MainTrackerFilterSeasonPoints = IsTrackingFilteredSeasonPoints;
+            SettingsController.CurrentSettings.IsMainTrackerFilterSilver = IsTrackingFilteredSilver;
+            SettingsController.CurrentSettings.IsMainTrackerFilterFame = IsTrackingFilteredFame;
+            SettingsController.CurrentSettings.IsMainTrackerFilterFaction = IsTrackingFilteredFaction;
+            SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints = IsTrackingFilteredSeasonPoints;
 
-            Settings.Default.MainTrackerFilterEquipmentLoot = IsTrackingFilteredEquipmentLoot;
-            Settings.Default.MainTrackerFilterConsumableLoot = IsTrackingFilteredConsumableLoot;
-            Settings.Default.MainTrackerFilterSimpleLoot = IsTrackingFilteredSimpleLoot;
-            Settings.Default.MainTrackerFilterUnknownLoot = IsTrackingFilteredUnknownLoot;
-            Settings.Default.IsDamageMeterTrackingActive = IsDamageMeterTrackingActive;
-            Settings.Default.IsTrackingPartyLootOnly = IsTrackingPartyLootOnly;
+            SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot = IsTrackingFilteredEquipmentLoot;
+            SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot = IsTrackingFilteredConsumableLoot;
+            SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot = IsTrackingFilteredSimpleLoot;
+            SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot = IsTrackingFilteredUnknownLoot;
+            SettingsController.CurrentSettings.IsDamageMeterTrackingActive = IsDamageMeterTrackingActive;
+            SettingsController.CurrentSettings.IsTrackingPartyLootOnly = IsTrackingPartyLootOnly;
 
             #endregion
 
@@ -539,12 +538,10 @@ namespace StatisticsAnalysisTool.ViewModels
 
             #endregion
 
-            Settings.Default.Save();
+            SettingsController.Save();
 
             ItemController.SaveFavoriteItemsToLocalFile();
             ItemController.SaveItemInformationLocal();
-
-            SettingsController.Save();
         }
 
         #endregion

@@ -16,5 +16,17 @@
         public double MainWindowHeight { get; set; } = 0;
         public double MainWindowWidth { get; set; } = 0;
         public bool MainWindowMaximized { get; set; } = false;
+        public bool IsTrackingResetByMapChangeActive { get; set; } = false;
+        public bool IsTrackingActiveAtToolStart { get; set; } = false;
+        public bool IsMainTrackerFilterSilver { get; set; } = false;
+        public bool IsMainTrackerFilterFame { get; set; } = false;
+        public bool IsMainTrackerFilterFaction { get; set; } = false;
+        public bool IsMainTrackerFilterSeasonPoints { get; set; } = false;
+        public bool IsMainTrackerFilterEquipmentLoot { get; set; } = false;
+        public bool IsMainTrackerFilterConsumableLoot { get; set; } = false;
+        public bool IsMainTrackerFilterSimpleLoot { get; set; } = false;
+        public bool IsMainTrackerFilterUnknownLoot { get; set; } = false;
+        public bool IsDamageMeterTrackingActive { get; set; } = true;
+        public bool IsTrackingPartyLootOnly { get; set; } = true;
     }
 }

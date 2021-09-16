@@ -196,18 +196,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsTrackingActiveAtToolStart {
-            get {
-                return ((bool)(this["IsTrackingActiveAtToolStart"]));
-            }
-            set {
-                this["IsTrackingActiveAtToolStart"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("world.json")]
         public string WorldDataFileName {
             get {
@@ -240,18 +228,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["UpdateWorldDataByDays"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsTrackingResetByMapChangeActive {
-            get {
-                return ((bool)(this["IsTrackingResetByMapChangeActive"]));
-            }
-            set {
-                this["IsTrackingResetByMapChangeActive"] = value;
             }
         }
         
@@ -340,132 +316,12 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterSilver {
-            get {
-                return ((bool)(this["MainTrackerFilterSilver"]));
-            }
-            set {
-                this["MainTrackerFilterSilver"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterFame {
-            get {
-                return ((bool)(this["MainTrackerFilterFame"]));
-            }
-            set {
-                this["MainTrackerFilterFame"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterEquipmentLoot {
-            get {
-                return ((bool)(this["MainTrackerFilterEquipmentLoot"]));
-            }
-            set {
-                this["MainTrackerFilterEquipmentLoot"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterConsumableLoot {
-            get {
-                return ((bool)(this["MainTrackerFilterConsumableLoot"]));
-            }
-            set {
-                this["MainTrackerFilterConsumableLoot"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterSimpleLoot {
-            get {
-                return ((bool)(this["MainTrackerFilterSimpleLoot"]));
-            }
-            set {
-                this["MainTrackerFilterSimpleLoot"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterUnknownLoot {
-            get {
-                return ((bool)(this["MainTrackerFilterUnknownLoot"]));
-            }
-            set {
-                this["MainTrackerFilterUnknownLoot"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterFaction {
-            get {
-                return ((bool)(this["MainTrackerFilterFaction"]));
-            }
-            set {
-                this["MainTrackerFilterFaction"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("GameFiles")]
         public string WorldDataDirectoryName {
             get {
                 return ((string)(this["WorldDataDirectoryName"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool IsDamageMeterTrackingActive {
-            get {
-                return ((bool)(this["IsDamageMeterTrackingActive"]));
-            }
-            set {
-                this["IsDamageMeterTrackingActive"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterSeasonPoints {
-            get {
-                return ((bool)(this["MainTrackerFilterSeasonPoints"]));
-            }
-            set {
-                this["MainTrackerFilterSeasonPoints"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool IsTrackingPartyLootOnly {
-            get {
-                return ((bool)(this["IsTrackingPartyLootOnly"]));
-            }
-            set {
-                this["IsTrackingPartyLootOnly"] = value;
             }
         }
         
