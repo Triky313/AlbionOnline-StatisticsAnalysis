@@ -167,7 +167,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             InitMainWindowData();
-            InitTracking();
+            _ = InitTrackingAsync();
         }
 
         public async void SetUiElements()
@@ -289,7 +289,7 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 var imageAwesome = (ImageAwesome) sender;
-                var item = (Item) imageAwesome.DataContext;
+                var item = (Item)imageAwesome.DataContext;
 
                 if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
                 {
@@ -388,14 +388,16 @@ namespace StatisticsAnalysisTool.ViewModels
             AlertManager = new AlertController(_mainWindow, ItemsView);
         }
 
-        private void UpgradeSettings()
+        private static void UpgradeSettings()
         {
-            if (Settings.Default.UpgradeRequired)
+            if (!Settings.Default.UpgradeRequired)
             {
-                Settings.Default.Upgrade();
-                Settings.Default.UpgradeRequired = false;
-                Settings.Default.Save();
+                return;
             }
+
+            Settings.Default.Upgrade();
+            Settings.Default.UpgradeRequired = false;
+            Settings.Default.Save();
         }
 
         private void InitWindowSettings()
@@ -406,7 +408,10 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 _mainWindow.Height = SettingsController.CurrentSettings.MainWindowHeight;
                 _mainWindow.Width = SettingsController.CurrentSettings.MainWindowWidth;
-                if (SettingsController.CurrentSettings.MainWindowMaximized) _mainWindow.WindowState = WindowState.Maximized;
+                if (SettingsController.CurrentSettings.MainWindowMaximized)
+                {
+                    _mainWindow.WindowState = WindowState.Maximized;
+                }
 
                 CenterWindowOnScreen();
 
@@ -455,13 +460,13 @@ namespace StatisticsAnalysisTool.ViewModels
             IsItemSearchCheckboxesEnabled = true;
             IsTxtSearchEnabled = true;
 
-            _mainWindow.Dispatcher?.Invoke(() => { _mainWindow.TxtSearch.Focus(); });
+            _mainWindow.Dispatcher?.Invoke(() => { _ = _mainWindow.TxtSearch.Focus(); });
         }
 
-        private async void InitTracking()
+        private async Task InitTrackingAsync()
         {
-            await WorldData.GetDataListFromJsonAsync();
-            await DungeonObjectData.GetDataListFromJsonAsync();
+            _ = await WorldData.GetDataListFromJsonAsync();
+            _ = await DungeonObjectData.GetDataListFromJsonAsync();
 
             TrackingController ??= new TrackingController(this, _mainWindow);
 
