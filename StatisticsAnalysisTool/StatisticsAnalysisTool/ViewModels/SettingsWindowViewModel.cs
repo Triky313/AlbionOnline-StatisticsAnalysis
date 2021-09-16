@@ -1,5 +1,6 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
@@ -52,7 +53,7 @@ namespace StatisticsAnalysisTool.ViewModels
             RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("30_SECONDS"), Value = 30000});
             RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("60_SECONDS"), Value = 60000});
             RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("5_MINUTES"), Value = 300000});
-            RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == Settings.Default.RefreshRate);
+            RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
 
             #endregion
 
@@ -87,12 +88,12 @@ namespace StatisticsAnalysisTool.ViewModels
             UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7});
             UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14});
             UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28});
-            UpdateItemListByDaysSelection = UpdateItemListByDays.FirstOrDefault(x => x.Value == Settings.Default.UpdateItemListByDays);
+            UpdateItemListByDaysSelection = UpdateItemListByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateItemListByDays);
 
-            ItemListSourceUrl = Settings.Default.ItemListSourceUrl;
-            IsOpenItemWindowInNewWindowChecked = Settings.Default.IsOpenItemWindowInNewWindowChecked;
-            ShowInfoWindowOnStartChecked = Settings.Default.ShowInfoWindowOnStartChecked;
-            FullItemInformationUpdateCycleDays = Settings.Default.FullItemInformationUpdateCycleDays;
+            ItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
+            IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
+            ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
+            FullItemInformationUpdateCycleDays = SettingsController.CurrentSettings.FullItemInformationUpdateCycleDays;
 
             #endregion
 
@@ -104,35 +105,35 @@ namespace StatisticsAnalysisTool.ViewModels
                 AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
             }
 
-            AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.FileName == Settings.Default.SelectedAlertSound);
+            AlertSoundSelection = AlertSounds.FirstOrDefault(x => x.FileName == SettingsController.CurrentSettings.SelectedAlertSound);
 
             #endregion
 
             #region Api urls
 
-            CityPricesApiUrl = Settings.Default.CityPricesApiUrl;
-            CityPricesHistoryApiUrl = Settings.Default.CityPricesHistoryApiUrl;
-            GoldStatsApiUrl = Settings.Default.GoldStatsApiUrl;
+            CityPricesApiUrl = SettingsController.CurrentSettings.CityPricesApiUrl;
+            CityPricesHistoryApiUrl = SettingsController.CurrentSettings.CityPricesHistoryApiUrl;
+            GoldStatsApiUrl = SettingsController.CurrentSettings.GoldStatsApiUrl;
 
             #endregion
         }
 
         public void SaveSettings()
         {
-            Settings.Default.ItemListSourceUrl = ItemListSourceUrl;
-            Settings.Default.RefreshRate = RefreshRatesSelection.Value;
-            Settings.Default.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
-            Settings.Default.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
-            Settings.Default.ShowInfoWindowOnStartChecked = ShowInfoWindowOnStartChecked;
-            Settings.Default.FullItemInformationUpdateCycleDays = FullItemInformationUpdateCycleDays;
-            Settings.Default.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
+            SettingsController.CurrentSettings.ItemListSourceUrl = ItemListSourceUrl;
+            SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
+            SettingsController.CurrentSettings.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
+            SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
+            SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
+            SettingsController.CurrentSettings.FullItemInformationUpdateCycleDays = FullItemInformationUpdateCycleDays;
+            SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
 
             LanguageController.CurrentCultureInfo = new CultureInfo(LanguagesSelection.FileName);
             LanguageController.SetLanguage();
 
-            Settings.Default.CityPricesApiUrl = string.IsNullOrEmpty(CityPricesApiUrl) ? Settings.Default.CityPricesApiUrlDefault : CityPricesApiUrl;
-            Settings.Default.CityPricesHistoryApiUrl = string.IsNullOrEmpty(CityPricesHistoryApiUrl) ? Settings.Default.CityPricesHistoryApiUrlDefault : CityPricesHistoryApiUrl;
-            Settings.Default.GoldStatsApiUrl = string.IsNullOrEmpty(GoldStatsApiUrl) ? Settings.Default.GoldStatsApiUrlDefault : GoldStatsApiUrl;
+            SettingsController.CurrentSettings.CityPricesApiUrl = string.IsNullOrEmpty(CityPricesApiUrl) ? Settings.Default.CityPricesApiUrlDefault : CityPricesApiUrl;
+            SettingsController.CurrentSettings.CityPricesHistoryApiUrl = string.IsNullOrEmpty(CityPricesHistoryApiUrl) ? Settings.Default.CityPricesHistoryApiUrlDefault : CityPricesHistoryApiUrl;
+            SettingsController.CurrentSettings.GoldStatsApiUrl = string.IsNullOrEmpty(GoldStatsApiUrl) ? Settings.Default.GoldStatsApiUrlDefault : GoldStatsApiUrl;
 
             SetAppSettingsAndTranslations();
 

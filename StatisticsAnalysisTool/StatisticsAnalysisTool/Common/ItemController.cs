@@ -1,4 +1,5 @@
 using log4net;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
@@ -247,7 +248,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 var fileDateTime = File.GetLastWriteTime(localFilePath);
 
-                if (fileDateTime.AddDays(Settings.Default.UpdateItemListByDays) < DateTime.Now)
+                if (fileDateTime.AddDays(SettingsController.CurrentSettings.UpdateItemListByDays) < DateTime.Now)
                 {
                     if (await GetItemListFromWebAsync(url))
                     {
@@ -269,7 +270,7 @@ namespace StatisticsAnalysisTool.Common
 
         private static string GetItemListSourceUrlIfExist()
         {
-            var url = Settings.Default.ItemListSourceUrl ?? string.Empty;
+            var url = SettingsController.CurrentSettings.ItemListSourceUrl ?? string.Empty;
 
             if (string.IsNullOrEmpty(url))
             {
@@ -277,7 +278,7 @@ namespace StatisticsAnalysisTool.Common
 
                 if (!string.IsNullOrEmpty(url))
                 {
-                    Settings.Default.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
+                    SettingsController.CurrentSettings.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
                     MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
                 }
             }
@@ -449,7 +450,7 @@ namespace StatisticsAnalysisTool.Common
         {
             if (lastUpdate == null || lastUpdate.Value.Year == 1) return false;
 
-            var lastUpdateWithCycleDays = lastUpdate.Value.AddDays(Settings.Default.FullItemInformationUpdateCycleDays);
+            var lastUpdateWithCycleDays = lastUpdate.Value.AddDays(SettingsController.CurrentSettings.FullItemInformationUpdateCycleDays);
             return lastUpdateWithCycleDays >= DateTime.UtcNow;
         }
 

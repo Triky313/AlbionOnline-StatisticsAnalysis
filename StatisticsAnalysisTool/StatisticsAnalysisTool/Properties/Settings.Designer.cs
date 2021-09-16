@@ -23,75 +23,30 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10000")]
-        public int RefreshRate {
-            get {
-                return ((int)(this["RefreshRate"]));
-            }
-            set {
-                this["RefreshRate"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Languages")]
         public string LanguageDirectoryName {
             get {
                 return ((string)(this["LanguageDirectoryName"]));
             }
-            set {
-                this["LanguageDirectoryName"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ImageResources")]
         public string ImageResources {
             get {
                 return ((string)(this["ImageResources"]));
             }
-            set {
-                this["ImageResources"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ItemList.json")]
         public string ItemListFileName {
             get {
                 return ((string)(this["ItemListFileName"]));
-            }
-            set {
-                this["ItemListFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7")]
-        public int UpdateItemListByDays {
-            get {
-                return ((int)(this["UpdateItemListByDays"]));
-            }
-            set {
-                this["UpdateItemListByDays"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Normal")]
-        public string ActiveMode {
-            get {
-                return ((string)(this["ActiveMode"]));
-            }
-            set {
-                this["ActiveMode"] = value;
             }
         }
         
@@ -105,7 +60,7 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/it" +
             "ems.json")]
@@ -113,70 +68,15 @@ namespace StatisticsAnalysisTool.Properties {
             get {
                 return ((string)(this["DefaultItemListSourceUrl"]));
             }
-            set {
-                this["DefaultItemListSourceUrl"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master" +
             "/StatisticsAnalysisTool/StatisticsAnalysisTool/ao-update-check.xml")]
         public string AutoUpdateConfigUrl {
             get {
                 return ((string)(this["AutoUpdateConfigUrl"]));
-            }
-            set {
-                this["AutoUpdateConfigUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public double MainWindowHeight {
-            get {
-                return ((double)(this["MainWindowHeight"]));
-            }
-            set {
-                this["MainWindowHeight"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public double MainWindowWidth {
-            get {
-                return ((double)(this["MainWindowWidth"]));
-            }
-            set {
-                this["MainWindowWidth"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool MainWindowMaximized {
-            get {
-                return ((bool)(this["MainWindowMaximized"]));
-            }
-            set {
-                this["MainWindowMaximized"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/it" +
-            "ems.json")]
-        public string ItemListSourceUrl {
-            get {
-                return ((string)(this["ItemListSourceUrl"]));
-            }
-            set {
-                this["ItemListSourceUrl"] = value;
             }
         }
         
@@ -186,18 +86,6 @@ namespace StatisticsAnalysisTool.Properties {
         public string DefaultLanguageCultureName {
             get {
                 return ((string)(this["DefaultLanguageCultureName"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SavedPlayerInformationName {
-            get {
-                return ((string)(this["SavedPlayerInformationName"]));
-            }
-            set {
-                this["SavedPlayerInformationName"] = value;
             }
         }
         
@@ -225,48 +113,12 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CurrentLanguageCultureName {
-            get {
-                return ((string)(this["CurrentLanguageCultureName"]));
-            }
-            set {
-                this["CurrentLanguageCultureName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool IsOpenItemWindowInNewWindowChecked {
-            get {
-                return ((bool)(this["IsOpenItemWindowInNewWindowChecked"]));
-            }
-            set {
-                this["IsOpenItemWindowInNewWindowChecked"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/Triky313/AlbionOnline-StatisticsAnalysis")]
         public string GitHubRepoUrl {
             get {
                 return ((string)(this["GitHubRepoUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShowInfoWindowOnStartChecked {
-            get {
-                return ((bool)(this["ShowInfoWindowOnStartChecked"]));
-            }
-            set {
-                this["ShowInfoWindowOnStartChecked"] = value;
             }
         }
         
@@ -296,18 +148,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("90")]
-        public int FullItemInformationUpdateCycleDays {
-            get {
-                return ((int)(this["FullItemInformationUpdateCycleDays"]));
-            }
-            set {
-                this["FullItemInformationUpdateCycleDays"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Sounds")]
         public string SoundDirectoryName {
             get {
@@ -320,18 +160,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SelectedAlertSound {
-            get {
-                return ((string)(this["SelectedAlertSound"]));
-            }
-            set {
-                this["SelectedAlertSound"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ActiveAlerts.json")]
         public string ActiveAlertsFileName {
             get {
@@ -339,18 +167,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["ActiveAlertsFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsTrackingActiveAtToolStart {
-            get {
-                return ((bool)(this["IsTrackingActiveAtToolStart"]));
-            }
-            set {
-                this["IsTrackingActiveAtToolStart"] = value;
             }
         }
         
@@ -388,18 +204,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["UpdateWorldDataByDays"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsTrackingResetByMapChangeActive {
-            get {
-                return ((bool)(this["IsTrackingResetByMapChangeActive"]));
-            }
-            set {
-                this["IsTrackingResetByMapChangeActive"] = value;
             }
         }
         
@@ -488,126 +292,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/history/")]
-        public string CityPricesHistoryApiUrl {
-            get {
-                return ((string)(this["CityPricesHistoryApiUrl"]));
-            }
-            set {
-                this["CityPricesHistoryApiUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/prices/")]
-        public string CityPricesApiUrl {
-            get {
-                return ((string)(this["CityPricesApiUrl"]));
-            }
-            set {
-                this["CityPricesApiUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.albion-online-data.com/api/v2/stats/Gold")]
-        public string GoldStatsApiUrl {
-            get {
-                return ((string)(this["GoldStatsApiUrl"]));
-            }
-            set {
-                this["GoldStatsApiUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterSilver {
-            get {
-                return ((bool)(this["MainTrackerFilterSilver"]));
-            }
-            set {
-                this["MainTrackerFilterSilver"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterFame {
-            get {
-                return ((bool)(this["MainTrackerFilterFame"]));
-            }
-            set {
-                this["MainTrackerFilterFame"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterEquipmentLoot {
-            get {
-                return ((bool)(this["MainTrackerFilterEquipmentLoot"]));
-            }
-            set {
-                this["MainTrackerFilterEquipmentLoot"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterConsumableLoot {
-            get {
-                return ((bool)(this["MainTrackerFilterConsumableLoot"]));
-            }
-            set {
-                this["MainTrackerFilterConsumableLoot"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterSimpleLoot {
-            get {
-                return ((bool)(this["MainTrackerFilterSimpleLoot"]));
-            }
-            set {
-                this["MainTrackerFilterSimpleLoot"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterUnknownLoot {
-            get {
-                return ((bool)(this["MainTrackerFilterUnknownLoot"]));
-            }
-            set {
-                this["MainTrackerFilterUnknownLoot"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterFaction {
-            get {
-                return ((bool)(this["MainTrackerFilterFaction"]));
-            }
-            set {
-                this["MainTrackerFilterFaction"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("GameFiles")]
@@ -617,39 +301,12 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool IsDamageMeterTrackingActive {
+        [global::System.Configuration.DefaultSettingValueAttribute("Settings.json")]
+        public string SettingsFileName {
             get {
-                return ((bool)(this["IsDamageMeterTrackingActive"]));
-            }
-            set {
-                this["IsDamageMeterTrackingActive"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MainTrackerFilterSeasonPoints {
-            get {
-                return ((bool)(this["MainTrackerFilterSeasonPoints"]));
-            }
-            set {
-                this["MainTrackerFilterSeasonPoints"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool IsTrackingPartyLootOnly {
-            get {
-                return ((bool)(this["IsTrackingPartyLootOnly"]));
-            }
-            set {
-                this["IsTrackingPartyLootOnly"] = value;
+                return ((string)(this["SettingsFileName"]));
             }
         }
     }

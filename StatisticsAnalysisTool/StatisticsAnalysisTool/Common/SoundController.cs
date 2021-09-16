@@ -1,4 +1,5 @@
 ﻿using log4net;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -66,7 +67,7 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                var currentSound = AlertSounds.FirstOrDefault(s => s.FileName == Settings.Default.SelectedAlertSound);
+                var currentSound = AlertSounds.FirstOrDefault(s => s.FileName == SettingsController.CurrentSettings.SelectedAlertSound);
                 return currentSound?.FilePath ?? string.Empty;
             }
             catch (Exception e) when (e is ArgumentException)

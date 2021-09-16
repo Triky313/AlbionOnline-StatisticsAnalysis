@@ -1,6 +1,5 @@
 ﻿using FontAwesome5;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -9,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+
 // ReSharper disable UnusedParameter.Local
 
 namespace StatisticsAnalysisTool.Views
@@ -54,7 +54,6 @@ namespace StatisticsAnalysisTool.Views
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            NetworkManager.StopNetworkCapture();
             Application.Current.Shutdown();
         }
 

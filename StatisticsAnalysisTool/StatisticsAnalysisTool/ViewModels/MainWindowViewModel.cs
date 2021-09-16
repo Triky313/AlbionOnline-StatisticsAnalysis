@@ -3,6 +3,7 @@ using log4net;
 using Microsoft.Win32;
 using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
@@ -154,6 +155,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow = mainWindow;
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
+            SettingsController.Load();
             InitViewModeGrids();
             UpgradeSettings();
             InitWindowSettings();
@@ -184,7 +186,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Modes.Add(new ModeStruct {Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player});
             //Modes.Add(new ModeStruct {Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold});
             ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
-
+            
             #endregion Set Modes to combobox
 
             #region Full Item Info elements
@@ -225,7 +227,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             #region Player information
 
-            SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
+            SavedPlayerInformationName = SettingsController.CurrentSettings.SavedPlayerInformationName;
 
             #endregion Player information
 
@@ -236,7 +238,7 @@ namespace StatisticsAnalysisTool.ViewModels
             AllianceInformationVisibility = Visibility.Hidden;
             CurrentMapInformationVisibility = Visibility.Hidden;
 
-            IsTrackingResetByMapChangeActive = Settings.Default.IsTrackingResetByMapChangeActive;
+            IsTrackingResetByMapChangeActive = SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive;
 
             var sortByDamageStruct = new DamageMeterSortStruct
             {
@@ -342,7 +344,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 Log.Fatal(nameof(OnUnhandledException), ex);
             }
         }
-
+        
         #region View mode init
 
         private void InitViewModeGrids()
@@ -402,9 +404,9 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 #region Set MainWindow height and width and center window
 
-                _mainWindow.Height = Settings.Default.MainWindowHeight;
-                _mainWindow.Width = Settings.Default.MainWindowWidth;
-                if (Settings.Default.MainWindowMaximized) _mainWindow.WindowState = WindowState.Maximized;
+                _mainWindow.Height = SettingsController.CurrentSettings.MainWindowHeight;
+                _mainWindow.Width = SettingsController.CurrentSettings.MainWindowWidth;
+                if (SettingsController.CurrentSettings.MainWindowMaximized) _mainWindow.WindowState = WindowState.Maximized;
 
                 CenterWindowOnScreen();
 
@@ -463,21 +465,21 @@ namespace StatisticsAnalysisTool.ViewModels
 
             TrackingController ??= new TrackingController(this, _mainWindow);
 
-            if (Settings.Default.IsTrackingActiveAtToolStart)
+            if (SettingsController.CurrentSettings.IsTrackingActiveAtToolStart)
             {
                 StartTracking();
             }
 
-            IsTrackingFilteredSilver = Settings.Default.MainTrackerFilterSilver;
-            IsTrackingFilteredFame = Settings.Default.MainTrackerFilterFame;
-            IsTrackingFilteredFaction = Settings.Default.MainTrackerFilterFaction;
-            IsTrackingFilteredEquipmentLoot = Settings.Default.MainTrackerFilterEquipmentLoot;
-            IsTrackingFilteredConsumableLoot = Settings.Default.MainTrackerFilterConsumableLoot;
-            IsTrackingFilteredSimpleLoot = Settings.Default.MainTrackerFilterSimpleLoot;
-            IsTrackingFilteredUnknownLoot = Settings.Default.MainTrackerFilterUnknownLoot;
-            IsTrackingFilteredSeasonPoints = Settings.Default.MainTrackerFilterSeasonPoints;
-            IsDamageMeterTrackingActive = Settings.Default.IsDamageMeterTrackingActive;
-            IsTrackingPartyLootOnly = Settings.Default.IsTrackingPartyLootOnly;
+            IsTrackingFilteredSilver = SettingsController.CurrentSettings.IsMainTrackerFilterSilver;
+            IsTrackingFilteredFame = SettingsController.CurrentSettings.IsMainTrackerFilterFame;
+            IsTrackingFilteredFaction = SettingsController.CurrentSettings.IsMainTrackerFilterFaction;
+            IsTrackingFilteredEquipmentLoot = SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot;
+            IsTrackingFilteredConsumableLoot = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot;
+            IsTrackingFilteredSimpleLoot = SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot;
+            IsTrackingFilteredUnknownLoot = SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot;
+            IsTrackingFilteredSeasonPoints = SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints;
+            IsDamageMeterTrackingActive = SettingsController.CurrentSettings.IsDamageMeterTrackingActive;
+            IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
 
             TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
             if (TrackingDungeonsCollectionView != null)
@@ -500,43 +502,24 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void SaveSettings(WindowState windowState, Rect restoreBounds, double height, double width)
         {
-            #region Tracking
-
-            Settings.Default.IsTrackingResetByMapChangeActive = IsTrackingResetByMapChangeActive;
-            Settings.Default.IsTrackingActiveAtToolStart = IsTrackingActive;
-
-            Settings.Default.MainTrackerFilterSilver = IsTrackingFilteredSilver;
-            Settings.Default.MainTrackerFilterFame = IsTrackingFilteredFame;
-            Settings.Default.MainTrackerFilterFaction = IsTrackingFilteredFaction;
-            Settings.Default.MainTrackerFilterSeasonPoints = IsTrackingFilteredSeasonPoints;
-
-            Settings.Default.MainTrackerFilterEquipmentLoot = IsTrackingFilteredEquipmentLoot;
-            Settings.Default.MainTrackerFilterConsumableLoot = IsTrackingFilteredConsumableLoot;
-            Settings.Default.MainTrackerFilterSimpleLoot = IsTrackingFilteredSimpleLoot;
-            Settings.Default.MainTrackerFilterUnknownLoot = IsTrackingFilteredUnknownLoot;
-            Settings.Default.IsDamageMeterTrackingActive = IsDamageMeterTrackingActive;
-            Settings.Default.IsTrackingPartyLootOnly = IsTrackingPartyLootOnly;
-
-            #endregion
-
             #region Window
 
             if (windowState == WindowState.Maximized)
             {
-                Settings.Default.MainWindowHeight = restoreBounds.Height;
-                Settings.Default.MainWindowWidth = restoreBounds.Width;
-                Settings.Default.MainWindowMaximized = true;
+                SettingsController.CurrentSettings.MainWindowHeight = restoreBounds.Height;
+                SettingsController.CurrentSettings.MainWindowWidth = restoreBounds.Width;
+                SettingsController.CurrentSettings.MainWindowMaximized = true;
             }
             else
             {
-                Settings.Default.MainWindowHeight = height;
-                Settings.Default.MainWindowWidth = width;
-                Settings.Default.MainWindowMaximized = false;
+                SettingsController.CurrentSettings.MainWindowHeight = height;
+                SettingsController.CurrentSettings.MainWindowWidth = width;
+                SettingsController.CurrentSettings.MainWindowMaximized = false;
             }
 
             #endregion
 
-            Settings.Default.Save();
+            SettingsController.Save();
 
             ItemController.SaveFavoriteItemsToLocalFile();
             ItemController.SaveItemInformationLocal();
@@ -558,7 +541,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void ShowInfoWindow()
         {
-            if (Settings.Default.ShowInfoWindowOnStartChecked)
+            if (SettingsController.CurrentSettings.IsInfoWindowShownOnStart)
             {
                 var infoWindow = new InfoWindow();
                 infoWindow.Show();
@@ -594,7 +577,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                if (!Settings.Default.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
+                if (!SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
                 {
                     var existItemWindow = Application.Current.Windows.OfType<ItemWindow>().FirstOrDefault();
                     existItemWindow?.InitializeItemWindow(item);
@@ -1200,6 +1183,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot = _isTrackingFilteredEquipmentLoot;
                 OnPropertyChanged();
             }
         }
@@ -1221,6 +1205,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot = _isTrackingFilteredConsumableLoot;
                 OnPropertyChanged();
             }
         }
@@ -1263,6 +1248,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot = _isTrackingFilteredUnknownLoot;
                 OnPropertyChanged();
             }
         }
@@ -1275,6 +1261,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 _isTrackingPartyLootOnly = value;
                 TrackingController.LootController.IsPartyLootOnly = _isTrackingPartyLootOnly;
 
+                SettingsController.CurrentSettings.IsTrackingPartyLootOnly = _isTrackingPartyLootOnly;
                 OnPropertyChanged();
             }
         }
@@ -1295,6 +1282,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterFame = _isTrackingFilteredFame;
                 OnPropertyChanged();
             }
         }
@@ -1315,6 +1303,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterSilver = _isTrackingFilteredSilver;
                 OnPropertyChanged();
             }
         }
@@ -1335,6 +1324,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterFaction = _isTrackingFilteredFaction;
                 OnPropertyChanged();
             }
         }
@@ -1355,6 +1345,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints = _isTrackingFilteredSeasonPoints;
                 OnPropertyChanged();
             }
         }
@@ -1653,6 +1644,7 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isTrackingResetByMapChangeActive = value;
+                SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive = _isTrackingResetByMapChangeActive;
                 OnPropertyChanged();
             }
         }
@@ -1721,6 +1713,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingIconColor = TrackingIconType.Off;
                 }
 
+                SettingsController.CurrentSettings.IsTrackingActiveAtToolStart = _isTrackingActive;
                 OnPropertyChanged();
             }
         }
@@ -1772,7 +1765,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
                 var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
                 DamageMeterActivationToggleColor = _isDamageMeterTrackingActive ? colorOn : colorOff;
-                
+
+                SettingsController.CurrentSettings.IsDamageMeterTrackingActive = _isDamageMeterTrackingActive;
                 OnPropertyChanged();
             }
         }
@@ -2274,7 +2268,7 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _savedPlayerInformationName = value;
-                Settings.Default.SavedPlayerInformationName = _savedPlayerInformationName;
+                SettingsController.CurrentSettings.SavedPlayerInformationName = _savedPlayerInformationName;
                 OnPropertyChanged();
             }
         }
