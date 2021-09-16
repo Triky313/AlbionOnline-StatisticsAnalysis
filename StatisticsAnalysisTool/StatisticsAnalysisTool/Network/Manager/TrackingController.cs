@@ -65,7 +65,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             CombatController.AddDamageAsync(objectId, causerId, healthChange, newHealthValue);
         }
-        
+
         public event Action<ClusterInfo> OnChangeCluster;
 
         #endregion
@@ -103,7 +103,10 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             var newClusterHash = index + mapName;
 
-            if (_lastClusterHash == newClusterHash) return false;
+            if (_lastClusterHash == newClusterHash)
+            {
+                return false;
+            }
 
             _lastClusterHash = newClusterHash;
             return true;
@@ -117,7 +120,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 RemovesClusterIfMoreThanLimit();
             });
         }
-        
+
         public void RemovesClusterIfMoreThanLimit()
         {
             foreach (var cluster in _mainWindowViewModel.EnteredCluster.OrderBy(x => x.Entered))
@@ -127,7 +130,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     break;
                 }
 
-                _mainWindowViewModel.EnteredCluster.Remove(cluster);
+                _ = _mainWindowViewModel.EnteredCluster.Remove(cluster);
             }
         }
 
@@ -149,7 +152,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         #endregion
 
         #region Notifications
-        
+
         public async Task AddNotificationAsync(TrackingNotification item)
         {
             if (_mainWindowViewModel?.TrackingNotifications == null)
@@ -173,7 +176,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             await RemovesUnnecessaryNotificationsAsync();
         }
-        
+
         public async Task RemovesUnnecessaryNotificationsAsync()
         {
             if (!IsRemovesUnnecessaryNotificationsActiveAllowed())
@@ -190,13 +193,13 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     if (Application.Current.Dispatcher.CheckAccess())
                     {
-                        _mainWindowViewModel.TrackingNotifications.Remove(notification);
+                        _ = _mainWindowViewModel.TrackingNotifications.Remove(notification);
                     }
                     else
                     {
                         await Application.Current.Dispatcher.InvokeAsync(() =>
                         {
-                            _mainWindowViewModel.TrackingNotifications.Remove(notification);
+                            _ = _mainWindowViewModel.TrackingNotifications.Remove(notification);
                         });
                     }
                 }
@@ -230,15 +233,12 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void SetNotificationFilteredVisibility(TrackingNotification trackingNotification)
         {
-            if (!IsNotificationFiltered(trackingNotification))
-            {
-                trackingNotification.Visibility = Visibility.Visible;
-            }
+            trackingNotification.Visibility = IsNotificationFiltered(trackingNotification) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public bool IsNotificationFiltered(TrackingNotification trackingNotification)
         {
-            return _notificationTypeFilters?.Exists(x => x == trackingNotification.Type) ?? false;
+            return !_notificationTypeFilters?.Exists(x => x == trackingNotification.Type) ?? false;
         }
 
         public void AddFilterType(NotificationType notificationType)
@@ -253,7 +253,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             if (_notificationTypeFilters.Exists(x => x == notificationType))
             {
-                _notificationTypeFilters.Remove(notificationType);
+                _ = _notificationTypeFilters.Remove(notificationType);
             }
         }
 

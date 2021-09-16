@@ -27,6 +27,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+// ReSharper disable UnusedMember.Global
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -51,7 +52,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private DungeonStats _dungeonStatsTotal = new();
         private string _errorBarText;
         private Visibility _errorBarVisibility;
-        private string _fullItemInformationExistLocal;
         private Visibility _goldPriceVisibility;
         private Visibility _guildInformationVisibility;
         private double _guildInfoWidth;
@@ -167,7 +167,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             InitMainWindowData();
-            InitTracking();
+            _ = InitTrackingAsync();
         }
 
         public async void SetUiElements()
@@ -289,7 +289,7 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 var imageAwesome = (ImageAwesome) sender;
-                var item = (Item) imageAwesome.DataContext;
+                var item = (Item)imageAwesome.DataContext;
 
                 if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
                 {
@@ -388,14 +388,16 @@ namespace StatisticsAnalysisTool.ViewModels
             AlertManager = new AlertController(_mainWindow, ItemsView);
         }
 
-        private void UpgradeSettings()
+        private static void UpgradeSettings()
         {
-            if (Settings.Default.UpgradeRequired)
+            if (!Settings.Default.UpgradeRequired)
             {
-                Settings.Default.Upgrade();
-                Settings.Default.UpgradeRequired = false;
-                Settings.Default.Save();
+                return;
             }
+
+            Settings.Default.Upgrade();
+            Settings.Default.UpgradeRequired = false;
+            Settings.Default.Save();
         }
 
         private void InitWindowSettings()
@@ -406,7 +408,10 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 _mainWindow.Height = SettingsController.CurrentSettings.MainWindowHeight;
                 _mainWindow.Width = SettingsController.CurrentSettings.MainWindowWidth;
-                if (SettingsController.CurrentSettings.MainWindowMaximized) _mainWindow.WindowState = WindowState.Maximized;
+                if (SettingsController.CurrentSettings.MainWindowMaximized)
+                {
+                    _mainWindow.WindowState = WindowState.Maximized;
+                }
 
                 CenterWindowOnScreen();
 
@@ -455,13 +460,13 @@ namespace StatisticsAnalysisTool.ViewModels
             IsItemSearchCheckboxesEnabled = true;
             IsTxtSearchEnabled = true;
 
-            _mainWindow.Dispatcher?.Invoke(() => { _mainWindow.TxtSearch.Focus(); });
+            _mainWindow.Dispatcher?.Invoke(() => { _ = _mainWindow.TxtSearch.Focus(); });
         }
 
-        private async void InitTracking()
+        private async Task InitTrackingAsync()
         {
-            await WorldData.GetDataListFromJsonAsync();
-            await DungeonObjectData.GetDataListFromJsonAsync();
+            _ = await WorldData.GetDataListFromJsonAsync();
+            _ = await DungeonObjectData.GetDataListFromJsonAsync();
 
             TrackingController ??= new TrackingController(this, _mainWindow);
 
@@ -1204,7 +1209,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.ConsumableLoot);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot = _isTrackingFilteredConsumableLoot;
                 OnPropertyChanged();
             }
@@ -1226,7 +1231,8 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.SimpleLoot);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot = _isTrackingFilteredSimpleLoot;
                 OnPropertyChanged();
             }
         }
@@ -1247,7 +1253,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.UnknownLoot);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot = _isTrackingFilteredUnknownLoot;
                 OnPropertyChanged();
             }
@@ -1281,7 +1287,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Fame);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterFame = _isTrackingFilteredFame;
                 OnPropertyChanged();
             }
@@ -1302,7 +1308,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Silver);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterSilver = _isTrackingFilteredSilver;
                 OnPropertyChanged();
             }
@@ -1323,7 +1329,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.Faction);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterFaction = _isTrackingFilteredFaction;
                 OnPropertyChanged();
             }
@@ -1344,7 +1350,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.SeasonPoints);
                 }
 
-                TrackingController?.NotificationUiFilteringAsync();
+                _ = TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints = _isTrackingFilteredSeasonPoints;
                 OnPropertyChanged();
             }
@@ -2215,16 +2221,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string FullItemInformationExistLocal
-        {
-            get => _fullItemInformationExistLocal;
-            set
-            {
-                _fullItemInformationExistLocal = value;
-                OnPropertyChanged();
-            }
-        }
-
         public double DungeonStatsGridHeight {
             get => _dungeonStatsGridHeight;
             set
@@ -2331,10 +2327,10 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string DonateUrl => Settings.Default.DonateUrl;
-        public string DiscordUrl => Settings.Default.DiscordUrl;
-        public string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
-        public string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
+        public static string DonateUrl => Settings.Default.DonateUrl;
+        public static string DiscordUrl => Settings.Default.DiscordUrl;
+        public static string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
+        public static string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;
 

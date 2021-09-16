@@ -85,20 +85,15 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void UpdateDungeonSaveTimerUi(MapType mapType = MapType.Unknown)
         {
-            if (mapType == MapType.RandomDungeon)
-            {
-                _mainWindowViewModel.DungeonCloseTimer = new DungeonCloseTimer
+            _mainWindowViewModel.DungeonCloseTimer = mapType == MapType.RandomDungeon
+                ? new DungeonCloseTimer
                 {
                     IsVisible = Visibility.Visible
-                };
-            }
-            else
-            {
-                _mainWindowViewModel.DungeonCloseTimer = new DungeonCloseTimer
+                }
+                : new DungeonCloseTimer
                 {
                     IsVisible = Visibility.Collapsed
                 };
-            }
         }
 
         public async void ResetDungeons()
@@ -114,6 +109,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void SetDungeonChestOpen(int id)
         {
             if (_currentGuid != null)
+            {
                 try
                 {
                     var dun = GetDungeon((Guid)_currentGuid);
@@ -132,6 +128,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                     Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
+            }
 
             SetDungeonStatsDayUi();
             SetDungeonStatsTotalUi();
@@ -187,18 +184,20 @@ namespace StatisticsAnalysisTool.Network.Manager
             var dialog = new DialogWindow(LanguageController.Translation("REMOVE_DUNGEON"), LanguageController.Translation("SURE_YOU_WANT_TO_REMOVE_DUNGEON"));
             var dialogResult = dialog.ShowDialog();
 
-            if (dialogResult is true)
+            if (dialogResult is not true)
             {
-                _dungeons.Remove(dungeon);
-                await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
+                return;
             }
+
+            _ = _dungeons.Remove(dungeon);
+            await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
         }
-        
+
         private DungeonObject GetDungeon(Guid? guid)
         {
             return guid == null ? null : _dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid)guid));
         }
-        
+
         private static void SetDungeonMapType(DungeonObject dungeon, MapType mapType)
         {
             switch (mapType)
@@ -249,18 +248,18 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private double GetReSpec(DateTime? dateTime)
         {
-            return _dungeons.Where(x => x.EnterDungeonFirstTime > dateTime || dateTime == null
+            return _dungeons.Where(x => x.EnterDungeonFirstTime > dateTime || (dateTime == null
                 && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null
                      && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
-                    || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null)).Select(x => x.ReSpec).Sum();
+                    || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null))).Select(x => x.ReSpec).Sum();
         }
 
         private double GetSilver(DateTime? dateTime)
         {
-            return _dungeons.Where(x => x.EnterDungeonFirstTime > dateTime || dateTime == null
+            return _dungeons.Where(x => x.EnterDungeonFirstTime > dateTime || (dateTime == null
                 && ((_mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters != null
                      && _mainWindowViewModel.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
-                    || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null)).Select(x => x.Silver).Sum();
+                    || _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters == null))).Select(x => x.Silver).Sum();
         }
 
         public int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
@@ -350,17 +349,17 @@ namespace StatisticsAnalysisTool.Network.Manager
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
-        
+
         private bool ExistDungeon(Guid? mapGuid)
         {
             return mapGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid)mapGuid));
         }
-        
+
         private static bool IsDungeonCluster(MapType mapType, Guid? mapGuid)
         {
             return mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition && mapGuid != null;
         }
-        
+
         private static async Task SetBestDungeonTimeAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
         {
             if (await dungeons.CountAsync() <= 0)
@@ -492,7 +491,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonFactionCoinsPerHour.IsBestFactionCoinsPerHour = true;
             }
         }
-        
+
         public async Task SetOrUpdateDungeonsDataUiAsync()
         {
             _mainWindowViewModel.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
@@ -518,7 +517,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     });
                 }
             }
-            
+
             await RemoveLeftOverDungeonNotificationFragments().ConfigureAwait(false);
             await SetBestDungeonTimeAsync(_mainWindowViewModel?.TrackingDungeons.ToAsyncEnumerable());
             await CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons.ToAsyncEnumerable());
@@ -530,24 +529,19 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private static bool IsDungeonDifferenceToAnother(DungeonObject dungeonObject, DungeonNotificationFragment dungeonNotificationFragment)
         {
-            if (dungeonObject.TotalRunTimeInSeconds != dungeonNotificationFragment.TotalRunTimeInSeconds 
-                || !dungeonObject.GuidList.SequenceEqual(dungeonNotificationFragment.GuidList) 
-                || dungeonObject.DungeonEventObjects.Count != dungeonNotificationFragment.DungeonChests.Count
-                || dungeonObject.Status != dungeonNotificationFragment.Status
-                || Math.Abs(dungeonObject.Fame - dungeonNotificationFragment.Fame) > 0.0d
-                || Math.Abs(dungeonObject.ReSpec - dungeonNotificationFragment.ReSpec) > 0.0d
-                || Math.Abs(dungeonObject.Silver - dungeonNotificationFragment.Silver) > 0.0d
-                || Math.Abs(dungeonObject.FactionCoins - dungeonNotificationFragment.FactionCoins) > 0.0d
-                || Math.Abs(dungeonObject.FactionFlags - dungeonNotificationFragment.FactionFlags) > 0.0d
-                || dungeonObject.DiedInDungeon != dungeonNotificationFragment.DiedInDungeon
-                || dungeonObject.Faction != dungeonNotificationFragment.Faction
-                || dungeonObject.Mode != dungeonNotificationFragment.Mode
-                || dungeonObject.CityFaction != dungeonNotificationFragment.CityFaction)
-            {
-                return true;
-            }
-
-            return false;
+            return dungeonObject.TotalRunTimeInSeconds != dungeonNotificationFragment.TotalRunTimeInSeconds 
+                   || !dungeonObject.GuidList.SequenceEqual(dungeonNotificationFragment.GuidList) 
+                   || dungeonObject.DungeonEventObjects.Count != dungeonNotificationFragment.DungeonChests.Count
+                   || dungeonObject.Status != dungeonNotificationFragment.Status
+                   || Math.Abs(dungeonObject.Fame - dungeonNotificationFragment.Fame) > 0.0d
+                   || Math.Abs(dungeonObject.ReSpec - dungeonNotificationFragment.ReSpec) > 0.0d
+                   || Math.Abs(dungeonObject.Silver - dungeonNotificationFragment.Silver) > 0.0d
+                   || Math.Abs(dungeonObject.FactionCoins - dungeonNotificationFragment.FactionCoins) > 0.0d
+                   || Math.Abs(dungeonObject.FactionFlags - dungeonNotificationFragment.FactionFlags) > 0.0d
+                   || dungeonObject.DiedInDungeon != dungeonNotificationFragment.DiedInDungeon
+                   || dungeonObject.Faction != dungeonNotificationFragment.Faction
+                   || dungeonObject.Mode != dungeonNotificationFragment.Mode
+                   || dungeonObject.CityFaction != dungeonNotificationFragment.CityFaction;
         }
 
         private async Task DungeonUiFilteringAsync()
@@ -558,7 +552,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     d.Visibility = Visibility.Collapsed;
                 });
-            
+
             await _mainWindowViewModel?.TrackingDungeons?.Where(x => _mainWindowViewModel?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
@@ -566,7 +560,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     d.Visibility = Visibility.Visible;
                 });
         }
-        
+
         private async Task RemoveLeftOverDungeonNotificationFragments()
         {
             await foreach (var dungeonFragment in _mainWindowViewModel?.TrackingDungeons?.ToAsyncEnumerable().ConfigureAwait(false) ?? new ConfiguredCancelableAsyncEnumerable<DungeonNotificationFragment>())
@@ -579,20 +573,20 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
+                    _ = (_mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment));
                 });
             }
         }
 
         public async void RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
         {
-            _dungeons.RemoveAll(x => dungeonHash.Contains(x.DungeonHash));
+            _ = _dungeons.RemoveAll(x => dungeonHash.Contains(x.DungeonHash));
 
             foreach (var dungeonFragment in _mainWindowViewModel?.TrackingDungeons?.ToList() ?? new List<DungeonNotificationFragment>())
             {
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
+                    _ = (_mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment));
                 });
             }
 
@@ -627,7 +621,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             dungeon = null;
             return false;
         }
-        
+
         public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
         {
             if (_currentGuid == null)

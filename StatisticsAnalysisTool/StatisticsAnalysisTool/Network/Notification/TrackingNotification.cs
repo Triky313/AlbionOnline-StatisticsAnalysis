@@ -13,7 +13,8 @@ namespace StatisticsAnalysisTool.Network.Notification
     public class TrackingNotification : INotifyPropertyChanged
     {
         private NotificationType _type;
-        
+        private Visibility _visibility;
+
         public TrackingNotification(DateTime dateTime, IEnumerable<LineFragment> fragments, int itemIndex)
         {
             DateTime = dateTime;
@@ -43,7 +44,15 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public Guid InstanceId { get; }
 
-        public Visibility Visibility { get; set; }
+        public Visibility Visibility
+        {
+            get => _visibility;
+            set
+            {
+                _visibility = value;
+                OnPropertyChanged();
+            }
+        }
 
         private async Task SetTypeAsync(int itemIndex)
         {
