@@ -502,25 +502,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void SaveSettings(WindowState windowState, Rect restoreBounds, double height, double width)
         {
-            #region Tracking
-
-            SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive = IsTrackingResetByMapChangeActive;
-            SettingsController.CurrentSettings.IsTrackingActiveAtToolStart = IsTrackingActive;
-
-            SettingsController.CurrentSettings.IsMainTrackerFilterSilver = IsTrackingFilteredSilver;
-            SettingsController.CurrentSettings.IsMainTrackerFilterFame = IsTrackingFilteredFame;
-            SettingsController.CurrentSettings.IsMainTrackerFilterFaction = IsTrackingFilteredFaction;
-            SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints = IsTrackingFilteredSeasonPoints;
-
-            SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot = IsTrackingFilteredEquipmentLoot;
-            SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot = IsTrackingFilteredConsumableLoot;
-            SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot = IsTrackingFilteredSimpleLoot;
-            SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot = IsTrackingFilteredUnknownLoot;
-            SettingsController.CurrentSettings.IsDamageMeterTrackingActive = IsDamageMeterTrackingActive;
-            SettingsController.CurrentSettings.IsTrackingPartyLootOnly = IsTrackingPartyLootOnly;
-
-            #endregion
-
             #region Window
 
             if (windowState == WindowState.Maximized)
@@ -1202,6 +1183,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot = _isTrackingFilteredEquipmentLoot;
                 OnPropertyChanged();
             }
         }
@@ -1223,6 +1205,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot = _isTrackingFilteredConsumableLoot;
                 OnPropertyChanged();
             }
         }
@@ -1265,6 +1248,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot = _isTrackingFilteredUnknownLoot;
                 OnPropertyChanged();
             }
         }
@@ -1277,6 +1261,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 _isTrackingPartyLootOnly = value;
                 TrackingController.LootController.IsPartyLootOnly = _isTrackingPartyLootOnly;
 
+                SettingsController.CurrentSettings.IsTrackingPartyLootOnly = _isTrackingPartyLootOnly;
                 OnPropertyChanged();
             }
         }
@@ -1297,6 +1282,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterFame = _isTrackingFilteredFame;
                 OnPropertyChanged();
             }
         }
@@ -1317,6 +1303,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterSilver = _isTrackingFilteredSilver;
                 OnPropertyChanged();
             }
         }
@@ -1337,6 +1324,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterFaction = _isTrackingFilteredFaction;
                 OnPropertyChanged();
             }
         }
@@ -1357,6 +1345,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints = _isTrackingFilteredSeasonPoints;
                 OnPropertyChanged();
             }
         }
@@ -1655,6 +1644,7 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isTrackingResetByMapChangeActive = value;
+                SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive = _isTrackingResetByMapChangeActive;
                 OnPropertyChanged();
             }
         }
@@ -1723,6 +1713,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingIconColor = TrackingIconType.Off;
                 }
 
+                SettingsController.CurrentSettings.IsTrackingActiveAtToolStart = _isTrackingActive;
                 OnPropertyChanged();
             }
         }
@@ -1774,7 +1765,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
                 var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
                 DamageMeterActivationToggleColor = _isDamageMeterTrackingActive ? colorOn : colorOff;
-                
+
+                SettingsController.CurrentSettings.IsDamageMeterTrackingActive = _isDamageMeterTrackingActive;
                 OnPropertyChanged();
             }
         }
