@@ -230,15 +230,12 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void SetNotificationFilteredVisibility(TrackingNotification trackingNotification)
         {
-            if (!IsNotificationFiltered(trackingNotification))
-            {
-                trackingNotification.Visibility = Visibility.Visible;
-            }
+            trackingNotification.Visibility = IsNotificationFiltered(trackingNotification) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public bool IsNotificationFiltered(TrackingNotification trackingNotification)
         {
-            return _notificationTypeFilters?.Exists(x => x == trackingNotification.Type) ?? false;
+            return !_notificationTypeFilters?.Exists(x => x == trackingNotification.Type) ?? false;
         }
 
         public void AddFilterType(NotificationType notificationType)
