@@ -186,7 +186,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Modes.Add(new ModeStruct {Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player});
             //Modes.Add(new ModeStruct {Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold});
             ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
-
+            
             #endregion Set Modes to combobox
 
             #region Full Item Info elements
@@ -227,7 +227,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             #region Player information
 
-            SavedPlayerInformationName = Settings.Default.SavedPlayerInformationName;
+            SavedPlayerInformationName = SettingsController.CurrentSettings.SavedPlayerInformationName;
 
             #endregion Player information
 
@@ -2268,7 +2268,7 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _savedPlayerInformationName = value;
-                Settings.Default.SavedPlayerInformationName = _savedPlayerInformationName;
+                SettingsController.CurrentSettings.SavedPlayerInformationName = _savedPlayerInformationName;
                 OnPropertyChanged();
             }
         }

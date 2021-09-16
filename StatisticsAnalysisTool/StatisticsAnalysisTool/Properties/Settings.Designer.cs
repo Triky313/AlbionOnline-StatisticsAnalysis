@@ -50,18 +50,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Normal")]
-        public string ActiveMode {
-            get {
-                return ((string)(this["ActiveMode"]));
-            }
-            set {
-                this["ActiveMode"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LEM458PZ4FV4" +
@@ -98,18 +86,6 @@ namespace StatisticsAnalysisTool.Properties {
         public string DefaultLanguageCultureName {
             get {
                 return ((string)(this["DefaultLanguageCultureName"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SavedPlayerInformationName {
-            get {
-                return ((string)(this["SavedPlayerInformationName"]));
-            }
-            set {
-                this["SavedPlayerInformationName"] = value;
             }
         }
         
