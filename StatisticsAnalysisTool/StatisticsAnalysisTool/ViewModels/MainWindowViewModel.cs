@@ -27,6 +27,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+// ReSharper disable UnusedMember.Global
 
 namespace StatisticsAnalysisTool.ViewModels
 {

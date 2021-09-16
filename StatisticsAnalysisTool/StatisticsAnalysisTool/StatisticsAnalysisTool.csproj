@@ -363,4 +363,7 @@
     <None Remove="Sounds\alert3.wav" />
     <None Remove="Sounds\alert4.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
 </Project>
