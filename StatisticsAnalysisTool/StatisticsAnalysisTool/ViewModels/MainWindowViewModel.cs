@@ -1227,6 +1227,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 TrackingController?.NotificationUiFilteringAsync();
+                SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot = _isTrackingFilteredSimpleLoot;
                 OnPropertyChanged();
             }
         }
