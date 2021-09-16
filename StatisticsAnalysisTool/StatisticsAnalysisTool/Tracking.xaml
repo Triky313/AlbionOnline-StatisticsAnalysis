@@ -3,8 +3,8 @@
                     xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
                     xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:networkModel="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
@@ -1270,39 +1270,52 @@
     <DataTemplate DataType="{x:Type networkModel:DungeonCloseTimer}">
         <Border Visibility="{Binding IsVisible}" Style="{StaticResource Tracking.Information.Border}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
-                <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationDungeonTimer, FallbackValue=DUNGEON__TIMER}"></Label>
-                <Grid>
+                <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationDungeonTimer, FallbackValue=DUNGEON__TIMER}" />
+                <StackPanel Orientation="Horizontal" Width="auto">
                     <Grid>
-                        <Grid.Style>
-                            <Style TargetType="{x:Type Grid}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        <Label Content="{Binding TimerString, FallbackValue=00:00:00}" />
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <StackPanel ZIndex="2" Orientation="Horizontal">
+                                <Label Content="{Binding TimerString, FallbackValue=00:00:00}" />
+                            </StackPanel>
+                        </Grid>
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Label FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Green.2}" Content="{Binding TranslationSafe, FallbackValue=SAFE}" />
+                        </Grid>
                     </Grid>
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="{x:Type Grid}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="True">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsDungeonClosed}" Value="False">
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        <Label FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Green.2}" Content="{Binding TranslationSafe, FallbackValue=SAFE}" />
+                    <Grid ZIndex="2" Height="15" Width="15" Margin="0,0,5,0" VerticalAlignment="Center">
+                        <fa5:ImageAwesome Icon="Solid_SyncAlt" Foreground="{StaticResource SolidColorBrush.Foreground.First}" ToolTip="{Binding TranslationResetDungeonTimer}">
+                            <fa5:ImageAwesome.InputBindings>
+                                <MouseBinding
+                                    MouseAction="LeftClick"
+                                    Command="{Binding RefreshDungeonTimer}" />
+                            </fa5:ImageAwesome.InputBindings>
+                        </fa5:ImageAwesome>
                     </Grid>
-                </Grid>
+                </StackPanel>
             </StackPanel>
         </Border>
     </DataTemplate>
