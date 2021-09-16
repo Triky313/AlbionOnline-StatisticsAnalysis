@@ -19,10 +19,10 @@ namespace StatisticsAnalysisTool.Network
 
         private readonly MainWindowViewModel _mainWindowViewModel;
 
-        private readonly List<ValuePerHour> _famePerHourList = new List<ValuePerHour>();
-        private readonly List<ValuePerHour> _reSpecPerHourList = new List<ValuePerHour>();
-        private readonly List<ValuePerHour> _silverPerHourList = new List<ValuePerHour>();
-        private readonly List<ValuePerHour> _factionPointsPerHourList = new List<ValuePerHour>();
+        private readonly List<ValuePerHour> _famePerHourList = new();
+        private readonly List<ValuePerHour> _reSpecPerHourList = new();
+        private readonly List<ValuePerHour> _silverPerHourList = new();
+        private readonly List<ValuePerHour> _factionPointsPerHourList = new();
 
         private double _famePerHourValue;
         private double _reSpecPerHourValue;

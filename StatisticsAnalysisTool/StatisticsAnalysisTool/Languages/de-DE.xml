@@ -449,4 +449,5 @@
 	<translation name="SEASON_POINTS">Season Punkte</translation>
 	<translation name="EXPORT_LOOT_TO_FILE">Exportiere Loot in Datei</translation>
 	<translation name="TRACK_PARTY_LOOT_ONLY">Nur Party Beute tracken</translation>
+	<translation name="RESET_DUNGEON_TIMER">Dungeon-Timer zurücksetzen</translation>
 </translations>

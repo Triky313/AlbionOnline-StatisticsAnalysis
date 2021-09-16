@@ -448,4 +448,5 @@
 	<translation name="SEASON_POINTS">Season points</translation>
 	<translation name="EXPORT_LOOT_TO_FILE">Export loot to file</translation>
 	<translation name="TRACK_PARTY_LOOT_ONLY">Track party loot only</translation>
+	<translation name="RESET_DUNGEON_TIMER">Reset dungeon timer</translation>
 </translations>
