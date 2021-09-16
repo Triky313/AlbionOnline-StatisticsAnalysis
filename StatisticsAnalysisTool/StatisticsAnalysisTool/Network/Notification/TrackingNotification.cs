@@ -34,9 +34,11 @@ namespace StatisticsAnalysisTool.Network.Notification
         public DateTime DateTime { get; }
         public IEnumerable<LineFragment> Fragments { get; }
 
-        public NotificationType Type {
+        public NotificationType Type
+        {
             get => _type;
-            set {
+            set
+            {
                 _type = value;
                 OnPropertyChanged();
             }
@@ -69,7 +71,7 @@ namespace StatisticsAnalysisTool.Network.Notification
                 _ => NotificationType.UnknownLoot,
             };
         }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
