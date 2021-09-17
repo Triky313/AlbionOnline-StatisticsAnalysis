@@ -1,4 +1,5 @@
 ﻿using log4net;
+using System.Linq;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Views
@@ -93,7 +94,7 @@ namespace StatisticsAnalysisTool.Views
         {
             FilterItemPriceValues();
         }
-        
+
         private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
         {
             _itemWindowViewModel.IsAutoUpdateActive = !_itemWindowViewModel.IsAutoUpdateActive;
@@ -131,6 +132,11 @@ namespace StatisticsAnalysisTool.Views
         private void MarketListBuyPriceMaxLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             _itemWindowViewModel.CopyTextToClipboard(sender);
+        }
+
+        private void TxtBoxCraftingQuantity_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
         }
     }
 }

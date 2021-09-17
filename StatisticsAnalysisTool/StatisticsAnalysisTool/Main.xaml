@@ -1295,6 +1295,27 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
+    <!-- TextBox crafting -->
+    <Style x:Key="TextBox.Crafting" TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Third}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.Color.6}" />
+        <Setter Property="MaxLength" Value="5" />
+        <Setter Property="Height" Value="22" />
+        <Setter Property="MinWidth" Value="75" />
+        <Setter Property="MaxWidth" Value="100" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <!-- Label crafting -->
+    <Style x:Key="Label.Crafting" TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Margin" Value="0,0,0,0" />
+        <Setter Property="Padding" Value="2,0,2,0" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
     <!-- Tab control -->
     <Style TargetType="TabControl">
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
