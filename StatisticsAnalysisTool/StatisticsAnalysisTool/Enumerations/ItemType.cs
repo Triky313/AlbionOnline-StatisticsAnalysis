@@ -11,6 +11,10 @@
         Farmable,
         Journal,
         LabourerContract,
-        Furniture
+        Furniture,
+        Hideout,
+        Mount,
+        MountSkin,
+        CrystalLeagueItem
     }
 }
