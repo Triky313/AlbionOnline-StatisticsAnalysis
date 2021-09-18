@@ -36,5 +36,35 @@
                 _ => 0
             };
         }
+
+        public static double GetItemValue(int numberOfMaterials, ItemTier tier, ItemLevel level, int artifactItemValue = 0)
+        {
+            return (tier, level) switch
+            {
+                (ItemTier.T2, ItemLevel.Level0) => numberOfMaterials * 2,
+                (ItemTier.T3, ItemLevel.Level0) => numberOfMaterials * 6,
+                (ItemTier.T4, ItemLevel.Level0) => (numberOfMaterials * 14) + artifactItemValue,
+                (ItemTier.T4, ItemLevel.Level1) => (numberOfMaterials * 30) + artifactItemValue,
+                (ItemTier.T4, ItemLevel.Level2) => (numberOfMaterials * 54) + artifactItemValue,
+                (ItemTier.T4, ItemLevel.Level3) => (numberOfMaterials * 102) + artifactItemValue,
+                (ItemTier.T5, ItemLevel.Level0) => (numberOfMaterials * 30) + artifactItemValue,
+                (ItemTier.T5, ItemLevel.Level1) => (numberOfMaterials * 62) + artifactItemValue,
+                (ItemTier.T5, ItemLevel.Level2) => (numberOfMaterials * 118) + artifactItemValue,
+                (ItemTier.T5, ItemLevel.Level3) => (numberOfMaterials * 230) + artifactItemValue,
+                (ItemTier.T6, ItemLevel.Level0) => (numberOfMaterials * 62) + artifactItemValue,
+                (ItemTier.T6, ItemLevel.Level1) => (numberOfMaterials * 126) + artifactItemValue,
+                (ItemTier.T6, ItemLevel.Level2) => (numberOfMaterials * 246) + artifactItemValue,
+                (ItemTier.T6, ItemLevel.Level3) => (numberOfMaterials * 486) + artifactItemValue,
+                (ItemTier.T7, ItemLevel.Level0) => (numberOfMaterials * 126) + artifactItemValue,
+                (ItemTier.T7, ItemLevel.Level1) => (numberOfMaterials * 254) + artifactItemValue,
+                (ItemTier.T7, ItemLevel.Level2) => (numberOfMaterials * 502) + artifactItemValue,
+                (ItemTier.T7, ItemLevel.Level3) => (numberOfMaterials * 1123) + artifactItemValue,
+                (ItemTier.T8, ItemLevel.Level0) => (numberOfMaterials * 254) + artifactItemValue,
+                (ItemTier.T8, ItemLevel.Level1) => (numberOfMaterials * 510) + artifactItemValue,
+                (ItemTier.T8, ItemLevel.Level2) => (numberOfMaterials * 1014) + artifactItemValue,
+                (ItemTier.T8, ItemLevel.Level3) => (numberOfMaterials * 2022) + artifactItemValue,
+                _ => 0
+            };
+        }
     }
 }
