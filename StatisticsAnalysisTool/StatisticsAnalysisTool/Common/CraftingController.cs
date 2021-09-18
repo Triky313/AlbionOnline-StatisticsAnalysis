@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common
@@ -25,7 +26,7 @@ namespace StatisticsAnalysisTool.Common
         // Total Base Fame * Item Menge = Total Book Fame
         // Total Book Fame / Fame Buch Max Menge (zB. T8 19200) = Anzahl benötigtiger Bücher zum Craften
 
-        public static double GetRequiredJournalsToCraft(Item item, int ItemQuantityToBeCrafted, ItemLevel level)
+        public static double GetRequiredJournalAmount(Item item, int ItemQuantityToBeCrafted, ItemLevel level)
         {
             var totalBaseFame = GetTotalBaseFame(item.FullItemInformation.CraftingRequirements.TotalAmountResources, (ItemTier)item.Tier, level);
             var totalJournalFame = totalBaseFame * ItemQuantityToBeCrafted;
@@ -132,7 +133,8 @@ namespace StatisticsAnalysisTool.Common
             {
                 var options = new JsonSerializerOptions()
                 {
-                    ReadCommentHandling = JsonCommentHandling.Skip
+                    ReadCommentHandling = JsonCommentHandling.Skip,
+                    NumberHandling = JsonNumberHandling.AllowReadingFromString
                 };
 
                 var localItemString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemsFileName), Encoding.UTF8);

@@ -178,6 +178,12 @@ namespace StatisticsAnalysisTool.Network.Manager
             for (var i = 0; i < notificationCounter; i++)
             {
                 var randomItem = ItemController.GetItemByIndex(_random.Next(1, 7000));
+
+                if (randomItem == null)
+                {
+                    continue;
+                }
+
                 await AddLootAsync(new Loot()
                 {
                     LootedBody = TestMethods.GenerateName(8),

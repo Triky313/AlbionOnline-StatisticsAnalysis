@@ -4,9 +4,11 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.ItemWindowModel;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -64,6 +66,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _showBlackZoneOutpostsChecked;
         private bool _showVillagesChecked;
         private ItemWindowTranslation _translation;
+        private int _requiredJournalAmount;
+        private int _craftingItemQuantity;
+        private ObservableCollection<RequiredResource> _requiredResources = new();
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
@@ -100,7 +105,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             ItemTierLevel = Item?.Tier != -1 && Item?.Level != -1 ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
-            SetFullItemInformationAsync(item);
+            await SetFullItemInformationAsync(item);
+            await InitCraftingTabUiAsync();
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
@@ -129,10 +135,32 @@ namespace StatisticsAnalysisTool.ViewModels
             RefreshSpin = IsAutoUpdateActive;
         }
 
-        private async void SetFullItemInformationAsync(Item item)
+        private async Task InitCraftingTabUiAsync()
+        {
+            CraftingItemQuantity = 1;
+
+            var craftResourceList = Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.ToAsyncEnumerable();
+            await foreach (var craftResource in craftResourceList ?? new List<CraftResourceList>().ToAsyncEnumerable())
+            {
+                var item = ItemController.GetItemByUniqueName(craftResource.UniqueName);
+                RequiredResources.Add(new RequiredResource()
+                {
+                    CraftingResourceName = item.LocalizedName,
+                    Quantity = craftResource.Count,
+                    Icon = item.Icon,
+                    ResourceCost = 0
+                });
+            }
+        }
+
+        private async Task SetFullItemInformationAsync(Item item)
         {
             InformationLoadingImageVisibility = Visibility.Visible;
-            ItemInformation = await ItemController.GetFullItemInformationAsync(item);
+
+            var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);
+            ItemInformation = fullItemInfo;
+            Item.FullItemInformation = fullItemInfo;
+
             InformationLoadingImageVisibility = Visibility.Hidden;
         }
 
@@ -525,7 +553,11 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                if (list.Exists(s => s.BuyPriceMax == max)) list.Find(s => s.BuyPriceMax == max).BestBuyMaxPrice = true;
+                if (list.Exists(s => s.BuyPriceMax == max))
+                {
+                    // ReSharper disable once PossibleNullReferenceException
+                    list.Find(s => s?.BuyPriceMax == max).BestBuyMaxPrice = true;
+                }
             }
             catch
             {
@@ -929,6 +961,36 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public int CraftingItemQuantity
+        {
+            get => _craftingItemQuantity;
+            set
+            {
+                _craftingItemQuantity = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int RequiredJournalAmount
+        {
+            get => _requiredJournalAmount;
+            set
+            {
+                _requiredJournalAmount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<RequiredResource> RequiredResources
+        {
+            get => _requiredResources;
+            set
+            {
+                _requiredResources = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -947,7 +1009,7 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 var label = (Label) sender;
-                Clipboard.SetText(label.Content.ToString());
+                Clipboard.SetText(label.Content.ToString() ?? string.Empty);
             }
             catch (Exception ex)
             {

@@ -41,6 +41,11 @@ namespace StatisticsAnalysisTool.Common
             return Items?.FirstOrDefault(i => i.Index == index);
         }
 
+        public static Item GetItemByUniqueName(string uniqueName)
+        {
+            return Items?.FirstOrDefault(i => i.UniqueName == uniqueName);
+        }
+
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
         {
             if (localizedNames == null)
