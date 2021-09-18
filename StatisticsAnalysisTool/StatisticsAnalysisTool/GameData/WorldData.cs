@@ -263,7 +263,7 @@ namespace StatisticsAnalysisTool.GameData
         }
 
         #region Helper methods
-        
+
         private static ObservableCollection<ClusterInfo> GetWorldDataFromLocal()
         {
             try
@@ -273,7 +273,7 @@ namespace StatisticsAnalysisTool.GameData
                     ReadCommentHandling = JsonCommentHandling.Skip
                 };
 
-                var localItemString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.WorldDataDirectoryName, Settings.Default.WorldDataFileName), Encoding.UTF8);
+                var localItemString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.WorldDataFileName), Encoding.UTF8);
                 return ConvertItemJsonObjectToMapData(JsonSerializer.Deserialize<ObservableCollection<WorldJsonObject>>(localItemString, options));
             }
             catch (Exception e)
@@ -310,7 +310,7 @@ namespace StatisticsAnalysisTool.GameData
                 using var content = response.Content;
 
                 var fileString = await content.ReadAsStringAsync();
-                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName), fileString, Encoding.UTF8);
+                await File.WriteAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName), fileString, Encoding.UTF8);
                 return true;
             }
             catch (HttpRequestException e)

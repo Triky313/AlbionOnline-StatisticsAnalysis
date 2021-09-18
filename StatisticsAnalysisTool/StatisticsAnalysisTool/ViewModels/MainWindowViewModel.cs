@@ -156,6 +156,7 @@ namespace StatisticsAnalysisTool.ViewModels
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
             SettingsController.Load();
+            _ = CraftingController.LoadAsync();
             InitViewModeGrids();
             UpgradeSettings();
             InitWindowSettings();
