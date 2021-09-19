@@ -5,12 +5,17 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
-    public class RequiredResource
+    public class RequiredResource : INotifyPropertyChanged
     {
         private string _craftingResourceName;
-        private int _resourceCost;
+        private long _resourceCost;
         private BitmapImage _icon;
-        private int _quantity;
+        private long _quantity;
+        private long _totalQuantity;
+        private long _totalCost;
+        private long _craftingQuantity;
+        private string _totalQuantityString;
+        private string _totalCostString;
 
         public string CraftingResourceName
         {
@@ -32,17 +37,19 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
-        public int ResourceCost
+        public long ResourceCost
         {
             get => _resourceCost;
             set
             {
                 _resourceCost = value;
+
+                TotalCost = _resourceCost * _craftingQuantity;
                 OnPropertyChanged();
             }
         }
 
-        public int Quantity
+        public long Quantity
         {
             get => _quantity;
             set
@@ -52,8 +59,69 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
+        public long TotalQuantity
+        {
+            get => _totalQuantity;
+            set
+            {
+                _totalQuantity = value;
+                TotalQuantityString = Utilities.LongNumberToString(_totalQuantity);
+                OnPropertyChanged();
+            }
+        }
+
+        public long TotalCost
+        {
+            get => _totalCost;
+            set
+            {
+                _totalCost = value;
+                TotalCostString = Utilities.LongNumberToString(_totalCost);
+                OnPropertyChanged();
+            }
+        }
+
+        public long CraftingQuantity
+        {
+            get => _craftingQuantity;
+            set
+            {
+                _craftingQuantity = value;
+
+                TotalQuantity = Quantity * _craftingQuantity;
+                TotalCost = ResourceCost * _craftingQuantity;
+                OnPropertyChanged();
+            }
+        }
+
+        #region String value bindings
+
+        public string TotalQuantityString
+        {
+            get => _totalQuantityString;
+            private set
+            {
+                _totalQuantityString = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TotalCostString
+        {
+            get => _totalCostString;
+            private set
+            {
+                _totalCostString = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         public string TranslationCost => LanguageController.Translation("COST");
         public string TranslationQuantity => LanguageController.Translation("QUANTITY");
+        public string TranslationTotalQuantity => LanguageController.Translation("TOTAL_QUANTITY");
+        public string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

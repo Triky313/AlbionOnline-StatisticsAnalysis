@@ -67,7 +67,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _showVillagesChecked;
         private ItemWindowTranslation _translation;
         private int _requiredJournalAmount;
-        private int _craftingItemQuantity;
+        private int _craftingItemQuantity = 1;
         private ObservableCollection<RequiredResource> _requiredResources = new();
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
@@ -135,14 +135,20 @@ namespace StatisticsAnalysisTool.ViewModels
             RefreshSpin = IsAutoUpdateActive;
         }
 
+        #region Crafting Tab
+
         private async Task InitCraftingTabUiAsync()
         {
-            CraftingItemQuantity = 1;
+            await GetCraftResourcesAsync();
+        }
 
+        private async Task GetCraftResourcesAsync()
+        {
             var craftResourceList = Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.ToAsyncEnumerable();
+
             await foreach (var craftResource in craftResourceList ?? new List<CraftResourceList>().ToAsyncEnumerable())
             {
-                var item = ItemController.GetItemByUniqueName(craftResource.UniqueName);
+                var item = GetSuitableResourceItem(craftResource.UniqueName);
                 RequiredResources.Add(new RequiredResource()
                 {
                     CraftingResourceName = item.LocalizedName,
@@ -152,6 +158,14 @@ namespace StatisticsAnalysisTool.ViewModels
                 });
             }
         }
+
+        private Item GetSuitableResourceItem(string uniqueName)
+        {
+            var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
+            return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
+        }
+
+        #endregion
 
         private async Task SetFullItemInformationAsync(Item item)
         {
@@ -967,6 +981,11 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _craftingItemQuantity = value;
+
+                foreach (var requiredResource in RequiredResources.ToList())
+                {
+                    requiredResource.CraftingQuantity = _craftingItemQuantity;
+                }
                 OnPropertyChanged();
             }
         }

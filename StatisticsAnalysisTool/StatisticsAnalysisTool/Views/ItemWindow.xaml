@@ -375,7 +375,7 @@
                         <StackPanel Orientation="Vertical" Margin="5">
                             <StackPanel Orientation="Vertical" Margin="5">
                                 <Label Content="{Binding Translation.Quantity, FallbackValue=QUANTITY}" Style="{StaticResource Label.Crafting}" />
-                                <TextBox Text="{Binding CraftingItemQuantity, IsAsync=True, Mode=TwoWay}" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
+                                <TextBox Text="{Binding CraftingItemQuantity, IsAsync=True}" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Margin="5">
                                 <Label Content="{Binding Translation.Fee, FallbackValue=FEE}" Style="{StaticResource Label.Crafting}" />
@@ -392,7 +392,7 @@
                                 <Label Content="{Binding Translation.RequiredResources, FallbackValue=REQUIRED__RESOURCES}" Style="{StaticResource Label.Crafting}" />
                             </StackPanel>
 
-                            <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True, Mode=TwoWay}"/>
+                            <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}"/>
 
                             <!--<StackPanel Orientation="Horizontal" Margin="5">
                                 <Image Source="{Binding CraftingResourceFirstImage}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,5,0,5" VerticalAlignment="Top" />

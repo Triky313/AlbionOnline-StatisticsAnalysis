@@ -132,6 +132,8 @@
 
     <SolidColorBrush x:Key="SolidColorBrush.Foreground.First" Color="Gainsboro"/>
     <SolidColorBrush x:Key="SolidColorBrush.Foreground.Second" Color="#B4B4B4"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Foreground.Third" Color="#ff3da2ca"/>
+
     <SolidColorBrush x:Key="SolidColorBrush.Background.First" Color="{StaticResource Background.First}" />
     <SolidColorBrush x:Key="SolidColorBrush.Background.Second" Color="{StaticResource Background.Second}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Background.Third" Color="{StaticResource Background.Third}"/>
@@ -1317,6 +1319,15 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
 
+    <!-- Label crafting title -->
+    <Style x:Key="Label.Crafting.Title" TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.Third}" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Margin" Value="0,0,0,0" />
+        <Setter Property="Padding" Value="2,0,2,0" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
     <!-- Tab control -->
     <Style TargetType="TabControl">
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
@@ -1375,16 +1386,24 @@
 
     <DataTemplate DataType="{x:Type itemWindowModel:RequiredResource}">
         <StackPanel Orientation="Horizontal" Margin="5">
-            <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,5,0,5" VerticalAlignment="Top" />
+            <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,0,0,0" VerticalAlignment="Top" />
             <StackPanel Orientation="Vertical">
-                <Label Content="{Binding CraftingResourceName, FallbackValue=CRAFTING__RESOURCE__FIRST__NAME}" Style="{StaticResource Label.Crafting}" />
+                <Label Content="{Binding CraftingResourceName, FallbackValue=CRAFTING__RESOURCE__FIRST__NAME}" Style="{StaticResource Label.Crafting.Title}" />
                 <StackPanel Orientation="Horizontal">
                     <Label Content="{Binding TranslationCost, FallbackValue=COST__A}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
-                    <TextBox Text="{Binding ResourceCost, FallbackValue=0}" Style="{StaticResource TextBox.Crafting}" />
+                    <TextBox Text="{Binding ResourceCost}" Style="{StaticResource TextBox.Crafting}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="{Binding TranslationQuantity, FallbackValue=QUANTITY}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
-                    <Label Content="{Binding Quantity, FallbackValue=0}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                    <Label Content="{Binding Quantity}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding TranslationTotalQuantity, FallbackValue=TOTAL__QUANTITY}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                    <Label Content="{Binding TotalQuantityString}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding TranslationTotalCost, FallbackValue=TOTAL__COST}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                    <Label Content="{Binding TotalCostString}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>
