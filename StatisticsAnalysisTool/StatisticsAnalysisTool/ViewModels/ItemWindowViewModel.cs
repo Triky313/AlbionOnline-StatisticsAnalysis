@@ -135,7 +135,7 @@ namespace StatisticsAnalysisTool.ViewModels
             RefreshSpin = IsAutoUpdateActive;
         }
 
-        #region Crafting Tab
+        #region Crafting tab
 
         private async Task InitCraftingTabUiAsync()
         {
@@ -154,7 +154,8 @@ namespace StatisticsAnalysisTool.ViewModels
                     CraftingResourceName = item.LocalizedName,
                     Quantity = craftResource.Count,
                     Icon = item.Icon,
-                    ResourceCost = 0
+                    ResourceCost = 0,
+                    CraftingQuantity = CraftingItemQuantity
                 });
             }
         }
@@ -165,7 +166,7 @@ namespace StatisticsAnalysisTool.ViewModels
             return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
         }
 
-        #endregion
+        #endregion Crafting tab
 
         private async Task SetFullItemInformationAsync(Item item)
         {

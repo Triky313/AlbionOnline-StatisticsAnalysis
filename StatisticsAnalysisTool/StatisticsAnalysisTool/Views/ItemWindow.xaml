@@ -370,85 +370,75 @@
                 </ListView>
             </TabItem>
             <TabItem Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
-                <Grid Background="{StaticResource SolidColorBrush.Background.First}">
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel Orientation="Vertical" Margin="5">
+                <ScrollViewer HorizontalScrollBarVisibility="Hidden">
+                    <Grid Background="{StaticResource SolidColorBrush.Background.First}">
+                        <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical" Margin="5">
-                                <Label Content="{Binding Translation.Quantity, FallbackValue=QUANTITY}" Style="{StaticResource Label.Crafting}" />
-                                <TextBox Text="{Binding CraftingItemQuantity, IsAsync=True}" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" Margin="5">
-                                <Label Content="{Binding Translation.Fee, FallbackValue=FEE}" Style="{StaticResource Label.Crafting}" />
-                                <TextBox Text="1" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" Margin="5">
-                                <Label Content="{Binding Translation.Tax, FallbackValue=TAX}" Style="{StaticResource Label.Crafting}" />
-                                <TextBox Text="1" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
-                            </StackPanel>
-                        </StackPanel>
-
-                        <StackPanel Margin="5">
-                            <StackPanel Orientation="Vertical" Margin="5">
-                                <Label Content="{Binding Translation.RequiredResources, FallbackValue=REQUIRED__RESOURCES}" Style="{StaticResource Label.Crafting}" />
-                            </StackPanel>
-
-                            <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}"/>
-
-                            <!--<StackPanel Orientation="Horizontal" Margin="5">
-                                <Image Source="{Binding CraftingResourceFirstImage}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,5,0,5" VerticalAlignment="Top" />
-                                <StackPanel Orientation="Vertical">
-                                    <Label Content="{Binding CraftingResourceFirstName, FallbackValue=CRAFTING__RESOURCE__FIRST__NAME}" Style="{StaticResource Label.Crafting}" />
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="{Binding Translation.Cost, FallbackValue=COST__A}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
-                                        <TextBox Text="{Binding FirstResourceCost, FallbackValue=0}" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
-                                    </StackPanel>
+                                <StackPanel Orientation="Vertical" Margin="5">
+                                    <Label Content="{Binding Translation.Quantity, FallbackValue=QUANTITY}" Style="{StaticResource Label.Crafting}" />
+                                    <TextBox Text="{Binding CraftingItemQuantity, IsAsync=True}" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Margin="5">
+                                    <Label Content="{Binding Translation.Fee, FallbackValue=FEE}" Style="{StaticResource Label.Crafting}" />
+                                    <TextBox Text="1" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Margin="5">
+                                    <Label Content="{Binding Translation.Tax, FallbackValue=TAX}" Style="{StaticResource Label.Crafting}" />
+                                    <TextBox Text="1" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5">
-                                <Image Source="{Binding CraftingResourceSecondImage}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,5,0,5" VerticalAlignment="Top" />
-                                <StackPanel Orientation="Vertical">
-                                    <Label Content="{Binding CraftingResourceSecondName, FallbackValue=CRAFTING__RESOURCE__SECOND__NAME}" Style="{StaticResource Label.Crafting}" />
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="{Binding Translation.Cost, FallbackValue=COST__A}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
-                                        <TextBox Text="{Binding SecondResourceCost, FallbackValue=0}" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="5">
-                                <Image Source="{Binding CraftingResourceArtifactImage}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,5,0,5" VerticalAlignment="Top" />
-                                <StackPanel Orientation="Vertical">
-                                    <Label Content="{Binding CraftingResourceArtifactName, FallbackValue=CRAFTING__RESOURCE__ARTIFACT__NAME}" Style="{StaticResource Label.Crafting}" />
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="{Binding Translation.Cost, FallbackValue=COST__A}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
-                                        <TextBox Text="{Binding ArtifactCost, FallbackValue=0}" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </StackPanel>-->
-                        </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <StackPanel Orientation="Vertical" Margin="5">
-                                <Label Content="{Binding RequiredJournals, FallbackValue=REQUIRED__JOURNALS}" Style="{StaticResource Label.Crafting}" />
-                            </StackPanel>
-                            <ItemsControl ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"/>
-                            
-                            <StackPanel Orientation="Horizontal" Margin="5">
-                                <Image Source="{Binding RequiredJournalImage}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,5,0,5" VerticalAlignment="Top" />
-                                <StackPanel Orientation="Vertical">
-                                    <Label Content="{Binding CraftingResourceFirstName, FallbackValue=CRAFTING__RESOURCE__FIRST__NAME}" Style="{StaticResource Label.Crafting}" />
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="{Binding Translation.Cost, FallbackValue=COST__A}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
-                                        <TextBox Text="{Binding FirstResourceCost, FallbackValue=0}" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
+                            <StackPanel>
+                                <Label Margin="5,10,5,0" Content="{Binding Translation.RequiredResources, FallbackValue=REQUIRED__RESOURCES}" Style="{StaticResource Label.Crafting}" />
+
+                                <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}"/>
+
+                                <!--<StackPanel Orientation="Horizontal" Margin="5">
+                                    <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,0,0,0" VerticalAlignment="Top" />
+                                    <StackPanel Orientation="Vertical">
+                                        <Label Content="{Binding CraftingResourceName, FallbackValue=CRAFTING__RESOURCE__FIRST__NAME}" Style="{StaticResource Label.Crafting.Title}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel Orientation="Vertical">
+                                                <Label Content="{Binding TranslationCost, FallbackValue=COST__A}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                                                <Label Content="{Binding TranslationQuantity, FallbackValue=QUANTITY}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                                                <Label Content="{Binding TranslationTotalQuantity, FallbackValue=TOTAL__QUANTITY}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                                                <Label Content="{Binding TranslationTotalCost, FallbackValue=TOTAL__COST}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBox Text="{Binding ResourceCost}" Style="{StaticResource TextBox.Crafting}" />
+                                                <Label Content="{Binding Quantity}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                                                <Label Content="{Binding TotalQuantityString}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                                                <Label Content="{Binding TotalCostString}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                                            </StackPanel>
+                                        </StackPanel>
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="{Binding Translation.RequiredJournalAmount, FallbackValue=REQUIRED__JOURNAL__AMOUNT}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
-                                        <Label Content="{Binding RequiredJournalAmount, FallbackValue=0}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                                </StackPanel>-->
+                            </StackPanel>
+
+                            <StackPanel Margin="5">
+                                <StackPanel Orientation="Vertical" Margin="5">
+                                    <Label Content="{Binding RequiredJournals, FallbackValue=REQUIRED__JOURNALS}" Style="{StaticResource Label.Crafting}" />
+                                </StackPanel>
+                                <ItemsControl ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="5">
+                                    <Image Source="{Binding RequiredJournalImage}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,5,0,5" VerticalAlignment="Top" />
+                                    <StackPanel Orientation="Vertical">
+                                        <Label Content="{Binding CraftingResourceFirstName, FallbackValue=CRAFTING__RESOURCE__FIRST__NAME}" Style="{StaticResource Label.Crafting}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{Binding Translation.Cost, FallbackValue=COST__A}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                                            <TextBox Text="{Binding FirstResourceCost, FallbackValue=0}" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{Binding Translation.RequiredJournalAmount, FallbackValue=REQUIRED__JOURNAL__AMOUNT}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                                            <Label Content="{Binding RequiredJournalAmount, FallbackValue=0}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </Grid>
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
 
