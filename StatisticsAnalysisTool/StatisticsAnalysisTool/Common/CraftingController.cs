@@ -21,9 +21,9 @@ namespace StatisticsAnalysisTool.Common
         private static IAsyncEnumerable<SimpleItemData> _simpleItemData = new List<SimpleItemData>().ToAsyncEnumerable();
         private static IAsyncEnumerable<ItemSpriteToJournalStruct> _craftingJournalData = new List<ItemSpriteToJournalStruct>().ToAsyncEnumerable();
 
-        public static double GetRequiredJournalAmount(Item item, int ItemQuantityToBeCrafted, ItemLevel level)
+        public static double GetRequiredJournalAmount(Item item, int ItemQuantityToBeCrafted, int level)
         {
-            var totalBaseFame = GetTotalBaseFame(item.FullItemInformation.CraftingRequirements.TotalAmountResources, (ItemTier)item.Tier, level);
+            var totalBaseFame = GetTotalBaseFame(item.FullItemInformation.CraftingRequirements.TotalAmountResources, (ItemTier)item.Tier, (ItemLevel)level);
             var totalJournalFame = totalBaseFame * ItemQuantityToBeCrafted;
             return totalJournalFame / MaxJournalFame((ItemTier)item.Tier);
         }

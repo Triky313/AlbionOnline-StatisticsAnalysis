@@ -66,10 +66,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _showBlackZoneOutpostsChecked;
         private bool _showVillagesChecked;
         private ItemWindowTranslation _translation;
-        private int _requiredJournalAmount;
         private int _craftingItemQuantity = 1;
         private ObservableCollection<RequiredResource> _requiredResources = new();
         private RequiredJournalTemplate _requiredJournalTemplate;
+        private Visibility _requiredJournalVisibility = Visibility.Collapsed;
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
@@ -171,12 +171,14 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
+            RequiredJournalVisibility = Visibility.Visible;
+
             RequiredJournalTemplate = new RequiredJournalTemplate()
             {
                 CostsPerJournal = 0,
                 CraftingResourceName = craftingJournalType.LocalizedName,
                 Icon = craftingJournalType.Icon,
-                RequiredJournalAmount = 0
+                RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingItemQuantity, Item.Level)
             };
         }
 
@@ -185,6 +187,17 @@ namespace StatisticsAnalysisTool.ViewModels
             var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
             return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
         }
+
+        private void UpdateCraftingValues(int itemQuantity)
+        {
+            foreach (var requiredResource in RequiredResources.ToList())
+            {
+                requiredResource.CraftingQuantity = itemQuantity;
+            }
+
+            RequiredJournalTemplate.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, itemQuantity, Item.Level);
+        }
+
 
         #endregion Crafting tab
 
@@ -1003,10 +1016,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _craftingItemQuantity = value;
 
-                foreach (var requiredResource in RequiredResources.ToList())
-                {
-                    requiredResource.CraftingQuantity = _craftingItemQuantity;
-                }
+                UpdateCraftingValues(_craftingItemQuantity);
                 OnPropertyChanged();
             }
         }
@@ -1027,6 +1037,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _requiredResources = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility RequiredJournalVisibility
+        {
+            get => _requiredJournalVisibility;
+            set
+            {
+                _requiredJournalVisibility = value;
                 OnPropertyChanged();
             }
         }

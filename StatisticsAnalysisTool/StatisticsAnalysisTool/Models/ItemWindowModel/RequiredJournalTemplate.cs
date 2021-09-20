@@ -10,7 +10,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private BitmapImage _icon;
         private string _craftingResourceName;
         private long _costsPerJournal;
-        private long _requiredJournalAmount;
+        private double _requiredJournalAmount;
 
         public BitmapImage Icon
         {
@@ -42,7 +42,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
-        public long RequiredJournalAmount
+        public double RequiredJournalAmount
         {
             get => _requiredJournalAmount;
             set

@@ -376,7 +376,7 @@
                             <StackPanel Orientation="Vertical" Margin="5">
                                 <StackPanel Orientation="Vertical" Margin="5">
                                     <Label Content="{Binding Translation.Quantity, FallbackValue=QUANTITY}" Style="{StaticResource Label.Crafting}" />
-                                    <TextBox Text="{Binding CraftingItemQuantity, IsAsync=True}" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
+                                    <TextBox Text="{Binding CraftingItemQuantity, IsAsync=True}" Style="{StaticResource TextBox.Crafting}" MaxLength="9" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
                                 </StackPanel>
                                 <StackPanel Orientation="Vertical" Margin="5">
                                     <Label Content="{Binding Translation.Fee, FallbackValue=FEE}" Style="{StaticResource Label.Crafting}" />
@@ -393,7 +393,7 @@
                                 <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}"/>
                             </StackPanel>
 
-                            <ContentControl ContentTemplate="{StaticResource RequiredJournalTemplate}" Content="{Binding RequiredJournalTemplate}" />
+                            <ContentControl Visibility="{Binding RequiredJournalVisibility}" ContentTemplate="{StaticResource RequiredJournalTemplate}" Content="{Binding RequiredJournalTemplate}" />
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
