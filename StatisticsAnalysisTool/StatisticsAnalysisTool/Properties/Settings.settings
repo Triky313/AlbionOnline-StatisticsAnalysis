@@ -86,5 +86,8 @@
     <Setting Name="ItemsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Items.json</Value>
     </Setting>
+    <Setting Name="ItemSpriteToJournalFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ItemSpriteToJournal.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

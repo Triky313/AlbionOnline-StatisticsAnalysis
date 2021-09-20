@@ -19,12 +19,7 @@ namespace StatisticsAnalysisTool.Common
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private static IAsyncEnumerable<SimpleItemData> _simpleItemData = new List<SimpleItemData>().ToAsyncEnumerable();
-
-        // https://docs.google.com/spreadsheets/d/1Vw9ucaSHmuqvQjgfVGYYcyKDv1yW24wyAf0p6iCZJII/edit#gid=303664656
-
-        // (Base Fame * Ressourcen Menge) = Total Base Fame
-        // Total Base Fame * Item Menge = Total Book Fame
-        // Total Book Fame / Fame Buch Max Menge (zB. T8 19200) = Anzahl benötigtiger Bücher zum Craften
+        private static IAsyncEnumerable<ItemSpriteToJournalStruct> _craftingJournalData = new List<ItemSpriteToJournalStruct>().ToAsyncEnumerable();
 
         public static double GetRequiredJournalAmount(Item item, int ItemQuantityToBeCrafted, ItemLevel level)
         {
@@ -33,10 +28,23 @@ namespace StatisticsAnalysisTool.Common
             return totalJournalFame / MaxJournalFame((ItemTier)item.Tier);
         }
 
-        public static async ValueTask<int> GetSimpleItemItemValue(string uniqueName)
+        public static async ValueTask<int> GetSimpleItemItemValueAsync(string uniqueName)
         {
-            var simpleItemData = await _simpleItemData.FirstOrDefaultAsync(x => x.UniqueName == uniqueName).ConfigureAwait(false);
-            return simpleItemData?.ItemValue ?? 0;
+            var data = await _simpleItemData.FirstOrDefaultAsync(x => x.UniqueName == uniqueName).ConfigureAwait(false);
+            return data?.ItemValue ?? 0;
+        }
+
+        public static async Task<Item> GetCraftingJournalItemAsync(int tier, string itemSpriteName)
+        {
+            var data = await _craftingJournalData.FirstOrDefaultAsync(x => x.Name == itemSpriteName).ConfigureAwait(false);
+            return data.Id switch
+            {
+                CraftingJournalType.JournalMage => ItemController.GetItemByUniqueName($"T{tier}_JOURNAL_MAGE_EMPTY"),
+                CraftingJournalType.JournalHunter => ItemController.GetItemByUniqueName($"T{tier}_JOURNAL_HUNTER_EMPTY"),
+                CraftingJournalType.JournalWarrior => ItemController.GetItemByUniqueName($"T{tier}_JOURNAL_WARRIOR_EMPTY"),
+                CraftingJournalType.JournalToolMaker => ItemController.GetItemByUniqueName($"T{tier}_JOURNAL_TOOLMAKER_EMPTY"),
+                _ => null
+            };
         }
 
         private static int MaxJournalFame(ItemTier tier)
@@ -116,9 +124,10 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<bool> LoadAsync()
         {
-            _simpleItemData = GetSimpleItemDataFromLocal();
+            _simpleItemData = await GetSimpleItemDataFromLocalAsync();
+            _craftingJournalData = await GetJournalNameFromLocalAsync();
 
-            if (_simpleItemData != null && await _simpleItemData.CountAsync() <= 0)
+            if (_simpleItemData != null && await _simpleItemData.CountAsync() <= 0 || _craftingJournalData != null && await _craftingJournalData.CountAsync() <= 0)
             {
                 Log.Warn($"{nameof(LoadAsync)}: No Simple item data found.");
                 return false;
@@ -127,7 +136,7 @@ namespace StatisticsAnalysisTool.Common
             return true;
         }
 
-        private static IAsyncEnumerable<SimpleItemData> GetSimpleItemDataFromLocal()
+        private static async Task<IAsyncEnumerable<SimpleItemData>> GetSimpleItemDataFromLocalAsync()
         {
             try
             {
@@ -137,7 +146,7 @@ namespace StatisticsAnalysisTool.Common
                     NumberHandling = JsonNumberHandling.AllowReadingFromString
                 };
 
-                var localItemString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemsFileName), Encoding.UTF8);
+                var localItemString = await File.ReadAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemsFileName), Encoding.UTF8);
                 return (JsonSerializer.Deserialize<List<SimpleItemData>>(localItemString, options) ?? new List<SimpleItemData>()).ToAsyncEnumerable();
             }
             catch (Exception e)
@@ -146,6 +155,33 @@ namespace StatisticsAnalysisTool.Common
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return new List<SimpleItemData>().ToAsyncEnumerable();
             }
+        }
+
+        public static async Task<IAsyncEnumerable<ItemSpriteToJournalStruct>> GetJournalNameFromLocalAsync()
+        {
+            try
+            {
+                var options = new JsonSerializerOptions()
+                {
+                    ReadCommentHandling = JsonCommentHandling.Skip,
+                    NumberHandling = JsonNumberHandling.AllowReadingFromString
+                };
+
+                var localItemString = await File.ReadAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemSpriteToJournalFileName), Encoding.UTF8);
+                return (JsonSerializer.Deserialize<List<ItemSpriteToJournalStruct>>(localItemString, options) ?? new List<ItemSpriteToJournalStruct>()).ToAsyncEnumerable();
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                return new List<ItemSpriteToJournalStruct>().ToAsyncEnumerable();
+            }
+        }
+
+        public struct ItemSpriteToJournalStruct
+        {
+            public string Name { get; set; }
+            public CraftingJournalType Id { get; set; }
         }
     }
 }

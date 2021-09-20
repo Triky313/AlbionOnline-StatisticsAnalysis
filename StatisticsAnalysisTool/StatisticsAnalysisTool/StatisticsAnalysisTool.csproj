@@ -67,6 +67,9 @@
     <Content Include="GameFiles\items.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="GameFiles\ItemSpriteToJournal.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="GameFiles\lootchests.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -348,6 +351,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="GameFiles\items.json" />
+    <None Remove="GameFiles\ItemSpriteToJournal.json" />
     <None Remove="GameFiles\lootchests.json" />
     <None Remove="GameFiles\world.json" />
     <None Remove="Languages\de-DE.xml" />

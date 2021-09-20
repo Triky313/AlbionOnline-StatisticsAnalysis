@@ -69,6 +69,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private int _requiredJournalAmount;
         private int _craftingItemQuantity = 1;
         private ObservableCollection<RequiredResource> _requiredResources = new();
+        private RequiredJournalTemplate _requiredJournalTemplate;
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
@@ -139,10 +140,11 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async Task InitCraftingTabUiAsync()
         {
-            await GetCraftResourcesAsync();
+            await GetCraftInfoAsync();
+            await GetJournalInfoAsync();
         }
 
-        private async Task GetCraftResourcesAsync()
+        private async Task GetCraftInfoAsync()
         {
             var craftResourceList = Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.ToAsyncEnumerable();
 
@@ -152,12 +154,30 @@ namespace StatisticsAnalysisTool.ViewModels
                 RequiredResources.Add(new RequiredResource()
                 {
                     CraftingResourceName = item.LocalizedName,
-                    Quantity = craftResource.Count,
+                    OneProductionAmount = craftResource.Count,
                     Icon = item.Icon,
                     ResourceCost = 0,
                     CraftingQuantity = CraftingItemQuantity
                 });
             }
+        }
+
+        private async Task GetJournalInfoAsync()
+        {
+            var craftingJournalType = await CraftingController.GetCraftingJournalItemAsync(Item.Tier, Item.FullItemInformation.SpriteName);
+
+            if (craftingJournalType == null)
+            {
+                return;
+            }
+
+            RequiredJournalTemplate = new RequiredJournalTemplate()
+            {
+                CostsPerJournal = 0,
+                CraftingResourceName = craftingJournalType.LocalizedName,
+                Icon = craftingJournalType.Icon,
+                RequiredJournalAmount = 0
+            };
         }
 
         private Item GetSuitableResourceItem(string uniqueName)
@@ -991,12 +1011,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public int RequiredJournalAmount
+        public RequiredJournalTemplate RequiredJournalTemplate
         {
-            get => _requiredJournalAmount;
+            get => _requiredJournalTemplate;
             set
             {
-                _requiredJournalAmount = value;
+                _requiredJournalTemplate = value;
                 OnPropertyChanged();
             }
         }

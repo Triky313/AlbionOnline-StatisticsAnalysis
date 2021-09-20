@@ -1392,15 +1392,40 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
                         <Label Content="{Binding TranslationCost, FallbackValue=COST__A}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
-                        <Label Content="{Binding TranslationQuantity, FallbackValue=QUANTITY}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                        <Label Content="{Binding TranslationOneProductionAmount, FallbackValue=ONE__PRODUCTION__AMOUNT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
                         <Label Content="{Binding TranslationTotalQuantity, FallbackValue=TOTAL__QUANTITY}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
                         <Label Content="{Binding TranslationTotalCost, FallbackValue=TOTAL__COST}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <TextBox Text="{Binding ResourceCost}" Style="{StaticResource TextBox.Crafting}" />
-                        <Label Content="{Binding Quantity}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                        <Label Content="{Binding OneProductionAmount}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
                         <Label Content="{Binding TotalQuantityString}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
                         <Label Content="{Binding TotalCostString}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="RequiredJournalTemplate" DataType="{x:Type itemWindowModel:RequiredJournalTemplate}">
+        <StackPanel Margin="5">
+            <StackPanel Orientation="Vertical" Margin="5,5,5,0">
+                <Label Content="{Binding TranslationRequiredJournals, FallbackValue=REQUIRED__JOURNALS}" Style="{StaticResource Label.Crafting}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
+                <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,5,0,5" VerticalAlignment="Top" />
+                <StackPanel Orientation="Vertical">
+                    <Label Content="{Binding CraftingResourceName, FallbackValue=CRAFTING__RESOURCE__NAME}" Style="{StaticResource Label.Crafting.Title}" />
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="{Binding TranslationCostsPerJournal, FallbackValue=COSTS__PER__JOURNAL}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                            <Label Content="{Binding TranslationRequiredJournalAmount, FallbackValue=REQUIRED__JOURNAL__AMOUNT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <TextBox Text="{Binding CostsPerJournal}" Style="{StaticResource TextBox.Crafting}" />
+                            <Label Content="{Binding RequiredJournalAmount}" Style="{StaticResource Label.Crafting}" Margin="0,0,5,0" />
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

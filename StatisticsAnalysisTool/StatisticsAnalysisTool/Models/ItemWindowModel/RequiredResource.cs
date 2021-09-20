@@ -10,12 +10,12 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private string _craftingResourceName;
         private long _resourceCost;
         private BitmapImage _icon;
-        private long _quantity;
         private long _totalQuantity;
         private long _totalCost;
         private long _craftingQuantity;
         private string _totalQuantityString;
         private string _totalCostString;
+        private long _oneProductionAmount;
 
         public string CraftingResourceName
         {
@@ -44,20 +44,20 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             {
                 _resourceCost = value;
 
-                TotalQuantity = Quantity * CraftingQuantity;
+                TotalQuantity = OneProductionAmount * CraftingQuantity;
                 TotalCost = ResourceCost * CraftingQuantity;
                 OnPropertyChanged();
             }
         }
 
-        public long Quantity
+        public long OneProductionAmount
         {
-            get => _quantity;
+            get => _oneProductionAmount;
             set
             {
-                _quantity = value;
+                _oneProductionAmount = value;
 
-                TotalQuantity = Quantity * CraftingQuantity;
+                TotalQuantity = OneProductionAmount * CraftingQuantity;
                 TotalCost = ResourceCost * CraftingQuantity;
                 OnPropertyChanged();
             }
@@ -92,7 +92,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             {
                 _craftingQuantity = value;
 
-                TotalQuantity = Quantity * CraftingQuantity;
+                TotalQuantity = OneProductionAmount * CraftingQuantity;
                 TotalCost = ResourceCost * CraftingQuantity;
                 OnPropertyChanged();
             }
@@ -123,7 +123,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         #endregion
 
         public string TranslationCost => LanguageController.Translation("COST");
-        public string TranslationQuantity => LanguageController.Translation("QUANTITY");
+        public string TranslationOneProductionAmount => LanguageController.Translation("ONE_PRODUCTION_AMOUNT");
         public string TranslationTotalQuantity => LanguageController.Translation("TOTAL_QUANTITY");
         public string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
 
