@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingItemQuantity = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
                 OnPropertyChanged();
             }
         }
@@ -37,7 +37,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _sellPricePerItem = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
                 OnPropertyChanged();
             }
         }
@@ -48,7 +48,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _setupFee = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
                 OnPropertyChanged();
             }
         }
@@ -59,7 +59,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _auctionHouseTax = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
                 OnPropertyChanged();
             }
         }
@@ -70,7 +70,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingTax = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
                 OnPropertyChanged();
             }
         }
@@ -81,11 +81,10 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingBonus = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
                 OnPropertyChanged();
             }
         }
-
 
         public string TranslationSellPricePerItem => LanguageController.Translation("SELL_PRICE_PER_ITEM");
         public string TranslationItemQuantity => LanguageController.Translation("ITEM_QUANTITY");
@@ -93,7 +92,6 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         public string TranslationAuctionsHouseTaxPercent => LanguageController.Translation("AUCTIONS_HOUSE_TAX_PERCENT");
         public string TranslationCraftingTaxPercent => LanguageController.Translation("CRAFTING_TAX_PERCENT");
         public string TranslationCraftingBonusPercent => LanguageController.Translation("CRAFTING_BONUS_PERCENT");
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

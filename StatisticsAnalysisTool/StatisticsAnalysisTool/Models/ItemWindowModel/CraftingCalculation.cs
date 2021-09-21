@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
-    public class CraftingCalculationTemplate : INotifyPropertyChanged
+    public class CraftingCalculation : INotifyPropertyChanged
     {
         private double _possibleItemCrafting;
         private double _craftingTax;
@@ -12,6 +12,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private double _auctionsHouseTax;
         private double _totalJournalCosts;
         private double _totalCosts;
+        private long _totalResourceCosts;
 
         public double PossibleItemCrafting
         {
@@ -63,6 +64,16 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
+        public long TotalResourceCosts
+        {
+            get => _totalResourceCosts;
+            set
+            {
+                _totalResourceCosts = value;
+                OnPropertyChanged();
+            }
+        }
+
         public double TotalCosts
         {
             get => _totalCosts;
@@ -82,6 +93,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         public string TranslationAuctionsHouseTax => LanguageController.Translation("AUCTIONS_HOUSE_TAX");
         public string TranslationTotalJournalCosts => LanguageController.Translation("TOTAL_JOURNAL_COSTS");
         public string TranslationTotalCosts => LanguageController.Translation("TOTAL_COSTS");
+        public string TranslationTotalResourceCosts => LanguageController.Translation("TOTAL_RESOURCE_COSTS");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

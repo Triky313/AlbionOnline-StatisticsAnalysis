@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
@@ -13,9 +14,13 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private long _totalQuantity;
         private long _totalCost;
         private long _craftingQuantity;
-        private string _totalQuantityString;
-        private string _totalCostString;
         private long _oneProductionAmount;
+        private readonly ItemWindowViewModel _itemWindowViewModel;
+
+        public RequiredResource(ItemWindowViewModel itemWindowViewModel)
+        {
+            _itemWindowViewModel = itemWindowViewModel;
+        }
 
         public string CraftingResourceName
         {
@@ -45,7 +50,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 _resourceCost = value;
 
                 TotalQuantity = OneProductionAmount * CraftingQuantity;
-                TotalCost = ResourceCost * CraftingQuantity;
+                TotalCost = ResourceCost * TotalQuantity;
                 OnPropertyChanged();
             }
         }
@@ -58,7 +63,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 _oneProductionAmount = value;
 
                 TotalQuantity = OneProductionAmount * CraftingQuantity;
-                TotalCost = ResourceCost * CraftingQuantity;
+                TotalCost = ResourceCost * TotalQuantity;
                 OnPropertyChanged();
             }
         }
@@ -69,7 +74,6 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _totalQuantity = value;
-                TotalQuantityString = Utilities.LongNumberToString(_totalQuantity);
                 OnPropertyChanged();
             }
         }
@@ -80,7 +84,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _totalCost = value;
-                TotalCostString = Utilities.LongNumberToString(_totalCost);
+                _itemWindowViewModel.UpdateCraftingCalculationTotalResourceCosts();
                 OnPropertyChanged();
             }
         }
@@ -97,30 +101,6 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 OnPropertyChanged();
             }
         }
-
-        #region String value bindings
-
-        public string TotalQuantityString
-        {
-            get => _totalQuantityString;
-            private set
-            {
-                _totalQuantityString = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TotalCostString
-        {
-            get => _totalCostString;
-            private set
-            {
-                _totalCostString = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
 
         public string TranslationCost => LanguageController.Translation("COST");
         public string TranslationOneProductionAmount => LanguageController.Translation("ONE_PRODUCTION_AMOUNT");

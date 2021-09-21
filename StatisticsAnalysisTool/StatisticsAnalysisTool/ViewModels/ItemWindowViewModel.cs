@@ -67,11 +67,20 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _showVillagesChecked;
         private ItemWindowTranslation _translation;
         private ObservableCollection<RequiredResource> _requiredResources = new();
-        private RequiredJournalTemplate _requiredJournal;
+        private RequiredJournal _requiredJournal;
         private Visibility _requiredJournalVisibility = Visibility.Collapsed;
         private Visibility _craftingTabVisibility = Visibility.Collapsed;
-        private CraftingCalculationTemplate _craftingCalculation;
         private EssentialCraftingValuesTemplate _essentialCraftingValues;
+
+        private CraftingCalculation _craftingCalculation = new()
+        {
+            AuctionsHouseTax = 0.0d,
+            CraftingTax = 0.0d,
+            PossibleItemCrafting = 0.0d,
+            SetupFee = 0.0d,
+            TotalCosts = 0.0,
+            TotalJournalCosts = 0.0d
+        };
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
@@ -149,7 +158,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 SetEssentialCraftingValues();
                 await GetJournalInfoAsync();
                 await GetCraftInfoAsync();
-                SetCraftingCalculation();
             }
         }
 
@@ -173,7 +181,7 @@ namespace StatisticsAnalysisTool.ViewModels
             await foreach (var craftResource in craftResourceList ?? new List<CraftResourceList>().ToAsyncEnumerable())
             {
                 var item = GetSuitableResourceItem(craftResource.UniqueName);
-                RequiredResources.Add(new RequiredResource()
+                RequiredResources.Add(new RequiredResource(this)
                 {
                     CraftingResourceName = item.LocalizedName,
                     OneProductionAmount = craftResource.Count,
@@ -194,7 +202,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             RequiredJournalVisibility = Visibility.Visible;
 
-            RequiredJournal = new RequiredJournalTemplate()
+            RequiredJournal = new RequiredJournal()
             {
                 UniqueName = craftingJournalType.UniqueName,
                 CostsPerJournal = 0,
@@ -203,47 +211,41 @@ namespace StatisticsAnalysisTool.ViewModels
                 RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, EssentialCraftingValues.CraftingItemQuantity, Item.Level)
             };
         }
-
-        private void SetCraftingCalculation()
-        {
-            CraftingCalculation = new CraftingCalculationTemplate()
-            {
-                AuctionsHouseTax = 0.0d,
-                CraftingTax = 0.0d,
-                PossibleItemCrafting = 0.0d,
-                SetupFee = 0.0d,
-                TotalCosts = 0.0,
-                TotalJournalCosts = 0.0d
-            };
-        }
-
+        
         private Item GetSuitableResourceItem(string uniqueName)
         {
             var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
             return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
         }
 
-        public async Task UpdateCraftingValuesAsync(int itemQuantity)
+        public async Task UpdateCraftingValuesAsync()
         {
             foreach (var requiredResource in RequiredResources.ToList())
             {
-                requiredResource.CraftingQuantity = itemQuantity;
+                requiredResource.CraftingQuantity = EssentialCraftingValues.CraftingItemQuantity;
             }
 
             if (RequiredJournal?.RequiredJournalAmount != null)
             {
-                RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, itemQuantity, Item.Level);
+                RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, EssentialCraftingValues.CraftingItemQuantity, Item.Level);
             }
 
-            if (CraftingCalculation?.SetupFee != null)
+            if (CraftingCalculation?.SetupFee != null && EssentialCraftingValues != null)
             {
-                CraftingCalculation.SetupFee =
-                    CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
+                CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
             }
 
-            if (CraftingCalculation?.CraftingTax != null)
+            if (CraftingCalculation?.CraftingTax != null && EssentialCraftingValues != null)
             {
                 CraftingCalculation.CraftingTax = await CraftingController.GetSetupFeeAsync(Item, RequiredJournal?.UniqueName, EssentialCraftingValues.CraftingTax);
+            }
+        }
+
+        public void UpdateCraftingCalculationTotalResourceCosts()
+        {
+            if (CraftingCalculation?.TotalResourceCosts != null)
+            {
+                CraftingCalculation.TotalResourceCosts = RequiredResources.Sum(x => x.TotalCost);
             }
         }
 
@@ -1057,7 +1059,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public RequiredJournalTemplate RequiredJournal
+        public RequiredJournal RequiredJournal
         {
             get => _requiredJournal;
             set
@@ -1067,7 +1069,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public CraftingCalculationTemplate CraftingCalculation
+        public CraftingCalculation CraftingCalculation
         {
             get => _craftingCalculation;
             set

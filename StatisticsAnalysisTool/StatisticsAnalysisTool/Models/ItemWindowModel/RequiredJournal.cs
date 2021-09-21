@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
-    public class RequiredJournalTemplate : INotifyPropertyChanged
+    public class RequiredJournal : INotifyPropertyChanged
     {
         private BitmapImage _icon;
         private string _craftingResourceName;

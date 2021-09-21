@@ -1399,8 +1399,8 @@
                     <StackPanel Orientation="Vertical">
                         <TextBox Text="{Binding ResourceCost}" Style="{StaticResource TextBox.Crafting}" />
                         <Label Content="{Binding OneProductionAmount}" Style="{StaticResource Label.Crafting}" />
-                        <Label Content="{Binding TotalQuantityString}" Style="{StaticResource Label.Crafting}" />
-                        <Label Content="{Binding TotalCostString}" Style="{StaticResource Label.Crafting}" />
+                        <Label Content="{Binding TotalQuantity}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
+                        <Label Content="{Binding TotalCost}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -1436,7 +1436,7 @@
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="RequiredJournalTemplate" DataType="{x:Type itemWindowModel:RequiredJournalTemplate}">
+    <DataTemplate x:Key="RequiredJournalTemplate" DataType="{x:Type itemWindowModel:RequiredJournal}">
         <StackPanel Margin="5">
             <StackPanel Orientation="Vertical" Margin="5,5,5,0">
                 <Label Content="{Binding TranslationRequiredJournals, FallbackValue=REQUIRED__JOURNALS}" Style="{StaticResource Label.Crafting}" />
@@ -1461,7 +1461,7 @@
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="CraftingCalculationTemplate" DataType="{x:Type itemWindowModel:CraftingCalculationTemplate}">
+    <DataTemplate x:Key="CraftingCalculationTemplate" DataType="{x:Type itemWindowModel:CraftingCalculation}">
         <StackPanel Margin="5">
             <StackPanel Orientation="Vertical" Margin="5,5,5,0">
                 <Label Content="{Binding TranslationCalculation, FallbackValue=CALCULATION}" Style="{StaticResource Label.Crafting}" />
@@ -1484,6 +1484,7 @@
                     <Label Content="{Binding TranslationSetupFee, FallbackValue=SETUP__FEE}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Label Content="{Binding TranslationAuctionsHouseTax, FallbackValue=AUCTIONS__HOUSE__TAX}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Label Content="{Binding TranslationTotalJournalCosts, FallbackValue=TOTAL__JOURNAL__COSTS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding TranslationTotalResourceCosts, FallbackValue=TOTAL__RESOURCE__COSTS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Separator />
                     <Label Content="{Binding TranslationTotalCosts, FallbackValue=TOTAL__COSTS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                 </StackPanel>
@@ -1492,6 +1493,7 @@
                     <Label Content="{Binding SetupFee}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
                     <Label Content="{Binding AuctionsHouseTax}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
                     <Label Content="{Binding TotalJournalCosts}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding TotalResourceCosts}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
                     <Separator />
                     <Label Content="{Binding TotalCosts}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" />
                 </StackPanel>
