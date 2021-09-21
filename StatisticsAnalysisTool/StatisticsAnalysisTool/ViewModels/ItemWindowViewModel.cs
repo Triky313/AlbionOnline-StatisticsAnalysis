@@ -202,7 +202,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             RequiredJournalVisibility = Visibility.Visible;
 
-            RequiredJournal = new RequiredJournal()
+            RequiredJournal = new RequiredJournal(this)
             {
                 UniqueName = craftingJournalType.UniqueName,
                 CostsPerJournal = 0,
@@ -211,7 +211,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, EssentialCraftingValues.CraftingItemQuantity, Item.Level)
             };
         }
-        
+
         private Item GetSuitableResourceItem(string uniqueName)
         {
             var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
@@ -242,7 +242,13 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (CraftingCalculation?.AuctionsHouseTax != null && EssentialCraftingValues != null)
             {
-                CraftingCalculation.AuctionsHouseTax = EssentialCraftingValues.SellPricePerItem * EssentialCraftingValues.CraftingItemQuantity / 100 * EssentialCraftingValues.AuctionHouseTax;
+                CraftingCalculation.AuctionsHouseTax =
+                    EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
+            }
+
+            if (CraftingCalculation?.TotalIncomeFromSales != null && EssentialCraftingValues != null)
+            {
+                CraftingCalculation.TotalIncomeFromSales = EssentialCraftingValues.SellPricePerItem * EssentialCraftingValues.CraftingItemQuantity;
             }
         }
 
@@ -331,7 +337,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     await Task.Delay(50);
                     if (_mainWindow.Dispatcher != null && !IsAutoUpdateActive)
+                    {
                         continue;
+                    }
 
                     if (Item.UniqueName != null)
                     {
@@ -367,19 +375,29 @@ namespace StatisticsAnalysisTool.ViewModels
             var qualities = new List<int>();
 
             if (NormalQualityChecked)
+            {
                 qualities.Add(1);
+            }
 
             if (GoodQualityChecked)
+            {
                 qualities.Add(2);
+            }
 
             if (OutstandingQualityChecked)
+            {
                 qualities.Add(3);
+            }
 
             if (ExcellentQualityChecked)
+            {
                 qualities.Add(4);
+            }
 
             if (MasterpieceQualityChecked)
+            {
                 qualities.Add(5);
+            }
 
             return qualities;
         }
@@ -387,7 +405,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private void SetDefaultQualityIfNoOneChecked()
         {
             if (!NormalQualityChecked && !GoodQualityChecked && !OutstandingQualityChecked && !ExcellentQualityChecked && !MasterpieceQualityChecked)
+            {
                 NormalQualityChecked = true;
+            }
         }
 
         public async void SetHistoryChartPricesAsync()
@@ -400,7 +420,10 @@ namespace StatisticsAnalysisTool.ViewModels
                 historyItemPrices = await ApiController
                     .GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
-                if (historyItemPrices == null) return;
+                if (historyItemPrices == null)
+                {
+                    return;
+                }
             }
             catch (TooManyRequestsException)
             {
@@ -446,12 +469,15 @@ namespace StatisticsAnalysisTool.ViewModels
         public async void GetItemPricesInRealMoneyAsync()
         {
             if (CurrentCityPrices == null)
+            {
                 return;
+            }
 
             var realMoneyMarketObject = new List<MarketQualityObject>();
 
             var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
             foreach (var stat in filteredCityPrices)
+            {
                 if (realMoneyMarketObject.Exists(x => x.Location == stat.City))
                 {
                     var marketQualityObject = realMoneyMarketObject.Find(x => x.LocationName == stat.City);
@@ -459,23 +485,26 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
                 else
                 {
-                    var marketQualityObject = new MarketQualityObject {Location = stat.City};
+                    var marketQualityObject = new MarketQualityObject { Location = stat.City };
                     await SetRealMoneyQualityStat(stat, marketQualityObject);
                     realMoneyMarketObject.Add(marketQualityObject);
                 }
-
+            }
             RealMoneyPriceList = realMoneyMarketObject;
         }
 
         public void SetQualityPriceStatsOnListView()
         {
             if (CurrentCityPrices == null)
+            {
                 return;
+            }
 
             var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
             var marketQualityObjectList = new List<MarketQualityObject>();
 
             foreach (var stat in filteredCityPrices)
+            {
                 if (marketQualityObjectList.Exists(x => x.Location == stat.City))
                 {
                     var marketQualityObject = marketQualityObjectList.Find(x => x.LocationName == stat.City);
@@ -483,10 +512,11 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
                 else
                 {
-                    var marketQualityObject = new MarketQualityObject {Location = stat.City};
+                    var marketQualityObject = new MarketQualityObject { Location = stat.City };
                     SetQualityStat(stat, ref marketQualityObject);
                     marketQualityObjectList.Add(marketQualityObject);
                 }
+            }
 
             AllQualityPricesList = marketQualityObjectList;
         }

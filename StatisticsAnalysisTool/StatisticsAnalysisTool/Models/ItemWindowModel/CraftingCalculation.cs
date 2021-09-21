@@ -13,6 +13,12 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private double _totalJournalCosts;
         private double _totalCosts;
         private long _totalResourceCosts;
+        private double _totalIncomeFromSales;
+
+        private double GetTotalCosts()
+        {
+            return CraftingTax + SetupFee + AuctionsHouseTax + TotalJournalCosts + TotalResourceCosts;
+        }
 
         public double PossibleItemCrafting
         {
@@ -20,6 +26,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _possibleItemCrafting = value;
+                TotalCosts = GetTotalCosts();
                 OnPropertyChanged();
             }
         }
@@ -30,6 +37,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingTax = value;
+                TotalCosts = GetTotalCosts();
                 OnPropertyChanged();
             }
         }
@@ -40,6 +48,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _setupFee = value;
+                TotalCosts = GetTotalCosts();
                 OnPropertyChanged();
             }
         }
@@ -50,6 +59,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _auctionsHouseTax = value;
+                TotalCosts = GetTotalCosts();
                 OnPropertyChanged();
             }
         }
@@ -60,6 +70,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _totalJournalCosts = value;
+                TotalCosts = GetTotalCosts();
                 OnPropertyChanged();
             }
         }
@@ -70,6 +81,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _totalResourceCosts = value;
+                TotalCosts = GetTotalCosts();
                 OnPropertyChanged();
             }
         }
@@ -84,6 +96,16 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
+        public double TotalIncomeFromSales
+        {
+            get => _totalIncomeFromSales;
+            set
+            {
+                _totalIncomeFromSales = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string TranslationCalculation => LanguageController.Translation("CALCULATION");
         public string TranslationPossibleCrafting => LanguageController.Translation("POSSIBLE_CRAFTING");
         public string TranslationPossibleItemCrafting => LanguageController.Translation("POSSIBLE_ITEM_CRAFTING");
@@ -94,6 +116,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         public string TranslationTotalJournalCosts => LanguageController.Translation("TOTAL_JOURNAL_COSTS");
         public string TranslationTotalCosts => LanguageController.Translation("TOTAL_COSTS");
         public string TranslationTotalResourceCosts => LanguageController.Translation("TOTAL_RESOURCE_COSTS");
+        public string TranslationTotalIncomeFromSales => LanguageController.Translation("TOTAL_INCOME_FROM_SALES");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

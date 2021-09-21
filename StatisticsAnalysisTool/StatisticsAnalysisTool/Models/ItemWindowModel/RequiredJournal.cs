@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
@@ -11,8 +12,14 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private string _craftingResourceName;
         private long _costsPerJournal;
         private double _requiredJournalAmount;
+        private readonly ItemWindowViewModel _itemWindowViewModel;
 
         public string UniqueName { get; set; }
+
+        public RequiredJournal(ItemWindowViewModel itemWindowViewModel)
+        {
+            _itemWindowViewModel = itemWindowViewModel;
+        }
 
         public BitmapImage Icon
         {
@@ -40,6 +47,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _costsPerJournal = value;
+                _itemWindowViewModel.CraftingCalculation.TotalJournalCosts = CostsPerJournal * RequiredJournalAmount;
                 OnPropertyChanged();
             }
         }

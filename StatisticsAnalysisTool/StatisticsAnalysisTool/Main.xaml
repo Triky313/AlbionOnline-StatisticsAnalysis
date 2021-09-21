@@ -151,6 +151,9 @@
     <SolidColorBrush x:Key="SolidColorBrush.Green.1" Color="{StaticResource Color.Green.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Green.2" Color="{StaticResource Color.Green.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Green.3" Color="{StaticResource Color.Green.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Red.1" Color="{StaticResource Color.Red.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Red.2" Color="{StaticResource Color.Red.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Red.3" Color="{StaticResource Color.Red.3}"/>
     <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#FF00799f"/>
     <SolidColorBrush x:Key="Item.IsSelected.Background" Color="#FF0e89b1"/>
     <SolidColorBrush x:Key="GridView.Column.Header.Font" Color="{StaticResource Color.Blue.2}"/>
@@ -1487,15 +1490,19 @@
                     <Label Content="{Binding TranslationTotalResourceCosts, FallbackValue=TOTAL__RESOURCE__COSTS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Separator />
                     <Label Content="{Binding TranslationTotalCosts, FallbackValue=TOTAL__COSTS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    <Separator />
+                    <Label Content="{Binding TranslationTotalIncomeFromSales, FallbackValue=TOTAL__INCOME__FROM_SALES}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
-                    <Label Content="{Binding CraftingTax}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
-                    <Label Content="{Binding SetupFee}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
-                    <Label Content="{Binding AuctionsHouseTax}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
-                    <Label Content="{Binding TotalJournalCosts}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
-                    <Label Content="{Binding TotalResourceCosts}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding CraftingTax}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
+                    <Label Content="{Binding SetupFee}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
+                    <Label Content="{Binding AuctionsHouseTax}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
+                    <Label Content="{Binding TotalJournalCosts}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
+                    <Label Content="{Binding TotalResourceCosts}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
                     <Separator />
-                    <Label Content="{Binding TotalCosts}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding TotalCosts}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
+                    <Separator />
+                    <Label Content="{Binding TotalIncomeFromSales}" ContentStringFormat="{}+ {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Green.2}" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>
