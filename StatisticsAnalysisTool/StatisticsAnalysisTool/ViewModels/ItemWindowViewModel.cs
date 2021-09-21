@@ -239,6 +239,11 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 CraftingCalculation.CraftingTax = await CraftingController.GetSetupFeeAsync(Item, RequiredJournal?.UniqueName, EssentialCraftingValues.CraftingTax);
             }
+
+            if (CraftingCalculation?.AuctionsHouseTax != null && EssentialCraftingValues != null)
+            {
+                CraftingCalculation.AuctionsHouseTax = EssentialCraftingValues.SellPricePerItem * EssentialCraftingValues.CraftingItemQuantity / 100 * EssentialCraftingValues.AuctionHouseTax;
+            }
         }
 
         public void UpdateCraftingCalculationTotalResourceCosts()
