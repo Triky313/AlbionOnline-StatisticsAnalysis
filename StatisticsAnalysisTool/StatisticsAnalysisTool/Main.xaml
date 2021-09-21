@@ -1453,10 +1453,12 @@
                         <StackPanel Orientation="Vertical">
                             <Label Content="{Binding TranslationCostsPerJournal, FallbackValue=COSTS__PER__JOURNAL}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                             <Label Content="{Binding TranslationRequiredJournalAmount, FallbackValue=REQUIRED__JOURNAL__AMOUNT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                            <Label Content="{Binding TranslationSellPricePerJournal, FallbackValue=SELL__PRICE__PER__JOURNAL}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical">
                             <TextBox Text="{Binding CostsPerJournal}" Style="{StaticResource TextBox.Crafting}" />
                             <Label Content="{Binding RequiredJournalAmount}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" />
+                            <TextBox Text="{Binding SellPricePerJournal}" Style="{StaticResource TextBox.Crafting}" />
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -1491,7 +1493,12 @@
                     <Separator />
                     <Label Content="{Binding TranslationTotalCosts, FallbackValue=TOTAL__COSTS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Separator />
-                    <Label Content="{Binding TranslationTotalIncomeFromSales, FallbackValue=TOTAL__INCOME__FROM_SALES}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding TranslationTotalItemSells, FallbackValue=TOTAL__ITEM__SELLS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding TranslationTotalJournalSells, FallbackValue=TOTAL__JOURNAL__SELLS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    <Separator />
+                    <Label Content="{Binding TranslationTotalSells, FallbackValue=TOTAL__SELLS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    <Separator />
+                    <Label Content="{Binding TranslationGrandTotal, FallbackValue=GRAND__TOTAL}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <Label Content="{Binding CraftingTax}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
@@ -1502,7 +1509,12 @@
                     <Separator />
                     <Label Content="{Binding TotalCosts}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
                     <Separator />
-                    <Label Content="{Binding TotalIncomeFromSales}" ContentStringFormat="{}+ {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Green.2}" />
+                    <Label Content="{Binding TotalItemSells}" ContentStringFormat="{}+ {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Green.2}" />
+                    <Label Content="{Binding TotalJournalSells}" ContentStringFormat="{}+ {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Green.2}" />
+                    <Separator />
+                    <Label Content="{Binding TotalSells}" ContentStringFormat="{}+ {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Green.2}" />
+                    <Separator />
+                    <Label Content="{Binding GrandTotal}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" FontWeight="Bold" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>

@@ -12,8 +12,11 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private double _auctionsHouseTax;
         private double _totalJournalCosts;
         private double _totalCosts;
-        private long _totalResourceCosts;
-        private double _totalIncomeFromSales;
+        private double _totalResourceCosts;
+        private double _totalItemSells;
+        private double _totalJournalSells;
+        private double _totalSells;
+        private double _grandTotal;
 
         private double GetTotalCosts()
         {
@@ -75,7 +78,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
-        public long TotalResourceCosts
+        public double TotalResourceCosts
         {
             get => _totalResourceCosts;
             set
@@ -92,31 +95,68 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _totalCosts = value;
+                GrandTotal = TotalSells - TotalCosts;
                 OnPropertyChanged();
             }
         }
 
-        public double TotalIncomeFromSales
+        public double TotalItemSells
         {
-            get => _totalIncomeFromSales;
+            get => _totalItemSells;
             set
             {
-                _totalIncomeFromSales = value;
+                _totalItemSells = value;
+                TotalSells = TotalItemSells + TotalJournalSells;
                 OnPropertyChanged();
             }
         }
 
-        public string TranslationCalculation => LanguageController.Translation("CALCULATION");
-        public string TranslationPossibleCrafting => LanguageController.Translation("POSSIBLE_CRAFTING");
-        public string TranslationPossibleItemCrafting => LanguageController.Translation("POSSIBLE_ITEM_CRAFTING");
-        public string TranslationStatementOfCost => LanguageController.Translation("STATEMENT_OF_COST");
-        public string TranslationCraftingTax => LanguageController.Translation("CRAFTING_TAX");
-        public string TranslationSetupFee => LanguageController.Translation("SETUP_FEE");
-        public string TranslationAuctionsHouseTax => LanguageController.Translation("AUCTIONS_HOUSE_TAX");
-        public string TranslationTotalJournalCosts => LanguageController.Translation("TOTAL_JOURNAL_COSTS");
-        public string TranslationTotalCosts => LanguageController.Translation("TOTAL_COSTS");
-        public string TranslationTotalResourceCosts => LanguageController.Translation("TOTAL_RESOURCE_COSTS");
-        public string TranslationTotalIncomeFromSales => LanguageController.Translation("TOTAL_INCOME_FROM_SALES");
+        public double TotalJournalSells
+        {
+            get => _totalJournalSells;
+            set
+            {
+                _totalJournalSells = value;
+                TotalSells = TotalItemSells + TotalJournalSells;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TotalSells
+        {
+            get => _totalSells;
+            set
+            {
+                _totalSells = value;
+                GrandTotal = TotalSells - TotalCosts;
+                OnPropertyChanged();
+            }
+        }
+
+        public double GrandTotal
+        {
+            get => _grandTotal;
+            set
+            {
+                _grandTotal = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public static string TranslationCalculation => LanguageController.Translation("CALCULATION");
+        public static string TranslationPossibleCrafting => LanguageController.Translation("POSSIBLE_CRAFTING");
+        public static string TranslationPossibleItemCrafting => LanguageController.Translation("POSSIBLE_ITEM_CRAFTING");
+        public static string TranslationStatementOfCost => LanguageController.Translation("STATEMENT_OF_COST");
+        public static string TranslationCraftingTax => LanguageController.Translation("CRAFTING_TAX");
+        public static string TranslationSetupFee => LanguageController.Translation("SETUP_FEE");
+        public static string TranslationAuctionsHouseTax => LanguageController.Translation("AUCTIONS_HOUSE_TAX");
+        public static string TranslationTotalJournalCosts => LanguageController.Translation("TOTAL_JOURNAL_COSTS");
+        public static string TranslationTotalCosts => LanguageController.Translation("TOTAL_COSTS");
+        public static string TranslationTotalResourceCosts => LanguageController.Translation("TOTAL_RESOURCE_COSTS");
+        public static string TranslationTotalItemSells => LanguageController.Translation("TOTAL_ITEM_SELLS");
+        public static string TranslationTotalJournalSells => LanguageController.Translation("TOTAL_JOURNAL_SELLS");
+        public static string TranslationTotalSells => LanguageController.Translation("TOTAL_SELLS");
+        public static string TranslationGrandTotal => LanguageController.Translation("GRAND_TOTAL");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

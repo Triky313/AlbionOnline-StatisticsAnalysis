@@ -79,7 +79,11 @@ namespace StatisticsAnalysisTool.ViewModels
             PossibleItemCrafting = 0.0d,
             SetupFee = 0.0d,
             TotalCosts = 0.0,
-            TotalJournalCosts = 0.0d
+            TotalJournalCosts = 0.0d,
+            TotalItemSells = 0.0d,
+            TotalJournalSells = 0.0d,
+            TotalResourceCosts = 0.0d,
+            GrandTotal = 0.0d
         };
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
@@ -208,7 +212,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 CostsPerJournal = 0,
                 CraftingResourceName = craftingJournalType.LocalizedName,
                 Icon = craftingJournalType.Icon,
-                RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, EssentialCraftingValues.CraftingItemQuantity, Item.Level)
+                RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, EssentialCraftingValues.CraftingItemQuantity, Item.Level),
+                SellPricePerJournal = 0
             };
         }
 
@@ -246,9 +251,14 @@ namespace StatisticsAnalysisTool.ViewModels
                     EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
             }
 
-            if (CraftingCalculation?.TotalIncomeFromSales != null && EssentialCraftingValues != null)
+            if (CraftingCalculation?.TotalItemSells != null && EssentialCraftingValues != null)
             {
-                CraftingCalculation.TotalIncomeFromSales = EssentialCraftingValues.SellPricePerItem * EssentialCraftingValues.CraftingItemQuantity;
+                CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * EssentialCraftingValues.CraftingItemQuantity;
+            }
+
+            if (CraftingCalculation?.TotalJournalSells != null && RequiredJournal != null)
+            {
+                CraftingCalculation.TotalJournalSells = RequiredJournal.RequiredJournalAmount * RequiredJournal.SellPricePerJournal;
             }
 
             if (CraftingCalculation?.PossibleItemCrafting != null && EssentialCraftingValues != null)

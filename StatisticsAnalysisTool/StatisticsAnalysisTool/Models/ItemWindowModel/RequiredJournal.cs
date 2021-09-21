@@ -13,6 +13,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private long _costsPerJournal;
         private double _requiredJournalAmount;
         private readonly ItemWindowViewModel _itemWindowViewModel;
+        private double _sellPricePerJournal;
 
         public string UniqueName { get; set; }
 
@@ -62,9 +63,21 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
+        public double SellPricePerJournal
+        {
+            get => _sellPricePerJournal;
+            set
+            {
+                _sellPricePerJournal = value;
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
+                OnPropertyChanged();
+            }
+        }
+
         public string TranslationRequiredJournals => LanguageController.Translation("REQUIRED_JOURNALS");
         public string TranslationCostsPerJournal => LanguageController.Translation("COSTS_PER_JOURNAL");
         public string TranslationRequiredJournalAmount => LanguageController.Translation("REQUIRED_JOURNAL_AMOUNT");
+        public string TranslationSellPricePerJournal => LanguageController.Translation("SELL_PRICE_PER_JOURNAL");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

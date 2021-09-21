@@ -97,7 +97,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 _craftingQuantity = value;
 
                 TotalQuantity = OneProductionAmount * CraftingQuantity;
-                TotalCost = ResourceCost * CraftingQuantity;
+                TotalCost = ResourceCost * TotalQuantity;
                 OnPropertyChanged();
             }
         }
