@@ -70,6 +70,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<RequiredResource> _requiredResources = new();
         private RequiredJournalTemplate _requiredJournalTemplate;
         private Visibility _requiredJournalVisibility = Visibility.Collapsed;
+        private Visibility _craftingTabVisibility = Visibility.Collapsed;
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
@@ -140,8 +141,13 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async Task InitCraftingTabUiAsync()
         {
-            await GetCraftInfoAsync();
-            await GetJournalInfoAsync();
+            if (Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.Count > 0)
+            {
+                CraftingTabVisibility = Visibility.Visible;
+
+                await GetCraftInfoAsync();
+                await GetJournalInfoAsync();
+            }
         }
 
         private async Task GetCraftInfoAsync()
@@ -1047,6 +1053,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _requiredJournalVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility CraftingTabVisibility
+        {
+            get => _craftingTabVisibility;
+            set
+            {
+                _craftingTabVisibility = value;
                 OnPropertyChanged();
             }
         }

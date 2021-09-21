@@ -369,7 +369,7 @@
                     </ListView.View>
                 </ListView>
             </TabItem>
-            <TabItem Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
+            <TabItem Visibility="{Binding CraftingTabVisibility}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden">
                     <Grid Background="{StaticResource SolidColorBrush.Background.First}">
                         <StackPanel Orientation="Horizontal">
