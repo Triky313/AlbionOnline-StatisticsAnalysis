@@ -12,6 +12,8 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private long _costsPerJournal;
         private double _requiredJournalAmount;
 
+        public string UniqueName { get; set; }
+
         public BitmapImage Icon
         {
             get => _icon;

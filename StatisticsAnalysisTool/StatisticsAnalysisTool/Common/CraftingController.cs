@@ -33,7 +33,7 @@ namespace StatisticsAnalysisTool.Common
             return totalJournalFame / MaxJournalFame((ItemTier)item.Tier);
         }
 
-        public static async ValueTask<int> GetSimpleItemItemValueAsync(string uniqueName)
+        private static async ValueTask<int> GetSimpleItemItemValueAsync(string uniqueName)
         {
             var data = await _simpleItemData.FirstOrDefaultAsync(x => x.UniqueName == uniqueName).ConfigureAwait(false);
             return data?.ItemValue ?? 0;
@@ -97,8 +97,23 @@ namespace StatisticsAnalysisTool.Common
             };
         }
 
-        public static double GetItemValue(int numberOfMaterials, ItemTier tier, ItemLevel level, int artifactItemValue = 0)
+        public static async Task<double> GetSetupFeeAsync(Item item, string artifactUniqueName, double essentialCraftingTax)
         {
+            try
+            {
+                return await GetItemValueAsync(item.FullItemInformation.CraftingRequirements.TotalAmountResources, (ItemTier)item.Tier, (ItemLevel)item.Level, artifactUniqueName) / 20 * essentialCraftingTax;
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                return 0;
+            }
+        }
+
+        public static async Task<double> GetItemValueAsync(int numberOfMaterials, ItemTier tier, ItemLevel level, string artifactUniqueName)
+        {
+            var artifactItemValue = await GetSimpleItemItemValueAsync(artifactUniqueName);
             return (tier, level) switch
             {
                 (ItemTier.T2, ItemLevel.Level0) => numberOfMaterials * 2,

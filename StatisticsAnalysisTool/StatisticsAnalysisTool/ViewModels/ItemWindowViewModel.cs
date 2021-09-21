@@ -196,6 +196,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             RequiredJournal = new RequiredJournalTemplate()
             {
+                UniqueName = craftingJournalType.UniqueName,
                 CostsPerJournal = 0,
                 CraftingResourceName = craftingJournalType.LocalizedName,
                 Icon = craftingJournalType.Icon,
@@ -222,7 +223,7 @@ namespace StatisticsAnalysisTool.ViewModels
             return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
         }
 
-        public void UpdateCraftingValues(int itemQuantity)
+        public async Task UpdateCraftingValuesAsync(int itemQuantity)
         {
             foreach (var requiredResource in RequiredResources.ToList())
             {
@@ -238,6 +239,11 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 CraftingCalculation.SetupFee =
                     CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
+            }
+
+            if (CraftingCalculation?.CraftingTax != null)
+            {
+                CraftingCalculation.CraftingTax = await CraftingController.GetSetupFeeAsync(Item, RequiredJournal?.UniqueName, EssentialCraftingValues.CraftingTax);
             }
         }
 

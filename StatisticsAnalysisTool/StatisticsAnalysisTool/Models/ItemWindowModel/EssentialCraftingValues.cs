@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingItemQuantity = value;
-                _itemWindowViewModel.UpdateCraftingValues(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
                 OnPropertyChanged();
             }
         }
@@ -37,7 +37,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _sellPricePerItem = value;
-                _itemWindowViewModel.UpdateCraftingValues(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
                 OnPropertyChanged();
             }
         }
@@ -48,7 +48,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _setupFee = value;
-                _itemWindowViewModel.UpdateCraftingValues(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
                 OnPropertyChanged();
             }
         }
@@ -59,7 +59,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _auctionHouseTax = value;
-                _itemWindowViewModel.UpdateCraftingValues(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
                 OnPropertyChanged();
             }
         }
@@ -70,7 +70,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingTax = value;
-                _itemWindowViewModel.UpdateCraftingValues(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
                 OnPropertyChanged();
             }
         }
@@ -81,7 +81,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingBonus = value;
-                _itemWindowViewModel.UpdateCraftingValues(CraftingItemQuantity);
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync(CraftingItemQuantity);
                 OnPropertyChanged();
             }
         }

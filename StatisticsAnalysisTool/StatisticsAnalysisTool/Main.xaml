@@ -1488,10 +1488,10 @@
                     <Label Content="{Binding TranslationTotalCosts, FallbackValue=TOTAL__COSTS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
-                    <Label Content="{Binding CraftingTax}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" />
-                    <Label Content="{Binding SetupFee}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" />
-                    <Label Content="{Binding AuctionsHouseTax}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" />
-                    <Label Content="{Binding TotalJournalCosts}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding CraftingTax}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding SetupFee}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding AuctionsHouseTax}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding TotalJournalCosts}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
                     <Separator />
                     <Label Content="{Binding TotalCosts}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" />
                 </StackPanel>
