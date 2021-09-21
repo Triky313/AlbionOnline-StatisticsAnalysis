@@ -13,7 +13,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private double _setupFee;
         private double _auctionHouseTax;
         private short _craftingTax;
-        private short _craftingBonus;
+        private int _craftingBonus;
 
         public EssentialCraftingValuesTemplate(ItemWindowViewModel itemWindowViewModel)
         {
@@ -75,7 +75,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
-        public short CraftingBonus
+        public int CraftingBonus
         {
             get => _craftingBonus;
             set

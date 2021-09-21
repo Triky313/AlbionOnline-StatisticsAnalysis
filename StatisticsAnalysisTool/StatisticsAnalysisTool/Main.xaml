@@ -1476,7 +1476,7 @@
                     <Label Content="{Binding TranslationPossibleItemCrafting, FallbackValue=POSSIBLE__ITEM__CRAFTING}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
-                    <Label Content="{Binding PossibleItemCrafting}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding PossibleItemCrafting}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" />
                 </StackPanel>
             </StackPanel>
 

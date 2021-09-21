@@ -250,6 +250,11 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 CraftingCalculation.TotalIncomeFromSales = EssentialCraftingValues.SellPricePerItem * EssentialCraftingValues.CraftingItemQuantity;
             }
+
+            if (CraftingCalculation?.PossibleItemCrafting != null && EssentialCraftingValues != null)
+            {
+                CraftingCalculation.PossibleItemCrafting = (double)EssentialCraftingValues.CraftingItemQuantity / 100 * EssentialCraftingValues.CraftingBonus * (23.1d / 100 + 1);
+            }
         }
 
         public void UpdateCraftingCalculationTotalResourceCosts()
