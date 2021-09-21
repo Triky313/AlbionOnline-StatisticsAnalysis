@@ -23,6 +23,11 @@ namespace StatisticsAnalysisTool.Common
 
         public static double GetRequiredJournalAmount(Item item, int ItemQuantityToBeCrafted, int level)
         {
+            if (ItemQuantityToBeCrafted == 0)
+            {
+                return 0;
+            }
+
             var totalBaseFame = GetTotalBaseFame(item.FullItemInformation.CraftingRequirements.TotalAmountResources, (ItemTier)item.Tier, (ItemLevel)level);
             var totalJournalFame = totalBaseFame * ItemQuantityToBeCrafted;
             return totalJournalFame / MaxJournalFame((ItemTier)item.Tier);
@@ -177,6 +182,20 @@ namespace StatisticsAnalysisTool.Common
                 return new List<ItemSpriteToJournalStruct>().ToAsyncEnumerable();
             }
         }
+
+        #region Calculations
+
+        public static double GetSetupFeeCalculation(int? craftingItemQuantity, double? setupFee, double? sellPricePerItem)
+        {
+            if (craftingItemQuantity != null && setupFee != null && sellPricePerItem != null && craftingItemQuantity > 0 && setupFee > 0 && sellPricePerItem > 0)
+            {
+                return (double)craftingItemQuantity * (double)sellPricePerItem / 100 * (double)setupFee;
+            }
+
+            return 0.0d;
+        }
+
+        #endregion
 
         public struct ItemSpriteToJournalStruct
         {

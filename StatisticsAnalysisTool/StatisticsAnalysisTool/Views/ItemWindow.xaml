@@ -373,27 +373,13 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden">
                     <Grid Background="{StaticResource SolidColorBrush.Background.First}">
                         <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Vertical" Margin="5">
-                                <StackPanel Orientation="Vertical" Margin="5">
-                                    <Label Content="{Binding Translation.Quantity, FallbackValue=QUANTITY}" Style="{StaticResource Label.Crafting}" />
-                                    <TextBox Text="{Binding CraftingItemQuantity, IsAsync=True}" Style="{StaticResource TextBox.Crafting}" MaxLength="9" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Margin="5">
-                                    <Label Content="{Binding Translation.Fee, FallbackValue=FEE}" Style="{StaticResource Label.Crafting}" />
-                                    <TextBox Text="1" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Margin="5">
-                                    <Label Content="{Binding Translation.Tax, FallbackValue=TAX}" Style="{StaticResource Label.Crafting}" />
-                                    <TextBox Text="1" Style="{StaticResource TextBox.Crafting}" PreviewTextInput="TxtBoxCraftingQuantity_OnPreviewTextInput" />
-                                </StackPanel>
-                            </StackPanel>
-
+                            <ContentControl ContentTemplate="{StaticResource EssentialCraftingValuesTemplate}" Content="{Binding EssentialCraftingValues}" />
                             <StackPanel>
                                 <Label Margin="5,10,5,0" Content="{Binding Translation.RequiredResources, FallbackValue=REQUIRED__RESOURCES}" Style="{StaticResource Label.Crafting}" />
                                 <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}"/>
                             </StackPanel>
-
-                            <ContentControl Visibility="{Binding RequiredJournalVisibility}" ContentTemplate="{StaticResource RequiredJournalTemplate}" Content="{Binding RequiredJournalTemplate}" />
+                            <ContentControl Visibility="{Binding RequiredJournalVisibility}" ContentTemplate="{StaticResource RequiredJournalTemplate}" Content="{Binding RequiredJournal}" />
+                            <ContentControl ContentTemplate="{StaticResource CraftingCalculationTemplate}" Content="{Binding CraftingCalculation}" />
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
