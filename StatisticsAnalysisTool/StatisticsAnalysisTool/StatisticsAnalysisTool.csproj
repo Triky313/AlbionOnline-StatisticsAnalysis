@@ -118,6 +118,9 @@
     <Resource Include="Resources\icon_daily_season_points.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\skull.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\tracker_description_activate_tracker.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -143,9 +146,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\dungeon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\skull.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\boss.png">
@@ -362,6 +362,7 @@
     <None Remove="Languages\tr-TR.xml" />
     <None Remove="Languages\zh-CN.xml" />
     <None Remove="Resources\icon_daily_season_points.png" />
+    <None Remove="Resources\skull.png" />
     <None Remove="Resources\tracker_description_activate_tracker.png" />
     <None Remove="Resources\tracker_description_done.png" />
     <None Remove="Resources\tracker_description_tracker.png" />
