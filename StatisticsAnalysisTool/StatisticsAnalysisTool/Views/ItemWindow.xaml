@@ -369,6 +369,25 @@
                     </ListView.View>
                 </ListView>
             </TabItem>
+
+            <TabItem Visibility="{Binding CraftingTabVisibility}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
+                <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto">
+                    <Grid Background="{StaticResource SolidColorBrush.Background.First}">
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl ContentTemplate="{StaticResource EssentialCraftingValuesTemplate}" Content="{Binding EssentialCraftingValues}" />
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            <StackPanel>
+                                <Label Margin="5,10,5,0" Content="{Binding Translation.RequiredResources, FallbackValue=REQUIRED__RESOURCES}" Style="{StaticResource Label.Crafting}" />
+                                <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}"/>
+                            </StackPanel>
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            <ContentControl Visibility="{Binding RequiredJournalVisibility}" ContentTemplate="{StaticResource RequiredJournalTemplate}" Content="{Binding RequiredJournal}" />
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            <ContentControl ContentTemplate="{StaticResource CraftingCalculationTemplate}" Content="{Binding CraftingCalculation}" />
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
         </TabControl>
 
         <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">

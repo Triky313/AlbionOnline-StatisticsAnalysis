@@ -4,9 +4,11 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.ItemWindowModel;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -64,6 +66,25 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _showBlackZoneOutpostsChecked;
         private bool _showVillagesChecked;
         private ItemWindowTranslation _translation;
+        private ObservableCollection<RequiredResource> _requiredResources = new();
+        private RequiredJournal _requiredJournal;
+        private Visibility _requiredJournalVisibility = Visibility.Collapsed;
+        private Visibility _craftingTabVisibility = Visibility.Collapsed;
+        private EssentialCraftingValuesTemplate _essentialCraftingValues;
+
+        private CraftingCalculation _craftingCalculation = new()
+        {
+            AuctionsHouseTax = 0.0d,
+            CraftingTax = 0.0d,
+            PossibleItemCrafting = 0.0d,
+            SetupFee = 0.0d,
+            TotalCosts = 0.0,
+            TotalJournalCosts = 0.0d,
+            TotalItemSells = 0.0d,
+            TotalJournalSells = 0.0d,
+            TotalResourceCosts = 0.0d,
+            GrandTotal = 0.0d
+        };
 
         public ItemWindowViewModel(ItemWindow mainWindow, Item item)
         {
@@ -100,7 +121,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             ItemTierLevel = Item?.Tier != -1 && Item?.Level != -1 ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
-            SetFullItemInformationAsync(item);
+            await SetFullItemInformationAsync(item);
+            await InitCraftingTabUiAsync();
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
             {
@@ -129,10 +151,161 @@ namespace StatisticsAnalysisTool.ViewModels
             RefreshSpin = IsAutoUpdateActive;
         }
 
-        private async void SetFullItemInformationAsync(Item item)
+        #region Crafting tab
+
+        private async Task InitCraftingTabUiAsync()
+        {
+            if (Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.Count > 0)
+            {
+                CraftingTabVisibility = Visibility.Visible;
+
+                SetEssentialCraftingValues();
+                await GetJournalInfoAsync();
+                await GetCraftInfoAsync();
+            }
+        }
+
+        private void SetEssentialCraftingValues()
+        {
+            EssentialCraftingValues = new EssentialCraftingValuesTemplate(this)
+            {
+                AuctionHouseTax = 3.0d,
+                CraftingBonus = 133,
+                CraftingItemQuantity = 1,
+                CraftingTax = 0,
+                SellPricePerItem = 0,
+                SetupFee = 1.5d,
+                OtherCosts = 0,
+                IsCraftingWithFocus = false
+            };
+        }
+
+        private async Task GetCraftInfoAsync()
+        {
+            var craftResourceList = Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.ToAsyncEnumerable();
+
+            await foreach (var craftResource in craftResourceList ?? new List<CraftResourceList>().ToAsyncEnumerable())
+            {
+                var item = GetSuitableResourceItem(craftResource.UniqueName);
+                var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false ? CraftingCalculation.PossibleItemCrafting : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
+                
+                RequiredResources.Add(new RequiredResource(this)
+                {
+                    CraftingResourceName = item?.LocalizedName,
+                    OneProductionAmount = craftResource.Count,
+                    Icon = item?.Icon,
+                    ResourceCost = 0,
+                    CraftingQuantity = craftingQuantity,
+                    IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
+                });
+            }
+        }
+
+        private async Task GetJournalInfoAsync()
+        {
+            var craftingJournalType = await CraftingController.GetCraftingJournalItemAsync(Item.Tier, Item.FullItemInformation.SpriteName);
+            if (craftingJournalType == null)
+            {
+                return;
+            }
+
+            RequiredJournalVisibility = Visibility.Visible;
+
+            RequiredJournal = new RequiredJournal(this)
+            {
+                UniqueName = craftingJournalType.UniqueName,
+                CostsPerJournal = 0,
+                CraftingResourceName = craftingJournalType.LocalizedName,
+                Icon = craftingJournalType.Icon,
+                RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting, Item.Level),
+                SellPricePerJournal = 0
+            };
+        }
+
+        private Item GetSuitableResourceItem(string uniqueName)
+        {
+            var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
+            return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
+        }
+
+        public async Task UpdateCraftingValuesAsync()
+        {
+            if (CraftingCalculation?.SetupFee != null && EssentialCraftingValues != null)
+            {
+                CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
+            }
+
+            if (CraftingCalculation?.CraftingTax != null && EssentialCraftingValues != null)
+            {
+                CraftingCalculation.CraftingTax = await CraftingController.GetSetupFeeAsync(Item, RequiredJournal?.UniqueName, EssentialCraftingValues.CraftingTax);
+            }
+
+            if (CraftingCalculation?.PossibleItemCrafting != null && EssentialCraftingValues != null)
+            {
+                if (EssentialCraftingValues.IsCraftingWithFocus)
+                {
+                    var possibleItemCrafting = (double)EssentialCraftingValues.CraftingItemQuantity / 100 * EssentialCraftingValues.CraftingBonus * ((23.1d / 100) + 1);
+                    CraftingCalculation.PossibleItemCrafting = Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
+                }
+                else
+                {
+                    var possibleItemCrafting = (double)EssentialCraftingValues.CraftingItemQuantity / 100 * EssentialCraftingValues.CraftingBonus;
+                    CraftingCalculation.PossibleItemCrafting = Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
+                }
+
+                foreach (var requiredResource in RequiredResources.ToList())
+                {
+                    requiredResource.CraftingQuantity = requiredResource.IsArtifactResource
+                        ? (long)Math.Round(CraftingCalculation.PossibleItemCrafting, MidpointRounding.ToPositiveInfinity)
+                        : EssentialCraftingValues.CraftingItemQuantity;
+                }
+            }
+
+            if (RequiredJournal?.RequiredJournalAmount != null && CraftingCalculation != null)
+            {
+                RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting, Item.Level);
+            }
+
+            if (CraftingCalculation?.AuctionsHouseTax != null && EssentialCraftingValues != null)
+            {
+                CraftingCalculation.AuctionsHouseTax =
+                    EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
+            }
+
+            if (CraftingCalculation?.TotalItemSells != null && EssentialCraftingValues != null && CraftingCalculation != null)
+            {
+                CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * CraftingCalculation.PossibleItemCrafting;
+            }
+
+            if (CraftingCalculation?.TotalJournalSells != null && RequiredJournal != null)
+            {
+                CraftingCalculation.TotalJournalSells = RequiredJournal.RequiredJournalAmount * RequiredJournal.SellPricePerJournal;
+            }
+
+            if (CraftingCalculation?.OtherCosts != null && EssentialCraftingValues != null)
+            {
+                CraftingCalculation.OtherCosts = EssentialCraftingValues.OtherCosts;
+            }
+        }
+
+        public void UpdateCraftingCalculationTotalResourceCosts()
+        {
+            if (CraftingCalculation?.TotalResourceCosts != null)
+            {
+                CraftingCalculation.TotalResourceCosts = RequiredResources.Sum(x => x.TotalCost);
+            }
+        }
+
+        #endregion Crafting tab
+
+        private async Task SetFullItemInformationAsync(Item item)
         {
             InformationLoadingImageVisibility = Visibility.Visible;
-            ItemInformation = await ItemController.GetFullItemInformationAsync(item);
+
+            var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);
+            ItemInformation = fullItemInfo;
+            Item.FullItemInformation = fullItemInfo;
+
             InformationLoadingImageVisibility = Visibility.Hidden;
         }
 
@@ -200,7 +373,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     await Task.Delay(50);
                     if (_mainWindow.Dispatcher != null && !IsAutoUpdateActive)
+                    {
                         continue;
+                    }
 
                     if (Item.UniqueName != null)
                     {
@@ -236,19 +411,29 @@ namespace StatisticsAnalysisTool.ViewModels
             var qualities = new List<int>();
 
             if (NormalQualityChecked)
+            {
                 qualities.Add(1);
+            }
 
             if (GoodQualityChecked)
+            {
                 qualities.Add(2);
+            }
 
             if (OutstandingQualityChecked)
+            {
                 qualities.Add(3);
+            }
 
             if (ExcellentQualityChecked)
+            {
                 qualities.Add(4);
+            }
 
             if (MasterpieceQualityChecked)
+            {
                 qualities.Add(5);
+            }
 
             return qualities;
         }
@@ -256,7 +441,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private void SetDefaultQualityIfNoOneChecked()
         {
             if (!NormalQualityChecked && !GoodQualityChecked && !OutstandingQualityChecked && !ExcellentQualityChecked && !MasterpieceQualityChecked)
+            {
                 NormalQualityChecked = true;
+            }
         }
 
         public async void SetHistoryChartPricesAsync()
@@ -269,7 +456,10 @@ namespace StatisticsAnalysisTool.ViewModels
                 historyItemPrices = await ApiController
                     .GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
-                if (historyItemPrices == null) return;
+                if (historyItemPrices == null)
+                {
+                    return;
+                }
             }
             catch (TooManyRequestsException)
             {
@@ -315,12 +505,15 @@ namespace StatisticsAnalysisTool.ViewModels
         public async void GetItemPricesInRealMoneyAsync()
         {
             if (CurrentCityPrices == null)
+            {
                 return;
+            }
 
             var realMoneyMarketObject = new List<MarketQualityObject>();
 
             var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
             foreach (var stat in filteredCityPrices)
+            {
                 if (realMoneyMarketObject.Exists(x => x.Location == stat.City))
                 {
                     var marketQualityObject = realMoneyMarketObject.Find(x => x.LocationName == stat.City);
@@ -328,23 +521,26 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
                 else
                 {
-                    var marketQualityObject = new MarketQualityObject {Location = stat.City};
+                    var marketQualityObject = new MarketQualityObject { Location = stat.City };
                     await SetRealMoneyQualityStat(stat, marketQualityObject);
                     realMoneyMarketObject.Add(marketQualityObject);
                 }
-
+            }
             RealMoneyPriceList = realMoneyMarketObject;
         }
 
         public void SetQualityPriceStatsOnListView()
         {
             if (CurrentCityPrices == null)
+            {
                 return;
+            }
 
             var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
             var marketQualityObjectList = new List<MarketQualityObject>();
 
             foreach (var stat in filteredCityPrices)
+            {
                 if (marketQualityObjectList.Exists(x => x.Location == stat.City))
                 {
                     var marketQualityObject = marketQualityObjectList.Find(x => x.LocationName == stat.City);
@@ -352,10 +548,11 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
                 else
                 {
-                    var marketQualityObject = new MarketQualityObject {Location = stat.City};
+                    var marketQualityObject = new MarketQualityObject { Location = stat.City };
                     SetQualityStat(stat, ref marketQualityObject);
                     marketQualityObjectList.Add(marketQualityObject);
                 }
+            }
 
             AllQualityPricesList = marketQualityObjectList;
         }
@@ -525,7 +722,11 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                if (list.Exists(s => s.BuyPriceMax == max)) list.Find(s => s.BuyPriceMax == max).BestBuyMaxPrice = true;
+                if (list.Exists(s => s.BuyPriceMax == max))
+                {
+                    // ReSharper disable once PossibleNullReferenceException
+                    list.Find(s => s?.BuyPriceMax == max).BestBuyMaxPrice = true;
+                }
             }
             catch
             {
@@ -769,16 +970,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ItemWindowTranslation Translation
-        {
-            get => _translation;
-            set
-            {
-                _translation = value;
-                OnPropertyChanged();
-            }
-        }
-
         public bool NormalQualityChecked
         {
             get => _normalQualityChecked;
@@ -929,6 +1120,76 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public RequiredJournal RequiredJournal
+        {
+            get => _requiredJournal;
+            set
+            {
+                _requiredJournal = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public CraftingCalculation CraftingCalculation
+        {
+            get => _craftingCalculation;
+            set
+            {
+                _craftingCalculation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public EssentialCraftingValuesTemplate EssentialCraftingValues
+        {
+            get => _essentialCraftingValues;
+            set
+            {
+                _essentialCraftingValues = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<RequiredResource> RequiredResources
+        {
+            get => _requiredResources;
+            set
+            {
+                _requiredResources = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility RequiredJournalVisibility
+        {
+            get => _requiredJournalVisibility;
+            set
+            {
+                _requiredJournalVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility CraftingTabVisibility
+        {
+            get => _craftingTabVisibility;
+            set
+            {
+                _craftingTabVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ItemWindowTranslation Translation
+        {
+            get => _translation;
+            set
+            {
+                _translation = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -947,7 +1208,7 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 var label = (Label) sender;
-                Clipboard.SetText(label.Content.ToString());
+                Clipboard.SetText(label.Content.ToString() ?? string.Empty);
             }
             catch (Exception ex)
             {

@@ -44,5 +44,7 @@ namespace StatisticsAnalysisTool.Models
         public string RealMoneyPrice => LanguageController.Translation("REAL_MONEY_PRICE");
         public string AveragePrices => LanguageController.Translation("AVERAGE_PRICES");
         public string AveragePricesTooltip => LanguageController.Translation("AVERAGE_PRICES_TOOLTIP");
+        public string RequiredResources => LanguageController.Translation("REQUIRED_RESOURCES");
+        public string Crafting => LanguageController.Translation("CRAFTING");
     }
 }

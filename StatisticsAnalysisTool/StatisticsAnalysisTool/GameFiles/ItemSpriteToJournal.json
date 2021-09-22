@@ -1,0 +1,901 @@
+﻿// Establishes the connection between ItemSpriteName and the JournalID.
+// 1 = JOURNAL_MAGE_EMPTY, 2 = JOURNAL_HUNTER_EMPTY, 3 = JOURNAL_WARRIOR_EMPTY, 4 = JOURNAL_TOOLMAKER_EMPTY
+
+[
+  {
+    "Name": "MAIN_ARCANESTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "ARMOR_PLATE_AVALON",
+    "Id": 3
+  },
+  {
+    "Name": "HEAD_LEATHER_SET3",
+    "Id": 2
+  },
+  {
+    "Name": "ARMOR_LEATHER_SET3",
+    "Id": 2
+  },
+  {
+    "Name": "SHOES_LEATHER_SET3",
+    "Id": 2
+  },
+  {
+    "Name": "OFF_SHIELD_AVALON",
+    "Id": 3
+  },
+  {
+    "Name": "2H_TOOL_AXE_AVALON",
+    "Id": 4
+  },
+  {
+    "Name": "2H_TOOL_SIEGEHAMMER_AVALON",
+    "Id": 4
+  },
+  {
+    "Name": "2H_TOOL_FISHINGROD_AVALON",
+    "Id": 4
+  },
+  {
+    "Name": "2H_TOOL_PICK_AVALON",
+    "Id": 4
+  },
+  {
+    "Name": "2H_TOOL_SICKLE_AVALON",
+    "Id": 4
+  },
+  {
+    "Name": "2H_TOOL_KNIFE_AVALON",
+    "Id": 4
+  },
+  {
+    "Name": "2H_TOOL_HAMMER_AVALON",
+    "Id": 4
+  },
+  {
+    "Name": "2H_TOOL_AXE",
+    "Id": 4
+  },
+  {
+    "Name": "BAG",
+    "Id": 4
+  },
+  {
+    "Name": "MAIN_AXE",
+    "Id": 3
+  },
+  {
+    "Name": "2H_DUALAXE_KEEPER",
+    "Id": 3
+  },
+  {
+    "Name": "MAIN_ROCKMACE_KEEPER",
+    "Id": 3
+  },
+  {
+    "Name": "2H_IRONGAUNTLETS_HELL",
+    "Id": 2
+  },
+  {
+    "Name": "2H_COMBATSTAFF_MORGANA",
+    "Id": 2
+  },
+  {
+    "Name": "2H_INFERNOSTAFF_MORGANA",
+    "Id": 1
+  },
+  {
+    "Name": "2H_NATURESTAFF_HELL",
+    "Id": 2
+  },
+  {
+    "Name": "MAIN_RAPIER_MORGANA",
+    "Id": 2
+  },
+  {
+    "Name": "2H_DUALCROSSBOW_HELL",
+    "Id": 3
+  },
+  {
+    "Name": "SHOES_PLATE_AVALON",
+    "Id": 3
+  },
+  {
+    "Name": "2H_BOW",
+    "Id": 2
+  },
+  {
+    "Name": "2H_BOW_KEEPER",
+    "Id": 2
+  },
+  {
+    "Name": "2H_DAGGER_KATAR_AVALON",
+    "Id": 2
+  },
+  {
+    "Name": "2H_FIRESTAFF_HELL",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_SWORD",
+    "Id": 3
+  },
+  {
+    "Name": "OFF_SHIELD_HELL",
+    "Id": 3
+  },
+  {
+    "Name": "2H_MACE_MORGANA",
+    "Id": 3
+  },
+  {
+    "Name": "CAPE",
+    "Id": 4
+  },
+  {
+    "Name": "2H_HALBERD_MORGANA",
+    "Id": 3
+  },
+  {
+    "Name": "2H_CLEAVER_HELL",
+    "Id": 3
+  },
+  {
+    "Name": "OFF_CENSER_AVALON",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_FROSTSTAFF_AVALON",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_SCIMITAR_MORGANA",
+    "Id": 3
+  },
+  {
+    "Name": "2H_CLAWPAIR",
+    "Id": 2
+  },
+  {
+    "Name": "2H_CLAYMORE",
+    "Id": 3
+  },
+  {
+    "Name": "HEAD_CLOTH_SET2",
+    "Id": 1
+  },
+  {
+    "Name": "ARMOR_CLOTH_SET2",
+    "Id": 1
+  },
+  {
+    "Name": "SHOES_CLOTH_SET2",
+    "Id": 1
+  },
+  {
+    "Name": "HEAD_CLOTH_AVALON",
+    "Id": 1
+  },
+  {
+    "Name": "2H_CROSSBOW",
+    "Id": 3
+  },
+  {
+    "Name": "OFF_LAMP_UNDEAD",
+    "Id": 2
+  },
+  {
+    "Name": "HEAD_CLOTH_MORGANA",
+    "Id": 1
+  },
+  {
+    "Name": "ARMOR_CLOTH_MORGANA",
+    "Id": 1
+  },
+  {
+    "Name": "SHOES_CLOTH_MORGANA",
+    "Id": 1
+  },
+  {
+    "Name": "2H_SKULLORB_HELL",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_CURSEDSTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_DAGGER",
+    "Id": 2
+  },
+  {
+    "Name": "2H_DAGGERPAIR",
+    "Id": 2
+  },
+  {
+    "Name": "2H_CURSEDSTAFF_MORGANA",
+    "Id": 1
+  },
+  {
+    "Name": "2H_FIRE_RINGPAIR_AVALON",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_SPEAR_LANCE_AVALON",
+    "Id": 2
+  },
+  {
+    "Name": "2H_DUALSICKLE_UNDEAD",
+    "Id": 2
+  },
+  {
+    "Name": "2H_TOOL_SIEGEHAMMER",
+    "Id": 4
+  },
+  {
+    "Name": "ARMOR_PLATE_HELL",
+    "Id": 3
+  },
+  {
+    "Name": "SHOES_PLATE_HELL",
+    "Id": 3
+  },
+  {
+    "Name": "HEAD_PLATE_HELL",
+    "Id": 3
+  },
+  {
+    "Name": "2H_DEMONICSTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "2H_DIVINESTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "2H_DOUBLEBLADEDSTAFF",
+    "Id": 2
+  },
+  {
+    "Name": "HEAD_CLOTH_KEEPER",
+    "Id": 1
+  },
+  {
+    "Name": "ARMOR_CLOTH_KEEPER",
+    "Id": 1
+  },
+  {
+    "Name": "SHOES_CLOTH_KEEPER",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_NATURESTAFF_KEEPER",
+    "Id": 2
+  },
+  {
+    "Name": "2H_DUALSWORD",
+    "Id": 3
+  },
+  {
+    "Name": "2H_CROSSBOW_CANNON_AVALON",
+    "Id": 3
+  },
+  {
+    "Name": "2H_ENIGMATICSTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "2H_ARCANE_RINGPAIR_AVALON",
+    "Id": 1
+  },
+  {
+    "Name": "OFF_ORB_MORGANA",
+    "Id": 1
+  },
+  {
+    "Name": "OFF_SPIKEDSHIELD_MORGANA",
+    "Id": 3
+  },
+  {
+    "Name": "2H_HOLYSTAFF_HELL",
+    "Id": 1
+  },
+  {
+    "Name": "HEAD_CLOTH_HELL",
+    "Id": 1
+  },
+  {
+    "Name": "ARMOR_CLOTH_HELL",
+    "Id": 1
+  },
+  {
+    "Name": "SHOES_CLOTH_HELL",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_FIRESTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "BACKPACK_GATHERER_FISH",
+    "Id": 4
+  },
+  {
+    "Name": "HEAD_GATHERER_FISH",
+    "Id": 4
+  },
+  {
+    "Name": "ARMOR_GATHERER_FISH",
+    "Id": 4
+  },
+  {
+    "Name": "SHOES_GATHERER_FISH",
+    "Id": 4
+  },
+  {
+    "Name": "2H_TOOL_FISHINGROD",
+    "Id": 4
+  },
+  {
+    "Name": "2H_DUALHAMMER_HELL",
+    "Id": 3
+  },
+  {
+    "Name": "MAIN_FROSTSTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "2H_DUALSCIMITAR_UNDEAD",
+    "Id": 3
+  },
+  {
+    "Name": "2H_GLACIALSTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "2H_GLAIVE",
+    "Id": 2
+  },
+  {
+    "Name": "2H_QUARTERSTAFF_AVALON",
+    "Id": 2
+  },
+  {
+    "Name": "ARMOR_PLATE_UNDEAD",
+    "Id": 3
+  },
+  {
+    "Name": "SHOES_PLATE_UNDEAD",
+    "Id": 3
+  },
+  {
+    "Name": "HEAD_PLATE_UNDEAD",
+    "Id": 3
+  },
+  {
+    "Name": "2H_ARCANESTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "2H_CURSEDSTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "2H_FIRESTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "2H_FROSTSTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "2H_HAMMER",
+    "Id": 3
+  },
+  {
+    "Name": "2H_HOLYSTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "2H_NATURESTAFF",
+    "Id": 2
+  },
+  {
+    "Name": "2H_AXE",
+    "Id": 3
+  },
+  {
+    "Name": "2H_RAM_KEEPER",
+    "Id": 3
+  },
+  {
+    "Name": "ARMOR_PLATE_SET3",
+    "Id": 3
+  },
+  {
+    "Name": "SHOES_PLATE_SET3",
+    "Id": 3
+  },
+  {
+    "Name": "HEAD_PLATE_SET3",
+    "Id": 3
+  },
+  {
+    "Name": "2H_HALBERD",
+    "Id": 3
+  },
+  {
+    "Name": "MAIN_HOLYSTAFF_AVALON",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_HAMMER",
+    "Id": 3
+  },
+  {
+    "Name": "2H_HAMMER_AVALON",
+    "Id": 3
+  },
+  {
+    "Name": "BACKPACK_GATHERER_FIBER",
+    "Id": 4
+  },
+  {
+    "Name": "HEAD_GATHERER_FIBER",
+    "Id": 4
+  },
+  {
+    "Name": "ARMOR_GATHERER_FIBER",
+    "Id": 4
+  },
+  {
+    "Name": "SHOES_GATHERER_FIBER",
+    "Id": 4
+  },
+  {
+    "Name": "2H_CROSSBOWLARGE",
+    "Id": 3
+  },
+  {
+    "Name": "2H_MACE",
+    "Id": 3
+  },
+  {
+    "Name": "HEAD_LEATHER_HELL",
+    "Id": 2
+  },
+  {
+    "Name": "ARMOR_LEATHER_HELL",
+    "Id": 2
+  },
+  {
+    "Name": "SHOES_LEATHER_HELL",
+    "Id": 2
+  },
+  {
+    "Name": "HEAD_PLATE_AVALON",
+    "Id": 3
+  },
+  {
+    "Name": "MAIN_SPEAR_KEEPER",
+    "Id": 2
+  },
+  {
+    "Name": "MAIN_FROSTSTAFF_KEEPER",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_HOLYSTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "HEAD_LEATHER_AVALON",
+    "Id": 2
+  },
+  {
+    "Name": "HEAD_LEATHER_SET2",
+    "Id": 2
+  },
+  {
+    "Name": "ARMOR_LEATHER_SET2",
+    "Id": 2
+  },
+  {
+    "Name": "SHOES_LEATHER_SET2",
+    "Id": 2
+  },
+  {
+    "Name": "2H_ICEGAUNTLETS_HELL",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_MACE_HELL",
+    "Id": 3
+  },
+  {
+    "Name": "2H_SCYTHE_HELL",
+    "Id": 3
+  },
+  {
+    "Name": "2H_INFERNOSTAFF",
+    "Id": 1
+  },
+  {
+    "Name": "2H_IRONCLADEDSTAFF",
+    "Id": 2
+  },
+  {
+    "Name": "MAIN_NATURESTAFF_AVALON",
+    "Id": 2
+  },
+  {
+    "Name": "ARMOR_LEATHER_AVALON",
+    "Id": 2
+  },
+  {
+    "Name": "ARMOR_PLATE_KEEPER",
+    "Id": 3
+  },
+  {
+    "Name": "SHOES_PLATE_KEEPER",
+    "Id": 3
+  },
+  {
+    "Name": "HEAD_PLATE_KEEPER",
+    "Id": 3
+  },
+  {
+    "Name": "2H_CLAYMORE_AVALON",
+    "Id": 3
+  },
+  {
+    "Name": "ARMOR_PLATE_SET2",
+    "Id": 3
+  },
+  {
+    "Name": "SHOES_PLATE_SET2",
+    "Id": 3
+  },
+  {
+    "Name": "HEAD_PLATE_SET2",
+    "Id": 3
+  },
+  {
+    "Name": "OFF_JESTERCANE_HELL",
+    "Id": 2
+  },
+  {
+    "Name": "MAIN_CURSEDSTAFF_UNDEAD",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_HOLYSTAFF_MORGANA",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_1HCROSSBOW",
+    "Id": 3
+  },
+  {
+    "Name": "2H_LONGBOW",
+    "Id": 2
+  },
+  {
+    "Name": "BACKPACK_GATHERER_WOOD",
+    "Id": 4
+  },
+  {
+    "Name": "HEAD_GATHERER_WOOD",
+    "Id": 4
+  },
+  {
+    "Name": "ARMOR_GATHERER_WOOD",
+    "Id": 4
+  },
+  {
+    "Name": "SHOES_GATHERER_WOOD",
+    "Id": 4
+  },
+  {
+    "Name": "MAIN_MACE",
+    "Id": 3
+  },
+  {
+    "Name": "HEAD_CLOTH_SET3",
+    "Id": 1
+  },
+  {
+    "Name": "ARMOR_CLOTH_SET3",
+    "Id": 1
+  },
+  {
+    "Name": "SHOES_CLOTH_SET3",
+    "Id": 1
+  },
+  {
+    "Name": "2H_ENIGMATICORB_MORGANA",
+    "Id": 1
+  },
+  {
+    "Name": "HEAD_LEATHER_SET1",
+    "Id": 2
+  },
+  {
+    "Name": "ARMOR_LEATHER_SET1",
+    "Id": 2
+  },
+  {
+    "Name": "SHOES_LEATHER_SET1",
+    "Id": 2
+  },
+  {
+    "Name": "BACKPACK_GATHERER_ORE",
+    "Id": 4
+  },
+  {
+    "Name": "HEAD_GATHERER_ORE",
+    "Id": 4
+  },
+  {
+    "Name": "ARMOR_GATHERER_ORE",
+    "Id": 4
+  },
+  {
+    "Name": "SHOES_GATHERER_ORE",
+    "Id": 4
+  },
+  {
+    "Name": "OFF_HORN_KEEPER",
+    "Id": 2
+  },
+  {
+    "Name": "2H_BOW_AVALON",
+    "Id": 2
+  },
+  {
+    "Name": "2H_FLAIL",
+    "Id": 3
+  },
+  {
+    "Name": "OFF_DEMONSKULL_HELL",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_NATURESTAFF",
+    "Id": 2
+  },
+  {
+    "Name": "2H_DUALMACE_AVALON",
+    "Id": 3
+  },
+  {
+    "Name": "2H_ARCANESTAFF_HELL",
+    "Id": 1
+  },
+  {
+    "Name": "2H_ICECRYSTAL_UNDEAD",
+    "Id": 1
+  },
+  {
+    "Name": "2H_TOOL_PICK",
+    "Id": 4
+  },
+  {
+    "Name": "2H_SPEAR",
+    "Id": 2
+  },
+  {
+    "Name": "2H_POLEHAMMER",
+    "Id": 3
+  },
+  {
+    "Name": "BACKPACK_GATHERER_ROCK",
+    "Id": 4
+  },
+  {
+    "Name": "HEAD_GATHERER_ROCK",
+    "Id": 4
+  },
+  {
+    "Name": "ARMOR_GATHERER_ROCK",
+    "Id": 4
+  },
+  {
+    "Name": "SHOES_GATHERER_ROCK",
+    "Id": 4
+  },
+  {
+    "Name": "2H_QUARTERSTAFF",
+    "Id": 2
+  },
+  {
+    "Name": "2H_NATURESTAFF_KEEPER",
+    "Id": 2
+  },
+  {
+    "Name": "2H_AXE_AVALON",
+    "Id": 3
+  },
+  {
+    "Name": "2H_HOLYSTAFF_UNDEAD",
+    "Id": 1
+  },
+  {
+    "Name": "ARMOR_CLOTH_AVALON",
+    "Id": 1
+  },
+  {
+    "Name": "OFF_TALISMAN_AVALON",
+    "Id": 2
+  },
+  {
+    "Name": "SHOES_CLOTH_AVALON",
+    "Id": 1
+  },
+  {
+    "Name": "OFF_TOWERSHIELD_UNDEAD",
+    "Id": 3
+  },
+  {
+    "Name": "BAG_INSIGHT",
+    "Id": 4
+  },
+  {
+    "Name": "HEAD_CLOTH_SET1",
+    "Id": 1
+  },
+  {
+    "Name": "ARMOR_CLOTH_SET1",
+    "Id": 1
+  },
+  {
+    "Name": "SHOES_CLOTH_SET1",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_CURSEDSTAFF_AVALON",
+    "Id": 1
+  },
+  {
+    "Name": "OFF_SHIELD",
+    "Id": 3
+  },
+  {
+    "Name": "SHOES_LEATHER_AVALON",
+    "Id": 2
+  },
+  {
+    "Name": "2H_TOOL_SICKLE",
+    "Id": 4
+  },
+  {
+    "Name": "2H_CROSSBOWLARGE_MORGANA",
+    "Id": 3
+  },
+  {
+    "Name": "BACKPACK_GATHERER_HIDE",
+    "Id": 4
+  },
+  {
+    "Name": "HEAD_GATHERER_HIDE",
+    "Id": 4
+  },
+  {
+    "Name": "ARMOR_GATHERER_HIDE",
+    "Id": 4
+  },
+  {
+    "Name": "SHOES_GATHERER_HIDE",
+    "Id": 4
+  },
+  {
+    "Name": "2H_TOOL_KNIFE",
+    "Id": 4
+  },
+  {
+    "Name": "ARMOR_PLATE_SET1",
+    "Id": 3
+  },
+  {
+    "Name": "SHOES_PLATE_SET1",
+    "Id": 3
+  },
+  {
+    "Name": "HEAD_PLATE_SET1",
+    "Id": 3
+  },
+  {
+    "Name": "2H_TWINSCYTHE_HELL",
+    "Id": 2
+  },
+  {
+    "Name": "MAIN_SPEAR",
+    "Id": 2
+  },
+  {
+    "Name": "HEAD_LEATHER_UNDEAD",
+    "Id": 2
+  },
+  {
+    "Name": "ARMOR_LEATHER_UNDEAD",
+    "Id": 2
+  },
+  {
+    "Name": "SHOES_LEATHER_UNDEAD",
+    "Id": 2
+  },
+  {
+    "Name": "2H_HARPOON_HELL",
+    "Id": 2
+  },
+  {
+    "Name": "2H_ROCKSTAFF_KEEPER",
+    "Id": 2
+  },
+  {
+    "Name": "HEAD_LEATHER_MORGANA",
+    "Id": 2
+  },
+  {
+    "Name": "ARMOR_LEATHER_MORGANA",
+    "Id": 2
+  },
+  {
+    "Name": "SHOES_LEATHER_MORGANA",
+    "Id": 2
+  },
+  {
+    "Name": "2H_TOOL_HAMMER",
+    "Id": 4
+  },
+  {
+    "Name": "OFF_TOTEM_KEEPER",
+    "Id": 1
+  },
+  {
+    "Name": "2H_HAMMER_UNDEAD",
+    "Id": 3
+  },
+  {
+    "Name": "OFF_BOOK",
+    "Id": 1
+  },
+  {
+    "Name": "OFF_TORCH",
+    "Id": 2
+  },
+  {
+    "Name": "2H_TRIDENT_UNDEAD",
+    "Id": 2
+  },
+  {
+    "Name": "2H_BOW_HELL",
+    "Id": 2
+  },
+  {
+    "Name": "2H_WARBOW",
+    "Id": 2
+  },
+  {
+    "Name": "2H_REPEATINGCROSSBOW_UNDEAD",
+    "Id": 3
+  },
+  {
+    "Name": "2H_LONGBOW_UNDEAD",
+    "Id": 2
+  },
+  {
+    "Name": "2H_WILDSTAFF",
+    "Id": 2
+  },
+  {
+    "Name": "MAIN_FIRESTAFF_KEEPER",
+    "Id": 1
+  },
+  {
+    "Name": "MAIN_ARCANESTAFF_UNDEAD",
+    "Id": 1
+  }
+]

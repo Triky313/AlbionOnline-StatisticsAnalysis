@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text.Json.Serialization;
 using Formatting = StatisticsAnalysisTool.Common.Formatting;
@@ -80,7 +81,8 @@ namespace StatisticsAnalysisTool.Models
         [JsonPropertyName("itemPowerProgressionType")]
         public string ItemPowerProgressionType { get; set; }
 
-        [JsonPropertyName("craftingRequirements")] public CraftingRequirements CraftingRequirements { get; set; }
+        [JsonPropertyName("craftingRequirements")] 
+        public CraftingRequirements CraftingRequirements { get; set; }
 
         [JsonPropertyName("unlockedToEquip")]
         public bool? UnlockedToEquip { get; set; }
@@ -183,6 +185,9 @@ namespace StatisticsAnalysisTool.Models
 
         [JsonPropertyName("craftResourceList")]
         public List<CraftResourceList> CraftResourceList { get; set; }
+
+        [JsonIgnore]
+        public int TotalAmountResources => CraftResourceList?.Sum(x => x?.Count) ?? 0;
     }
 
     public class Enchantment

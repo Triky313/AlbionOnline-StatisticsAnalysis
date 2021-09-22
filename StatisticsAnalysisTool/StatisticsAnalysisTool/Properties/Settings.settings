@@ -77,11 +77,17 @@
     <Setting Name="GoldStatsApiUrlDefault" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://www.albion-online-data.com/api/v2/stats/Gold</Value>
     </Setting>
-    <Setting Name="WorldDataDirectoryName" Type="System.String" Scope="Application">
+    <Setting Name="GameFilesDirectoryName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">GameFiles</Value>
     </Setting>
     <Setting Name="SettingsFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Settings.json</Value>
+    </Setting>
+    <Setting Name="ItemsFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Items.json</Value>
+    </Setting>
+    <Setting Name="ItemSpriteToJournalFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ItemSpriteToJournal.json</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -295,9 +295,9 @@ namespace StatisticsAnalysisTool.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("GameFiles")]
-        public string WorldDataDirectoryName {
+        public string GameFilesDirectoryName {
             get {
-                return ((string)(this["WorldDataDirectoryName"]));
+                return ((string)(this["GameFilesDirectoryName"]));
             }
         }
         
@@ -307,6 +307,30 @@ namespace StatisticsAnalysisTool.Properties {
         public string SettingsFileName {
             get {
                 return ((string)(this["SettingsFileName"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Items.json")]
+        public string ItemsFileName {
+            get {
+                return ((string)(this["ItemsFileName"]));
+            }
+            set {
+                this["ItemsFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ItemSpriteToJournal.json")]
+        public string ItemSpriteToJournalFileName {
+            get {
+                return ((string)(this["ItemSpriteToJournalFileName"]));
+            }
+            set {
+                this["ItemSpriteToJournalFileName"] = value;
             }
         }
     }
