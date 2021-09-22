@@ -21,7 +21,7 @@ namespace StatisticsAnalysisTool.Common
         private static IAsyncEnumerable<SimpleItemData> _simpleItemData = new List<SimpleItemData>().ToAsyncEnumerable();
         private static IAsyncEnumerable<ItemSpriteToJournalStruct> _craftingJournalData = new List<ItemSpriteToJournalStruct>().ToAsyncEnumerable();
 
-        public static double GetRequiredJournalAmount(Item item, int ItemQuantityToBeCrafted, int level)
+        public static double GetRequiredJournalAmount(Item item, double ItemQuantityToBeCrafted, int level)
         {
             if (ItemQuantityToBeCrafted == 0)
             {

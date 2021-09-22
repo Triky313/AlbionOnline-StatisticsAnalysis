@@ -16,6 +16,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private long _craftingQuantity;
         private long _oneProductionAmount;
         private readonly ItemWindowViewModel _itemWindowViewModel;
+        private bool _isArtifactResource;
 
         public RequiredResource(ItemWindowViewModel itemWindowViewModel)
         {
@@ -28,6 +29,16 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingResourceName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsArtifactResource
+        {
+            get => _isArtifactResource;
+            set
+            {
+                _isArtifactResource = value;
                 OnPropertyChanged();
             }
         }
