@@ -15,6 +15,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private short _craftingTax;
         private int _craftingBonus;
         private bool _isCraftingWithFocus;
+        private int _otherCosts;
 
         public EssentialCraftingValuesTemplate(ItemWindowViewModel itemWindowViewModel)
         {
@@ -87,6 +88,17 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
+        public int OtherCosts
+        {
+            get => _otherCosts;
+            set
+            {
+                _otherCosts = value;
+                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsCraftingWithFocus
         {
             get => _isCraftingWithFocus;
@@ -105,6 +117,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         public string TranslationCraftingTaxPercent => LanguageController.Translation("CRAFTING_TAX_PERCENT");
         public string TranslationCraftingBonusPercent => LanguageController.Translation("CRAFTING_BONUS_PERCENT");
         public string TranslationCraftingWithFocus => LanguageController.Translation("CRAFTING_WITH_FOCUS");
+        public string TranslationOtherCosts => LanguageController.Translation("OTHER_COSTS");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

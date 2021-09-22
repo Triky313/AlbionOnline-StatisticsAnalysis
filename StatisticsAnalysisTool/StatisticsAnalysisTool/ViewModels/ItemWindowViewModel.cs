@@ -175,6 +175,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 CraftingTax = 0,
                 SellPricePerItem = 0,
                 SetupFee = 1.5d,
+                OtherCosts = 0,
                 IsCraftingWithFocus = false
             };
         }
@@ -279,6 +280,11 @@ namespace StatisticsAnalysisTool.ViewModels
             if (CraftingCalculation?.TotalJournalSells != null && RequiredJournal != null)
             {
                 CraftingCalculation.TotalJournalSells = RequiredJournal.RequiredJournalAmount * RequiredJournal.SellPricePerJournal;
+            }
+
+            if (CraftingCalculation?.OtherCosts != null && EssentialCraftingValues != null)
+            {
+                CraftingCalculation.OtherCosts = EssentialCraftingValues.OtherCosts;
             }
         }
 

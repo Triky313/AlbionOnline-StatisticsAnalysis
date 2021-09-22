@@ -951,6 +951,12 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type ScrollViewer}">
+        <Style.Resources>
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="{StaticResource Background.Second}" />
+        </Style.Resources>
+    </Style>
+
     <!-- ListView style -->
     <Style TargetType="{x:Type ListView}">
         <Setter Property="Template">
@@ -1437,6 +1443,10 @@
                 <TextBox Text="{Binding CraftingBonus}" Style="{StaticResource TextBox.Crafting}" Margin="0,-2,0,0" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
+                <Label Content="{Binding TranslationOtherCosts, FallbackValue=OTHER__COSTS}" Style="{StaticResource Label.Crafting}" />
+                <TextBox Text="{Binding OtherCosts}" Style="{StaticResource TextBox.Crafting}" Margin="0,-2,0,0" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                 <Label Content="{Binding TranslationCraftingWithFocus, FallbackValue=CRAFTING__WITH__FOCUS}" Style="{StaticResource Label.Crafting}" />
                 <CheckBox IsChecked="{Binding IsCraftingWithFocus}" Margin="0,-2,0,0" />
             </StackPanel>
@@ -1494,6 +1504,7 @@
                     <Label Content="{Binding TranslationAuctionsHouseTax, FallbackValue=AUCTIONS__HOUSE__TAX}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Label Content="{Binding TranslationTotalJournalCosts, FallbackValue=TOTAL__JOURNAL__COSTS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Label Content="{Binding TranslationTotalResourceCosts, FallbackValue=TOTAL__RESOURCE__COSTS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding TranslationOtherCosts, FallbackValue=OTHER__COSTS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Separator />
                     <Label Content="{Binding TranslationTotalCosts, FallbackValue=TOTAL__COSTS}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Separator />
@@ -1510,6 +1521,7 @@
                     <Label Content="{Binding AuctionsHouseTax}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
                     <Label Content="{Binding TotalJournalCosts}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
                     <Label Content="{Binding TotalResourceCosts}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
+                    <Label Content="{Binding OtherCosts}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
                     <Separator />
                     <Label Content="{Binding TotalCosts}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Red.2}" />
                     <Separator />

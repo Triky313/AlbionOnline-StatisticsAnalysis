@@ -17,10 +17,11 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private double _totalJournalSells;
         private double _totalSells;
         private double _grandTotal;
+        private double _otherCosts;
 
         private double GetTotalCosts()
         {
-            return CraftingTax + SetupFee + AuctionsHouseTax + TotalJournalCosts + TotalResourceCosts;
+            return CraftingTax + SetupFee + AuctionsHouseTax + TotalJournalCosts + TotalResourceCosts + OtherCosts;
         }
 
         public double PossibleItemCrafting
@@ -62,6 +63,17 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _auctionsHouseTax = value;
+                TotalCosts = GetTotalCosts();
+                OnPropertyChanged();
+            }
+        }
+
+        public double OtherCosts
+        {
+            get => _otherCosts;
+            set
+            {
+                _otherCosts = value;
                 TotalCosts = GetTotalCosts();
                 OnPropertyChanged();
             }
@@ -153,6 +165,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         public static string TranslationTotalJournalCosts => LanguageController.Translation("TOTAL_JOURNAL_COSTS");
         public static string TranslationTotalCosts => LanguageController.Translation("TOTAL_COSTS");
         public static string TranslationTotalResourceCosts => LanguageController.Translation("TOTAL_RESOURCE_COSTS");
+        public static string TranslationOtherCosts => LanguageController.Translation("OTHER_COSTS");
         public static string TranslationTotalItemSells => LanguageController.Translation("TOTAL_ITEM_SELLS");
         public static string TranslationTotalJournalSells => LanguageController.Translation("TOTAL_JOURNAL_SELLS");
         public static string TranslationTotalSells => LanguageController.Translation("TOTAL_SELLS");
