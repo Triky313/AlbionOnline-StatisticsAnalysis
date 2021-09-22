@@ -970,16 +970,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ItemWindowTranslation Translation
-        {
-            get => _translation;
-            set
-            {
-                _translation = value;
-                OnPropertyChanged();
-            }
-        }
-
         public bool NormalQualityChecked
         {
             get => _normalQualityChecked;
@@ -1186,6 +1176,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _craftingTabVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ItemWindowTranslation Translation
+        {
+            get => _translation;
+            set
+            {
+                _translation = value;
                 OnPropertyChanged();
             }
         }
