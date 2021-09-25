@@ -30,11 +30,11 @@ namespace StatisticsAnalysisTool.Common
         private static readonly string FullItemInformationFilePath =
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FullItemInformationFileName);
 
-        private static ObservableCollection<ItemInformation> _itemInformationList = new ();
+        private static ObservableCollection<ItemInformation> _itemInformationList = new();
 
-        public static readonly Brush ToggleOnColor = new SolidColorBrush((Color) Application.Current.Resources["Color.Blue.2"]);
+        public static readonly Brush ToggleOnColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
 
-        public static readonly Brush ToggleOffColor = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.Normal"]);
+        public static readonly Brush ToggleOffColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
 
         public static Item GetItemByIndex(int index)
         {
@@ -93,14 +93,9 @@ namespace StatisticsAnalysisTool.Common
         public static bool IsTrash(int index)
         {
             var item = Items.FirstOrDefault(i => i.Index == index);
-            if (item != null && item.UniqueName.Contains("TRASH"))
-            {
-                return true;
-            }
-
-            return item == null;
+            return (item != null && item.UniqueName.Contains("TRASH")) || item == null;
         }
-        
+
         public static async Task<ItemType> GetItemTypeAsync(int index)
         {
             var item = Items?.FirstOrDefault(i => i.Index == index);
@@ -140,19 +135,31 @@ namespace StatisticsAnalysisTool.Common
 
         public static int GetItemLevel(string uniqueName)
         {
-            if (uniqueName == null || !uniqueName.Contains("@")) return 0;
+            if (uniqueName == null || !uniqueName.Contains("@"))
+            {
+                return 0;
+            }
 
             return int.TryParse(uniqueName.Split('@')[1], out var number) ? number : 0;
         }
-        
+
         public static int GetItemTier(Item item)
         {
-            if (item?.UniqueName == null) return -1;
+            if (item?.UniqueName == null)
+            {
+                return -1;
+            }
 
             var itemNameTierText = item.UniqueName.Split('_')[0];
-            if (itemNameTierText.Substring(0, 1) == "T" && int.TryParse(itemNameTierText.Substring(1, 1), out var result)) return result;
+            if (itemNameTierText.Substring(0, 1) == "T" && int.TryParse(itemNameTierText.Substring(1, 1), out var result))
+            {
+                return result;
+            }
 
-            if (item.FullItemInformation?.Tier != null) return item.FullItemInformation.Tier;
+            if (item.FullItemInformation?.Tier != null)
+            {
+                return item.FullItemInformation.Tier;
+            }
 
             return -1;
         }
@@ -201,23 +208,34 @@ namespace StatisticsAnalysisTool.Common
         public static Style GetStyleByTimestamp(DateTime value)
         {
             if (value.Date == DateTime.MinValue.Date)
+            {
                 return Application.Current.FindResource("ListView.Grid.Label.Date.NoValue") as Style;
+            }
 
             if (value.AddHours(8) < DateTime.Now.ToUniversalTime().AddHours(-1))
+            {
                 return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldFirst") as Style;
+            }
 
             if (value.AddHours(4) < DateTime.Now.ToUniversalTime().AddHours(-1))
+            {
                 return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldSecond") as Style;
+            }
 
             if (value.AddHours(2) < DateTime.Now.ToUniversalTime().AddHours(-1))
+            {
                 return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldThird") as Style;
+            }
 
             return Application.Current.FindResource("ListView.Grid.Label.Date.Normal") as Style;
         }
 
         public static Style PriceStyle(bool bestSellMinPrice)
         {
-            if (bestSellMinPrice) return Application.Current.FindResource("ListView.Grid.StackPanel.Label.BestPrice") as Style;
+            if (bestSellMinPrice)
+            {
+                return Application.Current.FindResource("ListView.Grid.StackPanel.Label.BestPrice") as Style;
+            }
 
             return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
         }
@@ -284,7 +302,7 @@ namespace StatisticsAnalysisTool.Common
                 if (!string.IsNullOrEmpty(url))
                 {
                     SettingsController.CurrentSettings.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
-                    MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
+                    _ = MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
                 }
             }
 
@@ -300,7 +318,7 @@ namespace StatisticsAnalysisTool.Common
                     NumberHandling = JsonNumberHandling.AllowReadingFromString |
                                      JsonNumberHandling.WriteAsString
                 };
-                
+
                 var localItemString = await File.ReadAllTextAsync($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", Encoding.UTF8);
                 return ConvertItemJsonObjectToItem(JsonSerializer.Deserialize<ObservableCollection<ItemJsonObject>>(localItemString, options));
             }
@@ -372,8 +390,9 @@ namespace StatisticsAnalysisTool.Common
                     var localItemString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
 
                     var favoriteItemList = JsonSerializer.Deserialize<List<string>>(localItemString);
-                    
+
                     if (favoriteItemList != null)
+                    {
                         foreach (var uniqueName in favoriteItemList)
                         {
                             var item = Items.FirstOrDefault(i => i.UniqueName == uniqueName);
@@ -382,6 +401,7 @@ namespace StatisticsAnalysisTool.Common
                                 item.IsFavorite = true;
                             }
                         }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -418,9 +438,17 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<ItemInformation> GetFullItemInformationAsync(Item item)
         {
-            var itemInformation = _itemInformationList.FirstOrDefault(x => x.UniqueName == item?.UniqueName);
+            ItemInformation itemInformation;
 
-            if (itemInformation?.HttpStatus == HttpStatusCode.NotFound) return itemInformation;
+            lock (_itemInformationList)
+            {
+                itemInformation = _itemInformationList.ToList().FirstOrDefault(x => x?.UniqueName == item?.UniqueName);
+            }
+
+            if (itemInformation?.HttpStatus == HttpStatusCode.NotFound)
+            {
+                return itemInformation;
+            }
 
             if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !IsItemInformationUpToDate(itemInformation.LastUpdate))
             {
@@ -433,7 +461,10 @@ namespace StatisticsAnalysisTool.Common
 
         private static ItemInformation SetEssentialItemInformation(ItemInformation itemInformation, string uniqueName)
         {
-            if (itemInformation == null) return null;
+            if (itemInformation == null)
+            {
+                return null;
+            }
 
             itemInformation.Level = GetItemLevel(uniqueName);
             itemInformation.UniqueName = uniqueName;
@@ -442,18 +473,27 @@ namespace StatisticsAnalysisTool.Common
 
         private static void AddItemInformationToLocal(ItemInformation currentItemInformation)
         {
-            if (currentItemInformation == null) return;
+            if (currentItemInformation == null)
+            {
+                return;
+            }
 
-            var localItemInfo = _itemInformationList.FirstOrDefault(x => x.UniqueName == currentItemInformation.UniqueName);
-            _itemInformationList.Remove(localItemInfo);
+            lock (_itemInformationList)
+            {
+                var localItemInfo = _itemInformationList.ToList().FirstOrDefault(x => x?.UniqueName == currentItemInformation.UniqueName);
+                _ = _itemInformationList.Remove(localItemInfo);
 
-            currentItemInformation.LastUpdate = DateTime.Now;
-            _itemInformationList.Add(currentItemInformation);
+                currentItemInformation.LastUpdate = DateTime.Now;
+                _itemInformationList.Add(currentItemInformation);
+            }
         }
 
         private static bool IsItemInformationUpToDate(DateTime? lastUpdate)
         {
-            if (lastUpdate == null || lastUpdate.Value.Year == 1) return false;
+            if (lastUpdate == null || lastUpdate.Value.Year == 1)
+            {
+                return false;
+            }
 
             var lastUpdateWithCycleDays = lastUpdate.Value.AddDays(SettingsController.CurrentSettings.FullItemInformationUpdateCycleDays);
             return lastUpdateWithCycleDays >= DateTime.UtcNow;
@@ -463,11 +503,15 @@ namespace StatisticsAnalysisTool.Common
         {
             if (_itemInformationList.Any(x => x.UniqueName == uniqueName)
                 && IsItemInformationUpToDate(_itemInformationList.FirstOrDefault(x => x.UniqueName == uniqueName)?.LastUpdate))
+            {
                 return new BitmapImage(new Uri(@"pack://application:,,,/Resources/check.png"));
+            }
 
             if (_itemInformationList.Any(x => x.UniqueName == uniqueName)
                 && !IsItemInformationUpToDate(_itemInformationList.FirstOrDefault(x => x.UniqueName == uniqueName)?.LastUpdate))
+            {
                 return new BitmapImage(new Uri(@"pack://application:,,,/Resources/outdated.png"));
+            }
 
             return null;
         }
@@ -475,7 +519,10 @@ namespace StatisticsAnalysisTool.Common
         public static void SaveItemInformationLocal()
         {
             var list = _itemInformationList;
-            if (list == null) return;
+            if (list == null)
+            {
+                return;
+            }
 
             var itemInformationString = JsonSerializer.Serialize(list);
 
@@ -499,7 +546,9 @@ namespace StatisticsAnalysisTool.Common
                     _itemInformationList = JsonSerializer.Deserialize<ObservableCollection<ItemInformation>>(readContents);
                 }
                 else
+                {
                     _itemInformationList = new ObservableCollection<ItemInformation>();
+                }
 
                 SetItemInformationToItems(Items);
             });
@@ -507,7 +556,10 @@ namespace StatisticsAnalysisTool.Common
 
         private static void SetItemInformationToItems(ObservableCollection<Item> items)
         {
-            if (items == null) return;
+            if (items == null)
+            {
+                return;
+            }
 
             foreach (var item in items.ToList())
             {

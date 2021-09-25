@@ -67,12 +67,7 @@ namespace StatisticsAnalysisTool.Common
                 return null;
             }
         }
-
-        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(Item item)
-        {
-            return await GetItemInfoFromJsonAsync(item.UniqueName);
-        }
-
+        
         /// <summary>
         ///     Returns all city item prices bye uniqueName, locations and qualities.
         /// </summary>

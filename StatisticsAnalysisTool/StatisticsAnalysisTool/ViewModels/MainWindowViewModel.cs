@@ -23,6 +23,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -679,13 +680,32 @@ namespace StatisticsAnalysisTool.ViewModels
             LoadFullItemInfoProBarMax = ItemController.Items.Count;
             IsFullItemInfoLoading = true;
 
-            foreach (var item in ItemController.Items)
+            var options = new ExecutionDataflowBlockOptions
             {
-                if (!IsFullItemInfoLoading) break;
+                MaxDegreeOfParallelism = 5,
+                BoundedCapacity = 50
+            };
 
+            var block = new ActionBlock<Item>(async item =>
+            {
                 item.FullItemInformation = await ItemController.GetFullItemInformationAsync(item);
-                LoadFullItemInfoProBarValue++;
+            }, options);
+
+            await foreach (var item in ItemController.Items.ToAsyncEnumerable())
+            {
+                if (!IsFullItemInfoLoading)
+                {
+                    break;
+                }
+
+                if (await block.SendAsync(item))
+                {
+                    LoadFullItemInfoProBarValue++;
+                }
             }
+
+            block.Complete();
+            await block.Completion;
 
             LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
 
