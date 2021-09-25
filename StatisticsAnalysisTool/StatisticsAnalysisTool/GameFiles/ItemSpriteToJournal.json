@@ -11,15 +11,15 @@
     "Id": 3
   },
   {
-    "Name": "HEAD_LEATHER_SET3",
+    "Name": "HEAD_LEATHER_LEVEL3",
     "Id": 2
   },
   {
-    "Name": "ARMOR_LEATHER_SET3",
+    "Name": "ARMOR_LEATHER_LEVEL3",
     "Id": 2
   },
   {
-    "Name": "SHOES_LEATHER_SET3",
+    "Name": "SHOES_LEATHER_LEVEL3",
     "Id": 2
   },
   {
@@ -163,15 +163,15 @@
     "Id": 3
   },
   {
-    "Name": "HEAD_CLOTH_SET2",
+    "Name": "HEAD_CLOTH_LEVEL2",
     "Id": 1
   },
   {
-    "Name": "ARMOR_CLOTH_SET2",
+    "Name": "ARMOR_CLOTH_LEVEL2",
     "Id": 1
   },
   {
-    "Name": "SHOES_CLOTH_SET2",
+    "Name": "SHOES_CLOTH_LEVEL2",
     "Id": 1
   },
   {
@@ -411,15 +411,15 @@
     "Id": 3
   },
   {
-    "Name": "ARMOR_PLATE_SET3",
+    "Name": "ARMOR_PLATE_LEVEL3",
     "Id": 3
   },
   {
-    "Name": "SHOES_PLATE_SET3",
+    "Name": "SHOES_PLATE_LEVEL3",
     "Id": 3
   },
   {
-    "Name": "HEAD_PLATE_SET3",
+    "Name": "HEAD_PLATE_LEVEL3",
     "Id": 3
   },
   {
@@ -495,15 +495,15 @@
     "Id": 2
   },
   {
-    "Name": "HEAD_LEATHER_SET2",
+    "Name": "HEAD_LEATHER_LEVEL2",
     "Id": 2
   },
   {
-    "Name": "ARMOR_LEATHER_SET2",
+    "Name": "ARMOR_LEATHER_LEVEL2",
     "Id": 2
   },
   {
-    "Name": "SHOES_LEATHER_SET2",
+    "Name": "SHOES_LEATHER_LEVEL2",
     "Id": 2
   },
   {
@@ -551,15 +551,15 @@
     "Id": 3
   },
   {
-    "Name": "ARMOR_PLATE_SET2",
+    "Name": "ARMOR_PLATE_LEVEL2",
     "Id": 3
   },
   {
-    "Name": "SHOES_PLATE_SET2",
+    "Name": "SHOES_PLATE_LEVEL2",
     "Id": 3
   },
   {
-    "Name": "HEAD_PLATE_SET2",
+    "Name": "HEAD_PLATE_LEVEL2",
     "Id": 3
   },
   {
@@ -603,15 +603,15 @@
     "Id": 3
   },
   {
-    "Name": "HEAD_CLOTH_SET3",
+    "Name": "HEAD_CLOTH_LEVEL3",
     "Id": 1
   },
   {
-    "Name": "ARMOR_CLOTH_SET3",
+    "Name": "ARMOR_CLOTH_LEVEL3",
     "Id": 1
   },
   {
-    "Name": "SHOES_CLOTH_SET3",
+    "Name": "SHOES_CLOTH_LEVEL3",
     "Id": 1
   },
   {
@@ -619,15 +619,15 @@
     "Id": 1
   },
   {
-    "Name": "HEAD_LEATHER_SET1",
+    "Name": "HEAD_LEATHER_LEVEL1",
     "Id": 2
   },
   {
-    "Name": "ARMOR_LEATHER_SET1",
+    "Name": "ARMOR_LEATHER_LEVEL1",
     "Id": 2
   },
   {
-    "Name": "SHOES_LEATHER_SET1",
+    "Name": "SHOES_LEATHER_LEVEL1",
     "Id": 2
   },
   {
@@ -743,15 +743,15 @@
     "Id": 4
   },
   {
-    "Name": "HEAD_CLOTH_SET1",
+    "Name": "HEAD_CLOTH_LEVEL1",
     "Id": 1
   },
   {
-    "Name": "ARMOR_CLOTH_SET1",
+    "Name": "ARMOR_CLOTH_LEVEL1",
     "Id": 1
   },
   {
-    "Name": "SHOES_CLOTH_SET1",
+    "Name": "SHOES_CLOTH_LEVEL1",
     "Id": 1
   },
   {
@@ -795,15 +795,15 @@
     "Id": 4
   },
   {
-    "Name": "ARMOR_PLATE_SET1",
+    "Name": "ARMOR_PLATE_LEVEL1",
     "Id": 3
   },
   {
-    "Name": "SHOES_PLATE_SET1",
+    "Name": "SHOES_PLATE_LEVEL1",
     "Id": 3
   },
   {
-    "Name": "HEAD_PLATE_SET1",
+    "Name": "HEAD_PLATE_LEVEL1",
     "Id": 3
   },
   {
