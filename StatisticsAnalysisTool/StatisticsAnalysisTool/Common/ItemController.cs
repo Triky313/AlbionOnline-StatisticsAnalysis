@@ -107,7 +107,7 @@ namespace StatisticsAnalysisTool.Common
             }
 
             var itemType = !string.IsNullOrEmpty(item?.FullItemInformation?.ItemType) ? item.FullItemInformation?.ItemType : "UNKNOWN";
-            
+
             switch (itemType.ToUpper())
             {
                 case "WEAPON":
