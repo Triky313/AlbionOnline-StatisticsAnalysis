@@ -64,7 +64,6 @@
                         <Label MinWidth="300"/>
                         <Button Content="{Binding Translation.OpenCloseDebugConsole, FallbackValue=OPEN__CLOSE__DEBUG__CONSOLE}" Height="24" VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
                     </DockPanel>
-
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.CityPricesApiUrl, FallbackValue=CITY__PRICES__API__URL}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
                         <TextBox Text="{Binding CityPricesApiUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
@@ -76,6 +75,15 @@
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.GoldStatsApiUrl, FallbackValue=GOLD__STATS__API__URL}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
                         <TextBox Text="{Binding GoldStatsApiUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.AutomaticLootLoggerSave, FallbackValue=AUTOMATIC__LOOT__LOGGER__SAVE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <CheckBox IsChecked="{Binding IsAutomaticLootLoggerSaveActive}" Height="21" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.SavePathForAutomaticLootLoggerSave, FallbackValue=SAVE__PATH__FOR__AUTOMATIC__LOOT__LOGGER__SAVE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding AutomaticLootLoggerSavePath}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
                 </StackPanel>
             </ScrollViewer>

@@ -21,5 +21,7 @@ namespace StatisticsAnalysisTool.Models
         public string CityPricesApiUrl => LanguageController.Translation("CITY_PRICES_API_URL");
         public string CityPricesHistoryApiUrl => LanguageController.Translation("CITY_PRICES_HISTORY_API_URL");
         public string GoldStatsApiUrl => LanguageController.Translation("GOLD_STATS_API_URL");
+        public string AutomaticLootLoggerSave => LanguageController.Translation("AUTOMATIC_LOOT_LOGGER_SAVE");
+        public string SavePathForAutomaticLootLoggerSave => LanguageController.Translation("SAVE_PATH_FOR_AUTOMATIC_LOOT_LOGGER_SAVE");
     }
 }

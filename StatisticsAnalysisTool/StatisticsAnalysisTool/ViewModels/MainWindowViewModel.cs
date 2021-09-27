@@ -534,6 +534,28 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion
 
+        #region Save loot logger
+
+        public void SaveLootLogger()
+        {
+            if (!SettingsController.CurrentSettings.IsAutomaticLootLoggerSaveActive || string.IsNullOrEmpty(SettingsController.CurrentSettings.AutomaticLootLoggerSavePath))
+            {
+                return;
+            }
+
+            try
+            {
+                File.WriteAllText(SettingsController.CurrentSettings.AutomaticLootLoggerSavePath, TrackingController.LootController.GetLootLoggerObjectsAsCsv());
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            }
+        }
+
+        #endregion
+
         #region Ui utility methods
 
         public void CenterWindowOnScreen()

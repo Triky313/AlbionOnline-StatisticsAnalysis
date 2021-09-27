@@ -130,6 +130,7 @@ namespace StatisticsAnalysisTool.Views
         
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            _mainWindowViewModel.SaveLootLogger();
             _mainWindowViewModel.SaveSettings(WindowState, RestoreBounds, Height, Width);
 
             if (_mainWindowViewModel.IsTrackingActive)
