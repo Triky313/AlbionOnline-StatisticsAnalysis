@@ -474,7 +474,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (SettingsController.CurrentSettings.IsTrackingActiveAtToolStart)
             {
-                StartTracking();
+                _ = StartTrackingAsync();
             }
 
             IsTrackingFilteredSilver = SettingsController.CurrentSettings.IsMainTrackerFilterSilver;
@@ -883,7 +883,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (IsTrackingActive)
             {
-                StartTracking();
+                _ = StartTrackingAsync();
             }
             else
             {
@@ -891,7 +891,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public void StartTracking()
+        public async Task StartTrackingAsync()
         {
             if (NetworkManager.IsNetworkCaptureRunning)
             {
@@ -908,7 +908,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
 
-            IsTrackingActive = NetworkManager.StartNetworkCapture(this, TrackingController);
+            IsTrackingActive = await NetworkManager.StartNetworkCaptureAsync(this, TrackingController);
             Console.WriteLine(@"### Start Tracking...");
         }
 
