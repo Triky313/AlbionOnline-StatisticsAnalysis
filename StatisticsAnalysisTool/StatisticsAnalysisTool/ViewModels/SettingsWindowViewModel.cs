@@ -34,6 +34,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _cityPricesApiUrl;
         private string _cityPricesHistoryApiUrl;
         private string _goldStatsApiUrl;
+        private bool _isAutomaticLootLoggerSaveActive;
+        private string _automaticLootLoggerSavePath;
 
         public SettingsWindowViewModel(SettingsWindow settingsWindow, MainWindowViewModel mainWindowViewModel)
         {
@@ -116,6 +118,13 @@ namespace StatisticsAnalysisTool.ViewModels
             GoldStatsApiUrl = SettingsController.CurrentSettings.GoldStatsApiUrl;
 
             #endregion
+
+            #region Loot logger
+
+            IsAutomaticLootLoggerSaveActive = SettingsController.CurrentSettings.IsAutomaticLootLoggerSaveActive;
+            AutomaticLootLoggerSavePath = SettingsController.CurrentSettings.AutomaticLootLoggerSavePath;
+
+            #endregion
         }
 
         public void SaveSettings()
@@ -134,6 +143,9 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.CurrentSettings.CityPricesApiUrl = string.IsNullOrEmpty(CityPricesApiUrl) ? Settings.Default.CityPricesApiUrlDefault : CityPricesApiUrl;
             SettingsController.CurrentSettings.CityPricesHistoryApiUrl = string.IsNullOrEmpty(CityPricesHistoryApiUrl) ? Settings.Default.CityPricesHistoryApiUrlDefault : CityPricesHistoryApiUrl;
             SettingsController.CurrentSettings.GoldStatsApiUrl = string.IsNullOrEmpty(GoldStatsApiUrl) ? Settings.Default.GoldStatsApiUrlDefault : GoldStatsApiUrl;
+
+            SettingsController.CurrentSettings.IsAutomaticLootLoggerSaveActive = IsAutomaticLootLoggerSaveActive;
+            SettingsController.CurrentSettings.AutomaticLootLoggerSavePath = AutomaticLootLoggerSavePath;
 
             SetAppSettingsAndTranslations();
 
@@ -280,7 +292,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool ShowInfoWindowOnStartChecked {
+        public bool ShowInfoWindowOnStartChecked
+        {
             get => _showInfoWindowOnStartChecked;
             set {
                 _showInfoWindowOnStartChecked = value;
@@ -288,7 +301,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string CityPricesApiUrl {
+        public string CityPricesApiUrl
+        {
             get => _cityPricesApiUrl;
             set
             {
@@ -296,7 +310,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        public string CityPricesHistoryApiUrl {
+
+        public string CityPricesHistoryApiUrl
+        {
             get => _cityPricesHistoryApiUrl;
             set
             {
@@ -304,11 +320,33 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        public string GoldStatsApiUrl {
+
+        public string GoldStatsApiUrl
+        {
             get => _goldStatsApiUrl;
             set
             {
                 _goldStatsApiUrl = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsAutomaticLootLoggerSaveActive
+        {
+            get => _isAutomaticLootLoggerSaveActive;
+            set
+            {
+                _isAutomaticLootLoggerSaveActive = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string AutomaticLootLoggerSavePath
+        {
+            get => _automaticLootLoggerSavePath;
+            set
+            {
+                _automaticLootLoggerSavePath = value;
                 OnPropertyChanged();
             }
         }

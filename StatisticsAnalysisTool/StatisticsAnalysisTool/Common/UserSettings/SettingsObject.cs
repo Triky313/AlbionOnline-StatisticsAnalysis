@@ -13,21 +13,23 @@
         public string CityPricesApiUrl { get; set; } = "https://www.albion-online-data.com/api/v2/stats/prices/";
         public string CityPricesHistoryApiUrl { get; set; } = "https://www.albion-online-data.com/api/v2/stats/history/";
         public string GoldStatsApiUrl { get; set; } = "https://www.albion-online-data.com/api/v2/stats/Gold";
-        public double MainWindowHeight { get; set; } = 0;
-        public double MainWindowWidth { get; set; } = 0;
-        public bool MainWindowMaximized { get; set; } = false;
-        public bool IsTrackingResetByMapChangeActive { get; set; } = false;
-        public bool IsTrackingActiveAtToolStart { get; set; } = false;
-        public bool IsMainTrackerFilterSilver { get; set; } = false;
-        public bool IsMainTrackerFilterFame { get; set; } = false;
-        public bool IsMainTrackerFilterFaction { get; set; } = false;
-        public bool IsMainTrackerFilterSeasonPoints { get; set; } = false;
-        public bool IsMainTrackerFilterEquipmentLoot { get; set; } = false;
-        public bool IsMainTrackerFilterConsumableLoot { get; set; } = false;
-        public bool IsMainTrackerFilterSimpleLoot { get; set; } = false;
-        public bool IsMainTrackerFilterUnknownLoot { get; set; } = false;
+        public double MainWindowHeight { get; set; }
+        public double MainWindowWidth { get; set; }
+        public bool MainWindowMaximized { get; set; }
+        public bool IsTrackingResetByMapChangeActive { get; set; }
+        public bool IsTrackingActiveAtToolStart { get; set; }
+        public bool IsMainTrackerFilterSilver { get; set; }
+        public bool IsMainTrackerFilterFame { get; set; }
+        public bool IsMainTrackerFilterFaction { get; set; }
+        public bool IsMainTrackerFilterSeasonPoints { get; set; }
+        public bool IsMainTrackerFilterEquipmentLoot { get; set; }
+        public bool IsMainTrackerFilterConsumableLoot { get; set; }
+        public bool IsMainTrackerFilterSimpleLoot { get; set; }
+        public bool IsMainTrackerFilterUnknownLoot { get; set; }
         public bool IsDamageMeterTrackingActive { get; set; } = true;
         public bool IsTrackingPartyLootOnly { get; set; } = true;
         public string SavedPlayerInformationName { get; set; }
+        public bool IsAutomaticLootLoggerSaveActive { get; set; }
+        public string AutomaticLootLoggerSavePath { get; set; } = "C:\\lootlogger.csv";
     }
 }

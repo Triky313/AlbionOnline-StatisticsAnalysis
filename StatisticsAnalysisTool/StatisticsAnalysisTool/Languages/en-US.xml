@@ -480,4 +480,6 @@
 	<translation name="TOTAL_JOURNAL_SELLS">Total journal sells</translation>
 	<translation name="TOTAL_SELLS">Total sells</translation>
 	<translation name="GRAND_TOTAL">Grand total</translation>
+	<translation name="AUTOMATIC_LOOT_LOGGER_SAVE">Automatic loot logger save</translation>
+	<translation name="SAVE_PATH_FOR_AUTOMATIC_LOOT_LOGGER_SAVE">Save path for automatic loot logger save</translation>
 </translations>
