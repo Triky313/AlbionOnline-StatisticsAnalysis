@@ -44,6 +44,29 @@ namespace StatisticsAnalysisTool.UnitTests.Common
         }
 
         [Test]
+        public void GetItemByUniqueName_WithValidValue_ReturnTrue()
+        {
+            var receivedItem1 = new Item() { UniqueName = "T6_CAPEITEM_MORGANA" };
+            var receivedItem2 = new Item() { UniqueName = "T7_HEAD_LEATHER_SET1" };
+            var receivedItem3 = new Item() { UniqueName = "T8_BACKPACK_GATHERER_FIBER@2" };
+            var receivedItem4 = new Item() { UniqueName = "T8_MAIN_FROSTSTAFF@3" };
+
+            var itemList = new ObservableCollection<Item>
+            {
+                receivedItem1,
+                receivedItem2,
+                receivedItem3,
+                receivedItem4,
+            };
+
+            ItemController.Items = itemList;
+
+            var expectedItem = ItemController.GetItemByUniqueName("T8_BACKPACK_GATHERER_FIBER@2");
+
+            Assert.Contains(expectedItem, itemList);
+        }
+
+        [Test]
         public void IsTrash_WithExistingTrashItem_ReturnTrue()
         {
             var receivedItem1 = new Item() { Index = 114, UniqueName = "T1_SWORD" };
