@@ -27,7 +27,7 @@
         public bool IsMainTrackerFilterSimpleLoot { get; set; }
         public bool IsMainTrackerFilterUnknownLoot { get; set; }
         public bool IsDamageMeterTrackingActive { get; set; } = true;
-        public bool IsTrackingPartyLootOnly { get; set; } = true;
+        public bool IsTrackingPartyLootOnly { get; set; }
         public string SavedPlayerInformationName { get; set; }
         public bool IsAutomaticLootLoggerSaveActive { get; set; }
         public string AutomaticLootLoggerSavePath { get; set; } = "C:\\lootlogger.csv";
