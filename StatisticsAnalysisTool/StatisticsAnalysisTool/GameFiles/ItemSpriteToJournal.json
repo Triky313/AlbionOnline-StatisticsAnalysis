@@ -27,35 +27,35 @@
     "Id": 3
   },
   {
-    "Name": "2H_TOOL_AXE_AVALON",
+    "Name": "2H_PICK_AVALON",
     "Id": 4
   },
   {
-    "Name": "2H_TOOL_SIEGEHAMMER_AVALON",
+    "Name": "2H_SIEGEHAMMER_AVALON",
     "Id": 4
   },
   {
-    "Name": "2H_TOOL_FISHINGROD_AVALON",
+    "Name": "FISHING_ROD_AVALON",
     "Id": 4
   },
   {
-    "Name": "2H_TOOL_PICK_AVALON",
+    "Name": "TOOL_AXE_AVALON",
     "Id": 4
   },
   {
-    "Name": "2H_TOOL_SICKLE_AVALON",
+    "Name": "MAIN_SICKLE_AVALON",
     "Id": 4
   },
   {
-    "Name": "2H_TOOL_KNIFE_AVALON",
+    "Name": "MAIN_SKINNINGKNIFE_AVALON",
     "Id": 4
   },
   {
-    "Name": "2H_TOOL_HAMMER_AVALON",
+    "Name": "2H_STONEHAMMER_AVALON",
     "Id": 4
   },
   {
-    "Name": "2H_TOOL_AXE",
+    "Name": "2H_PICK",
     "Id": 4
   },
   {
@@ -163,6 +163,58 @@
     "Id": 3
   },
   {
+    "Name": "2H_SWORD",
+    "Id": 3
+  },
+  {
+    "Name": "CAPE",
+    "Id": 4
+  },
+  {
+    "Name": "CAPEITEM_HERETIC",
+    "Id": 4
+  },
+  {
+    "Name": "CAPEITEM_MORGANA",
+    "Id": 4
+  },
+  {
+    "Name": "CAPEITEM_UNDEAD",
+    "Id": 4
+  },
+  {
+    "Name": "CAPEITEM_KEEPER",
+    "Id": 4
+  },
+  {
+    "Name": "CAPEITEM_DEMON",
+    "Id": 4
+  },
+  {
+    "Name": "CAPEITEM_FW_BRIDGEWATCH",
+    "Id": 4
+  },
+  {
+    "Name": "CAPEITEM_FW_FORTSTERLING",
+    "Id": 4
+  },
+  {
+    "Name": "CAPEITEM_FW_LYMHURST",
+    "Id": 4
+  },
+  {
+    "Name": "CAPEITEM_FW_MARTLOCK",
+    "Id": 4
+  },
+  {
+    "Name": "CAPEITEM_FW_THETFORD",
+    "Id": 4
+  },
+  {
+    "Name": "CAPEITEM_FW_CAERLEON",
+    "Id": 4
+  },
+  {
     "Name": "HEAD_CLOTH_LEVEL2",
     "Id": 1
   },
@@ -231,7 +283,7 @@
     "Id": 2
   },
   {
-    "Name": "2H_TOOL_SIEGEHAMMER",
+    "Name": "2H_SIEGEHAMMER",
     "Id": 4
   },
   {
@@ -335,7 +387,7 @@
     "Id": 4
   },
   {
-    "Name": "2H_TOOL_FISHINGROD",
+    "Name": "FISHING_ROD",
     "Id": 4
   },
   {
@@ -679,7 +731,7 @@
     "Id": 1
   },
   {
-    "Name": "2H_TOOL_PICK",
+    "Name": "TOOL_AXE",
     "Id": 4
   },
   {
@@ -767,7 +819,7 @@
     "Id": 2
   },
   {
-    "Name": "2H_TOOL_SICKLE",
+    "Name": "MAIN_SICKLE",
     "Id": 4
   },
   {
@@ -791,7 +843,7 @@
     "Id": 4
   },
   {
-    "Name": "2H_TOOL_KNIFE",
+    "Name": "MAIN_SKINNINGKNIFE",
     "Id": 4
   },
   {
@@ -847,7 +899,7 @@
     "Id": 2
   },
   {
-    "Name": "2H_TOOL_HAMMER",
+    "Name": "2H_STONEHAMMER",
     "Id": 4
   },
   {
@@ -896,6 +948,10 @@
   },
   {
     "Name": "MAIN_ARCANESTAFF_UNDEAD",
+    "Id": 1
+  },
+  {
+    "Name": "OFF_ORB",
     "Id": 1
   }
 ]
