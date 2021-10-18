@@ -538,14 +538,20 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void SaveLootLogger()
         {
-            if (!SettingsController.CurrentSettings.IsAutomaticLootLoggerSaveActive || string.IsNullOrEmpty(SettingsController.CurrentSettings.AutomaticLootLoggerSavePath))
+            if (!SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive)
             {
                 return;
             }
 
             try
             {
-                File.WriteAllText(SettingsController.CurrentSettings.AutomaticLootLoggerSavePath, TrackingController.LootController.GetLootLoggerObjectsAsCsv());
+                var dialog = new DialogWindow(LanguageController.Translation("SAVE_LOOT_LOGGER"), LanguageController.Translation("SAVE_LOOT_LOGGER_NOW"));
+                var dialogResult = dialog.ShowDialog();
+
+                if (dialogResult is true)
+                {
+                    ExportLootToFile();
+                }
             }
             catch (Exception e)
             {
@@ -671,7 +677,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
             }
         }
-
+        
         #endregion
 
         #region Full Item Information

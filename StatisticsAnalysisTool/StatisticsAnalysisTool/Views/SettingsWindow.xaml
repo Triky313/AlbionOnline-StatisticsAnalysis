@@ -78,12 +78,8 @@
                     </DockPanel>
 
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.AutomaticLootLoggerSave, FallbackValue=AUTOMATIC__LOOT__LOGGER__SAVE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
-                        <CheckBox IsChecked="{Binding IsAutomaticLootLoggerSaveActive}" Height="21" VerticalContentAlignment="Center" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.SavePathForAutomaticLootLoggerSave, FallbackValue=SAVE__PATH__FOR__AUTOMATIC__LOOT__LOGGER__SAVE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding AutomaticLootLoggerSavePath}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                        <Label Content="{Binding Translation.IsLootLoggerSaveReminderActive, FallbackValue=IS__LOOT__LOGGER__SAVE__REMINDER__ACTIVE}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MinWidth="300" VerticalAlignment="Top" />
+                        <CheckBox IsChecked="{Binding IsLootLoggerSaveReminderActive}" Height="21" VerticalContentAlignment="Center" />
                     </DockPanel>
                 </StackPanel>
             </ScrollViewer>

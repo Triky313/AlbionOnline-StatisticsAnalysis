@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _cityPricesApiUrl;
         private string _cityPricesHistoryApiUrl;
         private string _goldStatsApiUrl;
-        private bool _isAutomaticLootLoggerSaveActive;
+        private bool _isLootLoggerSaveReminderActive;
         private string _automaticLootLoggerSavePath;
 
         public SettingsWindowViewModel(SettingsWindow settingsWindow, MainWindowViewModel mainWindowViewModel)
@@ -121,8 +121,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             #region Loot logger
 
-            IsAutomaticLootLoggerSaveActive = SettingsController.CurrentSettings.IsAutomaticLootLoggerSaveActive;
-            AutomaticLootLoggerSavePath = SettingsController.CurrentSettings.AutomaticLootLoggerSavePath;
+            IsLootLoggerSaveReminderActive = SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive;
 
             #endregion
         }
@@ -144,8 +143,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.CurrentSettings.CityPricesHistoryApiUrl = string.IsNullOrEmpty(CityPricesHistoryApiUrl) ? Settings.Default.CityPricesHistoryApiUrlDefault : CityPricesHistoryApiUrl;
             SettingsController.CurrentSettings.GoldStatsApiUrl = string.IsNullOrEmpty(GoldStatsApiUrl) ? Settings.Default.GoldStatsApiUrlDefault : GoldStatsApiUrl;
 
-            SettingsController.CurrentSettings.IsAutomaticLootLoggerSaveActive = IsAutomaticLootLoggerSaveActive;
-            SettingsController.CurrentSettings.AutomaticLootLoggerSavePath = AutomaticLootLoggerSavePath;
+            SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive = IsLootLoggerSaveReminderActive;
 
             SetAppSettingsAndTranslations();
 
@@ -331,12 +329,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsAutomaticLootLoggerSaveActive
+        public bool IsLootLoggerSaveReminderActive
         {
-            get => _isAutomaticLootLoggerSaveActive;
+            get => _isLootLoggerSaveReminderActive;
             set
             {
-                _isAutomaticLootLoggerSaveActive = value;
+                _isLootLoggerSaveReminderActive = value;
                 OnPropertyChanged();
             }
         }

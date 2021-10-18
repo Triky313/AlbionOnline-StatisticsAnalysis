@@ -481,6 +481,7 @@
 	<translation name="TOTAL_JOURNAL_SELLS">Gesamter Journal Verkauf</translation>
 	<translation name="TOTAL_SELLS">Gesamter Verkauf</translation>
 	<translation name="GRAND_TOTAL">Gesamtsumme</translation>
-	<translation name="AUTOMATIC_LOOT_LOGGER_SAVE">Loot Logger automatisch speichern</translation>
-	<translation name="SAVE_PATH_FOR_AUTOMATIC_LOOT_LOGGER_SAVE">Speicherpfad für automatische Loot Logger Speicherung</translation>
+	<translation name="IS_LOOT_LOGGER_SAVE_REMINDER_ACTIVE">Ist Loot Logger Speichererinnerung aktiv?</translation>
+	<translation name="SAVE_LOOT_LOGGER_NOW">Loot Logger jetzt speichern?</translation>
+	<translation name="SAVE_LOOT_LOGGER">Loot Logger speichern</translation>
 </translations>

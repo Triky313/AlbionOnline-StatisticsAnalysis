@@ -54,6 +54,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            _mainWindowViewModel.SaveLootLogger();
             Application.Current.Shutdown();
         }
 
