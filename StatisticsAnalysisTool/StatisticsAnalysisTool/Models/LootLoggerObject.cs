@@ -15,6 +15,6 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public int Quantity { get; set; }
         public string BodyName { get; set; }
         public string LooterName { get; set; }
-        public string CsvOutput => $"{UtcPickupTime.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.InvariantCulture)};{LooterName};{UniqueName};{Quantity};{BodyName}";
+        public string CsvOutput => $"{UtcPickupTime.ToString("MM/dd/yyyy H:mm:ss", CultureInfo.InvariantCulture)};{LooterName};{UniqueName};{Quantity};{BodyName}";
     }
 }
