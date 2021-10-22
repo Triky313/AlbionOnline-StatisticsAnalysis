@@ -1239,7 +1239,7 @@
 
             <DataTrigger Binding="{Binding Name}" Value="Rakaaria">
                 <Setter Property="Margin" Value="0,0,0,1" />
-                <Setter Property="ToolTip" Value="Much love for the best girl in the world!" />
+                <Setter Property="ToolTip" Value="Rakaaria - Much love for the best girl in the world!" />
                 <Setter Property="Icon" Value="Solid_Heart" />
                 <Setter Property="Foreground">
                     <Setter.Value>
@@ -1255,12 +1255,25 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
+
             <DataTrigger Binding="{Binding Name}" Value="Triky313">
                 <Setter Property="Margin" Value="0,0,0,1" />
                 <Setter Property="Icon" Value="Solid_Font" />
                 <Setter Property="Effect">
                     <Setter.Value>
                         <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Red.3}"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Name}" Value="Rhaegaryn">
+                <Setter Property="Margin" Value="0,0,0,1" />
+                <Setter Property="ToolTip" Value="Rhaegaryn - Most dedicated contributor!" />
+                <Setter Property="Icon" Value="Solid_Star" />
+                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Gold.2}"/>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
