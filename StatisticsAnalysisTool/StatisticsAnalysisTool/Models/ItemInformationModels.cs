@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -178,7 +178,7 @@ namespace StatisticsAnalysisTool.Models
         [JsonPropertyName("time")] public double Time { get; set; }
 
         [JsonPropertyName("silver")]
-        public int Silver { get; set; }
+        public double Silver { get; set; }
 
         [JsonPropertyName("craftingFocus")]
         public int CraftingFocus { get; set; }
