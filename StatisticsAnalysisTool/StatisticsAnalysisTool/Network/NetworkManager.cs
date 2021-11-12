@@ -92,7 +92,7 @@ namespace StatisticsAnalysisTool.Network
             {
                 foreach (var device in _capturedDevices)
                 {
-                    await PacketEventAsync(device);
+                    await PacketEventAsync(device).ConfigureAwait(false);
                 }
             }
             catch (Exception e)
@@ -130,13 +130,13 @@ namespace StatisticsAnalysisTool.Network
                 {
                     device.Open(new DeviceConfiguration()
                     {
-                        Mode = DeviceModes.Promiscuous,
+                        Mode = DeviceModes.DataTransferUdp,
                         ReadTimeout = 5000
                     });
                     device.OnPacketArrival += Device_OnPacketArrival;
                     device.StartCapture();
                 }
-            });
+            }).ConfigureAwait(false);
         }
 
         private static void Device_OnPacketArrival(object sender, PacketCapture e)
