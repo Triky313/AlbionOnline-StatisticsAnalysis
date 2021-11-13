@@ -5,11 +5,13 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common
@@ -17,7 +19,7 @@ namespace StatisticsAnalysisTool.Common
     public static class ApiController
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
+        
         public static async Task<ItemInformation> GetItemInfoFromJsonAsync(string uniqueName)
         {
             var url = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
@@ -43,7 +45,12 @@ namespace StatisticsAnalysisTool.Common
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var itemInfo = JsonSerializer.Deserialize<ItemInformation>(await content.ReadAsStringAsync());
+                    var options = new JsonSerializerOptions()
+                    {
+                        NumberHandling = JsonNumberHandling.AllowReadingFromString
+                    };
+
+                    var itemInfo = JsonSerializer.Deserialize<ItemInformation>(await content.ReadAsStringAsync(), options);
                     if (itemInfo != null)
                     {
                         itemInfo.HttpStatus = HttpStatusCode.OK;
