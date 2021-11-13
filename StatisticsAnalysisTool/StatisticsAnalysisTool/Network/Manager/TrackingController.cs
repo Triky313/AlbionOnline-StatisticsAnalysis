@@ -32,7 +32,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public EntityController EntityController;
         public LootController LootController;
         private readonly List<NotificationType> _notificationTypeFilters = new();
-
+        
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
             _mainWindowViewModel = mainWindowViewModel;
@@ -156,6 +156,16 @@ namespace StatisticsAnalysisTool.Network.Manager
         public async Task AddNotificationAsync(TrackingNotification item)
         {
             if (_mainWindowViewModel?.TrackingNotifications == null)
+            {
+                return;
+            }
+
+            if (!_mainWindowViewModel.IsTrackingFame && item.Type == NotificationType.Fame)
+            {
+                return;
+            }
+
+            if (!_mainWindowViewModel.IsTrackingSilver && item.Type == NotificationType.Silver)
             {
                 return;
             }

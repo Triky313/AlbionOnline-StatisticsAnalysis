@@ -150,6 +150,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingFilteredSeasonPoints;
         private ListCollectionView _trackingNotificationsCollectionView;
         private bool _isTrackingPartyLootOnly;
+        private bool _isTrackingSilver;
+        private bool _isTrackingFame;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -487,6 +489,8 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingFilteredSeasonPoints = SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints;
             IsDamageMeterTrackingActive = SettingsController.CurrentSettings.IsDamageMeterTrackingActive;
             IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
+            IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
+            IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
 
             TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
             if (TrackingDungeonsCollectionView != null)
@@ -1317,6 +1321,30 @@ namespace StatisticsAnalysisTool.ViewModels
                 TrackingController.LootController.IsPartyLootOnly = _isTrackingPartyLootOnly;
 
                 SettingsController.CurrentSettings.IsTrackingPartyLootOnly = _isTrackingPartyLootOnly;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingSilver
+        {
+            get => _isTrackingSilver;
+            set
+            {
+                _isTrackingSilver = value;
+
+                SettingsController.CurrentSettings.IsTrackingSilver = _isTrackingSilver;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTrackingFame
+        {
+            get => _isTrackingFame;
+            set
+            {
+                _isTrackingFame = value;
+
+                SettingsController.CurrentSettings.IsTrackingFame = _isTrackingFame;
                 OnPropertyChanged();
             }
         }
