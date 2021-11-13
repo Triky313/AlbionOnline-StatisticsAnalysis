@@ -34,9 +34,11 @@ namespace StatisticsAnalysisTool.Models
         [JsonPropertyName("showinmarketplace")]
         public bool ShowInMarketplace { get; set; }
 
-        [JsonPropertyName("level")] public int Level { get; set; }
+        [JsonPropertyName("level")]
+        public int Level { get; set; }
 
-        [JsonPropertyName("tier")] public int Tier { get; set; }
+        [JsonPropertyName("tier")]
+        public int Tier { get; set; }
 
         [JsonPropertyName("enchantmentLevel")]
         public int EnchantmentLevel { get; set; }
@@ -57,6 +59,7 @@ namespace StatisticsAnalysisTool.Models
         //public ActiveSlots ActiveSlots { get; set; }
         //[JsonPropertyName("passiveSlots")]
         //public PassiveSlots PassiveSlots { get; set; }
+
         [JsonPropertyName("localizedNames")]
         public LocalizedNames LocalizedNames { get; set; }
 
@@ -69,11 +72,14 @@ namespace StatisticsAnalysisTool.Models
         [JsonPropertyName("physicalAttackDamageBonus")]
         public double PhysicalAttackDamageBonus { get; set; }
 
-        [JsonPropertyName("skinCount")] public object SkinCount { get; set; }
+        [JsonPropertyName("skinCount")]
+        public object SkinCount { get; set; }
 
-        [JsonPropertyName("physicalArmor")] public int PhysicalArmor { get; set; }
+        [JsonPropertyName("physicalArmor")]
+        public int PhysicalArmor { get; set; }
 
-        [JsonPropertyName("magicResistance")] public int MagicResistance { get; set; }
+        [JsonPropertyName("magicResistance")]
+        public int MagicResistance { get; set; }
 
         [JsonPropertyName("magicAttackDamageBonus")]
         public object MagicAttackDamageBonus { get; set; }
@@ -81,7 +87,7 @@ namespace StatisticsAnalysisTool.Models
         [JsonPropertyName("itemPowerProgressionType")]
         public string ItemPowerProgressionType { get; set; }
 
-        [JsonPropertyName("craftingRequirements")] 
+        [JsonPropertyName("craftingRequirements")]
         public CraftingRequirements CraftingRequirements { get; set; }
 
         [JsonPropertyName("unlockedToEquip")]
@@ -94,10 +100,10 @@ namespace StatisticsAnalysisTool.Models
         public double? PrefabScaling { get; set; }
 
         [JsonPropertyName("abilityPower")]
-        public int? AbilityPower { get; set; }
+        public double? AbilityPower { get; set; }
 
         [JsonPropertyName("attackDamage")]
-        public int? AttackDamage { get; set; }
+        public double? AttackDamage { get; set; }
 
         [JsonPropertyName("attackSpeed")]
         public double? AttackSpeed { get; set; }
@@ -115,28 +121,28 @@ namespace StatisticsAnalysisTool.Models
         public int? PassiveSpellSlots { get; set; }
 
         [JsonPropertyName("durability")]
-        public int? Durability { get; set; }
+        public double? Durability { get; set; }
 
         [JsonPropertyName("durabilityLossAttack")]
-        public int? DurabilityLossAttack { get; set; }
+        public double? DurabilityLossAttack { get; set; }
 
         [JsonPropertyName("durabilityLossSpelluse")]
-        public int? DurabilityLossSpellUse { get; set; }
+        public double? DurabilityLossSpellUse { get; set; }
 
         [JsonPropertyName("durabilityLossReceivedattack")]
-        public int? DurabilityLossReceivedAttack { get; set; }
+        public double? DurabilityLossReceivedAttack { get; set; }
 
         [JsonPropertyName("durabilityLossReceivedspell")]
-        public int? DurabilityLossReceivedSpell { get; set; }
+        public double? DurabilityLossReceivedSpell { get; set; }
 
         [JsonPropertyName("hitpointsMax")]
-        public int? HitPointsMax { get; set; }
+        public double? HitPointsMax { get; set; }
 
         [JsonPropertyName("itemPower")]
-        public int? ItemPower { get; set; }
+        public double? ItemPower { get; set; }
 
         [JsonPropertyName("dismountTime")]
-        public int? DismountTime { get; set; }
+        public double? DismountTime { get; set; }
 
         [JsonPropertyName("mountHitPointsMax")]
         public int? MountHitPointsMax { get; set; }
@@ -159,7 +165,8 @@ namespace StatisticsAnalysisTool.Models
         [JsonPropertyName("lastUpdate")]
         public DateTime LastUpdate { get; set; }
 
-        [JsonIgnore] public string LastFullItemInformationUpdate => Formatting.CurrentDateTimeFormat(LastUpdate) ?? string.Empty;
+        [JsonIgnore] 
+        public string LastFullItemInformationUpdate => Formatting.CurrentDateTimeFormat(LastUpdate) ?? string.Empty;
 
         public CategoryObject CategoryObject => CategoryController.GetCategory(CategoryId);
         public HttpStatusCode HttpStatus { get; set; }
@@ -175,7 +182,8 @@ namespace StatisticsAnalysisTool.Models
 
     public class CraftingRequirements
     {
-        [JsonPropertyName("time")] public double Time { get; set; }
+        [JsonPropertyName("time")] 
+        public double Time { get; set; }
 
         [JsonPropertyName("silver")]
         public double Silver { get; set; }
