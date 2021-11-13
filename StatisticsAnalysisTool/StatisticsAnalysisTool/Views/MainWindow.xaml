@@ -3,8 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-        xmlns:fa5="http://schemas.fontawesome.com/icons/"
-        Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="800" Closing="Window_Closing">
+        xmlns:fa5="http://schemas.fontawesome.com/icons/" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        Title="AlbionOnline - StatisticsAnalysisTool" Height="550" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" ResizeMode="CanResizeWithGrip" Style="{StaticResource PrimaryWindow}" WindowStyle="None" MinHeight="400" MinWidth="800" Closing="Window_Closing"
+        d:DataContext="{d:DesignData MainWindowViewModel}">
     <Grid>
         <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
@@ -292,6 +295,8 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                                     <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Width="20" Height="20" Margin="0,0,5,0" />
                                     <CheckBox IsChecked="{Binding IsTrackingPartyLootOnly, FallbackValue=true}" Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingSilver, FallbackValue=true}" Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFame, FallbackValue=true}" Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" Margin="5,0,5,0" />
                                 </StackPanel>
                             </StackPanel>
                         </Grid>

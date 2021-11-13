@@ -70,5 +70,7 @@ namespace StatisticsAnalysisTool.Models
         public static string SeasonPoints => LanguageController.Translation("SEASON_POINTS");
         public static string ExportLootToFile => LanguageController.Translation("EXPORT_LOOT_TO_FILE");
         public static string TrackPartyLootOnly => LanguageController.Translation("TRACK_PARTY_LOOT_ONLY");
+        public static string TrackingSilver => LanguageController.Translation("TRACKING_SILVER");
+        public static string TrackingFame => LanguageController.Translation("TRACKING_FAME");
     }
 }
