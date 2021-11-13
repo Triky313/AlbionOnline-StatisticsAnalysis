@@ -28,6 +28,8 @@
         public bool IsMainTrackerFilterUnknownLoot { get; set; }
         public bool IsDamageMeterTrackingActive { get; set; } = true;
         public bool IsTrackingPartyLootOnly { get; set; }
+        public bool IsTrackingSilver { get; set; }
+        public bool IsTrackingFame { get; set; }
         public string SavedPlayerInformationName { get; set; }
         public bool IsLootLoggerSaveReminderActive { get; set; }
     }

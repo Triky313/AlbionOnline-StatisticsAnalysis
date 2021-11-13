@@ -484,4 +484,6 @@
 	<translation name="IS_LOOT_LOGGER_SAVE_REMINDER_ACTIVE">Is Loot Logger save reminder active?</translation>
 	<translation name="SAVE_LOOT_LOGGER_NOW">Save Loot Logger now?</translation>
 	<translation name="SAVE_LOOT_LOGGER">Save Loot Logger</translation>
+	<translation name="TRACKING_SILVER">Tracking silver</translation>
+	<translation name="TRACKING_FAME">Tracking fame</translation>
 </translations>
