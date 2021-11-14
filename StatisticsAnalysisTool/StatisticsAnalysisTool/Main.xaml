@@ -35,6 +35,7 @@
     <Color x:Key="Color.City.ArthursRest">#FFF75656</Color>
     <Color x:Key="Color.City.MerlynsRest">#FF435DE0</Color>
     <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
+    <Color x:Key="Color.City.BlackMarket">#FF452626</Color>
 
     <Color x:Key="Color.City.Default.Transparent">#3324292D</Color>
     <Color x:Key="Color.City.Caerleon.Transparent">#3324292D</Color>
@@ -46,6 +47,7 @@
     <Color x:Key="Color.City.ArthursRest.Transparent">#33F75656</Color>
     <Color x:Key="Color.City.MerlynsRest.Transparent">#33435DE0</Color>
     <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
+    <Color x:Key="Color.City.BlackMarket.Transparent">#33452626</Color>
 
     <!-- Colors -->
     <Color x:Key="Color.Blue.1">#ff6fccf6</Color>
@@ -182,6 +184,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest" Color="{StaticResource Color.City.ArthursRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket" Color="{StaticResource Color.City.BlackMarket}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.City.Default.Transparent" Color="{StaticResource Color.City.Caerleon.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon.Transparent" Color="{StaticResource Color.City.Caerleon.Transparent}"/>
@@ -193,6 +196,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest.Transparent" Color="{StaticResource Color.City.ArthursRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest.Transparent" Color="{StaticResource Color.City.MerlynsRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest.Transparent" Color="{StaticResource Color.City.MorganasRest.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket.Transparent" Color="{StaticResource Color.City.BlackMarket.Transparent}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Background" Color="{StaticResource Color.Red.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Error.Bar.Border" Color="{StaticResource Color.Red.1}"/>
