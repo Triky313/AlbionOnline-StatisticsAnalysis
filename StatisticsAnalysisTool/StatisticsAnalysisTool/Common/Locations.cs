@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -112,17 +114,31 @@ namespace StatisticsAnalysisTool.Common
             return locations;
         }
 
-        public static Brush GetLocationBrush(Location location, bool transparent)
+        public static SolidColorPaint GetLocationBrush(Location location, bool transparent)
         {
             try
             {
                 if (transparent)
-                    return (Brush) Application.Current.Resources[$"SolidColorBrush.City.{GetParameterName(location)}.Transparent"];
-                return (Brush) Application.Current.Resources[$"SolidColorBrush.City.{GetParameterName(location)}"];
+                {
+                    var scbt = (SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.{location}.Transparent"];
+                    return new SolidColorPaint
+                    {
+                        Color = new SKColor(scbt.Color.R, scbt.Color.G, scbt.Color.B, scbt.Color.A)
+                    };
+                }
+
+                var scb = (SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.{location}"];
+                return new SolidColorPaint
+                {
+                    Color = new SKColor(scb.Color.R, scb.Color.G, scb.Color.B, scb.Color.A)
+                };
             }
             catch
             {
-                return (Brush) Application.Current.Resources["SolidColorBrush.City.Default.Transparent"];
+                return new SolidColorPaint
+                {
+                    Color = new SKColor(0, 0, 0, 0)
+                };
             }
         }
 
@@ -130,11 +146,11 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                return (Color) Application.Current.Resources[$"Color.City.{location}"];
+                return (Color)Application.Current.Resources[$"Color.City.{location}"];
             }
             catch
             {
-                return (Color) Application.Current.Resources["Color.City.Default"];
+                return (Color)Application.Current.Resources["Color.City.Default"];
             }
         }
     }

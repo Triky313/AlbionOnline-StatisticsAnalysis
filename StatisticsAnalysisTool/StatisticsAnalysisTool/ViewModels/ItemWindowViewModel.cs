@@ -1,4 +1,7 @@
 ﻿using FontAwesome5;
+using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
 using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -10,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -50,7 +54,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private XmlLanguage _itemListViewLanguage;
         private string _itemName;
         private string _itemTierLevel;
-        private string[] _labelsHistory;
+        private Axis[] _xAxesHistory;
         private EFontAwesomeIcon _loadingImageIcon;
         private bool _loadingImageSpin;
         private Visibility _loadingImageVisibility;
@@ -62,7 +66,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _refreshIconTooltipText;
         private bool _refreshSpin;
         private bool _runUpdate = true;
-        //private SeriesCollection _seriesCollectionHistory;
+        private ObservableCollection<ISeries> _seriesHistory = new();
         private bool _showBlackZoneOutpostsChecked;
         private bool _showVillagesChecked;
         private ItemWindowTranslation _translation;
@@ -188,7 +192,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 var item = GetSuitableResourceItem(craftResource.UniqueName);
                 var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false ? CraftingCalculation.PossibleItemCrafting : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
-                
+
                 RequiredResources.Add(new RequiredResource(this)
                 {
                     CraftingResourceName = item?.LocalizedName,
@@ -446,6 +450,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        #region History
+
         public async void SetHistoryChartPricesAsync()
         {
             List<MarketHistoriesResponse> historyItemPrices;
@@ -470,35 +476,55 @@ namespace StatisticsAnalysisTool.ViewModels
             SetHistoryChart(historyItemPrices);
         }
 
-        // ReSharper disable once UnusedParameter.Local
         private void SetHistoryChart(List<MarketHistoriesResponse> historyItemPrices)
         {
-            //var date = new List<string>();
-            //var seriesCollectionHistory = new SeriesCollection();
+            var date = new List<string>();
+            var seriesCollectionHistory = new ObservableCollection<ISeries>();
+            var xAxes = new ObservableCollection<Axis>();
 
-            //foreach (var marketHistory in historyItemPrices)
-            //{
-            //    var amount = new ChartValues<int>();
-            //    foreach (var data in marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
-            //    {
-            //        if (!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
-            //            date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+            foreach (var marketHistory in historyItemPrices)
+            {
+                var amount = new ObservableCollection<ObservablePoint>();
 
-            //        amount.Add(data.AveragePrice);
-            //    }
+                var counter = 0;
+                foreach (var data in marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
+                {
+                    if (!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
+                    {
+                        date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+                    }
 
-            //    seriesCollectionHistory.Add(new LineSeries
-            //    {
-            //        Title = Locations.GetName(Locations.GetName(marketHistory?.Location)),
-            //        Values = amount,
-            //        Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
-            //        Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false)
-            //    });
-            //}
+                    amount.Add(new ObservablePoint(counter++, data.AveragePrice));
+                }
 
-            //LabelsHistory = date.ToArray();
-            //SeriesCollectionHistory = seriesCollectionHistory;
+                var lineSeries = new LineSeries<ObservablePoint>
+                {
+                    Name = Locations.GetName(Locations.GetName(marketHistory?.Location)),
+                    Values = amount,
+                    Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
+                    Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false),
+                    GeometryStroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false),
+                    GeometryFill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
+                    GeometrySize = 5,
+                    TooltipLabelFormatter = p => $"{p.Context.Series.Name}: {p.PrimaryValue:N0}"
+                };
+
+                seriesCollectionHistory.Add(lineSeries);
+            }
+
+            xAxes.Add(new Axis()
+            {
+                LabelsRotation = 15,
+                Labels = date,
+                Labeler = value => new DateTime((long)value).ToString(CultureInfo.CurrentCulture),
+                UnitWidth = TimeSpan.FromDays(1).Ticks
+            });
+
+            XAxesHistory = xAxes.ToArray();
+            SeriesHistory = seriesCollectionHistory;
         }
+
+        #endregion
 
         #region Prices
 
@@ -1060,22 +1086,22 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        //public SeriesCollection SeriesCollectionHistory
-        //{
-        //    get => _seriesCollectionHistory;
-        //    set
-        //    {
-        //        _seriesCollectionHistory = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        public string[] LabelsHistory
+        public ObservableCollection<ISeries> SeriesHistory
         {
-            get => _labelsHistory;
+            get => _seriesHistory;
             set
             {
-                _labelsHistory = value;
+                _seriesHistory = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Axis[] XAxesHistory
+        {
+            get => _xAxesHistory;
+            set
+            {
+                _xAxesHistory = value;
                 OnPropertyChanged();
             }
         }
@@ -1207,7 +1233,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                var label = (Label) sender;
+                var label = (Label)sender;
                 Clipboard.SetText(label.Content.ToString() ?? string.Empty);
             }
             catch (Exception ex)
@@ -1227,7 +1253,7 @@ namespace StatisticsAnalysisTool.ViewModels
             if (values.Length == 0) return 0;
 
             var sum = Sum(values);
-            var result = sum / (ulong) values.Length;
+            var result = sum / (ulong)values.Length;
             return result;
         }
 

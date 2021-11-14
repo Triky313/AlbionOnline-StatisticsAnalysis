@@ -36,16 +36,16 @@
     <Color x:Key="Color.City.MerlynsRest">#FF435DE0</Color>
     <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
 
-    <Color x:Key="Color.City.Default.Transparent">#5524292D</Color>
-    <Color x:Key="Color.City.Caerleon.Transparent">#5524292D</Color>
-    <Color x:Key="Color.City.Thetford.Transparent">#553BAFDA</Color>
-    <Color x:Key="Color.City.Bridgewatch.Transparent">#55F76397</Color>
-    <Color x:Key="Color.City.Martlock.Transparent">#557266BA</Color>
-    <Color x:Key="Color.City.Lymhurst.Transparent">#55FFAA00</Color>
-    <Color x:Key="Color.City.FortSterling.Transparent">#5500B19D</Color>
-    <Color x:Key="Color.City.ArthursRest.Transparent">#55F75656</Color>
-    <Color x:Key="Color.City.MerlynsRest.Transparent">#55435DE0</Color>
-    <Color x:Key="Color.City.MorganasRest.Transparent">#5583AF00</Color>
+    <Color x:Key="Color.City.Default.Transparent">#3324292D</Color>
+    <Color x:Key="Color.City.Caerleon.Transparent">#3324292D</Color>
+    <Color x:Key="Color.City.Thetford.Transparent">#333BAFDA</Color>
+    <Color x:Key="Color.City.Bridgewatch.Transparent">#33F76397</Color>
+    <Color x:Key="Color.City.Martlock.Transparent">#337266BA</Color>
+    <Color x:Key="Color.City.Lymhurst.Transparent">#33FFAA00</Color>
+    <Color x:Key="Color.City.FortSterling.Transparent">#3300B19D</Color>
+    <Color x:Key="Color.City.ArthursRest.Transparent">#33F75656</Color>
+    <Color x:Key="Color.City.MerlynsRest.Transparent">#33435DE0</Color>
+    <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
 
     <!-- Colors -->
     <Color x:Key="Color.Blue.1">#ff6fccf6</Color>
