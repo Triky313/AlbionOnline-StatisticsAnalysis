@@ -35,7 +35,7 @@
     <Color x:Key="Color.City.ArthursRest">#FFF75656</Color>
     <Color x:Key="Color.City.MerlynsRest">#FF435DE0</Color>
     <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
-    <Color x:Key="Color.City.BlackMarket">#FF452626</Color>
+    <Color x:Key="Color.City.BlackMarket">#FFA72F47</Color>
 
     <Color x:Key="Color.City.Default.Transparent">#3324292D</Color>
     <Color x:Key="Color.City.Caerleon.Transparent">#3324292D</Color>
@@ -47,7 +47,7 @@
     <Color x:Key="Color.City.ArthursRest.Transparent">#33F75656</Color>
     <Color x:Key="Color.City.MerlynsRest.Transparent">#33435DE0</Color>
     <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
-    <Color x:Key="Color.City.BlackMarket.Transparent">#33452626</Color>
+    <Color x:Key="Color.City.BlackMarket.Transparent">#33A72F47</Color>
 
     <!-- Colors -->
     <Color x:Key="Color.Blue.1">#ff6fccf6</Color>
