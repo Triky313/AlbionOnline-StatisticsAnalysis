@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+        xmlns:ctx="clr-namespace:LiveChartsCore.Kernel;assembly=LiveChartsCore"
         mc:Ignorable="d"
         Title="ItemWindow" MinHeight="350" Height="420" MinWidth="900" Width="1210" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
     <Grid>
@@ -238,15 +240,36 @@
                     </ListView.View>
                 </ListView>
             </TabItem>
-            <!--<TabItem Header="{Binding Translation.History, FallbackValue=HISTORY}">
-                --><!--<Grid Background="{StaticResource SolidColorBrush.Background.First}">
-                    <wpf:CartesianChart Series="{Binding SeriesCollectionHistory, UpdateSourceTrigger=PropertyChanged}">
-                        <wpf:CartesianChart.AxisX>
-                            <wpf:Axis LabelsRotation="0" Labels="{Binding LabelsHistory, UpdateSourceTrigger=PropertyChanged}"></wpf:Axis>
-                        </wpf:CartesianChart.AxisX>
-                    </wpf:CartesianChart>
-                </Grid>--><!--
-            </TabItem>-->
+            <TabItem Header="{Binding Translation.History, FallbackValue=HISTORY}">
+                <Grid Background="{StaticResource SolidColorBrush.Background.First}">
+                    <lvc:CartesianChart Series="{Binding SeriesHistory, IsAsync=True}" XAxes="{Binding XAxesHistory}">
+                        <!--<lvc:CartesianChart.TooltipTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="5" Background="{StaticResource SolidColorBrush.Background.Color.6}">
+                                    <ItemsControl ItemsSource="{Binding Points, RelativeSource={RelativeSource AncestorType=lvc:DefaultTooltip}}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type ctx:TooltipPoint}">
+                                                <Border Padding="7 5">
+                                                    <StackPanel Orientation="Vertical">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="{Binding Point.AsTooltipString}" Margin="0 0 8 0" Foreground="{StaticResource SolidColorBrush.Foreground.First}"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Border>
+                            </DataTemplate>
+                        </lvc:CartesianChart.TooltipTemplate>-->
+                    </lvc:CartesianChart>
+                </Grid>
+            </TabItem>
             <TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}">
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden">
                     <Grid>
