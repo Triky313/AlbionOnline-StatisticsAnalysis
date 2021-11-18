@@ -40,7 +40,7 @@ namespace StatisticsAnalysisTool.Network
                 _ = builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
                 _ = builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
                 _ = builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
-                _ = builder.AddEventHandler(new UpdateMoneyEventHandler(trackingController));
+                _ = builder.AddEventHandler(new UpdateSilverEventHandler(trackingController));
                 _ = builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController));
                 _ = builder.AddEventHandler(new UpdateCurrencyEventHandler(trackingController));
                 _ = builder.AddEventHandler(new DiedEventHandler(trackingController));

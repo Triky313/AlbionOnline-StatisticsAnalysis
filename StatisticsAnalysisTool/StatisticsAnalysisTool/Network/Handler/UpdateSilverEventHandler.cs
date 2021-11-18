@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class UpdateMoneyEventHandler : EventPacketHandler<UpdateMoneyEvent>
+    public class UpdateSilverEventHandler : EventPacketHandler<UpdateSilverEvent>
     {
         private readonly CountUpTimer _countUpTimer;
 
-        public UpdateMoneyEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateMoney)
+        public UpdateSilverEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateSilver)
         {
             _countUpTimer = trackingController?.CountUpTimer;
         }
 
-        protected override async Task OnActionAsync(UpdateMoneyEvent value)
+        protected override async Task OnActionAsync(UpdateSilverEvent value)
         {
             await Task.CompletedTask;
         }
