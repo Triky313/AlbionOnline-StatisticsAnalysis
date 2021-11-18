@@ -77,8 +77,8 @@ namespace StatisticsAnalysisTool.Enumerations
         UpdateSilver = 71, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
         UpdateFame = 72, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 7: ItemId, 9: SatchelFame, )
         UpdateLearningPoints,
-        UpdateReSpecPoints,
-        UpdateCurrency,
+        UpdateReSpecPoints = 74,
+        UpdateCurrency = 75,
         UpdateFactionStanding,
         Respawn,
         ServerDebugLog,
@@ -354,6 +354,7 @@ namespace StatisticsAnalysisTool.Enumerations
         PartyFinderJoinRequestDeclined,
         NewUnlockedPersonalSeasonRewards,
         PersonalSeasonPointsGained,
+        ChallengePoints = 352, // map[0:1578596 252:352]
         EasyAntiCheatMessageToClient,
         MatchLootChestOpeningStart,
         MatchLootChestOpeningFinished,
@@ -429,6 +430,7 @@ namespace StatisticsAnalysisTool.Enumerations
         Unknown419,
         Unknown420,
         Unknown421,
-        Unknown422
+        Unknown422,
+        MightFavorPoints = 470 // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
     }
 }
