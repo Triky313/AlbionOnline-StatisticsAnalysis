@@ -149,9 +149,10 @@ namespace StatisticsAnalysisTool.Network
                     _receiver.ReceivePacket(packet.PayloadData);
                 }
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ioe)
             {
-                // ignore
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ioe);
+                Log.Error(nameof(Device_OnPacketArrival), ioe);
             }
             catch (OverflowException ex)
             {
