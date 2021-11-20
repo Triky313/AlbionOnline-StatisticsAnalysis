@@ -15,25 +15,17 @@ public class AlbionPackageParser : PhotonParser
 {
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
-    private readonly CountUpTimer _countUpTimer;
 
     public AlbionPackageParser(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
-        _countUpTimer = _trackingController?.CountUpTimer;
     }
 
     protected override void OnEvent(byte code, Dictionary<byte, object> parameters)
     {
         var eventCode = ParseEventCode(parameters);
-        //Debug.Print($"EventCode: {eventCode}");
-        //if ((short)eventCode == 74)
-        //{
-        //    Debug.Print($"Event 74: {string.Join("", parameters)}");
-        //}
-        //Console.WriteLine("OnEvent");
-
+        
         if (eventCode == EventCodes.Unused)
         {
             return;
@@ -123,6 +115,11 @@ public class AlbionPackageParser : PhotonParser
     {
         var opCode = ParseOperationCode(parameters);
 
+        if (opCode == OperationCodes.Unused)
+        {
+            return;
+        }
+
         Task.Run(async () =>
         {
             switch (opCode)
@@ -137,6 +134,11 @@ public class AlbionPackageParser : PhotonParser
     protected override void OnResponse(byte operationCode, short returnCode, string debugMessage, Dictionary<byte, object> parameters)
     {
         var opCode = ParseOperationCode(parameters);
+
+        if (opCode == OperationCodes.Unused)
+        {
+            return;
+        }
 
         Task.Run(async () =>
         {
@@ -155,13 +157,15 @@ public class AlbionPackageParser : PhotonParser
         });
     }
 
+    #region Code Parser
+
     private static EventCodes ParseEventCode(IReadOnlyDictionary<byte, object> parameters)
     {
         if (!parameters.TryGetValue(252, out var value))
         {
             return EventCodes.Unused;
         }
-        
+
         return (EventCodes)Enum.ToObject(typeof(EventCodes), value);
     }
 
@@ -174,6 +178,8 @@ public class AlbionPackageParser : PhotonParser
 
         return (OperationCodes)Enum.ToObject(typeof(OperationCodes), value);
     }
+
+    #endregion
 
     #region Handler
 

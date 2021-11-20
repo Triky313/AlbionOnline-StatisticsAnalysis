@@ -30,40 +30,6 @@ namespace StatisticsAnalysisTool.Network
 
             try
             {
-                //builder.AddResponseHandler(new UseLootChestEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new NewSimpleItemEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new NewEquipmentItemEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new OtherGrabbedLootEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new InventoryDeleteItemEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new InventoryPutItemEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new TakeSilverEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new UpdateFameEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new UpdateSilverEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new UpdateReSpecPointsEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new UpdateCurrencyEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new DiedEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new NewLootChestEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new LootChestOpenedEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new InCombatStateUpdateEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new NewShrineEventHandler(trackingController));
-                //_ = builder.AddRequestHandler(new UseShrineRequestHandler(trackingController));
-                //_ = builder.AddResponseHandler(new ChangeClusterResponseHandler(trackingController));
-                //_ = builder.AddEventHandler(new HealthUpdateEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new PartyDisbandedEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new PartyChangedOrderEventHandler(trackingController));
-                //_ = builder.AddResponseHandler(new PartyMakeLeaderResponseHandler(trackingController));
-                //_ = builder.AddEventHandler(new NewCharacterEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new SiegeCampClaimStartEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new NewMobEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new LeaveEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new CharacterEquipmentChangedEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new ActiveSpellEffectsUpdateEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new PartySilverGainedEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new UpdateFactionStandingEventHandler(trackingController));
-                //_ = builder.AddEventHandler(new ReceivedSeasonPointsEventHandler(trackingController));
-
-                //_ = builder.AddResponseHandler(new JoinResponseHandler(trackingController, _mainWindowViewModel));
-
                 _capturedDevices.AddRange(CaptureDeviceList.Instance);
                 return await StartDeviceCaptureAsync();
             }
