@@ -14,7 +14,10 @@ namespace StatisticsAnalysisTool.Network.Events
 
             try
             {
-                if (parameters.ContainsKey(0)) CauserId = parameters[0].ObjectToLong();
+                if (parameters.ContainsKey(0))
+                {
+                    CauserId = parameters[0].ObjectToLong();
+                }
 
                 if (parameters.ContainsKey(1))
                 {

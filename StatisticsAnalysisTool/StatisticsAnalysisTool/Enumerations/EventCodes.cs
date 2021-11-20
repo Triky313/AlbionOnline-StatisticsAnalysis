@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Enumerations
         Move,
         Teleport,
         ChangeEquipment,
-        HealthUpdate,
+        HealthUpdate = 6,
         EnergyUpdate,
         DamageShieldUpdate,
         CraftingFocusUpdate,

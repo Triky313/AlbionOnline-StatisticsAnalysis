@@ -37,7 +37,7 @@
         InventorySplitStack,
         InventorySplitStackInto,
         GetClusterData,
-        ChangeCluster,
+        ChangeCluster = 36,
         ConsoleCommand,
         ChatMessage,
         ReportClientError,
