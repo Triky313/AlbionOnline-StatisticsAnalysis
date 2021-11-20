@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
@@ -10,16 +9,16 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class UpdateFactionStandingEventHandler : EventPacketHandler<UpdateFactionStandingEvent>
+    public class UpdateFactionStandingEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public UpdateFactionStandingEventHandler(TrackingController trackingController) : base((int)EventCodes.UpdateFactionStanding)
+        public UpdateFactionStandingEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(UpdateFactionStandingEvent value)
+        public async Task OnActionAsync(UpdateFactionStandingEvent value)
         {
             await _trackingController.AddNotificationAsync(SetFactionFlagPointsNotification(value.CityFaction, value.GainedFactionFlagPoints.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
             _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionFlagPoints.DoubleValue, ValueType.FactionFame);

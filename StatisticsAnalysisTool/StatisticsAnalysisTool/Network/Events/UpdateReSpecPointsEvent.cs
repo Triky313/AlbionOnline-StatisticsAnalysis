@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
@@ -7,13 +6,13 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class UpdateReSpecPointsEvent : BaseEvent
+    public class UpdateReSpecPointsEvent
     {
         public FixPoint? CurrentReSpecPoints { get; }
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        public UpdateReSpecPointsEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public UpdateReSpecPointsEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

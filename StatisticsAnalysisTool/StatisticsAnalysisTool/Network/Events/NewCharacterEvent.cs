@@ -1,14 +1,13 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class NewCharacterEvent : BaseEvent
+    public class NewCharacterEvent
     {
-        public NewCharacterEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public NewCharacterEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

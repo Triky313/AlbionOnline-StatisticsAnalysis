@@ -1,23 +1,21 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class ActiveSpellEffectsUpdateEventHandler : EventPacketHandler<ActiveSpellEffectsUpdateEvent>
+    public class ActiveSpellEffectsUpdateEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public ActiveSpellEffectsUpdateEventHandler(TrackingController trackingController) : base((int) EventCodes.ActiveSpellEffectsUpdate)
+        public ActiveSpellEffectsUpdateEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(ActiveSpellEffectsUpdateEvent value)
+        public async Task OnActionAsync(ActiveSpellEffectsUpdateEvent value)
         {
             if (value.CauserId != null)
             {

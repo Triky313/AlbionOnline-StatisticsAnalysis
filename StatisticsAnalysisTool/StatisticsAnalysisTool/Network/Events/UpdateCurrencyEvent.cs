@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class UpdateCurrencyEvent : BaseEvent
+    public class UpdateCurrencyEvent
     {
         public CityFaction CityFaction;
         public FixPoint GainedFactionCoins;
@@ -17,7 +16,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         public FixPoint FactionRankPointsPremiumBonus;
         public FixPoint TotalPlayerFactionPoints;
 
-        public UpdateCurrencyEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public UpdateCurrencyEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
             

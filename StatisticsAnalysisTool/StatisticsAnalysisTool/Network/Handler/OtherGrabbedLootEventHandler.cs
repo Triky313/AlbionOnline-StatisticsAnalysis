@@ -1,21 +1,20 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class OtherGrabbedLootEventHandler : EventPacketHandler<OtherGrabbedLootEvent>
+    public class OtherGrabbedLootEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public OtherGrabbedLootEventHandler(TrackingController trackingController) : base((int) EventCodes.OtherGrabbedLoot)
+        public OtherGrabbedLootEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(OtherGrabbedLootEvent value)
+        public async Task OnActionAsync(OtherGrabbedLootEvent value)
         {
             await _trackingController.LootController.AddLootAsync(value.Loot);
         }

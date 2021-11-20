@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
@@ -10,18 +9,18 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class UpdateCurrencyEventHandler : EventPacketHandler<UpdateCurrencyEvent>
+    public class UpdateCurrencyEventHandler
     {
         private readonly TrackingController _trackingController;
         private readonly CountUpTimer _countUpTimer;
 
-        public UpdateCurrencyEventHandler(TrackingController trackingController) : base((int)EventCodes.UpdateCurrency)
+        public UpdateCurrencyEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
             _countUpTimer = _trackingController?.CountUpTimer;
         }
 
-        protected override async Task OnActionAsync(UpdateCurrencyEvent value)
+        public async Task OnActionAsync(UpdateCurrencyEvent value)
         {
             if (value.CityFaction != CityFaction.Unknown)
             {

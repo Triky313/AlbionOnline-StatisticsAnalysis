@@ -1,14 +1,13 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class NewMobEvent : BaseEvent
+    public class NewMobEvent
     {
-        public NewMobEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public NewMobEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
             

@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class NewSimpleItemEvent : BaseEvent
+    public class NewSimpleItemEvent
     {
         public DiscoveredLoot Loot;
 
@@ -15,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Events
         private readonly int _itemId;
         private readonly int _quantity;
 
-        public NewSimpleItemEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public NewSimpleItemEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

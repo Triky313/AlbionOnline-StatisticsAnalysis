@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using Albion.Network;
 
 namespace StatisticsAnalysisTool.Network.Operations
 {
-    public class MoveOperation : BaseOperation
+    public class MoveOperation
     {
-        public MoveOperation(Dictionary<byte, object> parameters) : base(parameters)
+        public MoveOperation(Dictionary<byte, object> parameters)
         {
             Time = (int) parameters[0];
             Position = (float[]) parameters[1];

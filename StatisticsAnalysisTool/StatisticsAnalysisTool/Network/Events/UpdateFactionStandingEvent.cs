@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Collections.Generic;
@@ -7,14 +6,14 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class UpdateFactionStandingEvent : BaseEvent
+    public class UpdateFactionStandingEvent
     {
         public CityFaction CityFaction;
         public FixPoint GainedFactionFlagPoints;
         public FixPoint BonusPremiumGainedFractionFlagPoints;
         public FixPoint TotalPlayerFactionFlagPoints;
 
-        public UpdateFactionStandingEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public UpdateFactionStandingEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

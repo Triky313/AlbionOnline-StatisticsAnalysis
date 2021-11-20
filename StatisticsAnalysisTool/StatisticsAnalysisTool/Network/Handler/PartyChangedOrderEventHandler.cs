@@ -1,21 +1,20 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using System;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class PartyChangedOrderEventHandler : EventPacketHandler<PartyChangedOrderEvent>
+    public class PartyChangedOrderEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public PartyChangedOrderEventHandler(TrackingController trackingController) : base((int) EventCodes.PartyChangedOrder)
+        public PartyChangedOrderEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(PartyChangedOrderEvent value)
+        public async Task OnActionAsync(PartyChangedOrderEvent value)
         {
             if (value?.UserGuid != null)
             {

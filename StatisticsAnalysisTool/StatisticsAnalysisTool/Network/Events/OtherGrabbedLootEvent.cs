@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
@@ -8,7 +7,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class OtherGrabbedLootEvent : BaseEvent
+    public class OtherGrabbedLootEvent
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         public Loot Loot;
@@ -19,7 +18,7 @@ namespace StatisticsAnalysisTool.Network.Events
         private readonly int _itemIndex;
         private readonly int _quantity;
 
-        public OtherGrabbedLootEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public OtherGrabbedLootEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

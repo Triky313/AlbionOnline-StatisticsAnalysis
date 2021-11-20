@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
@@ -7,16 +6,16 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class NewEquipmentItemEvent : BaseEvent
+    public class NewEquipmentItemEvent
     {
         public DiscoveredLoot Loot;
 
         private readonly long? _objectId;
         private readonly int _itemId;
         private readonly int _quantity;
-        private Dictionary<int, int> _spellDictionary { get; } = new Dictionary<int, int>();
+        private Dictionary<int, int> _spellDictionary { get; } = new ();
 
-        public NewEquipmentItemEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public NewEquipmentItemEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

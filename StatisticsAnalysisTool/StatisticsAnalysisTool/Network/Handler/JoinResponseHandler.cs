@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Manager;
@@ -11,18 +10,18 @@ using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class JoinResponseHandler : ResponsePacketHandler<JoinResponse>
+    public class JoinResponseHandler
     {
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly TrackingController _trackingController;
 
-        public JoinResponseHandler(TrackingController trackingController, MainWindowViewModel mainWindowViewModel) : base((int) OperationCodes.Join)
+        public JoinResponseHandler(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
             _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
         }
 
-        protected override async Task OnActionAsync(JoinResponse value)
+        public async Task OnActionAsync(JoinResponse value)
         {
             _trackingController.SetNewCluster(value.MapType, value.DungeonGuid, value.MapIndex, value.MainMapIndex);
 

@@ -1,12 +1,11 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class TakeSilverEvent : BaseEvent
+    public class TakeSilverEvent
     {
         public long? ObjectId;
         public FixPoint ClusterTax;
@@ -22,7 +21,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         public FixPoint PremiumAfterTax;
         public FixPoint ClusterYieldAfterTax;
 
-        public TakeSilverEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public TakeSilverEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
             

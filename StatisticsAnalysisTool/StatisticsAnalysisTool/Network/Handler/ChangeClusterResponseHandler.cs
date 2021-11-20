@@ -1,21 +1,19 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Operations.Responses;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class ChangeClusterResponseHandler : ResponsePacketHandler<ChangeClusterResponse>
+    public class ChangeClusterResponseHandler
     {
         private readonly TrackingController _trackingController;
 
-        public ChangeClusterResponseHandler(TrackingController trackingController) : base((int) OperationCodes.ChangeCluster)
+        public ChangeClusterResponseHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(ChangeClusterResponse value)
+        public async Task OnActionAsync(ChangeClusterResponse value)
         {
             _trackingController.EntityController.RemoveAllEntities();
             _trackingController.LootController.ResetViewedLootLists();

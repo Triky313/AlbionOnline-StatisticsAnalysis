@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
@@ -10,18 +9,18 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class UpdateFameEventHandler : EventPacketHandler<UpdateFameEvent>
+    public class UpdateFameEventHandler
     {
         private readonly CountUpTimer _countUpTimer;
         private readonly TrackingController _trackingController;
 
-        public UpdateFameEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateFame)
+        public UpdateFameEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
             _countUpTimer = _trackingController?.CountUpTimer;
         }
 
-        protected override async Task OnActionAsync(UpdateFameEvent value)
+        public async Task OnActionAsync(UpdateFameEvent value)
         {
             await _trackingController.AddNotificationAsync(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame.DoubleValue,
                 value.ZoneFame.DoubleValue, value.PremiumFame.DoubleValue, value.SatchelFame.DoubleValue, value.IsBonusFactorActive, value.BonusFactorInPercent));

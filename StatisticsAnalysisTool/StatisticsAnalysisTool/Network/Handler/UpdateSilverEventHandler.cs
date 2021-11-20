@@ -1,20 +1,19 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class UpdateSilverEventHandler : EventPacketHandler<UpdateSilverEvent>
+    public class UpdateSilverEventHandler
     {
         private readonly CountUpTimer _countUpTimer;
 
-        public UpdateSilverEventHandler(TrackingController trackingController) : base((int) EventCodes.UpdateSilver)
+        public UpdateSilverEventHandler(TrackingController trackingController)
         {
             _countUpTimer = trackingController?.CountUpTimer;
         }
 
-        protected override async Task OnActionAsync(UpdateSilverEvent value)
+        public async Task OnActionAsync(UpdateSilverEvent value)
         {
             await Task.CompletedTask;
         }

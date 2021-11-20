@@ -1,17 +1,16 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using Albion.Network;
 using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class NewLootEventHandler : EventPacketHandler<NewLootEvent>
+    public class NewLootEventHandler
     {
-        public NewLootEventHandler() : base(88)
+        public NewLootEventHandler()
         {
         }
 
-        protected override async Task OnActionAsync(NewLootEvent value)
+        public async Task OnActionAsync(NewLootEvent value)
         {
             Debug.Print("NewLoot");
 

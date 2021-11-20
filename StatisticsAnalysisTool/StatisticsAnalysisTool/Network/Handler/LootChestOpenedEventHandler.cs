@@ -1,21 +1,20 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Events;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class LootChestOpenedEventHandler : EventPacketHandler<LootChestOpenedEvent>
+    public class LootChestOpenedEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public LootChestOpenedEventHandler(TrackingController trackingController) : base((int) EventCodes.LootChestOpened)
+        public LootChestOpenedEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(LootChestOpenedEvent value)
+        public async Task OnActionAsync(LootChestOpenedEvent value)
         {
             _trackingController.DungeonController?.SetDungeonChestOpen(value.Id);
             await Task.CompletedTask;

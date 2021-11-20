@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses
 {
-    public class UseLootChestResponse : BaseOperation
+    public class UseLootChestResponse
     {
         public DiscoveredLoot Loot;
 
@@ -17,7 +16,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
         //private readonly int _quantity;
         //private readonly int _itemId;
 
-        public UseLootChestResponse(Dictionary<byte, object> parameters) : base(parameters)
+        public UseLootChestResponse(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
