@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.UserControls
             set => SetValue(ErrorBarVisibilityProperty, value);
         }
 
-        public static DependencyProperty ErrorBarVisibilityProperty = DependencyProperty.Register("ErrorBarVisibility", typeof(Visibility), typeof(ErrorBarControl));
+        public static readonly DependencyProperty ErrorBarVisibilityProperty = DependencyProperty.Register("ErrorBarVisibility", typeof(Visibility), typeof(ErrorBarControl));
 
         public string ErrorBarText
         {
@@ -27,7 +27,7 @@ namespace StatisticsAnalysisTool.UserControls
             set => SetValue(ErrorBarTextProperty, value);
         }
 
-        public static DependencyProperty ErrorBarTextProperty = DependencyProperty.Register("ErrorBarText", typeof(string), typeof(ErrorBarControl));
+        public static readonly DependencyProperty ErrorBarTextProperty = DependencyProperty.Register("ErrorBarText", typeof(string), typeof(ErrorBarControl));
 
         private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
         {

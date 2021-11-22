@@ -58,36 +58,20 @@ namespace StatisticsAnalysisTool.Common
                 currentLanguage = LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper();
             }
 
-            switch (FrequentlyValues.GameLanguages
-                .FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase)).Key)
-            {
-                case GameLanguage.UnitedStates:
-                    return localizedNames.EnUs ?? alternativeName;
-
-                case GameLanguage.Germany:
-                    return localizedNames.DeDe ?? alternativeName;
-
-                case GameLanguage.Russia:
-                    return localizedNames.RuRu ?? alternativeName;
-
-                case GameLanguage.Poland:
-                    return localizedNames.PlPl ?? alternativeName;
-
-                case GameLanguage.Brazil:
-                    return localizedNames.PtBr ?? alternativeName;
-
-                case GameLanguage.France:
-                    return localizedNames.FrFr ?? alternativeName;
-
-                case GameLanguage.Spain:
-                    return localizedNames.EsEs ?? alternativeName;
-
-                case GameLanguage.Chinese:
-                    return localizedNames.ZhCn ?? alternativeName;
-
-                default:
-                    return alternativeName;
-            }
+            return FrequentlyValues.GameLanguages
+                    .FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase))
+                    .Key switch
+                {
+                    GameLanguage.UnitedStates => localizedNames.EnUs ?? alternativeName,
+                    GameLanguage.Germany => localizedNames.DeDe ?? alternativeName,
+                    GameLanguage.Russia => localizedNames.RuRu ?? alternativeName,
+                    GameLanguage.Poland => localizedNames.PlPl ?? alternativeName,
+                    GameLanguage.Brazil => localizedNames.PtBr ?? alternativeName,
+                    GameLanguage.France => localizedNames.FrFr ?? alternativeName,
+                    GameLanguage.Spain => localizedNames.EsEs ?? alternativeName,
+                    GameLanguage.Chinese => localizedNames.ZhCn ?? alternativeName,
+                    _ => alternativeName
+                };
         }
 
         public static bool IsTrash(int index)
@@ -108,29 +92,19 @@ namespace StatisticsAnalysisTool.Common
 
             var itemType = !string.IsNullOrEmpty(item?.FullItemInformation?.ItemType) ? item.FullItemInformation?.ItemType : "UNKNOWN";
 
-            switch (itemType.ToUpper())
+            return itemType.ToUpper() switch
             {
-                case "WEAPON":
-                    return ItemType.Weapon;
-                case "EQUIPMENT":
-                    return ItemType.Equipment;
-                case "SIMPLE":
-                    return ItemType.Simple;
-                case "FARMABLE":
-                    return ItemType.Farmable;
-                case "CONSUMABLE":
-                    return ItemType.Consumable;
-                case "CONSUMABLEFROMINVENTORY":
-                    return ItemType.ConsumableFromInventory;
-                case "JOURNAL":
-                    return ItemType.Journal;
-                case "LABOURERCONTRACT":
-                    return ItemType.LabourerContract;
-                case "FURNITURE":
-                    return ItemType.Furniture;
-                default:
-                    return ItemType.Unknown;
-            }
+                "WEAPON" => ItemType.Weapon,
+                "EQUIPMENT" => ItemType.Equipment,
+                "SIMPLE" => ItemType.Simple,
+                "FARMABLE" => ItemType.Farmable,
+                "CONSUMABLE" => ItemType.Consumable,
+                "CONSUMABLEFROMINVENTORY" => ItemType.ConsumableFromInventory,
+                "JOURNAL" => ItemType.Journal,
+                "LABOURERCONTRACT" => ItemType.LabourerContract,
+                "FURNITURE" => ItemType.Furniture,
+                _ => ItemType.Unknown
+            };
         }
 
         public static int GetItemLevel(string uniqueName)
@@ -151,7 +125,7 @@ namespace StatisticsAnalysisTool.Common
             }
 
             var itemNameTierText = item.UniqueName.Split('_')[0];
-            if (itemNameTierText.Substring(0, 1) == "T" && int.TryParse(itemNameTierText.Substring(1, 1), out var result))
+            if (itemNameTierText[..1] == "T" && int.TryParse(itemNameTierText.Substring(1, 1), out var result))
             {
                 return result;
             }
@@ -171,38 +145,19 @@ namespace StatisticsAnalysisTool.Common
 
         public static Style LocationStyle(Location location)
         {
-            switch (location)
+            return location switch
             {
-                case Location.Caerleon:
-                    return Application.Current.FindResource("CaerleonStyle") as Style;
-
-                case Location.Thetford:
-                    return Application.Current.FindResource("ThetfordStyle") as Style;
-
-                case Location.Bridgewatch:
-                    return Application.Current.FindResource("BridgewatchStyle") as Style;
-
-                case Location.Martlock:
-                    return Application.Current.FindResource("MartlockStyle") as Style;
-
-                case Location.Lymhurst:
-                    return Application.Current.FindResource("LymhurstStyle") as Style;
-
-                case Location.FortSterling:
-                    return Application.Current.FindResource("FortSterlingStyle") as Style;
-
-                case Location.ArthursRest:
-                    return Application.Current.FindResource("ArthursRestStyle") as Style;
-
-                case Location.MerlynsRest:
-                    return Application.Current.FindResource("MerlynsRestStyle") as Style;
-
-                case Location.MorganasRest:
-                    return Application.Current.FindResource("MorganasRestStyle") as Style;
-
-                default:
-                    return Application.Current.FindResource("DefaultCityStyle") as Style;
-            }
+                Location.Caerleon => Application.Current.FindResource("CaerleonStyle") as Style,
+                Location.Thetford => Application.Current.FindResource("ThetfordStyle") as Style,
+                Location.Bridgewatch => Application.Current.FindResource("BridgewatchStyle") as Style,
+                Location.Martlock => Application.Current.FindResource("MartlockStyle") as Style,
+                Location.Lymhurst => Application.Current.FindResource("LymhurstStyle") as Style,
+                Location.FortSterling => Application.Current.FindResource("FortSterlingStyle") as Style,
+                Location.ArthursRest => Application.Current.FindResource("ArthursRestStyle") as Style,
+                Location.MerlynsRest => Application.Current.FindResource("MerlynsRestStyle") as Style,
+                Location.MorganasRest => Application.Current.FindResource("MorganasRestStyle") as Style,
+                _ => Application.Current.FindResource("DefaultCityStyle") as Style
+            };
         }
 
         public static Style GetStyleByTimestamp(DateTime value)
