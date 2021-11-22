@@ -209,12 +209,6 @@ namespace StatisticsAnalysisTool.Views
             _mainWindowViewModel.DeleteSelectedDungeons();
         }
 
-        private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
-        {
-            _mainWindowViewModel.ErrorBarVisibility = Visibility.Hidden;
-            _mainWindowViewModel.ErrorBarText = string.Empty;
-        }
-
         private void OpenDamageMeterInfoPopup_MouseEnter(object sender, MouseEventArgs e)
         {
             _mainWindowViewModel.IsDamageMeterPopupVisible = Visibility.Visible;

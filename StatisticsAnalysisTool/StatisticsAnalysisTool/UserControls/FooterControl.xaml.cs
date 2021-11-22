@@ -5,11 +5,11 @@ using System.Windows.Navigation;
 namespace StatisticsAnalysisTool.UserControls
 {
     /// <summary>
-    /// Interaction logic for FooterView.xaml
+    /// Interaction logic for FooterControl.xaml
     /// </summary>
-    public partial class FooterView
+    public partial class FooterControl
     {
-        public FooterView()
+        public FooterControl()
         {
             InitializeComponent();
             var footerViewModel = new FooterViewModel();

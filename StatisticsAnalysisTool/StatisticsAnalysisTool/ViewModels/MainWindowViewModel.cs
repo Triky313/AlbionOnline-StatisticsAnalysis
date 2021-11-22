@@ -325,7 +325,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion Item list (Normal Mode)
 
-        #region Helper methods
+        #region Error bar
 
         public void SetErrorBar(Visibility visibility, string errorMessage)
         {
