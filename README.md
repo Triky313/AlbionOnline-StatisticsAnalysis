@@ -1,7 +1,7 @@
 # AlbionOnline - Statistics Analysis
 [![Github All Releases](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases) 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/Triky313/AlbionOnline-StatisticsAnalysis/CodeQL/master)
+[![.NET Desktop](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/dotnet-desktop.yml)
 ![Lines of code](https://img.shields.io/tokei/lines/github/Triky313/AlbionOnline-StatisticsAnalysis) 
 [![GitHub issues](https://img.shields.io/github/issues/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues)
 [![Discord](https://img.shields.io/badge/discord-join-blueviolet)](https://discord.gg/6dGTvuF5nJ) 
