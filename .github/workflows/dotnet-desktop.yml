@@ -1,8 +1,12 @@
-name: .NET Core Desktop
+name: .NET Desktop
 
 on:
   push:
-    branches: [ master, workflow-test ]
+    branches: [ master ]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.gitignore'
+      - '**/*.gitattributes'
   pull_request:
     branches: [ master ]
 
