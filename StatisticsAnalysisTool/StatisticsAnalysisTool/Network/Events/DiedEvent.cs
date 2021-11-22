@@ -1,14 +1,13 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class DiedEvent : BaseEvent
+    public class DiedEvent
     {
-        public DiedEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public DiedEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

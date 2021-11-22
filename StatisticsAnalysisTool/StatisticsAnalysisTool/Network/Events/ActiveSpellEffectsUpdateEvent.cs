@@ -1,20 +1,22 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class ActiveSpellEffectsUpdateEvent : BaseEvent
+    public class ActiveSpellEffectsUpdateEvent
     {
-        public ActiveSpellEffectsUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public ActiveSpellEffectsUpdateEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
             try
             {
-                if (parameters.ContainsKey(0)) CauserId = parameters[0].ObjectToLong();
+                if (parameters.ContainsKey(0))
+                {
+                    CauserId = parameters[0].ObjectToLong();
+                }
 
                 if (parameters.ContainsKey(1))
                 {

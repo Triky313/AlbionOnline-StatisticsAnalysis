@@ -2,12 +2,10 @@
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 // ReSharper disable UnusedParameter.Local
 
@@ -30,7 +28,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void LvItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var item = (Item) ((ListView) sender).SelectedValue;
+            var item = (Item)((ListView)sender).SelectedValue;
 
             MainWindowViewModel.OpenItemWindow(item);
         }
@@ -67,9 +65,7 @@ namespace StatisticsAnalysisTool.Views
         {
             if (sender is ImageAwesome icon)
             {
-#pragma warning disable CA1416 // Validate platform compatibility
                 icon.Spin = true;
-#pragma warning restore CA1416 // Validate platform compatibility
             }
         }
 
@@ -77,9 +73,7 @@ namespace StatisticsAnalysisTool.Views
         {
             if (sender is ImageAwesome icon)
             {
-#pragma warning disable CA1416 // Validate platform compatibility
                 icon.Spin = false;
-#pragma warning restore CA1416 // Validate platform compatibility
             }
         }
 
@@ -96,7 +90,7 @@ namespace StatisticsAnalysisTool.Views
             if (e.ClickCount == 2 && WindowState == WindowState.Maximized)
             {
                 WindowState = WindowState.Normal;
-                _mainWindowViewModel.CenterWindowOnScreen();
+                MainWindowViewModel.CenterWindowOnScreen();
                 MaximizedButton.Content = 1;
                 _isWindowMaximized = false;
             }
@@ -107,7 +101,7 @@ namespace StatisticsAnalysisTool.Views
             if (_isWindowMaximized)
             {
                 WindowState = WindowState.Normal;
-                _mainWindowViewModel.CenterWindowOnScreen();
+                MainWindowViewModel.CenterWindowOnScreen();
                 MaximizedButton.Content = 1;
                 _isWindowMaximized = false;
             }
@@ -122,11 +116,6 @@ namespace StatisticsAnalysisTool.Views
         private void CbMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _mainWindowViewModel.SelectViewModeGrid();
-        }
-
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -214,12 +203,6 @@ namespace StatisticsAnalysisTool.Views
         private void BtnDeleteSelectedDungeons_Click(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel.DeleteSelectedDungeons();
-        }
-
-        private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
-        {
-            _mainWindowViewModel.ErrorBarVisibility = Visibility.Hidden;
-            _mainWindowViewModel.ErrorBarText = string.Empty;
         }
 
         private void OpenDamageMeterInfoPopup_MouseEnter(object sender, MouseEventArgs e)

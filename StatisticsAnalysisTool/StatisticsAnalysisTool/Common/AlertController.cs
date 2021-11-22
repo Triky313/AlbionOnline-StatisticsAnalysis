@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Common
     public class AlertController
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        private readonly ObservableCollection<Alert> _alerts = new ObservableCollection<Alert>();
+        private readonly ObservableCollection<Alert> _alerts = new ();
         private readonly ICollectionView _itemsView;
         private readonly MainWindow _mainWindow;
 

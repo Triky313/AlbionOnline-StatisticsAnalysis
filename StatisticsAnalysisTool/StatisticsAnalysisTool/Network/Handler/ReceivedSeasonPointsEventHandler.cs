@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
@@ -9,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class ReceivedSeasonPointsEventHandler : EventPacketHandler<ReceivedSeasonPointsEvent>
+    public class ReceivedSeasonPointsEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public ReceivedSeasonPointsEventHandler(TrackingController trackingController) : base((int)EventCodes.ReceivedSeasonPoints)
+        public ReceivedSeasonPointsEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(ReceivedSeasonPointsEvent value)
+        public async Task OnActionAsync(ReceivedSeasonPointsEvent value)
         {
             await _trackingController.AddNotificationAsync(SetSeasonPointsNotification(value.SeasonPoints));
         }

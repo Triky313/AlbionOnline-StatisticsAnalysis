@@ -1,21 +1,19 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Network.Events;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class LeaveEventHandler : EventPacketHandler<LeaveEvent>
+    public class LeaveEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public LeaveEventHandler(TrackingController trackingController) : base((int) EventCodes.NewMob)
+        public LeaveEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(LeaveEvent value)
+        public async Task OnActionAsync(LeaveEvent value)
         {
             //if (value.ObjectId != null)
             //{

@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.GameData;
 using System;
@@ -9,13 +8,13 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses
 {
-    public class JoinResponse : BaseOperation
+    public class JoinResponse
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public long? UserObjectId;
 
-        public JoinResponse(Dictionary<byte, object> parameters) : base(parameters)
+        public JoinResponse(Dictionary<byte, object> parameters)
         {
             try
             {

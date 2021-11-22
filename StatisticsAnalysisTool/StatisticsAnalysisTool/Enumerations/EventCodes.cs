@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Enumerations
         Move,
         Teleport,
         ChangeEquipment,
-        HealthUpdate,
+        HealthUpdate = 6,
         EnergyUpdate,
         DamageShieldUpdate,
         CraftingFocusUpdate,
@@ -25,11 +25,11 @@ namespace StatisticsAnalysisTool.Enumerations
         CastHits,
         ChannelingEnded,
         AttackBuilding,
-        InventoryPutItem, //  map[0:652 1:6 2:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 3:17 252:23] (0: ObjectId, 2: UserId)
-        InventoryDeleteItem, // map[0:754 1:48 252:24] (0: ObjectId) 
-        NewCharacter,
-        NewEquipmentItem, //  map[0:657 1:2036 2:1 4:28169331 5:Apolo540 6:3 7:90000000 8:[] 9:[0] 252:26] (0: ObjectId, 1: ItemId, 2: Amount, 4: Avarage Market Price, 5: CrafterName)
-        NewSimpleItem, //  map[0:505 1:7006 2:1 3:true 4:29033970 252:27] (0: ObjectId, 1: ItemId, 2: Amount)
+        InventoryPutItem = 24, //  map[0:652 1:6 2:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 3:17 252:23] (0: ObjectId, 2: UserId)
+        InventoryDeleteItem = 25, // map[0:754 1:48 252:24] (0: ObjectId) 
+        NewCharacter = 26,
+        NewEquipmentItem = 27, //  map[0:657 1:2036 2:1 4:28169331 5:Apolo540 6:3 7:90000000 8:[] 9:[0] 252:27] (0: ObjectId, 1: ItemId, 2: Amount, 4: Avarage Market Price, 5: CrafterName)
+        NewSimpleItem = 28, //  map[0:505 1:7006 2:1 3:true 4:29033970 252:27] (0: ObjectId, 1: ItemId, 2: Amount)
         NewFurnitureItem,
         NewJournalItem,
         NewLaborerItem,
@@ -54,7 +54,7 @@ namespace StatisticsAnalysisTool.Enumerations
         HarvestStart,
         HarvestCancel,
         HarvestFinished,
-        TakeSilver,
+        TakeSilver = 53,
         ActionOnBuildingStart,
         ActionOnBuildingCancel,
         ActionOnBuildingFinished,
@@ -74,11 +74,11 @@ namespace StatisticsAnalysisTool.Enumerations
         StopEmote,
         SystemMessage,
         UtilityTextMessage,
-        UpdateMoney,
-        UpdateFame,
+        UpdateSilver = 71, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
+        UpdateFame = 72, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 7: ItemId, 9: SatchelFame, )
         UpdateLearningPoints,
-        UpdateReSpecPoints,
-        UpdateCurrency,
+        UpdateReSpecPoints = 74,
+        UpdateCurrency = 75,
         UpdateFactionStanding,
         Respawn,
         ServerDebugLog,
@@ -117,7 +117,7 @@ namespace StatisticsAnalysisTool.Enumerations
         EndArenaMatch,
         MatchUpdate,
         ActiveMatchUpdate,
-        NewMob,
+        NewMob = 111,
         DebugAggroInfo,
         DebugVariablesInfo,
         DebugReputationInfo,
@@ -258,7 +258,7 @@ namespace StatisticsAnalysisTool.Enumerations
         PlayerCounts,
         Unknown254,
         Unknown255,
-        Unknown256,
+        GainedSilver = 256, // map[0:4195 2:Triky313 3:true 5:100000000 252:256]
         OtherGrabbedLoot, // map[0:4584 1:rxdc 2:Yoopo04 3:true 4:460 5:6 252:257] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity)
         Unknown258,
         InCombatStateUpdate = 259, // <- 1 = true; player hits enemy | 2 = true; enemy hits player
@@ -354,6 +354,7 @@ namespace StatisticsAnalysisTool.Enumerations
         PartyFinderJoinRequestDeclined,
         NewUnlockedPersonalSeasonRewards,
         PersonalSeasonPointsGained,
+        ChallengePoints = 352, // map[0:1578596 252:352]
         EasyAntiCheatMessageToClient,
         MatchLootChestOpeningStart,
         MatchLootChestOpeningFinished,
@@ -429,6 +430,7 @@ namespace StatisticsAnalysisTool.Enumerations
         Unknown419,
         Unknown420,
         Unknown421,
-        Unknown422
+        Unknown422,
+        MightFavorPoints = 470 // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
     }
 }

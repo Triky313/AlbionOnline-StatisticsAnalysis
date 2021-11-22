@@ -1,12 +1,11 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class UpdateFameEvent : BaseEvent
+    public class UpdateFameEvent
     {
         public float BonusFactor;
         public float BonusFactorInPercent;
@@ -24,7 +23,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         public FixPoint ZoneFame { get; }
         public FixPoint TotalGainedFame { get; }
 
-        public UpdateFameEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public UpdateFameEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
@@ -7,11 +6,11 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class UseShrineOperation : BaseOperation
+    public class UseShrineRequest
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        public UseShrineOperation(Dictionary<byte, object> parameters) : base(parameters)
+        public UseShrineRequest(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses
 {
-    public class ChangeClusterResponse : BaseOperation
+    public class ChangeClusterResponse
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
@@ -17,7 +16,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
         public string Index;
 
-        public ChangeClusterResponse(Dictionary<byte, object> parameters) : base(parameters)
+        public ChangeClusterResponse(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

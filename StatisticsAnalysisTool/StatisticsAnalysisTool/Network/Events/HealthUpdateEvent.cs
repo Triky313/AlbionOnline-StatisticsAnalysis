@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Time;
@@ -9,7 +8,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class HealthUpdateEvent : BaseEvent
+    public class HealthUpdateEvent
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         public long CauserId;
@@ -22,7 +21,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         public long ObjectId;
         public GameTimeStamp TimeStamp;
 
-        public HealthUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public HealthUpdateEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

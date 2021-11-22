@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
@@ -10,16 +9,16 @@ using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class TakeSilverEventHandler : EventPacketHandler<TakeSilverEvent>
+    public class TakeSilverEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public TakeSilverEventHandler(TrackingController trackingController) : base((int) EventCodes.TakeSilver)
+        public TakeSilverEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(TakeSilverEvent value)
+        public async Task OnActionAsync(TakeSilverEvent value)
         {
             var localEntity = _trackingController.EntityController.GetLocalEntity()?.Value;
 

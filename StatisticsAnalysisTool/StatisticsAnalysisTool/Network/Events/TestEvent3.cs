@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Albion.Network;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class TestEvent3 : BaseOperation
+    public class TestEvent3
     {
-        public TestEvent3(Dictionary<byte, object> parameters) : base(parameters)
+        public TestEvent3(Dictionary<byte, object> parameters)
         {
             Debug.Print("----- Join (Operations) -----");
 

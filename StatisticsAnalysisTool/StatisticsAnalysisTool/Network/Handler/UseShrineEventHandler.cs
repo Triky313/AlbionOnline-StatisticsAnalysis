@@ -1,20 +1,18 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class UseShrineEventHandler : RequestPacketHandler<UseShrineOperation>
+    public class UseShrineRequestHandler
     {
         private readonly TrackingController _trackingController;
 
-        public UseShrineEventHandler(TrackingController trackingController) : base((int) OperationCodes.UseShrine)
+        public UseShrineRequestHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(UseShrineOperation value)
+        public async Task OnActionAsync(UseShrineRequest value)
         {
             await Task.CompletedTask;
         }

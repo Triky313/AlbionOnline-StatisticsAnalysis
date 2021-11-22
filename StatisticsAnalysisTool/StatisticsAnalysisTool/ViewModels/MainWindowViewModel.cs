@@ -325,7 +325,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion Item list (Normal Mode)
 
-        #region Helper methods
+        #region Error bar
 
         public void SetErrorBar(Visibility visibility, string errorMessage)
         {
@@ -404,7 +404,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Settings.Default.Save();
         }
 
-        private void InitWindowSettings()
+        private static void InitWindowSettings()
         {
             _mainWindow.Dispatcher?.Invoke(() =>
             {
@@ -568,7 +568,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Ui utility methods
 
-        public void CenterWindowOnScreen()
+        public static void CenterWindowOnScreen()
         {
             var screenWidth = SystemParameters.PrimaryScreenWidth;
             var screenHeight = SystemParameters.PrimaryScreenHeight;
@@ -578,7 +578,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.Top = screenHeight / 2 - windowHeight / 2;
         }
 
-        private void ShowInfoWindow()
+        private static void ShowInfoWindow()
         {
             if (SettingsController.CurrentSettings.IsInfoWindowShownOnStart)
             {
@@ -1050,7 +1050,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        private void SetIsDamageMeterShowing(IEnumerable<DamageMeterFragment> damageMeter, bool isDamageMeterShowing)
+        private static void SetIsDamageMeterShowing(IEnumerable<DamageMeterFragment> damageMeter, bool isDamageMeterShowing)
         {
             foreach (var fragment in damageMeter)
             {
@@ -2403,10 +2403,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public static string DonateUrl => Settings.Default.DonateUrl;
-        public static string DiscordUrl => Settings.Default.DiscordUrl;
-        public static string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
+        
         public static string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;

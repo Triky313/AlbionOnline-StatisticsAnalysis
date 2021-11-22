@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Events;
@@ -7,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class NewEquipmentItemEventHandler : EventPacketHandler<NewEquipmentItemEvent>
+    public class NewEquipmentItemEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public NewEquipmentItemEventHandler(TrackingController trackingController) : base((int) EventCodes.NewEquipmentItem)
+        public NewEquipmentItemEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(NewEquipmentItemEvent value)
+        public async Task OnActionAsync(NewEquipmentItemEvent value)
         {
             //_trackingController.LootController.AddDiscoveredLoot(value.Loot);
 

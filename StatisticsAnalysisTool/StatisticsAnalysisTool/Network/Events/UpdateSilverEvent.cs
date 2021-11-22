@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
@@ -7,11 +6,11 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network
 {
-    public class UpdateMoneyEvent : BaseEvent
+    public class UpdateSilverEvent
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        public UpdateMoneyEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public UpdateSilverEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
@@ -20,11 +19,6 @@ namespace StatisticsAnalysisTool.Network
                 if (parameters.ContainsKey(1))
                 {
                     CurrentPlayerSilver = FixPoint.FromInternalValue(parameters[1].ObjectToLong() ?? 0);
-                }
-
-                if (parameters.ContainsKey(2))
-                {
-                    CurrentPlayerGold = FixPoint.FromInternalValue(parameters[2].ObjectToLong() ?? 0);
                 }
             }
             catch (ArgumentNullException e)
@@ -35,6 +29,5 @@ namespace StatisticsAnalysisTool.Network
         }
 
         public FixPoint CurrentPlayerSilver { get; }
-        public FixPoint CurrentPlayerGold { get; }
     }
 }

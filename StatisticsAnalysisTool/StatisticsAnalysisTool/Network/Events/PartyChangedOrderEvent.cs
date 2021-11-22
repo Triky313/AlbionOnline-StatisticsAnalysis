@@ -1,17 +1,16 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class PartyChangedOrderEvent : BaseEvent
+    public class PartyChangedOrderEvent
     {
         public Guid? UserGuid;
         public string Username;
 
-        public PartyChangedOrderEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public PartyChangedOrderEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

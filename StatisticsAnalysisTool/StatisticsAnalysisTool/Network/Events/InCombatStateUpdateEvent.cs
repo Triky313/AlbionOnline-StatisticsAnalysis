@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class InCombatStateUpdateEvent : BaseEvent
+    public class InCombatStateUpdateEvent
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         public bool InActiveCombat;
@@ -15,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public long? ObjectId;
 
-        public InCombatStateUpdateEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public InCombatStateUpdateEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

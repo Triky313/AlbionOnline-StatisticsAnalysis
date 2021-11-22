@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,7 +6,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class TestEvent : BaseOperation
+    public class TestEvent
     {
         public string ClusterMap;
 
@@ -15,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Events
 
         public string ClusterOwner;
 
-        public TestEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public TestEvent(Dictionary<byte, object> parameters)
         {
             Debug.Print("----- ChangeCluster -----");
             try

@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Time;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class PartySilverGainedEvent : BaseEvent
+    public class PartySilverGainedEvent
     {
         public FixPoint SilverNet;
         public FixPoint SilverPreTax;
@@ -16,7 +15,7 @@ namespace StatisticsAnalysisTool.Network.Events
 
         public GameTimeStamp TimeStamp;
 
-        public PartySilverGainedEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public PartySilverGainedEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

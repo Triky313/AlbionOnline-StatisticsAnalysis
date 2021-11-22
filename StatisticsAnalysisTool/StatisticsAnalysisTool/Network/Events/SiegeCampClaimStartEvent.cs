@@ -1,16 +1,15 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class SiegeCampClaimStartEvent : BaseEvent
+    public class SiegeCampClaimStartEvent
     {
         public string Username;
 
-        public SiegeCampClaimStartEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public SiegeCampClaimStartEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

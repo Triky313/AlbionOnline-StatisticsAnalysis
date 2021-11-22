@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Events;
 using System;
@@ -7,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class NewCharacterEventHandler : EventPacketHandler<NewCharacterEvent>
+    public class NewCharacterEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public NewCharacterEventHandler(TrackingController trackingController) : base((int) EventCodes.NewCharacter)
+        public NewCharacterEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        protected override async Task OnActionAsync(NewCharacterEvent value)
+        public async Task OnActionAsync(NewCharacterEvent value)
         {
             if (value.Guid != null && value.ObjectId != null)
             {

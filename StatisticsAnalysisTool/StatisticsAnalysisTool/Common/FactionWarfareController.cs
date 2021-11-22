@@ -6,44 +6,30 @@ namespace StatisticsAnalysisTool.Common
     {
         public static CityFaction GetCityFactionType(byte id)
         {
-            switch (id)
+            return id switch
             {
-                case 6:
-                    return CityFaction.Caerleon;
-                case 5:
-                    return CityFaction.Thetford;
-                case 4:
-                    return CityFaction.Bridgewatch;
-                case 3:
-                    return CityFaction.FortSterling;
-                case 2:
-                    return CityFaction.Martlock;
-                case 1:
-                    return CityFaction.Lymhurst;
-                default:
-                    return CityFaction.Unknown;
-            }
+                6 => CityFaction.Caerleon,
+                5 => CityFaction.Thetford,
+                4 => CityFaction.Bridgewatch,
+                3 => CityFaction.FortSterling,
+                2 => CityFaction.Martlock,
+                1 => CityFaction.Lymhurst,
+                _ => CityFaction.Unknown
+            };
         }
 
         public static CityFaction GetCityFactionFlagType(byte id)
         {
-            switch (id)
+            return id switch
             {
-                case 6:
-                    return CityFaction.Caerleon;
-                case 5:
-                    return CityFaction.Thetford;
-                case 4:
-                    return CityFaction.FortSterling;
-                case 3:
-                    return CityFaction.Bridgewatch;
-                case 2:
-                    return CityFaction.Lymhurst;
-                case 1:
-                    return CityFaction.Martlock;
-                default:
-                    return CityFaction.Unknown;
-            }
+                6 => CityFaction.Caerleon,
+                5 => CityFaction.Thetford,
+                4 => CityFaction.FortSterling,
+                3 => CityFaction.Bridgewatch,
+                2 => CityFaction.Lymhurst,
+                1 => CityFaction.Martlock,
+                _ => CityFaction.Unknown
+            };
         }
     }
 }

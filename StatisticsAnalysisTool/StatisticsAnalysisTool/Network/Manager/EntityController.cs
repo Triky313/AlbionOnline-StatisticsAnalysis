@@ -7,10 +7,11 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Divis.AsyncObservableCollection;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -19,8 +20,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new();
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private readonly ObservableCollection<EquipmentItem> _newEquipmentItems = new();
-        private readonly ObservableCollection<SpellEffect> _spellEffects = new();
+        private readonly AsyncObservableCollection<EquipmentItem> _newEquipmentItems = new();
+        private readonly AsyncObservableCollection<SpellEffect> _spellEffects = new();
         private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new();
         private double _lastLocalEntityGuildTaxInPercent;
         private double _lastLocalEntityClusterTaxInPercent;
@@ -39,7 +40,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void AddEntity(long objectId, Guid userGuid, Guid? interactGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
         {
             PlayerGameObject gameObject;
-            
+
             if (_knownEntities.TryRemove(userGuid, out var oldEntity))
                 gameObject = new PlayerGameObject(objectId)
                 {
@@ -81,7 +82,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _knownEntities.TryRemove(entity.Key, out _);
 
             foreach (var entity in _knownEntities.Where(x =>
-                x.Value.ObjectSubType == GameObjectSubType.LocalPlayer || _knownPartyEntities.ContainsKey(x.Key))) 
+                x.Value.ObjectSubType == GameObjectSubType.LocalPlayer || _knownPartyEntities.ContainsKey(x.Key)))
                 entity.Value.ObjectId = null;
         }
 
@@ -219,27 +220,32 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void AddEquipmentItem(EquipmentItem item)
         {
-            if (_newEquipmentItems.Any(x => x.ItemIndex.Equals(item.ItemIndex) && x.SpellDictionary.Values == item.SpellDictionary.Values) ||
-                item.SpellDictionary.Count <= 0) return;
-
-            lock (item)
+            if (_newEquipmentItems.ToList().Any(x => x == null || x.ItemIndex.Equals(item?.ItemIndex) && x.SpellDictionary?.Values == item?.SpellDictionary?.Values)
+                || item == null)
             {
-                _newEquipmentItems.Add(item);
+                return;
             }
+
+            _newEquipmentItems.Init(Application.Current.Dispatcher.Invoke);
+            _newEquipmentItems.Add(item);
 
             RemoveSpellAndEquipmentObjects();
         }
 
         public void AddSpellEffect(SpellEffect spell)
         {
-            if (!IsUserInParty(spell.CauserId)) return;
-
-            if (_spellEffects.Any(x => x.CauserId.Equals(spell.CauserId) && x.SpellIndex.Equals(spell.SpellIndex))) return;
-
-            lock (spell)
+            if (!IsUserInParty(spell.CauserId))
             {
-                _spellEffects.Add(spell);
+                return;
             }
+
+            if (_spellEffects.Any(x => x == null || x.CauserId.Equals(spell.CauserId) && x.SpellIndex.Equals(spell.SpellIndex)))
+            {
+                return;
+            }
+
+            _spellEffects.Init(Application.Current.Dispatcher.Invoke);
+            _spellEffects.Add(spell);
 
             RemoveSpellAndEquipmentObjects();
         }
@@ -249,17 +255,22 @@ namespace StatisticsAnalysisTool.Network.Manager
             var playerItemList = new Dictionary<long, int>();
 
             foreach (var item in _newEquipmentItems.ToList())
-            foreach (var spell in from itemSpell in item.SpellDictionary
-                from spell in _spellEffects
-                where spell.SpellIndex.Equals(itemSpell.Value)
-                select spell)
             {
-                if (playerItemList.Any(x => x.Key.Equals(spell.CauserId))) continue;
+                foreach (var spell in (from itemSpell in item.SpellDictionary from spell in _spellEffects where spell.SpellIndex.Equals(itemSpell.Value) select spell).ToList())
+                {
+                    if (playerItemList.Any(x => x.Key.Equals(spell.CauserId)))
+                    {
+                        continue;
+                    }
 
-                playerItemList.Add(spell.CauserId, item.ItemIndex);
+                    playerItemList.Add(spell.CauserId, item.ItemIndex);
+                }
             }
 
-            foreach (var playerItem in playerItemList.ToList()) SetCharacterMainHand(playerItem.Key, playerItem.Value);
+            foreach (var (key, value) in playerItemList.ToList())
+            {
+                SetCharacterMainHand(key, value);
+            }
         }
 
         private void SetCharacterMainHand(long objectId, int itemIndex)
@@ -282,15 +293,17 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void RemoveSpellAndEquipmentObjects()
         {
-            foreach (var item in _newEquipmentItems.Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)).ToList())
+            foreach (var item in _newEquipmentItems.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
                 lock (item)
                 {
+                    _newEquipmentItems.Init(Application.Current.Dispatcher.Invoke);
                     _newEquipmentItems.Remove(item);
                 }
 
-            foreach (var spell in _spellEffects.Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)).ToList())
+            foreach (var spell in _spellEffects.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
                 lock (spell)
                 {
+                    _spellEffects.Init(Application.Current.Dispatcher.Invoke);
                     _spellEffects.Remove(spell);
                 }
         }

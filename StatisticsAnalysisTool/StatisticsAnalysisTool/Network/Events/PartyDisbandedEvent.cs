@@ -1,16 +1,15 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class PartyDisbandedEvent : BaseEvent
+    public class PartyDisbandedEvent
     {
         public Dictionary<Guid, string> PartyUsersGuid = new Dictionary<Guid, string>();
 
-        public PartyDisbandedEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public PartyDisbandedEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

@@ -1,17 +1,16 @@
 ﻿using System.Threading.Tasks;
-using Albion.Network;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Events;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class TestHandler3 : RequestPacketHandler<TestEvent3>
+    public class TestHandler3
     {
-        public TestHandler3() : base((int) OperationCodes.ChangeCluster)
+        public TestHandler3()
         {
         }
 
-        protected override async Task OnActionAsync(TestEvent3 value)
+        public async Task OnActionAsync(TestEvent3 value)
         {
             await Task.CompletedTask;
         }

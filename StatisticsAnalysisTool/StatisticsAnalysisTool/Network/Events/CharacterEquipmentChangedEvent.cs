@@ -1,5 +1,4 @@
-﻿using Albion.Network;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
@@ -7,9 +6,9 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class CharacterEquipmentChangedEvent : BaseEvent
+    public class CharacterEquipmentChangedEvent
     {
-        public CharacterEquipmentChangedEvent(Dictionary<byte, object> parameters) : base(parameters)
+        public CharacterEquipmentChangedEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
