@@ -15,7 +15,7 @@ using System.Windows;
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: SupportedOSPlatform("windows10.0.22000.0")]
+[assembly: SupportedOSPlatform("windows10.0")]
 [assembly: UnsupportedOSPlatform("windows7.0")]
 [assembly: UnsupportedOSPlatform("windows8.0")]
 
