@@ -3,6 +3,10 @@ name: .NET Core Desktop
 on:
   push:
     branches: [ master, workflow-test ]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.gitignore'
+      - '**/*.gitattributes'
   pull_request:
     branches: [ master ]
 
@@ -18,7 +22,7 @@ jobs:
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
-      Solution_Name: StatisticsAnalysisTool.sln                 # Replace with your solution name, i.e. MyWpfApp.sln.
+      Solution_Name: StatisticsAnalysisTool.sln
 
     steps:
     - name: Checkout
@@ -37,8 +41,8 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     # Execute all unit tests in the solution
-    - name: Execute unit tests
-      run: dotnet test
+    # - name: Execute unit tests
+    #   run: dotnet test
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
