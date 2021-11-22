@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+        xmlns:uc="clr-namespace:StatisticsAnalysisTool.UserControls"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         xmlns:fa5="http://schemas.fontawesome.com/icons/" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -35,7 +36,7 @@
                 <fa5:ImageAwesome Icon="Solid_Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
             </Grid>
         </Grid>
-        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">
+        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
             <TextBox x:Name="TxtSearch" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="22" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" />
             <Grid Margin="235,11,0,0" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left" IsEnabled="{Binding IsFilterResetEnabled, FallbackValue=false}">
                 <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="FilterReset_MouseUp" />
@@ -131,7 +132,7 @@
             </Grid>
             <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
         </Grid>
-        <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Visible">
+        <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Hidden">
             <Grid Margin="10,10,255,0" Height="45" VerticalAlignment="Top">
                 <DockPanel Margin="0,0,0,0" Height="Auto" VerticalAlignment="Top">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Height="auto" Width="50">
@@ -654,33 +655,7 @@
                 <lvc:CartesianChart ZoomMode="None" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}" Series="{Binding Series}" />
             </Grid>
         </Grid>-->
-        <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,25,0">
-            <StackPanel Orientation="Horizontal" Width="auto" HorizontalAlignment="Left">
-                <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
-                    <TextBlock>
-                            <Hyperlink NavigateUri="{Binding GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                            </Hyperlink>
-                    </TextBlock>
-                </Grid>
-                <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
-                    <TextBlock>
-                            <Hyperlink NavigateUri="{Binding DiscordUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Brands_Discord" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                            </Hyperlink>
-                    </TextBlock>
-                </Grid>
-                <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
-                    <TextBlock>
-                            <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                            </Hyperlink>
-                    </TextBlock>
-                </Grid>
-                <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" 
-                           HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="35" Width="auto" />
-            </StackPanel>
-        </Grid>
+        <uc:FooterView/>
         <Grid ZIndex="2" Style="{StaticResource Grid.Error.Bar}" Visibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}">
             <Button Style="{StaticResource Window.Error.Bar.Button.Style}" Content="r" Margin="0,0,7,0" Click="BtnErrorBar_Click" />
             <Label Style="{StaticResource Grid.Error.Bar.Label}" Content="{Binding ErrorBarText}"></Label>

@@ -2403,10 +2403,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public static string DonateUrl => Settings.Default.DonateUrl;
-        public static string DiscordUrl => Settings.Default.DiscordUrl;
-        public static string GitHubRepoUrl => Settings.Default.GitHubRepoUrl;
+        
         public static string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;

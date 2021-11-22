@@ -2,12 +2,10 @@
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 // ReSharper disable UnusedParameter.Local
 
@@ -30,7 +28,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void LvItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var item = (Item) ((ListView) sender).SelectedValue;
+            var item = (Item)((ListView)sender).SelectedValue;
 
             MainWindowViewModel.OpenItemWindow(item);
         }
@@ -122,11 +120,6 @@ namespace StatisticsAnalysisTool.Views
         private void CbMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _mainWindowViewModel.SelectViewModeGrid();
-        }
-
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
