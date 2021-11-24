@@ -59,25 +59,17 @@ namespace StatisticsAnalysisTool.GameData
 
         private static string GetMapNameByMapType(MapType mapType)
         {
-            switch (mapType)
+            return mapType switch
             {
-                case MapType.HellGate:
-                    return LanguageController.Translation("HELLGATE");
-                case MapType.RandomDungeon:
-                    return LanguageController.Translation("DUNGEON");
-                case MapType.CorruptedDungeon:
-                    return LanguageController.Translation("CORRUPTED_LAIR");
-                case MapType.Island:
-                    return LanguageController.Translation("ISLAND");
-                case MapType.Hideout:
-                    return LanguageController.Translation("HIDEOUT");
-                case MapType.Expedition:
-                    return LanguageController.Translation("EXPEDITION");
-                case MapType.Arena:
-                    return LanguageController.Translation("ARENA");
-                default:
-                    return LanguageController.Translation("UNKNOWN");
-            }
+                MapType.HellGate => LanguageController.Translation("HELLGATE"),
+                MapType.RandomDungeon => LanguageController.Translation("DUNGEON"),
+                MapType.CorruptedDungeon => LanguageController.Translation("CORRUPTED_LAIR"),
+                MapType.Island => LanguageController.Translation("ISLAND"),
+                MapType.Hideout => LanguageController.Translation("HIDEOUT"),
+                MapType.Expedition => LanguageController.Translation("EXPEDITION"),
+                MapType.Arena => LanguageController.Translation("ARENA"),
+                _ => LanguageController.Translation("UNKNOWN")
+            };
         }
 
         public static MapType GetMapType(string index)
