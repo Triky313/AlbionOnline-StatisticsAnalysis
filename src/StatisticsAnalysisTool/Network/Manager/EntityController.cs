@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using Divis.AsyncObservableCollection;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -7,11 +8,9 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Divis.AsyncObservableCollection;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
