@@ -219,14 +219,18 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void AddEquipmentItem(EquipmentItem item)
         {
-            if (_newEquipmentItems.ToList().Any(x => x == null || x.ItemIndex.Equals(item?.ItemIndex) && x.SpellDictionary?.Values == item?.SpellDictionary?.Values)
-                || item == null)
+            lock (_newEquipmentItems)
             {
-                return;
+                _newEquipmentItems.Init(Application.Current.Dispatcher.Invoke);
+                if (_newEquipmentItems.ToList().Any(x => x == null || x.ItemIndex.Equals(item?.ItemIndex) && x.SpellDictionary?.Values == item?.SpellDictionary?.Values))
+                {
+                    return;
+                }
+
+                _newEquipmentItems.Add(item);
             }
 
-            _newEquipmentItems.Init(Application.Current.Dispatcher.Invoke);
-            _newEquipmentItems.Add(item);
+            
 
             RemoveSpellAndEquipmentObjects();
         }
@@ -238,13 +242,17 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            if (_spellEffects.Any(x => x == null || x.CauserId.Equals(spell.CauserId) && x.SpellIndex.Equals(spell.SpellIndex)))
+            lock(_spellEffects)
             {
-                return;
-            }
+                _spellEffects.Init(Application.Current.Dispatcher.Invoke);
+                if (_spellEffects.Any(x => x == null || x.CauserId.Equals(spell.CauserId) && x.SpellIndex.Equals(spell.SpellIndex)))
+                {
+                    return;
+                }
 
-            _spellEffects.Init(Application.Current.Dispatcher.Invoke);
-            _spellEffects.Add(spell);
+                _spellEffects.Init(Application.Current.Dispatcher.Invoke);
+                _spellEffects.Add(spell);
+            }
 
             RemoveSpellAndEquipmentObjects();
         }
@@ -253,16 +261,19 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             var playerItemList = new Dictionary<long, int>();
 
-            foreach (var item in _newEquipmentItems.ToList())
+            lock (_newEquipmentItems)
             {
-                foreach (var spell in (from itemSpell in item.SpellDictionary from spell in _spellEffects where spell.SpellIndex.Equals(itemSpell.Value) select spell).ToList())
+                foreach (var item in _newEquipmentItems.ToList())
                 {
-                    if (playerItemList.Any(x => x.Key.Equals(spell.CauserId)))
+                    foreach (var spell in (from itemSpell in item.SpellDictionary from spell in _spellEffects where spell.SpellIndex.Equals(itemSpell.Value) select spell).ToList())
                     {
-                        continue;
-                    }
+                        if (playerItemList.Any(x => x.Key.Equals(spell.CauserId)))
+                        {
+                            continue;
+                        }
 
-                    playerItemList.Add(spell.CauserId, item.ItemIndex);
+                        playerItemList.Add(spell.CauserId, item.ItemIndex);
+                    }
                 }
             }
 
@@ -292,19 +303,23 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void RemoveSpellAndEquipmentObjects()
         {
-            foreach (var item in _newEquipmentItems.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
-                lock (item)
+            lock (_newEquipmentItems)
+            {
+                foreach (var item in _newEquipmentItems.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
                 {
                     _newEquipmentItems.Init(Application.Current.Dispatcher.Invoke);
                     _newEquipmentItems.Remove(item);
                 }
+            }
 
-            foreach (var spell in _spellEffects.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
-                lock (spell)
+            lock (_spellEffects)
+            {
+                foreach (var spell in _spellEffects.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
                 {
                     _spellEffects.Init(Application.Current.Dispatcher.Invoke);
                     _spellEffects.Remove(spell);
                 }
+            }
         }
 
         public class CharacterEquipmentData

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Annotations;
 using Formatting = StatisticsAnalysisTool.Common.Formatting;
 
 namespace StatisticsAnalysisTool.Models
@@ -88,6 +89,7 @@ namespace StatisticsAnalysisTool.Models
         public string ItemPowerProgressionType { get; set; }
 
         [JsonPropertyName("craftingRequirements")]
+        [CanBeNull]
         public CraftingRequirements CraftingRequirements { get; set; }
 
         [JsonPropertyName("unlockedToEquip")]
@@ -186,7 +188,7 @@ namespace StatisticsAnalysisTool.Models
         public double Time { get; set; }
 
         [JsonPropertyName("silver")]
-        public double Silver { get; set; }
+        public double? Silver { get; set; }
 
         [JsonPropertyName("craftingFocus")]
         public int CraftingFocus { get; set; }
@@ -210,6 +212,7 @@ namespace StatisticsAnalysisTool.Models
         public int Durability { get; set; }
 
         [JsonPropertyName("craftingRequirements")]
+        [CanBeNull]
         public CraftingRequirements CraftingRequirements { get; set; }
     }
 

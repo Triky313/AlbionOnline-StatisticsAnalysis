@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
+using Divis.AsyncObservableCollection;
 
 namespace StatisticsAnalysisTool.GameData
 {
@@ -42,7 +45,7 @@ namespace StatisticsAnalysisTool.GameData
                 if (splitName.Length > 1 && index.ToLower().Contains('@'))
                 {
                     var mapType = GetMapType(splitName[0]);
-                    if ((mapType == MapType.RandomDungeon || mapType == MapType.CorruptedDungeon || mapType == MapType.HellGate || mapType == MapType.Expedition) && !string.IsNullOrEmpty(splitName[1]))
+                    if (mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition && !string.IsNullOrEmpty(splitName[1]))
                     {
                         var mapGuid = new Guid(splitName[1]);
                         return mapGuid;
@@ -59,25 +62,17 @@ namespace StatisticsAnalysisTool.GameData
 
         private static string GetMapNameByMapType(MapType mapType)
         {
-            switch (mapType)
+            return mapType switch
             {
-                case MapType.HellGate:
-                    return LanguageController.Translation("HELLGATE");
-                case MapType.RandomDungeon:
-                    return LanguageController.Translation("DUNGEON");
-                case MapType.CorruptedDungeon:
-                    return LanguageController.Translation("CORRUPTED_LAIR");
-                case MapType.Island:
-                    return LanguageController.Translation("ISLAND");
-                case MapType.Hideout:
-                    return LanguageController.Translation("HIDEOUT");
-                case MapType.Expedition:
-                    return LanguageController.Translation("EXPEDITION");
-                case MapType.Arena:
-                    return LanguageController.Translation("ARENA");
-                default:
-                    return LanguageController.Translation("UNKNOWN");
-            }
+                MapType.HellGate => LanguageController.Translation("HELLGATE"),
+                MapType.RandomDungeon => LanguageController.Translation("DUNGEON"),
+                MapType.CorruptedDungeon => LanguageController.Translation("CORRUPTED_LAIR"),
+                MapType.Island => LanguageController.Translation("ISLAND"),
+                MapType.Hideout => LanguageController.Translation("HIDEOUT"),
+                MapType.Expedition => LanguageController.Translation("EXPEDITION"),
+                MapType.Arena => LanguageController.Translation("ARENA"),
+                _ => LanguageController.Translation("UNKNOWN")
+            };
         }
 
         public static MapType GetMapType(string index)
@@ -264,7 +259,7 @@ namespace StatisticsAnalysisTool.GameData
 
         #region Helper methods
 
-        private static ObservableCollection<ClusterInfo> GetWorldDataFromLocal()
+        private static AsyncObservableCollection<ClusterInfo> GetWorldDataFromLocal()
         {
             try
             {
@@ -274,17 +269,17 @@ namespace StatisticsAnalysisTool.GameData
                 };
 
                 var localItemString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.WorldDataFileName), Encoding.UTF8);
-                return ConvertItemJsonObjectToMapData(JsonSerializer.Deserialize<ObservableCollection<WorldJsonObject>>(localItemString, options));
+                return ConvertItemJsonObjectToMapData(JsonSerializer.Deserialize<AsyncObservableCollection<WorldJsonObject>>(localItemString, options));
             }
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                return new ObservableCollection<ClusterInfo>();
+                return new AsyncObservableCollection<ClusterInfo>();
             }
         }
 
-        private static ObservableCollection<ClusterInfo> ConvertItemJsonObjectToMapData(ObservableCollection<WorldJsonObject> worldJsonObject)
+        private static AsyncObservableCollection<ClusterInfo> ConvertItemJsonObjectToMapData(IEnumerable<WorldJsonObject> worldJsonObject)
         {
             var result = worldJsonObject.Select(item => new ClusterInfo
             {
@@ -294,7 +289,10 @@ namespace StatisticsAnalysisTool.GameData
                 File = item.File
             }).ToList();
 
-            return new ObservableCollection<ClusterInfo>(result);
+            var resultReturn = new AsyncObservableCollection<ClusterInfo>();
+            resultReturn.Init(Application.Current.Dispatcher.Invoke);
+            resultReturn.AddRange(result);
+            return resultReturn;
         }
 
         private static async Task<bool> GetWorldListFromWebAsync(string url)

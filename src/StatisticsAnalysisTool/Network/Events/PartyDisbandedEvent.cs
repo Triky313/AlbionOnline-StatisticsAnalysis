@@ -7,7 +7,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class PartyDisbandedEvent
     {
-        public Dictionary<Guid, string> PartyUsersGuid = new Dictionary<Guid, string>();
+        public Dictionary<Guid, string> PartyUsersGuid = new ();
 
         public PartyDisbandedEvent(Dictionary<byte, object> parameters)
         {
