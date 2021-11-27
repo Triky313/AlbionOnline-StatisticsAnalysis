@@ -1106,6 +1106,9 @@
             <DataTrigger Binding="{Binding CategoryId}" Value="cursestaff">
                 <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.CursedStaff}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="knuckles">
+                <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Knuckles}" />
+            </DataTrigger>
             <DataTrigger Binding="{Binding CategoryId}" Value="crossbow">
                 <Setter Property="Foreground" Value="{StaticResource Weapon.Foreground.Crossbow}" />
             </DataTrigger>
