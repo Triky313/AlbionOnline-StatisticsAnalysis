@@ -1,6 +1,4 @@
-﻿using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
-using System;
+﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -16,10 +14,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(PartyChangedOrderEvent value)
         {
-            if (value?.UserGuid != null)
-            {
-                await _trackingController.EntityController.AddToPartyAsync((Guid)value.UserGuid, value.Username);
-            }
+            await _trackingController.EntityController.SetPartyAsync(value.PartyUsersGuid, true);
         }
     }
 }
