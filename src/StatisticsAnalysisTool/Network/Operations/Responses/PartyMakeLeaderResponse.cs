@@ -18,11 +18,14 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
             try
             {
-                if (parameters.ContainsKey(0)) Username = string.IsNullOrEmpty(parameters[0].ToString()) ? string.Empty : parameters[0].ToString();
+                if (parameters.ContainsKey(0))
+                {
+                    Username = string.IsNullOrEmpty(parameters[0].ToString()) ? string.Empty : parameters[0].ToString();
+                }
             }
             catch (Exception e)
             {
-                Log.Debug(nameof(PartyMakeLeaderResponse), e);
+                Log.Error(nameof(PartyMakeLeaderResponse), e);
             }
         }
     }

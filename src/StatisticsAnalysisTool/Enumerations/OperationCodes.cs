@@ -229,7 +229,7 @@
         PartyAnswerInvitation,
         PartyLeave,
         PartyKickPlayer,
-        PartyMakeLeader,
+        PartyMakeLeader = 222,
         PartyChangeLootSetting,
         PartyMarkObject,
         PartySetRole,

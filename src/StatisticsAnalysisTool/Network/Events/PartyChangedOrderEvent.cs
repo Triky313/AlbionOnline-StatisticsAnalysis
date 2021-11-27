@@ -7,8 +7,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class PartyChangedOrderEvent
     {
-        public Guid? UserGuid;
-        public string Username;
+        public Dictionary<Guid, string> PartyUsersGuid = new();
 
         public PartyChangedOrderEvent(Dictionary<byte, object> parameters)
         {
@@ -16,9 +15,21 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             try
             {
-                if (parameters.ContainsKey(1)) UserGuid = parameters[1].ObjectToGuid();
+                if (parameters.ContainsKey(0) && parameters[0] != null)
+                {
+                    var partyUsersByteArrays = ((object[])parameters[4]).ToDictionary();
+                    var partyUserNameArray = ((string[])parameters[5]).ToDictionary();
 
-                if (parameters.ContainsKey(2)) Username = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();
+                    for (var i = 0; i < partyUsersByteArrays.Count; i++)
+                    {
+                        var guid = partyUsersByteArrays[i].ObjectToGuid();
+                        var name = partyUserNameArray[i];
+                        if (guid != null && !string.IsNullOrEmpty(name))
+                        {
+                            PartyUsersGuid.Add((Guid)guid, name);
+                        }
+                    }
+                }
             }
             catch (Exception e)
             {
