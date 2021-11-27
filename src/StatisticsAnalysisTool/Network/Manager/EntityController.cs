@@ -9,13 +9,17 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using log4net;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
     public class EntityController
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
         private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new();
         private readonly MainWindowViewModel _mainWindowViewModel;
@@ -97,14 +101,14 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
         {
-            return onlyInParty ? _knownEntities.Where(x => IsUserInParty(x.Value.Name)).ToList() : _knownEntities.ToList();
+            return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsUserInParty(x.Value.Name)) : _knownEntities.ToArray());
         }
 
         public bool IsEntityInParty(long objectId) => GetAllEntities(true).Any(x => x.Value.ObjectId == objectId);
 
         public bool IsEntityInParty(string name) => GetAllEntities(true).Any(x => x.Value.Name == name);
 
-        public KeyValuePair<Guid, PlayerGameObject>? GetLocalEntity() => _knownEntities?.FirstOrDefault(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer);
+        public KeyValuePair<Guid, PlayerGameObject>? GetLocalEntity() => _knownEntities?.ToArray().FirstOrDefault(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer);
 
         #endregion
 
@@ -212,9 +216,13 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void ResetTempCharacterEquipment()
         {
-            foreach (var characterEquipment in _tempCharacterEquipmentData)
+            foreach (var characterEquipment in _tempCharacterEquipmentData.ToArray())
+            {
                 if (Utilities.IsBlockingTimeExpired(characterEquipment.Value.TimeStamp, 30))
+                {
                     _tempCharacterEquipmentData.TryRemove(characterEquipment.Key, out _);
+                }
+            }
         }
 
         public void AddEquipmentItem(EquipmentItem item)
@@ -261,20 +269,27 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             var playerItemList = new Dictionary<long, int>();
 
-            lock (_newEquipmentItems)
+            try
             {
-                foreach (var item in _newEquipmentItems.ToList())
+                lock (_newEquipmentItems)
                 {
-                    foreach (var spell in (from itemSpell in item.SpellDictionary from spell in _spellEffects where spell.SpellIndex.Equals(itemSpell.Value) select spell).ToList())
+                    foreach (var item in _newEquipmentItems.ToList())
                     {
-                        if (playerItemList.Any(x => x.Key.Equals(spell.CauserId)))
+                        foreach (var spell in (from itemSpell in item.SpellDictionary.ToList() from spell in _spellEffects.ToList() where spell.SpellIndex.Equals(itemSpell.Value) select spell).ToList())
                         {
-                            continue;
-                        }
+                            if (playerItemList.Any(x => x.Key.Equals(spell.CauserId)))
+                            {
+                                continue;
+                            }
 
-                        playerItemList.Add(spell.CauserId, item.ItemIndex);
+                            playerItemList.Add(spell.CauserId, item.ItemIndex);
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
 
             foreach (var (key, value) in playerItemList.ToList())
