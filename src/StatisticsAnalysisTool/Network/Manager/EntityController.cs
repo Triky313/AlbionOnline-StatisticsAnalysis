@@ -275,7 +275,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     foreach (var item in _newEquipmentItems.ToList())
                     {
-                        foreach (var spell in (from itemSpell in item.SpellDictionary.ToList() from spell in _spellEffects.ToList() where spell.SpellIndex.Equals(itemSpell.Value) select spell).ToList())
+                        foreach (var spell in (from itemSpell in item.SpellDictionary.ToArray() from spell in _spellEffects.ToArray() where spell.SpellIndex.Equals(itemSpell.Value) select spell).ToArray())
                         {
                             if (playerItemList.Any(x => x.Key.Equals(spell.CauserId)))
                             {
