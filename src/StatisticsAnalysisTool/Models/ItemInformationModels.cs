@@ -89,7 +89,6 @@ namespace StatisticsAnalysisTool.Models
         public string ItemPowerProgressionType { get; set; }
 
         [JsonPropertyName("craftingRequirements")]
-        [CanBeNull]
         public CraftingRequirements CraftingRequirements { get; set; }
 
         [JsonPropertyName("unlockedToEquip")]

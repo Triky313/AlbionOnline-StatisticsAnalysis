@@ -220,6 +220,7 @@
     <SolidColorBrush x:Key="Weapon.Foreground.Bow" Color="#004D39"/>
     <SolidColorBrush x:Key="Weapon.Foreground.Axe" Color="#c5242e"/>
     <SolidColorBrush x:Key="Weapon.Foreground.ArcaneStaff" Color="#732653"/>
+    <SolidColorBrush x:Key="Weapon.Foreground.Knuckles" Color="#914210"/>
     <SolidColorBrush x:Key="Weapon.Foreground.UnknownWeaponType" Color="#555555"/>
     <SolidColorBrush x:Key="Weapon.Foreground.HealBar" Color="#00aa1a"/>
 

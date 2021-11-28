@@ -1,3 +1,4 @@
+using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -6,9 +7,11 @@ using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -16,6 +19,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 {
     public class CombatController
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
         private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly TrackingController _trackingController;
@@ -46,8 +51,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
 
-            if (gameObject?.Value == null 
-                || gameObject.Value.Value?.ObjectType != GameObjectType.Player 
+            if (gameObject?.Value == null
+                || gameObject.Value.Value?.ObjectType != GameObjectType.Player
                 || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name)
                 )
             {
@@ -108,7 +113,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     continue;
                 }
-                
+
                 var fragment = damageMeter.FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
                 if (fragment != null)
                 {
@@ -129,7 +134,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             var itemInfo = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, healthChangeObject.Value?.CharacterEquipment?.MainHand);
             fragment.CauserMainHand = itemInfo;
-            
+
             // Damage
             if (healthChangeObject.Value?.Damage > 0)
             {
@@ -141,7 +146,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 fragment.Dps = healthChangeObject.Value.Dps;
             }
-            
+
             // Heal
             if (healthChangeObject.Value?.Heal > 0)
             {
@@ -167,8 +172,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         private async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
             List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
-            if (healthChangeObject.Value == null 
-                || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal)) 
+            if (healthChangeObject.Value == null
+                || (double.IsNaN(healthChangeObject.Value.Damage) && double.IsNaN(healthChangeObject.Value.Heal))
                 || (healthChangeObject.Value.Damage <= 0 && healthChangeObject.Value.Heal <= 0))
             {
                 return;
@@ -211,11 +216,11 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindow?.Dispatcher?.InvokeAsync(() => { _mainWindowViewModel?.DamageMeter?.Clear(); });
         }
 
-        public Dictionary<long, double> LastPlayersHealth = new();
+        public ConcurrentDictionary<long, double> LastPlayersHealth = new();
 
         public bool IsMaxHealthReached(long objectId, double newHealthValue)
         {
-            var playerHealth = LastPlayersHealth?.FirstOrDefault(x => x.Key == objectId);
+            var playerHealth = LastPlayersHealth?.ToArray().FirstOrDefault(x => x.Key == objectId);
             if (playerHealth?.Value.CompareTo(newHealthValue) == 0)
             {
                 return true;
@@ -233,7 +238,14 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
             else
             {
-                LastPlayersHealth.Add(key, value);
+                try
+                {
+                    LastPlayersHealth.TryAdd(key, value);
+                }
+                catch (Exception e)
+                {
+                    Log.Warn(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                }
             }
         }
 
@@ -246,7 +258,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return currentItem;
             }
 
-            var item = ItemController.GetItemByIndex((int) newIndex);
+            var item = ItemController.GetItemByIndex((int)newIndex);
             if (item == null) return currentItem;
 
             var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);
@@ -273,7 +285,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             return false;
         }
-        
+
         #endregion
 
         #region Combat Mode / Combat Timer
@@ -320,7 +332,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Debug methods
 
-        private static readonly Random _random = new (DateTime.Now.Millisecond);
+        private static readonly Random _random = new(DateTime.Now.Millisecond);
 
         private async void RunDamageMeterDebugAsync(int runs = 30)
         {
@@ -351,7 +363,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private List<KeyValuePair<Guid, PlayerGameObject>> SetRandomDamageValues(int playerAmount = 5)
         {
             var randomPlayerList = new List<KeyValuePair<Guid, PlayerGameObject>>();
-            
+
             for (var i = 0; i < playerAmount; i++)
             {
                 var randomPlayer = GetRandomPlayerDebug();

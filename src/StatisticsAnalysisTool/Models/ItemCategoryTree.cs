@@ -68,6 +68,8 @@ namespace StatisticsAnalysisTool.Models
 
         [JsonPropertyName("sword")] public string Sword { get; set; }
 
+        [JsonPropertyName("knuckles")] public string Knuckles { get; set; }
+
         [JsonPropertyName("spear")] public string Spear { get; set; }
 
         [JsonPropertyName("froststaff")] public string Froststaff { get; set; }

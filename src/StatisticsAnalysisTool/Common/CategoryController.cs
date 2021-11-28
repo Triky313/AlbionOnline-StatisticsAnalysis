@@ -118,6 +118,7 @@ namespace StatisticsAnalysisTool.Common
             new ("quarterstaff", Category.QuarterStaff, ParentCategory.Melee),
             new ("spear", Category.Spear, ParentCategory.Melee),
             new ("sword", Category.Sword, ParentCategory.Melee),
+            new ("knuckles", Category.Knuckles, ParentCategory.Melee),
 
             new ("armoredhorse", Category.ArmoredHorse, ParentCategory.Mount),
             new ("ox", Category.Ox, ParentCategory.Mount),
@@ -330,6 +331,7 @@ namespace StatisticsAnalysisTool.Common
             {Category.QuarterStaff, LanguageController.Translation("QUARTER_STAFF")},
             {Category.Spear, LanguageController.Translation("SPEAR")},
             {Category.Sword, LanguageController.Translation("SWORD")},
+            {Category.Knuckles, LanguageController.Translation("KNUCKLES") },
 
             #endregion Melee
 
@@ -565,6 +567,7 @@ namespace StatisticsAnalysisTool.Common
         QuarterStaff,
         Spear,
         Sword,
+        Knuckles,
         ArmoredHorse,
         Ox,
         RareMount,
