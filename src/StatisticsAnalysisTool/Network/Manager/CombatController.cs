@@ -36,7 +36,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             OnChangeCombatMode += AddCombatTime;
 
 #if DEBUG
-            RunDamageMeterDebugAsync(30);
+            RunDamageMeterDebugAsync();
 #endif
         }
 
