@@ -46,7 +46,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _currentGuid = mapGuid;
 
             // Last map is a dungeon, add new map
-            if (IsDungeonCluster(mapType, mapGuid) && ExistDungeon(_lastMapGuid) && mapType != MapType.CorruptedDungeon)
+            if (IsDungeonCluster(mapType, mapGuid) && ExistDungeon(_lastMapGuid) && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate)
             {
                 if (AddClusterToExistDungeon(_dungeons, mapGuid, _lastMapGuid, out var currentDungeon))
                 {
@@ -54,13 +54,19 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
             }
             // Add new dungeon
-            else if (mapGuid != null && IsDungeonCluster(mapType, mapGuid) && !ExistDungeon(_lastMapGuid))
+            else if (IsDungeonCluster(mapType, mapGuid) && !ExistDungeon(_lastMapGuid) || IsDungeonCluster(mapType, mapGuid) && mapType is MapType.CorruptedDungeon or MapType.HellGate)
             {
                 UpdateDungeonSaveTimerUi(mapType);
 
+                if (mapType is MapType.CorruptedDungeon or MapType.HellGate)
+                {
+                    var lastDungeon = GetDungeon(_lastMapGuid);
+                    lastDungeon.EndTimer();
+                }
+
                 _dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
-                var newDungeon = new DungeonObject(_trackingController.CurrentCluster.MainClusterIndex, (Guid)mapGuid, DungeonStatus.Active, _trackingController.CurrentCluster.Tier);
+                var newDungeon = new DungeonObject(_trackingController.CurrentCluster.MainClusterIndex, (Guid)mapGuid!, DungeonStatus.Active, _trackingController.CurrentCluster.Tier);
                 SetDungeonMapType(newDungeon, mapType);
 
                 _dungeons.Insert(0, newDungeon);
@@ -96,14 +102,12 @@ namespace StatisticsAnalysisTool.Network.Manager
                 };
         }
 
-        public async void ResetDungeons()
+        public void ResetDungeons()
         {
             _dungeons.Clear();
 
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                _mainWindowViewModel?.TrackingDungeons?.Clear();
-            });
+            _mainWindowViewModel?.TrackingDungeons?.Init(Application.Current.Dispatcher.Invoke);
+            _mainWindowViewModel?.TrackingDungeons?.Clear();
         }
 
         public void SetDungeonChestOpen(int id)
@@ -357,7 +361,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private static bool IsDungeonCluster(MapType mapType, Guid? mapGuid)
         {
-            return mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition && mapGuid != null;
+            return mapGuid != null && mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition;
         }
 
         private static async Task SetBestDungeonTimeAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
@@ -500,27 +504,30 @@ namespace StatisticsAnalysisTool.Network.Manager
             var orderedDungeon = _dungeons.OrderBy(x => x.EnterDungeonFirstTime).ToList();
             foreach (var dungeonObject in orderedDungeon)
             {
-                var dungeonFragment = _mainWindowViewModel.TrackingDungeons.FirstOrDefault(x => x.DungeonHash == dungeonObject.DungeonHash);
+                _mainWindowViewModel?.TrackingDungeons?.Init(Application.Current.Dispatcher.Invoke);
+                var dungeonFragment = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.DungeonHash == dungeonObject.DungeonHash);
                 if (dungeonFragment != null && IsDungeonDifferenceToAnother(dungeonObject, dungeonFragment))
                 {
                     dungeonFragment.SetValues(dungeonObject);
                     dungeonFragment.DungeonNumber = orderedDungeon.IndexOf(dungeonObject);
                 }
-                else if(dungeonFragment == null)
+                else if (dungeonFragment == null)
                 {
                     await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
                         var index = orderedDungeon.IndexOf(dungeonObject);
                         var dunFragment = new DungeonNotificationFragment(index, dungeonObject.GuidList, dungeonObject.MainMapIndex, dungeonObject.EnterDungeonFirstTime);
                         dunFragment.SetValues(dungeonObject);
-                        _mainWindowViewModel?.TrackingDungeons.Insert(index, dunFragment);
+                        _mainWindowViewModel?.TrackingDungeons?.Init(Application.Current.Dispatcher.Invoke);
+                        _mainWindowViewModel?.TrackingDungeons?.Insert(index, dunFragment);
                     });
                 }
             }
 
             await RemoveLeftOverDungeonNotificationFragments().ConfigureAwait(false);
-            await SetBestDungeonTimeAsync(_mainWindowViewModel?.TrackingDungeons.ToAsyncEnumerable());
-            await CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons.ToAsyncEnumerable());
+            _mainWindowViewModel?.TrackingDungeons?.Init(Application.Current.Dispatcher.Invoke);
+            await SetBestDungeonTimeAsync(_mainWindowViewModel?.TrackingDungeons?.ToAsyncEnumerable());
+            await CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons?.ToAsyncEnumerable());
             await DungeonUiFilteringAsync();
 
             SetDungeonStatsDayUi();
@@ -529,8 +536,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private static bool IsDungeonDifferenceToAnother(DungeonObject dungeonObject, DungeonNotificationFragment dungeonNotificationFragment)
         {
-            return dungeonObject.TotalRunTimeInSeconds != dungeonNotificationFragment.TotalRunTimeInSeconds 
-                   || !dungeonObject.GuidList.SequenceEqual(dungeonNotificationFragment.GuidList) 
+            return dungeonObject.TotalRunTimeInSeconds != dungeonNotificationFragment.TotalRunTimeInSeconds
+                   || !dungeonObject.GuidList.SequenceEqual(dungeonNotificationFragment.GuidList)
                    || dungeonObject.DungeonEventObjects.Count != dungeonNotificationFragment.DungeonChests.Count
                    || dungeonObject.Status != dungeonNotificationFragment.Status
                    || Math.Abs(dungeonObject.Fame - dungeonNotificationFragment.Fame) > 0.0d
@@ -571,10 +578,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                     continue;
                 }
 
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    _ = (_mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment));
-                });
+                _mainWindowViewModel?.TrackingDungeons?.Init(Application.Current.Dispatcher.Invoke);
+                _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
             }
         }
 
@@ -584,10 +589,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             foreach (var dungeonFragment in _mainWindowViewModel?.TrackingDungeons?.ToList() ?? new List<DungeonNotificationFragment>())
             {
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    _ = (_mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment));
-                });
+                _mainWindowViewModel?.TrackingDungeons?.Init(Application.Current.Dispatcher.Invoke);
+                _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
             }
 
             await SetOrUpdateDungeonsDataUiAsync();
@@ -631,10 +634,13 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             try
             {
-                var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
-                dun?.Add(value, valueType, cityFaction);
+                lock (_dungeons)
+                {
+                    var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
+                    dun?.Add(value, valueType, cityFaction);
 
-                UpdateDungeonDataUi(dun);
+                    UpdateDungeonDataUi(dun);
+                }
             }
             catch
             {
