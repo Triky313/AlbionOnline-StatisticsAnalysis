@@ -112,7 +112,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _trackingAllianceName;
         public TrackingController TrackingController;
         private string _trackingCurrentMapName;
-        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
+        private AsyncObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
         private string _trackingGuildName;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new();
         private string _trackingUsername;
@@ -1744,7 +1744,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
+        public AsyncObservableCollection<DungeonNotificationFragment> TrackingDungeons
         {
             get => _trackingDungeons;
             set
