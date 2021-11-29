@@ -1,3 +1,4 @@
+using Divis.AsyncObservableCollection;
 using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
@@ -9,7 +10,6 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -36,7 +36,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             OnChangeCombatMode += AddCombatTime;
 
 #if DEBUG
-            RunDamageMeterDebugAsync(10);
+            RunDamageMeterDebugAsync();
 #endif
         }
 
@@ -99,7 +99,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private static bool IsUiUpdateActive;
 
-        public async Task UpdateDamageMeterUiAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
+        public async Task UpdateDamageMeterUiAsync(AsyncObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
             IsUiUpdateActive = true;
 
@@ -169,7 +169,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
+        private async Task AddDamageMeterFragmentAsync(AsyncObservableCollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
             List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
             if (healthChangeObject.Value == null
@@ -199,10 +199,11 @@ namespace StatisticsAnalysisTool.Network.Manager
                 CauserMainHand = itemInfo
             };
 
-            await Application.Current.Dispatcher.InvokeAsync(delegate
+            lock (damageMeter)
             {
+                damageMeter.Init(Application.Current.Dispatcher.Invoke);
                 damageMeter.Add(damageMeterFragment);
-            });
+            }
 
             _trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, itemInfo?.FullItemInformation?.CategoryId);
         }
@@ -213,7 +214,11 @@ namespace StatisticsAnalysisTool.Network.Manager
             _trackingController.EntityController.ResetEntitiesDamage();
             _trackingController.EntityController.ResetEntitiesDamageStartTime();
 
-            _mainWindow?.Dispatcher?.InvokeAsync(() => { _mainWindowViewModel?.DamageMeter?.Clear(); });
+            _mainWindow?.Dispatcher?.InvokeAsync(() =>
+            {
+                _mainWindowViewModel?.DamageMeter.Init(Application.Current.Dispatcher.Invoke);
+                _mainWindowViewModel?.DamageMeter?.Clear();
+            });
         }
 
         public ConcurrentDictionary<long, double> LastPlayersHealth = new();
@@ -336,77 +341,37 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private async void RunDamageMeterDebugAsync(int runs = 30)
         {
-            var entities = SetRandomDamageValues(20);
+            var entities = SetRandomDamageValues();
 
             for (var i = 0; i < runs; i++)
             {
-                await UpdateDamageMeterUiAsync(_mainWindowViewModel.DamageMeter, entities);
-                await Task.Delay(1080);
+                var index = _random.Next(entities.Count);
+                var (_, value) = entities[index];
 
-                foreach (var entity in entities)
-                {
-                    if (_random.Next(0, 10) < 8)
-                    {
-                        continue;
-                    }
+                AddDamageAsync(_random.Next(2000, 5000), value?.ObjectId ?? -1, _random.Next(-100, 100), _random.Next(2000, 3000));
 
-                    entity.Value.Damage += _random.Next(10, 500);
-                    entity.Value.Heal += _random.Next(10, 750);
-                    entity.Value.AddCombatTime(new TimeCollectObject(DateTime.UtcNow)
-                    {
-                        EndTime = DateTime.UtcNow.AddSeconds(_random.Next(1, 35))
-                    });
-                }
+                await Task.Delay(_random.Next(1, 400));
+
+                //Debug.Print($"{_random.Next(2000, 5000)} {value?.ObjectId ?? -1} {_random.Next(-100, 100)} {_random.Next(2000, 3000)}");
             }
         }
 
-        private List<KeyValuePair<Guid, PlayerGameObject>> SetRandomDamageValues(int playerAmount = 5)
+        private List<KeyValuePair<Guid, PlayerGameObject>> SetRandomDamageValues(int playerAmount = 20)
         {
-            var randomPlayerList = new List<KeyValuePair<Guid, PlayerGameObject>>();
-
             for (var i = 0; i < playerAmount; i++)
             {
-                var randomPlayer = GetRandomPlayerDebug();
-                randomPlayerList.Add(new KeyValuePair<Guid, PlayerGameObject>(randomPlayer.CauserGuid, new PlayerGameObject(randomPlayer.ObjectId)
-                {
-                    CharacterEquipment = new CharacterEquipment
-                    {
-                        MainHand = TestMethods.GetRandomWeaponIndex()
-                    },
-                    CombatTime = new TimeSpan(0, 0, 0, randomPlayer.RandomTime),
-                    Damage = randomPlayer.Damage,
-                    Heal = randomPlayer.Heal,
-                    Name = TestMethods.GenerateName(randomPlayer.Name),
-                    ObjectSubType = GameObjectSubType.Player,
-                    ObjectType = GameObjectType.Player,
-                    UserGuid = randomPlayer.CauserGuid
-                }));
+                var guid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
+                var interactGuid = Guid.NewGuid();
+                var name = TestMethods.GenerateName(_random.Next(3, 10));
+
+                _trackingController?.EntityController?.AddEntity(i, guid, interactGuid, name, GameObjectType.Player, GameObjectSubType.Mob);
+
+                // Only if SetCharacterMainHand is public
+                //_trackingController?.EntityController?.SetCharacterMainHand(i, TestMethods.GetRandomWeaponIndex());
+                _trackingController?.EntityController?.AddToPartyAsync(guid, name);
             }
 
-            return randomPlayerList;
-        }
-
-        private RandomPlayerDebugStruct GetRandomPlayerDebug()
-        {
-            return new RandomPlayerDebugStruct()
-            {
-                CauserGuid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000"),
-                Damage = _random.Next(500, 9999),
-                Heal = _random.Next(500, 9999),
-                ObjectId = _random.Next(20, 9999),
-                Name = _random.Next(3, 10),
-                RandomTime = _random.Next(1, 1000)
-            };
-        }
-
-        struct RandomPlayerDebugStruct
-        {
-            public Guid CauserGuid { get; set; }
-            public int Damage { get; set; }
-            public int Heal { get; set; }
-            public int ObjectId { get; set; }
-            public int Name { get; set; }
-            public int RandomTime { get; set; }
+            return _trackingController?.EntityController?.GetAllEntities();
         }
 
         #endregion
