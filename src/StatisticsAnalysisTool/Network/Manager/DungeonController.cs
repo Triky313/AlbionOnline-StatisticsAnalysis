@@ -9,7 +9,6 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -45,7 +44,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             UpdateDungeonSaveTimerUi();
 
             _currentGuid = mapGuid;
-            
+
             // Last map is a dungeon, add new map
             if (IsDungeonCluster(mapType, mapGuid) && ExistDungeon(_lastMapGuid) && mapType != MapType.CorruptedDungeon && mapType != MapType.HellGate)
             {
@@ -512,7 +511,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     dungeonFragment.SetValues(dungeonObject);
                     dungeonFragment.DungeonNumber = orderedDungeon.IndexOf(dungeonObject);
                 }
-                else if(dungeonFragment == null)
+                else if (dungeonFragment == null)
                 {
                     await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
@@ -537,8 +536,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private static bool IsDungeonDifferenceToAnother(DungeonObject dungeonObject, DungeonNotificationFragment dungeonNotificationFragment)
         {
-            return dungeonObject.TotalRunTimeInSeconds != dungeonNotificationFragment.TotalRunTimeInSeconds 
-                   || !dungeonObject.GuidList.SequenceEqual(dungeonNotificationFragment.GuidList) 
+            return dungeonObject.TotalRunTimeInSeconds != dungeonNotificationFragment.TotalRunTimeInSeconds
+                   || !dungeonObject.GuidList.SequenceEqual(dungeonNotificationFragment.GuidList)
                    || dungeonObject.DungeonEventObjects.Count != dungeonNotificationFragment.DungeonChests.Count
                    || dungeonObject.Status != dungeonNotificationFragment.Status
                    || Math.Abs(dungeonObject.Fame - dungeonNotificationFragment.Fame) > 0.0d
