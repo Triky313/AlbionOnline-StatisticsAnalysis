@@ -302,13 +302,18 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
 
-            if (entity?.Value == null) return;
+            if (entity?.Value == null)
+            {
+                return;
+            }
 
             if (entity.Value.Value?.CharacterEquipment == null)
+            {
                 entity.Value.Value.CharacterEquipment = new CharacterEquipment
                 {
                     MainHand = itemIndex
                 };
+            }
 
             //if (entity.Value.Value != null)
             //{
