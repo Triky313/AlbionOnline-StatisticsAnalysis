@@ -28,6 +28,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using Divis.AsyncObservableCollection;
+
 // ReSharper disable UnusedMember.Global
 
 namespace StatisticsAnalysisTool.ViewModels
@@ -46,7 +48,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _currentGoldPriceTimestamp;
         private Visibility _currentMapInformationVisibility;
         private double _currentMapInfoWidth;
-        private ObservableCollection<DamageMeterFragment> _damageMeter = new();
+        private AsyncObservableCollection<DamageMeterFragment> _damageMeter = new();
         private List<DamageMeterSortStruct> _damageMeterSort = new();
         private DamageMeterSortStruct _damageMeterSortSelection;
         private DungeonStats _dungeonStatsDay = new();
@@ -1455,7 +1457,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<DamageMeterFragment> DamageMeter
+        public AsyncObservableCollection<DamageMeterFragment> DamageMeter
         {
             get => _damageMeter;
             set

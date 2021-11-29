@@ -9,11 +9,11 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using Divis.AsyncObservableCollection;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -99,7 +99,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private static bool IsUiUpdateActive;
 
-        public async Task UpdateDamageMeterUiAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
+        public async Task UpdateDamageMeterUiAsync(AsyncObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
             IsUiUpdateActive = true;
 
@@ -169,7 +169,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
+        private async Task AddDamageMeterFragmentAsync(AsyncObservableCollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
             List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
             if (healthChangeObject.Value == null
@@ -199,10 +199,11 @@ namespace StatisticsAnalysisTool.Network.Manager
                 CauserMainHand = itemInfo
             };
 
-            await Application.Current.Dispatcher.InvokeAsync(delegate
+            lock (damageMeter)
             {
+                damageMeter.Init(Application.Current.Dispatcher.Invoke);
                 damageMeter.Add(damageMeterFragment);
-            });
+            }
 
             _trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, itemInfo?.FullItemInformation?.CategoryId);
         }
@@ -212,8 +213,12 @@ namespace StatisticsAnalysisTool.Network.Manager
             _trackingController.EntityController.ResetEntitiesDamageTimes();
             _trackingController.EntityController.ResetEntitiesDamage();
             _trackingController.EntityController.ResetEntitiesDamageStartTime();
-
-            _mainWindow?.Dispatcher?.InvokeAsync(() => { _mainWindowViewModel?.DamageMeter?.Clear(); });
+            
+            _mainWindow?.Dispatcher?.InvokeAsync(() =>
+            {
+                _mainWindowViewModel?.DamageMeter.Init(Application.Current.Dispatcher.Invoke);
+                _mainWindowViewModel?.DamageMeter?.Clear();
+            });
         }
 
         public ConcurrentDictionary<long, double> LastPlayersHealth = new();
