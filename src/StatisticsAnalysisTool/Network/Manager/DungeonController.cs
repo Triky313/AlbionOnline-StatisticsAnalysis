@@ -61,7 +61,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 if (mapType is MapType.CorruptedDungeon or MapType.HellGate)
                 {
                     var lastDungeon = GetDungeon(_lastMapGuid);
-                    lastDungeon.EndTimer();
+                    lastDungeon?.EndTimer();
                 }
 
                 _dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
