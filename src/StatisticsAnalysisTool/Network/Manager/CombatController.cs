@@ -10,6 +10,7 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -36,13 +37,13 @@ namespace StatisticsAnalysisTool.Network.Manager
             OnChangeCombatMode += AddCombatTime;
 
 #if DEBUG
-            RunDamageMeterDebugAsync();
+            RunDamageMeterDebugAsync(0, 0);
 #endif
         }
 
         #region Damage Meter methods
 
-        public async void AddDamageAsync(long objectId, long causerId, double healthChange, double newHealthValue)
+        public async Task AddDamageAsync(long objectId, long causerId, double healthChange, double newHealthValue)
         {
             if (!IsDamageMeterActive || objectId == causerId)
             {
@@ -102,7 +103,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public async Task UpdateDamageMeterUiAsync(AsyncObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
             IsUiUpdateActive = true;
-
+            
             var highestDamage = entities.GetHighestDamage();
             var highestHeal = entities.GetHighestHeal();
             _trackingController.EntityController.DetectUsedWeapon();
@@ -114,14 +115,14 @@ namespace StatisticsAnalysisTool.Network.Manager
                     continue;
                 }
 
-                var fragment = damageMeter.FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
+                var fragment = damageMeter.ToList().FirstOrDefault(x => x.CauserGuid == healthChangeObject.Value.UserGuid);
                 if (fragment != null)
                 {
-                    await UpdateDamageMeterFragmentAsync(fragment, healthChangeObject, entities, highestDamage, highestHeal);
+                    await UpdateDamageMeterFragmentAsync(fragment, healthChangeObject, entities, highestDamage, highestHeal).ConfigureAwait(true);
                 }
                 else
                 {
-                    await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, highestDamage, highestHeal);
+                    await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, highestDamage, highestHeal).ConfigureAwait(true);
                 }
 
                 Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.SetDamageMeterSort());
@@ -132,7 +133,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private async Task UpdateDamageMeterFragmentAsync(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject, List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
-            var itemInfo = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, healthChangeObject.Value?.CharacterEquipment?.MainHand);
+            var itemInfo = await SetItemInfoIfSlotTypeMainHandAsync(fragment.CauserMainHand, healthChangeObject.Value?.CharacterEquipment?.MainHand).ConfigureAwait(false);
             fragment.CauserMainHand = itemInfo;
 
             // Damage
@@ -339,20 +340,31 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private static readonly Random _random = new(DateTime.Now.Millisecond);
 
-        private async void RunDamageMeterDebugAsync(int runs = 30)
+        private async void RunDamageMeterDebugAsync(int runs = 50, int forRuns = 100)
         {
             var entities = SetRandomDamageValues();
+            var tasks = new List<Task>();
 
             for (var i = 0; i < runs; i++)
             {
                 var index = _random.Next(entities.Count);
                 var (_, value) = entities[index];
 
-                AddDamageAsync(_random.Next(2000, 5000), value?.ObjectId ?? -1, _random.Next(-100, 100), _random.Next(2000, 3000));
+                tasks.Add(AddDamageAsync(value, forRuns));
+            }
 
-                await Task.Delay(_random.Next(1, 400));
+            await Task.WhenAll(tasks);
+        }
 
-                //Debug.Print($"{_random.Next(2000, 5000)} {value?.ObjectId ?? -1} {_random.Next(-100, 100)} {_random.Next(2000, 3000)}");
+        private async Task AddDamageAsync(PlayerGameObject entity, int runs)
+        {
+            for (var i = 0; i < runs; i++)
+            {
+                var damage = _random.Next(-100, 100);
+                await AddDamageAsync(9999, entity.ObjectId ?? -1, damage, _random.Next(2000, 3000));
+                Debug.Print($"AddDamage - {entity.Name}: {damage}");
+
+                await Task.Delay(_random.Next(1, 1000));
             }
         }
 

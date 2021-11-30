@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Notification;
-using StatisticsAnalysisTool.Network.Time;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -32,7 +31,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public EntityController EntityController;
         public LootController LootController;
         private readonly List<NotificationType> _notificationTypeFilters = new();
-        
+
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
             _mainWindowViewModel = mainWindowViewModel;
@@ -50,20 +49,12 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void RegisterEvents()
         {
-            EntityController.OnHealthUpdate += DamageMeterUpdate;
             OnChangeCluster += UpdateClusterTracking;
         }
 
         public void UnregisterEvents()
         {
-            EntityController.OnHealthUpdate -= DamageMeterUpdate;
             OnChangeCluster -= UpdateClusterTracking;
-        }
-
-        public void DamageMeterUpdate(long objectId, GameTimeStamp timeStamp, double healthChange, double newHealthValue, EffectType effectType,
-            EffectOrigin effectOrigin, long causerId, int causingSpellType)
-        {
-            CombatController.AddDamageAsync(objectId, causerId, healthChange, newHealthValue);
         }
 
         public event Action<ClusterInfo> OnChangeCluster;

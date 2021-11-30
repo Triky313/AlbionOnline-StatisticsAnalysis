@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -34,6 +36,16 @@ namespace StatisticsAnalysisTool.Common
             var itemIndex = indexArray[index];
             indexArray.RemoveAt(index);
             return itemIndex;
+        }
+
+        public static void PrintProperties(object obj)
+        {
+            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(obj))
+            {
+                var name = descriptor.Name;
+                var value = descriptor.GetValue(obj);
+                Debug.Print(@"{0}={1}", name, value);
+            }
         }
     }
 }

@@ -45,6 +45,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             PlayerGameObject gameObject;
 
             if (_knownEntities.TryRemove(userGuid, out var oldEntity))
+            {
                 gameObject = new PlayerGameObject(objectId)
                 {
                     Name = name,
@@ -58,7 +59,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                     Damage = oldEntity.Damage,
                     Heal = oldEntity.Heal
                 };
+            }
             else
+            {
                 gameObject = new PlayerGameObject(objectId)
                 {
                     Name = name,
@@ -66,6 +69,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     UserGuid = userGuid,
                     ObjectSubType = objectSubType
                 };
+            }
 
             if (_tempCharacterEquipmentData.TryGetValue(objectId, out var characterEquipmentData))
             {
@@ -275,7 +279,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     foreach (var item in _newEquipmentItems.ToList())
                     {
-                        foreach (var spell in (from itemSpell in item.SpellDictionary.ToArray() from spell in _spellEffects.ToArray() where spell.SpellIndex.Equals(itemSpell.Value) select spell).ToArray())
+                        foreach (var spell in 
+                                 (from itemSpell in item.SpellDictionary.ToArray() 
+                                     from spell in _spellEffects.ToArray() where spell != null && spell.SpellIndex.Equals(itemSpell.Value) select spell).ToArray())
                         {
                             if (playerItemList.Any(x => x.Key.Equals(spell.CauserId)))
                             {
