@@ -14,10 +14,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(HealthUpdateEvent value)
         {
-            _trackingController.EntityController.HealthUpdate(value.ObjectId, value.TimeStamp, value.HealthChange, value.NewHealthValue,
-                value.EffectType, value.EffectOrigin, value.CauserId, value.CausingSpellType);
-
-            await Task.CompletedTask;
+            await _trackingController.CombatController.AddDamageAsync(value.ObjectId, value.CauserId, value.HealthChange, value.NewHealthValue);
         }
     }
 }
