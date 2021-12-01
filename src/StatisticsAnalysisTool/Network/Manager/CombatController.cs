@@ -10,7 +10,6 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -381,7 +380,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 tasks.Add(AddDamageAsync(entity.Value, damageRuns));
             }
-            
+
             await Task.WhenAll(tasks);
         }
 
