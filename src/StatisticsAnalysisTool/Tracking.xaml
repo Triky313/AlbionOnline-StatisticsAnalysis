@@ -1157,8 +1157,8 @@
                     <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding DamagePercentage}" 
                            ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"/>
                     <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"/>
-                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding Damage}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
-                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"></Label>
+                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding DamageShortString}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
+                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
                 </StackPanel>
             </Grid>
             <Grid>
@@ -1183,8 +1183,8 @@
                     <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding HealPercentage}" 
                            ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"></Label>
                     <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
-                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding Heal}" ContentStringFormat="{}{0:N0}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"></Label>
-                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding HpsString}" ContentStringFormat="{}{0:N0}/hps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"></Label>
+                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding HealShortString}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
+                    <Label Foreground="{StaticResource Weapon.Foreground.Text}" Content="{Binding HpsString}" ContentStringFormat="{}{0:N0}/hps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
                 </StackPanel>
             </Grid>
         </Grid>
