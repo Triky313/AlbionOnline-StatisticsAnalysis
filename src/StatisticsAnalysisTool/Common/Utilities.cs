@@ -14,10 +14,12 @@ namespace StatisticsAnalysisTool.Common
     {
         public static void AutoUpdate()
         {
+#pragma warning disable CA1416 // Validate platform compatibility
             AutoUpdater.Start(Settings.Default.AutoUpdateConfigUrl);
             AutoUpdater.DownloadPath = Environment.CurrentDirectory;
             AutoUpdater.RunUpdateAsAdmin = false;
             AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExitAsync;
+#pragma warning restore CA1416 // Validate platform compatibility
         }
 
         private static async void AutoUpdaterApplicationExitAsync()

@@ -50,10 +50,12 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
+#pragma warning disable CA1416 // Validate platform compatibility
                 var player = new SoundPlayer(GetCurrentSound());
                 player.Load();
                 player.Play();
                 player.Dispose();
+#pragma warning restore CA1416 // Validate platform compatibility
             }
             catch (Exception e) when (e is InvalidOperationException || e is UriFormatException || e is FileNotFoundException ||
                                       e is ArgumentException)
