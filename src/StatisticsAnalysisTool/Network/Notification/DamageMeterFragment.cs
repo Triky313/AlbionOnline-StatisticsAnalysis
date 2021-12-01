@@ -12,18 +12,39 @@ namespace StatisticsAnalysisTool.Network.Notification
         private string _categoryId;
         private Guid _causerGuid;
         private Item _causerMainHand;
-        private string _damage;
+        private long _damage;
         private double _damageInPercent;
         private double _damagePercentage;
         private double _dps;
         private string _dpsString;
         private string _name;
-        private string _heal;
+        private long _heal;
         private string _hpsString;
         private double _hps;
         private double _healInPercent;
         private double _healPercentage;
         private bool _isDamageMeterShowing = true;
+        private string _damageShortString;
+        private string _healShortString;
+
+        public DamageMeterFragment(DamageMeterFragment damageMeterFragment)
+        {
+            CauserGuid = damageMeterFragment.CauserGuid;
+            Damage = damageMeterFragment.Damage;
+            Dps = damageMeterFragment.Dps;
+            DamageInPercent = damageMeterFragment.DamageInPercent;
+            DamagePercentage = damageMeterFragment.DamagePercentage;
+            Heal = damageMeterFragment.Heal;
+            Hps = damageMeterFragment.Hps;
+            HealInPercent = damageMeterFragment.HealInPercent;
+            HealPercentage = damageMeterFragment.HealPercentage;
+            Name = damageMeterFragment.Name;
+            CauserMainHand = damageMeterFragment.CauserMainHand;
+        }
+
+        public DamageMeterFragment()
+        {
+        }
 
         public string Name
         {
@@ -56,15 +77,23 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         #region Damage
 
-        public string Damage {
+        public long Damage {
             get => _damage;
             set {
                 _damage = value;
+                DamageShortString = _damage.ToShortNumberString();
                 OnPropertyChanged();
             }
         }
-
-
+        
+        public string DamageShortString {
+            get => _damageShortString;
+            private set {
+                _damageShortString = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public string DpsString {
             get => _dpsString;
             private set {
@@ -102,15 +131,23 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         #region Heal
 
-        public string Heal {
+        public long Heal {
             get => _heal;
             set {
                 _heal = value;
+                HealShortString = _heal.ToShortNumberString();
                 OnPropertyChanged();
             }
         }
-
-
+        
+        public string HealShortString {
+            get => _healShortString;
+            private set {
+                _healShortString = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public string HpsString {
             get => _hpsString;
             private set {
@@ -173,6 +210,19 @@ namespace StatisticsAnalysisTool.Network.Notification
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is DamageMeterFragment damageMeterFragment && Name == damageMeterFragment.Name
+                                                                  && Damage == damageMeterFragment.Damage
+                                                                  && CauserGuid == damageMeterFragment.CauserGuid
+                                                                  && Heal == damageMeterFragment.Heal;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, CauserGuid, Damage, Heal);
         }
     }
 }
