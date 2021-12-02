@@ -213,6 +213,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
         {
+            // TOTO: System.InvalidOperationException: 'Collection was modified; enumeration operation may not execute.'
             return damageMeter.GroupBy(x => x.Name).Any(g => g.Count() > 1);
         }
 
@@ -402,8 +403,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 var guid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
                 var interactGuid = Guid.NewGuid();
-                //var name = TestMethods.GenerateName(_random.Next(3, 10));
-                var name = "Peter";
+                var name = TestMethods.GenerateName(_random.Next(3, 10));
 
                 _trackingController?.EntityController?.AddEntity(i, guid, interactGuid, name, GameObjectType.Player, GameObjectSubType.Mob);
 
