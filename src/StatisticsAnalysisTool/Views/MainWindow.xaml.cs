@@ -65,7 +65,9 @@ namespace StatisticsAnalysisTool.Views
         {
             if (sender is ImageAwesome icon)
             {
+#pragma warning disable CA1416 // Validate platform compatibility
                 icon.Spin = true;
+#pragma warning restore CA1416 // Validate platform compatibility
             }
         }
 
@@ -73,7 +75,9 @@ namespace StatisticsAnalysisTool.Views
         {
             if (sender is ImageAwesome icon)
             {
+#pragma warning disable CA1416 // Validate platform compatibility
                 icon.Spin = false;
+#pragma warning restore CA1416 // Validate platform compatibility
             }
         }
 
