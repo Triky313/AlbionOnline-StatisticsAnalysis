@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Network
     public class AlbionPackageParser : PhotonParser
     {
         private readonly NewEquipmentItemEventHandler NewEquipmentItemEventHandler;
-        private readonly OtherGrabbedLootEventHandler OtherGrabbedLootEventHandler;
+        private readonly OtherGrabbedLootEventHandler GrabbedLootEventHandler;
         private readonly InventoryDeleteItemEventHandler InventoryDeleteItemEventHandler;
         private readonly InventoryPutItemEventHandler InventoryPutItemEventHandler;
         private readonly TakeSilverEventHandler TakeSilverEventHandler;
@@ -47,7 +47,7 @@ namespace StatisticsAnalysisTool.Network
         public AlbionPackageParser(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
             NewEquipmentItemEventHandler = new NewEquipmentItemEventHandler(trackingController);
-            OtherGrabbedLootEventHandler = new OtherGrabbedLootEventHandler(trackingController);
+            GrabbedLootEventHandler = new OtherGrabbedLootEventHandler(trackingController);
             InventoryDeleteItemEventHandler = new InventoryDeleteItemEventHandler(trackingController);
             InventoryPutItemEventHandler = new InventoryPutItemEventHandler(trackingController);
             TakeSilverEventHandler = new TakeSilverEventHandler(trackingController);
@@ -96,8 +96,8 @@ namespace StatisticsAnalysisTool.Network
                     case EventCodes.NewEquipmentItem:
                         await NewEquipmentItemEventHandlerAsync(parameters);
                         return;
-                    case EventCodes.OtherGrabbedLoot:
-                        await OtherGrabbedLootEventHandlerAsync(parameters).ConfigureAwait(false);
+                    case EventCodes.GrabbedLoot:
+                        await GrabbedLootEventHandlerAsync(parameters).ConfigureAwait(false);
                         return;
                     case EventCodes.InventoryDeleteItem:
                         await InventoryDeleteItemEventHandlerAsync(parameters).ConfigureAwait(false);
@@ -251,10 +251,10 @@ namespace StatisticsAnalysisTool.Network
             await NewEquipmentItemEventHandler.OnActionAsync(value);
         }
 
-        private async Task OtherGrabbedLootEventHandlerAsync(Dictionary<byte, object> parameters)
+        private async Task GrabbedLootEventHandlerAsync(Dictionary<byte, object> parameters)
         {
-            var value = new OtherGrabbedLootEvent(parameters);
-            await OtherGrabbedLootEventHandler.OnActionAsync(value);
+            var value = new GrabbedLootEvent(parameters);
+            await GrabbedLootEventHandler.OnActionAsync(value);
         }
 
         private async Task InventoryDeleteItemEventHandlerAsync(Dictionary<byte, object> parameters)
