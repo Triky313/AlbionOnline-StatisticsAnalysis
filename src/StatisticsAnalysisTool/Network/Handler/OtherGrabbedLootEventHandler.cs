@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             _trackingController = trackingController;
         }
 
-        public async Task OnActionAsync(OtherGrabbedLootEvent value)
+        public async Task OnActionAsync(GrabbedLootEvent value)
         {
             await _trackingController.LootController.AddLootAsync(value.Loot);
         }
