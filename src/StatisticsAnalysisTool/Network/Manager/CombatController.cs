@@ -213,15 +213,15 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
         {
-            // TOTO: System.InvalidOperationException: 'Collection was modified; enumeration operation may not execute.'
-            return damageMeter.GroupBy(x => x.Name).Any(g => g.Count() > 1);
+            return damageMeter.ToList().GroupBy(x => x.Name).Any(g => g.Count() > 1);
         }
 
         private static async Task RemoveDuplicatesAsync(AsyncObservableCollection<DamageMeterFragment> damageMeter)
         {
             await Task.Run(() =>
             {
-                var damageMeterWithoutDupes = (from dmf in damageMeter
+                damageMeter.Init(Application.Current.Dispatcher.Invoke);
+                var damageMeterWithoutDupes = (from dmf in damageMeter.ToList()
                                                group dmf by dmf.Name into x
                                                select new DamageMeterFragment(x.FirstOrDefault())).ToList();
 
