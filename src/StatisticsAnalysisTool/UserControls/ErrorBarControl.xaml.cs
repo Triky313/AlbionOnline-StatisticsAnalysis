@@ -12,15 +12,7 @@ namespace StatisticsAnalysisTool.UserControls
         {
             InitializeComponent();
         }
-
-        public Visibility ErrorBarVisibility
-        {
-            get => (Visibility)GetValue(ErrorBarVisibilityProperty);
-            set => SetValue(ErrorBarVisibilityProperty, value);
-        }
-
-        public static readonly DependencyProperty ErrorBarVisibilityProperty = DependencyProperty.Register("ErrorBarVisibility", typeof(Visibility), typeof(ErrorBarControl));
-
+        
         public string ErrorBarText
         {
             get => (string)GetValue(ErrorBarTextProperty);

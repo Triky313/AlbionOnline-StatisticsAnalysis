@@ -655,8 +655,8 @@
                 <lvc:CartesianChart ZoomMode="None" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}" Series="{Binding Series}" />
             </Grid>
         </Grid>-->
-        <uc:FooterControl/>
-        <uc:ErrorBarControl ErrorBarVisibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}" ErrorBarText="{Binding ErrorBarText}" />
+        <uc:FooterControl Height="34" VerticalAlignment="Bottom" />
+        <uc:ErrorBarControl Height="30" VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}" ErrorBarText="{Binding ErrorBarText}" />
 
     </Grid>
 </Window>
