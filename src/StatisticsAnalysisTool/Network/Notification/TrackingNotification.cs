@@ -12,15 +12,19 @@ namespace StatisticsAnalysisTool.Network.Notification
 {
     public class TrackingNotification : INotifyPropertyChanged
     {
+        private const int _setTypesMaxTries = 3;
+
         private NotificationType _type;
         private Visibility _visibility;
+        private readonly int _itemIndex;
+        private int _trySetTypeCounter;
 
         public TrackingNotification(DateTime dateTime, IEnumerable<LineFragment> fragments, int itemIndex)
         {
             DateTime = dateTime;
             Fragments = fragments;
+            _itemIndex = itemIndex;
             InstanceId = Guid.NewGuid();
-            _ = SetTypeAsync(itemIndex);
         }
 
         public TrackingNotification(DateTime dateTime, IEnumerable<LineFragment> fragments, NotificationType type)
@@ -56,9 +60,14 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        private async Task SetTypeAsync(int itemIndex)
+        public async Task SetTypeAsync(bool forceSetType = false)
         {
-            Type = GetNotificationType(await ItemController.GetItemTypeAsync(itemIndex));
+            if (Type == NotificationType.Unknown && _trySetTypeCounter <= _setTypesMaxTries || forceSetType)
+            {
+                Type = GetNotificationType(await ItemController.GetItemTypeAsync(_itemIndex));
+            }
+
+            _trySetTypeCounter++;
         }
 
         private static NotificationType GetNotificationType(ItemType itemType)

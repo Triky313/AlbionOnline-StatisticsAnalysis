@@ -146,6 +146,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task AddNotificationAsync(TrackingNotification item)
         {
+            await item.SetTypeAsync();
+
             if (_mainWindowViewModel?.TrackingNotifications == null)
             {
                 return;
@@ -163,19 +165,13 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             SetNotificationFilteredVisibility(item);
 
-            if (Application.Current.Dispatcher.CheckAccess())
+            await Application.Current.Dispatcher.InvokeAsync(delegate
             {
                 _mainWindowViewModel.TrackingNotifications.Insert(0, item);
-            }
-            else
-            {
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    _mainWindowViewModel.TrackingNotifications.Insert(0, item);
-                });
-            }
+            });
 
             await RemovesUnnecessaryNotificationsAsync();
+            await SetNotificationTypesAsync();
         }
 
         public async Task RemovesUnnecessaryNotificationsAsync()
@@ -192,17 +188,10 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 await foreach (var notification in _mainWindowViewModel.TrackingNotifications.OrderBy(x => x.DateTime).ToList().Take(numberToBeRemoved).ToAsyncEnumerable())
                 {
-                    if (Application.Current.Dispatcher.CheckAccess())
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
                         _ = _mainWindowViewModel.TrackingNotifications.Remove(notification);
-                    }
-                    else
-                    {
-                        await Application.Current.Dispatcher.InvokeAsync(() =>
-                        {
-                            _ = _mainWindowViewModel.TrackingNotifications.Remove(notification);
-                        });
-                    }
+                    });
                 }
             }
 
@@ -256,6 +245,17 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 _ = _notificationTypeFilters.Remove(notificationType);
             }
+        }
+
+        public async Task SetNotificationTypesAsync()
+        {
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                await foreach (var notification in _mainWindowViewModel.TrackingNotifications.ToAsyncEnumerable())
+                {
+                    await notification.SetTypeAsync();
+                }
+            });
         }
 
         private static bool _isRemovesUnnecessaryNotificationsActive;
