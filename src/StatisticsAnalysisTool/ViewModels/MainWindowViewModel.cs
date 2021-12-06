@@ -500,11 +500,12 @@ namespace StatisticsAnalysisTool.ViewModels
                 TrackingDungeonsCollectionView.IsLiveSorting = true;
                 TrackingDungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
             }
-
+            
             TrackingNotificationsCollectionView = CollectionViewSource.GetDefaultView(TrackingNotifications) as ListCollectionView;
             if (TrackingNotificationsCollectionView != null)
             {
                 TrackingNotificationsCollectionView.IsLiveSorting = true;
+                TrackingNotificationsCollectionView.IsLiveFiltering = true;
                 TrackingNotificationsCollectionView.SortDescriptions.Add(new SortDescription(nameof(DateTime), ListSortDirection.Descending));
             }
         }

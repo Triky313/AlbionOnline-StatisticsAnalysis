@@ -149,7 +149,7 @@
             <TextBlock>
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
-                        <Setter Property="Text" Value="{Binding BonusFactorInPercent, StringFormat='{} +{0}%'}"/>
+                        <Setter Property="Text" Value="{Binding BonusFactorInPercent, StringFormat='{} +{0:N2}%'}"/>
                         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsBonusFactorActive}" Value="true">

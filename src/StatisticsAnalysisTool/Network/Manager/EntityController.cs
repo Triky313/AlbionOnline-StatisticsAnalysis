@@ -178,7 +178,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void SetPartyCircleColor(Guid userGuid, string weaponCategoryId)
         {
             var memberObject = _mainWindowViewModel?.PartyMemberCircles?.FirstOrDefault(x => x.UserGuid == userGuid);
-            if (memberObject != null && memberObject.WeaponCategoryId != weaponCategoryId)
+            if (memberObject?.WeaponCategoryId != null && memberObject.WeaponCategoryId != weaponCategoryId)
             {
                 memberObject.WeaponCategoryId = weaponCategoryId;
             }
@@ -209,13 +209,17 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
             if (entity?.Value != null)
+            {
                 entity.Value.Value.CharacterEquipment = equipment;
+            }
             else
+            {
                 _tempCharacterEquipmentData.TryAdd(objectId, new CharacterEquipmentData
                 {
                     CharacterEquipment = equipment,
                     TimeStamp = DateTime.UtcNow
                 });
+            }
         }
 
         public void ResetTempCharacterEquipment()
@@ -241,8 +245,6 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                 _newEquipmentItems.Add(item);
             }
-
-            
 
             RemoveSpellAndEquipmentObjects();
         }
