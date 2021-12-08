@@ -18,6 +18,7 @@
     <Color x:Key="Color.Background.4">#FF101215</Color>
     <Color x:Key="Color.Background.5">#FF0D0F11</Color>
     <Color x:Key="Color.Background.6">#FF0A0B0D</Color>
+    <Color x:Key="Color.Background.7">#FF070709</Color>
 
     <!-- Accent colors -->
     <Color x:Key="Color.Accent.Blue.1">#FF97CAED</Color>
@@ -40,6 +41,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Background.4" Color="{StaticResource Color.Background.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Background.5" Color="{StaticResource Color.Background.5}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Background.6" Color="{StaticResource Color.Background.6}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.7" Color="{StaticResource Color.Background.7}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.1" Color="{StaticResource Color.Accent.Blue.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.2" Color="{StaticResource Color.Accent.Blue.2}"/>

@@ -32,7 +32,7 @@
 
     <Style x:Key="TabControlStyle" TargetType="{x:Type TabControl}">
         <Setter Property="TabStripPlacement" Value="Left" />
-        <Setter Property="Margin" Value="0,40,0,35" />
+        <Setter Property="Margin" Value="0,40,0,40" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource ItemContainerStyle}" />
         <Setter Property="Template">
             <Setter.Value>

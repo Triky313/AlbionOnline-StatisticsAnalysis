@@ -37,7 +37,7 @@
                 <fa5:ImageAwesome Icon="Solid_Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
             </Grid>
         </Grid>
-        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Hidden">
+        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
             <TextBox x:Name="TxtSearch" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="22" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" />
             <Grid Margin="235,11,0,0" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left" IsEnabled="{Binding IsFilterResetEnabled, FallbackValue=false}">
                 <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="FilterReset_MouseUp" />
@@ -133,7 +133,7 @@
             </Grid>
             <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
         </Grid>
-        <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Visible">
+        <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Hidden">
             <Grid Margin="10,10,255,0" Height="45" VerticalAlignment="Top">
                 <DockPanel Margin="0,0,0,0" Height="Auto" VerticalAlignment="Top">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Height="auto" Width="50">
