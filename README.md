@@ -1,13 +1,15 @@
-# AlbionOnline - Statistics Analysis
+AlbionOnline - Statistics Analysis
+===================
+
+A tool for easy reading of auction house data, Loot logger, tracking of Dungeons and a Damage Meter for the game Albion Online
+
 [![Github All Releases](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases) 
 [![.NET Desktop](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/actions/workflows/dotnet-desktop.yml)
 ![Lines of code](https://img.shields.io/tokei/lines/github/Triky313/AlbionOnline-StatisticsAnalysis) 
 [![GitHub issues](https://img.shields.io/github/issues/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/issues)
 [![Discord](https://img.shields.io/badge/discord-join-blueviolet)](https://discord.gg/6dGTvuF5nJ) 
-[![Donate](https://img.shields.io/badge/paypal-donate-1e477a)](https://www.paypal.me/schultzaaron) 
-
-A tool for easy reading of auction house data, Tracking of Dungeons and a Damage Meter for the game Albion Online
+[![Donate](https://img.shields.io/badge/paypal-donate-1e477a)](https://www.paypal.me/schultzaaron)
 
 ![Image of this Application](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/blob/master/StatisticsAnalysisTool.png?raw=true)
 
