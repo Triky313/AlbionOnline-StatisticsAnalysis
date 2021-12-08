@@ -1,0 +1,59 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+    <Style x:Key="ItemContainerStyle" TargetType="{x:Type TabItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Grid Margin="5,0">
+                        <StackPanel Orientation="Horizontal" Margin="0">
+                            <TextBlock Name="Label" Foreground="{StaticResource SolidColorBrush.Text.4}" FontWeight="Bold" Text="|" 
+                                       Margin="0,0,0,4" FontSize="16"  VerticalAlignment="Center" />
+                            <TextBlock Name="Text" Text="{TemplateBinding Header}" Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="16" 
+                                       Margin="10, 5, 10,5" />
+                        </StackPanel>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Label" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Text" Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter TargetName="Label" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="Text" Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TabControlStyle" TargetType="{x:Type TabControl}">
+        <Setter Property="TabStripPlacement" Value="Left" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ItemContainerStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <Grid x:Name="templateRoot" ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Padding="5" Background="Transparent">
+                            <DockPanel>
+                                <TabPanel Background="Transparent" IsItemsHost="true" Margin="2,2,2,0" Grid.Row="0" Grid.Column="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+                            </DockPanel>
+                        </Border>
+                        <Border x:Name="contentPanel" Grid.Column="1" Margin="5,0,0,0">
+                            <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" 
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            </ContentPresenter>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <!-- Foreground colors -->
+    <Color x:Key="Color.Text.1">#FFF8FAFB</Color>
+    <Color x:Key="Color.Text.2">#FFE9ECEE</Color>
+    <Color x:Key="Color.Text.3">#FFD9DEE1</Color>
+    <Color x:Key="Color.Text.4">#FFC9D0D4</Color>
+    <Color x:Key="Color.Text.5">#FFB3BCC2</Color>
+    <Color x:Key="Color.Text.6">#FF9DA8AF</Color>
+
+    <!-- Background colors -->
+    <Color x:Key="Color.Background.1">#FF1E2126</Color>
+    <Color x:Key="Color.Background.2">#FF1A1D21</Color>
+    <Color x:Key="Color.Background.3">#FF16191C</Color>
+    <Color x:Key="Color.Background.4">#FF101215</Color>
+    <Color x:Key="Color.Background.5">#FF0D0F11</Color>
+    <Color x:Key="Color.Background.6">#FF0A0B0D</Color>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Text.1" Color="{StaticResource Color.Text.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.2" Color="{StaticResource Color.Text.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.3" Color="{StaticResource Color.Text.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.4" Color="{StaticResource Color.Text.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.5" Color="{StaticResource Color.Text.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.6" Color="{StaticResource Color.Text.6}"/>
+    
+    <SolidColorBrush x:Key="SolidColorBrush.Background.1" Color="{StaticResource Color.Background.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.2" Color="{StaticResource Color.Background.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.3" Color="{StaticResource Color.Background.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.4" Color="{StaticResource Color.Background.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.5" Color="{StaticResource Color.Background.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.6" Color="{StaticResource Color.Background.6}"/>
+
+</ResourceDictionary>

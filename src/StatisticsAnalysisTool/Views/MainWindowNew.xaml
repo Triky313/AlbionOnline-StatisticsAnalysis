@@ -1,0 +1,27 @@
+﻿<Window x:Class="StatisticsAnalysisTool.Views.MainWindowNew"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StatisticsAnalysisTool.Views"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        mc:Ignorable="d"
+        Topmost="True"
+        WindowStartupLocation="CenterScreen"
+        Title="AlbionOnline - StatisticsAnalysisTool"
+        Style="{StaticResource MainWindowStyle}">
+
+    <Grid Style="{StaticResource MainGridStyle}">
+        <Grid Style="{StaticResource BackgroundImageGridStyle}" />
+        <TabControl Style="{DynamicResource TabControlStyle}">
+            <TabItem Header="Item Search">
+                <Grid>
+                    <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" Text="Windows 10 pro" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Tracking" Height="34" VerticalAlignment="Bottom">
+                <TextBlock Text="Other page" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

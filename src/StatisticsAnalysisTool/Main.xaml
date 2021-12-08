@@ -226,6 +226,25 @@
 
     <!-- ######################################################################################### -->
 
+    <Style TargetType="Grid" x:Key="MainGridStyle">
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.1}" />
+    </Style>
+
+    <Style TargetType="Grid" x:Key="BackgroundImageGridStyle">
+        <Setter Property="ZIndex" Value="-1" />
+        <Setter Property="Width" Value="960" />
+        <Setter Property="Height" Value="398" />
+        <Setter Property="Opacity" Value="0.2" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <ImageBrush ImageSource="Assets/bg01.png" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="Label">
         <Setter Property="Height" Value="28" />
         <Setter Property="MinWidth" Value="20" />
@@ -509,8 +528,15 @@
     </Style>
 
     <!-- Primary Window -->
-    <Style x:Key="PrimaryWindow" TargetType="Window">
+    <Style x:Key="MainWindowStyle" TargetType="Window">
         <Setter Property="BorderThickness" Value="1,1,1,1" />
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="Height" Value="550" />
+        <Setter Property="Width" Value="1000" />
+        <Setter Property="MinHeight" Value="400" />
+        <Setter Property="MinWidth" Value="800" />
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.First}"/>
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
     </Style>
