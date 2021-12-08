@@ -9,31 +9,36 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="800">
 
-    <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="0,0,25,0">
-        <StackPanel Orientation="Horizontal" Width="auto" HorizontalAlignment="Left">
-            <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+    <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="10,0,20,10">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="2,0,0,0" Height="40">
+            <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Text.1}" FontSize="14" Padding="0" Margin="0,10,0,0"
+                   HorizontalAlignment="Left" Height="24" Width="auto" />
+            <Label Content="{Binding Version, FallbackValue=VERSION, Mode=OneTime}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.4}" FontSize="14" Padding="0" Margin="0,-10,0,0"
+                   HorizontalAlignment="Left" Height="24" Width="auto" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Width="auto" HorizontalAlignment="Right" Margin="0,0">
+            <Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
                 <TextBlock>
-                            <Hyperlink NavigateUri="{Binding GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                            </Hyperlink>
+                    <Hyperlink NavigateUri="{Binding GitHubRepoUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                        <fa5:ImageAwesome Icon="Brands_Github" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </Hyperlink>
                 </TextBlock>
             </Grid>
-            <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+            <Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
                 <TextBlock>
-                            <Hyperlink NavigateUri="{Binding DiscordUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Brands_Discord" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                            </Hyperlink>
+                    <Hyperlink NavigateUri="{Binding DiscordUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                        <fa5:ImageAwesome Icon="Brands_Discord" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </Hyperlink>
                 </TextBlock>
             </Grid>
-            <Grid ZIndex="10" Margin="5,0,5,5" HorizontalAlignment="Left" Width="24" Height="24" VerticalAlignment="Bottom">
+            <Grid ZIndex="10" Margin="5,0" HorizontalAlignment="Left" Width="22" Height="22" VerticalAlignment="Bottom">
                 <TextBlock>
-                            <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
-                                <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
-                            </Hyperlink>
+                    <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                        <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </Hyperlink>
                 </TextBlock>
             </Grid>
-            <Label Content="Made by Triky313" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="12" VerticalContentAlignment="Center" 
-                           HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="35" Width="auto" />
         </StackPanel>
     </Grid>
 </UserControl>

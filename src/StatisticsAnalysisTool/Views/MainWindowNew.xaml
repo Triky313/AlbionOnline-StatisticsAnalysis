@@ -5,23 +5,69 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StatisticsAnalysisTool.Views"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
         mc:Ignorable="d"
-        Topmost="True"
         WindowStartupLocation="CenterScreen"
         Title="AlbionOnline - StatisticsAnalysisTool"
         Style="{StaticResource MainWindowStyle}">
 
     <Grid Style="{StaticResource MainGridStyle}">
         <Grid Style="{StaticResource BackgroundImageGridStyle}" />
+
+        <Grid ZIndex="-1" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <Grid Background="{StaticResource SolidColorBrush.Background.5}" Opacity="0.5" />
+            <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
+            <Button x:Name="MaximizedButton" Style="{StaticResource WindowButtonStyle}" Content="1" Margin="0,0,28,0" Click="MaximizedButton_Click" />
+            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,58,0" Click="MinimizeButton_Click" />
+            <StackPanel Orientation="Horizontal"  Height="40" VerticalAlignment="Top" Margin="35,0,91,0">
+                <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Style="{StaticResource MainWindow.Title}" />
+            </StackPanel>
+            <Image Style="{StaticResource Image.ToolIcon}" />
+        </Grid>
+
         <TabControl Style="{DynamicResource TabControlStyle}">
             <TabItem Header="Item Search">
-                <Grid>
+                <Grid Style="{StaticResource TabItemGridStyle}">
                     <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" Text="Windows 10 pro" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Tracking" Height="34" VerticalAlignment="Bottom">
-                <TextBlock Text="Other page" />
+            <TabItem Header="Tracking">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Loot logger">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Dungeon">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Damage Meter">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Map History">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Player Information">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+
+                </Grid>
             </TabItem>
         </TabControl>
+
+        <userControls:FooterControl Height="40" VerticalAlignment="Bottom" />
     </Grid>
 </Window>

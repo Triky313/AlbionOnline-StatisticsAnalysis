@@ -7,22 +7,22 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
-                    <Grid Margin="5,0">
-                        <StackPanel Orientation="Horizontal" Margin="0">
-                            <TextBlock Name="Label" Foreground="{StaticResource SolidColorBrush.Text.4}" FontWeight="Bold" Text="|" 
-                                       Margin="0,0,0,4" FontSize="16"  VerticalAlignment="Center" />
-                            <TextBlock Name="Text" Text="{TemplateBinding Header}" Foreground="{StaticResource SolidColorBrush.Text.4}" FontSize="16" 
-                                       Margin="10, 5, 10,5" />
+                    <Grid Margin="5,2">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                            <TextBlock Name="Pipe" Foreground="{StaticResource SolidColorBrush.Accent.Blue.4}" FontWeight="Bold" Text="|" 
+                                       VerticalAlignment="Center" Padding="5,0,0,0" FontSize="16" />
+                            <Label Name="Text" Height="40" Content="{TemplateBinding Header}" Foreground="{StaticResource SolidColorBrush.Text.5}" 
+                                   FontSize="16" VerticalContentAlignment="Center" Margin="5,0" />
                         </StackPanel>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Label" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Pipe" Property="Visibility" Value="Visible" />
                             <Setter TargetName="Text" Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="False">
-                            <Setter TargetName="Label" Property="Visibility" Value="Hidden" />
-                            <Setter TargetName="Text" Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}" />
+                            <Setter TargetName="Pipe" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="Text" Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -32,6 +32,7 @@
 
     <Style x:Key="TabControlStyle" TargetType="{x:Type TabControl}">
         <Setter Property="TabStripPlacement" Value="Left" />
+        <Setter Property="Margin" Value="0,40,0,35" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource ItemContainerStyle}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -41,12 +42,14 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Padding="5" Background="Transparent">
+                        <Border Grid.Column="0" Padding="0" Background="Transparent">
                             <DockPanel>
-                                <TabPanel Background="Transparent" IsItemsHost="true" Margin="2,2,2,0" Grid.Row="0" Grid.Column="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+                                <!-- ReSharper disable Xaml.RedundantAttachedProperty -->
+                                <TabPanel Background="Transparent" IsItemsHost="true" Margin="2,0,2,0" Grid.Row="0" Grid.Column="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+                                <!-- ReSharper restore Xaml.RedundantAttachedProperty -->
                             </DockPanel>
                         </Border>
-                        <Border x:Name="contentPanel" Grid.Column="1" Margin="5,0,0,0">
+                        <Border x:Name="contentPanel" Grid.Column="1" Margin="0">
                             <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" 
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             </ContentPresenter>
@@ -55,5 +58,9 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="TabItemGridStyle" TargetType="{x:Type Grid}">
+        <Setter Property="Margin" Value="7,7,7,0" />
     </Style>
 </ResourceDictionary>

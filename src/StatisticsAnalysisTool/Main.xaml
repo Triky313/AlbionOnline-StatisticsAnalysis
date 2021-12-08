@@ -450,11 +450,14 @@
         <Setter Property="Source" Value="Resources/goldchest.png"/>
     </Style>
 
-    <!-- Image logo -->
-    <Style TargetType="Image" x:Key="Image.Logo" >
-        <Setter Property="Source" Value="logo.ico"/>
-        <Setter Property="Height" Value="37"/>
-        <Setter Property="Width" Value="37"/>
+    <!-- Tool icon -->
+    <Style TargetType="Image" x:Key="Image.ToolIcon" >
+        <Setter Property="Source" Value="sat-icon.ico"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="5,0,0,0"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Width" Value="35"/>
     </Style>
 
     <!-- ListView grid stackPanel item icon -->
@@ -885,7 +888,7 @@
 
     <!-- MainWindow title label -->
     <Style TargetType="Label" x:Key="MainWindow.Title">
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"></Setter>
         <Setter Property="HorizontalAlignment" Value="Left"></Setter>
         <Setter Property="VerticalAlignment" Value="Top"></Setter>
         <Setter Property="FontSize" Value="20"></Setter>

@@ -175,7 +175,7 @@ namespace StatisticsAnalysisTool.ViewModels
             InitMainWindowData();
             _ = InitTrackingAsync();
         }
-
+        
         public async void SetUiElements()
         {
             #region Error bar
