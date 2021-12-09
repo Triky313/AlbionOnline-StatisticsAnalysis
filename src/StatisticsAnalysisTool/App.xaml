@@ -7,9 +7,16 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Colors.xaml" />
+                <ResourceDictionary Source="Styles/MainStyles.xaml" />
+
+                <ResourceDictionary Source="Styles/ErrorBarStyles.xaml" />
+
+                <ResourceDictionary Source="Styles/MainWindowStyle.xaml" />
+
+                <ResourceDictionary Source="Styles/TabControlStyles.xaml" />
+                <ResourceDictionary Source="Styles/ItemSearchStyles.xaml" />
                 <ResourceDictionary Source="Main.xaml" />
                 <ResourceDictionary Source="Tracking.xaml" />
-                <ResourceDictionary Source="Styles/TabControlStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

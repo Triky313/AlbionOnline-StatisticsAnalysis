@@ -61,6 +61,6 @@
     </Style>
 
     <Style x:Key="TabItemGridStyle" TargetType="{x:Type Grid}">
-        <Setter Property="Margin" Value="7,7,7,0" />
+        <Setter Property="Margin" Value="0" />
     </Style>
 </ResourceDictionary>

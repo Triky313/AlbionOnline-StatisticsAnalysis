@@ -1182,7 +1182,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion
 
         #region Bindings
-
+        
         public string SearchText
         {
             get => _searchText;
