@@ -1,32 +1,47 @@
-﻿using System.Linq;
+﻿using FontAwesome5;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.ViewModels;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.ViewModels;
+
+// ReSharper disable UnusedParameter.Local
 
 namespace StatisticsAnalysisTool.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindowNew.xaml
+    ///     Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindowNew : Window
+    public partial class MainWindowOld
     {
         private readonly MainWindowViewModel _mainWindowViewModel;
         private static bool _isWindowMaximized;
 
-        public MainWindowNew()
+        public MainWindowOld()
         {
             InitializeComponent();
             //_mainWindowViewModel = new MainWindowViewModel(this);
-            //DataContext = _mainWindowViewModel;
+            DataContext = _mainWindowViewModel;
         }
-
+        
         private void LvItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var item = (Item)((ListView)sender).SelectedValue;
 
             MainWindowViewModel.OpenItemWindow(item);
+        }
+
+        private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var sw = new SettingsWindow(_mainWindowViewModel);
+            sw.ShowDialog();
+        }
+
+        private void StopLoadFullItemInfo_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _mainWindowViewModel.IsFullItemInfoLoading = false;
         }
 
         private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
@@ -46,9 +61,24 @@ namespace StatisticsAnalysisTool.Views
             WindowState = WindowState.Minimized;
         }
 
-        private void StopLoadFullItemInfo_MouseUp(object sender, MouseButtonEventArgs e)
+        private void ImageAwesome_MouseEnter(object sender, MouseEventArgs e)
         {
-            _mainWindowViewModel.IsFullItemInfoLoading = false;
+            if (sender is ImageAwesome icon)
+            {
+#pragma warning disable CA1416 // Validate platform compatibility
+                icon.Spin = true;
+#pragma warning restore CA1416 // Validate platform compatibility
+            }
+        }
+
+        private void ImageAwesome_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is ImageAwesome icon)
+            {
+#pragma warning disable CA1416 // Validate platform compatibility
+                icon.Spin = false;
+#pragma warning restore CA1416 // Validate platform compatibility
+            }
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -85,6 +115,37 @@ namespace StatisticsAnalysisTool.Views
                 MaximizedButton.Content = 2;
                 _isWindowMaximized = true;
             }
+        }
+
+        private void CbMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _mainWindowViewModel.SelectViewModeGrid();
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            _mainWindowViewModel.SaveLootLogger();
+            _mainWindowViewModel.SaveSettings(WindowState, RestoreBounds, Height, Width);
+
+            if (_mainWindowViewModel.IsTrackingActive)
+            {
+                _mainWindowViewModel.StopTracking();
+            }
+        }
+
+        private async void BtnPlayerModeSave_Click(object sender, RoutedEventArgs e)
+        {
+            await _mainWindowViewModel.SetComparedPlayerModeInfoValues();
+        }
+
+        private async void TxtBoxPlayerModeUsername_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter)
+            {
+                return;
+            }
+
+            await _mainWindowViewModel.SetComparedPlayerModeInfoValues();
         }
 
         // ReSharper disable once UnusedMember.Local

@@ -355,9 +355,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void InitViewModeGrids()
         {
-            viewModeGrid.Add(ViewMode.Normal, _mainWindow.GridNormalMode);
-            viewModeGrid.Add(ViewMode.Tracking, _mainWindow.GridTrackingMode);
-            viewModeGrid.Add(ViewMode.Player, _mainWindow.GridPlayerMode);
+            //viewModeGrid.Add(ViewMode.Normal, _mainWindow.GridNormalMode);
+            //viewModeGrid.Add(ViewMode.Tracking, _mainWindow.GridTrackingMode);
+            //viewModeGrid.Add(ViewMode.Player, _mainWindow.GridPlayerMode);
             //viewModeGrid.Add(ViewMode.Gold, _mainWindow.GridGoldMode);
         }
 
@@ -376,7 +376,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             grid.Value.Visibility = Visibility.Visible;
-            _mainWindow.TxtSearch.Focus();
+            //_mainWindow.TxtSearch.Focus();
         }
 
         private void HideAllGrids()
@@ -466,7 +466,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsItemSearchCheckboxesEnabled = true;
             IsTxtSearchEnabled = true;
 
-            _mainWindow.Dispatcher?.Invoke(() => { _ = _mainWindow.TxtSearch.Focus(); });
+            //_mainWindow.Dispatcher?.Invoke(() => { _ = _mainWindow.TxtSearch.Focus(); });
         }
 
         private async Task InitTrackingAsync()

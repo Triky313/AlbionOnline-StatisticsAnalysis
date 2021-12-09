@@ -1,0 +1,663 @@
+﻿<Window x:Class="StatisticsAnalysisTool.Views.MainWindowOld"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+        xmlns:uc="clr-namespace:StatisticsAnalysisTool.UserControls"
+        xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
+        Title="AlbionOnline - StatisticsAnalysisTool"
+        WindowStartupLocation="CenterScreen" Style="{StaticResource MainWindowStyle}" Closing="Window_Closing"
+        d:DataContext="{d:DesignData MainWindowViewModel}">
+    <Grid>
+        <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
+            <Button x:Name="MaximizedButton" Style="{StaticResource WindowButtonStyle}" Content="1" Margin="0,0,28,0" Click="MaximizedButton_Click" />
+            <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,58,0" Click="MinimizeButton_Click" />
+            <StackPanel Orientation="Horizontal"  Height="40" VerticalAlignment="Top" Margin="52,0,91,0">
+                <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL | " Style="{StaticResource MainWindow.Title}" />
+                <Label Content="{Binding Version, FallbackValue=VERSION, Mode=OneTime}" Style="{StaticResource MainWindow.Version}" />
+            </StackPanel>
+            <Image Style="{StaticResource Image.ToolIcon}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" />
+        </Grid>
+        <Grid ZIndex="-1" Background="{StaticResource SolidColorBrush.Background.Second}" Height="40" VerticalAlignment="Top" Margin="0,40,0,0">
+            <ComboBox ItemsSource="{Binding Modes}" SelectedItem="{Binding ModeSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="ViewMode" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="170" Height="23" SelectionChanged="CbMode_SelectionChanged" />
+            <Grid HorizontalAlignment="Left" Height="24" Margin="185,7,0,0" VerticalAlignment="Top" Width="24">
+                <fa5:ImageAwesome Visibility="{Binding LoadIconVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+            </Grid>
+            <Grid Visibility="{Binding GoldPriceVisibility, FallbackValue=Visible}" Height="40" VerticalAlignment="Top" HorizontalAlignment="Center" Width="120">
+                <Image Style="{StaticResource Image.Gold}" Width="24" Height="24" Margin="10,8,0,8" HorizontalAlignment="Left" />
+                <Label Content="{Binding CurrentGoldPrice, FallbackValue=0, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding CurrentGoldPriceTimestamp}" VerticalAlignment="Center" Foreground="{StaticResource Solid.Color.Text.Gold}" Height="26" Margin="35,5,10,9" FontWeight="Bold" />
+            </Grid>
+            <Grid Margin="0,7,40,0" HorizontalAlignment="Right" Width="28" Height="28" VerticalAlignment="Top" ToolTip="{Binding Translation.IsTrackingActive}">
+                <fa5:ImageAwesome Icon="Solid_Wifi" Foreground="{Binding TrackingIconColor, Converter={StaticResource Tracker.Icon.Converter}, FallbackValue={StaticResource SolidColorBrush.Tracking.Off}}" />
+            </Grid>
+            <Grid Margin="0,10,10,0" HorizontalAlignment="Right" Width="24" Height="24" VerticalAlignment="Top">
+                <fa5:ImageAwesome Icon="Solid_Cog" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" MouseEnter="ImageAwesome_MouseEnter" MouseLeave="ImageAwesome_MouseLeave" />
+            </Grid>
+        </Grid>
+        <Grid x:Name="GridNormalMode" Margin="0,80,0,0" Visibility="Visible">
+            <TextBox x:Name="TxtSearch" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsTxtSearchEnabled, FallbackValue=false}" HorizontalAlignment="Left" Height="22" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" />
+            <Grid Margin="235,11,0,0" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left" IsEnabled="{Binding IsFilterResetEnabled, FallbackValue=false}">
+                <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="FilterReset_MouseUp" />
+            </Grid>
+            <ComboBox ItemsSource="{Binding ItemParentCategories}" SelectedValue="{Binding SelectedItemParentCategory}" Visibility="{Binding ItemParentCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="260,10,0,0" VerticalAlignment="Top" Width="150" />
+            <ComboBox ItemsSource="{Binding ItemCategories}" SelectedValue="{Binding SelectedItemCategory}" Visibility="{Binding ItemCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="260,37,0,0" VerticalAlignment="Top" Width="150" />
+            <ComboBox ItemsSource="{Binding ItemTiers}" SelectedValue="{Binding SelectedItemTier}" Visibility="{Binding ItemTiersVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="415,10,0,0" VerticalAlignment="Top" Width="44" MinWidth="80" />
+            <ComboBox ItemsSource="{Binding ItemLevels}" SelectedValue="{Binding SelectedItemLevel}" Visibility="{Binding ItemLevelsVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="500,10,0,0" VerticalAlignment="Top" Width="54" MinWidth="80" />
+
+            <Grid Margin="0,6,160,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <fa5:ImageAwesome Icon="Regular_Image" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+            </Grid>
+            <Label Content="{Binding LocalImageCounter, FallbackValue=0}" Height="26" Margin="0,6,105,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Left" HorizontalAlignment="Right" Width="50" />
+            <StackPanel Orientation="Horizontal" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,6,90,0" Width="10">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" HorizontalContentAlignment="Center" />
+            </StackPanel>
+            <Label Content="{Binding ItemCounterString, FallbackValue=0/0}" Height="26" Margin="0,7,10,0" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="75" />
+
+            <Grid IsEnabled="{Binding IsItemSearchCheckboxesEnabled}">
+                <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearchActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="245" />
+                <CheckBox Content="{Binding Translation.ShowOnlyItemsWithAlertOn, FallbackValue=SHOW__ONLY__ITEMS__WITH__ALERT__ON}" IsChecked="{Binding IsShowOnlyItemsWithAlertOnActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Width="245" />
+                <CheckBox Content="{Binding Translation.ShowOnlyFavorites, FallbackValue=SHOW__ONLY__FAVORITES}" IsChecked="{Binding IsShowOnlyFavoritesActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="260,59,0,0" VerticalAlignment="Top" Width="235" />
+            </Grid>
+
+            <Grid ZIndex="1" Margin="0,97,0,40" Visibility="{Binding GridTryToLoadTheItemListAgainVisibility, FallbackValue=Collapsed}">
+                <Button Height="32" Width="auto" MinWidth="200" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="{Binding Translation.TryDownloadingTheItemListAgain, FallbackValue=TRY__DOWNLOADING__THE__ITEM__LIST__AGAIN}" Click="BtnTryToLoadTheItemListAgain_Click"/>
+            </Grid>
+
+            <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemsView}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="10,97,10,40" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="{Binding Translation.Icon, FallbackValue=ICON}" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Image Source="{Binding (viewModels:ItemWindowViewModel.Icon)}" Width="75" Height="75" Stretch="Fill" />
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="{Binding Translation.Name, FallbackValue=NAME}" Width="400" DisplayMemberBinding="{Binding LocalizedNameAndEnglish}" />
+
+                        <GridViewColumn Header="{Binding Translation.FullItemInformationExistLocal, FallbackValue=FULL_ITEM_INFORMATION_EXIST_LOCAL}" Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Image Source="{Binding (models:Item.ExistFullItemInformationLocal)}" Width="17" Height="18" Stretch="Fill" />
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="{Binding Translation.IsAlertActive, FallbackValue=IS_ALERT_ACTIVE}" Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Height="24" Width="24">
+                                        <fa5:ImageAwesome Visibility="Visible" Icon="{Binding (models:Item.AlertToggle)}" Foreground="{Binding (models:Item.AlertToggleColor)}" MouseUp="AlertModeAlertActiveToggle_MouseUp" />
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="{Binding Translation.UndercuttingPrice, FallbackValue=UNDERCUTTING_PRICE}" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBox Text="{Binding (models:Item.AlertModeMinSellPriceIsUndercutPrice)}" MaxLength="12" Height="24" Width="65" PreviewTextInput="TxtBoxMinSellPriceIsUndercutPrice_OnPreviewTextInput"></TextBox>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="{Binding Translation.Favorite, FallbackValue=FAVORITE}" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <CheckBox IsChecked="{Binding (models:Item.IsFavorite)}"></CheckBox>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <Grid Visibility="{Binding LoadFullItemInfoProBarGridVisibility, FallbackValue=Hidden}">
+                <ProgressBar Minimum="{Binding LoadFullItemInfoProBarMin, IsAsync=True, FallbackValue=0}" Maximum="{Binding LoadFullItemInfoProBarMax, IsAsync=True, FallbackValue=0}" Value="{Binding LoadFullItemInfoProBarValue, IsAsync=True, FallbackValue=0}" Height="22" Margin="0,38,36,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150" />
+                <Label Content="{Binding LoadFullItemInfoProBarCounter, FallbackValue=0/0}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="24" Margin="0,36,36,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150"></Label>
+                <Grid Margin="0,38,10,0" HorizontalAlignment="Right" Width="24" Height="22" VerticalAlignment="Top">
+                    <fa5:ImageAwesome Icon="Regular_StopCircle" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="StopLoadFullItemInfo_MouseUp" />
+                </Grid>
+            </Grid>
+            <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
+        </Grid>
+        <Grid x:Name="GridTrackingMode" Margin="0,80,0,0" Visibility="Hidden">
+            <Grid Margin="10,10,255,0" Height="45" VerticalAlignment="Top">
+                <DockPanel Margin="0,0,0,0" Height="Auto" VerticalAlignment="Top">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Height="auto" Width="50">
+                        <Grid Margin="0,0,0,0" HorizontalAlignment="Left" Height="auto" Width="40" VerticalAlignment="Center">
+                            <fa5:ImageAwesome Visibility="Visible" 
+                                              ToolTip="{Binding Translation.TrackerOnOff, FallbackValue=TRACKER__ON__OFF}"
+                                              Icon="{Binding TrackerActivationToggleIcon, FallbackValue=Solid_ToggleOff}" 
+                                              Foreground="{Binding TrackerActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" 
+                                              MouseUp="TrackingModeActiveToggle_MouseUp" />
+                        </Grid>
+                    </StackPanel>
+                    <Border Width="{Binding UsernameInfoWidth, FallbackValue=NaN}" Visibility="{Binding UsernameInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
+                        <StackPanel Style="{StaticResource Tracking.Information.StackPanel}" Height="40">
+                            <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding Translation.Username, FallbackValue=USERNAME}"></Label>
+                            <Label Style="{StaticResource Tracking.Information.Value}" Content="{Binding TrackingUsername, FallbackValue=USERNAME}"></Label>
+                        </StackPanel>
+                    </Border>
+                    <Border Width="{Binding GuildInfoWidth, FallbackValue=NaN}" Visibility="{Binding GuildInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
+                        <StackPanel Style="{StaticResource Tracking.Information.StackPanel}" Height="40">
+                            <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding Translation.Guild, FallbackValue=GUILD}"></Label>
+                            <Label Style="{StaticResource Tracking.Information.Value}" Content="{Binding TrackingGuildName, FallbackValue=GUILD}"></Label>
+                        </StackPanel>
+                    </Border>
+                    <Border Width="{Binding AllianceInfoWidth, FallbackValue=NaN}" Visibility="{Binding AllianceInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
+                        <StackPanel Style="{StaticResource Tracking.Information.StackPanel}" Height="40">
+                            <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding Translation.Alliance, FallbackValue=ALLIANCE}"></Label>
+                            <Label Style="{StaticResource Tracking.Information.Value}" Content="{Binding TrackingAllianceName, FallbackValue=ALLIANCE}"></Label>
+                        </StackPanel>
+                    </Border>
+                    <Border Width="{Binding CurrentMapInfoWidth, FallbackValue=NaN}" Visibility="{Binding CurrentMapInformationVisibility}" Style="{StaticResource Tracking.Information.Border}">
+                        <StackPanel Style="{StaticResource Tracking.Information.StackPanel}" Height="40">
+                            <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding Translation.CurrentMap, FallbackValue=CURRENT__MAP}"></Label>
+                            <Label Style="{StaticResource Tracking.Information.Value}" Content="{Binding TrackingCurrentMapName, FallbackValue=CURRENT__MAP__NAME}"></Label>
+                        </StackPanel>
+                    </Border>
+                    <Grid></Grid>
+                </DockPanel>
+            </Grid>
+            <StackPanel IsEnabled="{Binding IsTrackingActive, FallbackValue=false}" Margin="0,10,10,0" HorizontalAlignment="Right" Width="240" Height="96" VerticalAlignment="Top">
+                <Grid>
+                    <DockPanel Width="auto" HorizontalAlignment="Right">
+                        <Button Content="{Binding Translation.ResetTrackingCounter, FallbackValue=RESET__TRACKING__COUNTER}" Width="215" Height="26" Click="BtnTrackingReset_Click" />
+                        <Grid Height="20" Width="20" Margin="5,0,0,0" MouseEnter="OpenMainTrackerInfoPopup_MouseEnter" MouseLeave="CloseMainTrackerInfoPopup_MouseLeave">
+                            <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,0,0,0" />
+                        </Grid>
+                    </DockPanel>
+                </Grid>
+                <CheckBox IsChecked="{Binding IsTrackingResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}"></CheckBox>
+                <Label Foreground="{StaticResource SolidColorBrush.Foreground.First}" Content="{Binding MainTrackerTimer, FallbackValue=00:00:00}" HorizontalAlignment="Right" />
+            </StackPanel>
+            <Grid Margin="10,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel>
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalFame, FallbackValue='TOTAL__FAME'}">
+                            <Image Style="{StaticResource Icon.Fame}"/>
+                        </Grid>
+                        <Label Content="{Binding TotalGainedFameInSession, IsAsync=True, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Style="{StaticResource Icon.Fame}"/>
+                        </Grid>
+                        <Label Content="{Binding FamePerHour, IsAsync=True, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                </StackPanel>
+            </Grid>
+            <Grid Margin="160,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel Margin="0,0,0,0">
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalReSpec, FallbackValue='TOTAL__RESPEC'}">
+                            <Image Style="{StaticResource Icon.ReSpec}"/>
+                        </Grid>
+                        <Label Content="{Binding TotalGainedReSpecPointsInSession, IsAsync=True, FallbackValue='0'}" ContentStringFormat="{}{0}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Style="{StaticResource Icon.ReSpec}"/>
+                        </Grid>
+                        <Label Content="{Binding ReSpecPointsPerHour, IsAsync=True, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                </StackPanel>
+            </Grid>
+            <Grid Margin="320,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <StackPanel Margin="0,0,0,0">
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding Translation.TotalSilver, FallbackValue='TOTAL__SILVER'}">
+                            <Image Style="{StaticResource Icon.Silver}"/>
+                        </Grid>
+                        <Label Content="{Binding TotalGainedSilverInSession, IsAsync=True, FallbackValue='0'}" Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Style="{StaticResource Icon.Silver}"/>
+                        </Grid>
+                        <Label Content="{Binding SilverPerHour, IsAsync=True, FallbackValue='0'}" ContentStringFormat="{}{0} /h"  Width="Auto" Height="auto" FontWeight="Bold" FontSize="12" Margin="0,-2, 0,0" HorizontalAlignment="Left"></Label>
+                    </DockPanel>
+                </StackPanel>
+            </Grid>
+            <Grid Margin="480,55,0,0" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150">
+                <ItemsControl ItemsSource="{Binding FactionPointStats}" />
+            </Grid>
+            <Grid Height="30" VerticalAlignment="Top" Margin="10,101,0,0" HorizontalAlignment="Left" Width="500">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding PartyMemberNumber, FallbackValue=0}"></Label>
+                    <Grid Height="20" Width="20" Margin="0,0,5,0" VerticalAlignment="Center">
+                        <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="PartyIcon_MouseUp" />
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding PartyMemberCircles}" Style="{StaticResource PartyMember.ItemsControl}"/>
+                </StackPanel>
+            </Grid>
+            <Grid ZIndex="1" Visibility="{Binding IsMainTrackerPopupVisible, FallbackValue=Hidden}" Margin="0,58,0,35" Background="{StaticResource SolidColorBrush.Background.Second}">
+                <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
+                    <DockPanel Margin="0,5,0,10">
+                        <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                            <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                        </Grid>
+                        <TextBlock Text="{Binding Translation.MainTrackerDescription1}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="16" TextWrapping="Wrap" Width="auto"/>
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,10">
+                        <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                            <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                        </Grid>
+                        <TextBlock Text="{Binding Translation.MainTrackerDescription2}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="16" TextWrapping="Wrap" Width="auto"/>
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,10">
+                        <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                            <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                        </Grid>
+                        <TextBlock Text="{Binding Translation.MainTrackerDescription3}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="16" TextWrapping="Wrap" Width="auto"/>
+                    </DockPanel>
+                </StackPanel>
+            </Grid>
+            <TabControl IsEnabled="{Binding IsTrackingActive, FallbackValue=true}" Margin="10,136,10,35" BorderThickness="0 1 0 0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}">
+                <TabItem Header="{Binding Translation.Tracking, FallbackValue=TRACKING}">
+                    <Grid>
+                        <Grid Height="65" Width="auto" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Vertical">
+                                <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="250" 
+                                        Margin="0,2,0,5" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
+                                <Grid Height="26" Width="26" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                    <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}" 
+                                                      Foreground="{StaticResource  SolidColorBrush.Green.3}" MouseUp="BtnExportLootToFile_MouseUp" />
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Height="auto" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <StackPanel Orientation="Vertical" Height="90">
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                    <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Width="20" Height="20" Margin="0,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredFame, FallbackValue=true}" Content="{Binding Translation.Fame, FallbackValue=FAME}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredSilver, FallbackValue=true}" Content="{Binding Translation.Silver, FallbackValue=SILVER}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredFaction, FallbackValue=true}" Content="{Binding Translation.Faction, FallbackValue=FACTION}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredSeasonPoints, FallbackValue=true}" Content="{Binding Translation.SeasonPoints, FallbackValue=SEASON__POINTS}" Margin="5,0,5,0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="25,5,0,5">
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredEquipmentLoot, FallbackValue=true}" Content="{Binding Translation.EquipmentLoot, FallbackValue=EQUIPMENT__LOOT}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredConsumableLoot, FallbackValue=true}" Content="{Binding Translation.ConsumableLoot, FallbackValue=CONSUMABLE__LOOT}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredSimpleLoot, FallbackValue=true}" Content="{Binding Translation.SimpleLoot, FallbackValue=SIMPLE__LOOT}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFilteredUnknownLoot, FallbackValue=true}" Content="{Binding Translation.UnknownLoot, FallbackValue=UNKNOWN__LOOT}" Margin="5,0,5,0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                    <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Width="20" Height="20" Margin="0,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingPartyLootOnly, FallbackValue=true}" Content="{Binding Translation.TrackPartyLootOnly, FallbackValue=TRACK__PARTY__LOOT__ONLY}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingSilver, FallbackValue=true}" Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" Margin="5,0,5,0" />
+                                    <CheckBox IsChecked="{Binding IsTrackingFame, FallbackValue=true}" Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" Margin="5,0,5,0" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,94,0,0" VerticalAlignment="Top"/>
+                        <ScrollViewer Margin="0,97,0,0">
+                            <ItemsControl ItemsSource="{Binding TrackingNotificationsCollectionView, IsAsync=True, Mode=OneWay}" />
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{Binding Translation.Dungeon, FallbackValue=DUNGEON}">
+                    <Grid>
+                        <Grid Height="{Binding DungeonStatsGridHeight, FallbackValue=82}" ZIndex="1" MinHeight="60" VerticalAlignment="Top">
+                            <Grid>
+                                <StackPanel Height="auto" VerticalAlignment="Top" HorizontalAlignment="Left">
+                                    <ContentPresenter Content="{Binding DungeonStatsTotal}"/>
+                                    <ContentPresenter Content="{Binding DungeonStatsDay}"/>
+                                    <ContentPresenter Content="{Binding DungeonStatsFilter}"/>
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Right" Width="250" Height="123" VerticalAlignment="Top">
+                                    <DockPanel Height="auto" VerticalAlignment="Top">
+                                        <ContentControl Content="{Binding DungeonCloseTimer}" />
+                                    </DockPanel>
+                                    <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="80" Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
+                                    <Button Content="{Binding Translation.DeleteSelectedDungeons, FallbackValue=DELETE__SELECTED__DUNGEONS}" Height="26" MaxWidth="500" MinWidth="80" Margin="0,2,0,5" Click="BtnDeleteSelectedDungeons_Click" />
+                                </StackPanel>
+                            </Grid>
+                            <Grid Style="{StaticResource Grid.Unfold.Bar}" ZIndex="2">
+                                <fa5:ImageAwesome Icon="{Binding DungeonStatsGridButtonIcon, FallbackValue=Solid_AngleDoubleDown}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Margin="0,0,0,3" MouseUp="MouseUp_FoldUnfoldDungeonStats" />
+                                <Separator Margin="0,19,0,0" Background="{StaticResource SolidColorBrush.Blue.3}" />
+                            </Grid>
+                        </Grid>
+                        <ScrollViewer Margin="{Binding DungeonStatsScrollViewerMargin, FallbackValue='0,82,0,0'}">
+                            <ItemsControl ItemsSource="{Binding TrackingDungeonsCollectionView, IsAsync=True, Mode=OneWay}" />
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE_METER}">
+                    <Grid>
+                        <Grid Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Grid Height="20" Width="30" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <fa5:ImageAwesome Visibility="Visible" 
+                                                      ToolTip="{Binding Translation.DamageMeterOnOff, FallbackValue=DAMAGE__METER__ON__OFF}"
+                                                      Icon="{Binding DamageMeterActivationToggleIcon, FallbackValue=Solid_ToggleOff}" 
+                                                      Foreground="{Binding DamageMeterActivationToggleColor, FallbackValue={StaticResource Solid.Color.Text.Normal}}" 
+                                                      MouseUp="DamageMeterModeActiveToggle_MouseUp" />
+                                </Grid>
+                                <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterSort}" SelectedItem="{Binding DamageMeterSortSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
+                            </StackPanel>
+                        </Grid>
+                        <Grid Margin="0,0,0,0" HorizontalAlignment="Right" Width="500" Height="30" VerticalAlignment="Top">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsDamageMeterResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
+                                          HorizontalContentAlignment="Left" Margin="5,3,10,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="auto" MaxWidth="250"/>
+                                <Button Content="{Binding Translation.ResetDamageMeter, FallbackValue=RESET__DAMAGE__METER}" Height="26" MaxWidth="500" MinWidth="200" Margin="0,0,0,0" Width="auto" VerticalAlignment="Top" Click="BtnDamageMeterReset_Click" />
+                                <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="{Binding Translation.OpenExtendedDamageMeterWindow, FallbackValue=OPEN__EXTENDED__DAMAGE__METER__WINDOW}" MouseUp="OpenDamageMeterWindow_MouseUp">
+                                    <fa5:ImageAwesome Icon="Solid_Expand" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                                </Grid>
+                                <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}" MouseUp="CopyDamageMeterToClipboard_MouseUp">
+                                    <fa5:ImageAwesome Icon="Regular_Copy" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                                </Grid>
+                                <Grid Height="20" Width="20" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
+                                    <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+
+                        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,61,0,0" VerticalAlignment="Top"/>
+                        <ScrollViewer Margin="0,65,0,0">
+                            <ItemsControl ItemsSource="{Binding DamageMeter, IsAsync=True, Mode=OneWay}"/>
+                        </ScrollViewer>
+
+                        <Grid Visibility="{Binding IsDamageMeterPopupVisible, FallbackValue=Hidden}" Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.Second}">
+                            <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
+                                <DockPanel Margin="0,0,0,16">
+                                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                                    </Grid>
+                                    <TextBlock Text="{Binding Translation.DamageMeterDescription1}" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontSize="16" TextWrapping="Wrap" Width="auto"></TextBlock>
+                                </DockPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{Binding Translation.MapTracking, FallbackValue=MAP_TRACKING}">
+                    <Grid>
+                        <ScrollViewer Margin="0,0,0,0">
+                            <ItemsControl ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"/>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+                <!--<TabItem Header="{Binding Translation.Settings, FallbackValue=SETTINGS}">
+                    <Grid>
+                        <ScrollViewer Margin="0,10,0,0">
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Height="auto">
+                                <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="200" Margin="0,5,0,5" Click="BtnDungeonTrackingReset_Click" />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>-->
+            </TabControl>
+        </Grid>
+        <Grid x:Name="GridPlayerMode" Margin="0,80,0,0" Visibility="Hidden">
+            <TextBox x:Name="TxtBoxPlayerModeUsername" Text="{Binding SavedPlayerInformationName}" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" KeyDown="TxtBoxPlayerModeUsername_KeyDown" />
+            <Button x:Name="BtnPlayerModeSave" Content="{Binding Path=Translation.Load, FallbackValue=LOAD}" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="110" Height="25" Click="BtnPlayerModeSave_Click" />
+            <ScrollViewer  Margin="0,40,0,20" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="10,5,10,10">
+                    <StackPanel Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,-15">
+                            <Label Content="{Binding Path=PlayerModeTranslation.GeneralInformation}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14" />
+                            <Separator />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Id}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.Id, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.Id, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Name}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.GuildName}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.GuildName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.GuildName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.AllianceName}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.AllianceName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.AllianceName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.FameRatio}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.FameRatio, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N2" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.FameRatio, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,-15">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Pvp}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14" />
+                            <Separator />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.KillFame}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.KillFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.KillFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.DeathFame}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.DeathFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.DeathFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.TotalKills}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.SearchPlayer.TotalKills, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.SearchPlayer.TotalKills, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.GvgKills}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.SearchPlayer.GvgKills, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.SearchPlayer.GvgKills, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.GvgWon}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.SearchPlayer.GvgWon, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.SearchPlayer.GvgWon, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.CrystalLeague}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.CrystalLeague, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.CrystalLeague, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,-15">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Pve}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14" />
+                            <Separator />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Hellgate}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Hellgate, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Hellgate, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,-15">
+                            <Label Content="{Binding Path=PlayerModeTranslation.GatheringFiber}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14" />
+                            <Separator />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,-15">
+                            <Label Content="{Binding Path=PlayerModeTranslation.GatheringHide}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14" />
+                            <Separator />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,-15">
+                            <Label Content="{Binding Path=PlayerModeTranslation.GatheringOre}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14" />
+                            <Separator />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,-15">
+                            <Label Content="{Binding Path=PlayerModeTranslation.GatheringRock}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14" />
+                            <Separator />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,-15">
+                            <Label Content="{Binding Path=PlayerModeTranslation.GatheringWood}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14" />
+                            <Separator />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,-15">
+                            <Label Content="{Binding Path=PlayerModeTranslation.GatheringAll}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14" />
+                            <Separator />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.All.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.All.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.All.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,-15">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Crafting}" Style="{StaticResource PlayerMode.Title}" HorizontalAlignment="Left" Margin="0,0,0,14" />
+                            <Separator />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Royal}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Crafting.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Outlands}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Crafting.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Path=PlayerModeTranslation.Total}" Style="{StaticResource PlayerMode.Label.Title}" />
+                            <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                            <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Crafting.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <!--<Grid x:Name="GridGoldMode" Margin="0,80,0,0" Visibility="Hidden">
+            <Button Content="{Binding Translation.Update, FallbackValue=UPDATE}" HorizontalAlignment="Left" Margin="10,10,0,0" Width="110" Height="24" VerticalAlignment="Top" Click="LoadGoldPrice_Click" />
+            <TextBox Text="{Binding TextBoxGoldModeNumberOfValues}" ToolTip="{Binding Translation.NumberOfValues, FallbackValue=NUMBER__OF__VALUES}" MaxLength="5" Margin="125,10,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" PreviewTextInput="TxtBoxGoldModeAmountValues_OnPreviewTextInput" />
+            <Grid Margin="10,34,10,10">
+                <lvc:CartesianChart ZoomMode="None" XAxes="{Binding XAxes}" YAxes="{Binding YAxes}" Series="{Binding Series}" />
+            </Grid>
+        </Grid>-->
+        <uc:FooterControl Height="34" VerticalAlignment="Bottom" />
+        <uc:ErrorBarControl Height="30" VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}" ErrorBarText="{Binding ErrorBarText}" />
+
+    </Grid>
+</Window>
