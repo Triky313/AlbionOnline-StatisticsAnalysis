@@ -49,7 +49,10 @@
                     <ComboBox ItemsSource="{Binding ItemLevels}" SelectedValue="{Binding SelectedItemLevel}" Visibility="{Binding ItemLevelsVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="500,10,0,0" VerticalAlignment="Top" Width="54" MinWidth="80" />
 
                     <userControls:ItemSearchImageCounterControl VerticalAlignment="Top" HorizontalAlignment="Right" LocalImageCounter="{Binding LocalImageCounter}" ItemCounterString="{Binding ItemCounterString}" />
-                    <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
+                    <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" 
+                            IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" 
+                            Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" 
+                            Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
 
                     <Grid IsEnabled="{Binding IsItemSearchCheckboxesEnabled}">
                         <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" IsChecked="{Binding IsFullItemInfoSearchActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="245" />
@@ -166,6 +169,6 @@
         </TabControl>
 
         <userControls:FooterControl Height="40" VerticalAlignment="Bottom" />
-        <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Visible}" ErrorBarText="{Binding ErrorBarText}" />
+        <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}" ErrorBarText="{Binding ErrorBarText}" />
     </Grid>
 </Window>
