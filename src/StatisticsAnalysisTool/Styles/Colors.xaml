@@ -32,6 +32,13 @@
     <Color x:Key="Color.Accent.Red.4">#FFE23B3E</Color>
     <Color x:Key="Color.Accent.Red.5">#FFCD3638</Color>
 
+    <!-- Accent colors transparent -->
+    <Color x:Key="Color.Accent.Blue.Transparent.1">#3397CAED</Color>
+    <Color x:Key="Color.Accent.Blue.Transparent.2">#3363B0E3</Color>
+    <Color x:Key="Color.Accent.Blue.Transparent.3">#333498DB</Color>
+    <Color x:Key="Color.Accent.Blue.Transparent.4">#332280BF</Color>
+    <Color x:Key="Color.Accent.Blue.Transparent.5">#33185D8B</Color>
+
     <SolidColorBrush x:Key="SolidColorBrush.Text.1" Color="{StaticResource Color.Text.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.2" Color="{StaticResource Color.Text.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.3" Color="{StaticResource Color.Text.3}"/>
@@ -60,4 +67,9 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.4" Color="{StaticResource Color.Accent.Red.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.5" Color="{StaticResource Color.Accent.Red.5}"/>
 
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.1" Color="{StaticResource Color.Accent.Blue.Transparent.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.2" Color="{StaticResource Color.Accent.Blue.Transparent.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.3" Color="{StaticResource Color.Accent.Blue.Transparent.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.4" Color="{StaticResource Color.Accent.Blue.Transparent.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.5" Color="{StaticResource Color.Accent.Blue.Transparent.5}"/>
 </ResourceDictionary>

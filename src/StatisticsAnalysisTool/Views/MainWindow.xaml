@@ -64,7 +64,8 @@
                         <Button Height="32" Width="auto" MinWidth="200" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="{Binding Translation.TryDownloadingTheItemListAgain, FallbackValue=TRY__DOWNLOADING__THE__ITEM__LIST__AGAIN}" Click="BtnTryToLoadTheItemListAgain_Click"/>
                     </Grid>
 
-                    <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemsView}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" Margin="0,97,0,0" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
+                    <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemsView}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" 
+                              Margin="0,97,0,0" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="{Binding Translation.Icon, FallbackValue=ICON}" Width="80">
@@ -77,7 +78,8 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
 
-                                <GridViewColumn Header="{Binding Translation.Name, FallbackValue=NAME}" Width="400" DisplayMemberBinding="{Binding LocalizedNameAndEnglish}" />
+                                <GridViewColumn Header="{Binding Translation.Name, FallbackValue=NAME}" Width="400" 
+                                                DisplayMemberBinding="{Binding (models:Item.LocalizedNameAndEnglish)}" />
 
                                 <GridViewColumn Header="{Binding Translation.FullItemInformationExistLocal, FallbackValue=FULL_ITEM_INFORMATION_EXIST_LOCAL}" Width="100">
                                     <GridViewColumn.CellTemplate>
@@ -103,7 +105,8 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Grid>
-                                                <TextBox Text="{Binding (models:Item.AlertModeMinSellPriceIsUndercutPrice)}" MaxLength="12" Height="24" Width="65" PreviewTextInput="TxtBoxMinSellPriceIsUndercutPrice_OnPreviewTextInput"></TextBox>
+                                                <TextBox Text="{Binding (models:Item.AlertModeMinSellPriceIsUndercutPrice)}" 
+                                                         MaxLength="12" Height="24" Width="65" PreviewTextInput="TxtBoxMinSellPriceIsUndercutPrice_OnPreviewTextInput"></TextBox>
                                             </Grid>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
