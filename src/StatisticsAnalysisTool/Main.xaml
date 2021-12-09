@@ -4,9 +4,6 @@
                     xmlns:itemWindowModel="clr-namespace:StatisticsAnalysisTool.Models.ItemWindowModel"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common">
 
-    <!-- Base font size -->
-    <system:Double x:Key="BaseFontSize">12</system:Double>
-
     <!-- Global background colors -->
     <Color x:Key="Background.First">#FF36363F</Color>
     <Color x:Key="Background.Second">#FF2B2B33</Color>
@@ -519,30 +516,15 @@
         <Setter Property="MinWidth" Value="80"/>
     </Style>
 
-    <!-- Primary Window -->
-    <Style x:Key="MainWindowStyle" TargetType="Window">
-        <Setter Property="BorderThickness" Value="1,1,1,1" />
-        <Setter Property="AllowsTransparency" Value="True" />
-        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
-        <Setter Property="WindowStyle" Value="None" />
-        <Setter Property="Height" Value="550" />
-        <Setter Property="Width" Value="1000" />
-        <Setter Property="MinHeight" Value="400" />
-        <Setter Property="MinWidth" Value="800" />
-        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.First}"/>
-        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.First}"/>
-    </Style>
-
-    <!-- Primary Window -->
-    <Style x:Key="WindowChrome" TargetType="Window">
+    <Style x:Key="WindowChrome" TargetType="{x:Type Window}">
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome />
             </Setter.Value>
         </Setter>
         <Setter Property="BorderThickness" Value="1,1,1,1" />
-        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.First}"/>
-        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.Second}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.1}"/>
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}"/>
         <Setter Property="FontSize" Value="{StaticResource BaseFontSize}"/>
         <Setter Property="WindowStyle" Value="None"/>
         <Setter Property="Focusable" Value="False"/>

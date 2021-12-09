@@ -11,7 +11,8 @@
 
                 <ResourceDictionary Source="Styles/ErrorBarStyles.xaml" />
 
-                <ResourceDictionary Source="Styles/MainWindowStyle.xaml" />
+                <ResourceDictionary Source="Styles/MainWindowStyles.xaml" />
+                <ResourceDictionary Source="Styles/ItemWindowStyles.xaml" />
 
                 <ResourceDictionary Source="Styles/TabControlStyles.xaml" />
                 <ResourceDictionary Source="Styles/ItemSearchStyles.xaml" />

@@ -6,24 +6,28 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         xmlns:ctx="clr-namespace:LiveChartsCore.Kernel;assembly=LiveChartsCore"
+        xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
         mc:Ignorable="d"
-        Title="ItemWindow" MinHeight="350" Height="420" MinWidth="900" Width="1210" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
+        Title="ItemWindow" 
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource ItemWindowStyle}">
     <Grid>
-        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
+        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
+        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
+
         <Grid ZIndex="1" Width="24" Height="24" Margin="0,80,5,0" HorizontalAlignment="Right" VerticalAlignment="Top">
             <fa5:ImageAwesome Visibility="Visible" Icon="Solid_Sync" ToolTip="{Binding RefreshIconTooltipText, FallbackValue=LAST__UPDATE: TIME}" Spin="{Binding RefreshSpin, FallbackValue=false, UpdateSourceTrigger=PropertyChanged}" SpinDuration="10" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" />
         </Grid>
         <Grid ZIndex="-1" Height="110" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="{StaticResource Background.First}" Offset="0" />
-                    <GradientStop Color="{StaticResource Background.Second}" Offset="1" />
+                    <GradientStop Color="{StaticResource Color.Background.2}" Offset="0" />
+                    <GradientStop Color="{StaticResource Color.Background.2}" Offset="1" />
                 </LinearGradientBrush>
             </Grid.Background>
-            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
+            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.3}" />
             <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
             <Button Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
             <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75" />
@@ -44,12 +48,13 @@
                 </Grid>
             </Grid>
         </Grid>
+        
         <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top">
-            <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+            <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
         </Grid>
-        <TabControl Margin="0,86,0,35" IsEnabled="{Binding HasItemPrices}">
+        <TabControl IsEnabled="{Binding HasItemPrices}" Background="Transparent" Margin="0,86,0,35">
             <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}">
-                <ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
+                <ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
@@ -241,9 +246,9 @@
                 </ListView>
             </TabItem>
             <TabItem Header="{Binding Translation.History, FallbackValue=HISTORY}">
-                <Grid Background="{StaticResource SolidColorBrush.Background.First}">
+                <Grid>
                     <lvc:CartesianChart Series="{Binding SeriesHistory, IsAsync=True}" XAxes="{Binding XAxesHistory}">
-                        <!--<lvc:CartesianChart.TooltipTemplate>
+                        <lvc:CartesianChart.TooltipTemplate>
                             <DataTemplate>
                                 <Border BorderThickness="5" Background="{StaticResource SolidColorBrush.Background.Color.6}">
                                     <ItemsControl ItemsSource="{Binding Points, RelativeSource={RelativeSource AncestorType=lvc:DefaultTooltip}}">
@@ -266,7 +271,7 @@
                                     </ItemsControl>
                                 </Border>
                             </DataTemplate>
-                        </lvc:CartesianChart.TooltipTemplate>-->
+                        </lvc:CartesianChart.TooltipTemplate>
                     </lvc:CartesianChart>
                 </Grid>
             </TabItem>
@@ -395,7 +400,7 @@
 
             <TabItem Visibility="{Binding CraftingTabVisibility}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
                 <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto">
-                    <Grid Background="{StaticResource SolidColorBrush.Background.First}">
+                    <Grid Background="Transparent">
                         <StackPanel Orientation="Horizontal">
                             <ContentControl ContentTemplate="{StaticResource EssentialCraftingValuesTemplate}" Content="{Binding EssentialCraftingValues}" />
                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
@@ -413,7 +418,7 @@
             </TabItem>
         </TabControl>
 
-        <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">
+        <!--<Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="{StaticResource Background.First}" Offset="0" />
@@ -426,14 +431,8 @@
                 Prices are provided by the
                 <Hyperlink NavigateUri="https://www.albion-online-data.com/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" BaselineAlignment="Center" RequestNavigate="Hyperlink_RequestNavigate">Albion Online Data Project</Hyperlink>
             </TextBlock>
-        </Grid>
-        <Grid ZIndex="2" Style="{StaticResource Grid.Error.Bar}" Visibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}">
-            <Button Style="{StaticResource Window.Error.Bar.Button.Style}" Content="r" Margin="0,0,7,0" Click="BtnErrorBar_Click" />
-            <Label Style="{StaticResource Grid.Error.Bar.Label}" Content="{Binding ErrorBarText}"></Label>
-            <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
-            <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
-            <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
-            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
-        </Grid>
+        </Grid>-->
+
+        <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Visible}" ErrorBarText="{Binding ErrorBarText}" />
     </Grid>
 </Window>
