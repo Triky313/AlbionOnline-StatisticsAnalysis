@@ -13,6 +13,7 @@
 
                 <ResourceDictionary Source="Styles/MainWindowStyles.xaml" />
                 <ResourceDictionary Source="Styles/ItemWindowStyles.xaml" />
+                <ResourceDictionary Source="Styles/InfoWindowStyles.xaml" />
 
                 <ResourceDictionary Source="Styles/TabControlStyles.xaml" />
                 <ResourceDictionary Source="Styles/ItemSearchStyles.xaml" />

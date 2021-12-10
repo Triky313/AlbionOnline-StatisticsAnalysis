@@ -50,4 +50,10 @@
         <Setter Property="SpinDuration" Value="4"/>
     </Style>
 
+    <Style TargetType="Grid" x:Key="Grid.Unfold.Bar" >
+        <Setter Property="Height" Value="20" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+
 </ResourceDictionary>

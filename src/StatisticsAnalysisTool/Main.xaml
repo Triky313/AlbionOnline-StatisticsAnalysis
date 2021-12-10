@@ -897,24 +897,4 @@
             </Style.Triggers>-->
     </Style>
 
-    <Style TargetType="Grid" x:Key="Grid.Unfold.Bar" >
-        <Setter Property="Height" Value="20" />
-        <Setter Property="VerticalAlignment" Value="Bottom" />
-        <Setter Property="Margin" Value="0" />
-    </Style>
-
-    <Style TargetType="TextBlock" x:Key="InfoWindow.TextBlock.Title" >
-        <Setter Property="FontSize" Value="20" />
-        <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
-        <Setter Property="TextAlignment" Value="Left" />
-        <Setter Property="TextWrapping" Value="Wrap" />
-    </Style>
-
-    <Style TargetType="TextBlock" x:Key="InfoWindow.TextBlock.Text" >
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
-        <Setter Property="TextAlignment" Value="Left" />
-        <Setter Property="TextWrapping" Value="Wrap" />
-    </Style>
-
 </ResourceDictionary>
