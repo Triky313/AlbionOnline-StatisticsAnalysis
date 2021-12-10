@@ -97,7 +97,8 @@
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                                                 <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" 
                                                        Content="{Binding (models:MarketCurrentPricesItem.SellPriceMaxString)}" 
-                                                       ToolTip="{Binding (models:MarketCurrentPricesItem.SellPriceMaxDateString)}" MouseDoubleClick="MarketListSellPriceMaxLabel_MouseDoubleClick" />
+                                                       ToolTip="{Binding (models:MarketCurrentPricesItem.SellPriceMaxDateString)}" 
+                                                       MouseDoubleClick="MarketListSellPriceMaxLabel_MouseDoubleClick" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
