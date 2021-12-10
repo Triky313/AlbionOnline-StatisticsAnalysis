@@ -187,4 +187,10 @@
         </StackPanel>
     </DataTemplate>
 
+    <Style TargetType="Label" x:Key="ItemWindow.Information.FullInfoValue">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Margin" Value="0,5,0,0" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+
 </ResourceDictionary>
