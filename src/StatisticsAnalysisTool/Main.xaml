@@ -674,4 +674,50 @@
         <Setter Property="FontWeight" Value="Light"></Setter>
     </Style>
 
+    <Style TargetType="{x:Type ProgressBar}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Blue.3}"/>
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <Grid Name="TemplateRoot" SnapsToDevicePixels="true">
+                        <Rectangle Fill="{TemplateBinding Background}"/>
+                        <Rectangle Name="PART_Track" Margin="0"/>
+                        <Decorator x:Name="PART_Indicator" HorizontalAlignment="Left" Margin="0">
+                            <Grid Name="Foreground">
+                                <Rectangle Fill="{TemplateBinding Foreground}" Name="Indicator" />
+                                <Grid Name="Animation" ClipToBounds="True">
+                                    <Border Name="PART_GlowRect"  Margin="0,0,0,0" HorizontalAlignment="Left" Background="{TemplateBinding Foreground}"/>
+                                </Grid>
+                                <Grid Name="Overlay">
+                                </Grid>
+                            </Grid>
+                        </Decorator>
+
+                        <Border BorderThickness="{TemplateBinding BorderThickness}"
+                        BorderBrush="{TemplateBinding BorderBrush}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsIndeterminate" Value="true">
+                            <Setter TargetName="Indicator" Property="Fill" Value="Transparent" />
+                            <Setter TargetName="PART_GlowRect" Property="Width" Value="100" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation 
+                                        Storyboard.TargetName="PART_GlowRect"
+                                        Storyboard.TargetProperty="Margin"
+                                        From="-50,0,0,0"  To="400,0,0,0" Duration="0:0:2"
+                                        AutoReverse="True" RepeatBehavior="Forever" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

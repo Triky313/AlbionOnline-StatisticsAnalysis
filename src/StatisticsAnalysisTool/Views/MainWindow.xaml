@@ -166,7 +166,7 @@
             </TabItem>
             <TabItem Header="Settings">
                 <Grid Style="{StaticResource TabItemGridStyle}">
-
+                    <userControls:SettingsControl />
                 </Grid>
             </TabItem>
         </TabControl>

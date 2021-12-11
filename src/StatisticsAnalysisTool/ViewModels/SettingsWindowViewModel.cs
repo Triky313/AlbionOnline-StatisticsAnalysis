@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -15,7 +14,6 @@ namespace StatisticsAnalysisTool.ViewModels
 {
     public class SettingsWindowViewModel : INotifyPropertyChanged
     {
-        private static SettingsWindow _settingsWindow;
         private static string _itemListSourceUrl;
         private static ObservableCollection<FileInformation> _languages = new();
         private static FileInformation _languagesSelection;
@@ -24,7 +22,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private static ObservableCollection<FileSettingInformation> _updateItemListByDays = new();
         private static FileSettingInformation _updateItemListByDaysSelection;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        private readonly MainWindowViewModel _mainWindowViewModel;
         private ObservableCollection<FileInformation> _alertSounds = new();
         private FileInformation _alertSoundSelection;
         private int _fullItemInformationUpdateCycleDays;
@@ -37,10 +34,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isLootLoggerSaveReminderActive;
         private string _automaticLootLoggerSavePath;
 
-        public SettingsWindowViewModel(SettingsWindow settingsWindow, MainWindowViewModel mainWindowViewModel)
+        public SettingsWindowViewModel()
         {
-            _settingsWindow = settingsWindow;
-            _mainWindowViewModel = mainWindowViewModel;
             Translation = new SettingsWindowTranslation();
             InitializeSettings();
         }
@@ -50,11 +45,11 @@ namespace StatisticsAnalysisTool.ViewModels
             #region Refrash rate
 
             RefreshRates.Clear();
-            RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("5_SECONDS"), Value = 5000});
-            RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("10_SECONDS"), Value = 10000});
-            RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("30_SECONDS"), Value = 30000});
-            RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("60_SECONDS"), Value = 60000});
-            RefreshRates.Add(new FileSettingInformation {Name = LanguageController.Translation("5_MINUTES"), Value = 300000});
+            RefreshRates.Add(new FileSettingInformation { Name = LanguageController.Translation("5_SECONDS"), Value = 5000 });
+            RefreshRates.Add(new FileSettingInformation { Name = LanguageController.Translation("10_SECONDS"), Value = 10000 });
+            RefreshRates.Add(new FileSettingInformation { Name = LanguageController.Translation("30_SECONDS"), Value = 30000 });
+            RefreshRates.Add(new FileSettingInformation { Name = LanguageController.Translation("60_SECONDS"), Value = 60000 });
+            RefreshRates.Add(new FileSettingInformation { Name = LanguageController.Translation("5_MINUTES"), Value = 300000 });
             RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
 
             #endregion
@@ -62,6 +57,8 @@ namespace StatisticsAnalysisTool.ViewModels
             #region Language
 
             Languages.Clear();
+            LanguageController.InitializeLanguage();
+
             foreach (var langInfo in LanguageController.LanguageFiles)
                 try
                 {
@@ -85,11 +82,11 @@ namespace StatisticsAnalysisTool.ViewModels
             #region Update item list by days
 
             UpdateItemListByDays.Clear();
-            UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_DAY"), Value = 1});
-            UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3});
-            UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7});
-            UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14});
-            UpdateItemListByDays.Add(new FileSettingInformation {Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28});
+            UpdateItemListByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
+            UpdateItemListByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
+            UpdateItemListByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
+            UpdateItemListByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
+            UpdateItemListByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
             UpdateItemListByDaysSelection = UpdateItemListByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateItemListByDays);
 
             ItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
@@ -146,20 +143,18 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive = IsLootLoggerSaveReminderActive;
 
             SetAppSettingsAndTranslations();
-
-            _settingsWindow.Close();
         }
 
         private void SetAppSettingsAndTranslations()
         {
             Translation = new SettingsWindowTranslation();
 
-            _mainWindowViewModel.SetUiElements();
-            _mainWindowViewModel.IsFullItemInformationCompleteCheck();
-            _mainWindowViewModel.PlayerModeTranslation = new PlayerModeTranslation();
-            _mainWindowViewModel.LoadTranslation = LanguageController.Translation("LOAD");
-            _mainWindowViewModel.NumberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
-            _mainWindowViewModel.UpdateTranslation = LanguageController.Translation("UPDATE");
+            //_mainWindowViewModel.SetUiElements();
+            //_mainWindowViewModel.IsFullItemInformationCompleteCheck();
+            //_mainWindowViewModel.PlayerModeTranslation = new PlayerModeTranslation();
+            //_mainWindowViewModel.LoadTranslation = LanguageController.Translation("LOAD");
+            //_mainWindowViewModel.NumberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
+            //_mainWindowViewModel.UpdateTranslation = LanguageController.Translation("UPDATE");
         }
 
         public struct FileSettingInformation
@@ -293,7 +288,8 @@ namespace StatisticsAnalysisTool.ViewModels
         public bool ShowInfoWindowOnStartChecked
         {
             get => _showInfoWindowOnStartChecked;
-            set {
+            set
+            {
                 _showInfoWindowOnStartChecked = value;
                 OnPropertyChanged();
             }

@@ -32,13 +32,7 @@ namespace StatisticsAnalysisTool.Views
 
             MainWindowViewModel.OpenItemWindow(item);
         }
-
-        private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            var sw = new SettingsWindow(_mainWindowViewModel);
-            sw.ShowDialog();
-        }
-
+        
         private void StopLoadFullItemInfo_MouseUp(object sender, MouseButtonEventArgs e)
         {
             _mainWindowViewModel.IsFullItemInfoLoading = false;

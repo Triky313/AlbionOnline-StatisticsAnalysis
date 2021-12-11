@@ -3,7 +3,7 @@
 namespace StatisticsAnalysisTool.UserControls
 {
     /// <summary>
-    /// Interaction logic for ErrorBarControl.xaml
+    /// Interaction logic for ItemSearchImageCounterControl.xaml
     /// </summary>
     public partial class ItemSearchImageCounterControl
     {
