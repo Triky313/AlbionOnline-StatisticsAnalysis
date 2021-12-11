@@ -17,6 +17,8 @@
 
                 <ResourceDictionary Source="Styles/TabControlStyles.xaml" />
                 <ResourceDictionary Source="Styles/ItemSearchStyles.xaml" />
+                <ResourceDictionary Source="Styles/PlayerInformationStyles.xaml" />
+
                 <ResourceDictionary Source="Main.xaml" />
                 <ResourceDictionary Source="Tracking.xaml" />
             </ResourceDictionary.MergedDictionaries>

@@ -568,8 +568,6 @@
     </Style>
 
     <!-- Normal Button Style -->
-    
-
     <Style TargetType="{x:Type Button}" x:Key="Style.Button.Attention">
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -629,33 +627,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-
-    <!-- PlayerMode label value last -->
-    <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Last">
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
-        <Setter Property="HorizontalAlignment" Value="Left"></Setter>
-        <Setter Property="Width" Value="220"></Setter>
-    </Style>
-
-    <!-- PlayerMode label value current -->
-    <Style TargetType="Label" x:Key="PlayerMode.Label.Value.Current">
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
-        <Setter Property="HorizontalAlignment" Value="Left"></Setter>
-        <Setter Property="Width" Value="220"></Setter>
-    </Style>
-
-    <!-- PlayerMode label title -->
-    <Style TargetType="Label" x:Key="PlayerMode.Label.Title">
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
-        <Setter Property="HorizontalAlignment" Value="Left"></Setter>
-        <Setter Property="Width" Value="200"></Setter>
-    </Style>
-
-    <!-- PlayerMode label -->
-    <Style TargetType="Label" x:Key="PlayerMode.Title">
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
-        <Setter Property="FontWeight" Value="Bold"></Setter>
     </Style>
 
     <!-- Price list column style -->

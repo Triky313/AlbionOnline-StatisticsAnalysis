@@ -161,7 +161,7 @@
             </TabItem>
             <TabItem Header="Player Information">
                 <Grid Style="{StaticResource TabItemGridStyle}">
-
+                    <userControls:PlayerInformationControl />
                 </Grid>
             </TabItem>
             <TabItem Header="Settings">

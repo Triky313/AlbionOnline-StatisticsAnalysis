@@ -4,6 +4,7 @@ namespace StatisticsAnalysisTool.Models
 {
     public class PlayerModeTranslation
     {
+        public static string Load => LanguageController.Translation("LOAD");
         public static string Id => LanguageController.Translation("ID");
         public static string Name => LanguageController.Translation("NAME");
         public static string AverageItemPower => LanguageController.Translation("AVERAGE_ITEM_POWER");
