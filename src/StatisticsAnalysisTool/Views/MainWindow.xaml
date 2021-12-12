@@ -134,19 +134,19 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Tracking">
+            <TabItem Header="{Binding Translation.Tracking, FallbackValue=TRACKING}">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+                    <userControls:TrackingControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
+                </Grid>
+            </TabItem>
+            <!--<TabItem Header="Loot logger">
                 <Grid Style="{StaticResource TabItemGridStyle}">
 
                 </Grid>
-            </TabItem>
-            <TabItem Header="Loot logger">
-                <Grid Style="{StaticResource TabItemGridStyle}">
-
-                </Grid>
-            </TabItem>
+            </TabItem>-->
             <TabItem Header="Dungeon">
                 <Grid Style="{StaticResource TabItemGridStyle}">
-
+                    <userControls:DungeonControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
             <TabItem Header="Damage Meter">
