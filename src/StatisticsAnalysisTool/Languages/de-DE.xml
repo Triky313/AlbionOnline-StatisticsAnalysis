@@ -427,7 +427,7 @@
 	<translation name="SURE_YOU_WANT_TO_RESET_THE_PARTY">Party wirklich zurücksetzen?</translation>
 	<translation name="OPEN_EXTENDED_DAMAGE_METER_WINDOW">Öffne externes Schadensmeter Fenster</translation>
 	<translation name="COPY_TO_CLIPBOARD">In Zwischenablage kopieren</translation>
-	<translation name="MAP_TRACKING">Kartenverfolgung</translation>
+	<translation name="MAP_HISTORY">Kartenverfolgung</translation>
 	<translation name="TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN">Herunterladen der Itemlist erneut versuchen</translation>
 	<translation name="DAMAGE_METER_ON_OFF">Schadensanzeige - AN/AUS</translation>
 	<translation name="TRACKER_ON_OFF">Tracker - AN/AUS</translation>

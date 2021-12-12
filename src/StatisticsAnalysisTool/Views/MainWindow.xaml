@@ -154,9 +154,11 @@
                     <userControls:DamageMeterControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Map History">
+            <TabItem Header="{Binding Translation.MapHistory, FallbackValue=MAP__HISTORY}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
-
+                    <ScrollViewer Margin="0,0,0,0">
+                        <ItemsControl ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"/>
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
             <TabItem Header="Player Information">
