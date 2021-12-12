@@ -1,12 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection;
-using System.Windows;
-using log4net;
-using Microsoft.VisualBasic.Logging;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Shortcut;
 using StatisticsAnalysisTool.ViewModels;
+using System;
+using System.Diagnostics;
+using System.Reflection;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.UserControls
 {

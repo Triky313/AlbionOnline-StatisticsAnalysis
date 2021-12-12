@@ -42,18 +42,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void InitializeSettings()
         {
-            #region Refrash rate
-
-            RefreshRates.Clear();
-            RefreshRates.Add(new FileSettingInformation { Name = LanguageController.Translation("5_SECONDS"), Value = 5000 });
-            RefreshRates.Add(new FileSettingInformation { Name = LanguageController.Translation("10_SECONDS"), Value = 10000 });
-            RefreshRates.Add(new FileSettingInformation { Name = LanguageController.Translation("30_SECONDS"), Value = 30000 });
-            RefreshRates.Add(new FileSettingInformation { Name = LanguageController.Translation("60_SECONDS"), Value = 60000 });
-            RefreshRates.Add(new FileSettingInformation { Name = LanguageController.Translation("5_MINUTES"), Value = 300000 });
-            RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
-
-            #endregion
-
             #region Language
 
             Languages.Clear();
@@ -79,6 +67,18 @@ namespace StatisticsAnalysisTool.ViewModels
 
             #endregion
 
+            #region Refrash rate
+
+            RefreshRates.Clear();
+            RefreshRates.Add(new FileSettingInformation { Name = Translation.FiveSeconds, Value = 5000 });
+            RefreshRates.Add(new FileSettingInformation { Name = Translation.TenSeconds, Value = 10000 });
+            RefreshRates.Add(new FileSettingInformation { Name = Translation.ThirtySeconds, Value = 30000 });
+            RefreshRates.Add(new FileSettingInformation { Name = Translation.SixtySeconds, Value = 60000 });
+            RefreshRates.Add(new FileSettingInformation { Name = Translation.FiveMinutes, Value = 300000 });
+            RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
+
+            #endregion
+
             #region Update item list by days
 
             UpdateItemListByDays.Clear();
@@ -99,6 +99,7 @@ namespace StatisticsAnalysisTool.ViewModels
             #region Alert Sounds
 
             AlertSounds.Clear();
+            SoundController.InitializeSoundFilesFromDirectory();
             foreach (var sound in SoundController.AlertSounds)
             {
                 AlertSounds.Add(new FileInformation(sound.FileName, sound.FilePath));
