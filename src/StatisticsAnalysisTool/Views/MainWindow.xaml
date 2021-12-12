@@ -6,7 +6,7 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-        xmlns:models="clr-namespace:StatisticsAnalysisTool.Models" 
+        xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -16,7 +16,7 @@
     <Grid Style="{StaticResource MainGridStyle}">
         <Grid Style="{StaticResource BackgroundImageGridStyle}" />
 
-        <Grid ZIndex="-1" Height="40" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+        <Grid ZIndex="-1" Height="80" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid Background="{StaticResource SolidColorBrush.Background.5}" Opacity="0.5" />
             <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
             <Button x:Name="MaximizedButton" Style="{StaticResource WindowButtonStyle}" Content="1" Margin="0,0,28,0" Click="MaximizedButton_Click" />
@@ -151,7 +151,7 @@
             </TabItem>
             <TabItem Header="Damage Meter">
                 <Grid Style="{StaticResource TabItemGridStyle}">
-
+                    <userControls:DamageMeterControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
             <TabItem Header="Map History">

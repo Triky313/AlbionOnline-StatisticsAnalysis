@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="StatisticsAnalysisTool.UserControls.DamageMeterControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="800">
+
+    <Grid>
+        <Grid Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Grid Height="20" Width="30" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <fa5:ImageAwesome Visibility="Visible" 
+                                                      ToolTip="{Binding Translation.DamageMeterOnOff, FallbackValue=DAMAGE__METER__ON__OFF}"
+                                                      Icon="{Binding DamageMeterActivationToggleIcon, FallbackValue=Solid_ToggleOff}" 
+                                                      Foreground="{Binding DamageMeterActivationToggleColor, FallbackValue={StaticResource SolidColorBrush.Text.1}}" 
+                                                      MouseUp="DamageMeterModeActiveToggle_MouseUp" />
+                </Grid>
+                <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterSort}" SelectedItem="{Binding DamageMeterSortSelection}" 
+                          IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
+            </StackPanel>
+        </Grid>
+        <Grid Margin="0,0,0,0" HorizontalAlignment="Right" Width="500" Height="30" VerticalAlignment="Top">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsDamageMeterResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
+                                          HorizontalContentAlignment="Left" Margin="5,3,10,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="auto" MaxWidth="250"/>
+                <Button Content="{Binding Translation.ResetDamageMeter, FallbackValue=RESET__DAMAGE__METER}" Height="26" MaxWidth="500" MinWidth="200" Margin="0,0,0,0" 
+                        Width="auto" VerticalAlignment="Top" Click="BtnDamageMeterReset_Click" />
+                <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                      ToolTip="{Binding Translation.OpenExtendedDamageMeterWindow, FallbackValue=OPEN__EXTENDED__DAMAGE__METER__WINDOW}" MouseUp="OpenDamageMeterWindow_MouseUp">
+                    <fa5:ImageAwesome Icon="Solid_Expand" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                </Grid>
+                <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                      ToolTip="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}" MouseUp="CopyDamageMeterToClipboard_MouseUp">
+                    <fa5:ImageAwesome Icon="Regular_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                </Grid>
+                <Grid Height="20" Width="20" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                      MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
+                    <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <Separator Background="{StaticResource SolidColorBrush.Background.Second}" Height="4" Margin="0,61,0,0" VerticalAlignment="Top"/>
+        <ScrollViewer Margin="0,65,0,0">
+            <ItemsControl ItemsSource="{Binding DamageMeter, IsAsync=True, Mode=OneWay}"/>
+        </ScrollViewer>
+
+        <Grid Visibility="{Binding IsDamageMeterPopupVisible, FallbackValue=Hidden}" Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
+            <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
+                <DockPanel Margin="0,0,0,16">
+                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                    </Grid>
+                    <TextBlock Text="{Binding Translation.DamageMeterDescription1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                               FontSize="16" TextWrapping="Wrap" Width="auto"></TextBlock>
+                </DockPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

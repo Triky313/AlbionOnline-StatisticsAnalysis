@@ -131,12 +131,7 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.ResetMainCounters();
         }
-
-        private void BtnDamageMeterReset_Click(object sender, RoutedEventArgs e)
-        {
-            _mainWindowViewModel.ResetDamageMeter();
-        }
-
+        
         private void BtnDungeonTrackingReset_Click(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel.ResetDungeonCounters();
@@ -147,17 +142,7 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.DeleteSelectedDungeons();
         }
-
-        private void OpenDamageMeterInfoPopup_MouseEnter(object sender, MouseEventArgs e)
-        {
-            _mainWindowViewModel.IsDamageMeterPopupVisible = Visibility.Visible;
-        }
-
-        private void CloseDamageMeterInfoPopup_MouseLeave(object sender, MouseEventArgs e)
-        {
-            _mainWindowViewModel.IsDamageMeterPopupVisible = Visibility.Hidden;
-        }
-
+        
         private void OpenMainTrackerInfoPopup_MouseEnter(object sender, MouseEventArgs e)
         {
             _mainWindowViewModel.IsMainTrackerPopupVisible = Visibility.Visible;
@@ -191,21 +176,6 @@ namespace StatisticsAnalysisTool.Views
         private void PartyIcon_MouseUp(object sender, MouseButtonEventArgs e)
         {
             _ = _mainWindowViewModel.ResetPartyAsync();
-        }
-
-        private void OpenDamageMeterWindow_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            _mainWindowViewModel.OpenDamageMeterWindow();
-        }
-
-        private void CopyDamageMeterToClipboard_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            _mainWindowViewModel.CopyDamageMeterToClipboard();
-        }
-
-        private void DamageMeterModeActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            _mainWindowViewModel.DamageMeterActivationToggle();
         }
     }
 }

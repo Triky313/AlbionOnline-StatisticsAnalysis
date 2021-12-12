@@ -6,7 +6,7 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d"
         Title="{Binding Title, FallbackValue=TITLE}" Height="200" Width="500" AllowsTransparency="True" WindowStartupLocation="CenterScreen" 
-        Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Color.6}" FontSize="{StaticResource BaseFontSize}" 
+        Background="{StaticResource SolidColorBrush.Background.Color.6}" FontSize="{StaticResource BaseFontSize}" 
         WindowStyle="None" Topmost="True" ShowInTaskbar="False" ResizeMode="NoResize">
     <Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Blue.2}" />
