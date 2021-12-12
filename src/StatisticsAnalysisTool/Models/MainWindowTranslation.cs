@@ -72,5 +72,8 @@ namespace StatisticsAnalysisTool.Models
         public static string TrackPartyLootOnly => LanguageController.Translation("TRACK_PARTY_LOOT_ONLY");
         public static string TrackingSilver => LanguageController.Translation("TRACKING_SILVER");
         public static string TrackingFame => LanguageController.Translation("TRACKING_FAME");
+        public static string ItemSearch => LanguageController.Translation("ITEM_SEARCH");
+        public static string Dungeons => LanguageController.Translation("DUNGEONS");
+        public static string PlayerInformation => LanguageController.Translation("PLAYER_INFORMATION");
     }
 }

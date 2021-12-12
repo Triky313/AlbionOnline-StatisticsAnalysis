@@ -35,7 +35,7 @@
         </Grid>
 
         <TabControl Style="{DynamicResource TabControlStyle}">
-            <TabItem Header="Item Search">
+            <TabItem Header="{Binding Translation.ItemSearch, FallbackValue=ITEM__SEARCH}">
                 <Grid Style="{StaticResource TabItemGridStyle}" Visibility="Visible">
                     <TextBox x:Name="TxtSearch" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                              IsEnabled="{Binding IsTxtSearchEnabled, FallbackValue=false}" Style="{StaticResource ItemSearchTextBoxStyle}" />
@@ -144,12 +144,12 @@
 
                 </Grid>
             </TabItem>-->
-            <TabItem Header="Dungeon">
+            <TabItem Header="{Binding Translation.Dungeons, FallbackValue=DUNGEONS}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:DungeonControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Damage Meter">
+            <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE__METER}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:DamageMeterControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
@@ -161,12 +161,12 @@
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-            <TabItem Header="Player Information">
+            <TabItem Header="{Binding Translation.PlayerInformation, FallbackValue=PLAYER__INFORMATION}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:PlayerInformationControl />
                 </Grid>
             </TabItem>
-            <TabItem Header="Settings">
+            <TabItem Header="{Binding Translation.Settings, FallbackValue=SETTINGS}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:SettingsControl />
                 </Grid>

@@ -486,4 +486,7 @@
 	<translation name="SAVE_LOOT_LOGGER">Loot Logger speichern</translation>
 	<translation name="TRACKING_SILVER">Silber tracken</translation>
 	<translation name="TRACKING_FAME">Ruhm tracken</translation>
+	<translation name="ITEM_SEARCH">Itemsuche</translation>
+	<translation name="DUNGEONS">Dungeons</translation>
+	<translation name="PLAYER_INFORMATION">Spieler Information</translation>
 </translations>

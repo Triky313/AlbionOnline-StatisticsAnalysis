@@ -10,7 +10,7 @@ namespace StatisticsAnalysisTool.Views
     /// <summary>
     /// Interaction logic for MainWindowNew.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private readonly MainWindowViewModel _mainWindowViewModel;
         private static bool _isWindowMaximized;
