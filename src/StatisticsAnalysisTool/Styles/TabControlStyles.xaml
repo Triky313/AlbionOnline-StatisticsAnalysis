@@ -37,16 +37,20 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabControl}">
-                    <Grid x:Name="templateRoot" ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+                   <Grid x:Name="templateRoot" ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="0" Padding="0" Background="Transparent">
                             <DockPanel>
+                                <ScrollViewer 
+                                    HorizontalScrollBarVisibility="Disabled"  
+                                    VerticalScrollBarVisibility="Auto">
                                 <!-- ReSharper disable Xaml.RedundantAttachedProperty -->
                                 <TabPanel Background="Transparent" IsItemsHost="true" Margin="2,0,2,0" Grid.Row="0" Grid.Column="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
                                 <!-- ReSharper restore Xaml.RedundantAttachedProperty -->
+                                </ScrollViewer>
                             </DockPanel>
                         </Border>
                         <Border x:Name="contentPanel" Grid.Column="1" Margin="0">
@@ -55,6 +59,7 @@
                             </ContentPresenter>
                         </Border>
                     </Grid>
+
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

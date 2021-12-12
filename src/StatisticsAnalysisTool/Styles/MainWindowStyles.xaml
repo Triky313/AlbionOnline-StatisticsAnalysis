@@ -12,8 +12,8 @@
         <Setter Property="WindowStyle" Value="None" />
         <Setter Property="Height" Value="550" />
         <Setter Property="Width" Value="1000" />
-        <Setter Property="MinHeight" Value="400" />
-        <Setter Property="MinWidth" Value="800" />
+        <Setter Property="MinHeight" Value="500" />
+        <Setter Property="MinWidth" Value="1000" />
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.1}"/>
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.1}"/>
     </Style>
