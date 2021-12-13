@@ -1,9 +1,6 @@
-﻿using System.Linq;
+﻿using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Views
 {
@@ -22,13 +19,6 @@ namespace StatisticsAnalysisTool.Views
             DataContext = _mainWindowViewModel;
         }
 
-        private void LvItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            var item = (Item)((ListView)sender).SelectedValue;
-
-            MainWindowViewModel.OpenItemWindow(item);
-        }
-
         private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -44,11 +34,6 @@ namespace StatisticsAnalysisTool.Views
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
-        }
-
-        private void StopLoadFullItemInfo_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            _mainWindowViewModel.IsFullItemInfoLoading = false;
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -85,87 +70,6 @@ namespace StatisticsAnalysisTool.Views
                 MaximizedButton.Content = 2;
                 _isWindowMaximized = true;
             }
-        }
-
-        // ReSharper disable once UnusedMember.Local
-        private void TxtBoxGoldModeAmountValues_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
-        }
-
-        private void TxtBoxMinSellPriceIsUndercutPrice_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
-        }
-
-        // ReSharper disable once UnusedMember.Local
-        private void LoadGoldPrice_Click(object sender, RoutedEventArgs e)
-        {
-            if (int.TryParse(_mainWindowViewModel.TextBoxGoldModeNumberOfValues, out var numberOfValues))
-            {
-                _mainWindowViewModel.SetGoldChart(numberOfValues);
-            }
-        }
-
-        private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            _mainWindowViewModel.ItemFilterReset();
-        }
-
-        private void LoadFullItemInfoButton_Click(object sender, RoutedEventArgs e)
-        {
-            _mainWindowViewModel.LoadAllFullItemInformationFromWeb();
-        }
-
-        private void AlertModeAlertActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            _mainWindowViewModel.ToggleAlertSender(sender);
-        }
-        
-        private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
-        {
-            _mainWindowViewModel.ResetMainCounters();
-        }
-        
-        private void BtnDungeonTrackingReset_Click(object sender, RoutedEventArgs e)
-        {
-            _mainWindowViewModel.ResetDungeonCounters();
-            _mainWindowViewModel.ResetDungeons();
-        }
-
-        private void BtnDeleteSelectedDungeons_Click(object sender, RoutedEventArgs e)
-        {
-            _mainWindowViewModel.DeleteSelectedDungeons();
-        }
-        
-        private void OpenMainTrackerInfoPopup_MouseEnter(object sender, MouseEventArgs e)
-        {
-            _mainWindowViewModel.IsMainTrackerPopupVisible = Visibility.Visible;
-        }
-
-        private void CloseMainTrackerInfoPopup_MouseLeave(object sender, MouseEventArgs e)
-        {
-            _mainWindowViewModel.IsMainTrackerPopupVisible = Visibility.Hidden;
-        }
-
-        private void MouseUp_FoldUnfoldDungeonStats(object sender, MouseEventArgs e)
-        {
-            _mainWindowViewModel.DungeonStatsGridToggle();
-        }
-
-        private void BtnTrackingNotificationsReset_Click(object sender, RoutedEventArgs e)
-        {
-            _ = _mainWindowViewModel.ResetTrackingNotificationsAsync();
-        }
-
-        private void BtnExportLootToFile_MouseUp(object sender, MouseEventArgs e)
-        {
-            _mainWindowViewModel.ExportLootToFile();
-        }
-
-        private void BtnTryToLoadTheItemListAgain_Click(object sender, RoutedEventArgs e)
-        {
-            _ = _mainWindowViewModel.InitItemListAsync().ConfigureAwait(false);
         }
 
         private void PartyIcon_MouseUp(object sender, MouseButtonEventArgs e)

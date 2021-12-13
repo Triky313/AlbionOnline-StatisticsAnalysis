@@ -6,7 +6,6 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-        xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
         d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"

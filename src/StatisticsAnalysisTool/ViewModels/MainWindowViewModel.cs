@@ -120,7 +120,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _updateTranslation;
         private Visibility _usernameInformationVisibility;
         private double _usernameInfoWidth;
-        private DateTime? activateWaitTimer;
         public AlertController AlertManager;
         private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
@@ -914,19 +913,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");
         }
-
-        private bool IsReadyToTracking()
-        {
-            var waitTime = activateWaitTimer?.AddSeconds(1);
-            if (waitTime < DateTime.Now || waitTime == null)
-            {
-                activateWaitTimer = DateTime.Now;
-                return true;
-            }
-
-            return false;
-        }
-
+        
         public void ResetMainCounters()
         {
             TrackingController?.CountUpTimer?.Reset();
