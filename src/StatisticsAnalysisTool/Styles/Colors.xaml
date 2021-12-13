@@ -48,6 +48,19 @@
     <Color x:Key="Color.Accent.Blue.Transparent.4">#332280BF</Color>
     <Color x:Key="Color.Accent.Blue.Transparent.5">#33185D8B</Color>
 
+    <!-- City colors -->
+    <Color x:Key="Color.City.Default">#FF24292D</Color>
+    <Color x:Key="Color.City.Caerleon">#FF24292D</Color>
+    <Color x:Key="Color.City.Thetford">#FF3BAFDA</Color>
+    <Color x:Key="Color.City.Bridgewatch">#FFF76397</Color>
+    <Color x:Key="Color.City.Martlock">#FF7266BA</Color>
+    <Color x:Key="Color.City.Lymhurst">#FFFFAA00</Color>
+    <Color x:Key="Color.City.FortSterling">#FF00B19D</Color>
+    <Color x:Key="Color.City.ArthursRest">#FFF75656</Color>
+    <Color x:Key="Color.City.MerlynsRest">#FF435DE0</Color>
+    <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
+    <Color x:Key="Color.City.BlackMarket">#FFA72F47</Color>
+
     <SolidColorBrush x:Key="SolidColorBrush.Text.1" Color="{StaticResource Color.Text.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.2" Color="{StaticResource Color.Text.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.3" Color="{StaticResource Color.Text.3}"/>
@@ -82,12 +95,24 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.4" Color="{StaticResource Color.Accent.Green.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.5" Color="{StaticResource Color.Accent.Green.5}"/>
 
-    <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.1" Color="{StaticResource Color.Gold.1}"/>
-    <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.2" Color="{StaticResource Color.Gold.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.1" Color="{StaticResource Color.Accent.Yellow.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.2" Color="{StaticResource Color.Accent.Yellow.2}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.1" Color="{StaticResource Color.Accent.Blue.Transparent.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.2" Color="{StaticResource Color.Accent.Blue.Transparent.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.3" Color="{StaticResource Color.Accent.Blue.Transparent.3}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.4" Color="{StaticResource Color.Accent.Blue.Transparent.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.5" Color="{StaticResource Color.Accent.Blue.Transparent.5}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.City.Default" Color="{StaticResource Color.City.Caerleon}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Thetford" Color="{StaticResource Color.City.Thetford}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Bridgewatch" Color="{StaticResource Color.City.Bridgewatch}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Martlock" Color="{StaticResource Color.City.Martlock}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst" Color="{StaticResource Color.City.Lymhurst}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling" Color="{StaticResource Color.City.FortSterling}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest" Color="{StaticResource Color.City.ArthursRest}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket" Color="{StaticResource Color.City.BlackMarket}"/>
 </ResourceDictionary>

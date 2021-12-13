@@ -5,31 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d"
-        Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="250" Width="400" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False" ResizeMode="NoResize">
+        Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="250" Width="400" AllowsTransparency="True" WindowStartupLocation="CenterScreen" 
+        Background="{StaticResource SolidColorBrush.Background.2}" 
+        FontSize="{StaticResource BaseFontSize}" 
+        WindowStyle="None" Focusable="False" ResizeMode="NoResize">
     <Grid>
         <Image Source="/Resources/alert_window_background.jpg" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.1" />
-        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}">
+        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.3}" />
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.3}" />
+        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.3}" />
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.3}">
         </Border>
-        <Grid ZIndex="1" Height="33" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.Second}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+        <Grid ZIndex="1" Height="33" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.2}" MouseDown="Hotbar_MouseDown" 
+              MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left">
-                <fa5:ImageAwesome Icon="Solid_Flag" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                <fa5:ImageAwesome Icon="Solid_Flag" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             </Grid>
-            <Label Content="{Binding Translation.Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold" />
+            <Label Content="{Binding Translation.Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" 
+                   Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" />
             <Separator Margin="10,30,10,0" VerticalAlignment="Top" />
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
         </Grid>
         <Grid Margin="0,33,0,0">
-            <TextBlock Text="{Binding Translation.ThePriceOf, FallbackValue=THE_PRICE_OF}" FontSize="15" Foreground="{StaticResource Solid.Color.Text.Normal}" TextAlignment="Center" Margin="10,10,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
-            <TextBlock Text="{Binding ItemName, FallbackValue=ITEM_NAME}" FontSize="15" FontWeight="Bold" Foreground="{StaticResource Solid.Color.Text.Gold}" TextAlignment="Center" Margin="10,35,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
+            <TextBlock Text="{Binding Translation.ThePriceOf, FallbackValue=THE_PRICE_OF}" FontSize="15" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                       TextAlignment="Center" Margin="10,10,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
+            <TextBlock Text="{Binding ItemName, FallbackValue=ITEM_NAME}" FontSize="15" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" 
+                       TextAlignment="Center" Margin="10,35,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
 
             <Image Source="{Binding Icon}" Height="50" Width="50" Margin="174,65,174,0" VerticalAlignment="Top" />
 
-            <TextBlock Text="{Binding Translation.In, FallbackValue=IN}" FontSize="15" Foreground="{StaticResource Solid.Color.Text.Normal}" TextAlignment="Center" Margin="10,115,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
-            <TextBlock Text="{Binding CityName, FallbackValue=CITY_NAME}" FontSize="20" FontWeight="Bold" Foreground="{StaticResource Solid.Color.Text.Normal}" TextAlignment="Center" Margin="10,140,10,0" TextWrapping="Wrap" Height="30" VerticalAlignment="Top">
+            <TextBlock Text="{Binding Translation.In, FallbackValue=IN}" FontSize="15" Foreground="{StaticResource SolidColorBrush.Text.1}" TextAlignment="Center" 
+                       Margin="10,115,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
+            <TextBlock Text="{Binding CityName, FallbackValue=CITY_NAME}" FontSize="20" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                       TextAlignment="Center" Margin="10,140,10,0" TextWrapping="Wrap" Height="30" VerticalAlignment="Top">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Background">
@@ -44,7 +53,8 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
-            <TextBlock Text="{Binding Translation.HasBeenUndercut, FallbackValue=HAS_BEEN_UNDERCUT}" FontSize="15" Foreground="{StaticResource Solid.Color.Text.Normal}" TextAlignment="Center" Margin="10,170,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
+            <TextBlock Text="{Binding Translation.HasBeenUndercut, FallbackValue=HAS_BEEN_UNDERCUT}" FontSize="15" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                       TextAlignment="Center" Margin="10,170,10,0" TextWrapping="Wrap" Height="25" VerticalAlignment="Top" />
         </Grid>
     </Grid>
 </Window>
