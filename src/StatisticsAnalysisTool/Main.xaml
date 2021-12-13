@@ -527,7 +527,7 @@
         <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
         <Setter Property="MinHeight" Value="18px" />
         <Setter Property="MinWidth"  Value="40px" />
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -562,11 +562,11 @@
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
                                                 Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Button.Attention.Color.Disabled}" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color.Text.6}" />
                                         </ColorAnimationUsingKeyFrames>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
                                                 Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Button.Attention.Color.DisabledForeground}" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color.Text.5}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

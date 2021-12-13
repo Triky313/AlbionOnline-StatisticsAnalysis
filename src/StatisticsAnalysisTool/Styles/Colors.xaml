@@ -48,6 +48,11 @@
     <Color x:Key="Color.Accent.Blue.Transparent.4">#332280BF</Color>
     <Color x:Key="Color.Accent.Blue.Transparent.5">#33185D8B</Color>
 
+    <!-- Attention button colors -->
+    <Color x:Key="Button.Attention.Color.Normal">#FFb00e29</Color>
+    <Color x:Key="Button.Attention.Color.MouseOver">#ffC93C54</Color>
+    <Color x:Key="Button.Attention.Color.Pressed">#ffE0586E</Color>
+
     <!-- City colors -->
     <Color x:Key="Color.City.Default">#FF24292D</Color>
     <Color x:Key="Color.City.Caerleon">#FF24292D</Color>
