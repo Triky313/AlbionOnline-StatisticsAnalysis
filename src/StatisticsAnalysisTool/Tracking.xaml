@@ -1024,15 +1024,6 @@
         <Setter Property="Padding" Value="0 3 0 0"></Setter>
     </Style>
 
-    <Style x:Key="Tracking.Information.Value" TargetType="{x:Type Label}">
-        <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}"></Setter>
-        <Setter Property="FontSize" Value="12"></Setter>
-        <Setter Property="FontWeight" Value="Bold"></Setter>
-        <Setter Property="Height" Value="20"></Setter>
-        <Setter Property="Padding" Value="0"></Setter>
-        <Setter Property="Margin" Value="0"></Setter>
-    </Style>
-
     <DataTemplate DataType="{x:Type models:MainStatObject}">
         <StackPanel Margin="0,0,0,0" Visibility="{Binding Visibility}">
             <DockPanel Margin="0,0,0,0" Height="24" VerticalAlignment="Top">

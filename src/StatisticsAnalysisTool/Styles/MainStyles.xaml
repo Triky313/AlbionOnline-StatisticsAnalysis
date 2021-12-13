@@ -576,4 +576,13 @@
             </Style.Triggers>-->
     </Style>
 
+    <Style x:Key="HeaderStyle.Tracking.Username" TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+
 </ResourceDictionary>

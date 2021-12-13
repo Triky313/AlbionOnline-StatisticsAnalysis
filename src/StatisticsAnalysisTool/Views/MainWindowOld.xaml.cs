@@ -179,7 +179,7 @@ namespace StatisticsAnalysisTool.Views
 
         private void TrackingModeActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            _mainWindowViewModel.TrackerActivationToggle();
+            //_mainWindowViewModel.TrackerActivationToggle();
         }
 
         private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)

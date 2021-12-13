@@ -475,11 +475,8 @@ namespace StatisticsAnalysisTool.ViewModels
             _ = await DungeonObjectData.GetDataListFromJsonAsync();
 
             TrackingController ??= new TrackingController(this, _mainWindow);
-
-            if (SettingsController.CurrentSettings.IsTrackingActiveAtToolStart)
-            {
-                _ = StartTrackingAsync();
-            }
+            
+            await StartTrackingAsync();
 
             IsTrackingFilteredSilver = SettingsController.CurrentSettings.IsMainTrackerFilterSilver;
             IsTrackingFilteredFame = SettingsController.CurrentSettings.IsMainTrackerFilterFame;
@@ -884,26 +881,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion Gold (Gold Mode)
 
         #region Tracking Mode
-
-        public void TrackerActivationToggle()
-        {
-            if (!IsReadyToTracking())
-            {
-                return;
-            }
-
-            IsTrackingActive = !IsTrackingActive;
-
-            if (IsTrackingActive)
-            {
-                _ = StartTrackingAsync();
-            }
-            else
-            {
-                StopTracking();
-            }
-        }
-
+        
         public async Task StartTrackingAsync()
         {
             if (NetworkManager.IsNetworkCaptureRunning)
@@ -1798,8 +1776,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     TrackingIconColor = TrackingIconType.Off;
                 }
-
-                SettingsController.CurrentSettings.IsTrackingActiveAtToolStart = _isTrackingActive;
+                
                 OnPropertyChanged();
             }
         }

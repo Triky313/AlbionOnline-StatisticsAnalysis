@@ -17,7 +17,6 @@
         public double MainWindowWidth { get; set; }
         public bool MainWindowMaximized { get; set; }
         public bool IsTrackingResetByMapChangeActive { get; set; }
-        public bool IsTrackingActiveAtToolStart { get; set; }
         public bool IsMainTrackerFilterSilver { get; set; }
         public bool IsMainTrackerFilterFame { get; set; }
         public bool IsMainTrackerFilterFaction { get; set; }

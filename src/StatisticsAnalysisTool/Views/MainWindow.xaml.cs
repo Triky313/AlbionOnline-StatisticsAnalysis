@@ -121,12 +121,7 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel.ToggleAlertSender(sender);
         }
-
-        private void TrackingModeActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            _mainWindowViewModel.TrackerActivationToggle();
-        }
-
+        
         private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel.ResetMainCounters();
