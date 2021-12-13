@@ -1,0 +1,133 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
+                    xmlns:common="clr-namespace:StatisticsAnalysisTool.Common">
+
+    <!-- Damage meter icon -->
+    <Style TargetType="Image" x:Key="DamageMeter.Icon">
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="40"/>
+    </Style>
+
+    <Style TargetType="ProgressBar" x:Key="DamageMeter.ProgressBar.Colors">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.UnknownWeaponType}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding CategoryId}" Value="sword">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Sword}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="spear">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Spear}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="quarterstaff">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Quarterstaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="naturestaff">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.NatureStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="mace">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Mace}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="holystaff">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.HolyStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="hammer">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Hammer}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="froststaff">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.FrostStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="firestaff">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.FireStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="dagger">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Dagger}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="cursestaff">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.CursedStaff}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="knuckles">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Knuckles}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="crossbow">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Crossbow}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="bow">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Bow}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="axe">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Axe}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CategoryId}" Value="arcanestaff">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.ArcaneStaff}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Damage meter -->
+    <DataTemplate DataType="{x:Type notification:DamageMeterFragment}">
+        <Grid>
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="False">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding DamageInPercent}" Minimum="0" Maximum="100" 
+                             Height="40" Margin="3,1,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" 
+                             Style="{StaticResource DamageMeter.ProgressBar.Colors}" />
+                <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding HealInPercent}"
+                             Minimum="0" Maximum="100" Height="2" Margin="3,1,2,1" VerticalAlignment="Bottom" Background="#00FFFFFF" BorderThickness="0">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.HealBar}" />
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
+                <StackPanel Orientation="Horizontal">
+                    <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
+                    </Grid>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamagePercentage}" 
+                           ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"/>
+                    <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"/>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamageShortString}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
+                </StackPanel>
+            </Grid>
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding HealInPercent}" Minimum="0" Maximum="100" 
+                             Height="40" Margin="3,1,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" 
+                             Style="{StaticResource DamageMeter.ProgressBar.Colors}" />
+                <StackPanel Orientation="Horizontal">
+                    <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
+                    </Grid>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HealPercentage}" 
+                           ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"></Label>
+                    <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HealShortString}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HpsString}" ContentStringFormat="{}{0:N0}/hps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

@@ -8,19 +8,21 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Colors.xaml" />
                 <ResourceDictionary Source="Styles/MainStyles.xaml" />
-
                 <ResourceDictionary Source="Styles/ErrorBarStyles.xaml" />
 
                 <ResourceDictionary Source="Styles/MainWindowStyles.xaml" />
+
                 <ResourceDictionary Source="Styles/ItemWindowStyles.xaml" />
                 <ResourceDictionary Source="Styles/InfoWindowStyles.xaml" />
-
                 <ResourceDictionary Source="Styles/TabControlStyles.xaml" />
                 <ResourceDictionary Source="Styles/ItemSearchStyles.xaml" />
                 <ResourceDictionary Source="Styles/PlayerInformationStyles.xaml" />
 
+                <ResourceDictionary Source="Styles/TrackingStyles.xaml" />
+                <ResourceDictionary Source="Styles/DungeonStyles.xaml" />
+                <ResourceDictionary Source="Styles/DamageMeterStyles.xaml" />
+
                 <ResourceDictionary Source="Main.xaml" />
-                <ResourceDictionary Source="Tracking.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

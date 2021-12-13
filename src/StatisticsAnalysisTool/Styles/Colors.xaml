@@ -61,6 +61,43 @@
     <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
     <Color x:Key="Color.City.BlackMarket">#FFA72F47</Color>
 
+    <!-- Faction colors -->
+    <Color x:Key="Dungeon.Mode.Expedition.1">#B857DB</Color>
+    <Color x:Key="Dungeon.Mode.Expedition.2">#8329A3</Color>
+    <Color x:Key="Dungeon.Mode.HellGate.1">#EF1527</Color>
+    <Color x:Key="Dungeon.Mode.HellGate.2">#9C1C26</Color>
+    <Color x:Key="Dungeon.Mode.Corrupted.1">#FF662E</Color>
+    <Color x:Key="Dungeon.Mode.Corrupted.2">#E24E18</Color>
+    <Color x:Key="Dungeon.Mode.Solo.1">#ff37d266</Color>
+    <Color x:Key="Dungeon.Mode.Solo.2">#ff1f8a41</Color>
+    <Color x:Key="Dungeon.Mode.Standard.1">#ff09a9f6</Color>
+    <Color x:Key="Dungeon.Mode.Standard.2">#ff0e6fa2</Color>
+    <Color x:Key="Dungeon.Mode.Avalon.1">#fffffaeb</Color>
+    <Color x:Key="Dungeon.Mode.Avalon.2">#ffeddaa7</Color>
+    <Color x:Key="Dungeon.Mode.Unknown">#ff252525</Color>
+
+    <!-- Item level colors -->
+    <Color x:Key="Item.Level.Color.0">#FFb1b0ae</Color>
+    <Color x:Key="Item.Level.Color.1">#FF6bff91</Color>
+    <Color x:Key="Item.Level.Color.2">#FF4ff0fd</Color>
+    <Color x:Key="Item.Level.Color.3">#FFb866fe</Color>
+
+    <!-- Pvp/Pve colors -->
+    <Color x:Key="Text.Color.Pvp">#ffe05761</Color>
+    <Color x:Key="Text.Color.Pve">#ff57b6e0</Color>
+
+    <!-- Tracking colors -->
+    <Color x:Key="Tracking.On">#FF1F9E6E</Color>
+    <Color x:Key="Tracking.Partially">#FFD9A900</Color>
+    <Color x:Key="Tracking.Off">#FF616172</Color>
+
+    <!-- Cluster type colors -->
+    <Color x:Key="Cluster.SafeArea">#FF4B6EA0</Color>
+    <Color x:Key="Cluster.Yellow">#FFF2A60D</Color>
+    <Color x:Key="Cluster.Red">#FFD81320</Color>
+    <Color x:Key="Cluster.Black">#FF202026</Color>
+    <Color x:Key="Cluster.Avalon">#ffEBCD7A</Color>
+
     <SolidColorBrush x:Key="SolidColorBrush.Text.1" Color="{StaticResource Color.Text.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.2" Color="{StaticResource Color.Text.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.3" Color="{StaticResource Color.Text.3}"/>
@@ -115,4 +152,39 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket" Color="{StaticResource Color.City.BlackMarket}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Expedition.1" Color="{StaticResource Dungeon.Mode.Expedition.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.HellGate.1" Color="{StaticResource Dungeon.Mode.HellGate.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Corrupted.1" Color="{StaticResource Dungeon.Mode.Corrupted.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Solo.1" Color="{StaticResource Dungeon.Mode.Solo.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Standard.1" Color="{StaticResource Dungeon.Mode.Standard.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Avalon.1" Color="{StaticResource Dungeon.Mode.Avalon.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Unknown" Color="{StaticResource Dungeon.Mode.Unknown}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pvp" Color="{StaticResource Text.Color.Pvp}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pve" Color="{StaticResource Text.Color.Pve}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Text" Color="#fafafa"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Sword" Color="#FAA307"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Spear" Color="#DAB10B"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Quarterstaff" Color="#297A7A"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.NatureStaff" Color="#afafaf"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Mace" Color="#D35F91"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.HolyStaff" Color="#afafaf"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Hammer" Color="#7373D9"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.FrostStaff" Color="#4089d1"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.FireStaff" Color="#C9561D"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Dagger" Color="#A2AD1F"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.CursedStaff" Color="#61358D"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Crossbow" Color="#00576e"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Bow" Color="#004D39"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Axe" Color="#c5242e"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.ArcaneStaff" Color="#732653"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Knuckles" Color="#914210"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.UnknownWeaponType" Color="#555555"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.HealBar" Color="#00aa1a"/>
 </ResourceDictionary>
