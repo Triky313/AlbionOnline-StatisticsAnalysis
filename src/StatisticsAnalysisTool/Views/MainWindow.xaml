@@ -16,7 +16,7 @@
     <Grid Style="{StaticResource MainGridStyle}">
         <Grid Style="{StaticResource BackgroundImageGridStyle}" />
 
-        <Grid ZIndex="-1" Height="100" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+        <Grid ZIndex="-1" Height="90" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid Background="{StaticResource SolidColorBrush.Background.5}" Opacity="0.5" />
             <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
             <Button x:Name="MaximizedButton" Style="{StaticResource WindowButtonStyle}" Content="1" Margin="0,0,28,0" Click="MaximizedButton_Click" />
