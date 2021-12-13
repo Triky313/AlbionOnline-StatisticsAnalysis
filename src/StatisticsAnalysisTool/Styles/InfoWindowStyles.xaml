@@ -3,14 +3,14 @@
 
     <Style TargetType="TextBlock" x:Key="InfoWindow.TextBlock.Title" >
         <Setter Property="FontSize" Value="20" />
-        <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 
     <Style TargetType="TextBlock" x:Key="InfoWindow.TextBlock.Text" >
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Normal}" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>

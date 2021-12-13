@@ -38,6 +38,9 @@
     <Color x:Key="Color.Accent.Green.4">#FF22BF57</Color>
     <Color x:Key="Color.Accent.Green.5">#FF188C3F</Color>
 
+    <Color x:Key="Color.Accent.Yellow.1">#FFf2b83b</Color>
+    <Color x:Key="Color.Accent.Yellow.2">#55f2b83b</Color>
+
     <!-- Accent colors transparent -->
     <Color x:Key="Color.Accent.Blue.Transparent.1">#3397CAED</Color>
     <Color x:Key="Color.Accent.Blue.Transparent.2">#3363B0E3</Color>
@@ -78,6 +81,9 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.3" Color="{StaticResource Color.Accent.Green.3}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.4" Color="{StaticResource Color.Accent.Green.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.5" Color="{StaticResource Color.Accent.Green.5}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.1" Color="{StaticResource Color.Gold.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.2" Color="{StaticResource Color.Gold.2}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.1" Color="{StaticResource Color.Accent.Blue.Transparent.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.2" Color="{StaticResource Color.Accent.Blue.Transparent.2}"/>
