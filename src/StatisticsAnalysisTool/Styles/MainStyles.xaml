@@ -449,14 +449,14 @@
                   x:Name="Border" 
                   Grid.ColumnSpan="2"
                   CornerRadius="0"
-                  Background="{StaticResource SolidColorBrush.Background.2}"
+                  Background="{StaticResource SolidColorBrush.Background.3}"
                   BorderBrush="{StaticResource SolidColorBrush.Text.6}"
                   BorderThickness="1" />
             <Border 
                   Grid.Column="0"
                   CornerRadius="0" 
                   Margin="1" 
-                  Background="{StaticResource SolidColorBrush.Background.4}" 
+                  Background="{StaticResource SolidColorBrush.Background.5}" 
                   BorderBrush="{StaticResource SolidColorBrush.Text.6}"
                   BorderThickness="0,0,1,0" />
             <Path 
@@ -465,8 +465,7 @@
                   Fill="{StaticResource SolidColorBrush.Text.2}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
-                />
+                  Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"/>
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="ToggleButton.IsMouseOver" Value="true">
@@ -506,9 +505,8 @@
                             Template="{StaticResource ComboBoxToggleButton}" 
                             Focusable="false"
                             IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
-                            ClickMode="Press">
-                        </ToggleButton>
-                        <ContentPresenter Name="ContentSite" IsHitTestVisible="False"  Content="{TemplateBinding SelectionBoxItem}"
+                            ClickMode="Press"/>
+                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False"  Content="{TemplateBinding SelectionBoxItem}"
                             ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                             ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                             Margin="3,3,23,3"
@@ -554,7 +552,7 @@
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}"/>
+                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}"/>
                         </Trigger>
                         <Trigger Property="IsGrouping" Value="true">
                             <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
