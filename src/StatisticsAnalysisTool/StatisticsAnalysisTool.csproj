@@ -61,7 +61,7 @@
     <Compile Update="UserControls\ItemSearchControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserControls\TrackingControl.xaml.cs">
+    <Compile Update="UserControls\LoggingControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\DungeonControl.xaml.cs">
@@ -443,7 +443,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="UserControls\TrackingControl.xaml">
+    <Page Update="UserControls\LoggingControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

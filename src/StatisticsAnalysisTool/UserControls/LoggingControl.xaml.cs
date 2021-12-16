@@ -5,11 +5,11 @@ using StatisticsAnalysisTool.ViewModels;
 namespace StatisticsAnalysisTool.UserControls
 {
     /// <summary>
-    /// Interaction logic for TrackingControl.xaml
+    /// Interaction logic for LoggingControl.xaml
     /// </summary>
-    public partial class TrackingControl
+    public partial class LoggingControl
     {
-        public TrackingControl()
+        public LoggingControl()
         {
             InitializeComponent();
         }

@@ -75,5 +75,6 @@ namespace StatisticsAnalysisTool.Models
         public static string ItemSearch => LanguageController.Translation("ITEM_SEARCH");
         public static string Dungeons => LanguageController.Translation("DUNGEONS");
         public static string PlayerInformation => LanguageController.Translation("PLAYER_INFORMATION");
+        public static string Logging => LanguageController.Translation("LOGGING");
     }
 }
