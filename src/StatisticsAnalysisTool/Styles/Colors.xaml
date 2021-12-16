@@ -108,9 +108,6 @@
     <Color x:Key="Cluster.Black">#FF202026</Color>
     <Color x:Key="Cluster.Avalon">#ffEBCD7A</Color>
 
-    <!-- Best price color -->
-    <Color x:Key="Color.BestPrice">#FF1DC160</Color>
-
     <SolidColorBrush x:Key="SolidColorBrush.Text.1" Color="{StaticResource Color.Text.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.2" Color="{StaticResource Color.Text.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.3" Color="{StaticResource Color.Text.3}"/>
@@ -205,6 +202,4 @@
     <SolidColorBrush x:Key="Solid.Color.Text.ToOldSecond" Color="{StaticResource Color.Text.ToOldSecond}"/>
     <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
     <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
-
-    <SolidColorBrush x:Key="Solid.Color.BestPrice" Color="{StaticResource Color.BestPrice}"/>
 </ResourceDictionary>
