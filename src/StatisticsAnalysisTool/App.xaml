@@ -1,4 +1,4 @@
-﻿<Application x:Class="StatisticsAnalysisTool.App"
+<Application x:Class="StatisticsAnalysisTool.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              DispatcherUnhandledException="Application_DispatcherUnhandledException"
@@ -21,8 +21,6 @@
                 <ResourceDictionary Source="Styles/TrackingStyles.xaml" />
                 <ResourceDictionary Source="Styles/DungeonStyles.xaml" />
                 <ResourceDictionary Source="Styles/DamageMeterStyles.xaml" />
-
-                <ResourceDictionary Source="Main.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
