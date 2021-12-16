@@ -210,7 +210,7 @@
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding FameText, StringFormat='{} {0} '}"/>
-                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding PvpPveType}" Value="{x:Static enumerations:PvpPveType.Pve}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.Color.Pve}" />
@@ -238,7 +238,7 @@
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding BonusFactorInPercent, StringFormat='{} +{0:N2}%'}"/>
-                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}" />
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsBonusFactorActive}" Value="true">
                                 <Setter Property="Visibility" Value="Visible" />
