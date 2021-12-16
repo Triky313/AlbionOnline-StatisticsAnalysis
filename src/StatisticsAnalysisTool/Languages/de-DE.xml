@@ -490,4 +490,7 @@
 	<translation name="DUNGEONS">Dungeons</translation>
 	<translation name="PLAYER_INFORMATION">Spieler Information</translation>
 	<translation name="LOGGING">Protokollierung</translation>
+	<translation name="TRACKING_IS_ACTIVE">Tracking ist aktiv</translation>
+	<translation name="TRACKING_IS_PARTIALLY_ACTIVE">Tracking is teilweise aktiv</translation>
+	<translation name="TRACKING_IS_NOT_ACTIVE">Tracking ist nicht aktiv</translation>
 </translations>

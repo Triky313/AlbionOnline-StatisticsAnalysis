@@ -12,7 +12,7 @@
                     mc:Ignorable="d">
 
 
-    <converters:TrackerIconConverter x:Key="Tracker.Icon.Converter" />
+    <converters:TrackingActivityColorConverter x:Key="Tracker.ActivityColor" />
 
     <Style x:Key="LineFragmentImageStyle" TargetType="{x:Type Image}">
         <Setter Property="Width" Value="16" />
@@ -401,7 +401,7 @@
     </ControlTemplate>
 
     <Style TargetType="fa5:ImageAwesome" x:Key="Style.Party.Circle">
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.Second}" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
         <Setter Property="Icon" Value="Solid_UserCircle" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding WeaponCategoryId}" Value="sword">
@@ -457,14 +457,14 @@
                 <Setter Property="Foreground">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="{StaticResource Color.Red.1}" Offset="0.0" />
-                            <GradientStop Color="{StaticResource Color.Red.2}" Offset="1.0" />
+                            <GradientStop Color="{StaticResource Color.Accent.Red.1}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Accent.Red.2}" Offset="1.0" />
                         </LinearGradientBrush>
                     </Setter.Value>
                 </Setter>
                 <Setter Property="Effect">
                     <Setter.Value>
-                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Red.3}"/>
+                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Accent.Red.3}"/>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
@@ -474,7 +474,7 @@
                 <Setter Property="Icon" Value="Solid_Font" />
                 <Setter Property="Effect">
                     <Setter.Value>
-                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Red.3}"/>
+                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Accent.Red.3}"/>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
@@ -483,10 +483,10 @@
                 <Setter Property="Margin" Value="0,0,0,1" />
                 <Setter Property="ToolTip" Value="Rhaegaryn - Most dedicated contributor!" />
                 <Setter Property="Icon" Value="Solid_Star" />
-                <Setter Property="Foreground" Value="{StaticResource Solid.Color.Text.Gold}"/>
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}"/>
                 <Setter Property="Effect">
                     <Setter.Value>
-                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Gold.2}"/>
+                        <DropShadowEffect BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="{StaticResource Color.Accent.Yellow.2}"/>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
@@ -511,7 +511,7 @@
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
                                             <GradientStop Color="{StaticResource Cluster.SafeArea}" Offset="0.0" />
-                                            <GradientStop Color="{StaticResource Background.Colors.1}" Offset="1.0" />
+                                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
@@ -521,7 +521,7 @@
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
                                             <GradientStop Color="{StaticResource Cluster.Yellow}" Offset="0.0" />
-                                            <GradientStop Color="{StaticResource Background.Colors.1}" Offset="1.0" />
+                                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
@@ -531,7 +531,7 @@
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
                                             <GradientStop Color="{StaticResource Cluster.Red}" Offset="0.0" />
-                                            <GradientStop Color="{StaticResource Background.Colors.1}" Offset="1.0" />
+                                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
@@ -541,7 +541,7 @@
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
                                             <GradientStop Color="{StaticResource Cluster.Black}" Offset="0.0" />
-                                            <GradientStop Color="{StaticResource Background.Colors.1}" Offset="1.0" />
+                                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
@@ -551,7 +551,7 @@
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
                                             <GradientStop Color="{StaticResource Cluster.Avalon}" Offset="0.0" />
-                                            <GradientStop Color="{StaticResource Background.Colors.1}" Offset="1.0" />
+                                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
@@ -561,7 +561,7 @@
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
                                             <GradientStop Color="{StaticResource Cluster.Black}" Offset="0.0" />
-                                            <GradientStop Color="{StaticResource Background.Colors.1}" Offset="1.0" />
+                                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>

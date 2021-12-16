@@ -72,7 +72,7 @@ namespace StatisticsAnalysisTool.Views
             }
         }
 
-        private void PartyIcon_MouseUp(object sender, MouseButtonEventArgs e)
+        private void ResetParty_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _ = _mainWindowViewModel.ResetPartyAsync();
         }

@@ -18,7 +18,7 @@
             <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             <Grid Margin="10,3,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left">
-                <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
             </Grid>
             <Label Content="{Binding Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" 
                    Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" />

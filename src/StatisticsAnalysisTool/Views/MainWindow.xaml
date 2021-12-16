@@ -20,14 +20,14 @@
             <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
             <Button x:Name="MaximizedButton" Style="{StaticResource WindowButtonStyle}" Content="1" Margin="0,0,28,0" Click="MaximizedButton_Click" />
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,58,0" Click="MinimizeButton_Click" />
+
             <StackPanel Orientation="Vertical" Margin="0">
                 <Grid>
                     <StackPanel Orientation="Horizontal"  Height="38" VerticalAlignment="Top" Margin="35,0,90,0">
                         <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Style="{StaticResource MainWindow.Title}" />
-                        <Grid Style="{StaticResource TrackingAvailabilityIconStyle}" ToolTip="{Binding Translation.IsTrackingActive}">
-                            <fa5:ImageAwesome Icon="Solid_Wifi" Foreground="{Binding TrackingIconColor, Converter={StaticResource Tracker.Icon.Converter}, 
-                        FallbackValue={StaticResource SolidColorBrush.Tracking.Off}}" />
-                        </Grid>
+                        <Label Content="{Binding TrackingActiveText, FallbackValue=TRACKING__IS__NOT__ACTIVE}" 
+                               Foreground="{Binding TrackingActivityColor, Converter={StaticResource Tracker.ActivityColor}, 
+                                FallbackValue={StaticResource SolidColorBrush.Text.6}}" />
                         <Grid Style="{StaticResource LoadingIconGridStyle}">
                             <fa5:ImageAwesome Visibility="{Binding LoadIconVisibility}" Style="{StaticResource LoadingIconStyle}" />
                         </Grid>
@@ -37,20 +37,30 @@
 
                 <Grid>
                     <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                        <Label Style="{StaticResource HeaderStyle.Tracking.Username}" Content="{Binding TrackingUsername, FallbackValue=USERNAME}"/>
-                    </StackPanel>
-                </Grid>
-
-                <Grid Height="26" VerticalAlignment="Top" Margin="10,0,0,0" HorizontalAlignment="Left" Width="500">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="{Binding PartyMemberNumber, FallbackValue=0}"></Label>
-                        <Grid Height="20" Width="20" Margin="0,0,5,0" VerticalAlignment="Center">
-                            <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="PartyIcon_MouseUp" />
-                        </Grid>
-                        <ItemsControl ItemsSource="{Binding PartyMemberCircles}" Style="{StaticResource PartyMember.ItemsControl}"/>
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Username, FallbackValue=USERNAME}" ContentStringFormat="{}{0}: "/>
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingUsername, FallbackValue=USERNAME}"/>
+                        <Label Content=" | "/>
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Guild, FallbackValue=GUILD}" ContentStringFormat="{}{0}: "/>
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingGuildName, FallbackValue=GUILD__NAME}"/>
+                        <Label Content=" | "/>
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Alliance, FallbackValue=ALLIANCE}" ContentStringFormat="{}{0}: "/>
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingAllianceName, FallbackValue=ALLIANCE__NAME}"/>
+                        <Label Content=" | "/>
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.CurrentMap, FallbackValue=CURRENT__MAP}" ContentStringFormat="{}{0}: "/>
+                        <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingCurrentMapName, FallbackValue=CURRENT__MAP__NAME}"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
+
+            <Grid Height="26" VerticalAlignment="Top" Margin="10,62,0,0" HorizontalAlignment="Left" Width="500">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding PartyMemberNumber, FallbackValue=0}"/>
+                    <Grid Height="20" Width="20" Margin="0,0,5,0" VerticalAlignment="Center" PreviewMouseDown="ResetParty_PreviewMouseDown">
+                        <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding PartyMemberCircles}" Style="{StaticResource PartyMember.ItemsControl}"/>
+                </StackPanel>
+            </Grid>
         </Grid>
 
         <TabControl Style="{DynamicResource TabControlStyle}">

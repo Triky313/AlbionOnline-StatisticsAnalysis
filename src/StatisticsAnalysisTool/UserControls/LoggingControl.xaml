@@ -16,7 +16,7 @@
                                         Margin="0,2,0,5" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
                 <Grid Height="26" Width="26" VerticalAlignment="Center" HorizontalAlignment="Right">
                     <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}" 
-                                                      Foreground="{StaticResource  SolidColorBrush.Green.3}" MouseUp="BtnExportLootToFile_MouseUp" />
+                                                      Foreground="{StaticResource  SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
                 </Grid>
             </StackPanel>
         </Grid>

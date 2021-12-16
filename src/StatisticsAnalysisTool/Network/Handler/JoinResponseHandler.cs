@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -61,16 +62,17 @@ namespace StatisticsAnalysisTool.Network.Handler
             _trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.DungeonGuid).ConfigureAwait(false);
 
             ResetFameCounterByMapChangeIfActive();
-            SetTrackingIconColor();
+            SetTrackingActivityText();
 
             await Task.CompletedTask;
         }
 
-        private void SetTrackingIconColor()
+        private void SetTrackingActivityText()
         {
             if (_trackingController.ExistIndispensableInfos)
             {
-                _mainWindowViewModel.TrackingIconColor = TrackingIconType.On;
+                _mainWindowViewModel.TrackingActiveText = MainWindowTranslation.TrackingIsActive;
+                _mainWindowViewModel.TrackingActivityColor = TrackingIconType.On;
             }
         }
 

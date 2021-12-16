@@ -53,7 +53,7 @@
             <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                 <DockPanel Margin="0,0,0,16">
                     <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                     </Grid>
                     <TextBlock Text="{Binding Translation.DamageMeterDescription1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
                                FontSize="16" TextWrapping="Wrap" Width="auto"></TextBlock>

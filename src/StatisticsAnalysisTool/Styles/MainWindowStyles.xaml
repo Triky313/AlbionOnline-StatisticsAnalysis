@@ -27,14 +27,6 @@
         <Setter Property="Width" Value="auto"/>
     </Style>
 
-    <Style x:Key="TrackingAvailabilityIconStyle" TargetType="Grid">
-        <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="Height" Value="28"/>
-        <Setter Property="Width" Value="28"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="Margin" Value="5,3,5,0"/>
-    </Style>
-
     <Style x:Key="LoadingIconGridStyle" TargetType="Grid">
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="Margin" Value="5,7,5,0"/>
@@ -73,6 +65,24 @@
                 <ImageBrush ImageSource="../Assets/bg01.png" />
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="HeaderStyle.Tracking.Content" TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+
+    <Style x:Key="HeaderStyle.Tracking.Title" TargetType="{x:Type Label}">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
     </Style>
 
 </ResourceDictionary>

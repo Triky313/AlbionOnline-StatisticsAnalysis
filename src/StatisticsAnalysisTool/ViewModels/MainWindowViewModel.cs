@@ -131,7 +131,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
         private bool IsDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
-        private TrackingIconType _trackingIconColor;
+        private TrackingIconType _trackingActivityColor;
         private bool _isTrackingFilteredEquipmentLoot = true;
         private bool _isTrackingFilteredConsumableLoot = true;
         private bool _isTrackingFilteredSimpleLoot = true;
@@ -153,6 +153,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingPartyLootOnly;
         private bool _isTrackingSilver;
         private bool _isTrackingFame;
+        private string _trackingActiveText = MainWindowTranslation.TrackingIsNotActive;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1745,55 +1746,42 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _isTrackingActive = value;
 
-                TrackerActivationToggleIcon = _isTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
+                switch (_isTrackingActive)
+                {
+                    case true when TrackingController is { ExistIndispensableInfos: false }:
+                        TrackingActiveText = MainWindowTranslation.TrackingIsPartiallyActive;
+                        TrackingActivityColor = TrackingIconType.Partially;
+                        break;
+                    case true when TrackingController is { ExistIndispensableInfos: true }:
+                        TrackingActiveText = MainWindowTranslation.TrackingIsActive;
+                        TrackingActivityColor = TrackingIconType.On;
+                        break;
+                    case false:
+                        TrackingActiveText = MainWindowTranslation.TrackingIsNotActive;
+                        TrackingActivityColor = TrackingIconType.Off;
+                        break;
+                }
 
-                var colorOn = new SolidColorBrush((Color) Application.Current.Resources["Color.Blue.2"]);
-                var colorOff = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.Normal"]);
-                TrackerActivationToggleColor = _isTrackingActive ? colorOn : colorOff;
-
-                if (_isTrackingActive && TrackingController is { ExistIndispensableInfos: false })
-                {
-                    TrackingIconColor = TrackingIconType.Partially;
-                }
-                else if(_isTrackingActive && TrackingController is { ExistIndispensableInfos: true })
-                {
-                    TrackingIconColor = TrackingIconType.On;
-                }
-                else if(!_isTrackingActive)
-                {
-                    TrackingIconColor = TrackingIconType.Off;
-                }
-                
+                OnPropertyChanged();
+            }
+        }
+        
+        public TrackingIconType TrackingActivityColor
+        {
+            get => _trackingActivityColor;
+            set
+            {
+                _trackingActivityColor = value;
                 OnPropertyChanged();
             }
         }
 
-        public EFontAwesomeIcon TrackerActivationToggleIcon
+        public string TrackingActiveText
         {
-            get => _trackerActivationToggleIcon;
+            get => _trackingActiveText;
             set
             {
-                _trackerActivationToggleIcon = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Brush TrackerActivationToggleColor
-        {
-            get => _trackerActivationToggleColor ?? new SolidColorBrush((Color) Application.Current.Resources["Color.Text.Normal"]);
-            set
-            {
-                _trackerActivationToggleColor = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public TrackingIconType TrackingIconColor
-        {
-            get => _trackingIconColor;
-            set
-            {
-                _trackingIconColor = value;
+                _trackingActiveText = value;
                 OnPropertyChanged();
             }
         }
@@ -1812,8 +1800,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 DamageMeterActivationToggleIcon = _isDamageMeterTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 
-                var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
-                var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+                var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Accent.Blue.2"]);
+                var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
                 DamageMeterActivationToggleColor = _isDamageMeterTrackingActive ? colorOn : colorOff;
 
                 SettingsController.CurrentSettings.IsDamageMeterTrackingActive = _isDamageMeterTrackingActive;
@@ -1830,7 +1818,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         public Brush DamageMeterActivationToggleColor {
-            get => _damageMeterActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+            get => _damageMeterActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
             set {
                 _damageMeterActivationToggleColor = value;
                 OnPropertyChanged();

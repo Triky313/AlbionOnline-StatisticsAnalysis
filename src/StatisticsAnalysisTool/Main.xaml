@@ -4,24 +4,24 @@
                     xmlns:itemWindowModel="clr-namespace:StatisticsAnalysisTool.Models.ItemWindowModel"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common">
 
-    <!-- Global background colors -->
+    <!-- Global background colors --><!--
     <Color x:Key="Background.First">#FF36363F</Color>
     <Color x:Key="Background.Second">#FF2B2B33</Color>
     <Color x:Key="Background.Third">#FF202026</Color>
 
-    <!-- Global background colors 2 -->
+    --><!-- Global background colors 2 --><!--
     <Color x:Key="Background.Colors.4">#FF636373</Color>
     <Color x:Key="Background.Colors.5">#FF565666</Color>
     <Color x:Key="Background.Colors.6">#FF4B4B59</Color>
 
 
-    <!-- Item level colors -->
+    --><!-- Item level colors --><!--
     <Color x:Key="Item.Level.Color.0">#FFb1b0ae</Color>
     <Color x:Key="Item.Level.Color.1">#FF6bff91</Color>
     <Color x:Key="Item.Level.Color.2">#FF4ff0fd</Color>
     <Color x:Key="Item.Level.Color.3">#FFb866fe</Color>
 
-    <!-- City colors -->
+    --><!-- City colors --><!--
     <Color x:Key="Color.City.Default.Transparent">#3324292D</Color>
     <Color x:Key="Color.City.Caerleon.Transparent">#3324292D</Color>
     <Color x:Key="Color.City.Thetford.Transparent">#333BAFDA</Color>
@@ -34,7 +34,7 @@
     <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
     <Color x:Key="Color.City.BlackMarket.Transparent">#33A72F47</Color>
 
-    <!-- Colors -->
+    --><!-- Colors --><!--
     <Color x:Key="Color.Blue.1">#ff6fccf6</Color>
     <Color x:Key="Color.Blue.2">#ff57b6e0</Color>
     <Color x:Key="Color.Blue.3">#ff3da2ca</Color>
@@ -55,20 +55,20 @@
 
     <Color x:Key="Color.Avalon.1">#fff2d490</Color>
 
-    <!-- Text colors -->
+    --><!-- Text colors --><!--
     <Color x:Key="Color.Text.Normal">#FFDEDEEA</Color>
     <Color x:Key="Color.Text.ToOldFirst">#FF8C8CA5</Color>
     <Color x:Key="Color.Text.ToOldSecond">#FF77778C</Color>
     <Color x:Key="Color.Text.ToOldThird">#FF616172</Color>
     <Color x:Key="Color.Text.NoValue">#FF4B4B59</Color>
 
-    <!-- Button colors -->
+    --><!-- Button colors --><!--
     <Color x:Key="ControlNormalColor">#FF0e89b1</Color>
     <Color x:Key="ControlMouseOverColor">#ff3da2ca</Color>
     <Color x:Key="DisabledControlColor">#FF4B4B59</Color>
     <Color x:Key="ControlPressedColor">#ff57b6e0</Color>
 
-    <!-- Attention button colors -->
+    --><!-- Attention button colors --><!--
     <Color x:Key="Button.Attention.Color.Normal">#FFb00e29</Color>
     <Color x:Key="Button.Attention.Color.MouseOver">#ffC93C54</Color>
     <Color x:Key="Button.Attention.Color.Disabled">#FF594B4B</Color>
@@ -76,16 +76,16 @@
 
     <Color x:Key="Button.Attention.Color.DisabledForeground">#FFBFBFBF</Color>
 
-     <!--Pvp/Pve colors--> 
+     --><!--Pvp/Pve colors--><!-- 
     <Color x:Key="Text.Color.Pvp">#ffe05761</Color>
     <Color x:Key="Text.Color.Pve">#ff57b6e0</Color>
 
-     <!--Tracking colors--> 
+     --><!--Tracking colors--><!-- 
     <Color x:Key="Tracking.On">#FF1F9E6E</Color>
     <Color x:Key="Tracking.Partially">#FFD9A900</Color>
     <Color x:Key="Tracking.Off">#FF616172</Color>
 
-     <!--Cluster type colors--> 
+     --><!--Cluster type colors--><!-- 
     <Color x:Key="Cluster.SafeArea">#FF4B6EA0</Color>
     <Color x:Key="Cluster.Yellow">#FFF2A60D</Color>
     <Color x:Key="Cluster.Red">#FFD81320</Color>
@@ -154,7 +154,7 @@
 
     <SolidColorBrush x:Key="SolidColorBrush.Tracking.Off" Color="{StaticResource Tracking.Off}"/>
 
-    <!--<SolidColorBrush x:Key="Weapon.Foreground.Text" Color="#fafafa"/>
+    --><!--<SolidColorBrush x:Key="Weapon.Foreground.Text" Color="#fafafa"/>
     <SolidColorBrush x:Key="Weapon.Foreground.Sword" Color="#FAA307"/>
     <SolidColorBrush x:Key="Weapon.Foreground.Spear" Color="#DAB10B"/>
     <SolidColorBrush x:Key="Weapon.Foreground.Quarterstaff" Color="#297A7A"/>
@@ -178,144 +178,30 @@
 
     <!-- ######################################################################################### -->
 
-    <!-- Image gold -->
+    <!-- Image gold --><!--
     <Style TargetType="Image" x:Key="Image.Gold" >
         <Setter Property="Source" Value="Resources/gold.png"/>
     </Style>
 
-    <!-- Image gold chest -->
+    --><!-- Image gold chest --><!--
     <Style TargetType="Image" x:Key="Image.GoldChest" >
         <Setter Property="Source" Value="Resources/goldchest.png"/>
     </Style>
 
-
-    <Style x:Key="WindowChrome" TargetType="{x:Type Window}">
-        <Setter Property="WindowChrome.WindowChrome">
-            <Setter.Value>
-                <WindowChrome />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="BorderThickness" Value="1,1,1,1" />
-        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.1}"/>
-        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.2}"/>
-        <Setter Property="FontSize" Value="{StaticResource BaseFontSize}"/>
-        <Setter Property="WindowStyle" Value="None"/>
-        <Setter Property="Focusable" Value="False"/>
-    </Style>
-
-    <!-- Hotbar Grid -->
-    <Style x:Key="HotbarGrid" TargetType="Grid">
-        <Setter Property="Height" Value="150"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
-    </Style>
-
-    <!-- Radio Button -->
-    <Style TargetType="{x:Type RadioButton}" >
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"/>
-        <Setter Property="Height" Value="21"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type RadioButton}">
-                    <BulletDecorator>
-                        <BulletDecorator.Bullet>
-                            <Grid Height="16" Width="16">
-                                <Border Name="RadioOuter" Background="Transparent" BorderBrush="{StaticResource SolidColorBrush.Foreground.First}" BorderThickness="1" CornerRadius="10" />
-                                <Border CornerRadius="10" Margin="4" Name="RadioMark" Background="{StaticResource SolidColorBrush.Blue.3}" Visibility="Hidden" />
-                            </Grid>
-                        </BulletDecorator.Bullet>
-                        <TextBlock Margin="4,0,0,0" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
-                                <ContentPresenter />
-                        </TextBlock>
-                    </BulletDecorator>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="true">
-                            <Setter TargetName="RadioMark" Property="Visibility" Value="Visible"/>
-                            <Setter TargetName="RadioOuter" Property="BorderBrush" Value="{StaticResource SolidColorBrush.Blue.4}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- Normal Button Style -->
-    <Style TargetType="{x:Type Button}" x:Key="Style.Button.Attention">
-        <Setter Property="SnapsToDevicePixels" Value="true" />
-        <Setter Property="OverridesDefaultStyle" Value="true" />
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
-        <Setter Property="MinHeight" Value="18px" />
-        <Setter Property="MinWidth"  Value="40px" />
-        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border TextBlock.Foreground="{TemplateBinding Foreground}" x:Name="Border">
-                        <Border.Background>
-                            <SolidColorBrush  Color="{DynamicResource Button.Attention.Color.Normal}" />
-                        </Border.Background>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition GeneratedDuration="0:0:0.1" />
-                                    <VisualTransition GeneratedDuration="0" To="Pressed" />
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Button.Attention.Color.MouseOver}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Button.Attention.Color.Pressed}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color.Text.6}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
-                                                Storyboard.TargetName="Border">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color.Text.5}" />
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter Margin="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            RecognizesAccessKey="True" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- Price list column style -->
+    --><!-- Price list column style --><!--
     <Style TargetType="Label" x:Key="Price.List.Column.Style">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Foreground.First}"></Setter>
         <Setter Property="HorizontalAlignment" Value="Left"></Setter>
         <Setter Property="VerticalAlignment" Value="Top"></Setter>
     </Style>
 
-    <!-- MainWindow version label -->
+    --><!-- MainWindow version label --><!--
     <Style TargetType="Label" x:Key="MainWindow.Version">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Highlighted.First}"></Setter>
         <Setter Property="HorizontalAlignment" Value="Left"></Setter>
         <Setter Property="VerticalAlignment" Value="Top"></Setter>
         <Setter Property="FontSize" Value="20"></Setter>
         <Setter Property="FontWeight" Value="Light"></Setter>
-    </Style>
+    </Style>-->
 
 </ResourceDictionary>

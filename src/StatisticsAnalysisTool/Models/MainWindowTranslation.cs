@@ -1,5 +1,4 @@
 ﻿using StatisticsAnalysisTool.Common;
-// ReSharper disable UnusedMember.Global
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -76,5 +75,8 @@ namespace StatisticsAnalysisTool.Models
         public static string Dungeons => LanguageController.Translation("DUNGEONS");
         public static string PlayerInformation => LanguageController.Translation("PLAYER_INFORMATION");
         public static string Logging => LanguageController.Translation("LOGGING");
+        public static string TrackingIsActive => LanguageController.Translation("TRACKING_IS_ACTIVE");
+        public static string TrackingIsPartiallyActive => LanguageController.Translation("TRACKING_IS_PARTIALLY_ACTIVE");
+        public static string TrackingIsNotActive => LanguageController.Translation("TRACKING_IS_NOT_ACTIVE");
     }
 }
