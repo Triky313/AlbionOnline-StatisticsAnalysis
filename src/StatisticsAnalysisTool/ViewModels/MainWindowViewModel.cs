@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -55,7 +54,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private DungeonStats _dungeonStatsTotal = new();
         private string _errorBarText;
         private Visibility _errorBarVisibility;
-        private Visibility _goldPriceVisibility;
         private Visibility _guildInformationVisibility;
         private double _guildInfoWidth;
         private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
@@ -174,7 +172,7 @@ namespace StatisticsAnalysisTool.ViewModels
             _ = InitTrackingAsync();
         }
         
-        public async void SetUiElements()
+        public void SetUiElements()
         {
             #region Error bar
 
@@ -211,24 +209,7 @@ namespace StatisticsAnalysisTool.ViewModels
             if (!IsFullItemInfoLoading) LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
 
             #endregion Full Item Info elements
-
-            #region Gold price
-
-            var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
-            CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
-            if (currentGoldPrice.Count > 0)
-            {
-                CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ??
-                                            new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
-                GoldPriceVisibility = Visibility.Visible;
-            }
-            else
-            {
-                GoldPriceVisibility = Visibility.Hidden;
-            }
-
-            #endregion Gold price
-
+            
             #region Player information
 
             SavedPlayerInformationName = SettingsController.CurrentSettings.SavedPlayerInformationName;
@@ -1481,17 +1462,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public Visibility GoldPriceVisibility
-        {
-            get => _goldPriceVisibility;
-            set
-            {
-                _goldPriceVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public DungeonStats DungeonStatsDay
         {
             get => _dungeonStatsDay;
@@ -1521,7 +1492,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public string TrackingUsername
         {
             get => _trackingUsername;
@@ -1529,7 +1500,6 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _trackingUsername = value;
                 UsernameInformationVisibility = !string.IsNullOrEmpty(_trackingUsername) ? Visibility.Visible : Visibility.Hidden;
-                UsernameInfoWidth = string.IsNullOrEmpty(_trackingUsername) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
@@ -1541,7 +1511,6 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _trackingGuildName = value;
                 GuildInformationVisibility = !string.IsNullOrEmpty(_trackingGuildName) ? Visibility.Visible : Visibility.Hidden;
-                GuildInfoWidth = string.IsNullOrEmpty(_trackingGuildName) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
@@ -1553,7 +1522,6 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _trackingAllianceName = value;
                 AllianceInformationVisibility = !string.IsNullOrEmpty(_trackingAllianceName) ? Visibility.Visible : Visibility.Hidden;
-                AllianceInfoWidth = string.IsNullOrEmpty(_trackingAllianceName) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
@@ -1565,7 +1533,6 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _trackingCurrentMapName = value;
                 CurrentMapInformationVisibility = !string.IsNullOrEmpty(_trackingCurrentMapName) ? Visibility.Visible : Visibility.Hidden;
-                CurrentMapInfoWidth = string.IsNullOrEmpty(_trackingCurrentMapName) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
