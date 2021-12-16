@@ -107,8 +107,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _totalGainedFameInSessionInSession = "0";
         private string _totalGainedReSpecPointsInSessionInSession = "0";
         private string _totalGainedSilverInSessionInSession = "0";
-        private Brush _trackerActivationToggleColor;
-        private EFontAwesomeIcon _trackerActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private string _trackingAllianceName;
         public TrackingController TrackingController;
         private string _trackingCurrentMapName;
