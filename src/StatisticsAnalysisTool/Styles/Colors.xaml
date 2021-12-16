@@ -55,16 +55,16 @@
 
     <!-- City colors -->
     <Color x:Key="Color.City.Default">#FF24292D</Color>
-    <Color x:Key="Color.City.Caerleon">#FF24292D</Color>
-    <Color x:Key="Color.City.Thetford">#FF3BAFDA</Color>
-    <Color x:Key="Color.City.Bridgewatch">#FFF76397</Color>
-    <Color x:Key="Color.City.Martlock">#FF7266BA</Color>
-    <Color x:Key="Color.City.Lymhurst">#FFFFAA00</Color>
-    <Color x:Key="Color.City.FortSterling">#FF00B19D</Color>
+    <Color x:Key="Color.City.Caerleon">#FFDE2643</Color>
+    <Color x:Key="Color.City.Thetford">#FF873FD4</Color>
+    <Color x:Key="Color.City.Bridgewatch">#FFFFA64D</Color>
+    <Color x:Key="Color.City.Martlock">#FF5066CC</Color>
+    <Color x:Key="Color.City.Lymhurst">#FF18A170</Color>
+    <Color x:Key="Color.City.FortSterling">#FFE1F7FA</Color>
     <Color x:Key="Color.City.ArthursRest">#FFF75656</Color>
-    <Color x:Key="Color.City.MerlynsRest">#FF435DE0</Color>
+    <Color x:Key="Color.City.MerlynsRest">#FF3A9DC7</Color>
     <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
-    <Color x:Key="Color.City.BlackMarket">#FFA72F47</Color>
+    <Color x:Key="Color.City.BlackMarket">#FF95233F</Color>
 
     <!-- Faction colors -->
     <Color x:Key="Dungeon.Mode.Expedition.1">#B857DB</Color>
@@ -80,6 +80,11 @@
     <Color x:Key="Dungeon.Mode.Avalon.1">#fffffaeb</Color>
     <Color x:Key="Dungeon.Mode.Avalon.2">#ffeddaa7</Color>
     <Color x:Key="Dungeon.Mode.Unknown">#ff252525</Color>
+
+    <Color x:Key="Color.Text.ToOldFirst">#FF8C8CA5</Color>
+    <Color x:Key="Color.Text.ToOldSecond">#FF77778C</Color>
+    <Color x:Key="Color.Text.ToOldThird">#FF616172</Color>
+    <Color x:Key="Color.Text.NoValue">#FF4B4B59</Color>
 
     <!-- Item level colors -->
     <Color x:Key="Item.Level.Color.0">#FFb1b0ae</Color>
@@ -102,6 +107,9 @@
     <Color x:Key="Cluster.Red">#FFD81320</Color>
     <Color x:Key="Cluster.Black">#FF202026</Color>
     <Color x:Key="Cluster.Avalon">#ffEBCD7A</Color>
+
+    <!-- Best price color -->
+    <Color x:Key="Color.BestPrice">#FF1DC160</Color>
 
     <SolidColorBrush x:Key="SolidColorBrush.Text.1" Color="{StaticResource Color.Text.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.2" Color="{StaticResource Color.Text.2}"/>
@@ -192,4 +200,11 @@
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Knuckles" Color="#914210"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.UnknownWeaponType" Color="#555555"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.HealBar" Color="#00aa1a"/>
+
+    <SolidColorBrush x:Key="Solid.Color.Text.ToOldFirst" Color="{StaticResource Color.Text.ToOldFirst}"/>
+    <SolidColorBrush x:Key="Solid.Color.Text.ToOldSecond" Color="{StaticResource Color.Text.ToOldSecond}"/>
+    <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
+    <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
+
+    <SolidColorBrush x:Key="Solid.Color.BestPrice" Color="{StaticResource Color.BestPrice}"/>
 </ResourceDictionary>

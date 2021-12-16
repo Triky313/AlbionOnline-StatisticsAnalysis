@@ -56,4 +56,23 @@
         <Setter Property="Margin" Value="0" />
     </Style>
 
+    <Style TargetType="Grid" x:Key="MainGridStyle">
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.1}" />
+    </Style>
+
+    <Style TargetType="Grid" x:Key="BackgroundImageGridStyle">
+        <Setter Property="ZIndex" Value="-1" />
+        <Setter Property="Width" Value="960" />
+        <Setter Property="Height" Value="398" />
+        <Setter Property="Opacity" Value="0.2" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <ImageBrush ImageSource="../Assets/bg01.png" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

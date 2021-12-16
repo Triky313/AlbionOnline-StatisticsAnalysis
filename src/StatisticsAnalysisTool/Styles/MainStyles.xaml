@@ -1,6 +1,21 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <Style TargetType="Image" x:Key="Image.ToolIcon" >
+        <Setter Property="Source" Value="../sat-icon.ico"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="5,4,0,0"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Width" Value="35"/>
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="Height" Value="28" />
+        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+    </Style>
+
     <Style x:Key="ButtonFocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -627,6 +642,158 @@
         <Setter Property="Height" Value="20"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Margin" Value="0"/>
+    </Style>
+
+    <!-- City Styles -->
+    <Style TargetType="Label" x:Key="CaerleonStyle">
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.City.Caerleon}"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Label" x:Key="ThetfordStyle" >
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.City.Thetford}"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Label" x:Key="BridgewatchStyle" >
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.City.Bridgewatch}"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Label" x:Key="MartlockStyle" >
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.City.Martlock}"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Label" x:Key="LymhurstStyle" >
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.City.Lymhurst}"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Label" x:Key="FortSterlingStyle" >
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.City.FortSterling}"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Label" x:Key="ArthursRestStyle" >
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.City.ArthursRest}"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Label" x:Key="MerlynsRestStyle" >
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.City.MerlynsRest}"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Label" x:Key="MorganasRestStyle" >
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.City.MorganasRest}"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Label" x:Key="BlackMarketStyle" >
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Caerleon}" />
+    </Style>
+    <Style TargetType="Label" x:Key="DefaultCityStyle" >
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
     </Style>
 
 </ResourceDictionary>

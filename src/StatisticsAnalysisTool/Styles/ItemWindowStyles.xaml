@@ -3,6 +3,34 @@
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:itemWindowModel="clr-namespace:StatisticsAnalysisTool.Models.ItemWindowModel">
 
+    <Style x:Key="ListView.Grid.Item.Price" TargetType="Grid">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Width" Value="Auto"/>
+    </Style>
+
+    <Style x:Key="ListView.Grid.Item.Date" TargetType="Grid">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Height" Value="24"/>
+    </Style>
+
+    <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Price">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="22,0,0,0"/>
+    </Style>
+
+    <Style TargetType="Image" x:Key="ListView.Grid.StackPanel.Image.Price.Silver" >
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Source" Value="../Resources/silver.png"/>
+    </Style>
+
     <Style x:Key="ItemWindowStyle" TargetType="{x:Type Window}">
         <Setter Property="BorderThickness" Value="1,1,1,1" />
         <Setter Property="AllowsTransparency" Value="True" />
@@ -191,6 +219,64 @@
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="Margin" Value="0,5,0,0" />
         <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+
+    <Style TargetType="StackPanel" x:Key="ListView.Grid.StackPanel.Item.Icon">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.Normal">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+    <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldFirst">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+    <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldSecond">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+    <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.ToOldThird">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+    <Style TargetType="Label" x:Key="ListView.Grid.Label.Date.NoValue">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.BestPrice" >
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="MinWidth" Value="80"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="ListView.Grid.StackPanel.Label.Price">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="MinWidth" Value="80"/>
     </Style>
 
 </ResourceDictionary>

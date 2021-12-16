@@ -156,6 +156,7 @@ namespace StatisticsAnalysisTool.Common
                 Location.ArthursRest => Application.Current.FindResource("ArthursRestStyle") as Style,
                 Location.MerlynsRest => Application.Current.FindResource("MerlynsRestStyle") as Style,
                 Location.MorganasRest => Application.Current.FindResource("MorganasRestStyle") as Style,
+                Location.BlackMarket => Application.Current.FindResource("BlackMarketStyle") as Style,
                 _ => Application.Current.FindResource("DefaultCityStyle") as Style
             };
         }
