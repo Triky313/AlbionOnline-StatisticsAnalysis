@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,6 @@ namespace StatisticsAnalysisTool.Views
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            _mainWindowViewModel.SaveLootLogger();
             Application.Current?.Shutdown();
         }
 
@@ -88,9 +88,15 @@ namespace StatisticsAnalysisTool.Views
             _ = _mainWindowViewModel.ResetPartyAsync();
         }
 
-        private void MainWindow_OnClosed(object sender, EventArgs e)
+        private void MainWindow_OnClosed(object? sender, EventArgs eventArgs)
         {
-            _mainWindowViewModel.StopTracking();
+            _mainWindowViewModel.SaveLootLogger();
+            _mainWindowViewModel.SaveSettings(WindowState, RestoreBounds, Height, Width);
+
+            if (_mainWindowViewModel.IsTrackingActive)
+            {
+                _mainWindowViewModel.StopTracking();
+            }
         }
     }
 }
