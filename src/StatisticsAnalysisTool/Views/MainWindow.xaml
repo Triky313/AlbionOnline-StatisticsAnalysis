@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
+        xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="AlbionOnline - StatisticsAnalysisTool"
         Closed="MainWindow_OnClosed"
+        d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}"
         Style="{StaticResource MainWindowStyle}">
 
     <Grid Style="{StaticResource MainGridStyle}">
