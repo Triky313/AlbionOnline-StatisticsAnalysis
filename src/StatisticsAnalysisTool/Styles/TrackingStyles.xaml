@@ -30,7 +30,6 @@
         </Style.Triggers>
     </Style>
 
-
     <!-- Chest icons -->
     <Style TargetType="Image" x:Key="Icon.Chest.Standard.Close" >
         <Setter Property="Source" Value="../Resources/chest_close_standard.png"/>

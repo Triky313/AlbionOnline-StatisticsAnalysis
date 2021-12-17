@@ -19,7 +19,7 @@
     </Style>
 
     <Style TargetType="Image" x:Key="Image.ToolIcon" >
-        <Setter Property="Source" Value="../sat-icon.ico"/>
+        <Setter Property="Source" Value="../Assets/sat-icon.png"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Margin" Value="5,4,0,0"/>

@@ -136,6 +136,9 @@
     <Resource Include="Assets\bg01.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\sat-icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\alert_window_background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -376,6 +379,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\bg01.png" />
+    <None Remove="Assets\sat-icon.png" />
     <None Remove="GameFiles\items.json" />
     <None Remove="GameFiles\ItemSpriteToJournal.json" />
     <None Remove="GameFiles\lootchests.json" />
