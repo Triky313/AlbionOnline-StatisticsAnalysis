@@ -1,11 +1,22 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindowNew.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
@@ -28,7 +39,7 @@ namespace StatisticsAnalysisTool.Views
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel.SaveLootLogger();
-            Application.Current.Shutdown();
+            Application.Current?.Shutdown();
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
@@ -75,6 +86,11 @@ namespace StatisticsAnalysisTool.Views
         private void ResetParty_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _ = _mainWindowViewModel.ResetPartyAsync();
+        }
+
+        private void MainWindow_OnClosed(object sender, EventArgs e)
+        {
+            _mainWindowViewModel.StopTracking();
         }
     }
 }

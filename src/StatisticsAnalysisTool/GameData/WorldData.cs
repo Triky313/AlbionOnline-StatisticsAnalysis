@@ -111,7 +111,7 @@ namespace StatisticsAnalysisTool.GameData
 
                 if (fileDateTime.AddDays(Settings.Default.UpdateWorldDataByDays) < DateTime.Now)
                 {
-                    if (await GetWorldListFromWebAsync(url))
+                    if (await GetWorldListFromWebAsync(url).ConfigureAwait(false))
                     {
                         MapData = GetWorldDataFromLocal();
                     }
@@ -123,7 +123,7 @@ namespace StatisticsAnalysisTool.GameData
                 return MapData?.Count > 0;
             }
 
-            if (await GetWorldListFromWebAsync(url))
+            if (await GetWorldListFromWebAsync(url).ConfigureAwait(false))
             {
                 MapData = GetWorldDataFromLocal();
             }

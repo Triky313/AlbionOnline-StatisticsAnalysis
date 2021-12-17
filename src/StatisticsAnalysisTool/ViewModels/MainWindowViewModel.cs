@@ -450,12 +450,12 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async Task InitTrackingAsync()
         {
-            _ = await WorldData.GetDataListFromJsonAsync();
-            _ = await DungeonObjectData.GetDataListFromJsonAsync();
+            await WorldData.GetDataListFromJsonAsync().ConfigureAwait(true);
+            await DungeonObjectData.GetDataListFromJsonAsync().ConfigureAwait(true);
 
             TrackingController ??= new TrackingController(this, _mainWindow);
-            
-            await StartTrackingAsync();
+
+            StartTracking();
 
             IsTrackingFilteredSilver = SettingsController.CurrentSettings.IsMainTrackerFilterSilver;
             IsTrackingFilteredFame = SettingsController.CurrentSettings.IsMainTrackerFilterFame;
@@ -861,7 +861,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Tracking Mode
         
-        public async Task StartTrackingAsync()
+        public void StartTracking()
         {
             if (NetworkManager.IsNetworkCaptureRunning)
             {
@@ -878,7 +878,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
 
-            IsTrackingActive = await NetworkManager.StartNetworkCaptureAsync(this, TrackingController);
+            IsTrackingActive = NetworkManager.StartNetworkCapture(this, TrackingController);
             Console.WriteLine(@"### Start Tracking...");
         }
 

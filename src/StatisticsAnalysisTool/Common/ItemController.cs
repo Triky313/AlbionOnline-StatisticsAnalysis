@@ -55,7 +55,7 @@ namespace StatisticsAnalysisTool.Common
 
             if (string.IsNullOrEmpty(currentLanguage))
             {
-                currentLanguage = LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper();
+                currentLanguage = LanguageController.CurrentCultureInfo?.TextInfo.CultureName.ToUpper();
             }
 
             return FrequentlyValues.GameLanguages
