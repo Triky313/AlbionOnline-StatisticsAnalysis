@@ -10,7 +10,7 @@
                     <Grid Margin="5,2">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                             <TextBlock Name="Pipe" Foreground="{StaticResource SolidColorBrush.Accent.Blue.4}" FontWeight="Bold" Text="|" 
-                                       VerticalAlignment="Center" Padding="5,0,0,0" FontSize="16" />
+                                       VerticalAlignment="Center" Padding="5,0,0,3" FontSize="16" />
                             <Label Name="Text" Height="40" Content="{TemplateBinding Header}" Foreground="{StaticResource SolidColorBrush.Text.5}" 
                                    FontSize="16" VerticalContentAlignment="Center" Margin="5,0" />
                         </StackPanel>
