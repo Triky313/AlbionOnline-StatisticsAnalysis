@@ -47,17 +47,29 @@ namespace StatisticsAnalysisTool.Common
                 if (CurrentCultureInfo == null)
                 {
                     if (!string.IsNullOrEmpty(SettingsController.CurrentSettings.CurrentLanguageCultureName))
+                    {
                         CurrentCultureInfo = new CultureInfo(SettingsController.CurrentSettings.CurrentLanguageCultureName);
+                    }
                     else if (!string.IsNullOrEmpty(Settings.Default.DefaultLanguageCultureName))
+                    {
                         CurrentCultureInfo = new CultureInfo(Settings.Default.DefaultLanguageCultureName);
+                    }
                     else
+                    {
                         throw new CultureNotFoundException();
+                    }
                 }
 
-                if (SetLanguage()) return true;
+                if (SetLanguage())
+                {
+                    return true;
+                }
 
                 CurrentCultureInfo = new CultureInfo(Settings.Default.DefaultLanguageCultureName);
-                if (SetLanguage()) return true;
+                if (SetLanguage())
+                {
+                    return true;
+                }
 
                 throw new CultureNotFoundException();
             }

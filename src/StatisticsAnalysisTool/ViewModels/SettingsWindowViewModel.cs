@@ -44,10 +44,13 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             #region Language
 
+            SettingsController.LoadSettings();
+
             Languages.Clear();
             LanguageController.InitializeLanguage();
 
             foreach (var langInfo in LanguageController.LanguageFiles)
+            {
                 try
                 {
                     var cultureInfo = CultureInfo.CreateSpecificCulture(langInfo.FileName);
@@ -62,6 +65,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                     Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 }
+            }
 
             LanguagesSelection = Languages.FirstOrDefault(x => x.FileName == LanguageController.CurrentCultureInfo.TextInfo.CultureName);
 
