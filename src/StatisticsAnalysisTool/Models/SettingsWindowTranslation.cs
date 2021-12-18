@@ -5,7 +5,7 @@ namespace StatisticsAnalysisTool.Models
     public class SettingsWindowTranslation
     {
         public string Settings => LanguageController.Translation("SETTINGS");
-        public string Language => LanguageController.Translation("LANGUAGE");
+        public string Language => $"{LanguageController.Translation("LANGUAGE")} ({LanguageController.Translation("PROGRAM_RESTART_REQUIRED")})";
         public string RefreshRate => LanguageController.Translation("REFRESH_RATE");
         public string UpdateItemListByDays => LanguageController.Translation("UPDATE_ITEM_LIST_BY_DAYS");
         public string ItemListSourceUrl => LanguageController.Translation("ITEM_LIST_SOURCE_URL");

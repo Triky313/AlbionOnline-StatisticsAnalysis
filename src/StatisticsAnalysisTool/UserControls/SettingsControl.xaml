@@ -78,7 +78,7 @@
             </ScrollViewer>
         </Grid>
         <Grid Height="44" VerticalAlignment="Bottom">
-            <Button Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="10,10,0,10" Width="110" Click="BtnSave_Click" />
+            <Button Content="{Binding Translation.Save, FallbackValue=SAVE}" HorizontalAlignment="Left" Margin="5,10,0,10" Width="110" Click="BtnSave_Click" />
         </Grid>
     </Grid>
 </UserControl>
