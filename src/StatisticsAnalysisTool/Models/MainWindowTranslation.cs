@@ -78,5 +78,6 @@ namespace StatisticsAnalysisTool.Models
         public static string TrackingIsActive => LanguageController.Translation("TRACKING_IS_ACTIVE");
         public static string TrackingIsPartiallyActive => LanguageController.Translation("TRACKING_IS_PARTIALLY_ACTIVE");
         public static string TrackingIsNotActive => LanguageController.Translation("TRACKING_IS_NOT_ACTIVE");
+        public static string Dashboard => LanguageController.Translation("DASHBOARD");
     }
 }

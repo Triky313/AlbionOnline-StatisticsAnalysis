@@ -18,12 +18,13 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(UpdateReSpecPointsEvent value)
         {
-            if (value?.CurrentReSpecPoints != null)
+            if (value?.CurrentTotalReSpecPoints != null)
             {
-                _countUpTimer.Add(ValueType.ReSpec, value.CurrentReSpecPoints.Value.DoubleValue);
-                _trackingController.DungeonController?.AddValueToDungeon(value.CurrentReSpecPoints.Value.DoubleValue, ValueType.ReSpec);
+                _countUpTimer.Add(ValueType.ReSpec, value.CurrentTotalReSpecPoints.Value.DoubleValue);
+                _trackingController.DungeonController?.AddValueToDungeon(value.CurrentTotalReSpecPoints.Value.DoubleValue, ValueType.ReSpec);
+                _trackingController.StatisticController?.AddValue(ValueType.ReSpec, value.CurrentTotalReSpecPoints.Value.DoubleValue);
             }
-            
+
             await Task.CompletedTask;
         }
     }

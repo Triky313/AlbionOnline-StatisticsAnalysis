@@ -1,5 +1,6 @@
 ﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Network.Operations.Requests;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {

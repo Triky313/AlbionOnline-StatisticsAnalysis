@@ -28,6 +28,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using Divis.AsyncObservableCollection;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 // ReSharper disable UnusedMember.Global
 
@@ -150,6 +152,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingSilver;
         private bool _isTrackingFame;
         private string _trackingActiveText = MainWindowTranslation.TrackingIsNotActive;
+        private Axis[] _xAxesDashboardHourValues;
+        private ObservableCollection<ISeries> _seriesDashboardHourValues;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -2266,20 +2270,30 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string ErrorBarText
-        {
-            get => _errorBarText;
-            set
-            {
-                _errorBarText = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ObservableCollection<MainStatObject> FactionPointStats {
             get => _factionPointStats;
             set {
                 _factionPointStats = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<ISeries> SeriesDashboardHourValues
+        {
+            get => _seriesDashboardHourValues;
+            set
+            {
+                _seriesDashboardHourValues = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Axis[] XAxesDashboardHourValues
+        {
+            get => _xAxesDashboardHourValues;
+            set
+            {
+                _xAxesDashboardHourValues = value;
                 OnPropertyChanged();
             }
         }
@@ -2300,6 +2314,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _errorBarVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ErrorBarText
+        {
+            get => _errorBarText;
+            set
+            {
+                _errorBarText = value;
                 OnPropertyChanged();
             }
         }

@@ -286,32 +286,7 @@
             </TabItem>
             <TabItem Header="{Binding Translation.History, FallbackValue=HISTORY}">
                 <Grid>
-                    <lvc:CartesianChart Series="{Binding SeriesHistory, IsAsync=True}" XAxes="{Binding XAxesHistory}">
-                        <lvc:CartesianChart.TooltipTemplate>
-                            <DataTemplate>
-                                <Border BorderThickness="5" Background="{StaticResource SolidColorBrush.Background.Color.6}">
-                                    <ItemsControl ItemsSource="{Binding Points, RelativeSource={RelativeSource AncestorType=lvc:DefaultTooltip}}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical" />
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate DataType="{x:Type ctx:TooltipPoint}">
-                                                <Border Padding="7 5">
-                                                    <StackPanel Orientation="Vertical">
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Text="{Binding Point.AsTooltipString}" Margin="0 0 8 0" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
-                                                        </StackPanel>
-                                                    </StackPanel>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </Border>
-                            </DataTemplate>
-                        </lvc:CartesianChart.TooltipTemplate>
-                    </lvc:CartesianChart>
+                    <lvc:CartesianChart Series="{Binding SeriesHistory, IsAsync=True}" XAxes="{Binding XAxesHistory}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}">

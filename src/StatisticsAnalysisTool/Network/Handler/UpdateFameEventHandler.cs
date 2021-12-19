@@ -26,6 +26,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                 value.ZoneFame.DoubleValue, value.PremiumFame.DoubleValue, value.SatchelFame.DoubleValue, value.IsBonusFactorActive, value.BonusFactorInPercent));
             _countUpTimer.Add(ValueType.Fame, value.TotalGainedFame.DoubleValue);
             _trackingController.DungeonController?.AddValueToDungeon(value.TotalGainedFame.DoubleValue, ValueType.Fame);
+            _trackingController.StatisticController?.AddValue(ValueType.Fame, value.TotalGainedFame.DoubleValue);
         }
 
         private TrackingNotification SetPveFameNotification(double totalPlayerFame, double totalGainedFame, double zoneFame, double premiumFame,

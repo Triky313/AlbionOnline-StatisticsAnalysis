@@ -66,6 +66,18 @@
     <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
     <Color x:Key="Color.City.BlackMarket">#FF95233F</Color>
 
+    <Color x:Key="Color.City.Default.Transparent">#3324292D</Color>
+    <Color x:Key="Color.City.Caerleon.Transparent">#33DE2643</Color>
+    <Color x:Key="Color.City.Thetford.Transparent">#33873FD4</Color>
+    <Color x:Key="Color.City.Bridgewatch.Transparent">#33FFA64D</Color>
+    <Color x:Key="Color.City.Martlock.Transparent">#335066CC</Color>
+    <Color x:Key="Color.City.Lymhurst.Transparent">#3318A170</Color>
+    <Color x:Key="Color.City.FortSterling.Transparent">#33E1F7FA</Color>
+    <Color x:Key="Color.City.ArthursRest.Transparent">#33F75656</Color>
+    <Color x:Key="Color.City.MerlynsRest.Transparent">#333A9DC7</Color>
+    <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
+    <Color x:Key="Color.City.BlackMarket.Transparent">#3395233F</Color>
+
     <!-- Faction colors -->
     <Color x:Key="Dungeon.Mode.Expedition.1">#B857DB</Color>
     <Color x:Key="Dungeon.Mode.Expedition.2">#8329A3</Color>
@@ -107,6 +119,23 @@
     <Color x:Key="Cluster.Red">#FFD81320</Color>
     <Color x:Key="Cluster.Black">#FF202026</Color>
     <Color x:Key="Cluster.Avalon">#ffEBCD7A</Color>
+
+    <!-- Value colors -->
+    <Color x:Key="Color.Value.Fame">#FFCF2026</Color>
+    <Color x:Key="Color.Value.Silver">#FF787878</Color>
+    <Color x:Key="Color.Value.ReSpec">#FFFBBA00</Color>
+    <Color x:Key="Color.Value.FactionFame">#FFA1434F</Color>
+    <Color x:Key="Color.Value.FactionPoints">#FF80436C</Color>
+    <Color x:Key="Color.Value.Might">#FF60AEE2</Color>
+    <Color x:Key="Color.Value.Favor">#FF1D70A2</Color>
+
+    <Color x:Key="Color.Value.Fame.Transparent">#33CF2026</Color>
+    <Color x:Key="Color.Value.Silver.Transparent">#33787878</Color>
+    <Color x:Key="Color.Value.ReSpec.Transparent">#33FBBA00</Color>
+    <Color x:Key="Color.Value.FactionFame.Transparent">#33A1434F</Color>
+    <Color x:Key="Color.Value.FactionPoints.Transparent">#3380436C</Color>
+    <Color x:Key="Color.Value.Might.Transparent">#3360AEE2</Color>
+    <Color x:Key="Color.Value.Favor.Transparent">#331D70A2</Color>
 
     <SolidColorBrush x:Key="SolidColorBrush.Text.1" Color="{StaticResource Color.Text.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.2" Color="{StaticResource Color.Text.2}"/>
@@ -151,7 +180,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.4" Color="{StaticResource Color.Accent.Blue.Transparent.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.5" Color="{StaticResource Color.Accent.Blue.Transparent.5}"/>
 
-    <SolidColorBrush x:Key="SolidColorBrush.City.Default" Color="{StaticResource Color.City.Caerleon}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Default" Color="{StaticResource Color.City.Default}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Thetford" Color="{StaticResource Color.City.Thetford}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Bridgewatch" Color="{StaticResource Color.City.Bridgewatch}"/>
@@ -162,6 +191,18 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket" Color="{StaticResource Color.City.BlackMarket}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.City.Default.Transparent" Color="{StaticResource Color.City.Default.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon.Transparent" Color="{StaticResource Color.City.Caerleon.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Thetford.Transparent" Color="{StaticResource Color.City.Thetford.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Bridgewatch.Transparent" Color="{StaticResource Color.City.Bridgewatch.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Martlock.Transparent" Color="{StaticResource Color.City.Martlock.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst.Transparent" Color="{StaticResource Color.City.Lymhurst.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling.Transparent" Color="{StaticResource Color.City.FortSterling.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest.Transparent" Color="{StaticResource Color.City.ArthursRest.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest.Transparent" Color="{StaticResource Color.City.MerlynsRest.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest.Transparent" Color="{StaticResource Color.City.MorganasRest.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket.Transparent" Color="{StaticResource Color.City.BlackMarket.Transparent}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Expedition.1" Color="{StaticResource Dungeon.Mode.Expedition.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.HellGate.1" Color="{StaticResource Dungeon.Mode.HellGate.1}"/>
@@ -177,6 +218,22 @@
 
     <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pvp" Color="{StaticResource Text.Color.Pvp}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pve" Color="{StaticResource Text.Color.Pve}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Fame" Color="{StaticResource Color.Value.Fame}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Silver" Color="{StaticResource Color.Value.Silver}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.ReSpec" Color="{StaticResource Color.Value.ReSpec}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionFame" Color="{StaticResource Color.Value.FactionFame}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionPoints" Color="{StaticResource Color.Value.FactionPoints}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Might" Color="{StaticResource Color.Value.Might}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Favor" Color="{StaticResource Color.Value.Favor}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Fame.Transparent" Color="{StaticResource Color.Value.Fame.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Silver.Transparent" Color="{StaticResource Color.Value.Silver.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.ReSpec.Transparent" Color="{StaticResource Color.Value.ReSpec.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionFame.Transparent" Color="{StaticResource Color.Value.FactionFame.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionPoints.Transparent" Color="{StaticResource Color.Value.FactionPoints.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Might.Transparent" Color="{StaticResource Color.Value.Might.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Favor.Transparent" Color="{StaticResource Color.Value.Favor.Transparent}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Text" Color="#fafafa"/>
     <SolidColorBrush x:Key="SolidColorBrush.Weapon.Sword" Color="#FAA307"/>

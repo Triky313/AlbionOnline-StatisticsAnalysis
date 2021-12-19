@@ -6,6 +6,8 @@
         ReSpec,
         Silver,
         FactionFame,
-        FactionPoints
+        FactionPoints,
+        Might,
+        Favor
     }
 }
