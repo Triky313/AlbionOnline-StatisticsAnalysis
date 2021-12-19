@@ -77,7 +77,7 @@ namespace StatisticsAnalysisTool.Views
             _ = _mainWindowViewModel.ResetPartyAsync();
         }
 
-        private void MainWindow_OnClosed(object? sender, EventArgs eventArgs)
+        private void MainWindow_OnClosed(object sender, EventArgs eventArgs)
         {
             _mainWindowViewModel.SaveLootLogger();
             _mainWindowViewModel.SaveSettings(WindowState, RestoreBounds, Height, Width);
