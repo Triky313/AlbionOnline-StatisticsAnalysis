@@ -53,7 +53,10 @@ namespace StatisticsAnalysisTool.Models
         public static string Loot => LanguageController.Translation("LOOT");
         public static string Fame => LanguageController.Translation("FAME");
         public static string Silver => LanguageController.Translation("SILVER");
+        public static string ReSpec => LanguageController.Translation("RESPEC");
         public static string Faction => LanguageController.Translation("FACTION");
+        public static string Might => LanguageController.Translation("MIGHT");
+        public static string Favor => LanguageController.Translation("FAVOR");
         public static string ResetTrackingNotifications => LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS");
         public static string EquipmentLoot => LanguageController.Translation("EQUIPMENT_LOOT");
         public static string ConsumableLoot => LanguageController.Translation("CONSUMABLE_LOOT");

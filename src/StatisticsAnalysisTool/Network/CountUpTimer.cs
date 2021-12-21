@@ -22,11 +22,15 @@ namespace StatisticsAnalysisTool.Network
         private readonly List<ValuePerHour> _famePerHourList = new();
         private readonly List<ValuePerHour> _reSpecPerHourList = new();
         private readonly List<ValuePerHour> _silverPerHourList = new();
+        private readonly List<ValuePerHour> _mightPerHourList = new();
+        private readonly List<ValuePerHour> _favorPerHourList = new();
         private readonly List<ValuePerHour> _factionPointsPerHourList = new();
 
         private double _famePerHourValue;
         private double _reSpecPerHourValue;
         private double _silverPerHourValue;
+        private double _mightPerHourValue;
+        private double _favorPerHourValue;
         private double _factionPointsPerHourValue;
 
         private bool _isCurrentTimerUpdateActive;
@@ -35,6 +39,8 @@ namespace StatisticsAnalysisTool.Network
         private double _totalGainedFameInSession;
         private double _totalGainedReSpecInSession;
         private double _totalGainedSilverInSession;
+        private double _totalGainedMightInSession;
+        private double _totalGainedFavorInSession;
         private double _totalGainedFactionPointsInSession;
         private CityFaction _currentCityFaction = CityFaction.Unknown;
         private double? _lastReSpecValue;
@@ -83,6 +89,20 @@ namespace StatisticsAnalysisTool.Network
 
                     RemoveValueFromValuePerHour(_factionPointsPerHourList, _factionPointsPerHourValue);
                     break;
+                case ValueType.Might:
+                    _mightPerHourValue += value;
+                    _mightPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
+                    _totalGainedMightInSession += value;
+
+                    RemoveValueFromValuePerHour(_mightPerHourList, _mightPerHourValue);
+                    break;
+                case ValueType.Favor:
+                    _favorPerHourValue += value;
+                    _favorPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
+                    _totalGainedFavorInSession += value;
+
+                    RemoveValueFromValuePerHour(_favorPerHourList, _favorPerHourValue);
+                    break;
             }
             Start();
         }
@@ -111,9 +131,7 @@ namespace StatisticsAnalysisTool.Network
         public void Reset()
         {
             _startTime = DateTime.UtcNow;
-            _mainWindowViewModel.FamePerHour = "0";
-            _mainWindowViewModel.ReSpecPointsPerHour = "0";
-            _mainWindowViewModel.SilverPerHour = "0";
+            _mainWindowViewModel.DashboardObject.Reset();
 
             var factionValues = _mainWindowViewModel.FactionPointStats.FirstOrDefault();
             if (factionValues != null)
@@ -171,9 +189,11 @@ namespace StatisticsAnalysisTool.Network
             {
                 while (_isCurrentTimerUpdateActive)
                 {
-                    _mainWindowViewModel.TotalGainedFameInSession = _totalGainedFameInSession.ToString("N0", LanguageController.CurrentCultureInfo);
-                    _mainWindowViewModel.TotalGainedReSpecPointsInSession = _totalGainedReSpecInSession.ToString("N0", LanguageController.CurrentCultureInfo);
-                    _mainWindowViewModel.TotalGainedSilverInSession = _totalGainedSilverInSession.ToString("N0", LanguageController.CurrentCultureInfo);
+                    _mainWindowViewModel.DashboardObject.TotalGainedFameInSession = _totalGainedFameInSession;
+                    _mainWindowViewModel.DashboardObject.TotalGainedReSpecPointsInSession = _totalGainedReSpecInSession;
+                    _mainWindowViewModel.DashboardObject.TotalGainedSilverInSession = _totalGainedSilverInSession;
+                    _mainWindowViewModel.DashboardObject.TotalGainedMightInSession = _totalGainedMightInSession;
+                    _mainWindowViewModel.DashboardObject.TotalGainedFavorInSession = _totalGainedFavorInSession;
 
                     var factionPointStat = _mainWindowViewModel.FactionPointStats.FirstOrDefault();
                     if (factionPointStat != null)
@@ -184,9 +204,11 @@ namespace StatisticsAnalysisTool.Network
 
                     }
 
-                    _mainWindowViewModel.FamePerHour = Utilities.GetValuePerHourInShort(_famePerHourValue, DateTime.UtcNow - _startTime);
-                    _mainWindowViewModel.ReSpecPointsPerHour = Utilities.GetValuePerHourInShort(_reSpecPerHourValue, DateTime.UtcNow - _startTime);
-                    _mainWindowViewModel.SilverPerHour = Utilities.GetValuePerHourInShort(_silverPerHourValue, DateTime.UtcNow - _startTime);
+                    _mainWindowViewModel.DashboardObject.FamePerHour = Utilities.GetValuePerHourToDouble(_famePerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+                    _mainWindowViewModel.DashboardObject.ReSpecPointsPerHour = Utilities.GetValuePerHourToDouble(_reSpecPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+                    _mainWindowViewModel.DashboardObject.SilverPerHour = Utilities.GetValuePerHourToDouble(_silverPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+                    _mainWindowViewModel.DashboardObject.MightPerHour = Utilities.GetValuePerHourToDouble(_mightPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+                    _mainWindowViewModel.DashboardObject.FavorPerHour = Utilities.GetValuePerHourToDouble(_favorPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
 
                     var duration = _startTime - DateTime.UtcNow;
                     _mainWindowViewModel.MainTrackerTimer = duration.ToString("hh\\:mm\\:ss");

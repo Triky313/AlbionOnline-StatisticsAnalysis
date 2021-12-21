@@ -45,8 +45,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new();
         private Visibility _allianceInformationVisibility;
         private double _allianceInfoWidth;
-        private int _currentGoldPrice;
-        private string _currentGoldPriceTimestamp;
         private Visibility _currentMapInformationVisibility;
         private double _currentMapInfoWidth;
         private AsyncObservableCollection<DamageMeterFragment> _damageMeter = new();
@@ -100,13 +98,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private ItemLevel _selectedItemLevel;
         private ParentCategory _selectedItemParentCategories;
         private ItemTier _selectedItemTier;
-        private string _famePerHour = "0";
-        private string _reSpecPointsPerHour = "0";
-        private string _silverPerHour = "0";
-        private string _textBoxGoldModeNumberOfValues;
-        private string _totalGainedFameInSessionInSession = "0";
-        private string _totalGainedReSpecPointsInSessionInSession = "0";
-        private string _totalGainedSilverInSessionInSession = "0";
         private string _trackingAllianceName;
         public TrackingController TrackingController;
         private string _trackingCurrentMapName;
@@ -154,6 +145,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _trackingActiveText = MainWindowTranslation.TrackingIsNotActive;
         private Axis[] _xAxesDashboardHourValues;
         private ObservableCollection<ISeries> _seriesDashboardHourValues;
+        private DashboardObject _dashboardObject = new ();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -415,7 +407,6 @@ namespace StatisticsAnalysisTool.ViewModels
             SetUiElements();
 
             ShowInfoWindow();
-            TextBoxGoldModeNumberOfValues = "10";
 
             await InitItemListAsync().ConfigureAwait(false);
         }
@@ -1580,67 +1571,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public string FamePerHour
-        {
-            get => _famePerHour;
-            set
-            {
-                _famePerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string SilverPerHour
-        {
-            get => _silverPerHour;
-            set
-            {
-                _silverPerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string ReSpecPointsPerHour
-        {
-            get => _reSpecPointsPerHour;
-            set
-            {
-                _reSpecPointsPerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TotalGainedFameInSession
-        {
-            get => _totalGainedFameInSessionInSession;
-            set
-            {
-                _totalGainedFameInSessionInSession = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TotalGainedSilverInSession
-        {
-            get => _totalGainedSilverInSessionInSession;
-            set
-            {
-                _totalGainedSilverInSessionInSession = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TotalGainedReSpecPointsInSession
-        {
-            get => _totalGainedReSpecPointsInSessionInSession;
-            set
-            {
-                _totalGainedReSpecPointsInSessionInSession = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public string MainTrackerTimer {
             get => _mainTrackerTimer;
             set
@@ -2172,36 +2103,16 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public int CurrentGoldPrice
+        public DashboardObject DashboardObject
         {
-            get => _currentGoldPrice;
+            get => _dashboardObject;
             set
             {
-                _currentGoldPrice = value;
+                _dashboardObject = value;
                 OnPropertyChanged();
             }
         }
-
-        public string CurrentGoldPriceTimestamp
-        {
-            get => _currentGoldPriceTimestamp;
-            set
-            {
-                _currentGoldPriceTimestamp = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TextBoxGoldModeNumberOfValues
-        {
-            get => _textBoxGoldModeNumberOfValues;
-            set
-            {
-                _textBoxGoldModeNumberOfValues = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public PlayerModeTranslation PlayerModeTranslation
         {
             get => _playerModeTranslation;

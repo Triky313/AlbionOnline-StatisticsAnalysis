@@ -4,12 +4,88 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-             xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
 
     <Grid Style="{StaticResource TabItemGridStyle}" Visibility="Visible">
-        <wpf:CartesianChart Series="{Binding SeriesDashboardHourValues, IsAsync=True}" XAxes="{Binding XAxesDashboardHourValues}" />
+
+        <DockPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" Height="80">
+            <StackPanel Orientation="Vertical" Margin="10,0,10,0">
+                <Image Source="../Resources/fame.png" Width="26" Height="26" ToolTip="{Binding Translation.Fame, FallbackValue=FAME}" />
+                <TextBlock Text="{Binding DashboardObject.TotalGainedFameInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                <TextBlock FontSize="16" Text="{Binding DashboardObject.FamePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="10,0,10,0">
+                <Image Source="../Resources/silver.png" Width="26" Height="26" ToolTip="{Binding Translation.Silver, FallbackValue=SILVER}" />
+                <TextBlock Text="{Binding DashboardObject.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                <TextBlock FontSize="16" Text="{Binding DashboardObject.SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="10,0,10,0">
+                <Image Source="../Resources/respec.png" Width="26" Height="26" ToolTip="{Binding Translation.ReSpec, FallbackValue=RESPEC}" />
+                <TextBlock Text="{Binding DashboardObject.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                <TextBlock FontSize="16" Text="{Binding DashboardObject.ReSpecPointsPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="10,0,10,0">
+                <Image Source="../Resources/might.png" Width="26" Height="26" ToolTip="{Binding Translation.Might, FallbackValue=MIGHT}" />
+                <TextBlock Text="{Binding DashboardObject.TotalGainedMightInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                <TextBlock FontSize="16" Text="{Binding DashboardObject.MightPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="10,0,10,0">
+                <Image Source="../Resources/favor.png" Width="26" Height="26" ToolTip="{Binding Translation.Favor, FallbackValue=FAVOR}" />
+                <TextBlock Text="{Binding DashboardObject.TotalGainedFavorInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                <TextBlock FontSize="16" Text="{Binding DashboardObject.FavorPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+            </StackPanel>
+        </DockPanel>
+
+        <StackPanel Orientation="Vertical">
+            <!--<DockPanel>
+                <Grid>
+                    <ProgressBar Name="pbFame" common:ProgressBarSmoother.SmoothValue="{Binding DashboardObject.FameInPercent}"  
+                                 Minimum="0" Maximum="{Binding DashboardObject.HighestValue}" Height="20" Margin="0,0,0,0" 
+                                 Foreground="{StaticResource SolidColorBrush.Value.Fame}" Background="#00FFFFFF" BorderThickness="0" Width="Auto" />
+                    <TextBlock Text="{Binding DashboardObject.FameString}" VerticalAlignment="Center" FontSize="16" MinHeight="24" Height="Auto" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+                </Grid>
+            </DockPanel>
+            <DockPanel>
+                <Grid>
+                    <ProgressBar Name="pbSilver" common:ProgressBarSmoother.SmoothValue="{Binding DashboardObject.SilverInPercent}" 
+                                 Minimum="0" Maximum="{Binding DashboardObject.HighestValue}" Height="20" Margin="0,0,0,0" 
+                                 Foreground="{StaticResource SolidColorBrush.Text.5}" Background="#00FFFFFF" BorderThickness="0" Width="Auto" />
+                    <TextBlock Text="{Binding DashboardObject.SilverString}" VerticalAlignment="Center" FontSize="16" MinHeight="24" Height="Auto" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+                </Grid>
+            </DockPanel>
+            <DockPanel>
+                <Grid>
+                    <ProgressBar Name="pbReSpec" common:ProgressBarSmoother.SmoothValue="{Binding DashboardObject.ReSpecPointsInPercent}" 
+                                 Minimum="0" Maximum="{Binding DashboardObject.HighestValue}" Height="20" Margin="0,0,0,0" 
+                                 Foreground="{StaticResource SolidColorBrush.Value.ReSpec}" Background="#00FFFFFF" BorderThickness="0" Width="Auto" />
+                    <TextBlock Text="{Binding DashboardObject.ReSpecPointsString}" VerticalAlignment="Center" FontSize="16" MinHeight="24" Height="Auto" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+                </Grid>
+            </DockPanel>
+            <DockPanel>
+                <Grid>
+                    <ProgressBar Name="pbMight" common:ProgressBarSmoother.SmoothValue="{Binding DashboardObject.MightInPercent}" 
+                                 Minimum="0" Maximum="{Binding DashboardObject.HighestValue}" Height="20" Margin="0,0,0,0" 
+                                 Foreground="{StaticResource SolidColorBrush.Value.Might}" Background="#00FFFFFF" BorderThickness="0" Width="Auto" />
+                    <TextBlock Text="{Binding DashboardObject.MightString}" VerticalAlignment="Center" FontSize="16" MinHeight="24" Height="Auto" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+                </Grid>
+            </DockPanel>
+            <DockPanel>
+                <Grid>
+                    <ProgressBar Name="pbFavor" common:ProgressBarSmoother.SmoothValue="{Binding DashboardObject.FavorInPercent}" 
+                                 Minimum="0" Maximum="{Binding DashboardObject.HighestValue}" Height="20" Margin="0,0,0,0" 
+                                 Foreground="{StaticResource SolidColorBrush.Value.Favor}" Background="#00FFFFFF" BorderThickness="0" Width="Auto" />
+                    <TextBlock Text="{Binding DashboardObject.FavorString}" VerticalAlignment="Center" FontSize="16" MinHeight="24" Height="Auto" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+                </Grid>
+            </DockPanel>-->
+        </StackPanel>
+
+        <!--<wpf:CartesianChart Series="{Binding SeriesDashboardHourValues, IsAsync=True}" XAxes="{Binding XAxesDashboardHourValues}" />-->
     </Grid>
 </UserControl>

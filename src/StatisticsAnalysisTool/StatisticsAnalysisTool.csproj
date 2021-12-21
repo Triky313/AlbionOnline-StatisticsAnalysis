@@ -148,7 +148,13 @@
     <Resource Include="Resources\fame.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\favor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\icon_daily_season_points.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\might.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\skull.png">
@@ -394,7 +400,9 @@
     <None Remove="Languages\ru-RU.xml" />
     <None Remove="Languages\tr-TR.xml" />
     <None Remove="Languages\zh-CN.xml" />
+    <None Remove="Resources\favor.png" />
     <None Remove="Resources\icon_daily_season_points.png" />
+    <None Remove="Resources\might.png" />
     <None Remove="Resources\skull.png" />
     <None Remove="Resources\tracker_description_activate_tracker.png" />
     <None Remove="Resources\tracker_description_done.png" />
