@@ -37,27 +37,34 @@
                 </Grid>
 
                 <Grid>
-                    <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                        <StackPanel Orientation="Horizontal" Visibility="{Binding UsernameInformationVisibility, FallbackValue=Hidden}">
-                            <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Username, FallbackValue=USERNAME}" ContentStringFormat="{}{0}: "/>
-                            <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingUsername, FallbackValue=USERNAME}"/>
-                            <Label Content=" | "/>
+                    <Grid HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding UsernameInformationVisibility, FallbackValue=Hidden}">
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Username, FallbackValue=USERNAME}" ContentStringFormat="{}{0}: "/>
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingUsername, FallbackValue=USERNAME}"/>
+                                <Label Content=" | "/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding GuildInformationVisibility, FallbackValue=Hidden}">
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Guild, FallbackValue=GUILD}" ContentStringFormat="{}{0}: "/>
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingGuildName, FallbackValue=GUILD__NAME}"/>
+                                <Label Content=" | "/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AllianceInformationVisibility, FallbackValue=Hidden}">
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Alliance, FallbackValue=ALLIANCE}" ContentStringFormat="{}{0}: "/>
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingAllianceName, FallbackValue=ALLIANCE__NAME}"/>
+                                <Label Content=" | "/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding CurrentMapInformationVisibility, FallbackValue=Hidden}">
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.CurrentMap, FallbackValue=CURRENT__MAP}" ContentStringFormat="{}{0}: "/>
+                                <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingCurrentMapName, FallbackValue=CURRENT__MAP__NAME}"/>
+                            </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Visibility="{Binding GuildInformationVisibility, FallbackValue=Hidden}">
-                            <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Guild, FallbackValue=GUILD}" ContentStringFormat="{}{0}: "/>
-                            <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingGuildName, FallbackValue=GUILD__NAME}"/>
-                            <Label Content=" | "/>
+                    </Grid>
+                    <Grid HorizontalAlignment="Right" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding MainTrackerTimer, FallbackValue=00:00:00}"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Visibility="{Binding AllianceInformationVisibility, FallbackValue=Hidden}">
-                            <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Alliance, FallbackValue=ALLIANCE}" ContentStringFormat="{}{0}: "/>
-                            <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingAllianceName, FallbackValue=ALLIANCE__NAME}"/>
-                            <Label Content=" | "/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Visibility="{Binding CurrentMapInformationVisibility, FallbackValue=Hidden}">
-                            <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.CurrentMap, FallbackValue=CURRENT__MAP}" ContentStringFormat="{}{0}: "/>
-                            <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingCurrentMapName, FallbackValue=CURRENT__MAP__NAME}"/>
-                        </StackPanel>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </StackPanel>
 
