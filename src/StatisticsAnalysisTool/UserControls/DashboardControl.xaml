@@ -10,33 +10,6 @@
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
 
     <Grid Style="{StaticResource TabItemGridStyle}" Visibility="Visible">
-        <Grid ZIndex="1" Visibility="{Binding IsMainTrackerPopupVisible, FallbackValue=Hidden}" Margin="0,40,16,0" 
-              Background="{StaticResource SolidColorBrush.Background.2}">
-            <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
-                <DockPanel Margin="0,5,0,10">
-                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
-                    </Grid>
-                    <TextBlock Text="{Binding Translation.MainTrackerDescription1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                               FontSize="16" TextWrapping="Wrap" Width="auto"/>
-                </DockPanel>
-                <DockPanel Margin="0,0,0,10">
-                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
-                    </Grid>
-                    <TextBlock Text="{Binding Translation.MainTrackerDescription2}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                               FontSize="16" TextWrapping="Wrap" Width="auto"/>
-                </DockPanel>
-                <DockPanel Margin="0,0,0,10">
-                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
-                    </Grid>
-                    <TextBlock Text="{Binding Translation.MainTrackerDescription3}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                               FontSize="16" TextWrapping="Wrap" Width="auto"/>
-                </DockPanel>
-            </StackPanel>
-        </Grid>
-
         <ScrollViewer>
             <Grid>
                 <DockPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
@@ -122,13 +95,10 @@
                     <Grid>
                         <DockPanel Width="auto" HorizontalAlignment="Right">
                             <Button Content="{Binding Translation.ResetTrackingCounter, FallbackValue=RESET__TRACKING__COUNTER}" 
-                                    Width="215" Height="26" Click="BtnTrackingReset_Click" />
-                            <Grid Height="20" Width="20" Margin="5,0,0,0" MouseEnter="OpenMainTrackerInfoPopup_MouseEnter" MouseLeave="CloseMainTrackerInfoPopup_MouseLeave">
-                                <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,0,0,0" />
-                            </Grid>
+                                    Width="237" Height="26" Click="BtnTrackingReset_Click" />
                         </DockPanel>
                     </Grid>
-                    <CheckBox IsChecked="{Binding IsTrackingResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}"></CheckBox>
+                    <CheckBox IsChecked="{Binding IsTrackingResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}"/>
                 </StackPanel>
             </Grid>
         </ScrollViewer>

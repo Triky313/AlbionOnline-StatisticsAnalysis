@@ -1,6 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using StatisticsAnalysisTool.ViewModels;
+﻿using StatisticsAnalysisTool.ViewModels;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.UserControls
 {
@@ -20,18 +19,6 @@ namespace StatisticsAnalysisTool.UserControls
         {
             var vm = (MainWindowViewModel)DataContext;
             vm.ResetMainCounters();
-        }
-
-        private void OpenMainTrackerInfoPopup_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var vm = (MainWindowViewModel)DataContext;
-            vm.IsMainTrackerPopupVisible = Visibility.Visible;
-        }
-
-        private void CloseMainTrackerInfoPopup_MouseLeave(object sender, MouseEventArgs e)
-        {
-            var vm = (MainWindowViewModel)DataContext;
-            vm.IsMainTrackerPopupVisible = Visibility.Hidden;
         }
 
         #endregion

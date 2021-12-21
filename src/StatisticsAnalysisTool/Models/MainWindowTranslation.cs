@@ -39,9 +39,6 @@ namespace StatisticsAnalysisTool.Models
         public static string Total => LanguageController.Translation("TOTAL");
         public static string DamageMeter => LanguageController.Translation("DAMAGE_METER");
         public static string DamageMeterDescription1 => LanguageController.Translation("DAMAGE_METER_DESCRIPTION_1");
-        public static string MainTrackerDescription1 => LanguageController.Translation("MAIN_TRACKER_DESCRIPTION_1");
-        public static string MainTrackerDescription2 => LanguageController.Translation("MAIN_TRACKER_DESCRIPTION_2");
-        public static string MainTrackerDescription3 => LanguageController.Translation("MAIN_TRACKER_DESCRIPTION_3");
         public static string ResetDamageMeter => LanguageController.Translation("RESET_DAMAGE_METER");
         public static string SortByDamage => LanguageController.Translation("SORT_BY_DAMAGE");
         public static string SortByDps => LanguageController.Translation("SORT_BY_DPS");

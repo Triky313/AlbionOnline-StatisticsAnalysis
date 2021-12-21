@@ -112,7 +112,6 @@ namespace StatisticsAnalysisTool.ViewModels
         public AlertController AlertManager;
         private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
-        private Visibility _isMainTrackerPopupVisible = Visibility.Hidden;
         private bool _isShowOnlyFavoritesActive;
         private DungeonCloseTimer _dungeonCloseTimer;
         private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
@@ -1156,17 +1155,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public Visibility IsMainTrackerPopupVisible
-        {
-            get => _isMainTrackerPopupVisible;
-            set
-            {
-                _isMainTrackerPopupVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public bool IsTrackingFilteredEquipmentLoot
         {
             get => _isTrackingFilteredEquipmentLoot;
