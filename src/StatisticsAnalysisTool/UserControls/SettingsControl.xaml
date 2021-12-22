@@ -31,10 +31,10 @@
                         <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding IsOpenItemWindowInNewWindowChecked}" Height="21" VerticalContentAlignment="Center" />
                     </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
+                    <!--<DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding ShowInfoWindowOnStartChecked}" Height="21" VerticalContentAlignment="Center"  />
-                    </DockPanel>
+                    </DockPanel>-->
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.FullItemInformationUpdateCycleDays, FallbackValue=FULL__ITEM__INFO__UPDATE__CYCLE__DAYS}" MinWidth="300" VerticalAlignment="Top" />
                         <TextBox Text="{Binding FullItemInformationUpdateCycleDays, FallbackValue=90}" Height="26" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />

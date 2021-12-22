@@ -405,7 +405,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
             SetUiElements();
 
-            ShowInfoWindow();
+            // TODO: Info Window vorrübergehend deaktiviert
+            //ShowInfoWindow();
 
             await InitItemListAsync().ConfigureAwait(false);
         }
@@ -551,14 +552,14 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.Top = screenHeight / 2 - windowHeight / 2;
         }
 
-        private static void ShowInfoWindow()
-        {
-            if (SettingsController.CurrentSettings.IsInfoWindowShownOnStart)
-            {
-                var infoWindow = new InfoWindow();
-                infoWindow.Show();
-            }
-        }
+        //private static void ShowInfoWindow()
+        //{
+        //    if (SettingsController.CurrentSettings.IsInfoWindowShownOnStart)
+        //    {
+        //        var infoWindow = new InfoWindow();
+        //        infoWindow.Show();
+        //    }
+        //}
 
         public void OpenDamageMeterWindow()
         {
