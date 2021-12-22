@@ -2,7 +2,6 @@
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
@@ -56,7 +55,7 @@ namespace StatisticsAnalysisTool.Common
             image.DownloadCompleted += (sender, _) =>
             {
                 var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(((BitmapImage) sender)!));
+                encoder.Frames.Add(BitmapFrame.Create(((BitmapImage)sender)!));
                 using var fileStream = new FileStream(localFilePath, FileMode.Create);
                 encoder.Save(fileStream);
             };
@@ -71,13 +70,12 @@ namespace StatisticsAnalysisTool.Common
 
             try
             {
-                var request = WebRequest.Create(new Uri(webPath));
                 var userImage = new BitmapImage();
                 userImage.BeginInit();
                 userImage.CacheOption = BitmapCacheOption.OnDemand;
                 userImage.DecodePixelHeight = pixelHeight;
                 userImage.DecodePixelWidth = pixelWidth;
-                userImage.UriSource = request.RequestUri;
+                userImage.UriSource = new Uri(webPath);
                 userImage.EndInit();
                 if (freeze)
                     userImage.Freeze();

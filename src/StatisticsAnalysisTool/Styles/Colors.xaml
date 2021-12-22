@@ -117,7 +117,7 @@
     <Color x:Key="Cluster.SafeArea">#FF4B6EA0</Color>
     <Color x:Key="Cluster.Yellow">#FFF2A60D</Color>
     <Color x:Key="Cluster.Red">#FFD81320</Color>
-    <Color x:Key="Cluster.Black">#FF202026</Color>
+    <Color x:Key="Cluster.Black">#FF323B43</Color>
     <Color x:Key="Cluster.Avalon">#ffEBCD7A</Color>
 
     <!-- Value colors -->

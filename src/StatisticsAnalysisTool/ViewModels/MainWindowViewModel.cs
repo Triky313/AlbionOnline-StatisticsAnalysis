@@ -27,7 +27,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using Divis.AsyncObservableCollection;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 
@@ -47,7 +46,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _allianceInfoWidth;
         private Visibility _currentMapInformationVisibility;
         private double _currentMapInfoWidth;
-        private AsyncObservableCollection<DamageMeterFragment> _damageMeter = new();
+        private ObservableCollection<DamageMeterFragment> _damageMeter = new();
         private List<DamageMeterSortStruct> _damageMeterSort = new();
         private DamageMeterSortStruct _damageMeterSortSelection;
         private DungeonStats _dungeonStatsDay = new();
@@ -101,7 +100,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _trackingAllianceName;
         public TrackingController TrackingController;
         private string _trackingCurrentMapName;
-        private AsyncObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
+        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
         private string _trackingGuildName;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new();
         private string _trackingUsername;
@@ -1388,7 +1387,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public AsyncObservableCollection<DamageMeterFragment> DamageMeter
+        public ObservableCollection<DamageMeterFragment> DamageMeter
         {
             get => _damageMeter;
             set
@@ -1601,7 +1600,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public AsyncObservableCollection<DungeonNotificationFragment> TrackingDungeons
+        public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
         {
             get => _trackingDungeons;
             set

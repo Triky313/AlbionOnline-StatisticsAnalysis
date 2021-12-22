@@ -1,4 +1,3 @@
-using Divis.AsyncObservableCollection;
 using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
@@ -10,6 +9,7 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -99,7 +99,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private static bool IsUiUpdateActive;
 
-        public async Task UpdateDamageMeterUiAsync(AsyncObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
+        public async Task UpdateDamageMeterUiAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
             IsUiUpdateActive = true;
 
@@ -175,7 +175,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private async Task AddDamageMeterFragmentAsync(AsyncObservableCollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
+        private async Task AddDamageMeterFragmentAsync(ObservableCollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
             List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
             if (healthChangeObject.Value == null
@@ -204,9 +204,11 @@ namespace StatisticsAnalysisTool.Network.Manager
                 Name = healthChangeObject.Value.Name,
                 CauserMainHand = itemInfo
             };
-
-            damageMeter.Init(Application.Current.Dispatcher.Invoke);
-            damageMeter.Add(damageMeterFragment);
+            
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                damageMeter.Add(damageMeterFragment);
+            });
 
             _trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, itemInfo?.FullItemInformation?.CategoryId);
         }
@@ -216,14 +218,13 @@ namespace StatisticsAnalysisTool.Network.Manager
             return damageMeter.ToList().GroupBy(x => x.Name).Any(g => g.Count() > 1);
         }
 
-        private static async Task RemoveDuplicatesAsync(AsyncObservableCollection<DamageMeterFragment> damageMeter)
+        private static async Task RemoveDuplicatesAsync(ObservableCollection<DamageMeterFragment> damageMeter)
         {
-            await Task.Run(() =>
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                damageMeter.Init(Application.Current.Dispatcher.Invoke);
                 var damageMeterWithoutDupes = (from dmf in damageMeter.ToList()
-                                               group dmf by dmf.Name into x
-                                               select new DamageMeterFragment(x.FirstOrDefault())).ToList();
+                    group dmf by dmf.Name into x
+                    select new DamageMeterFragment(x.FirstOrDefault())).ToList();
 
                 if (damageMeterWithoutDupes.Count <= 0)
                 {
@@ -234,7 +235,6 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     if (damageMeterWithoutDupes.Any(x => x.Equals(damageMeterFragment)))
                     {
-                        damageMeter.Init(Application.Current.Dispatcher.Invoke);
                         damageMeter.Remove(damageMeterFragment);
                     }
                 }
@@ -247,9 +247,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             _trackingController.EntityController.ResetEntitiesDamage();
             _trackingController.EntityController.ResetEntitiesDamageStartTime();
 
-            _mainWindow?.Dispatcher?.InvokeAsync(() =>
+            Application.Current?.Dispatcher?.InvokeAsync(() =>
             {
-                _mainWindowViewModel?.DamageMeter.Init(Application.Current.Dispatcher.Invoke);
                 _mainWindowViewModel?.DamageMeter?.Clear();
             });
         }

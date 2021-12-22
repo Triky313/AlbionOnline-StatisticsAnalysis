@@ -1,5 +1,4 @@
-﻿using Divis.AsyncObservableCollection;
-using LiveChartsCore;
+﻿using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
@@ -21,7 +20,7 @@ namespace StatisticsAnalysisTool.Network.Manager
     {
         private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private readonly AsyncObservableCollection<DashboardHourObject> _stats = new();
+        private readonly ObservableCollection<DashboardHourObject> _stats = new();
         private readonly List<ValueType> _valueTypes = new() { ValueType.Fame, ValueType.Silver, ValueType.ReSpec, ValueType.FactionFame, ValueType.FactionPoints, ValueType.Might, ValueType.Favor };
         private double? _lastReSpecValue;
         private DateTime _lastChartUpdate;
@@ -54,8 +53,10 @@ namespace StatisticsAnalysisTool.Network.Manager
                     });
                 }
 
-                _stats.Init(Application.Current.Dispatcher.Invoke);
-                _stats.Add(dashboardHourObject);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    _stats.Add(dashboardHourObject);
+                });
             }
         }
 
