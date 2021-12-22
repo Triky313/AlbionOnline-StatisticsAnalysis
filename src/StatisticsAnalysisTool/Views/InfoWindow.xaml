@@ -5,19 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d"
-        Title="{Binding Translation.Title, FallbackValue=TITLE}" Height="450" Width="550" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Style="{StaticResource PrimaryWindow}" Background="{StaticResource SolidColorBrush.Background.Second}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" Focusable="False">
+        Title="{Binding Translation.Title, FallbackValue=TITLE}" 
+        Height="450" 
+        Width="550" 
+        AllowsTransparency="True" 
+        WindowStartupLocation="CenterScreen" 
+        Background="{StaticResource SolidColorBrush.Background.1}" 
+        FontSize="{StaticResource BaseFontSize}" 
+        WindowStyle="None" 
+        Focusable="False">
     <Grid>
-        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}">
+        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.3}" />
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.3}" />
+        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.3}" />
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.3}">
         </Border>
-        <Grid ZIndex="1" Height="33" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.Second}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+        <Grid ZIndex="1" Height="33" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.3}" 
+              MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid Margin="10,5,0,0" Width="26" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left">
-                <fa5:ImageAwesome Icon="Regular_Newspaper" Foreground="{StaticResource SolidColorBrush.Blue.2}" />
+                <fa5:ImageAwesome Icon="Regular_Newspaper" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
             </Grid>
-            <Label Content="{Binding Translation.Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold" />
-            <Separator Margin="10,30,10,0" VerticalAlignment="Top" />
+            <Label Content="{Binding Translation.Title, FallbackValue=TITLE}" Margin="41,0,61,0" VerticalAlignment="Top" Height="33" FontSize="16" 
+                   Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" />
+           
             <Button x:Name="CloseButton" Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
             <Button x:Name="MinimizeButton" Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
         </Grid>
@@ -30,7 +40,7 @@
                         <TextBlock>
                             <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}"  Text="{Binding Translation.DescriptionTrackMyGameDetails2, FallbackValue=DESCRIPTION_STEP_2}" />
                             <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}">
-                                <Hyperlink NavigateUri="https://nmap.org/npcap/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" RequestNavigate="Hyperlink_RequestNavigate">https://nmap.org/npcap/</Hyperlink>
+                                <Hyperlink NavigateUri="https://nmap.org/npcap/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" RequestNavigate="Hyperlink_RequestNavigate">https://nmap.org/npcap/</Hyperlink>
                             </TextBlock>
                         </TextBlock>
                         <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails3, FallbackValue=DESCRIPTION_STEP_3}" />
@@ -52,7 +62,8 @@
                         <TextBlock Style="{StaticResource InfoWindow.TextBlock.Title}" Text="{Binding Translation.DescUpdateMarketPricesTitle, FallbackValue=DESC_UPDATE_MARKET_PRICES_TITLE}" />
                         <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescUpdateMarketPrices1, FallbackValue=DESC_UPDATE_MARKET_PRICES_1}" />
                         <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}">
-                            <Hyperlink NavigateUri="https://www.albion-online-data.com/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" RequestNavigate="Hyperlink_RequestNavigate">https://www.albion-online-data.com/</Hyperlink>
+                            <Hyperlink NavigateUri="https://www.albion-online-data.com/" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontWeight="Bold" 
+                                       RequestNavigate="Hyperlink_RequestNavigate">https://www.albion-online-data.com/</Hyperlink>
                         </TextBlock>
                         <TextBlock/>
                         <TextBlock/>
@@ -60,11 +71,11 @@
                 </Grid>
             </ScrollViewer>
         </Grid>
-        <Separator Background="{StaticResource SolidColorBrush.Background.Third}" Height="4" Margin="0,0,0,31" VerticalAlignment="Bottom" />
+        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,0,0,31" VerticalAlignment="Bottom" />
         <Grid Height="33" VerticalAlignment="Bottom">
             <CheckBox Content="{Binding Translation.ShowNotAgainContent, FallbackValue=SHOW__NOT__AGAIN}" 
                       IsChecked="{Binding ShowNotAgainChecked, FallbackValue=false}" 
-                      Foreground="{StaticResource SolidColorBrush.Foreground.First}" 
+                      Foreground="{StaticResource SolidColorBrush.Text.1}" 
                       HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="10,0,0,5" VerticalAlignment="Bottom" Width="Auto" />
         </Grid>
     </Grid>

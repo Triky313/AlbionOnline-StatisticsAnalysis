@@ -1,11 +1,6 @@
-﻿using log4net;
-using System.Linq;
-using System.Reflection;
-
-namespace StatisticsAnalysisTool.Views
+﻿namespace StatisticsAnalysisTool.Views
 {
     using Models;
-    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;
     using ViewModels;
@@ -17,7 +12,6 @@ namespace StatisticsAnalysisTool.Views
     {
 
         private readonly ItemWindowViewModel _itemWindowViewModel;
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public ItemWindow(Item item)
         {
@@ -52,11 +46,6 @@ namespace StatisticsAnalysisTool.Views
             FilterItemPriceValues();
         }
 
-        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
-        }
-
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2 && WindowState == WindowState.Normal)
@@ -66,12 +55,6 @@ namespace StatisticsAnalysisTool.Views
             }
 
             if (e.ClickCount == 2 && WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
-        }
-
-        private void BtnErrorBar_Click(object sender, RoutedEventArgs e)
-        {
-            _itemWindowViewModel.ErrorBarVisibility = Visibility.Hidden;
-            _itemWindowViewModel.ErrorBarText = string.Empty;
         }
 
         private void CbNormalQuality_Click(object sender, RoutedEventArgs e)
@@ -132,11 +115,6 @@ namespace StatisticsAnalysisTool.Views
         private void MarketListBuyPriceMaxLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             _itemWindowViewModel.CopyTextToClipboard(sender);
-        }
-
-        private void TxtBoxCraftingQuantity_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
         }
     }
 }

@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -28,7 +27,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using Divis.AsyncObservableCollection;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 // ReSharper disable UnusedMember.Global
 
@@ -44,18 +44,15 @@ namespace StatisticsAnalysisTool.ViewModels
         private readonly Dictionary<ViewMode, Grid> viewModeGrid = new();
         private Visibility _allianceInformationVisibility;
         private double _allianceInfoWidth;
-        private int _currentGoldPrice;
-        private string _currentGoldPriceTimestamp;
         private Visibility _currentMapInformationVisibility;
         private double _currentMapInfoWidth;
-        private AsyncObservableCollection<DamageMeterFragment> _damageMeter = new();
+        private ObservableCollection<DamageMeterFragment> _damageMeter = new();
         private List<DamageMeterSortStruct> _damageMeterSort = new();
         private DamageMeterSortStruct _damageMeterSortSelection;
         private DungeonStats _dungeonStatsDay = new();
         private DungeonStats _dungeonStatsTotal = new();
         private string _errorBarText;
         private Visibility _errorBarVisibility;
-        private Visibility _goldPriceVisibility;
         private Visibility _guildInformationVisibility;
         private double _guildInfoWidth;
         private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
@@ -100,19 +97,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private ItemLevel _selectedItemLevel;
         private ParentCategory _selectedItemParentCategories;
         private ItemTier _selectedItemTier;
-        private string _famePerHour = "0";
-        private string _reSpecPointsPerHour = "0";
-        private string _silverPerHour = "0";
-        private string _textBoxGoldModeNumberOfValues;
-        private string _totalGainedFameInSessionInSession = "0";
-        private string _totalGainedReSpecPointsInSessionInSession = "0";
-        private string _totalGainedSilverInSessionInSession = "0";
-        private Brush _trackerActivationToggleColor;
-        private EFontAwesomeIcon _trackerActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private string _trackingAllianceName;
         public TrackingController TrackingController;
         private string _trackingCurrentMapName;
-        private AsyncObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
+        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
         private string _trackingGuildName;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new();
         private string _trackingUsername;
@@ -120,11 +108,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _updateTranslation;
         private Visibility _usernameInformationVisibility;
         private double _usernameInfoWidth;
-        private DateTime? activateWaitTimer;
         public AlertController AlertManager;
         private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
-        private Visibility _isMainTrackerPopupVisible = Visibility.Hidden;
         private bool _isShowOnlyFavoritesActive;
         private DungeonCloseTimer _dungeonCloseTimer;
         private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
@@ -132,7 +118,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
         private bool IsDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
-        private TrackingIconType _trackingIconColor;
+        private TrackingIconType _trackingActivityColor;
         private bool _isTrackingFilteredEquipmentLoot = true;
         private bool _isTrackingFilteredConsumableLoot = true;
         private bool _isTrackingFilteredSimpleLoot = true;
@@ -154,13 +140,17 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingPartyLootOnly;
         private bool _isTrackingSilver;
         private bool _isTrackingFame;
+        private string _trackingActiveText = MainWindowTranslation.TrackingIsNotActive;
+        private Axis[] _xAxesDashboardHourValues;
+        private ObservableCollection<ISeries> _seriesDashboardHourValues;
+        private DashboardObject _dashboardObject = new ();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
-            SettingsController.Load();
+            SettingsController.LoadSettings();
             _ = CraftingController.LoadAsync();
             InitViewModeGrids();
             UpgradeSettings();
@@ -175,8 +165,8 @@ namespace StatisticsAnalysisTool.ViewModels
             InitMainWindowData();
             _ = InitTrackingAsync();
         }
-
-        public async void SetUiElements()
+        
+        public void SetUiElements()
         {
             #region Error bar
 
@@ -213,24 +203,7 @@ namespace StatisticsAnalysisTool.ViewModels
             if (!IsFullItemInfoLoading) LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
 
             #endregion Full Item Info elements
-
-            #region Gold price
-
-            var currentGoldPrice = await ApiController.GetGoldPricesFromJsonAsync(null, 1).ConfigureAwait(true);
-            CurrentGoldPrice = currentGoldPrice.FirstOrDefault()?.Price ?? 0;
-            if (currentGoldPrice.Count > 0)
-            {
-                CurrentGoldPriceTimestamp = currentGoldPrice.FirstOrDefault()?.Timestamp.ToString(CultureInfo.CurrentCulture) ??
-                                            new DateTime(0, 0, 0, 0, 0, 0).ToString(CultureInfo.CurrentCulture);
-                GoldPriceVisibility = Visibility.Visible;
-            }
-            else
-            {
-                GoldPriceVisibility = Visibility.Hidden;
-            }
-
-            #endregion Gold price
-
+            
             #region Player information
 
             SavedPlayerInformationName = SettingsController.CurrentSettings.SavedPlayerInformationName;
@@ -355,9 +328,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private void InitViewModeGrids()
         {
-            viewModeGrid.Add(ViewMode.Normal, _mainWindow.GridNormalMode);
-            viewModeGrid.Add(ViewMode.Tracking, _mainWindow.GridTrackingMode);
-            viewModeGrid.Add(ViewMode.Player, _mainWindow.GridPlayerMode);
+            //viewModeGrid.Add(ViewMode.Normal, _mainWindow.GridNormalMode);
+            //viewModeGrid.Add(ViewMode.Tracking, _mainWindow.GridTrackingMode);
+            //viewModeGrid.Add(ViewMode.Player, _mainWindow.GridPlayerMode);
             //viewModeGrid.Add(ViewMode.Gold, _mainWindow.GridGoldMode);
         }
 
@@ -376,7 +349,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             grid.Value.Visibility = Visibility.Visible;
-            _mainWindow.TxtSearch.Focus();
+            //_mainWindow.TxtSearch.Focus();
         }
 
         private void HideAllGrids()
@@ -431,8 +404,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
             SetUiElements();
 
-            ShowInfoWindow();
-            TextBoxGoldModeNumberOfValues = "10";
+            // TODO: Info Window vorrübergehend deaktiviert
+            //ShowInfoWindow();
 
             await InitItemListAsync().ConfigureAwait(false);
         }
@@ -466,20 +439,17 @@ namespace StatisticsAnalysisTool.ViewModels
             IsItemSearchCheckboxesEnabled = true;
             IsTxtSearchEnabled = true;
 
-            _mainWindow.Dispatcher?.Invoke(() => { _ = _mainWindow.TxtSearch.Focus(); });
+            //_mainWindow.Dispatcher?.Invoke(() => { _ = _mainWindow.TxtSearch.Focus(); });
         }
 
         private async Task InitTrackingAsync()
         {
-            _ = await WorldData.GetDataListFromJsonAsync();
-            _ = await DungeonObjectData.GetDataListFromJsonAsync();
+            await WorldData.GetDataListFromJsonAsync().ConfigureAwait(true);
+            await DungeonObjectData.GetDataListFromJsonAsync().ConfigureAwait(true);
 
             TrackingController ??= new TrackingController(this, _mainWindow);
 
-            if (SettingsController.CurrentSettings.IsTrackingActiveAtToolStart)
-            {
-                _ = StartTrackingAsync();
-            }
+            StartTracking();
 
             IsTrackingFilteredSilver = SettingsController.CurrentSettings.IsMainTrackerFilterSilver;
             IsTrackingFilteredFame = SettingsController.CurrentSettings.IsMainTrackerFilterFame;
@@ -581,14 +551,14 @@ namespace StatisticsAnalysisTool.ViewModels
             _mainWindow.Top = screenHeight / 2 - windowHeight / 2;
         }
 
-        private static void ShowInfoWindow()
-        {
-            if (SettingsController.CurrentSettings.IsInfoWindowShownOnStart)
-            {
-                var infoWindow = new InfoWindow();
-                infoWindow.Show();
-            }
-        }
+        //private static void ShowInfoWindow()
+        //{
+        //    if (SettingsController.CurrentSettings.IsInfoWindowShownOnStart)
+        //    {
+        //        var infoWindow = new InfoWindow();
+        //        infoWindow.Show();
+        //    }
+        //}
 
         public void OpenDamageMeterWindow()
         {
@@ -884,27 +854,8 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion Gold (Gold Mode)
 
         #region Tracking Mode
-
-        public void TrackerActivationToggle()
-        {
-            if (!IsReadyToTracking())
-            {
-                return;
-            }
-
-            IsTrackingActive = !IsTrackingActive;
-
-            if (IsTrackingActive)
-            {
-                _ = StartTrackingAsync();
-            }
-            else
-            {
-                StopTracking();
-            }
-        }
-
-        public async Task StartTrackingAsync()
+        
+        public void StartTracking()
         {
             if (NetworkManager.IsNetworkCaptureRunning)
             {
@@ -921,7 +872,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
 
-            IsTrackingActive = await NetworkManager.StartNetworkCaptureAsync(this, TrackingController);
+            IsTrackingActive = NetworkManager.StartNetworkCapture(this, TrackingController);
             Console.WriteLine(@"### Start Tracking...");
         }
 
@@ -936,19 +887,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");
         }
-
-        private bool IsReadyToTracking()
-        {
-            var waitTime = activateWaitTimer?.AddSeconds(1);
-            if (waitTime < DateTime.Now || waitTime == null)
-            {
-                activateWaitTimer = DateTime.Now;
-                return true;
-            }
-
-            return false;
-        }
-
+        
         public void ResetMainCounters()
         {
             TrackingController?.CountUpTimer?.Reset();
@@ -1182,7 +1121,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion
 
         #region Bindings
-
+        
         public string SearchText
         {
             get => _searchText;
@@ -1216,17 +1155,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public Visibility IsMainTrackerPopupVisible
-        {
-            get => _isMainTrackerPopupVisible;
-            set
-            {
-                _isMainTrackerPopupVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public bool IsTrackingFilteredEquipmentLoot
         {
             get => _isTrackingFilteredEquipmentLoot;
@@ -1458,7 +1387,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public AsyncObservableCollection<DamageMeterFragment> DamageMeter
+        public ObservableCollection<DamageMeterFragment> DamageMeter
         {
             get => _damageMeter;
             set
@@ -1517,17 +1446,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public Visibility GoldPriceVisibility
-        {
-            get => _goldPriceVisibility;
-            set
-            {
-                _goldPriceVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public DungeonStats DungeonStatsDay
         {
             get => _dungeonStatsDay;
@@ -1557,7 +1476,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public string TrackingUsername
         {
             get => _trackingUsername;
@@ -1565,7 +1484,6 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _trackingUsername = value;
                 UsernameInformationVisibility = !string.IsNullOrEmpty(_trackingUsername) ? Visibility.Visible : Visibility.Hidden;
-                UsernameInfoWidth = string.IsNullOrEmpty(_trackingUsername) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
@@ -1577,7 +1495,6 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _trackingGuildName = value;
                 GuildInformationVisibility = !string.IsNullOrEmpty(_trackingGuildName) ? Visibility.Visible : Visibility.Hidden;
-                GuildInfoWidth = string.IsNullOrEmpty(_trackingGuildName) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
@@ -1589,7 +1506,6 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _trackingAllianceName = value;
                 AllianceInformationVisibility = !string.IsNullOrEmpty(_trackingAllianceName) ? Visibility.Visible : Visibility.Hidden;
-                AllianceInfoWidth = string.IsNullOrEmpty(_trackingAllianceName) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
@@ -1601,7 +1517,6 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _trackingCurrentMapName = value;
                 CurrentMapInformationVisibility = !string.IsNullOrEmpty(_trackingCurrentMapName) ? Visibility.Visible : Visibility.Hidden;
-                CurrentMapInfoWidth = string.IsNullOrEmpty(_trackingCurrentMapName) ? 0 : double.NaN;
                 OnPropertyChanged();
             }
         }
@@ -1645,67 +1560,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public string FamePerHour
-        {
-            get => _famePerHour;
-            set
-            {
-                _famePerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string SilverPerHour
-        {
-            get => _silverPerHour;
-            set
-            {
-                _silverPerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string ReSpecPointsPerHour
-        {
-            get => _reSpecPointsPerHour;
-            set
-            {
-                _reSpecPointsPerHour = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TotalGainedFameInSession
-        {
-            get => _totalGainedFameInSessionInSession;
-            set
-            {
-                _totalGainedFameInSessionInSession = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TotalGainedSilverInSession
-        {
-            get => _totalGainedSilverInSessionInSession;
-            set
-            {
-                _totalGainedSilverInSessionInSession = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TotalGainedReSpecPointsInSession
-        {
-            get => _totalGainedReSpecPointsInSessionInSession;
-            set
-            {
-                _totalGainedReSpecPointsInSessionInSession = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public string MainTrackerTimer {
             get => _mainTrackerTimer;
             set
@@ -1745,7 +1600,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public AsyncObservableCollection<DungeonNotificationFragment> TrackingDungeons
+        public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
         {
             get => _trackingDungeons;
             set
@@ -1780,56 +1635,42 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _isTrackingActive = value;
 
-                TrackerActivationToggleIcon = _isTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
-
-                var colorOn = new SolidColorBrush((Color) Application.Current.Resources["Color.Blue.2"]);
-                var colorOff = new SolidColorBrush((Color) Application.Current.Resources["Color.Text.Normal"]);
-                TrackerActivationToggleColor = _isTrackingActive ? colorOn : colorOff;
-
-                if (_isTrackingActive && TrackingController is { ExistIndispensableInfos: false })
+                switch (_isTrackingActive)
                 {
-                    TrackingIconColor = TrackingIconType.Partially;
-                }
-                else if(_isTrackingActive && TrackingController is { ExistIndispensableInfos: true })
-                {
-                    TrackingIconColor = TrackingIconType.On;
-                }
-                else if(!_isTrackingActive)
-                {
-                    TrackingIconColor = TrackingIconType.Off;
+                    case true when TrackingController is { ExistIndispensableInfos: false }:
+                        TrackingActiveText = MainWindowTranslation.TrackingIsPartiallyActive;
+                        TrackingActivityColor = TrackingIconType.Partially;
+                        break;
+                    case true when TrackingController is { ExistIndispensableInfos: true }:
+                        TrackingActiveText = MainWindowTranslation.TrackingIsActive;
+                        TrackingActivityColor = TrackingIconType.On;
+                        break;
+                    case false:
+                        TrackingActiveText = MainWindowTranslation.TrackingIsNotActive;
+                        TrackingActivityColor = TrackingIconType.Off;
+                        break;
                 }
 
-                SettingsController.CurrentSettings.IsTrackingActiveAtToolStart = _isTrackingActive;
+                OnPropertyChanged();
+            }
+        }
+        
+        public TrackingIconType TrackingActivityColor
+        {
+            get => _trackingActivityColor;
+            set
+            {
+                _trackingActivityColor = value;
                 OnPropertyChanged();
             }
         }
 
-        public EFontAwesomeIcon TrackerActivationToggleIcon
+        public string TrackingActiveText
         {
-            get => _trackerActivationToggleIcon;
+            get => _trackingActiveText;
             set
             {
-                _trackerActivationToggleIcon = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Brush TrackerActivationToggleColor
-        {
-            get => _trackerActivationToggleColor ?? new SolidColorBrush((Color) Application.Current.Resources["Color.Text.Normal"]);
-            set
-            {
-                _trackerActivationToggleColor = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public TrackingIconType TrackingIconColor
-        {
-            get => _trackingIconColor;
-            set
-            {
-                _trackingIconColor = value;
+                _trackingActiveText = value;
                 OnPropertyChanged();
             }
         }
@@ -1848,8 +1689,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 DamageMeterActivationToggleIcon = _isDamageMeterTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 
-                var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
-                var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+                var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Accent.Blue.2"]);
+                var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
                 DamageMeterActivationToggleColor = _isDamageMeterTrackingActive ? colorOn : colorOff;
 
                 SettingsController.CurrentSettings.IsDamageMeterTrackingActive = _isDamageMeterTrackingActive;
@@ -1866,7 +1707,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         public Brush DamageMeterActivationToggleColor {
-            get => _damageMeterActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+            get => _damageMeterActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
             set {
                 _damageMeterActivationToggleColor = value;
                 OnPropertyChanged();
@@ -2251,36 +2092,16 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public int CurrentGoldPrice
+        public DashboardObject DashboardObject
         {
-            get => _currentGoldPrice;
+            get => _dashboardObject;
             set
             {
-                _currentGoldPrice = value;
+                _dashboardObject = value;
                 OnPropertyChanged();
             }
         }
-
-        public string CurrentGoldPriceTimestamp
-        {
-            get => _currentGoldPriceTimestamp;
-            set
-            {
-                _currentGoldPriceTimestamp = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TextBoxGoldModeNumberOfValues
-        {
-            get => _textBoxGoldModeNumberOfValues;
-            set
-            {
-                _textBoxGoldModeNumberOfValues = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public PlayerModeTranslation PlayerModeTranslation
         {
             get => _playerModeTranslation;
@@ -2349,20 +2170,30 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string ErrorBarText
-        {
-            get => _errorBarText;
-            set
-            {
-                _errorBarText = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ObservableCollection<MainStatObject> FactionPointStats {
             get => _factionPointStats;
             set {
                 _factionPointStats = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<ISeries> SeriesDashboardHourValues
+        {
+            get => _seriesDashboardHourValues;
+            set
+            {
+                _seriesDashboardHourValues = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Axis[] XAxesDashboardHourValues
+        {
+            get => _xAxesDashboardHourValues;
+            set
+            {
+                _xAxesDashboardHourValues = value;
                 OnPropertyChanged();
             }
         }
@@ -2383,6 +2214,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _errorBarVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ErrorBarText
+        {
+            get => _errorBarText;
+            set
+            {
+                _errorBarText = value;
                 OnPropertyChanged();
             }
         }

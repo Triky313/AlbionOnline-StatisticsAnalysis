@@ -1,0 +1,262 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Foreground colors -->
+    <Color x:Key="Color.Text.1">#FFE9EDF1</Color>
+    <Color x:Key="Color.Text.2">#FFDDE3E9</Color>
+    <Color x:Key="Color.Text.3">#FFCBD4DC</Color>
+    <Color x:Key="Color.Text.4">#FFA9B5C1</Color>
+    <Color x:Key="Color.Text.5">#FF677683</Color>
+    <Color x:Key="Color.Text.6">#FF444F5A</Color>
+    <Color x:Key="Color.Text.7">#FF323B43</Color>
+
+    <!-- Background colors -->
+    <Color x:Key="Color.Background.1">#FF1E2126</Color>
+    <Color x:Key="Color.Background.2">#FF1A1D21</Color>
+    <Color x:Key="Color.Background.3">#FF16191C</Color>
+    <Color x:Key="Color.Background.4">#FF101215</Color>
+    <Color x:Key="Color.Background.5">#FF0D0F11</Color>
+    <Color x:Key="Color.Background.6">#FF0A0B0D</Color>
+    <Color x:Key="Color.Background.7">#FF070709</Color>
+
+    <!-- Accent colors -->
+    <Color x:Key="Color.Accent.Blue.1">#FF97CAED</Color>
+    <Color x:Key="Color.Accent.Blue.2">#FF63B0E3</Color>
+    <Color x:Key="Color.Accent.Blue.3">#FF3498DB</Color>
+    <Color x:Key="Color.Accent.Blue.4">#FF2280BF</Color>
+    <Color x:Key="Color.Accent.Blue.5">#FF185D8B</Color>
+
+    <Color x:Key="Color.Accent.Red.1">#FFFF8082</Color>
+    <Color x:Key="Color.Accent.Red.2">#FFFC6163</Color>
+    <Color x:Key="Color.Accent.Red.3">#FFFA494C</Color>
+    <Color x:Key="Color.Accent.Red.4">#FFE23B3E</Color>
+    <Color x:Key="Color.Accent.Red.5">#FFCD3638</Color>
+
+    <Color x:Key="Color.Accent.Green.1">#FF98EDB4</Color>
+    <Color x:Key="Color.Accent.Green.2">#FF64E38E</Color>
+    <Color x:Key="Color.Accent.Green.3">#FF35DB6C</Color>
+    <Color x:Key="Color.Accent.Green.4">#FF22BF57</Color>
+    <Color x:Key="Color.Accent.Green.5">#FF188C3F</Color>
+
+    <Color x:Key="Color.Accent.Yellow.1">#FFf2b83b</Color>
+    <Color x:Key="Color.Accent.Yellow.2">#55f2b83b</Color>
+
+    <!-- Accent colors transparent -->
+    <Color x:Key="Color.Accent.Blue.Transparent.1">#3397CAED</Color>
+    <Color x:Key="Color.Accent.Blue.Transparent.2">#3363B0E3</Color>
+    <Color x:Key="Color.Accent.Blue.Transparent.3">#333498DB</Color>
+    <Color x:Key="Color.Accent.Blue.Transparent.4">#332280BF</Color>
+    <Color x:Key="Color.Accent.Blue.Transparent.5">#33185D8B</Color>
+
+    <!-- Attention button colors -->
+    <Color x:Key="Button.Attention.Color.Normal">#FFb00e29</Color>
+    <Color x:Key="Button.Attention.Color.MouseOver">#ffC93C54</Color>
+    <Color x:Key="Button.Attention.Color.Pressed">#ffE0586E</Color>
+
+    <!-- City colors -->
+    <Color x:Key="Color.City.Default">#FF24292D</Color>
+    <Color x:Key="Color.City.Caerleon">#FFDE2643</Color>
+    <Color x:Key="Color.City.Thetford">#FF873FD4</Color>
+    <Color x:Key="Color.City.Bridgewatch">#FFFFA64D</Color>
+    <Color x:Key="Color.City.Martlock">#FF5066CC</Color>
+    <Color x:Key="Color.City.Lymhurst">#FF18A170</Color>
+    <Color x:Key="Color.City.FortSterling">#FFE1F7FA</Color>
+    <Color x:Key="Color.City.ArthursRest">#FFF75656</Color>
+    <Color x:Key="Color.City.MerlynsRest">#FF3A9DC7</Color>
+    <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
+    <Color x:Key="Color.City.BlackMarket">#FF95233F</Color>
+
+    <Color x:Key="Color.City.Default.Transparent">#3324292D</Color>
+    <Color x:Key="Color.City.Caerleon.Transparent">#33DE2643</Color>
+    <Color x:Key="Color.City.Thetford.Transparent">#33873FD4</Color>
+    <Color x:Key="Color.City.Bridgewatch.Transparent">#33FFA64D</Color>
+    <Color x:Key="Color.City.Martlock.Transparent">#335066CC</Color>
+    <Color x:Key="Color.City.Lymhurst.Transparent">#3318A170</Color>
+    <Color x:Key="Color.City.FortSterling.Transparent">#33E1F7FA</Color>
+    <Color x:Key="Color.City.ArthursRest.Transparent">#33F75656</Color>
+    <Color x:Key="Color.City.MerlynsRest.Transparent">#333A9DC7</Color>
+    <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
+    <Color x:Key="Color.City.BlackMarket.Transparent">#3395233F</Color>
+
+    <!-- Faction colors -->
+    <Color x:Key="Dungeon.Mode.Expedition.1">#B857DB</Color>
+    <Color x:Key="Dungeon.Mode.Expedition.2">#8329A3</Color>
+    <Color x:Key="Dungeon.Mode.HellGate.1">#EF1527</Color>
+    <Color x:Key="Dungeon.Mode.HellGate.2">#9C1C26</Color>
+    <Color x:Key="Dungeon.Mode.Corrupted.1">#FF662E</Color>
+    <Color x:Key="Dungeon.Mode.Corrupted.2">#E24E18</Color>
+    <Color x:Key="Dungeon.Mode.Solo.1">#ff37d266</Color>
+    <Color x:Key="Dungeon.Mode.Solo.2">#ff1f8a41</Color>
+    <Color x:Key="Dungeon.Mode.Standard.1">#ff09a9f6</Color>
+    <Color x:Key="Dungeon.Mode.Standard.2">#ff0e6fa2</Color>
+    <Color x:Key="Dungeon.Mode.Avalon.1">#fffffaeb</Color>
+    <Color x:Key="Dungeon.Mode.Avalon.2">#ffeddaa7</Color>
+    <Color x:Key="Dungeon.Mode.Unknown">#ff252525</Color>
+
+    <Color x:Key="Color.Text.ToOldFirst">#FF8C8CA5</Color>
+    <Color x:Key="Color.Text.ToOldSecond">#FF77778C</Color>
+    <Color x:Key="Color.Text.ToOldThird">#FF616172</Color>
+    <Color x:Key="Color.Text.NoValue">#FF4B4B59</Color>
+
+    <!-- Item level colors -->
+    <Color x:Key="Item.Level.Color.0">#FFb1b0ae</Color>
+    <Color x:Key="Item.Level.Color.1">#FF6bff91</Color>
+    <Color x:Key="Item.Level.Color.2">#FF4ff0fd</Color>
+    <Color x:Key="Item.Level.Color.3">#FFb866fe</Color>
+
+    <!-- Pvp/Pve colors -->
+    <Color x:Key="Text.Color.Pvp">#ffe05761</Color>
+    <Color x:Key="Text.Color.Pve">#ff57b6e0</Color>
+
+    <!-- Tracking colors -->
+    <Color x:Key="Tracking.On">#FF1F9E6E</Color>
+    <Color x:Key="Tracking.Partially">#FFD9A900</Color>
+    <Color x:Key="Tracking.Off">#FF616172</Color>
+
+    <!-- Cluster type colors -->
+    <Color x:Key="Cluster.SafeArea">#FF4B6EA0</Color>
+    <Color x:Key="Cluster.Yellow">#FFF2A60D</Color>
+    <Color x:Key="Cluster.Red">#FFD81320</Color>
+    <Color x:Key="Cluster.Black">#FF323B43</Color>
+    <Color x:Key="Cluster.Avalon">#ffEBCD7A</Color>
+
+    <!-- Value colors -->
+    <Color x:Key="Color.Value.Fame">#FFCF2026</Color>
+    <Color x:Key="Color.Value.Silver">#B7B7B7</Color>
+    <Color x:Key="Color.Value.ReSpec">#FFFBBA00</Color>
+    <Color x:Key="Color.Value.FactionFame">#FFA1434F</Color>
+    <Color x:Key="Color.Value.FactionPoints">#FF80436C</Color>
+    <Color x:Key="Color.Value.Might">#FF60AEE2</Color>
+    <Color x:Key="Color.Value.Favor">#FF1D70A2</Color>
+
+    <Color x:Key="Color.Value.Fame.Transparent">#33CF2026</Color>
+    <Color x:Key="Color.Value.Silver.Transparent">#33787878</Color>
+    <Color x:Key="Color.Value.ReSpec.Transparent">#33FBBA00</Color>
+    <Color x:Key="Color.Value.FactionFame.Transparent">#33A1434F</Color>
+    <Color x:Key="Color.Value.FactionPoints.Transparent">#3380436C</Color>
+    <Color x:Key="Color.Value.Might.Transparent">#3360AEE2</Color>
+    <Color x:Key="Color.Value.Favor.Transparent">#331D70A2</Color>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Text.1" Color="{StaticResource Color.Text.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.2" Color="{StaticResource Color.Text.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.3" Color="{StaticResource Color.Text.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.4" Color="{StaticResource Color.Text.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.5" Color="{StaticResource Color.Text.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.6" Color="{StaticResource Color.Text.6}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.7" Color="{StaticResource Color.Text.7}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Background.1" Color="{StaticResource Color.Background.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.2" Color="{StaticResource Color.Background.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.3" Color="{StaticResource Color.Background.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.4" Color="{StaticResource Color.Background.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.5" Color="{StaticResource Color.Background.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.6" Color="{StaticResource Color.Background.6}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Background.7" Color="{StaticResource Color.Background.7}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.1" Color="{StaticResource Color.Accent.Blue.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.2" Color="{StaticResource Color.Accent.Blue.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.3" Color="{StaticResource Color.Accent.Blue.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.4" Color="{StaticResource Color.Accent.Blue.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.5" Color="{StaticResource Color.Accent.Blue.5}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.1" Color="{StaticResource Color.Accent.Red.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.2" Color="{StaticResource Color.Accent.Red.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.3" Color="{StaticResource Color.Accent.Red.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.4" Color="{StaticResource Color.Accent.Red.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.5" Color="{StaticResource Color.Accent.Red.5}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.1" Color="{StaticResource Color.Accent.Green.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.2" Color="{StaticResource Color.Accent.Green.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.3" Color="{StaticResource Color.Accent.Green.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.4" Color="{StaticResource Color.Accent.Green.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.5" Color="{StaticResource Color.Accent.Green.5}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.1" Color="{StaticResource Color.Accent.Yellow.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.2" Color="{StaticResource Color.Accent.Yellow.2}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.1" Color="{StaticResource Color.Accent.Blue.Transparent.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.2" Color="{StaticResource Color.Accent.Blue.Transparent.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.3" Color="{StaticResource Color.Accent.Blue.Transparent.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.4" Color="{StaticResource Color.Accent.Blue.Transparent.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Blue.Transparent.5" Color="{StaticResource Color.Accent.Blue.Transparent.5}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.City.Default" Color="{StaticResource Color.City.Default}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon" Color="{StaticResource Color.City.Caerleon}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Thetford" Color="{StaticResource Color.City.Thetford}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Bridgewatch" Color="{StaticResource Color.City.Bridgewatch}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Martlock" Color="{StaticResource Color.City.Martlock}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst" Color="{StaticResource Color.City.Lymhurst}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling" Color="{StaticResource Color.City.FortSterling}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest" Color="{StaticResource Color.City.ArthursRest}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket" Color="{StaticResource Color.City.BlackMarket}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.City.Default.Transparent" Color="{StaticResource Color.City.Default.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Caerleon.Transparent" Color="{StaticResource Color.City.Caerleon.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Thetford.Transparent" Color="{StaticResource Color.City.Thetford.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Bridgewatch.Transparent" Color="{StaticResource Color.City.Bridgewatch.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Martlock.Transparent" Color="{StaticResource Color.City.Martlock.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst.Transparent" Color="{StaticResource Color.City.Lymhurst.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling.Transparent" Color="{StaticResource Color.City.FortSterling.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest.Transparent" Color="{StaticResource Color.City.ArthursRest.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest.Transparent" Color="{StaticResource Color.City.MerlynsRest.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest.Transparent" Color="{StaticResource Color.City.MorganasRest.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.BlackMarket.Transparent" Color="{StaticResource Color.City.BlackMarket.Transparent}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Expedition.1" Color="{StaticResource Dungeon.Mode.Expedition.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.HellGate.1" Color="{StaticResource Dungeon.Mode.HellGate.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Corrupted.1" Color="{StaticResource Dungeon.Mode.Corrupted.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Solo.1" Color="{StaticResource Dungeon.Mode.Solo.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Standard.1" Color="{StaticResource Dungeon.Mode.Standard.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Avalon.1" Color="{StaticResource Dungeon.Mode.Avalon.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Dungeon.Mode.Unknown" Color="{StaticResource Dungeon.Mode.Unknown}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pvp" Color="{StaticResource Text.Color.Pvp}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pve" Color="{StaticResource Text.Color.Pve}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Fame" Color="{StaticResource Color.Value.Fame}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Silver" Color="{StaticResource Color.Value.Silver}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.ReSpec" Color="{StaticResource Color.Value.ReSpec}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionFame" Color="{StaticResource Color.Value.FactionFame}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionPoints" Color="{StaticResource Color.Value.FactionPoints}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Might" Color="{StaticResource Color.Value.Might}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Favor" Color="{StaticResource Color.Value.Favor}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Fame.Transparent" Color="{StaticResource Color.Value.Fame.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Silver.Transparent" Color="{StaticResource Color.Value.Silver.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.ReSpec.Transparent" Color="{StaticResource Color.Value.ReSpec.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionFame.Transparent" Color="{StaticResource Color.Value.FactionFame.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.FactionPoints.Transparent" Color="{StaticResource Color.Value.FactionPoints.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Might.Transparent" Color="{StaticResource Color.Value.Might.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Value.Favor.Transparent" Color="{StaticResource Color.Value.Favor.Transparent}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Text" Color="#fafafa"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Sword" Color="#FAA307"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Spear" Color="#DAB10B"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Quarterstaff" Color="#297A7A"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.NatureStaff" Color="#afafaf"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Mace" Color="#D35F91"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.HolyStaff" Color="#afafaf"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Hammer" Color="#7373D9"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.FrostStaff" Color="#4089d1"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.FireStaff" Color="#C9561D"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Dagger" Color="#A2AD1F"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.CursedStaff" Color="#61358D"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Crossbow" Color="#00576e"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Bow" Color="#004D39"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Axe" Color="#c5242e"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.ArcaneStaff" Color="#732653"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.Knuckles" Color="#914210"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.UnknownWeaponType" Color="#555555"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Weapon.HealBar" Color="#00aa1a"/>
+
+    <SolidColorBrush x:Key="Solid.Color.Text.ToOldFirst" Color="{StaticResource Color.Text.ToOldFirst}"/>
+    <SolidColorBrush x:Key="Solid.Color.Text.ToOldSecond" Color="{StaticResource Color.Text.ToOldSecond}"/>
+    <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
+    <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
+</ResourceDictionary>

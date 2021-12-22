@@ -117,7 +117,10 @@ namespace StatisticsAnalysisTool.GameData
 
                 if (fileDateTime.AddDays(Settings.Default.UpdateWorldDataByDays) < DateTime.Now)
                 {
-                    if (await GetLootChestListFromWebAsync(url)) LootChests = GetLootChestDataFromLocal();
+                    if (await GetLootChestListFromWebAsync(url).ConfigureAwait(false))
+                    {
+                        LootChests = GetLootChestDataFromLocal();
+                    }
                     return LootChests?.Count() > 0;
                 }
 
@@ -125,7 +128,10 @@ namespace StatisticsAnalysisTool.GameData
                 return LootChests?.Count() > 0;
             }
 
-            if (await GetLootChestListFromWebAsync(url)) LootChests = GetLootChestDataFromLocal();
+            if (await GetLootChestListFromWebAsync(url).ConfigureAwait(false))
+            {
+                LootChests = GetLootChestDataFromLocal();
+            }
             return LootChests?.Count() > 0;
         }
 
@@ -259,7 +265,7 @@ namespace StatisticsAnalysisTool.GameData
             {
                 using var response = await client.GetAsync(url);
                 using var content = response.Content;
-                var fileString = await content.ReadAsStringAsync();
+                var fileString = await content.ReadAsStringAsync().ConfigureAwait(false);
                 await File.WriteAllTextAsync(
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.LootChestDataFileName), fileString,
                     Encoding.UTF8);

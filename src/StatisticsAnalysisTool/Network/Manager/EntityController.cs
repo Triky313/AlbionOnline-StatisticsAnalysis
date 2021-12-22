@@ -1,5 +1,4 @@
-﻿using Divis.AsyncObservableCollection;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -8,6 +7,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -23,8 +23,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new();
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private readonly AsyncObservableCollection<EquipmentItem> _newEquipmentItems = new();
-        private readonly AsyncObservableCollection<SpellEffect> _spellEffects = new();
+        private readonly ObservableCollection<EquipmentItem> _newEquipmentItems = new();
+        private readonly ObservableCollection<SpellEffect> _spellEffects = new();
         private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new();
         private double _lastLocalEntityGuildTaxInPercent;
         private double _lastLocalEntityClusterTaxInPercent;
@@ -237,13 +237,15 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             lock (_newEquipmentItems)
             {
-                _newEquipmentItems.Init(Application.Current.Dispatcher.Invoke);
-                if (_newEquipmentItems.ToList().Any(x => x == null || x.ItemIndex.Equals(item?.ItemIndex) && x.SpellDictionary?.Values == item?.SpellDictionary?.Values))
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    return;
-                }
+                    if (_newEquipmentItems.ToList().Any(x => x == null || x.ItemIndex.Equals(item?.ItemIndex) && x.SpellDictionary?.Values == item.SpellDictionary?.Values))
+                    {
+                        return;
+                    }
 
-                _newEquipmentItems.Add(item);
+                    _newEquipmentItems.Add(item);
+                });
             }
 
             RemoveSpellAndEquipmentObjects();
@@ -258,14 +260,15 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             lock(_spellEffects)
             {
-                _spellEffects.Init(Application.Current.Dispatcher.Invoke);
-                if (_spellEffects.Any(x => x == null || x.CauserId.Equals(spell.CauserId) && x.SpellIndex.Equals(spell.SpellIndex)))
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    return;
-                }
+                    if (_spellEffects.Any(x => x == null || x.CauserId.Equals(spell.CauserId) && x.SpellIndex.Equals(spell.SpellIndex)))
+                    {
+                        return;
+                    }
 
-                _spellEffects.Init(Application.Current.Dispatcher.Invoke);
-                _spellEffects.Add(spell);
+                    _spellEffects.Add(spell);
+                });
             }
 
             RemoveSpellAndEquipmentObjects();
@@ -335,8 +338,10 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 foreach (var item in _newEquipmentItems.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
                 {
-                    _newEquipmentItems.Init(Application.Current.Dispatcher.Invoke);
-                    _newEquipmentItems.Remove(item);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        _newEquipmentItems.Remove(item);
+                    });
                 }
             }
 
@@ -344,8 +349,10 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 foreach (var spell in _spellEffects.ToList().Where(x => x?.TimeStamp < DateTime.UtcNow.AddSeconds(-15)))
                 {
-                    _spellEffects.Init(Application.Current.Dispatcher.Invoke);
-                    _spellEffects.Remove(spell);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        _spellEffects.Remove(spell);
+                    });
                 }
             }
         }

@@ -23,7 +23,7 @@ namespace StatisticsAnalysisTool.Network
 
         public static bool IsNetworkCaptureRunning => _capturedDevices.Where(device => device.Started).Any(device => device.Started);
 
-        public static async Task<bool> StartNetworkCaptureAsync(MainWindowViewModel mainWindowViewModel, TrackingController trackingController)
+        public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController)
         {
             _mainWindowViewModel = mainWindowViewModel;
             _receiver = new AlbionPackageParser(trackingController, mainWindowViewModel);
@@ -31,7 +31,7 @@ namespace StatisticsAnalysisTool.Network
             try
             {
                 _capturedDevices.AddRange(CaptureDeviceList.Instance);
-                return await StartDeviceCaptureAsync();
+                return StartDeviceCapture();
             }
             catch (Exception e)
             {
@@ -43,7 +43,7 @@ namespace StatisticsAnalysisTool.Network
             }
         }
 
-        private static async Task<bool> StartDeviceCaptureAsync()
+        private static bool StartDeviceCapture()
         {
             if (_capturedDevices.Count <= 0)
             {
@@ -54,7 +54,7 @@ namespace StatisticsAnalysisTool.Network
             {
                 foreach (var device in _capturedDevices)
                 {
-                    await PacketEventAsync(device).ConfigureAwait(false);
+                    PacketEvent(device);
                 }
             }
             catch (Exception e)
@@ -73,31 +73,25 @@ namespace StatisticsAnalysisTool.Network
         {
             foreach (var device in _capturedDevices.Where(device => device.Started))
             {
-                _ = Task.Run(() =>
-                  {
-                      device.StopCapture();
-                      device.Close();
-                  });
+                device.StopCapture();
+                device.Close();
             }
 
             _capturedDevices.Clear();
         }
 
-        private static async Task PacketEventAsync(ICaptureDevice device)
+        private static void PacketEvent(ICaptureDevice device)
         {
-            await Task.Run(() =>
+            if (!device.Started)
             {
-                if (!device.Started)
+                device.Open(new DeviceConfiguration()
                 {
-                    device.Open(new DeviceConfiguration()
-                    {
-                        Mode = DeviceModes.DataTransferUdp,
-                        ReadTimeout = 5000
-                    });
-                    device.OnPacketArrival += Device_OnPacketArrival;
-                    device.StartCapture();
-                }
-            }).ConfigureAwait(false);
+                    Mode = DeviceModes.DataTransferUdp,
+                    ReadTimeout = 5000
+                });
+                device.OnPacketArrival += Device_OnPacketArrival;
+                device.StartCapture();
+            }
         }
 
         private static void Device_OnPacketArrival(object sender, PacketCapture e)

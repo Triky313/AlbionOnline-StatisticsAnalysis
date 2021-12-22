@@ -32,9 +32,9 @@ namespace StatisticsAnalysisTool.Common
 
         private static ObservableCollection<ItemInformation> _itemInformationList = new();
 
-        public static readonly Brush ToggleOnColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Blue.2"]);
+        public static readonly Brush ToggleOnColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Accent.Blue.2"]);
 
-        public static readonly Brush ToggleOffColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.Normal"]);
+        public static readonly Brush ToggleOffColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
 
         public static Item GetItemByIndex(int index)
         {
@@ -55,7 +55,7 @@ namespace StatisticsAnalysisTool.Common
 
             if (string.IsNullOrEmpty(currentLanguage))
             {
-                currentLanguage = LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper();
+                currentLanguage = LanguageController.CurrentCultureInfo?.TextInfo.CultureName.ToUpper();
             }
 
             return FrequentlyValues.GameLanguages
@@ -156,6 +156,7 @@ namespace StatisticsAnalysisTool.Common
                 Location.ArthursRest => Application.Current.FindResource("ArthursRestStyle") as Style,
                 Location.MerlynsRest => Application.Current.FindResource("MerlynsRestStyle") as Style,
                 Location.MorganasRest => Application.Current.FindResource("MorganasRestStyle") as Style,
+                Location.BlackMarket => Application.Current.FindResource("BlackMarketStyle") as Style,
                 _ => Application.Current.FindResource("DefaultCityStyle") as Style
             };
         }

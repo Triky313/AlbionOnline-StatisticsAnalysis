@@ -14,7 +14,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using Divis.AsyncObservableCollection;
 
 namespace StatisticsAnalysisTool.GameData
 {
@@ -111,7 +110,7 @@ namespace StatisticsAnalysisTool.GameData
 
                 if (fileDateTime.AddDays(Settings.Default.UpdateWorldDataByDays) < DateTime.Now)
                 {
-                    if (await GetWorldListFromWebAsync(url))
+                    if (await GetWorldListFromWebAsync(url).ConfigureAwait(false))
                     {
                         MapData = GetWorldDataFromLocal();
                     }
@@ -123,7 +122,7 @@ namespace StatisticsAnalysisTool.GameData
                 return MapData?.Count > 0;
             }
 
-            if (await GetWorldListFromWebAsync(url))
+            if (await GetWorldListFromWebAsync(url).ConfigureAwait(false))
             {
                 MapData = GetWorldDataFromLocal();
             }
@@ -259,7 +258,7 @@ namespace StatisticsAnalysisTool.GameData
 
         #region Helper methods
 
-        private static AsyncObservableCollection<ClusterInfo> GetWorldDataFromLocal()
+        private static ObservableCollection<ClusterInfo> GetWorldDataFromLocal()
         {
             try
             {
@@ -269,17 +268,17 @@ namespace StatisticsAnalysisTool.GameData
                 };
 
                 var localItemString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.WorldDataFileName), Encoding.UTF8);
-                return ConvertItemJsonObjectToMapData(JsonSerializer.Deserialize<AsyncObservableCollection<WorldJsonObject>>(localItemString, options));
+                return ConvertItemJsonObjectToMapData(JsonSerializer.Deserialize<ObservableCollection<WorldJsonObject>>(localItemString, options));
             }
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                return new AsyncObservableCollection<ClusterInfo>();
+                return new ObservableCollection<ClusterInfo>();
             }
         }
 
-        private static AsyncObservableCollection<ClusterInfo> ConvertItemJsonObjectToMapData(IEnumerable<WorldJsonObject> worldJsonObject)
+        private static ObservableCollection<ClusterInfo> ConvertItemJsonObjectToMapData(IEnumerable<WorldJsonObject> worldJsonObject)
         {
             var result = worldJsonObject.Select(item => new ClusterInfo
             {
@@ -289,9 +288,13 @@ namespace StatisticsAnalysisTool.GameData
                 File = item.File
             }).ToList();
 
-            var resultReturn = new AsyncObservableCollection<ClusterInfo>();
-            resultReturn.Init(Application.Current.Dispatcher.Invoke);
-            resultReturn.AddRange(result);
+            var resultReturn = new ObservableRangeCollection<ClusterInfo>();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                resultReturn.AddRange(result);
+            });
+
             return resultReturn;
         }
 

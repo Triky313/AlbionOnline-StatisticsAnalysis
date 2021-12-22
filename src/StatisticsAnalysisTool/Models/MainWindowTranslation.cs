@@ -1,5 +1,4 @@
 ﻿using StatisticsAnalysisTool.Common;
-// ReSharper disable UnusedMember.Global
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -40,9 +39,6 @@ namespace StatisticsAnalysisTool.Models
         public static string Total => LanguageController.Translation("TOTAL");
         public static string DamageMeter => LanguageController.Translation("DAMAGE_METER");
         public static string DamageMeterDescription1 => LanguageController.Translation("DAMAGE_METER_DESCRIPTION_1");
-        public static string MainTrackerDescription1 => LanguageController.Translation("MAIN_TRACKER_DESCRIPTION_1");
-        public static string MainTrackerDescription2 => LanguageController.Translation("MAIN_TRACKER_DESCRIPTION_2");
-        public static string MainTrackerDescription3 => LanguageController.Translation("MAIN_TRACKER_DESCRIPTION_3");
         public static string ResetDamageMeter => LanguageController.Translation("RESET_DAMAGE_METER");
         public static string SortByDamage => LanguageController.Translation("SORT_BY_DAMAGE");
         public static string SortByDps => LanguageController.Translation("SORT_BY_DPS");
@@ -54,7 +50,10 @@ namespace StatisticsAnalysisTool.Models
         public static string Loot => LanguageController.Translation("LOOT");
         public static string Fame => LanguageController.Translation("FAME");
         public static string Silver => LanguageController.Translation("SILVER");
+        public static string ReSpec => LanguageController.Translation("RESPEC");
         public static string Faction => LanguageController.Translation("FACTION");
+        public static string Might => LanguageController.Translation("MIGHT");
+        public static string Favor => LanguageController.Translation("FAVOR");
         public static string ResetTrackingNotifications => LanguageController.Translation("RESET_TRACKING_NOTIFICATIONS");
         public static string EquipmentLoot => LanguageController.Translation("EQUIPMENT_LOOT");
         public static string ConsumableLoot => LanguageController.Translation("CONSUMABLE_LOOT");
@@ -62,7 +61,7 @@ namespace StatisticsAnalysisTool.Models
         public static string UnknownLoot => LanguageController.Translation("UNKNOWN_LOOT");
         public static string OpenExtendedDamageMeterWindow => LanguageController.Translation("OPEN_EXTENDED_DAMAGE_METER_WINDOW");
         public static string CopyToClipboard => LanguageController.Translation("COPY_TO_CLIPBOARD");
-        public static string MapTracking => LanguageController.Translation("MAP_TRACKING");
+        public static string MapHistory => LanguageController.Translation("MAP_HISTORY");
         public static string TryDownloadingTheItemListAgain => LanguageController.Translation("TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN");
         public static string DamageMeterOnOff => LanguageController.Translation("DAMAGE_METER_ON_OFF");
         public static string TrackerOnOff => LanguageController.Translation("TRACKER_ON_OFF");
@@ -72,5 +71,13 @@ namespace StatisticsAnalysisTool.Models
         public static string TrackPartyLootOnly => LanguageController.Translation("TRACK_PARTY_LOOT_ONLY");
         public static string TrackingSilver => LanguageController.Translation("TRACKING_SILVER");
         public static string TrackingFame => LanguageController.Translation("TRACKING_FAME");
+        public static string ItemSearch => LanguageController.Translation("ITEM_SEARCH");
+        public static string Dungeons => LanguageController.Translation("DUNGEONS");
+        public static string PlayerInformation => LanguageController.Translation("PLAYER_INFORMATION");
+        public static string Logging => LanguageController.Translation("LOGGING");
+        public static string TrackingIsActive => LanguageController.Translation("TRACKING_IS_ACTIVE");
+        public static string TrackingIsPartiallyActive => LanguageController.Translation("TRACKING_IS_PARTIALLY_ACTIVE");
+        public static string TrackingIsNotActive => LanguageController.Translation("TRACKING_IS_NOT_ACTIVE");
+        public static string Dashboard => LanguageController.Translation("DASHBOARD");
     }
 }

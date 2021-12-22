@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Network.Operations.Requests;
 
 namespace StatisticsAnalysisTool.Network
 {
@@ -37,6 +38,7 @@ namespace StatisticsAnalysisTool.Network
         private readonly ActiveSpellEffectsUpdateEventHandler ActiveSpellEffectsUpdateEventHandler;
         private readonly UpdateFactionStandingEventHandler UpdateFactionStandingEventHandler;
         private readonly ReceivedSeasonPointsEventHandler ReceivedSeasonPointsEventHandler;
+        private readonly MightFavorPointsEventHandler MightFavorPointsEventHandler;
 
         private readonly UseShrineRequestHandler UseShrineRequestHandler;
 
@@ -70,6 +72,7 @@ namespace StatisticsAnalysisTool.Network
             ActiveSpellEffectsUpdateEventHandler = new ActiveSpellEffectsUpdateEventHandler(trackingController);
             UpdateFactionStandingEventHandler = new UpdateFactionStandingEventHandler(trackingController);
             ReceivedSeasonPointsEventHandler = new ReceivedSeasonPointsEventHandler(trackingController);
+            MightFavorPointsEventHandler = new MightFavorPointsEventHandler(trackingController);
 
             UseShrineRequestHandler = new UseShrineRequestHandler(trackingController);
 
@@ -162,6 +165,9 @@ namespace StatisticsAnalysisTool.Network
                     return;
                 case EventCodes.ReceivedSeasonPoints:
                     await ReceivedSeasonPointsEventHandlerAsync(parameters).ConfigureAwait(false);
+                    return;
+                case EventCodes.MightFavorPoints:
+                    await MightFavorPointsEventHandlerAsync(parameters).ConfigureAwait(false);
                     return;
             }
         }
@@ -384,6 +390,12 @@ namespace StatisticsAnalysisTool.Network
         {
             var value = new ReceivedSeasonPointsEvent(parameters);
             await ReceivedSeasonPointsEventHandler.OnActionAsync(value);
+        }
+
+        private async Task MightFavorPointsEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new MightFavorPointsEvent(parameters);
+            await MightFavorPointsEventHandler.OnActionAsync(value);
         }
 
         #endregion

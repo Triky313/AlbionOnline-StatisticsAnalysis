@@ -367,10 +367,7 @@
 	<translation name="OPENED_UNCOMMON_CHESTS">Opened uncommon chests</translation>
 	<translation name="OPENED_RARE_CHESTS">Opened rare chests</translation>
 	<translation name="OPENED_LEGENDARY_CHESTS">Opened legendary chests</translation>
-
-	<translation name="MAIN_TRACKER_DESCRIPTION_1">For the tracker to work properly, the wifi icon must be green. In order to achieve this status, the map must be changed once in the game with the character.</translation>
-	<translation name="MAIN_TRACKER_DESCRIPTION_2">Join a party or invite some to the party to update the party list. It is not important whether you yourself or someone else invites players into the group.</translation>
-	<translation name="MAIN_TRACKER_DESCRIPTION_3">The fame that the tracker tracks is the real overall fame. So that means with Premium and Satchel Fame. Fame in the profile of a player is the normal fame, without premium or other special fame.</translation>
+	
 	<translation name="DAMAGE_METER_DESCRIPTION_1">In order for damage from other players in the party to be recognized, the tool must first be activated and then a player must leave or join the party.</translation>
 
 	<translation name="SORT_BY_DAMAGE">Sort by damage</translation>
@@ -427,7 +424,7 @@
 	<translation name="SURE_YOU_WANT_TO_RESET_THE_PARTY">Are you sure you want to reset the Party?</translation>
 	<translation name="OPEN_EXTENDED_DAMAGE_METER_WINDOW">Open extended damage meter window</translation>
 	<translation name="COPY_TO_CLIPBOARD">Copy to clipboard</translation>
-	<translation name="MAP_TRACKING">Map Tracking</translation>
+	<translation name="MAP_HISTORY">Map History</translation>
 	<translation name="TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN">Try downloading the item list again</translation>
 	<translation name="DAMAGE_METER_ON_OFF">Damage Meter - ON/OFF</translation>
 	<translation name="TRACKER_ON_OFF">Tracker - ON/OFF</translation>
@@ -486,4 +483,15 @@
 	<translation name="SAVE_LOOT_LOGGER">Save Loot Logger</translation>
 	<translation name="TRACKING_SILVER">Tracking silver</translation>
 	<translation name="TRACKING_FAME">Tracking fame</translation>
+	<translation name="ITEM_SEARCH">Item Search</translation>
+	<translation name="DUNGEONS">Dungeons</translation>
+	<translation name="PLAYER_INFORMATION">Player Information</translation>
+	<translation name="LOGGING">Logging</translation>
+	<translation name="TRACKING_IS_ACTIVE">Tracking is active</translation>
+	<translation name="TRACKING_IS_PARTIALLY_ACTIVE">Tracking is partially active</translation>
+	<translation name="TRACKING_IS_NOT_ACTIVE">Tracking is not active</translation>
+	<translation name="PROGRAM_RESTART_REQUIRED">Program restart required</translation>
+	<translation name="DASHBOARD">Dashboard</translation>
+	<translation name="MIGHT">Might</translation>
+	<translation name="FAVOR">Favor</translation>
 </translations>

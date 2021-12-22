@@ -6,56 +6,72 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         xmlns:ctx="clr-namespace:LiveChartsCore.Kernel;assembly=LiveChartsCore"
+        xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls" 
+        xmlns:viewmodels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+        xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+        d:DataContext="{d:DesignInstance Type=viewmodels:ItemWindowViewModel}"
         mc:Ignorable="d"
-        Title="ItemWindow" MinHeight="350" Height="420" MinWidth="900" Width="1210" AllowsTransparency="True" Style="{StaticResource PrimaryWindow}" FontSize="{StaticResource BaseFontSize}" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
+        Title="ItemWindow" 
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource ItemWindowStyle}">
     <Grid>
-        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
-        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
+        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
+        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
+
         <Grid ZIndex="1" Width="24" Height="24" Margin="0,80,5,0" HorizontalAlignment="Right" VerticalAlignment="Top">
-            <fa5:ImageAwesome Visibility="Visible" Icon="Solid_Sync" ToolTip="{Binding RefreshIconTooltipText, FallbackValue=LAST__UPDATE: TIME}" Spin="{Binding RefreshSpin, FallbackValue=false, UpdateSourceTrigger=PropertyChanged}" SpinDuration="10" Foreground="{StaticResource SolidColorBrush.Foreground.First}" MouseUp="ImageAwesome_MouseUp" />
+            <fa5:ImageAwesome Visibility="Visible" Icon="Solid_Sync" ToolTip="{Binding RefreshIconTooltipText, FallbackValue=LAST__UPDATE: TIME}" Spin="{Binding RefreshSpin, FallbackValue=false, UpdateSourceTrigger=PropertyChanged}" SpinDuration="10" Foreground="{StaticResource SolidColorBrush.Text.1}" MouseUp="ImageAwesome_MouseUp" />
         </Grid>
-        <Grid ZIndex="-1" Height="110" VerticalAlignment="Top" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
-            <Grid.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="{StaticResource Background.First}" Offset="0" />
-                    <GradientStop Color="{StaticResource Background.Second}" Offset="1" />
-                </LinearGradientBrush>
-            </Grid.Background>
-            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.Third}" />
+        <Grid ZIndex="-1" Height="110" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.1}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Background.3}" />
             <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
             <Button Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
             <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75" />
             <DockPanel Margin="90,5,200,0" VerticalAlignment="Top" Height="28">
-                <Label Content="{Binding Path=ItemName, FallbackValue=ITEM__TITLE}" HorizontalAlignment="Left" FontSize="14" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold" />
-                <Label Content="{Binding Path=ItemTierLevel, FallbackValue=T0.0}" HorizontalAlignment="Left" FontSize="14" Margin="-5 0 0 0" Foreground="{StaticResource SolidColorBrush.Foreground.First}" FontWeight="Bold" />
+                <Label Content="{Binding ItemName, FallbackValue=ITEM__TITLE}" HorizontalAlignment="Left" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" />
+                <Label Content="{Binding ItemTierLevel, FallbackValue=T0.0}" HorizontalAlignment="Left" FontSize="14" Margin="-5 0 0 0" Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" />
             </DockPanel>
 
             <Grid IsEnabled="{Binding HasItemPrices, FallbackValue=false}" Margin="90,33,10,30">
-                <CheckBox Content="{Binding Translation.ShowBlackzoneOutposts, FallbackValue=SHOW__BLACKZONE__OUTPOSTS}" IsChecked="{Binding ShowBlackZoneOutpostsChecked}" Margin="0,0,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="200" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="ChbShowBlackZoneOutposts_Click" />
-                <CheckBox Content="{Binding Translation.ShowVillages, FallbackValue=SHOW__VILLAGES}" IsChecked="{Binding ShowVillagesChecked}" Margin="295,0,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="200" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Click="ShowVillagesPrices_Click" />
+                <CheckBox Content="{Binding Translation.ShowBlackzoneOutposts, FallbackValue=SHOW__BLACKZONE__OUTPOSTS}" 
+                          IsChecked="{Binding ShowBlackZoneOutpostsChecked}" Margin="0,0,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" 
+                          Width="200" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Text.1}" Click="ChbShowBlackZoneOutposts_Click" />
+                <CheckBox Content="{Binding Translation.ShowVillages, FallbackValue=SHOW__VILLAGES}" IsChecked="{Binding ShowVillagesChecked}" 
+                          Margin="295,0,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="200" VerticalAlignment="Top" 
+                          Foreground="{StaticResource SolidColorBrush.Text.1}" Click="ShowVillagesPrices_Click" />
                 <Grid>
-                    <RadioButton Content="{Binding Translation.Normal, FallbackValue=NORMAL}" IsChecked="{Binding NormalQualityChecked, FallbackValue=False}" Margin="3,22,0,0" HorizontalAlignment="Left" Width="200" VerticalAlignment="Top" Click="CbNormalQuality_Click" />
-                    <RadioButton Content="{Binding Translation.Good, FallbackValue=GOOD}" IsChecked="{Binding GoodQualityChecked, FallbackValue=False}" Margin="298,22,0,0" HorizontalAlignment="Left" Width="200" VerticalAlignment="Top" Click="CbGoodQuality_Click" />
-                    <RadioButton Content="{Binding Translation.Outstanding, FallbackValue=OUTSTANDING}" IsChecked="{Binding OutstandingQualityChecked, FallbackValue=False}" Margin="500,22,0,0" HorizontalAlignment="Left" Width="200" VerticalAlignment="Top" Click="CbCbOutstandingQuality_Click" />
-                    <RadioButton Content="{Binding Translation.Excellent, FallbackValue=EXCELLENT}" IsChecked="{Binding ExcellentQualityChecked, FallbackValue=False}" Margin="705,22,0,0" HorizontalAlignment="Left" Width="200" VerticalAlignment="Top" Click="CbExcellentQuality_Click" />
-                    <RadioButton Content="{Binding Translation.Masterpiece, FallbackValue=MASTERPIECE}" IsChecked="{Binding MasterpieceQualityChecked, FallbackValue=False}" Margin="910,22,0,0" HorizontalAlignment="Left" Width="200" VerticalAlignment="Top" Click="CbMasterpieceQuality_Click" />
+                    <RadioButton Content="{Binding Translation.Normal, FallbackValue=NORMAL}" IsChecked="{Binding NormalQualityChecked, FallbackValue=False}" 
+                                 Margin="3,22,0,0" HorizontalAlignment="Left" Width="200" VerticalAlignment="Top" Click="CbNormalQuality_Click" />
+                    <RadioButton Content="{Binding Translation.Good, FallbackValue=GOOD}" IsChecked="{Binding GoodQualityChecked, FallbackValue=False}" 
+                                 Margin="298,22,0,0" HorizontalAlignment="Left" Width="200" VerticalAlignment="Top" Click="CbGoodQuality_Click" />
+                    <RadioButton Content="{Binding Translation.Outstanding, FallbackValue=OUTSTANDING}" 
+                                 IsChecked="{Binding OutstandingQualityChecked, FallbackValue=False}" Margin="500,22,0,0" HorizontalAlignment="Left" Width="200" 
+                                 VerticalAlignment="Top" Click="CbCbOutstandingQuality_Click" />
+                    <RadioButton Content="{Binding Translation.Excellent, FallbackValue=EXCELLENT}" 
+                                 IsChecked="{Binding ExcellentQualityChecked, FallbackValue=False}" Margin="705,22,0,0" HorizontalAlignment="Left" Width="200" 
+                                 VerticalAlignment="Top" Click="CbExcellentQuality_Click" />
+                    <RadioButton Content="{Binding Translation.Masterpiece, FallbackValue=MASTERPIECE}" 
+                                 IsChecked="{Binding MasterpieceQualityChecked, FallbackValue=False}" Margin="910,22,0,0" HorizontalAlignment="Left" Width="200" 
+                                 VerticalAlignment="Top" Click="CbMasterpieceQuality_Click" />
                 </Grid>
             </Grid>
         </Grid>
+        
         <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top">
-            <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+            <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
         </Grid>
-        <TabControl Margin="0,86,0,35" IsEnabled="{Binding HasItemPrices}">
+        <TabControl IsEnabled="{Binding HasItemPrices}" Background="Transparent" Margin="1,86,1,35">
             <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}">
-                <ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
+                <ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" BorderThickness="0" 
+                          SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}" MouseDoubleClick="MarketListCityLabel_MouseDoubleClick" />
+                                        <Label Height="28" Width="150" Margin="0" Content="{Binding (models:MarketCurrentPricesItem.LocationName)}" 
+                                               Style="{Binding (models:MarketCurrentPricesItem.LocationStyle)}" MouseDoubleClick="MarketListCityLabel_MouseDoubleClick" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -64,7 +80,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinStyle}" Content="{Binding SellPriceMinString}" MouseDoubleClick="MarketListSellPriceMinLabel_MouseDoubleClick" />
+                                                <Label Style="{Binding (models:MarketCurrentPricesItem.SellPriceMinStyle)}" 
+                                                       Content="{Binding (models:MarketCurrentPricesItem.SellPriceMinString)}" 
+                                                       MouseDoubleClick="MarketListSellPriceMinLabel_MouseDoubleClick" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -77,7 +95,9 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding SellPriceMinDateStyle}" Content="{Binding SellPriceMinDateLastUpdateTime}" ToolTip="{Binding SellPriceMinDateString}" />
+                                            <Label Style="{Binding (models:MarketCurrentPricesItem.SellPriceMinDateStyle)}" 
+                                                   Content="{Binding (models:MarketCurrentPricesItem.SellPriceMinDateLastUpdateTime)}" 
+                                                   ToolTip="{Binding (models:MarketCurrentPricesItem.SellPriceMinDateString)}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -87,7 +107,10 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding SellPriceMaxString}" ToolTip="{Binding SellPriceMaxDateString}" MouseDoubleClick="MarketListSellPriceMaxLabel_MouseDoubleClick" />
+                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" 
+                                                       Content="{Binding (models:MarketCurrentPricesItem.SellPriceMaxString)}" 
+                                                       ToolTip="{Binding (models:MarketCurrentPricesItem.SellPriceMaxDateString)}" 
+                                                       MouseDoubleClick="MarketListSellPriceMaxLabel_MouseDoubleClick" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -100,7 +123,9 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding SellPriceMaxDateStyle}" Content="{Binding SellPriceMaxDateLastUpdateTime}" ToolTip="{Binding SellPriceMaxDateString}" />
+                                            <Label Style="{Binding (models:MarketCurrentPricesItem.SellPriceMaxDateStyle)}" 
+                                                   Content="{Binding (models:MarketCurrentPricesItem.SellPriceMaxDateLastUpdateTime)}" 
+                                                   ToolTip="{Binding (models:MarketCurrentPricesItem.SellPriceMaxDateString)}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -110,7 +135,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" Content="{Binding BuyPriceMinString}" MouseDoubleClick="MarketListBuyPriceMinLabel_MouseDoubleClick" />
+                                                <Label Style="{StaticResource ListView.Grid.StackPanel.Label.Price}" 
+                                                       Content="{Binding (models:MarketCurrentPricesItem.BuyPriceMinString)}" 
+                                                       MouseDoubleClick="MarketListBuyPriceMinLabel_MouseDoubleClick" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -123,7 +150,9 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding BuyPriceMinDateStyle}" Content="{Binding BuyPriceMinDateLastUpdateTime}" ToolTip="{Binding BuyPriceMinDateString}" />
+                                            <Label Style="{Binding (models:MarketCurrentPricesItem.BuyPriceMinDateStyle)}" 
+                                                   Content="{Binding (models:MarketCurrentPricesItem.BuyPriceMinDateLastUpdateTime)}" 
+                                                   ToolTip="{Binding (models:MarketCurrentPricesItem.BuyPriceMinDateString)}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -133,7 +162,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding BuyPriceMaxStyle}" Content="{Binding BuyPriceMaxString}" MouseDoubleClick="MarketListBuyPriceMaxLabel_MouseDoubleClick" />
+                                                <Label Style="{Binding (models:MarketCurrentPricesItem.BuyPriceMaxStyle)}" 
+                                                       Content="{Binding (models:MarketCurrentPricesItem.BuyPriceMaxString)}" 
+                                                       MouseDoubleClick="MarketListBuyPriceMaxLabel_MouseDoubleClick" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -146,7 +177,9 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-                                            <Label Style="{Binding BuyPriceMaxDateStyle}" Content="{Binding BuyPriceMaxDateLastUpdateTime}" ToolTip="{Binding BuyPriceMaxDateString}" />
+                                            <Label Style="{Binding (models:MarketCurrentPricesItem.BuyPriceMaxDateStyle)}" 
+                                                   Content="{Binding (models:MarketCurrentPricesItem.BuyPriceMaxDateLastUpdateTime)}" 
+                                                   ToolTip="{Binding (models:MarketCurrentPricesItem.BuyPriceMaxDateString)}" />
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -156,13 +189,14 @@
                 </ListView>
             </TabItem>
             <TabItem Header="{Binding Translation.Quality, FallbackValue=QUALITY}" ToolTip="{Binding Translation.TabAllQualityToolTipDescription}">
-                <ListView ItemsSource="{Binding AllQualityPricesList}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
+                <ListView ItemsSource="{Binding AllQualityPricesList}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}" />
+                                        <Label Height="28" Width="150" Margin="0" Content="{Binding (models:MarketQualityObject.LocationName)}" 
+                                               Style="{Binding (models:MarketQualityObject.LocationStyle)}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -171,7 +205,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinNormalStyle}" Content="{Binding SellPriceMinNormalString}" ToolTip="{Binding SellPriceMinNormalDateString}" />
+                                                <Label Style="{Binding (models:MarketQualityObject.SellPriceMinNormalStyle)}" 
+                                                       Content="{Binding (models:MarketQualityObject.SellPriceMinNormalString)}" 
+                                                       ToolTip="{Binding (models:MarketQualityObject.SellPriceMinNormalDateString)}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -185,7 +221,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label  Style="{Binding SellPriceMinGoodStyle}" Content="{Binding SellPriceMinGoodString}" ToolTip="{Binding SellPriceMinGoodDateString}" />
+                                                <Label  Style="{Binding (models:MarketQualityObject.SellPriceMinGoodStyle)}" 
+                                                        Content="{Binding (models:MarketQualityObject.SellPriceMinGoodString)}" 
+                                                        ToolTip="{Binding (models:MarketQualityObject.SellPriceMinGoodDateString)}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -199,7 +237,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinOutstandingStyle}" Content="{Binding SellPriceMinOutstandingString}" ToolTip="{Binding SellPriceMinOutstandingDateString}" />
+                                                <Label Style="{Binding (models:MarketQualityObject.SellPriceMinOutstandingStyle)}" 
+                                                       Content="{Binding (models:MarketQualityObject.SellPriceMinOutstandingString)}" 
+                                                       ToolTip="{Binding (models:MarketQualityObject.SellPriceMinOutstandingDateString)}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -213,7 +253,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinExcellentStyle}" Content="{Binding SellPriceMinExcellentString}" ToolTip="{Binding SellPriceMinExcellentDateString}" />
+                                                <Label Style="{Binding (models:MarketQualityObject.SellPriceMinExcellentStyle)}" 
+                                                       Content="{Binding (models:MarketQualityObject.SellPriceMinExcellentString)}" 
+                                                       ToolTip="{Binding (models:MarketQualityObject.SellPriceMinExcellentDateString)}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -227,7 +269,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinMasterpieceStyle}" Content="{Binding SellPriceMinMasterpieceString}" ToolTip="{Binding SellPriceMinMasterpieceDateString}" />
+                                                <Label Style="{Binding (models:MarketQualityObject.SellPriceMinMasterpieceStyle)}" 
+                                                       Content="{Binding (models:MarketQualityObject.SellPriceMinMasterpieceString)}" 
+                                                       ToolTip="{Binding (models:MarketQualityObject.SellPriceMinMasterpieceDateString)}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -241,40 +285,15 @@
                 </ListView>
             </TabItem>
             <TabItem Header="{Binding Translation.History, FallbackValue=HISTORY}">
-                <Grid Background="{StaticResource SolidColorBrush.Background.First}">
-                    <lvc:CartesianChart Series="{Binding SeriesHistory, IsAsync=True}" XAxes="{Binding XAxesHistory}">
-                        <!--<lvc:CartesianChart.TooltipTemplate>
-                            <DataTemplate>
-                                <Border BorderThickness="5" Background="{StaticResource SolidColorBrush.Background.Color.6}">
-                                    <ItemsControl ItemsSource="{Binding Points, RelativeSource={RelativeSource AncestorType=lvc:DefaultTooltip}}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical" />
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate DataType="{x:Type ctx:TooltipPoint}">
-                                                <Border Padding="7 5">
-                                                    <StackPanel Orientation="Vertical">
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Text="{Binding Point.AsTooltipString}" Margin="0 0 8 0" Foreground="{StaticResource SolidColorBrush.Foreground.First}"/>
-                                                        </StackPanel>
-                                                    </StackPanel>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </Border>
-                            </DataTemplate>
-                        </lvc:CartesianChart.TooltipTemplate>-->
-                    </lvc:CartesianChart>
+                <Grid>
+                    <lvc:CartesianChart Series="{Binding SeriesHistory, IsAsync=True}" XAxes="{Binding XAxesHistory}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}">
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden">
                     <Grid>
                         <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" Margin="18,88,0,0" VerticalAlignment="Top">
-                            <fa5:ImageAwesome Visibility="{Binding InformationLoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" />
+                            <fa5:ImageAwesome Visibility="{Binding InformationLoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                         </Grid>
                         <StackPanel Margin="10,10,0,10" HorizontalAlignment="Left" Width="250">
                             <Label Content="{Binding Translation.Equipable, FallbackValue=EQUIPABLE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
@@ -308,13 +327,14 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="{Binding Translation.RealMoneyPrice, FallbackValue=REAL_MONEY_PRICE}">
-                <ListView ItemsSource="{Binding RealMoneyPriceList}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Foreground.First}">
+                <ListView ItemsSource="{Binding RealMoneyPriceList}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" Width="160">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Height="28" Width="150" Margin="0" Content="{Binding LocationName}" Style="{Binding LocationStyle}" />
+                                        <Label Height="28" Width="150" Margin="0" Content="{Binding (models:MarketQualityObject.LocationName)}" 
+                                               Style="{Binding (models:MarketQualityObject.LocationStyle)}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -323,7 +343,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinNormalStyle}" Content="{Binding SellPriceMinNormalStringInRalMoney}" ToolTip="{Binding SellPriceMinNormalDateString}" />
+                                                <Label Style="{Binding (models:MarketQualityObject.SellPriceMinNormalStyle)}" 
+                                                       Content="{Binding (models:MarketQualityObject.SellPriceMinNormalStringInRalMoney)}" 
+                                                       ToolTip="{Binding (models:MarketQualityObject.SellPriceMinNormalDateString)}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -337,7 +359,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label  Style="{Binding SellPriceMinGoodStyle}" Content="{Binding SellPriceMinGoodStringInRalMoney}" ToolTip="{Binding SellPriceMinGoodDateString}" />
+                                                <Label  Style="{Binding (models:MarketQualityObject.SellPriceMinGoodStyle)}" 
+                                                        Content="{Binding (models:MarketQualityObject.SellPriceMinGoodStringInRalMoney)}" 
+                                                        ToolTip="{Binding (models:MarketQualityObject.SellPriceMinGoodDateString)}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -351,7 +375,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinOutstandingStyle}" Content="{Binding SellPriceMinOutstandingStringInRalMoney}" ToolTip="{Binding SellPriceMinOutstandingDateString}" />
+                                                <Label Style="{Binding (models:MarketQualityObject.SellPriceMinOutstandingStyle)}" 
+                                                       Content="{Binding (models:MarketQualityObject.SellPriceMinOutstandingStringInRalMoney)}" 
+                                                       ToolTip="{Binding (models:MarketQualityObject.SellPriceMinOutstandingDateString)}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -365,7 +391,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinExcellentStyle}" Content="{Binding SellPriceMinExcellentStringInRalMoney}" ToolTip="{Binding SellPriceMinExcellentDateString}" />
+                                                <Label Style="{Binding (models:MarketQualityObject.SellPriceMinExcellentStyle)}" 
+                                                       Content="{Binding (models:MarketQualityObject.SellPriceMinExcellentStringInRalMoney)}" 
+                                                       ToolTip="{Binding (models:MarketQualityObject.SellPriceMinExcellentDateString)}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -379,7 +407,9 @@
                                     <DataTemplate>
                                         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                                                <Label Style="{Binding SellPriceMinMasterpieceStyle}" Content="{Binding SellPriceMinMasterpieceStringInRalMoney}" ToolTip="{Binding SellPriceMinMasterpieceDateString}" />
+                                                <Label Style="{Binding (models:MarketQualityObject.SellPriceMinMasterpieceStyle)}" 
+                                                       Content="{Binding (models:MarketQualityObject.SellPriceMinMasterpieceStringInRalMoney)}" 
+                                                       ToolTip="{Binding (models:MarketQualityObject.SellPriceMinMasterpieceDateString)}" />
                                             </StackPanel>
                                             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Icon}">
                                                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
@@ -395,7 +425,7 @@
 
             <TabItem Visibility="{Binding CraftingTabVisibility}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
                 <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto">
-                    <Grid Background="{StaticResource SolidColorBrush.Background.First}">
+                    <Grid Background="Transparent">
                         <StackPanel Orientation="Horizontal">
                             <ContentControl ContentTemplate="{StaticResource EssentialCraftingValuesTemplate}" Content="{Binding EssentialCraftingValues}" />
                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
@@ -413,27 +443,21 @@
             </TabItem>
         </TabControl>
 
-        <Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">
+        <!--<Grid ZIndex="1" Height="35" VerticalAlignment="Bottom" Margin="1,0,1,1">
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="{StaticResource Background.First}" Offset="0" />
                     <GradientStop Color="{StaticResource Background.Second}" Offset="1" />
                 </LinearGradientBrush>
             </Grid.Background>
-            <Label Content="{Binding Translation.AveragePrices, FallbackValue=AVERAGE__PRICES}" ToolTip="{Binding Translation.AveragePricesTooltip}" HorizontalAlignment="Left" Margin="10,0,0,4" VerticalAlignment="Bottom" Width="150" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Background="{x:Null}" />
-            <Label Content="{Binding AveragePrices, FallbackValue=0.000.00 | 0.000.000 | 0.000.000 | 0.000.000}" Margin="160,0,0,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="400" />
-            <TextBlock Margin="0,0,10,4" Foreground="{StaticResource SolidColorBrush.Foreground.First}" Height="21" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="293">
+            <Label Content="{Binding Translation.AveragePrices, FallbackValue=AVERAGE__PRICES}" ToolTip="{Binding Translation.AveragePricesTooltip}" HorizontalAlignment="Left" Margin="10,0,0,4" VerticalAlignment="Bottom" Width="150" Foreground="{StaticResource SolidColorBrush.Text.1}" Background="{x:Null}" />
+            <Label Content="{Binding AveragePrices, FallbackValue=0.000.00 | 0.000.000 | 0.000.000 | 0.000.000}" Margin="160,0,0,4" Foreground="{StaticResource SolidColorBrush.Text.1}" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="400" />
+            <TextBlock Margin="0,0,10,4" Foreground="{StaticResource SolidColorBrush.Text.1}" Height="21" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="293">
                 Prices are provided by the
                 <Hyperlink NavigateUri="https://www.albion-online-data.com/" Foreground="{StaticResource SolidColorBrush.Hyperlink.First}" FontWeight="Bold" BaselineAlignment="Center" RequestNavigate="Hyperlink_RequestNavigate">Albion Online Data Project</Hyperlink>
             </TextBlock>
-        </Grid>
-        <Grid ZIndex="2" Style="{StaticResource Grid.Error.Bar}" Visibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}">
-            <Button Style="{StaticResource Window.Error.Bar.Button.Style}" Content="r" Margin="0,0,7,0" Click="BtnErrorBar_Click" />
-            <Label Style="{StaticResource Grid.Error.Bar.Label}" Content="{Binding ErrorBarText}"></Label>
-            <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
-            <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
-            <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
-            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Error.Bar.Border}" />
-        </Grid>
+        </Grid>-->
+
+        <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Visible}" ErrorBarText="{Binding ErrorBarText}" />
     </Grid>
 </Window>

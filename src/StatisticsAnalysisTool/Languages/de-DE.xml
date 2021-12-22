@@ -367,10 +367,7 @@
 	<translation name="OPENED_UNCOMMON_CHESTS">Geöffnete Truhen (Ungewöhnlich)</translation>
 	<translation name="OPENED_RARE_CHESTS">Geöffnete Truhen (Selten)</translation>
 	<translation name="OPENED_LEGENDARY_CHESTS">Geöffnete Truhen (Legendär)</translation>
-
-	<translation name="MAIN_TRACKER_DESCRIPTION_1">Damit der Tracker einwandfrei funktioniert, muss das wifi icon grün sein. Um diesen Status zu erreichen muss mit dem Charakter einmalig die Map im Spiel gewechselt werden.</translation>
-	<translation name="MAIN_TRACKER_DESCRIPTION_2">Tritt einer Party bei oder lade welche in die Party ein, damit sich die Partyliste aktualisiert. Dabei ist es nicht wichtig, ob Du selber oder eine andere Person Spieler in die Gruppe einlädt.</translation>
-	<translation name="MAIN_TRACKER_DESCRIPTION_3">Der Ruhm den der Tracker trackt, ist der echte gesamt Ruhm. Heißt also, mit Premium und Satchel Ruhm. Ruhm im Profil eines Spielers, ist der normale Ruhm, ohne Premium oder sonstiger Sonder-Fame.</translation>
+	
 	<translation name="DAMAGE_METER_DESCRIPTION_1">Damit Schaden von anderen Spielern in der Party erkannt wird, muss das Tool zuvor aktiviert sein und dann ein Spieler die Party verlassen oder ihr beitreten.</translation>
 
 	<translation name="SORT_BY_DAMAGE">Nach Schaden sortieren</translation>
@@ -427,7 +424,7 @@
 	<translation name="SURE_YOU_WANT_TO_RESET_THE_PARTY">Party wirklich zurücksetzen?</translation>
 	<translation name="OPEN_EXTENDED_DAMAGE_METER_WINDOW">Öffne externes Schadensmeter Fenster</translation>
 	<translation name="COPY_TO_CLIPBOARD">In Zwischenablage kopieren</translation>
-	<translation name="MAP_TRACKING">Kartenverfolgung</translation>
+	<translation name="MAP_HISTORY">Kartenverfolgung</translation>
 	<translation name="TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN">Herunterladen der Itemlist erneut versuchen</translation>
 	<translation name="DAMAGE_METER_ON_OFF">Schadensanzeige - AN/AUS</translation>
 	<translation name="TRACKER_ON_OFF">Tracker - AN/AUS</translation>
@@ -486,4 +483,15 @@
 	<translation name="SAVE_LOOT_LOGGER">Loot Logger speichern</translation>
 	<translation name="TRACKING_SILVER">Silber tracken</translation>
 	<translation name="TRACKING_FAME">Ruhm tracken</translation>
+	<translation name="ITEM_SEARCH">Itemsuche</translation>
+	<translation name="DUNGEONS">Dungeons</translation>
+	<translation name="PLAYER_INFORMATION">Spieler Information</translation>
+	<translation name="LOGGING">Protokollierung</translation>
+	<translation name="TRACKING_IS_ACTIVE">Tracking ist aktiv</translation>
+	<translation name="TRACKING_IS_PARTIALLY_ACTIVE">Tracking is teilweise aktiv</translation>
+	<translation name="TRACKING_IS_NOT_ACTIVE">Tracking ist nicht aktiv</translation>
+	<translation name="PROGRAM_RESTART_REQUIRED">Programmneustart erforderlich</translation>
+	<translation name="DASHBOARD">Dashboard</translation>
+	<translation name="MIGHT">Stärke</translation>
+	<translation name="FAVOR">Gunst</translation>
 </translations>

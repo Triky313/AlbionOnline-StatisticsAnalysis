@@ -6,36 +6,22 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Input;
 
-namespace StatisticsAnalysisTool.Views
+namespace StatisticsAnalysisTool.UserControls
 {
-
     /// <summary>
-    /// Interaktionslogik für SettingsWindow.xaml
+    /// Interaction logic for SettingsControl.xaml
     /// </summary>
-    public partial class SettingsWindow
+    public partial class SettingsControl
     {
         private readonly SettingsWindowViewModel _settingsWindowViewModel;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        public SettingsWindow(MainWindowViewModel mainWindowViewModel)
+        public SettingsControl()
         {
             InitializeComponent();
-            _settingsWindowViewModel = new SettingsWindowViewModel(this, mainWindowViewModel);
+            _settingsWindowViewModel = new SettingsWindowViewModel();
             DataContext = _settingsWindowViewModel;
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
-
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
-
-        private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
