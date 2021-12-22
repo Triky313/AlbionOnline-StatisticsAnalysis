@@ -61,7 +61,7 @@
         <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top">
             <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
         </Grid>
-        <TabControl IsEnabled="{Binding HasItemPrices}" Background="Transparent" Margin="0,86,0,35">
+        <TabControl IsEnabled="{Binding HasItemPrices}" Background="Transparent" Margin="1,86,1,35">
             <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}">
                 <ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" BorderThickness="0" 
                           SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}">
