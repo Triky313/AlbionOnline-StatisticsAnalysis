@@ -12,7 +12,7 @@
     <Grid Style="{StaticResource TabItemGridStyle}" Visibility="Visible">
         <ScrollViewer>
             <Grid>
-                <DockPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
+                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                     <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                         <Image Source="../Resources/fame.png" Width="22" Height="22" ToolTip="{Binding Translation.Fame, FallbackValue=FAME}" />
                         <TextBlock Text="{Binding DashboardObject.TotalGainedFameInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
