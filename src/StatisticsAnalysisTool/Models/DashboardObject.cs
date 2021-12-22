@@ -24,11 +24,6 @@ public class DashboardObject : INotifyPropertyChanged
     private double _reSpecPointsInPercent;
     private double _mightInPercent;
     private double _favorInPercent;
-    private string _fameString;
-    private string _silverString;
-    private string _reSpecPointsString;
-    private string _mightString;
-    private string _favorString;
 
     public double GetHighestValue()
     {
