@@ -21,11 +21,9 @@
                         <Separator />
                     </Grid>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="{Binding Path=PlayerModeTranslation.Id}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.Id, UpdateSourceTrigger=PropertyChanged}" 
-                               Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.Id, UpdateSourceTrigger=PropertyChanged}" 
-                               Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding Path=PlayerModeTranslation.Id, FallbackValue=ID}" Style="{StaticResource PlayerMode.Label.Title}" />
+                        <Label Content="{Binding Path=PlayerModeInformation.GameInfoPlayers.Id}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding Path=PlayerModeInformationLocal.GameInfoPlayers.Id}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding Path=PlayerModeTranslation.Name}" Style="{StaticResource PlayerMode.Label.Title}" />
