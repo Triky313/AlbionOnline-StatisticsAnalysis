@@ -42,6 +42,7 @@
                         <TextBlock FontSize="16" Text="{Binding DashboardObject.FavorPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                     </StackPanel>
+                    <ItemsControl ItemsSource="{Binding FactionPointStats}" />
                 </DockPanel>
 
                 <StackPanel Orientation="Vertical">

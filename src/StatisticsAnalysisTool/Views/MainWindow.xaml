@@ -129,7 +129,7 @@
             </TabItem>
         </TabControl>
 
-        <userControls:FooterControl Height="40" VerticalAlignment="Bottom" />
+        <userControls:FooterControl VerticalAlignment="Bottom" Height="40" />
         <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}" ErrorBarText="{Binding ErrorBarText}" />
     </Grid>
 </Window>

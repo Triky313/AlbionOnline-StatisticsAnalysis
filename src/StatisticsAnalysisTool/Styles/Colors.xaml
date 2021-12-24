@@ -91,7 +91,7 @@
     <Color x:Key="Dungeon.Mode.Standard.2">#ff0e6fa2</Color>
     <Color x:Key="Dungeon.Mode.Avalon.1">#fffffaeb</Color>
     <Color x:Key="Dungeon.Mode.Avalon.2">#ffeddaa7</Color>
-    <Color x:Key="Dungeon.Mode.Unknown">#ff252525</Color>
+    <Color x:Key="Dungeon.Mode.Unknown">#FF323B43</Color>
 
     <Color x:Key="Color.Text.ToOldFirst">#FF8C8CA5</Color>
     <Color x:Key="Color.Text.ToOldSecond">#FF77778C</Color>

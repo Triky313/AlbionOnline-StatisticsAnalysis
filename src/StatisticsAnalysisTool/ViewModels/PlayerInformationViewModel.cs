@@ -17,6 +17,11 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _savedPlayerInformationName;
         private PlayerModeTranslation _playerModeTranslation;
 
+        public PlayerInformationViewModel()
+        {
+            PlayerModeTranslation = new PlayerModeTranslation();
+        }
+
         public async Task SetComparedPlayerModeInfoValues()
         {
             PlayerModeInformationLocal = PlayerModeInformation;
@@ -94,6 +99,5 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }

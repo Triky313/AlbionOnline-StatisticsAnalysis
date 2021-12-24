@@ -10,8 +10,8 @@ namespace StatisticsAnalysisTool.Models
     public class MainStatObject : INotifyPropertyChanged
     {
         private CityFaction _cityFaction = CityFaction.Unknown;
-        private string _value = "0";
-        private string _valuePerHour = "0";
+        private double _value;
+        private double _valuePerHour;
         private Visibility visibility = Visibility.Hidden;
 
         public CityFaction CityFaction {
@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public string Value {
+        public double Value {
             get => _value;
             set
             {
@@ -33,7 +33,7 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public string ValuePerHour {
+        public double ValuePerHour {
             get => _valuePerHour;
             set
             {
