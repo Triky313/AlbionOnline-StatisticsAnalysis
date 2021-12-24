@@ -8,6 +8,7 @@
         Height="450" Width="650" MinHeight="250" MinWidth="400" 
         WindowStartupLocation="CenterScreen" 
         WindowStyle="None"
+        ResizeMode="CanResizeWithGrip"
         BorderThickness="1,1,1,1"
         BorderBrush="{StaticResource SolidColorBrush.Background.3}"
         AllowsTransparency="True">
