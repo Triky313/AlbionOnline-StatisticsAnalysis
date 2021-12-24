@@ -1,10 +1,10 @@
+using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Annotations;
 using Formatting = StatisticsAnalysisTool.Common.Formatting;
 
 namespace StatisticsAnalysisTool.Models
@@ -166,7 +166,7 @@ namespace StatisticsAnalysisTool.Models
         [JsonPropertyName("lastUpdate")]
         public DateTime LastUpdate { get; set; }
 
-        [JsonIgnore] 
+        [JsonIgnore]
         public string LastFullItemInformationUpdate => Formatting.CurrentDateTimeFormat(LastUpdate) ?? string.Empty;
 
         public CategoryObject CategoryObject => CategoryController.GetCategory(CategoryId);
@@ -183,7 +183,7 @@ namespace StatisticsAnalysisTool.Models
 
     public class CraftingRequirements
     {
-        [JsonPropertyName("time")] 
+        [JsonPropertyName("time")]
         public double Time { get; set; }
 
         [JsonPropertyName("silver")]
@@ -196,7 +196,7 @@ namespace StatisticsAnalysisTool.Models
         public List<CraftResourceList> CraftResourceList { get; set; }
 
         [JsonIgnore]
-        public int TotalAmountResources => CraftResourceList?.Sum(x => x?.Count) ?? 0;
+        public int TotalAmountResources => CraftResourceList?.ToList().Where(x => x.UniqueName != "QUESTITEM_TOKEN_AVALON").Sum(x => x?.Count) ?? 0;
     }
 
     public class Enchantment
