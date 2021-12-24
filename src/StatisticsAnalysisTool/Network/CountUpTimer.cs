@@ -136,22 +136,28 @@ namespace StatisticsAnalysisTool.Network
             var factionValues = _mainWindowViewModel.FactionPointStats.FirstOrDefault();
             if (factionValues != null)
             {
-                factionValues.ValuePerHour = "0";
+                factionValues.ValuePerHour = 0;
             }
 
             _totalGainedFameInSession = 0;
             _totalGainedReSpecInSession = 0;
             _totalGainedSilverInSession = 0;
+            _totalGainedMightInSession = 0;
+            _totalGainedFavorInSession = 0;
             _totalGainedFactionPointsInSession = 0;
 
             _famePerHourValue = 0;
             _reSpecPerHourValue = 0;
             _silverPerHourValue = 0;
+            _mightPerHourValue = 0;
+            _favorPerHourValue = 0;
             _factionPointsPerHourValue = 0;
 
             _famePerHourList.Clear();
             _reSpecPerHourList.Clear();
             _silverPerHourList.Clear();
+            _mightPerHourList.Clear();
+            _favorPerHourList.Clear();
             _factionPointsPerHourList.Clear();
 
             CurrentTimerUpdate();
@@ -199,8 +205,8 @@ namespace StatisticsAnalysisTool.Network
                     if (factionPointStat != null)
                     {
                         factionPointStat.CityFaction = _currentCityFaction;
-                        factionPointStat.ValuePerHour = Utilities.GetValuePerHourInShort(_factionPointsPerHourValue, DateTime.UtcNow - _startTime);
-                        factionPointStat.Value = _totalGainedFactionPointsInSession.ToString("N0", LanguageController.CurrentCultureInfo);
+                        factionPointStat.ValuePerHour = Utilities.GetValuePerHourToDouble(_factionPointsPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+                        factionPointStat.Value = _totalGainedFactionPointsInSession;
 
                     }
 

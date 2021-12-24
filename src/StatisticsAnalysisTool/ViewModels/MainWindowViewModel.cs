@@ -109,7 +109,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _usernameInformationVisibility;
         private double _usernameInfoWidth;
         public AlertController AlertManager;
-        private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = "0", ValuePerHour = "0", CityFaction = CityFaction.Unknown } };
+        private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = 0, ValuePerHour = 0, CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
         private bool _isShowOnlyFavoritesActive;
         private DungeonCloseTimer _dungeonCloseTimer;
