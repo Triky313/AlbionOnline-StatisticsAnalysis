@@ -478,176 +478,178 @@
 
 
     <DataTemplate DataType="{x:Type notification:DungeonNotificationFragment}">
-        <Grid Height="72" Margin="0 1 0 1" Visibility="{Binding Visibility}">
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:DungeonStatus.Active}">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="{StaticResource Color.Background.2}" Offset="0.0"/>
-                                        <GradientStop Color="{StaticResource Color.Accent.Blue.5}" Offset="1"/>
-                                    </LinearGradientBrush>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:DungeonStatus.Done}">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="{StaticResource Color.Background.2}" Offset="0.0"/>
-                                        <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
-                                    </LinearGradientBrush>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
-            <StackPanel Orientation="Vertical" Style="{StaticResource DungeonNotificationFragment.Faction}">
-                <DockPanel>
-                    <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
-                    <Label Style="{StaticResource DungeonNotificationFragment.Label.DungeonMode}" Content="{Binding TierString}"/>
-                    <Grid Height="72">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal" Height="24" Margin="0">
-                                <Label Content="{Binding DungeonNumber, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="38" 
+        <Border BorderBrush="{StaticResource SolidColorBrush.Background.2}" BorderThickness="0,0,0,1">
+            <Grid Height="72" Margin="0" Visibility="{Binding Visibility}">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:DungeonStatus.Active}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="{StaticResource Color.Background.2}" Offset="0.0"/>
+                                            <GradientStop Color="{StaticResource Color.Accent.Blue.5}" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:DungeonStatus.Done}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="{StaticResource Color.Background.2}" Offset="0.0"/>
+                                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <StackPanel Orientation="Vertical" Style="{StaticResource DungeonNotificationFragment.Faction}">
+                    <DockPanel>
+                        <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
+                        <Label Style="{StaticResource DungeonNotificationFragment.Label.DungeonMode}" Content="{Binding TierString}"/>
+                        <Grid Height="72">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" Height="24" Margin="0">
+                                    <Label Content="{Binding DungeonNumber, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}[{0}]" MinWidth="38" 
                                        VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
-                                <Label MinWidth="135" VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource SolidColorBrush.Text.1}">
-                                    <Label.Content>
-                                        <TextBlock>
-                                            <TextBlock.Text>
-                                                <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
-                                                    <Binding Path="EnterDungeonFirstTime" FallbackValue="00.00.0000 00:00:00" />
-                                                </MultiBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
-                                    </Label.Content>
-                                </Label>
-                                <Label Content="{Binding MainMapName, IsAsync=True, FallbackValue=UNKNOWN}" 
+                                    <Label MinWidth="135" VerticalAlignment="Center" Margin="0 0 5 0" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                        <Label.Content>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                                        <Binding Path="EnterDungeonFirstTime" FallbackValue="00.00.0000 00:00:00" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Label.Content>
+                                    </Label>
+                                    <Label Content="{Binding MainMapName, IsAsync=True, FallbackValue=UNKNOWN}" 
                                        Style="{StaticResource DungeonNotificationFragment.MainMapName}" MinWidth="138" />
-                                <Grid Margin="5 0 20 0">
-                                    <StackPanel Orientation="Horizontal" MinWidth="210">
-                                        <ItemsControl ItemsSource="{Binding DungeonChests, IsAsync=True}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <UniformGrid Rows="1"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                        </ItemsControl>
-                                    </StackPanel>
-                                </Grid>
-                                <Grid ZIndex="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-20 0 0 0" ToolTip="{Binding DiedMessage}">
-                                    <Image Style="{StaticResource DungeonNotificationFragment.Image.Skull}" />
-                                </Grid>
-                                <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" 
+                                    <Grid Margin="5 0 20 0">
+                                        <StackPanel Orientation="Horizontal" MinWidth="210">
+                                            <ItemsControl ItemsSource="{Binding DungeonChests, IsAsync=True}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <UniformGrid Rows="1"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid ZIndex="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-20 0 0 0" ToolTip="{Binding DiedMessage}">
+                                        <Image Style="{StaticResource DungeonNotificationFragment.Image.Skull}" />
+                                    </Grid>
+                                    <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" 
                                       ToolTip="{Binding TranslationDungeonRunTime, FallbackValue=DUNGEON__RUN__TIME}">
-                                    <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                </Grid>
-                                <Label Content="{Binding RunTimeString, IsAsync=True, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" 
+                                        <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                    </Grid>
+                                    <Label Content="{Binding RunTimeString, IsAsync=True, FallbackValue=00:00:00}" ContentStringFormat="{}{0}" VerticalAlignment="Center" 
                                        Margin="3 0 10 0" MinWidth="55">
-                                    <Label.Style>
-                                        <Style TargetType="Label">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsBestTime}" Value="true">
-                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
-                                                    <Setter Property="Effect">
-                                                        <Setter.Value>
-                                                            <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Accent.Yellow.2}"/>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsBestTime}" Value="false">
-                                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Label.Style>
-                                </Label>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Height="24">
-                                <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
-                                    <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                </Grid>
-                                <Label Content="{Binding Fame, IsAsync=True, FallbackValue=-}" 
+                                        <Label.Style>
+                                            <Style TargetType="Label">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsBestTime}" Value="true">
+                                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="{StaticResource Color.Accent.Yellow.2}"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsBestTime}" Value="false">
+                                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Label.Style>
+                                    </Label>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Height="24">
+                                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
+                                        <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                    </Grid>
+                                    <Label Content="{Binding Fame, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" 
                                        Margin="0 0 10 0" MinWidth="75" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                </Grid>
-                                <Label Content="{Binding ReSpec, IsAsync=True, FallbackValue=-}" 
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                    </Grid>
+                                    <Label Content="{Binding ReSpec, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestReSpec}" VerticalAlignment="Center" 
                                    Margin="0 0 10 0" MinWidth="75" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                </Grid>
-                                <Label Content="{Binding Silver, IsAsync=True, FallbackValue=-}" 
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                    </Grid>
+                                    <Label Content="{Binding Silver, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestSilver}" VerticalAlignment="Center" 
                                    Margin="0 0 10 0" MinWidth="75" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
-                                    <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                </Grid>
-                                <Label Content="{Binding FamePerHour, IsAsync=True, FallbackValue=-}" 
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
+                                        <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                    </Grid>
+                                    <Label Content="{Binding FamePerHour, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFamePerHour}" VerticalAlignment="Center" 
                                    Margin="0 0 10 0" MinWidth="85" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                </Grid>
-                                <Label Content="{Binding ReSpecPerHour, IsAsync=True, FallbackValue=-}" 
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                    </Grid>
+                                    <Label Content="{Binding ReSpecPerHour, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestReSpecPerHour}" VerticalAlignment="Center" 
                                    Margin="0 0 10 0" MinWidth="85" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
-                                </Grid>
-                                <Label Content="{Binding SilverPerHour, IsAsync=True, FallbackValue=-}" 
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
+                                    </Grid>
+                                    <Label Content="{Binding SilverPerHour, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestSilverPerHour}" VerticalAlignment="Center" 
                                    Margin="0 0 10 0" MinWidth="85" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Height="24">
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,2,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
-                                    <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
-                                </Grid>
-                                <Label Content="{Binding FactionFlags, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Height="24">
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,2,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
+                                        <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
+                                    </Grid>
+                                    <Label Content="{Binding FactionFlags, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionFlags}" VerticalAlignment="Center" 
                                        Margin="0 0 5 0" MinWidth="82" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
-                                    <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
-                                </Grid>
-                                <Label Content="{Binding FactionFlagsPerHour, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
+                                        <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
+                                    </Grid>
+                                    <Label Content="{Binding FactionFlagsPerHour, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
                                        ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionFlagsPerHour}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
-                                    <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
-                                </Grid>
-                                <Label Content="{Binding FactionCoins, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
+                                        <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
+                                    </Grid>
+                                    <Label Content="{Binding FactionCoins, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionCoins}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85" />
 
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
-                                    <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
-                                </Grid>
-                                <Label Content="{Binding FactionCoinsPerHour, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}">
+                                        <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
+                                    </Grid>
+                                    <Label Content="{Binding FactionCoinsPerHour, IsAsync=True, FallbackValue=-}" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Hidden}"
                                        ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionCoinsPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205" />
 
-                                <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}">
-                                    <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                </Grid>
-                                <Label Content="{Binding NumberOfDungeonFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55" />
+                                    <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}">
+                                        <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                    </Grid>
+                                    <Label Content="{Binding NumberOfDungeonFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55" />
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                </DockPanel>
-            </StackPanel>
-            <Grid Margin="0 0 20 0" Height="30" Width="50" HorizontalAlignment="Right">
-                <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion}" ToolTip="{Binding TranslationSelectToDelete}" />
+                        </Grid>
+                    </DockPanel>
+                </StackPanel>
+                <Grid Margin="0 0 20 0" Height="30" Width="50" HorizontalAlignment="Right">
+                    <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion}" ToolTip="{Binding TranslationSelectToDelete}" />
+                </Grid>
             </Grid>
-        </Grid>
+        </Border>
     </DataTemplate>
 
     <Style x:Key="DungeonEventObjectFragment.Image.Chest" TargetType="Image">
