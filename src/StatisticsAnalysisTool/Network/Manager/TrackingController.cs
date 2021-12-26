@@ -225,9 +225,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                     await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable()?.Where(x =>
                         x.Type is NotificationType.EquipmentLoot or NotificationType.ConsumableLoot or NotificationType.SimpleLoot
                             or NotificationType.UnknownLoot
-                        && (((OtherGrabbedLootNotificationFragment)x.Fragment).Looter.Contains(text)
-                            || ((OtherGrabbedLootNotificationFragment)x.Fragment).LocalizedName.Contains(text)
-                            || ((OtherGrabbedLootNotificationFragment)x.Fragment).LootedPlayer.Contains(text)
+                        && (((OtherGrabbedLootNotificationFragment)x.Fragment).Looter.ToLower().Contains(text.ToLower())
+                            || ((OtherGrabbedLootNotificationFragment)x.Fragment).LocalizedName.ToLower().Contains(text.ToLower())
+                            || ((OtherGrabbedLootNotificationFragment)x.Fragment).LootedPlayer.ToLower().Contains(text.ToLower())
                         )
                     ).ForEachAsync(d =>
                     {

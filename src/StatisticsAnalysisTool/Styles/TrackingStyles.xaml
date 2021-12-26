@@ -361,7 +361,7 @@
             <TextBlock Text="{Binding LocalizedName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
 
             <TextBlock Text="{Binding FromTranslation, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
-            <TextBlock Text="{Binding LootedPlayer, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
+            <TextBlock Text="{Binding LootedPlayer, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
         </StackPanel>
     </DataTemplate>
 
