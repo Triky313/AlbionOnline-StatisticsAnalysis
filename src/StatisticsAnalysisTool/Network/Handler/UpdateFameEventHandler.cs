@@ -32,12 +32,9 @@ namespace StatisticsAnalysisTool.Network.Handler
         private TrackingNotification SetPveFameNotification(double totalPlayerFame, double totalGainedFame, double zoneFame, double premiumFame,
             double satchelFame, bool isBonusFactorActive, double bonusFactorInPercent)
         {
-            return new TrackingNotification(DateTime.Now, new List<LineFragment>
-            {
-                new FameNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, totalPlayerFame, totalGainedFame,
-                    LanguageController.Translation("FAME"), PvpPveType.Pve, zoneFame, premiumFame, satchelFame, isBonusFactorActive, bonusFactorInPercent, 
-                    LanguageController.Translation("GAINED"))
-            }, NotificationType.Fame);
+            return new TrackingNotification(DateTime.Now, new FameNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, totalPlayerFame, totalGainedFame,
+                LanguageController.Translation("FAME"), PvpPveType.Pve, zoneFame, premiumFame, satchelFame, isBonusFactorActive, bonusFactorInPercent,
+                LanguageController.Translation("GAINED")), NotificationType.Fame);
         }
     }
 }

@@ -27,11 +27,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         private TrackingNotification SetFactionFlagPointsNotification(CityFaction cityFaction, double GainedFractionPoints, double BonusPremiumGainedFractionPoints)
         {
-            return new TrackingNotification(DateTime.Now, new List<LineFragment>
-            {
-                new FactionFlagPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, cityFaction, GainedFractionPoints, 
-                    BonusPremiumGainedFractionPoints, LanguageController.Translation("FACTION_FLAG_POINTS"), LanguageController.Translation("GAINED")),
-            }, NotificationType.Faction);
+            return new TrackingNotification(DateTime.Now, new FactionFlagPointsNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, cityFaction, GainedFractionPoints,
+                BonusPremiumGainedFractionPoints, LanguageController.Translation("FACTION_FLAG_POINTS"), LanguageController.Translation("GAINED")), NotificationType.Faction);
         }
     }
 }

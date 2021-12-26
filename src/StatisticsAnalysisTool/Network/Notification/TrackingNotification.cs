@@ -2,7 +2,6 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -19,24 +18,24 @@ namespace StatisticsAnalysisTool.Network.Notification
         private readonly int _itemIndex;
         private int _trySetTypeCounter;
 
-        public TrackingNotification(DateTime dateTime, IEnumerable<LineFragment> fragments, int itemIndex)
+        public TrackingNotification(DateTime dateTime, LineFragment fragment, NotificationType type)
         {
             DateTime = dateTime;
-            Fragments = fragments;
-            _itemIndex = itemIndex;
-            InstanceId = Guid.NewGuid();
-        }
-
-        public TrackingNotification(DateTime dateTime, IEnumerable<LineFragment> fragments, NotificationType type)
-        {
-            DateTime = dateTime;
-            Fragments = fragments;
+            Fragment = fragment;
             Type = type;
             InstanceId = Guid.NewGuid();
         }
 
+        public TrackingNotification(DateTime dateTime, OtherGrabbedLootNotificationFragment fragment, int itemIndex)
+        {
+            DateTime = dateTime;
+            Fragment = fragment;
+            _itemIndex = itemIndex;
+            InstanceId = Guid.NewGuid();
+        }
+
         public DateTime DateTime { get; }
-        public IEnumerable<LineFragment> Fragments { get; }
+        public LineFragment Fragment { get; }
 
         public NotificationType Type
         {

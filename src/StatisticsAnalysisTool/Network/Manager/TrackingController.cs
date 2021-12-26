@@ -9,6 +9,7 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 {
     public class TrackingController : ITrackingController
     {
-        private const int _maxNotifications = 2000;
+        private const int _maxNotifications = 4000;
         private const int _maxEnteredCluster = 500;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
@@ -207,20 +208,52 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _mainWindowViewModel.TrackingNotifications.Clear();
             });
         }
-
-        public async Task NotificationUiFilteringAsync()
+        
+        [SuppressMessage("ReSharper", "ConstantConditionalAccessQualifier")]
+        public async Task NotificationUiFilteringAsync(string text = null)
         {
-            // ReSharper disable once ConstantConditionalAccessQualifier
-            await _mainWindowViewModel?.TrackingNotifications?.Where(x => !_notificationTypeFilters?.Contains(x.Type) ?? true)?.ToAsyncEnumerable().ForEachAsync(d =>
+            try
             {
-                d.Visibility = Visibility.Collapsed;
-            });
 
-            // ReSharper disable once ConstantConditionalAccessQualifier
-            await _mainWindowViewModel?.TrackingNotifications?.Where(x => _notificationTypeFilters?.Contains(x.Type) ?? false)?.ToAsyncEnumerable().ForEachAsync(d =>
+                if (!string.IsNullOrEmpty(text))
+                {
+                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable()?.ForEachAsync(d =>
+                    {
+                        d.Visibility = Visibility.Collapsed;
+                    });
+
+                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable()?.Where(x =>
+                        x.Type is NotificationType.EquipmentLoot or NotificationType.ConsumableLoot or NotificationType.SimpleLoot
+                            or NotificationType.UnknownLoot
+                        && (((OtherGrabbedLootNotificationFragment)x.Fragment).Looter.Contains(text)
+                            || ((OtherGrabbedLootNotificationFragment)x.Fragment).LocalizedName.Contains(text)
+                            || ((OtherGrabbedLootNotificationFragment)x.Fragment).LootedPlayer.Contains(text)
+                        )
+                    ).ForEachAsync(d =>
+                    {
+                        d.Visibility = Visibility.Visible;
+                    });
+                }
+                else
+                {
+                    // ReSharper disable once ConstantConditionalAccessQualifier
+                    await _mainWindowViewModel?.TrackingNotifications?.Where(x => !_notificationTypeFilters?.Contains(x.Type) ?? true)?.ToAsyncEnumerable().ForEachAsync(d =>
+                    {
+                        d.Visibility = Visibility.Collapsed;
+                    });
+
+                    // ReSharper disable once ConstantConditionalAccessQualifier
+                    await _mainWindowViewModel?.TrackingNotifications?.Where(x => _notificationTypeFilters?.Contains(x.Type) ?? false)?.ToAsyncEnumerable().ForEachAsync(d =>
+                    {
+                        d.Visibility = Visibility.Visible;
+                    });
+                }
+
+            }
+            catch (Exception)
             {
-                d.Visibility = Visibility.Visible;
-            });
+                // ignore
+            }
         }
 
         public void SetNotificationFilteredVisibility(TrackingNotification trackingNotification)
@@ -248,7 +281,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _ = _notificationTypeFilters.Remove(notificationType);
             }
         }
-
+        
         public async Task SetNotificationTypesAsync()
         {
             await Application.Current.Dispatcher.InvokeAsync(async () =>

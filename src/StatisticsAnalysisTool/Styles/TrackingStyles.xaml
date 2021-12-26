@@ -184,13 +184,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Margin="3" Text="{Binding DateTime, StringFormat=[hh:mm:ss]}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-            <ItemsControl Grid.Column="1" Margin="3" ItemsSource="{Binding Fragments}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
+            <ContentControl Grid.Column="1" Margin="3" Content="{Binding Fragment}" />
         </Grid>
     </DataTemplate>
 
