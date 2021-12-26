@@ -46,7 +46,8 @@ namespace StatisticsAnalysisTool.Common
             {GameLanguage.Brazil, "PT-BR"},
             {GameLanguage.France, "FR-FR"},
             {GameLanguage.Spain, "ES-ES"},
-            {GameLanguage.Chinese, "ZH-CN"}
+            {GameLanguage.Chinese, "ZH-CN"},
+            {GameLanguage.Korean, "KO-KR"}
         };
     }
 

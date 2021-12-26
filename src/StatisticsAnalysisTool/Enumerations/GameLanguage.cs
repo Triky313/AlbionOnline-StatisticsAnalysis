@@ -9,6 +9,7 @@
         Brazil,
         France,
         Spain,
-        Chinese
+        Chinese,
+        Korean
     }
 }

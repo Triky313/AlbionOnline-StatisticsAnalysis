@@ -70,6 +70,7 @@ namespace StatisticsAnalysisTool.Common
                     GameLanguage.France => localizedNames.FrFr ?? alternativeName,
                     GameLanguage.Spain => localizedNames.EsEs ?? alternativeName,
                     GameLanguage.Chinese => localizedNames.ZhCn ?? alternativeName,
+                    GameLanguage.Korean => localizedNames.KoKr ?? alternativeName,
                     _ => alternativeName
                 };
         }

@@ -250,8 +250,7 @@ namespace StatisticsAnalysisTool.Models
 
         [JsonPropertyName("KO-KR")] public string KoKr { get; set; }
 
-        [JsonPropertyName("RU-RUS")]
-        public string RuRu { get; set; }
+        [JsonPropertyName("RU-RUS")] public string RuRu { get; set; }
 
         [JsonPropertyName("PL-PL")] public string PlPl { get; set; }
 
