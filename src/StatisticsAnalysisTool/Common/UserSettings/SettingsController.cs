@@ -1,7 +1,6 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Properties;
 using System;
-using System.DirectoryServices.ActiveDirectory;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -14,7 +13,7 @@ namespace StatisticsAnalysisTool.Common.UserSettings
         public static SettingsObject CurrentSettings = new();
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        private static bool _haveSettingsAlreadyBeenLoaded = false;
+        private static bool _haveSettingsAlreadyBeenLoaded;
 
         public static void LoadSettings()
         {
