@@ -163,10 +163,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private static TrackingNotification SetNotificationAsync(string looter, string lootedPlayer, Item item, int quantity)
         {
-            return new TrackingNotification(DateTime.Now, new List<LineFragment>
-            {
-                new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity)
-            }, item.Index);
+            return new TrackingNotification(DateTime.Now, new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity), item.Index);
         }
         
         #region Debug methods

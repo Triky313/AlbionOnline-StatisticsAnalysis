@@ -144,6 +144,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Axis[] _xAxesDashboardHourValues;
         private ObservableCollection<ISeries> _seriesDashboardHourValues;
         private DashboardObject _dashboardObject = new ();
+        private string _loggingSearchText;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1155,7 +1156,18 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
+        public string LoggingSearchText
+        {
+            get => _loggingSearchText;
+            set
+            {
+                _loggingSearchText = value;
+                TrackingController?.NotificationUiFilteringAsync(_loggingSearchText);
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsTrackingFilteredEquipmentLoot
         {
             get => _isTrackingFilteredEquipmentLoot;
@@ -1194,7 +1206,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.ConsumableLoot);
                 }
 
-                _ = TrackingController?.NotificationUiFilteringAsync();
+                TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot = _isTrackingFilteredConsumableLoot;
                 OnPropertyChanged();
             }
@@ -1216,7 +1228,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.SimpleLoot);
                 }
 
-                _ = TrackingController?.NotificationUiFilteringAsync();
+                TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot = _isTrackingFilteredSimpleLoot;
                 OnPropertyChanged();
             }
@@ -1238,7 +1250,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     TrackingController?.RemoveFilterType(NotificationType.UnknownLoot);
                 }
 
-                _ = TrackingController?.NotificationUiFilteringAsync();
+                TrackingController?.NotificationUiFilteringAsync();
                 SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot = _isTrackingFilteredUnknownLoot;
                 OnPropertyChanged();
             }

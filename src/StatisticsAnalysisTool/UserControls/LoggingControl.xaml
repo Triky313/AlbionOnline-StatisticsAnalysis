@@ -21,7 +21,7 @@
             </StackPanel>
         </Grid>
         <Grid Height="auto" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <StackPanel Orientation="Vertical" Height="90">
+            <StackPanel Orientation="Vertical" Height="120">
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                     <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
                     <CheckBox IsChecked="{Binding IsTrackingFilteredFame, FallbackValue=true}" 
@@ -43,6 +43,9 @@
                     <CheckBox IsChecked="{Binding IsTrackingFilteredUnknownLoot, FallbackValue=true}" 
                               Content="{Binding Translation.UnknownLoot, FallbackValue=UNKNOWN__LOOT}" Margin="5,0,5,0" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="30,5,0,5">
+                    <TextBox Text="{Binding LoggingSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="22" />
+                </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                     <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
                     <CheckBox IsChecked="{Binding IsTrackingPartyLootOnly, FallbackValue=true}" 
@@ -54,8 +57,8 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,94,0,0" VerticalAlignment="Top"/>
-        <ScrollViewer Margin="0,97,0,0">
+        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,124,0,0" VerticalAlignment="Top"/>
+        <ScrollViewer Margin="0,127,0,0">
             <ItemsControl ItemsSource="{Binding TrackingNotificationsCollectionView, IsAsync=True, Mode=OneWay}" />
         </ScrollViewer>
     </Grid>

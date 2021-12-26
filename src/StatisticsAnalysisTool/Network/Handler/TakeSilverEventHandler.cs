@@ -55,11 +55,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         private TrackingNotification SetNotification(FixPoint totalGainedSilver, FixPoint cluster, FixPoint premium, FixPoint clusterTax)
         {
-            return new TrackingNotification(DateTime.Now, new List<LineFragment>
-            {
-                new SilverNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, totalGainedSilver, 
-                    LanguageController.Translation("SILVER"), cluster, premium, clusterTax, LanguageController.Translation("GAINED"))
-            }, NotificationType.Silver);
+            return new TrackingNotification(DateTime.Now, new SilverNotificationFragment(LanguageController.Translation("YOU_HAVE"), AttributeStatOperator.Plus, totalGainedSilver,
+                LanguageController.Translation("SILVER"), cluster, premium, clusterTax, LanguageController.Translation("GAINED")), NotificationType.Silver);
         }
     }
 }
