@@ -73,9 +73,10 @@ namespace StatisticsAnalysisTool.Common
                     var cityPrices = await ApiController.GetCityItemPricesFromJsonAsync(uniqueName, null, null).ConfigureAwait(false);
 
                     foreach (var marketResponse in cityPrices ?? new List<MarketResponse>())
+                    {
                         if (Locations.GetName(marketResponse.City) != Location.BlackMarket
                             && marketResponse.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5)
-                            && marketResponse.SellPriceMin <= (ulong) AlertModeMinSellPriceIsUndercutPrice
+                            && marketResponse.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice
                             && AlertModeMinSellPriceIsUndercutPrice > 0)
                         {
                             SoundController.PlayAlertSound();
@@ -90,6 +91,7 @@ namespace StatisticsAnalysisTool.Common
 
                             break;
                         }
+                    }
 
                     await Task.Delay(25000);
                 }
