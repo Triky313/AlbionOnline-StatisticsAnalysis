@@ -19,7 +19,7 @@ A tool for easy reading of auction house data, Loot logger, tracking of Dungeons
 Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click.
 
 ## Installation
- - General -> Minimal .Net Framework 5.0, you can download it [here](https://dotnet.microsoft.com/download).
+ - General -> Minimal .Net Framework 6.0, you can download it [here](https://dotnet.microsoft.com/download).
  - For Tracking -> NPcap: [https://nmap.org/npcap](https://nmap.org/npcap/)
  
 ## Is This Allowed
