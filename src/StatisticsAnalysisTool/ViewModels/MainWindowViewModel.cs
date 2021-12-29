@@ -489,18 +489,9 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             #region Window
 
-            if (windowState == WindowState.Maximized)
-            {
-                SettingsController.CurrentSettings.MainWindowHeight = restoreBounds.Height;
-                SettingsController.CurrentSettings.MainWindowWidth = restoreBounds.Width;
-                SettingsController.CurrentSettings.MainWindowMaximized = true;
-            }
-            else
-            {
-                SettingsController.CurrentSettings.MainWindowHeight = height;
-                SettingsController.CurrentSettings.MainWindowWidth = width;
-                SettingsController.CurrentSettings.MainWindowMaximized = false;
-            }
+            SettingsController.CurrentSettings.MainWindowHeight = double.IsNegativeInfinity(height) || double.IsPositiveInfinity(height) ? 0 : height;
+            SettingsController.CurrentSettings.MainWindowWidth = double.IsNegativeInfinity(width) || double.IsPositiveInfinity(width) ? 0 : width;
+            SettingsController.CurrentSettings.MainWindowMaximized = windowState == WindowState.Maximized;
 
             #endregion
 
