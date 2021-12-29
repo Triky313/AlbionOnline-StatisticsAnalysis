@@ -157,18 +157,6 @@
     <Resource Include="Resources\skull.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\tracker_description_activate_tracker.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\tracker_description_done.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\tracker_description_tracker.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\tracker_description_wifi_icon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\zone.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -400,10 +388,6 @@
     <None Remove="Resources\icon_daily_season_points.png" />
     <None Remove="Resources\might.png" />
     <None Remove="Resources\skull.png" />
-    <None Remove="Resources\tracker_description_activate_tracker.png" />
-    <None Remove="Resources\tracker_description_done.png" />
-    <None Remove="Resources\tracker_description_tracker.png" />
-    <None Remove="Resources\tracker_description_wifi_icon.png" />
     <None Remove="Sounds\alert1.wav" />
     <None Remove="Sounds\alert2.wav" />
     <None Remove="Sounds\alert3.wav" />
