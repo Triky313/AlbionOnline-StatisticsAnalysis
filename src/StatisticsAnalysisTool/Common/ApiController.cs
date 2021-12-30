@@ -23,7 +23,9 @@ namespace StatisticsAnalysisTool.Common
         {
             var url = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
 
-            using var client = new HttpClient();
+            using var clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            using var client = new HttpClient(clientHandler);
             client.Timeout = TimeSpan.FromSeconds(300);
 
             try
@@ -105,7 +107,9 @@ namespace StatisticsAnalysisTool.Common
                 url = qualities.Aggregate(url, (current, quality) => current + $"{quality},");
             }
 
-            using var client = new HttpClient();
+            using var clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            using var client = new HttpClient(clientHandler);
             try
             {
                 client.Timeout = TimeSpan.FromSeconds(30);
@@ -182,7 +186,9 @@ namespace StatisticsAnalysisTool.Common
             var gameInfoSearchResponse = new GameInfoSearchResponse();
             var url = $"https://gameinfo.albiononline.com/api/gameinfo/search?q={username}";
 
-            using var client = new HttpClient();
+            using var clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            using var client = new HttpClient(clientHandler);
             client.Timeout = TimeSpan.FromSeconds(120);
             try
             {
@@ -203,7 +209,9 @@ namespace StatisticsAnalysisTool.Common
             var gameInfoPlayerResponse = new GameInfoPlayersResponse();
             var url = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}";
 
-            using var client = new HttpClient();
+            using var clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            using var client = new HttpClient(clientHandler);
             client.Timeout = TimeSpan.FromSeconds(120);
             try
             {
@@ -251,7 +259,10 @@ namespace StatisticsAnalysisTool.Common
             var checkedDateTime = dateTime != null ? dateTime.ToString() : string.Empty;
 
             var url = $"{SettingsController.CurrentSettings.GoldStatsApiUrl ?? Settings.Default.GoldStatsApiUrlDefault}?date={checkedDateTime}&count={count}";
-            using var client = new HttpClient();
+
+            using var clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            using var client = new HttpClient(clientHandler);
             client.Timeout = TimeSpan.FromSeconds(timeout);
             try
             {

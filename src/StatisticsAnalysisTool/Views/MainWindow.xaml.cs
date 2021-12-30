@@ -23,7 +23,9 @@ namespace StatisticsAnalysisTool.Views
         private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
+            {
                 DragMove();
+            }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

@@ -46,16 +46,16 @@
                         <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails3, FallbackValue=DESCRIPTION_STEP_3}" />
                         <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails4, FallbackValue=DESCRIPTION_STEP_4}" />
                         <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails5, FallbackValue=DESCRIPTION_STEP_5}" />
-                        <Image Source="../Resources/tracker_description_tracker.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />
+                        <!--<Image Source="../Resources/tracker_description_tracker.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />-->
                         <TextBlock/>
                         <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails6, FallbackValue=DESCRIPTION_STEP_6}" />
-                        <Image Source="../Resources/tracker_description_activate_tracker.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />
+                        <!--<Image Source="../Resources/tracker_description_activate_tracker.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />-->
                         <TextBlock/>
                         <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails7, FallbackValue=DESCRIPTION_STEP_7}" />
-                        <Image Source="../Resources/tracker_description_wifi_icon.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />
+                        <!--<Image Source="../Resources/tracker_description_wifi_icon.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />-->
                         <TextBlock/>
                         <TextBlock Style="{StaticResource InfoWindow.TextBlock.Text}" Text="{Binding Translation.DescriptionTrackMyGameDetails8, FallbackValue=DESCRIPTION_STEP_8}" />
-                        <Image Source="../Resources/tracker_description_done.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />
+                        <!--<Image Source="../Resources/tracker_description_done.png" StretchDirection="DownOnly" HorizontalAlignment="Left" />-->
                         <TextBlock/>
                         <TextBlock/>
 
