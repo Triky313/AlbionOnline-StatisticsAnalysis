@@ -176,7 +176,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 AuctionHouseTax = 3.0d,
                 CraftingBonus = 133,
                 CraftingItemQuantity = 1,
-                CraftingTax = 0,
+                UsageFeePerHundredFood = 0,
                 SellPricePerItem = 0,
                 SetupFee = 1.5d,
                 OtherCosts = 0,
@@ -221,7 +221,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 CostsPerJournal = 0,
                 CraftingResourceName = craftingJournalType.LocalizedName,
                 Icon = craftingJournalType.Icon,
-                RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting, Item.Level),
+                RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting),
                 SellPricePerJournal = 0
             };
         }
@@ -232,16 +232,18 @@ namespace StatisticsAnalysisTool.ViewModels
             return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
         }
 
-        public async Task UpdateCraftingValuesAsync()
+        public void UpdateCraftingValues()
         {
             if (CraftingCalculation?.SetupFee != null && EssentialCraftingValues != null)
             {
-                CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
+                CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, 
+                    EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
             }
 
             if (CraftingCalculation?.CraftingTax != null && EssentialCraftingValues != null)
             {
-                CraftingCalculation.CraftingTax = await CraftingController.GetSetupFeeAsync(Item, RequiredJournal?.UniqueName, EssentialCraftingValues.CraftingTax);
+                CraftingCalculation.CraftingTax = CraftingController.GetCraftingTax(EssentialCraftingValues.UsageFeePerHundredFood,
+                    Item, EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.UsageFeePerHundredFood);
             }
 
             if (CraftingCalculation?.PossibleItemCrafting != null && EssentialCraftingValues != null)
@@ -267,7 +269,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (RequiredJournal?.RequiredJournalAmount != null && CraftingCalculation != null)
             {
-                RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting, Item.Level);
+                RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting);
             }
 
             if (CraftingCalculation?.AuctionsHouseTax != null && EssentialCraftingValues != null)

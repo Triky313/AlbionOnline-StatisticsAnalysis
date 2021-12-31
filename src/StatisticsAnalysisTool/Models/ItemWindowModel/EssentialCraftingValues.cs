@@ -12,7 +12,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private int _craftingItemQuantity;
         private double _setupFee;
         private double _auctionHouseTax;
-        private short _craftingTax;
+        private int _usageFeePerHundredFood;
         private int _craftingBonus;
         private bool _isCraftingWithFocus;
         private int _otherCosts;
@@ -28,7 +28,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingItemQuantity = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
+                _itemWindowViewModel.UpdateCraftingValues();
                 OnPropertyChanged();
             }
         }
@@ -39,7 +39,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _sellPricePerItem = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
+                _itemWindowViewModel.UpdateCraftingValues();
                 OnPropertyChanged();
             }
         }
@@ -50,7 +50,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _setupFee = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
+                _itemWindowViewModel.UpdateCraftingValues();
                 OnPropertyChanged();
             }
         }
@@ -61,18 +61,18 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _auctionHouseTax = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
+                _itemWindowViewModel.UpdateCraftingValues();
                 OnPropertyChanged();
             }
         }
 
-        public short CraftingTax
+        public int UsageFeePerHundredFood
         {
-            get => _craftingTax;
+            get => _usageFeePerHundredFood;
             set
             {
-                _craftingTax = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
+                _usageFeePerHundredFood = value;
+                _itemWindowViewModel.UpdateCraftingValues();
                 OnPropertyChanged();
             }
         }
@@ -83,7 +83,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingBonus = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
+                _itemWindowViewModel.UpdateCraftingValues();
                 OnPropertyChanged();
             }
         }
@@ -94,7 +94,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _otherCosts = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
+                _itemWindowViewModel.UpdateCraftingValues();
                 OnPropertyChanged();
             }
         }
@@ -105,7 +105,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _isCraftingWithFocus = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
+                _itemWindowViewModel.UpdateCraftingValues();
                 OnPropertyChanged();
             }
         }
@@ -114,7 +114,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         public string TranslationItemQuantity => LanguageController.Translation("ITEM_QUANTITY");
         public string TranslationSetupFeePercent => LanguageController.Translation("SETUP_FEE_PERCENT");
         public string TranslationAuctionsHouseTaxPercent => LanguageController.Translation("AUCTIONS_HOUSE_TAX_PERCENT");
-        public string TranslationCraftingTaxPercent => LanguageController.Translation("CRAFTING_TAX_PERCENT");
+        public string TranslationUsageFeePerHundredFood => LanguageController.Translation("USAGE_FEE_PER_HUNDRED_FOOD");
         public string TranslationCraftingBonusPercent => LanguageController.Translation("CRAFTING_BONUS_PERCENT");
         public string TranslationCraftingWithFocus => LanguageController.Translation("CRAFTING_WITH_FOCUS");
         public string TranslationOtherCosts => LanguageController.Translation("OTHER_COSTS");

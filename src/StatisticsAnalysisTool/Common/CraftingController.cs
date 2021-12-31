@@ -21,24 +21,18 @@ namespace StatisticsAnalysisTool.Common
         private static IAsyncEnumerable<SimpleItemData> _simpleItemData = new List<SimpleItemData>().ToAsyncEnumerable();
         private static IAsyncEnumerable<ItemSpriteToJournalStruct> _craftingJournalData = new List<ItemSpriteToJournalStruct>().ToAsyncEnumerable();
 
-        public static double GetRequiredJournalAmount(Item item, double ItemQuantityToBeCrafted, int level)
+        public static double GetRequiredJournalAmount(Item item, double itemQuantityToBeCrafted)
         {
-            if (ItemQuantityToBeCrafted == 0)
+            if (itemQuantityToBeCrafted == 0)
             {
                 return 0;
             }
 
-            var totalBaseFame = GetTotalBaseFame(item.FullItemInformation.CraftingRequirements.TotalAmountResources, (ItemTier)item.Tier, (ItemLevel)level);
-            var totalJournalFame = totalBaseFame * ItemQuantityToBeCrafted;
+            var totalBaseFame = GetTotalBaseFame(item.FullItemInformation.CraftingRequirements.TotalAmountResources, (ItemTier)item.Tier, (ItemLevel)item.Level);
+            var totalJournalFame = totalBaseFame * itemQuantityToBeCrafted;
             return totalJournalFame / MaxJournalFame((ItemTier)item.Tier);
         }
-
-        private static async ValueTask<int> GetSimpleItemItemValueAsync(string uniqueName)
-        {
-            var data = await _simpleItemData.FirstOrDefaultAsync(x => x.UniqueName == uniqueName).ConfigureAwait(false);
-            return data?.ItemValue ?? 0;
-        }
-
+        
         public static async Task<Item> GetCraftingJournalItemAsync(int tier, string itemSpriteName)
         {
             var data = await _craftingJournalData.FirstOrDefaultAsync(x => x.Name == itemSpriteName).ConfigureAwait(false);
@@ -97,11 +91,12 @@ namespace StatisticsAnalysisTool.Common
             };
         }
 
-        public static async Task<double> GetSetupFeeAsync(Item item, string artifactUniqueName, double essentialCraftingTax)
+        public static double GetCraftingTax(int foodValue, Item item, int itemQuantity, int craftingTaxDefault)
         {
             try
             {
-                return await GetItemValueAsync(item.FullItemInformation.CraftingRequirements.TotalAmountResources, (ItemTier)item.Tier, (ItemLevel)item.Level, artifactUniqueName) / 20 * essentialCraftingTax;
+                return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, item.FullItemInformation.CraftingRequirements.TotalAmountResources, 
+                    (ItemTier)item.Tier, (ItemLevel)item.Level, item.FullItemInformation.CraftingRequirements.CraftResourceList, craftingTaxDefault);
             }
             catch (Exception e)
             {
@@ -109,37 +104,6 @@ namespace StatisticsAnalysisTool.Common
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return 0;
             }
-        }
-
-        public static async Task<double> GetItemValueAsync(int numberOfMaterials, ItemTier tier, ItemLevel level, string artifactUniqueName)
-        {
-            var artifactItemValue = await GetSimpleItemItemValueAsync(artifactUniqueName);
-            return (tier, level) switch
-            {
-                (ItemTier.T2, ItemLevel.Level0) => numberOfMaterials * 2,
-                (ItemTier.T3, ItemLevel.Level0) => numberOfMaterials * 6,
-                (ItemTier.T4, ItemLevel.Level0) => (numberOfMaterials * 14) + artifactItemValue,
-                (ItemTier.T4, ItemLevel.Level1) => (numberOfMaterials * 30) + artifactItemValue,
-                (ItemTier.T4, ItemLevel.Level2) => (numberOfMaterials * 54) + artifactItemValue,
-                (ItemTier.T4, ItemLevel.Level3) => (numberOfMaterials * 102) + artifactItemValue,
-                (ItemTier.T5, ItemLevel.Level0) => (numberOfMaterials * 30) + artifactItemValue,
-                (ItemTier.T5, ItemLevel.Level1) => (numberOfMaterials * 62) + artifactItemValue,
-                (ItemTier.T5, ItemLevel.Level2) => (numberOfMaterials * 118) + artifactItemValue,
-                (ItemTier.T5, ItemLevel.Level3) => (numberOfMaterials * 230) + artifactItemValue,
-                (ItemTier.T6, ItemLevel.Level0) => (numberOfMaterials * 62) + artifactItemValue,
-                (ItemTier.T6, ItemLevel.Level1) => (numberOfMaterials * 126) + artifactItemValue,
-                (ItemTier.T6, ItemLevel.Level2) => (numberOfMaterials * 246) + artifactItemValue,
-                (ItemTier.T6, ItemLevel.Level3) => (numberOfMaterials * 486) + artifactItemValue,
-                (ItemTier.T7, ItemLevel.Level0) => (numberOfMaterials * 126) + artifactItemValue,
-                (ItemTier.T7, ItemLevel.Level1) => (numberOfMaterials * 254) + artifactItemValue,
-                (ItemTier.T7, ItemLevel.Level2) => (numberOfMaterials * 502) + artifactItemValue,
-                (ItemTier.T7, ItemLevel.Level3) => (numberOfMaterials * 1123) + artifactItemValue,
-                (ItemTier.T8, ItemLevel.Level0) => (numberOfMaterials * 254) + artifactItemValue,
-                (ItemTier.T8, ItemLevel.Level1) => (numberOfMaterials * 510) + artifactItemValue,
-                (ItemTier.T8, ItemLevel.Level2) => (numberOfMaterials * 1014) + artifactItemValue,
-                (ItemTier.T8, ItemLevel.Level3) => (numberOfMaterials * 2022) + artifactItemValue,
-                _ => 0
-            };
         }
 
         public static async Task<bool> LoadAsync()
@@ -198,6 +162,73 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
+        public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResourceList> craftRequiredResources, int craftingTaxDefault)
+        {
+            var tierFactor = (tier, level) switch
+            {
+                (ItemTier.T2, ItemLevel.Level0) => 1,
+                (ItemTier.T3, ItemLevel.Level0) => 1,
+                (ItemTier.T4, ItemLevel.Level0) => 1.8,
+                (ItemTier.T4, ItemLevel.Level1) => 3.6,
+                (ItemTier.T4, ItemLevel.Level2) => 7.2,
+                (ItemTier.T4, ItemLevel.Level3) => 14.4,
+                (ItemTier.T5, ItemLevel.Level0) => 3.6,
+                (ItemTier.T5, ItemLevel.Level1) => 7.2,
+                (ItemTier.T5, ItemLevel.Level2) => 14.4,
+                (ItemTier.T5, ItemLevel.Level3) => 28.8,
+                (ItemTier.T6, ItemLevel.Level0) => 7.2,
+                (ItemTier.T6, ItemLevel.Level1) => 14.4,
+                (ItemTier.T6, ItemLevel.Level2) => 28.8,
+                (ItemTier.T6, ItemLevel.Level3) => 57.6,
+                (ItemTier.T7, ItemLevel.Level0) => 14.4,
+                (ItemTier.T7, ItemLevel.Level1) => 28.8,
+                (ItemTier.T7, ItemLevel.Level2) => 57.6,
+                (ItemTier.T7, ItemLevel.Level3) => 115.2,
+                (ItemTier.T8, ItemLevel.Level0) => 28.8,
+                (ItemTier.T8, ItemLevel.Level1) => 57.6,
+                (ItemTier.T8, ItemLevel.Level2) => 115.2,
+                (ItemTier.T8, ItemLevel.Level3) => 230.4,
+                _ => 1
+            };
+
+            return foodValue / 100 * numberOfMaterials * (tierFactor + GetArtifactFactor(craftRequiredResources, craftingTaxDefault));
+        }
+
+        private static double GetArtifactFactor(IEnumerable<CraftResourceList> requiredResources, double craftingTaxDefault = 0)
+        {
+            var artifactResource = requiredResources.FirstOrDefault(x => x.UniqueName.Contains("ARTEFACT_TOKEN_FAVOR"));
+            
+            if (string.IsNullOrEmpty(artifactResource?.UniqueName) || !artifactResource.UniqueName.Contains("ARTEFACT_TOKEN_FAVOR"))
+            {
+                return craftingTaxDefault;
+            }
+
+            return artifactResource.UniqueName[..2] switch
+            {
+                "T4" when artifactResource.UniqueName[^1..] == "1" => 0.45f,
+                "T4" when artifactResource.UniqueName[^1..] == "2" => 1.35f,
+                "T4" when artifactResource.UniqueName[^1..] == "3" => 3.15f,
+                "T4" when artifactResource.UniqueName[^1..] == "4" => 6.75f,
+                "T5" when artifactResource.UniqueName[^1..] == "1" => 0.9f,
+                "T5" when artifactResource.UniqueName[^1..] == "2" => 2.7f,
+                "T5" when artifactResource.UniqueName[^1..] == "3" => 6.3f,
+                "T5" when artifactResource.UniqueName[^1..] == "4" => 13.5f,
+                "T6" when artifactResource.UniqueName[^1..] == "1" => 1.8f,
+                "T6" when artifactResource.UniqueName[^1..] == "2" => 5.4f,
+                "T6" when artifactResource.UniqueName[^1..] == "3" => 12.6f,
+                "T6" when artifactResource.UniqueName[^1..] == "4" => 27.0f,
+                "T7" when artifactResource.UniqueName[^1..] == "1" => 3.6f,
+                "T7" when artifactResource.UniqueName[^1..] == "2" => 10.8f,
+                "T7" when artifactResource.UniqueName[^1..] == "3" => 25.2f,
+                "T7" when artifactResource.UniqueName[^1..] == "4" => 45.0f,
+                "T8" when artifactResource.UniqueName[^1..] == "1" => 7.2f,
+                "T8" when artifactResource.UniqueName[^1..] == "2" => 21.6f,
+                "T8" when artifactResource.UniqueName[^1..] == "3" => 50.4f,
+                "T8" when artifactResource.UniqueName[^1..] == "4" => 108.0f,
+                _ => craftingTaxDefault
+            };
+        }
+        
         #region Calculations
 
         public static double GetSetupFeeCalculation(int? craftingItemQuantity, double? setupFee, double? sellPricePerItem)

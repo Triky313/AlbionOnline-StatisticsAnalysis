@@ -196,7 +196,7 @@ namespace StatisticsAnalysisTool.Models
         public List<CraftResourceList> CraftResourceList { get; set; }
 
         [JsonIgnore]
-        public int TotalAmountResources => CraftResourceList?.ToList().Where(x => x.UniqueName != "QUESTITEM_TOKEN_AVALON").Sum(x => x?.Count) ?? 0;
+        public int TotalAmountResources => CraftResourceList?.ToList().Where(x => x != null && x.UniqueName != "QUESTITEM_TOKEN_AVALON" && !x.UniqueName.Contains("ARTEFACT_TOKEN_FAVOR")).Sum(x => x.Count) ?? 0;
     }
 
     public class Enchantment

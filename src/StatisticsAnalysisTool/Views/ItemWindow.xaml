@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
-        xmlns:ctx="clr-namespace:LiveChartsCore.Kernel;assembly=LiveChartsCore"
         xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls" 
         xmlns:viewmodels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"

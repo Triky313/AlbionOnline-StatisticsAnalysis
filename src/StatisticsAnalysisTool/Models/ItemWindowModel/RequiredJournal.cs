@@ -69,7 +69,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _sellPricePerJournal = value;
-                _ = _itemWindowViewModel.UpdateCraftingValuesAsync();
+                _itemWindowViewModel.UpdateCraftingValues();
                 OnPropertyChanged();
             }
         }

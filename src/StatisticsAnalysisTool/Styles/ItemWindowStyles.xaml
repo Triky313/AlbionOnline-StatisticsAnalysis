@@ -114,8 +114,8 @@
                 <TextBox Text="{Binding AuctionHouseTax}" Style="{StaticResource TextBox.Crafting}" Margin="0,-2,0,0" common:TextBoxHelper.OnlyNumeric="Double" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
-                <Label Content="{Binding TranslationCraftingTaxPercent, FallbackValue=CRAFTING__TAX%}" Style="{StaticResource Label.Crafting}" />
-                <TextBox Text="{Binding CraftingTax}" Style="{StaticResource TextBox.Crafting}" Margin="0,-2,0,0" common:TextBoxHelper.OnlyNumeric="Int" />
+                <Label Content="{Binding TranslationUsageFeePerHundredFood, FallbackValue=USAGE__FEE__PER__HUNDRED__FOOD}" Style="{StaticResource Label.Crafting}" />
+                <TextBox Text="{Binding UsageFeePerHundredFood}" Style="{StaticResource TextBox.Crafting}" Margin="0,-2,0,0" common:TextBoxHelper.OnlyNumeric="Int" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                 <Label Content="{Binding TranslationCraftingBonusPercent, FallbackValue=CRAFTING__BONUS__%}" Style="{StaticResource Label.Crafting}" />
