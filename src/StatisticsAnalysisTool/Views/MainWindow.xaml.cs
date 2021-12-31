@@ -42,17 +42,15 @@ namespace StatisticsAnalysisTool.Views
         {
             if (e.ClickCount == 2 && WindowState == WindowState.Normal)
             {
-                WindowState = WindowState.Maximized;
-                MaximizedButton.Content = 2;
+                SwitchState();
                 _isWindowMaximized = true;
                 return;
             }
 
             if (e.ClickCount == 2 && WindowState == WindowState.Maximized)
             {
-                WindowState = WindowState.Normal;
+                SwitchState();
                 MainWindowViewModel.CenterWindowOnScreen();
-                MaximizedButton.Content = 1;
                 _isWindowMaximized = false;
             }
         }
@@ -61,15 +59,13 @@ namespace StatisticsAnalysisTool.Views
         {
             if (_isWindowMaximized)
             {
-                WindowState = WindowState.Normal;
+                SwitchState();
                 MainWindowViewModel.CenterWindowOnScreen();
-                MaximizedButton.Content = 1;
                 _isWindowMaximized = false;
             }
             else
             {
-                WindowState = WindowState.Maximized;
-                MaximizedButton.Content = 2;
+                SwitchState();
                 _isWindowMaximized = true;
             }
         }
@@ -88,6 +84,33 @@ namespace StatisticsAnalysisTool.Views
             {
                 _mainWindowViewModel.StopTracking();
             }
+        }
+
+        private void Grid_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                if (WindowState == WindowState.Maximized)
+                {
+                    SwitchState();
+                    if (Application.Current.MainWindow != null)
+                    {
+                        Application.Current.MainWindow.Top = 3;
+                        MaximizedButton.Content = 1;
+                    }
+                }
+                DragMove();
+            }
+        }
+
+        private void SwitchState()
+        {
+            WindowState = WindowState switch
+            {
+                WindowState.Normal => WindowState.Maximized,
+                WindowState.Maximized => WindowState.Normal,
+                _ => WindowState
+            };
         }
     }
 }
