@@ -91,12 +91,12 @@ namespace StatisticsAnalysisTool.Common
             };
         }
 
-        public static double GetCraftingTax(int foodValue, Item item, int itemQuantity, int craftingTaxDefault)
+        public static double GetCraftingTax(int foodValue, Item item, int itemQuantity)
         {
             try
             {
                 return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, item.FullItemInformation.CraftingRequirements.TotalAmountResources, 
-                    (ItemTier)item.Tier, (ItemLevel)item.Level, item.FullItemInformation.CraftingRequirements.CraftResourceList, craftingTaxDefault);
+                    (ItemTier)item.Tier, (ItemLevel)item.Level, item.FullItemInformation.CraftingRequirements.CraftResourceList);
             }
             catch (Exception e)
             {
@@ -162,7 +162,7 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResourceList> craftRequiredResources, int craftingTaxDefault)
+        public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResourceList> craftRequiredResources)
         {
             var tierFactor = (tier, level) switch
             {
@@ -191,10 +191,11 @@ namespace StatisticsAnalysisTool.Common
                 _ => 1
             };
 
-            return foodValue / 100 * numberOfMaterials * (tierFactor + GetArtifactFactor(craftRequiredResources, craftingTaxDefault));
+            var safeFoodValue = (foodValue <= 0) ? 1 : foodValue;
+            return safeFoodValue / 100 * numberOfMaterials * (tierFactor + GetArtifactFactor(craftRequiredResources));
         }
 
-        private static double GetArtifactFactor(IEnumerable<CraftResourceList> requiredResources, double craftingTaxDefault = 0)
+        private static double GetArtifactFactor(IEnumerable<CraftResourceList> requiredResources, double craftingTaxDefault = 0.0)
         {
             var artifactResource = requiredResources.FirstOrDefault(x => x.UniqueName.Contains("ARTEFACT_TOKEN_FAVOR"));
             

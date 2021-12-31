@@ -243,7 +243,7 @@ namespace StatisticsAnalysisTool.ViewModels
             if (CraftingCalculation?.CraftingTax != null && EssentialCraftingValues != null)
             {
                 CraftingCalculation.CraftingTax = CraftingController.GetCraftingTax(EssentialCraftingValues.UsageFeePerHundredFood,
-                    Item, EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.UsageFeePerHundredFood);
+                    Item, EssentialCraftingValues.CraftingItemQuantity);
             }
 
             if (CraftingCalculation?.PossibleItemCrafting != null && EssentialCraftingValues != null)
