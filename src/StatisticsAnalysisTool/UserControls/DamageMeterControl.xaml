@@ -44,6 +44,30 @@
             </StackPanel>
         </Grid>
 
+        <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,35,0,0">
+            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                <Image Source="../Resources/fame.png" Width="22" Height="22" ToolTip="{Binding Translation.Fame, FallbackValue=FAME}" Margin="0,0,5,0" />
+                <TextBlock Text="{Binding DashboardObject.TotalGainedFameInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                <TextBlock Text=" | " Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,2,0,0" />
+                <TextBlock FontSize="16" Text="{Binding DashboardObject.FamePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                <Image Source="../Resources/silver.png" Width="22" Height="22" ToolTip="{Binding Translation.Silver, FallbackValue=SILVER}" Margin="0,0,5,0" />
+                <TextBlock Text="{Binding DashboardObject.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                <TextBlock Text=" | " Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,2,0,0" />
+                <TextBlock FontSize="16" Text="{Binding DashboardObject.SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                <Image Source="../Resources/respec.png" Width="22" Height="22" ToolTip="{Binding Translation.ReSpec, FallbackValue=RESPEC}" Margin="0,0,5,0" />
+                <TextBlock Text="{Binding DashboardObject.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                <TextBlock Text=" | " Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,2,0,0" />
+                <TextBlock FontSize="16" Text="{Binding DashboardObject.ReSpecPointsPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </DockPanel>
+
         <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,61,0,0" VerticalAlignment="Top"/>
         <ScrollViewer Margin="0,65,0,0">
             <ItemsControl ItemsSource="{Binding DamageMeter, IsAsync=True, Mode=OneWay}"/>
