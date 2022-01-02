@@ -31,6 +31,7 @@ namespace StatisticsAnalysisTool.Common
             try
             {
                 using var response = await client.GetAsync(url);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 using var content = response.Content;
                 var emptyItemInfo = new ItemInformation
                 {
@@ -115,6 +116,7 @@ namespace StatisticsAnalysisTool.Common
                 client.Timeout = TimeSpan.FromSeconds(30);
 
                 using var response = await client.GetAsync(url);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 if (response.StatusCode == (HttpStatusCode) 429)
                 {
                     throw new TooManyRequestsException();
@@ -160,6 +162,7 @@ namespace StatisticsAnalysisTool.Common
             try
             {
                 using var response = await client.GetAsync(url);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 using var content = response.Content;
                 if (response.StatusCode == (HttpStatusCode) 429)
                 {
@@ -193,6 +196,7 @@ namespace StatisticsAnalysisTool.Common
             try
             {
                 using var response = await client.GetAsync(url);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 using var content = response.Content;
                 return JsonSerializer.Deserialize<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
             }
@@ -216,6 +220,7 @@ namespace StatisticsAnalysisTool.Common
             try
             {
                 using var response = await client.GetAsync(url);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 using var content = response.Content;
                 return JsonSerializer.Deserialize<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ??
                        gameInfoPlayerResponse;
@@ -267,6 +272,7 @@ namespace StatisticsAnalysisTool.Common
             try
             {
                 using var response = await client.GetAsync(url);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 using var content = response.Content;
                 var contentString = await content.ReadAsStringAsync();
                 return string.IsNullOrEmpty(contentString) ? new List<GoldResponseModel>() : JsonSerializer.Deserialize<List<GoldResponseModel>>(contentString);
