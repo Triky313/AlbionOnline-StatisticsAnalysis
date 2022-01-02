@@ -26,7 +26,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                         <Image Source="../Resources/respec.png" Width="22" Height="22" ToolTip="{Binding Translation.ReSpec, FallbackValue=RESPEC}" />
-                        <TextBlock Text="{Binding DashboardObject.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                        <TextBlock Text="{Binding DashboardObject.TotalGainedReSpecPointsInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                         <TextBlock FontSize="16" Text="{Binding DashboardObject.ReSpecPointsPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center"/>
                     </StackPanel>
