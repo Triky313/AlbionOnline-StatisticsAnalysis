@@ -1,4 +1,6 @@
 using FontAwesome5;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 using log4net;
 using Microsoft.Win32;
 using StatisticsAnalysisTool.Annotations;
@@ -24,11 +26,8 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
 
 // ReSharper disable UnusedMember.Global
 
@@ -41,7 +40,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
-        private readonly Dictionary<ViewMode, Grid> viewModeGrid = new();
         private Visibility _allianceInformationVisibility;
         private double _allianceInfoWidth;
         private Visibility _currentMapInformationVisibility;
@@ -86,8 +84,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _loadIconVisibility;
         private string _loadTranslation;
         private int _localImageCounter;
-        private ObservableCollection<ModeStruct> _modes = new();
-        private ModeStruct _modeSelection;
         private string _numberOfValuesTranslation;
         private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new();
         private PlayerModeTranslation _playerModeTranslation = new();
@@ -119,13 +115,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool IsDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
         private TrackingIconType _trackingActivityColor;
-        private bool _isTrackingFilteredEquipmentLoot = true;
-        private bool _isTrackingFilteredConsumableLoot = true;
-        private bool _isTrackingFilteredSimpleLoot = true;
-        private bool _isTrackingFilteredUnknownLoot = true;
-        private bool _isTrackingFilteredFame = true;
-        private bool _isTrackingFilteredSilver = true;
-        private bool _isTrackingFilteredFaction = true;
         private int _partyMemberNumber;
         private ObservableCollection<ClusterInfo> _enteredCluster = new();
         private bool _isItemSearchCheckboxesEnabled;
@@ -135,7 +124,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private Brush _damageMeterActivationToggleColor;
         private bool _isDamageMeterTrackingActive;
         private ListCollectionView _trackingDungeonsCollectionView;
-        private bool _isTrackingFilteredSeasonPoints;
         private ListCollectionView _trackingNotificationsCollectionView;
         private bool _isTrackingPartyLootOnly;
         private bool _isTrackingSilver;
@@ -143,8 +131,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _trackingActiveText = MainWindowTranslation.TrackingIsNotActive;
         private Axis[] _xAxesDashboardHourValues;
         private ObservableCollection<ISeries> _seriesDashboardHourValues;
-        private DashboardObject _dashboardObject = new ();
+        private DashboardObject _dashboardObject = new();
         private string _loggingSearchText;
+        private ObservableCollection<LoggingFilterObject> _loggingFilters = new();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -153,7 +142,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
             SettingsController.LoadSettings();
             _ = CraftingController.LoadAsync();
-            InitViewModeGrids();
             UpgradeSettings();
             InitWindowSettings();
             Utilities.AutoUpdate();
@@ -166,7 +154,7 @@ namespace StatisticsAnalysisTool.ViewModels
             InitMainWindowData();
             _ = InitTrackingAsync();
         }
-        
+
         public void SetUiElements()
         {
             #region Error bar
@@ -174,17 +162,6 @@ namespace StatisticsAnalysisTool.ViewModels
             ErrorBarVisibility = Visibility.Hidden;
 
             #endregion
-
-            #region Set Modes to combobox
-
-            Modes.Clear();
-            Modes.Add(new ModeStruct {Name = LanguageController.Translation("NORMAL"), ViewMode = ViewMode.Normal});
-            Modes.Add(new ModeStruct {Name = LanguageController.Translation("TRACKING"), ViewMode = ViewMode.Tracking});
-            Modes.Add(new ModeStruct {Name = LanguageController.Translation("PLAYER"), ViewMode = ViewMode.Player});
-            //Modes.Add(new ModeStruct {Name = LanguageController.Translation("GOLD"), ViewMode = ViewMode.Gold});
-            ModeSelection = Modes.FirstOrDefault(x => x.ViewMode == ViewMode.Normal);
-            
-            #endregion Set Modes to combobox
 
             #region Full Item Info elements
 
@@ -204,7 +181,7 @@ namespace StatisticsAnalysisTool.ViewModels
             if (!IsFullItemInfoLoading) LoadFullItemInfoProBarGridVisibility = Visibility.Hidden;
 
             #endregion Full Item Info elements
-            
+
             #region Player information
 
             SavedPlayerInformationName = SettingsController.CurrentSettings.SavedPlayerInformationName;
@@ -253,7 +230,7 @@ namespace StatisticsAnalysisTool.ViewModels
             DamageMeterSort.Add(sortByHealStruct);
             DamageMeterSort.Add(sortByHpsStruct);
             DamageMeterSortSelection = sortByDamageStruct;
-
+            
             #endregion
         }
 
@@ -268,7 +245,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                var imageAwesome = (ImageAwesome) sender;
+                var imageAwesome = (ImageAwesome)sender;
                 var item = (Item)imageAwesome.DataContext;
 
                 if (item.AlertModeMinSellPriceIsUndercutPrice <= 0)
@@ -317,50 +294,13 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             try
             {
-                Log.Fatal(nameof(OnUnhandledException), (Exception) e.ExceptionObject);
+                Log.Fatal(nameof(OnUnhandledException), (Exception)e.ExceptionObject);
             }
             catch (Exception ex)
             {
                 Log.Fatal(nameof(OnUnhandledException), ex);
             }
         }
-        
-        #region View mode init
-
-        private void InitViewModeGrids()
-        {
-            //viewModeGrid.Add(ViewMode.Normal, _mainWindow.GridNormalMode);
-            //viewModeGrid.Add(ViewMode.Tracking, _mainWindow.GridTrackingMode);
-            //viewModeGrid.Add(ViewMode.Player, _mainWindow.GridPlayerMode);
-            //viewModeGrid.Add(ViewMode.Gold, _mainWindow.GridGoldMode);
-        }
-
-        public void SelectViewModeGrid()
-        {
-            HideAllGrids();
-            var grid = viewModeGrid.FirstOrDefault(g => g.Key == ModeSelection.ViewMode);
-
-            if (grid.Value == null)
-            {
-                Log.Warn($"SelectViewModeGrid: Grid for [{ModeSelection.ViewMode}] is not existing");
-
-                if (viewModeGrid.FirstOrDefault().Value != null) viewModeGrid.FirstOrDefault().Value.Visibility = Visibility.Visible;
-
-                return;
-            }
-
-            grid.Value.Visibility = Visibility.Visible;
-            //_mainWindow.TxtSearch.Focus();
-        }
-
-        private void HideAllGrids()
-        {
-            if (viewModeGrid == null) return;
-
-            foreach (var grid in viewModeGrid) grid.Value.Visibility = Visibility.Hidden;
-        }
-
-        #endregion
 
         private void InitAlerts()
         {
@@ -451,15 +391,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController ??= new TrackingController(this, _mainWindow);
 
             StartTracking();
-
-            IsTrackingFilteredSilver = SettingsController.CurrentSettings.IsMainTrackerFilterSilver;
-            IsTrackingFilteredFame = SettingsController.CurrentSettings.IsMainTrackerFilterFame;
-            IsTrackingFilteredFaction = SettingsController.CurrentSettings.IsMainTrackerFilterFaction;
-            IsTrackingFilteredEquipmentLoot = SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot;
-            IsTrackingFilteredConsumableLoot = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot;
-            IsTrackingFilteredSimpleLoot = SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot;
-            IsTrackingFilteredUnknownLoot = SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot;
-            IsTrackingFilteredSeasonPoints = SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints;
+            
             IsDamageMeterTrackingActive = SettingsController.CurrentSettings.IsDamageMeterTrackingActive;
             IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
             IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
@@ -471,7 +403,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 TrackingDungeonsCollectionView.IsLiveSorting = true;
                 TrackingDungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
             }
-            
+
             TrackingNotificationsCollectionView = CollectionViewSource.GetDefaultView(TrackingNotifications) as ListCollectionView;
             if (TrackingNotificationsCollectionView != null)
             {
@@ -479,6 +411,56 @@ namespace StatisticsAnalysisTool.ViewModels
                 TrackingNotificationsCollectionView.IsLiveFiltering = true;
                 TrackingNotificationsCollectionView.SortDescriptions.Add(new SortDescription(nameof(DateTime), ListSortDirection.Descending));
             }
+
+            // Logging
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.Fame)
+            {
+                IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFame,
+                Name = MainWindowTranslation.Fame
+            });
+
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.Silver)
+            {
+                IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSilver,
+                Name = MainWindowTranslation.Silver
+            });
+
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.Faction)
+            {
+                IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFaction,
+                Name = MainWindowTranslation.Faction
+            });
+
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.SeasonPoints)
+            {
+                IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints,
+                Name = MainWindowTranslation.SeasonPoints
+            });
+
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.ConsumableLoot)
+            {
+                IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot,
+                Name = MainWindowTranslation.ConsumableLoot
+            });
+
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.EquipmentLoot)
+            {
+                IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot,
+                Name = MainWindowTranslation.EquipmentLoot
+            });
+
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.SimpleLoot)
+            {
+                IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot,
+                Name = MainWindowTranslation.SimpleLoot
+            });
+
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.UnknownLoot)
+            {
+                IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot,
+                Name = MainWindowTranslation.UnknownLoot
+            });
+
         }
 
         #endregion
@@ -622,7 +604,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleUp;
                 DungeonStatsGridHeight = unfoldGridHeight;
-                DungeonStatsScrollViewerMargin = new Thickness(0, unfoldGridHeight, 0,0);
+                DungeonStatsScrollViewerMargin = new Thickness(0, unfoldGridHeight, 0, 0);
                 IsDungeonStatsGridUnfold = true;
             }
         }
@@ -650,7 +632,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
             }
         }
-        
+
         #endregion
 
         #region Full Item Information
@@ -850,7 +832,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion Gold (Gold Mode)
 
         #region Tracking Mode
-        
+
         public void StartTracking()
         {
             if (NetworkManager.IsNetworkCaptureRunning)
@@ -883,7 +865,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");
         }
-        
+
         public void ResetMainCounters()
         {
             TrackingController?.CountUpTimer?.Reset();
@@ -967,7 +949,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 case DamageMeterSortType.Damage:
                     SetIsDamageMeterShowing(DamageMeter, true);
-                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList()); 
+                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
                     return;
                 case DamageMeterSortType.Dps:
                     SetIsDamageMeterShowing(DamageMeter, true);
@@ -1054,8 +1036,8 @@ namespace StatisticsAnalysisTool.ViewModels
                                && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory ||
                                    SelectedItemParentCategory == ParentCategory.Unknown)
                                && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
-                               && ((ItemTier) item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                               && ((ItemLevel) item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
+                               && ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                               && ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
                                && item.IsAlertActive;
                     }
 
@@ -1076,8 +1058,8 @@ namespace StatisticsAnalysisTool.ViewModels
                            && (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory ||
                                SelectedItemParentCategory == ParentCategory.Unknown)
                            && (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
-                           && ((ItemTier) item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                           && ((ItemLevel) item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
+                           && ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                           && ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
                 };
             else
                 ItemsView.Filter = i =>
@@ -1105,7 +1087,7 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 LocalImageCounter = await ImageController.LocalImagesCounterAsync();
-                ItemCounterString = $"{((ListCollectionView) ItemsView)?.Count ?? 0}/{ItemController.Items?.Count ?? 0}";
+                ItemCounterString = $"{((ListCollectionView)ItemsView)?.Count ?? 0}/{ItemController.Items?.Count ?? 0}";
             }
             catch (Exception e)
             {
@@ -1117,7 +1099,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion
 
         #region Bindings
-        
+
         public string SearchText
         {
             get => _searchText;
@@ -1162,95 +1144,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public bool IsTrackingFilteredEquipmentLoot
-        {
-            get => _isTrackingFilteredEquipmentLoot;
-            set
-            {
-                _isTrackingFilteredEquipmentLoot = value;
-
-                if (_isTrackingFilteredEquipmentLoot)
-                {
-                    TrackingController?.AddFilterType(NotificationType.EquipmentLoot);
-                }
-                else
-                {
-                    TrackingController?.RemoveFilterType(NotificationType.EquipmentLoot);
-                }
-
-                TrackingController?.NotificationUiFilteringAsync();
-                SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot = _isTrackingFilteredEquipmentLoot;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsTrackingFilteredConsumableLoot
-        {
-            get => _isTrackingFilteredConsumableLoot;
-            set
-            {
-                _isTrackingFilteredConsumableLoot = value;
-
-                if (_isTrackingFilteredConsumableLoot)
-                {
-                    TrackingController?.AddFilterType(NotificationType.ConsumableLoot);
-                }
-                else
-                {
-                    TrackingController?.RemoveFilterType(NotificationType.ConsumableLoot);
-                }
-
-                TrackingController?.NotificationUiFilteringAsync();
-                SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot = _isTrackingFilteredConsumableLoot;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsTrackingFilteredSimpleLoot
-        {
-            get => _isTrackingFilteredSimpleLoot;
-            set
-            {
-                _isTrackingFilteredSimpleLoot = value;
-
-                if (_isTrackingFilteredSimpleLoot)
-                {
-                    TrackingController?.AddFilterType(NotificationType.SimpleLoot);
-                }
-                else
-                {
-                    TrackingController?.RemoveFilterType(NotificationType.SimpleLoot);
-                }
-
-                TrackingController?.NotificationUiFilteringAsync();
-                SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot = _isTrackingFilteredSimpleLoot;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsTrackingFilteredUnknownLoot
-        {
-            get => _isTrackingFilteredUnknownLoot;
-            set
-            {
-                _isTrackingFilteredUnknownLoot = value;
-
-                if (_isTrackingFilteredUnknownLoot)
-                {
-                    TrackingController?.AddFilterType(NotificationType.UnknownLoot);
-                }
-                else
-                {
-                    TrackingController?.RemoveFilterType(NotificationType.UnknownLoot);
-                }
-
-                TrackingController?.NotificationUiFilteringAsync();
-                SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot = _isTrackingFilteredUnknownLoot;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public bool IsTrackingPartyLootOnly
         {
             get => _isTrackingPartyLootOnly;
@@ -1287,91 +1181,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public bool IsTrackingFilteredFame {
-            get => _isTrackingFilteredFame;
-            set
-            {
-                _isTrackingFilteredFame = value;
-
-                if (_isTrackingFilteredFame)
-                {
-                    TrackingController?.AddFilterType(NotificationType.Fame);
-                }
-                else
-                {
-                    TrackingController?.RemoveFilterType(NotificationType.Fame);
-                }
-
-                _ = TrackingController?.NotificationUiFilteringAsync();
-                SettingsController.CurrentSettings.IsMainTrackerFilterFame = _isTrackingFilteredFame;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsTrackingFilteredSilver {
-            get => _isTrackingFilteredSilver;
-            set
-            {
-                _isTrackingFilteredSilver = value;
-
-                if (_isTrackingFilteredSilver)
-                {
-                    TrackingController?.AddFilterType(NotificationType.Silver);
-                }
-                else
-                {
-                    TrackingController?.RemoveFilterType(NotificationType.Silver);
-                }
-
-                _ = TrackingController?.NotificationUiFilteringAsync();
-                SettingsController.CurrentSettings.IsMainTrackerFilterSilver = _isTrackingFilteredSilver;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsTrackingFilteredFaction {
-            get => _isTrackingFilteredFaction;
-            set
-            {
-                _isTrackingFilteredFaction = value;
-
-                if (_isTrackingFilteredFaction)
-                {
-                    TrackingController?.AddFilterType(NotificationType.Faction);
-                }
-                else
-                {
-                    TrackingController?.RemoveFilterType(NotificationType.Faction);
-                }
-
-                _ = TrackingController?.NotificationUiFilteringAsync();
-                SettingsController.CurrentSettings.IsMainTrackerFilterFaction = _isTrackingFilteredFaction;
-                OnPropertyChanged();
-            }
-        }
         
-        public bool IsTrackingFilteredSeasonPoints {
-            get => _isTrackingFilteredSeasonPoints;
-            set
-            {
-                _isTrackingFilteredSeasonPoints = value;
-
-                if (_isTrackingFilteredSeasonPoints)
-                {
-                    TrackingController?.AddFilterType(NotificationType.SeasonPoints);
-                }
-                else
-                {
-                    TrackingController?.RemoveFilterType(NotificationType.SeasonPoints);
-                }
-
-                _ = TrackingController?.NotificationUiFilteringAsync();
-                SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints = _isTrackingFilteredSeasonPoints;
-                OnPropertyChanged();
-            }
-        }
-
         public DamageMeterSortStruct DamageMeterSortSelection
         {
             get => _damageMeterSortSelection;
@@ -1453,7 +1263,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public DungeonStats DungeonStatsDay
         {
             get => _dungeonStatsDay;
@@ -1483,7 +1293,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public string TrackingUsername
         {
             get => _trackingUsername;
@@ -1567,8 +1377,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
-        public string MainTrackerTimer {
+
+        public string MainTrackerTimer
+        {
             get => _mainTrackerTimer;
             set
             {
@@ -1577,7 +1388,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public DungeonCloseTimer DungeonCloseTimer {
+        public DungeonCloseTimer DungeonCloseTimer
+        {
             get => _dungeonCloseTimer;
             set
             {
@@ -1596,7 +1408,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public ObservableCollection<TrackingNotification> TrackingNotifications
         {
             get => _trackingNotifications;
@@ -1616,8 +1428,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
-        public ListCollectionView TrackingDungeonsCollectionView {
+
+        public ListCollectionView TrackingDungeonsCollectionView
+        {
             get => _trackingDungeonsCollectionView;
             set
             {
@@ -1626,7 +1439,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ListCollectionView TrackingNotificationsCollectionView {
+        public ListCollectionView TrackingNotificationsCollectionView
+        {
             get => _trackingNotificationsCollectionView;
             set
             {
@@ -1661,7 +1475,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public TrackingIconType TrackingActivityColor
         {
             get => _trackingActivityColor;
@@ -1682,9 +1496,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsDamageMeterTrackingActive {
+        public bool IsDamageMeterTrackingActive
+        {
             get => _isDamageMeterTrackingActive;
-            set {
+            set
+            {
                 if (TrackingController?.CombatController == null)
                 {
                     return;
@@ -1705,17 +1521,21 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public EFontAwesomeIcon DamageMeterActivationToggleIcon {
+        public EFontAwesomeIcon DamageMeterActivationToggleIcon
+        {
             get => _damageMeterActivationToggleIcon;
-            set {
+            set
+            {
                 _damageMeterActivationToggleIcon = value;
                 OnPropertyChanged();
             }
         }
 
-        public Brush DamageMeterActivationToggleColor {
+        public Brush DamageMeterActivationToggleColor
+        {
             get => _damageMeterActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
-            set {
+            set
+            {
                 _damageMeterActivationToggleColor = value;
                 OnPropertyChanged();
             }
@@ -1739,9 +1559,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsShowOnlyFavoritesActive {
+        public bool IsShowOnlyFavoritesActive
+        {
             get => _isShowOnlyFavoritesActive;
-            set {
+            set
+            {
                 _isShowOnlyFavoritesActive = value;
 
                 if (value)
@@ -1876,7 +1698,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public int PartyMemberNumber 
+        public int PartyMemberNumber
         {
             get => _partyMemberNumber;
             set
@@ -1932,7 +1754,7 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 var categories = value;
-                categories = new Dictionary<Category, string> {{Category.Unknown, string.Empty}}.Concat(categories)
+                categories = new Dictionary<Category, string> { { Category.Unknown, string.Empty } }.Concat(categories)
                     .ToDictionary(k => k.Key, v => v.Value);
                 _itemCategories = categories;
                 OnPropertyChanged();
@@ -2049,7 +1871,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsItemSearchCheckboxesEnabled 
+        public bool IsItemSearchCheckboxesEnabled
         {
             get => _isItemSearchCheckboxesEnabled;
             set
@@ -2059,7 +1881,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public bool IsFilterResetEnabled 
+        public bool IsFilterResetEnabled
         {
             get => _isFilterResetEnabled;
             set
@@ -2079,26 +1901,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<ModeStruct> Modes
-        {
-            get => _modes;
-            set
-            {
-                _modes = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ModeStruct ModeSelection
-        {
-            get => _modeSelection;
-            set
-            {
-                _modeSelection = value;
-                OnPropertyChanged();
-            }
-        }
-
         public DashboardObject DashboardObject
         {
             get => _dashboardObject;
@@ -2108,7 +1910,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public PlayerModeTranslation PlayerModeTranslation
         {
             get => _playerModeTranslation;
@@ -2129,7 +1931,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public double DungeonStatsGridHeight {
+        public double DungeonStatsGridHeight
+        {
             get => _dungeonStatsGridHeight;
             set
             {
@@ -2138,7 +1941,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Thickness DungeonStatsScrollViewerMargin {
+        public Thickness DungeonStatsScrollViewerMargin
+        {
             get => _dungeonStatsScrollViewerMargin;
             set
             {
@@ -2147,7 +1951,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public EFontAwesomeIcon DungeonStatsGridButtonIcon {
+        public EFontAwesomeIcon DungeonStatsGridButtonIcon
+        {
             get => _dungeonStatsGridButtonIcon;
             set
             {
@@ -2177,9 +1982,11 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<MainStatObject> FactionPointStats {
+        public ObservableCollection<MainStatObject> FactionPointStats
+        {
             get => _factionPointStats;
-            set {
+            set
+            {
                 _factionPointStats = value;
                 OnPropertyChanged();
             }
@@ -2205,12 +2012,22 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Visibility GridTryToLoadTheItemListAgainVisibility 
+        public Visibility GridTryToLoadTheItemListAgainVisibility
         {
             get => _gridTryToLoadTheItemListAgainVisibility;
             set
             {
                 _gridTryToLoadTheItemListAgainVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<LoggingFilterObject> LoggingFilters
+        {
+            get => _loggingFilters;
+            set
+            {
+                _loggingFilters = value;
                 OnPropertyChanged();
             }
         }
@@ -2254,7 +2071,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public static string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;

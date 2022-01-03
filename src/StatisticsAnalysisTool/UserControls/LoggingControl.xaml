@@ -22,29 +22,12 @@
         </Grid>
         <Grid Height="auto" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel Orientation="Vertical" Height="120">
-                <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,5" Height="26">
                     <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
-                    <CheckBox IsChecked="{Binding IsTrackingFilteredFame, FallbackValue=true}" 
-                              Content="{Binding Translation.Fame, FallbackValue=FAME}" Margin="5,0,5,0" />
-                    <CheckBox IsChecked="{Binding IsTrackingFilteredSilver, FallbackValue=true}" 
-                              Content="{Binding Translation.Silver, FallbackValue=SILVER}" Margin="5,0,5,0" />
-                    <CheckBox IsChecked="{Binding IsTrackingFilteredFaction, FallbackValue=true}" 
-                              Content="{Binding Translation.Faction, FallbackValue=FACTION}" Margin="5,0,5,0" />
-                    <CheckBox IsChecked="{Binding IsTrackingFilteredSeasonPoints, FallbackValue=true}" 
-                              Content="{Binding Translation.SeasonPoints, FallbackValue=SEASON__POINTS}" Margin="5,0,5,0" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="25,5,0,5">
-                    <CheckBox IsChecked="{Binding IsTrackingFilteredEquipmentLoot, FallbackValue=true}" 
-                              Content="{Binding Translation.EquipmentLoot, FallbackValue=EQUIPMENT__LOOT}" Margin="5,0,5,0" />
-                    <CheckBox IsChecked="{Binding IsTrackingFilteredConsumableLoot, FallbackValue=true}" 
-                              Content="{Binding Translation.ConsumableLoot, FallbackValue=CONSUMABLE__LOOT}" Margin="5,0,5,0" />
-                    <CheckBox IsChecked="{Binding IsTrackingFilteredSimpleLoot, FallbackValue=true}" 
-                              Content="{Binding Translation.SimpleLoot, FallbackValue=SIMPLE__LOOT}" Margin="5,0,5,0" />
-                    <CheckBox IsChecked="{Binding IsTrackingFilteredUnknownLoot, FallbackValue=true}" 
-                              Content="{Binding Translation.UnknownLoot, FallbackValue=UNKNOWN__LOOT}" Margin="5,0,5,0" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="30,5,0,5">
-                    <TextBox Text="{Binding LoggingSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="22" />
+                    <ComboBox VerticalAlignment="Center" Margin="2,0,6,0" MinWidth="150" Height="24" ItemsSource="{Binding LoggingFilters}" 
+                              ItemTemplate="{StaticResource LoggingFilterObject}" />
+
+                    <TextBox Text="{Binding LoggingSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="24" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                     <fa5:ImageAwesome Icon="Solid_UserCog" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
@@ -54,6 +37,8 @@
                               Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" Margin="5,0,5,0" />
                     <CheckBox IsChecked="{Binding IsTrackingFame, FallbackValue=true}" 
                               Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" Margin="5,0,5,0" />
+                    <!--<CheckBox IsChecked="{Binding IsTrackingMobLoot, FallbackValue=true}" 
+                              Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" Margin="5,0,5,0" />-->
                 </StackPanel>
             </StackPanel>
         </Grid>

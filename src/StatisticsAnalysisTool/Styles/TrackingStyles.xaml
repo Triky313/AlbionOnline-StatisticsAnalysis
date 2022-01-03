@@ -485,6 +485,13 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="LoggingFilterObject" DataType="{x:Type models:LoggingFilterObject}">
+        <StackPanel Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding IsSelected}" Width="20" />
+            <TextBlock Text="{Binding Name}" Width="100" />
+        </StackPanel>
+    </DataTemplate>
+
     <!-- ClusterInfo -->
     <DataTemplate DataType="{x:Type models:ClusterInfo}">
         <Grid>
