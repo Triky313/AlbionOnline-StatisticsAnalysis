@@ -183,7 +183,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                 await AddLootAsync(new Loot()
                 {
-                    LootedBody = TestMethods.GenerateName(8),
+                    LootedBody = TestMethods.GenerateName(6),
                     IsTrash = ItemController.IsTrash(randomItem.Index),
                     ItemIndex = randomItem.Index,
                     LooterName = TestMethods.GenerateName(8),

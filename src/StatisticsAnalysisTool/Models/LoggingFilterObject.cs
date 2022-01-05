@@ -13,19 +13,19 @@ namespace StatisticsAnalysisTool.Models
         private bool? _isSelected;
         private string _name;
 
-        public LoggingFilterObject(TrackingController trackingController, NotificationType notificationType)
+        public LoggingFilterObject(TrackingController trackingController, LoggingFilterType loggingFilterType)
         {
             _trackingController = trackingController;
-            NotificationType = notificationType;
+            LoggingFilterType = loggingFilterType;
         }
 
-        public NotificationType NotificationType { get; }
+        public LoggingFilterType LoggingFilterType { get; }
 
         private void SetFilter()
         {
-            switch (NotificationType)
+            switch (LoggingFilterType)
             {
-                case NotificationType.Fame:
+                case LoggingFilterType.Fame:
                     if (IsSelected ?? false)
                     {
                         _trackingController?.AddFilterType(NotificationType.Fame);
@@ -37,7 +37,7 @@ namespace StatisticsAnalysisTool.Models
 
                     SettingsController.CurrentSettings.IsMainTrackerFilterFame = IsSelected ?? false;
                     break;
-                case NotificationType.Silver:
+                case LoggingFilterType.Silver:
                     if (IsSelected ?? false)
                     {
                         _trackingController?.AddFilterType(NotificationType.Silver);
@@ -49,7 +49,7 @@ namespace StatisticsAnalysisTool.Models
 
                     SettingsController.CurrentSettings.IsMainTrackerFilterSilver = IsSelected ?? false;
                     break;
-                case NotificationType.Faction:
+                case LoggingFilterType.Faction:
                     if (IsSelected ?? false)
                     {
                         _trackingController?.AddFilterType(NotificationType.Faction);
@@ -61,7 +61,7 @@ namespace StatisticsAnalysisTool.Models
 
                     SettingsController.CurrentSettings.IsMainTrackerFilterFaction = IsSelected ?? false;
                     break;
-                case NotificationType.EquipmentLoot:
+                case LoggingFilterType.EquipmentLoot:
                     if (IsSelected ?? false)
                     {
                         _trackingController?.AddFilterType(NotificationType.EquipmentLoot);
@@ -73,7 +73,7 @@ namespace StatisticsAnalysisTool.Models
 
                     SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot = IsSelected ?? false;
                     break;
-                case NotificationType.ConsumableLoot:
+                case LoggingFilterType.ConsumableLoot:
                     if (IsSelected ?? false)
                     {
                         _trackingController?.AddFilterType(NotificationType.ConsumableLoot);
@@ -85,7 +85,7 @@ namespace StatisticsAnalysisTool.Models
 
                     SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot = IsSelected ?? false;
                     break;
-                case NotificationType.SimpleLoot:
+                case LoggingFilterType.SimpleLoot:
                     if (IsSelected ?? false)
                     {
                         _trackingController?.AddFilterType(NotificationType.SimpleLoot);
@@ -97,7 +97,7 @@ namespace StatisticsAnalysisTool.Models
 
                     SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot = IsSelected ?? false;
                     break;
-                case NotificationType.UnknownLoot:
+                case LoggingFilterType.UnknownLoot:
                     if (IsSelected ?? false)
                     {
                         _trackingController?.AddFilterType(NotificationType.UnknownLoot);
@@ -109,7 +109,7 @@ namespace StatisticsAnalysisTool.Models
 
                     SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot = IsSelected ?? false;
                     break;
-                case NotificationType.SeasonPoints:
+                case LoggingFilterType.SeasonPoints:
                     if (IsSelected ?? false)
                     {
                         _trackingController?.AddFilterType(NotificationType.SeasonPoints);
@@ -121,22 +121,13 @@ namespace StatisticsAnalysisTool.Models
 
                     SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints = IsSelected ?? false;
                     break;
+                case LoggingFilterType.ShowLootFromMob:
+                    _trackingController.IsLootFromMobShown = IsSelected ?? false;
+                    SettingsController.CurrentSettings.IsLootFromMobShown = IsSelected ?? false;
+                    break;
             }
 
             _trackingController?.NotificationUiFilteringAsync();
-
-
-            //if (_isTrackingFilteredUnknownLoot)
-            //{
-            //    _trackingController?.AddFilterType(NotificationType.UnknownLoot);
-            //}
-            //else
-            //{
-            //    _trackingController?.RemoveFilterType(NotificationType.UnknownLoot);
-            //}
-
-            //_trackingController?.NotificationUiFilteringAsync();
-            //SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot = _isTrackingFilteredUnknownLoot;
         }
 
         public bool? IsSelected

@@ -134,6 +134,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private DashboardObject _dashboardObject = new();
         private string _loggingSearchText;
         private ObservableCollection<LoggingFilterObject> _loggingFilters = new();
+        private bool _isTrackingMobLoot;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -396,6 +397,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
             IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
             IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
+            IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
 
             TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
             if (TrackingDungeonsCollectionView != null)
@@ -413,52 +415,58 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             // Logging
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.Fame)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.Fame)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFame,
                 Name = MainWindowTranslation.Fame
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.Silver)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.Silver)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSilver,
                 Name = MainWindowTranslation.Silver
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.Faction)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.Faction)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFaction,
                 Name = MainWindowTranslation.Faction
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.SeasonPoints)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.SeasonPoints)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints,
                 Name = MainWindowTranslation.SeasonPoints
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.ConsumableLoot)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.ConsumableLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot,
                 Name = MainWindowTranslation.ConsumableLoot
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.EquipmentLoot)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.EquipmentLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot,
                 Name = MainWindowTranslation.EquipmentLoot
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.SimpleLoot)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.SimpleLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot,
                 Name = MainWindowTranslation.SimpleLoot
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, NotificationType.UnknownLoot)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.UnknownLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot,
                 Name = MainWindowTranslation.UnknownLoot
+            });
+
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.ShowLootFromMob)
+            {
+                IsSelected = SettingsController.CurrentSettings.IsLootFromMobShown,
+                Name = MainWindowTranslation.ShowLootFromMobs
             });
 
         }
@@ -1178,6 +1186,18 @@ namespace StatisticsAnalysisTool.ViewModels
                 _isTrackingFame = value;
 
                 SettingsController.CurrentSettings.IsTrackingFame = _isTrackingFame;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool IsTrackingMobLoot
+        {
+            get => _isTrackingMobLoot;
+            set
+            {
+                _isTrackingMobLoot = value;
+
+                SettingsController.CurrentSettings.IsTrackingMobLoot = _isTrackingMobLoot;
                 OnPropertyChanged();
             }
         }

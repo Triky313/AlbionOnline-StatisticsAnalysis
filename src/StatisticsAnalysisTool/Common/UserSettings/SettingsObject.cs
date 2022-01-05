@@ -29,7 +29,9 @@
         public bool IsTrackingPartyLootOnly { get; set; }
         public bool IsTrackingSilver { get; set; }
         public bool IsTrackingFame { get; set; }
+        public bool IsTrackingMobLoot { get; set; }
         public string SavedPlayerInformationName { get; set; }
         public bool IsLootLoggerSaveReminderActive { get; set; }
+        public bool IsLootFromMobShown { get; set; }
     }
 }

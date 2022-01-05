@@ -22,5 +22,6 @@ namespace StatisticsAnalysisTool.Network.Notification
         public int Quantity { get; }
         public string FromTranslation => LanguageController.Translation("FROM");
         public string LootedPlayer { get; }
+        public bool IsLootedPlayerMob => LootedPlayer.ToUpper().Equals("MOB");
     }
 }

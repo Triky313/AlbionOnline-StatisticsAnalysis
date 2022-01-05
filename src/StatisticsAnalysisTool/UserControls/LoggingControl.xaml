@@ -21,10 +21,10 @@
             </StackPanel>
         </Grid>
         <Grid Height="auto" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <StackPanel Orientation="Vertical" Height="120">
+            <StackPanel Orientation="Vertical" Height="68">
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,5" Height="26">
                     <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
-                    <ComboBox VerticalAlignment="Center" Margin="2,0,6,0" MinWidth="150" Height="24" ItemsSource="{Binding LoggingFilters}" 
+                    <ComboBox VerticalAlignment="Center" Margin="2,0,6,0" Width="150" Height="24" ItemsSource="{Binding LoggingFilters}" 
                               ItemTemplate="{StaticResource LoggingFilterObject}" />
 
                     <TextBox Text="{Binding LoggingSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="24" />
@@ -37,13 +37,13 @@
                               Content="{Binding Translation.TrackingSilver, FallbackValue=TRACKING__SILVER}" Margin="5,0,5,0" />
                     <CheckBox IsChecked="{Binding IsTrackingFame, FallbackValue=true}" 
                               Content="{Binding Translation.TrackingFame, FallbackValue=TRACKING__FAME}" Margin="5,0,5,0" />
-                    <!--<CheckBox IsChecked="{Binding IsTrackingMobLoot, FallbackValue=true}" 
-                              Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" Margin="5,0,5,0" />-->
+                    <CheckBox IsChecked="{Binding IsTrackingMobLoot, FallbackValue=true}" 
+                              Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" Margin="5,0,5,0" />
                 </StackPanel>
             </StackPanel>
         </Grid>
-        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,124,0,0" VerticalAlignment="Top"/>
-        <ScrollViewer Margin="0,127,0,0">
+        <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,70,0,0" VerticalAlignment="Top"/>
+        <ScrollViewer Margin="0,75,0,0">
             <ItemsControl ItemsSource="{Binding TrackingNotificationsCollectionView, IsAsync=True, Mode=OneWay}" />
         </ScrollViewer>
     </Grid>

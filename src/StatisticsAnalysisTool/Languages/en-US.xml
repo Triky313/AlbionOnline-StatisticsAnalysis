@@ -495,4 +495,6 @@
 	<translation name="MIGHT">Might</translation>
 	<translation name="FAVOR">Favor</translation>
 	<translation name="USAGE_FEE_PER_HUNDRED_FOOD">Usage fee per 100 food</translation>
+	<translation name="SHOW_LOOT_FROM_MOBS">Show loot from mobs</translation>
+	<translation name="TRACKING_MOB_LOOT">Tracking mob loot</translation>
 </translations>
