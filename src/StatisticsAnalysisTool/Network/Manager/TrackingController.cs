@@ -32,7 +32,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public EntityController EntityController;
         public LootController LootController;
         public StatisticController StatisticController;
-        private readonly List<NotificationType> _notificationTypeFilters = new();
+        private readonly List<NotificationType> _notificationTypesFilters = new();
 
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
         {
@@ -223,12 +223,14 @@ namespace StatisticsAnalysisTool.Network.Manager
                     });
 
                     await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable()?.Where(x =>
-                        x.Type is NotificationType.EquipmentLoot or NotificationType.ConsumableLoot or NotificationType.SimpleLoot
-                            or NotificationType.UnknownLoot
-                        && (((OtherGrabbedLootNotificationFragment)x.Fragment).Looter.ToLower().Contains(text.ToLower())
+                        (_notificationTypesFilters?.Contains(x.Type) ?? true)
+                        && 
+                        (
+                            ((OtherGrabbedLootNotificationFragment)x.Fragment).Looter.ToLower().Contains(text.ToLower())
                             || ((OtherGrabbedLootNotificationFragment)x.Fragment).LocalizedName.ToLower().Contains(text.ToLower())
                             || ((OtherGrabbedLootNotificationFragment)x.Fragment).LootedPlayer.ToLower().Contains(text.ToLower())
                         )
+                        && (IsLootFromMobShown || !((OtherGrabbedLootNotificationFragment)x.Fragment).IsLootedPlayerMob)
                     ).ForEachAsync(d =>
                     {
                         d.Visibility = Visibility.Visible;
@@ -236,14 +238,14 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
                 else
                 {
-                    // ReSharper disable once ConstantConditionalAccessQualifier
-                    await _mainWindowViewModel?.TrackingNotifications?.Where(x => !_notificationTypeFilters?.Contains(x.Type) ?? true)?.ToAsyncEnumerable().ForEachAsync(d =>
+                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable()?.ForEachAsync(d =>
                     {
                         d.Visibility = Visibility.Collapsed;
                     });
 
-                    // ReSharper disable once ConstantConditionalAccessQualifier
-                    await _mainWindowViewModel?.TrackingNotifications?.Where(x => _notificationTypeFilters?.Contains(x.Type) ?? false)?.ToAsyncEnumerable().ForEachAsync(d =>
+                    await _mainWindowViewModel?.TrackingNotifications?.Where(x => 
+                        (_notificationTypesFilters?.Contains(x.Type) ?? false)
+                        && (IsLootFromMobShown || !((OtherGrabbedLootNotificationFragment)x.Fragment).IsLootedPlayerMob))?.ToAsyncEnumerable().ForEachAsync(d =>
                     {
                         d.Visibility = Visibility.Visible;
                     });
@@ -263,25 +265,27 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public bool IsNotificationFiltered(TrackingNotification trackingNotification)
         {
-            return !_notificationTypeFilters?.Exists(x => x == trackingNotification.Type) ?? false;
+            return !_notificationTypesFilters?.Exists(x => x == trackingNotification.Type) ?? false;
         }
 
         public void AddFilterType(NotificationType notificationType)
         {
-            if (!_notificationTypeFilters.Exists(x => x == notificationType))
+            if (!_notificationTypesFilters.Exists(x => x == notificationType))
             {
-                _notificationTypeFilters.Add(notificationType);
+                _notificationTypesFilters.Add(notificationType);
             }
         }
 
         public void RemoveFilterType(NotificationType notificationType)
         {
-            if (_notificationTypeFilters.Exists(x => x == notificationType))
+            if (_notificationTypesFilters.Exists(x => x == notificationType))
             {
-                _ = _notificationTypeFilters.Remove(notificationType);
+                _ = _notificationTypesFilters.Remove(notificationType);
             }
         }
-        
+
+        public bool IsLootFromMobShown { get; set; }
+
         public async Task SetNotificationTypesAsync()
         {
             await Application.Current.Dispatcher.InvokeAsync(async () =>

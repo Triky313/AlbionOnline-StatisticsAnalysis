@@ -31,5 +31,6 @@
         public bool IsTrackingFame { get; set; }
         public string SavedPlayerInformationName { get; set; }
         public bool IsLootLoggerSaveReminderActive { get; set; }
+        public bool IsLootFromMobShown { get; set; }
     }
 }
