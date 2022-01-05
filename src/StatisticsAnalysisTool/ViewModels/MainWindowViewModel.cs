@@ -134,6 +134,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private DashboardObject _dashboardObject = new();
         private string _loggingSearchText;
         private ObservableCollection<LoggingFilterObject> _loggingFilters = new();
+        private bool _isTrackingMobLoot;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -396,6 +397,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
             IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
             IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
+            IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
 
             TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
             if (TrackingDungeonsCollectionView != null)
@@ -1184,6 +1186,18 @@ namespace StatisticsAnalysisTool.ViewModels
                 _isTrackingFame = value;
 
                 SettingsController.CurrentSettings.IsTrackingFame = _isTrackingFame;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool IsTrackingMobLoot
+        {
+            get => _isTrackingMobLoot;
+            set
+            {
+                _isTrackingMobLoot = value;
+
+                SettingsController.CurrentSettings.IsTrackingMobLoot = _isTrackingMobLoot;
                 OnPropertyChanged();
             }
         }

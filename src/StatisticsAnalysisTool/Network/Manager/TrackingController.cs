@@ -166,6 +166,11 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
+            if (!_mainWindowViewModel.IsTrackingMobLoot && item.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: true })
+            {
+                return;
+            }
+
             SetNotificationFilteredVisibility(item);
 
             await Application.Current.Dispatcher.InvokeAsync(delegate

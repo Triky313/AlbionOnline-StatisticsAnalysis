@@ -80,5 +80,6 @@ namespace StatisticsAnalysisTool.Models
         public static string TrackingIsNotActive => LanguageController.Translation("TRACKING_IS_NOT_ACTIVE");
         public static string Dashboard => LanguageController.Translation("DASHBOARD");
         public static string ShowLootFromMobs => LanguageController.Translation("SHOW_LOOT_FROM_MOBS");
+        public static string TrackingMobLoot => LanguageController.Translation("TRACKING_MOB_LOOT");
     }
 }
