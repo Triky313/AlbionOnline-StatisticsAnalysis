@@ -1,18 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class GrownItem
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 
-    [JsonProperty("@growtime")]
+    [JsonPropertyName("@growtime")]
     public string GrowTime { get; set; }
 
-    [JsonProperty("@fame")]
+    [JsonPropertyName("@fame")]
     public string Fame { get; set; }
 
-    [JsonProperty("offspring")]
+    [JsonPropertyName("offspring")]
     public Offspring OffSpring { get; set; }
 }

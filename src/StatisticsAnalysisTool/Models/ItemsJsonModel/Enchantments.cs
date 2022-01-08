@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class Enchantments
 {
-    [JsonProperty("enchantment")]
-    public Enchantment Enchantment { get; set; }
+    [JsonPropertyName("enchantment")]
+    public object Enchantment { get; set; }
 }

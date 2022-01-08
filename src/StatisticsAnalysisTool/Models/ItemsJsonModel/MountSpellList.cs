@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class MountSpellList
 {
-    [JsonProperty("mountspell")]
+    [JsonPropertyName("mountspell")]
     public object MountSpell { get; set; }
 }

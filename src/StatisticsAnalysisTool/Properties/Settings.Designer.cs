@@ -333,5 +333,29 @@ namespace StatisticsAnalysisTool.Properties {
                 this["ItemSpriteToJournalFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json")]
+        public string DefaultItemsJsonSourceUrl {
+            get {
+                return ((string)(this["DefaultItemsJsonSourceUrl"]));
+            }
+            set {
+                this["DefaultItemsJsonSourceUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Items.json")]
+        public string ItemsJsonFileName {
+            get {
+                return ((string)(this["ItemsJsonFileName"]));
+            }
+            set {
+                this["ItemsJsonFileName"] = value;
+            }
+        }
     }
 }

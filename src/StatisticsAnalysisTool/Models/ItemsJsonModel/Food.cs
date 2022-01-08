@@ -1,18 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class Food
 {
-    [JsonProperty("@nutritionmax")]
+    [JsonPropertyName("@nutritionmax")]
     public string NutritionMax { get; set; }
 
-    [JsonProperty("@secondspernutrition")]
+    [JsonPropertyName("@secondspernutrition")]
     public string SecondSpernutrition { get; set; }
 
-    [JsonProperty("acceptedfood")]
+    [JsonPropertyName("acceptedfood")]
     public AcceptedFood AcceptedFood { get; set; }
 
-    [JsonProperty("@lossbeforehungry")]
+    [JsonPropertyName("@lossbeforehungry")]
     public string LossBeforeHungry { get; set; }
 }

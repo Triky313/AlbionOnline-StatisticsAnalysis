@@ -1,25 +1,25 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class MountSkin
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 
-    [JsonProperty("@uisprite")]
+    [JsonPropertyName("@uisprite")]
     public string UiSprite { get; set; }
 
-    //[JsonProperty("@prefabname")]
+    //[JsonPropertyName("@prefabname")]
     //public string PrefabName { get; set; }
 
-    //[JsonProperty("@prefabscaling")]
+    //[JsonPropertyName("@prefabscaling")]
     //public string Prefabscaling { get; set; }
 
-    //[JsonProperty("@despawneffect")]
+    //[JsonPropertyName("@despawneffect")]
     //public string DespawnEffect { get; set; }
 
-    //[JsonProperty("@despawneffectscaling")]
+    //[JsonPropertyName("@despawneffectscaling")]
     //public string DespawnEffectScaling { get; set; }
     //public SocketPreset SocketPreset { get; set; }
     //public AudioInfo AudioInfo { get; set; }

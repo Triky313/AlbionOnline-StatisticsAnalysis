@@ -1,31 +1,35 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Annotations;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class CraftingRequirements
 {
-    [JsonProperty("@silver")]
+    [JsonPropertyName("@silver")]
     public string Silver { get; set; }
 
-    [JsonProperty("@time")]
+    [JsonPropertyName("@time")]
     public string Time { get; set; }
 
-    [JsonProperty("@craftingfocus")]
+    [JsonPropertyName("@craftingfocus")]
     public string CraftingFocus { get; set; }
-    [JsonProperty("craftresource")]
-    public List<CraftResource> CraftResource { get; set; }
 
-    [JsonProperty("@swaptransaction")]
+    [JsonPropertyName("craftresource")]
+    public object CraftResource { get; set; }
+
+    [JsonPropertyName("@swaptransaction")]
     public string SwapTransaction { get; set; }
-    [JsonProperty("playerfactionstanding")]
+
+    [JsonPropertyName("playerfactionstanding")]
     public PlayerFactionStanding PlayerFactionStanding { get; set; }
-    [JsonProperty("currency")]
+
+    [JsonPropertyName("currency")]
     public Currency Currency { get; set; }
 
-    [JsonProperty("@amountcrafted")]
+    [JsonPropertyName("@amountcrafted")]
     public string AmountCrafted { get; set; }
 
-    [JsonProperty("@forcesinglecraft")]
+    [JsonPropertyName("@forcesinglecraft")]
     public string ForceSingleCraft { get; set; }
 }

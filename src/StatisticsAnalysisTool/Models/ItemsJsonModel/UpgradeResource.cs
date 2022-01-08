@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class UpgradeResource
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 
-    [JsonProperty("@count")]
+    [JsonPropertyName("@count")]
     public string Count { get; set; }
 }

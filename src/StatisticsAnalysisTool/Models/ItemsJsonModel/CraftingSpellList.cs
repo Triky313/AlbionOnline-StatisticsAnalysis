@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class CraftingSpellList
 {
-    [JsonProperty("craftspell")]
-    public CraftSpell CraftSpell { get; set; }
+    [JsonPropertyName("craftspell")]
+    public object CraftSpell { get; set; }
 }

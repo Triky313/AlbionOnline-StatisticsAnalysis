@@ -55,7 +55,7 @@
 	<translation name="5_MINUTES">5 Minuten</translation>
 	<translation name="MIN_PROFIT_TOOLTIP">Gibt den minimalen Profit an, den ein Item generieren soll.</translation>
 	<translation name="REMOVE">Entfernen</translation>
-	<translation name="ITEM_LIST_SOURCE_URL">Itemliste Ressourcen Url</translation>
+	<translation name="ITEM_LIST_SOURCE_URL">Itemliste Url Quelle</translation>
 	<translation name="ITEM_LIST_CAN_NOT_BE_LOADED">Itemliste kann nicht geladen werden.</translation>
 	<translation name="ERROR">Fehler</translation>
 	<translation name="NOTE">Hinweis</translation>
@@ -497,4 +497,6 @@
 	<translation name="USAGE_FEE_PER_HUNDRED_FOOD">Nutzungsgebühr pro 100 Nahrung</translation>
 	<translation name="SHOW_LOOT_FROM_MOBS">Zeige Loot von Mobs</translation>
 	<translation name="TRACKING_MOB_LOOT">Mob Loot tracken</translation>
+	<translation name="ITEMS_JSON_SOURCE_URL">Items.json Url Quelle</translation>
+	<translation name="UPDATE_ITEMS_JSON_BY_DAYS">items.json aktualisieren: </translation>
 </translations>

@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class CraftSpell
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 }

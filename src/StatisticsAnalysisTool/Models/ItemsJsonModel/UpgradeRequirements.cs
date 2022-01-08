@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class UpgradeRequirements
 {
-    [JsonProperty("upgraderesource")]
+    [JsonPropertyName("upgraderesource")]
     public UpgradeResource UpgradeResource { get; set; }
 }

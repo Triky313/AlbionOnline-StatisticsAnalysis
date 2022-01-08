@@ -1,50 +1,50 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class HideoutItem
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 
-    [JsonProperty("@itemvalue")]
+    [JsonPropertyName("@itemvalue")]
     public string ItemValue { get; set; }
 
-    [JsonProperty("@tier")]
+    [JsonPropertyName("@tier")]
     public string Tier { get; set; }
 
-    [JsonProperty("@mindistance")]
+    [JsonPropertyName("@mindistance")]
     public string MinDistance { get; set; }
 
-    [JsonProperty("@mindistanceintunnel")]
+    [JsonPropertyName("@mindistanceintunnel")]
     public string MinDistanceinTunnel { get; set; }
 
-    [JsonProperty("@placementduration")]
+    [JsonPropertyName("@placementduration")]
     public string Placementduration { get; set; }
 
-    [JsonProperty("@primetimedurationminutes")]
+    [JsonPropertyName("@primetimedurationminutes")]
     public string Primetimedurationminutes { get; set; }
 
-    [JsonProperty("@maxstacksize")]
+    [JsonPropertyName("@maxstacksize")]
     public string Maxstacksize { get; set; }
 
-    [JsonProperty("@weight")]
+    [JsonPropertyName("@weight")]
     public string Weight { get; set; }
 
-    [JsonProperty("@unlockedtocraft")]
+    [JsonPropertyName("@unlockedtocraft")]
     public string Unlockedtocraft { get; set; }
 
-    [JsonProperty("@ShopCategory")]
+    [JsonPropertyName("@ShopCategory")]
     public string ShopCategory { get; set; }
 
-    [JsonProperty("@shopsubcategory1")]
+    [JsonPropertyName("@shopsubcategory1")]
     public string ShopSubCategory1 { get; set; }
 
-    //[JsonProperty("@uicraftsoundstart")]
+    //[JsonPropertyName("@uicraftsoundstart")]
     //public string UiCraftSoundStart { get; set; }
 
-    //[JsonProperty("@uicraftsoundfinish")]
+    //[JsonPropertyName("@uicraftsoundfinish")]
     //public string Uicraftsoundfinish { get; set; }
-    [JsonProperty("craftingrequirements")]
+    [JsonPropertyName("craftingrequirements")]
     public CraftingRequirements CraftingRequirements { get; set; }
 }

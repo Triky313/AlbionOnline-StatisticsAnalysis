@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class LootList
 {
-    [JsonProperty("loot")]
+    [JsonPropertyName("loot")]
     public object Loot { get; set; }
 }

@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Models.ItemWindowModel;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -26,6 +27,7 @@ namespace StatisticsAnalysisTool.Common
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static ObservableCollection<Item> Items;
+        public static ItemsJson ItemsJson;
 
         private static readonly string FullItemInformationFilePath =
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FullItemInformationFileName);
@@ -216,7 +218,10 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<bool> GetItemListFromJsonAsync()
         {
-            var url = GetItemListSourceUrlIfExist();
+            var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
+            var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
+            SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemsJsonSourceUrl;
+
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
 
             if (string.IsNullOrEmpty(url))
@@ -247,25 +252,7 @@ namespace StatisticsAnalysisTool.Common
             }
             return Items?.Count > 0;
         }
-
-        private static string GetItemListSourceUrlIfExist()
-        {
-            var url = SettingsController.CurrentSettings.ItemListSourceUrl ?? string.Empty;
-
-            if (string.IsNullOrEmpty(url))
-            {
-                url = Settings.Default.DefaultItemListSourceUrl ?? string.Empty;
-
-                if (!string.IsNullOrEmpty(url))
-                {
-                    SettingsController.CurrentSettings.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
-                    _ = MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
-                }
-            }
-
-            return url;
-        }
-
+        
         private static async Task<ObservableCollection<Item>> GetItemListFromLocal()
         {
             try
@@ -281,24 +268,8 @@ namespace StatisticsAnalysisTool.Common
             }
             catch
             {
-                DeleteItemList();
+                DeleteLocalFile($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
                 return new ObservableCollection<Item>();
-            }
-        }
-
-        private static void DeleteItemList()
-        {
-            if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}"))
-            {
-                try
-                {
-                    File.Delete($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
-                }
-                catch (Exception e)
-                {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
-                }
             }
         }
 
@@ -452,7 +423,7 @@ namespace StatisticsAnalysisTool.Common
                 return false;
             }
 
-            var lastUpdateWithCycleDays = lastUpdate.Value.AddDays(SettingsController.CurrentSettings.FullItemInformationUpdateCycleDays);
+            var lastUpdateWithCycleDays = lastUpdate.Value.AddDays(100);
             return lastUpdateWithCycleDays >= DateTime.UtcNow;
         }
 
@@ -530,6 +501,136 @@ namespace StatisticsAnalysisTool.Common
             return itemInfo?.SlotType == slotType;
         }
 
+        ///////////////////////// NEW FULL ITEM INFO
+
+        public static async Task<bool> GetItemsJsonAsync()
+        {
+            var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
+            var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemsJsonSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
+            SettingsController.CurrentSettings.ItemsJsonSourceUrl = currentSettingsItemsJsonSourceUrl;
+
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
+
+            if (string.IsNullOrEmpty(url))
+            {
+                return false;
+            }
+
+            if (File.Exists(localFilePath))
+            {
+                var fileDateTime = File.GetLastWriteTime(localFilePath);
+
+                if (fileDateTime.AddDays(SettingsController.CurrentSettings.UpdateItemsJsonByDays) < DateTime.Now)
+                {
+                    if (await GetItemsJsonFromWebAsync(url))
+                    {
+                        ItemsJson = await GetItemsJsonFromLocal();
+                    }
+                    return ItemsJson != null;
+                }
+
+                ItemsJson = await GetItemsJsonFromLocal();
+                // TODO: ItemsJson != null; ändern zu items hat objekte
+                return ItemsJson != null;
+            }
+
+            if (await GetItemsJsonFromWebAsync(url))
+            {
+                ItemsJson = await GetItemsJsonFromLocal();
+            }
+            return ItemsJson != null;
+        }
+
+        private static async Task<bool> GetItemsJsonFromWebAsync(string url)
+        {
+            using var client = new HttpClient
+            {
+                Timeout = TimeSpan.FromSeconds(300)
+            };
+
+            try
+            {
+                using var response = await client.GetAsync(url);
+                using var content = response.Content;
+
+                var fileString = await content.ReadAsStringAsync();
+                await File.WriteAllTextAsync($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}", fileString, Encoding.UTF8);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static async Task<ItemsJson> GetItemsJsonFromLocal()
+        {
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
+
+            try
+            {
+                var options = new JsonSerializerOptions()
+                {
+                    //NumberHandling = JsonNumberHandling.AllowReadingFromString
+                                     //| JsonNumberHandling.WriteAsString
+                };
+
+                var localFileString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
+                return JsonSerializer.Deserialize<ItemsJson>(localFileString, options);
+            }
+            catch
+            {
+                DeleteLocalFile(localFilePath);
+                return new ItemsJson();
+            }
+        }
+
         #endregion ItemInformation
+
+        #region Util methods
+
+        private static void DeleteLocalFile(string localFileString)
+        {
+            if (File.Exists(localFileString))
+            {
+                try
+                {
+                    File.Delete(localFileString);
+                }
+                catch (Exception e)
+                {
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
+                }
+            }
+        }
+
+        // ReSharper disable once RedundantAssignment
+        private static string GetSourceUrlOrDefault(string defaultUrl, string sourceUrl, ref string newSourceUrl)
+        {
+            var tempSourceUrl = string.IsNullOrEmpty(sourceUrl) ? defaultUrl : sourceUrl;
+            newSourceUrl = tempSourceUrl;
+            return newSourceUrl;
+        }
+
+        private static string GetItemListSourceUrlIfExist()
+        {
+            var url = SettingsController.CurrentSettings.ItemListSourceUrl ?? string.Empty;
+
+            if (string.IsNullOrEmpty(url))
+            {
+                url = Settings.Default.DefaultItemListSourceUrl ?? string.Empty;
+
+                if (!string.IsNullOrEmpty(url))
+                {
+                    SettingsController.CurrentSettings.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
+                    _ = MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
+                }
+            }
+
+            return url;
+        }
+
+        #endregion
     }
 }

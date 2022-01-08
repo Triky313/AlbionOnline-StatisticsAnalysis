@@ -1,36 +1,36 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class Items
 {
-    [JsonProperty("shopcategories")]
+    [JsonPropertyName("shopcategories")]
     public ShopCategories ShopCategories { get; set; }
-    [JsonProperty("hideoutitem")]
+    [JsonPropertyName("hideoutitem")]
     public HideoutItem HideoutItem { get; set; }
-    [JsonProperty("farmableitem")]
+    [JsonPropertyName("farmableitem")]
     public List<FarmableItem> FarmableItem { get; set; }
-    [JsonProperty("simpleitem")]
+    [JsonPropertyName("simpleitem")]
     public List<SimpleItem> SimpleItem { get; set; }
-    [JsonProperty("consumableitem")]
+    [JsonPropertyName("consumableitem")]
     public List<ConsumableItem> ConsumableItem { get; set; }
-    [JsonProperty("consumablefrominventoryitem")]
+    [JsonPropertyName("consumablefrominventoryitem")]
     public List<ConsumableFromInventoryItem> ConsumableFromInventoryItem { get; set; }
-    [JsonProperty("equipmentitem")]
+    [JsonPropertyName("equipmentitem")]
     public List<EquipmentItem> EquipmentItem { get; set; }
-    [JsonProperty("weapon")]
+    [JsonPropertyName("weapon")]
     public List<Weapon> Weapon { get; set; }
-    [JsonProperty("mount")]
+    [JsonPropertyName("mount")]
     public List<Mount> Mount { get; set; }
-    [JsonProperty("furnitureitem")]
+    [JsonPropertyName("furnitureitem")]
     public List<FurnitureItem> FurnitureItem { get; set; }
-    [JsonProperty("journalitem")]
+    [JsonPropertyName("journalitem")]
     public List<JournalItem> JournalItem { get; set; }
-    [JsonProperty("labourercontract")]
+    [JsonPropertyName("labourercontract")]
     public List<LabourerContract> LabourerContract { get; set; }
-    [JsonProperty("mountskin")]
+    [JsonPropertyName("mountskin")]
     public List<MountSkin> MountSkin { get; set; }
-    [JsonProperty("crystalleagueitem")]
+    [JsonPropertyName("crystalleagueitem")]
     public List<CrystalLeagueItem> CrystalLeagueItem { get; set; }
 }

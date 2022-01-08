@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class RepairKit
 {
-    [JsonProperty("@repaircostfactor")]
+    [JsonPropertyName("@repaircostfactor")]
     public string RepairCostFactor { get; set; }
 
-    [JsonProperty("@maxtier")]
+    [JsonPropertyName("@maxtier")]
     public string MaxTier { get; set; }
 }

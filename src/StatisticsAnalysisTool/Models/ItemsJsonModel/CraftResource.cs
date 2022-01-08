@@ -1,18 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class CraftResource
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 
-    [JsonProperty("@count")]
+    [JsonPropertyName("@count")]
     public string Count { get; set; }
 
-    [JsonProperty("@maxreturnamount")]
+    [JsonPropertyName("@maxreturnamount")]
     public string MaxReturnAmount { get; set; }
 
-    [JsonProperty("@enchantmentlevel")]
+    [JsonPropertyName("@enchantmentlevel")]
     public string EnchantmentLevel { get; set; }
 }

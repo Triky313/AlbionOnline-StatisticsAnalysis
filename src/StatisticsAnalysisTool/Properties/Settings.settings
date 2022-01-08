@@ -89,5 +89,11 @@
     <Setting Name="ItemSpriteToJournalFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">ItemSpriteToJournal.json</Value>
     </Setting>
+    <Setting Name="DefaultItemsJsonSourceUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json</Value>
+    </Setting>
+    <Setting Name="ItemsJsonFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Items.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

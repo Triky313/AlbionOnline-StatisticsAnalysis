@@ -1,89 +1,89 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class FarmableItem
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 
-    [JsonProperty("@tier")]
+    [JsonPropertyName("@tier")]
     public string Tier { get; set; }
 
-    [JsonProperty("@placefame")]
+    [JsonPropertyName("@placefame")]
     public string PlaceFame { get; set; }
 
-    [JsonProperty("@pickupable")]
+    [JsonPropertyName("@pickupable")]
     public string Pickupable { get; set; }
 
-    [JsonProperty("@destroyable")]
+    [JsonPropertyName("@destroyable")]
     public string Destroyable { get; set; }
 
-    [JsonProperty("@unlockedtoplace")]
+    [JsonPropertyName("@unlockedtoplace")]
     public string UnlockedToPlace { get; set; }
 
-    [JsonProperty("@maxstacksize")]
+    [JsonPropertyName("@maxstacksize")]
     public string MaxStackSize { get; set; }
 
-    [JsonProperty("@ShopCategory")]
+    [JsonPropertyName("@ShopCategory")]
     public string ShopCategory { get; set; }
 
-    [JsonProperty("@shopsubcategory1")]
+    [JsonPropertyName("@shopsubcategory1")]
     public string ShopSubCategory1 { get; set; }
 
-    [JsonProperty("@kind")]
+    [JsonPropertyName("@kind")]
     public string Kind { get; set; }
 
-    [JsonProperty("@weight")]
+    [JsonPropertyName("@weight")]
     public string Weight { get; set; }
 
-    [JsonProperty("@unlockedtocraft")]
+    [JsonPropertyName("@unlockedtocraft")]
     public string UnlockedToCraft { get; set; }
 
-    [JsonProperty("@animationid")]
+    [JsonPropertyName("@animationid")]
     public string AnimationId { get; set; }
 
-    [JsonProperty("@activefarmfocuscost")]
+    [JsonPropertyName("@activefarmfocuscost")]
     public string ActiveFarmFocusCost { get; set; }
 
-    [JsonProperty("@activefarmmaxcycles")]
+    [JsonPropertyName("@activefarmmaxcycles")]
     public string ActiveFarmMaxCycles { get; set; }
 
-    [JsonProperty("@activefarmactiondurationseconds")]
+    [JsonPropertyName("@activefarmactiondurationseconds")]
     public string ActiveFarmActionDurationSeconds { get; set; }
 
-    [JsonProperty("@activefarmcyclelengthseconds")]
+    [JsonPropertyName("@activefarmcyclelengthseconds")]
     public string ActiveFarmCycleLengthSeconds { get; set; }
 
-    [JsonProperty("@activefarmbonus")]
+    [JsonPropertyName("@activefarmbonus")]
     public string ActiveFarmBonus { get; set; }
 
-    [JsonProperty("@itemvalue")]
+    [JsonPropertyName("@itemvalue")]
     public string ItemValue { get; set; }
     public CraftingRequirements CraftingRequirements { get; set; }
     //public AudioInfo AudioInfo { get; set; }
-    [JsonProperty("harvest")]
+    [JsonPropertyName("harvest")]
     public Harvest Harvest { get; set; }
 
-    [JsonProperty("@prefabname")]
+    [JsonPropertyName("@prefabname")]
     public string PrefabName { get; set; }
 
-    [JsonProperty("@prefabscale")]
+    [JsonPropertyName("@prefabscale")]
     public string PrefabScale { get; set; }
 
-    [JsonProperty("@resourcevalue")]
+    [JsonPropertyName("@resourcevalue")]
     public string ResourceValue { get; set; }
-    [JsonProperty("grownitem")]
+    [JsonPropertyName("grownitem")]
     public GrownItem GrownItem { get; set; }
-    [JsonProperty("consumption")]
+    [JsonPropertyName("consumption")]
     public Consumption Consumption { get; set; }
 
-    [JsonProperty("@tile")]
+    [JsonPropertyName("@tile")]
     public string Tile { get; set; }
 
-    [JsonProperty("@uisprite")]
+    [JsonPropertyName("@uisprite")]
     public string UiSprite { get; set; }
 
-    [JsonProperty("@showinmarketplace")]
+    [JsonPropertyName("@showinmarketplace")]
     public string ShowInMarketPlace { get; set; }
 }

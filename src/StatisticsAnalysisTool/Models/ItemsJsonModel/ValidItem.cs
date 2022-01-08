@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class ValidItem
 {
-    [JsonProperty("@id")]
+    [JsonPropertyName("@id")]
     public string Id { get; set; }
 }

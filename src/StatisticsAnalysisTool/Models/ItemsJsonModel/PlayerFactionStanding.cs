@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class PlayerFactionStanding
 {
-    [JsonProperty("@faction")]
+    [JsonPropertyName("@faction")]
     public string Faction { get; set; }
 
-    [JsonProperty("@minstanding")]
+    [JsonPropertyName("@minstanding")]
     public string MinStanding { get; set; }
 }

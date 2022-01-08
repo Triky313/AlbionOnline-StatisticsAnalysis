@@ -1,109 +1,109 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class Weapon
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 
-    [JsonProperty("@mesh")]
+    [JsonPropertyName("@mesh")]
     public string Mesh { get; set; }
 
-    [JsonProperty("@uisprite")]
+    [JsonPropertyName("@uisprite")]
     public string UiSprite { get; set; }
 
-    [JsonProperty("@maxqualitylevel")]
+    [JsonPropertyName("@maxqualitylevel")]
     public string Maxqualitylevel { get; set; }
 
-    [JsonProperty("@abilitypower")]
+    [JsonPropertyName("@abilitypower")]
     public string AbilityPower { get; set; }
 
-    [JsonProperty("@slottype")]
+    [JsonPropertyName("@slottype")]
     public string SlotType { get; set; }
 
-    [JsonProperty("@ShopCategory")]
+    [JsonPropertyName("@ShopCategory")]
     public string ShopCategory { get; set; }
 
-    [JsonProperty("@shopsubcategory1")]
+    [JsonPropertyName("@shopsubcategory1")]
     public string ShopSubCategory1 { get; set; }
 
-    [JsonProperty("@attacktype")]
+    [JsonPropertyName("@attacktype")]
     public string AttackType { get; set; }
 
-    [JsonProperty("@attackdamage")]
+    [JsonPropertyName("@attackdamage")]
     public string AttackDamage { get; set; }
 
-    [JsonProperty("@attackspeed")]
+    [JsonPropertyName("@attackspeed")]
     public string AttackSpeed { get; set; }
 
-    [JsonProperty("@attackrange")]
+    [JsonPropertyName("@attackrange")]
     public string AttackRange { get; set; }
 
-    [JsonProperty("@twohanded")]
+    [JsonPropertyName("@twohanded")]
     public string TwoHanded { get; set; }
 
-    [JsonProperty("@tier")]
+    [JsonPropertyName("@tier")]
     public string Tier { get; set; }
 
-    [JsonProperty("@weight")]
+    [JsonPropertyName("@weight")]
     public string Weight { get; set; }
 
-    [JsonProperty("@activespellslots")]
+    [JsonPropertyName("@activespellslots")]
     public string ActiveSpellSlots { get; set; }
 
-    [JsonProperty("@passivespellslots")]
+    [JsonPropertyName("@passivespellslots")]
     public string PassiveSpellSlots { get; set; }
 
-    [JsonProperty("@durability")]
+    [JsonPropertyName("@durability")]
     public string Durability { get; set; }
 
-    [JsonProperty("@durabilityloss_attack")]
+    [JsonPropertyName("@durabilityloss_attack")]
     public string DurabilityLossAttack { get; set; }
 
-    [JsonProperty("@durabilityloss_spelluse")]
+    [JsonPropertyName("@durabilityloss_spelluse")]
     public string DurabilityLossSpellUse { get; set; }
 
-    [JsonProperty("@durabilityloss_receivedattack")]
+    [JsonPropertyName("@durabilityloss_receivedattack")]
     public string DurabilityLossReceivedAttack { get; set; }
 
-    [JsonProperty("@durabilityloss_receivedspell")]
+    [JsonPropertyName("@durabilityloss_receivedspell")]
     public string DurabilityLossReceivedSpell { get; set; }
 
-    //[JsonProperty("@mainhandanimationtype")]
+    //[JsonPropertyName("@mainhandanimationtype")]
     //public string Mainhandanimationtype { get; set; }
 
-    [JsonProperty("@unlockedtocraft")]
+    [JsonPropertyName("@unlockedtocraft")]
     public string UnlockedToCraft { get; set; }
 
-    [JsonProperty("@unlockedtoequip")]
+    [JsonPropertyName("@unlockedtoequip")]
     public string UnlockedToEquip { get; set; }
 
-    [JsonProperty("@itempower")]
+    [JsonPropertyName("@itempower")]
     public string ItemPower { get; set; }
 
-    [JsonProperty("@unequipincombat")]
+    [JsonPropertyName("@unequipincombat")]
     public string UnequipInCombat { get; set; }
 
-    //[JsonProperty("@uicraftsoundstart")]
+    //[JsonPropertyName("@uicraftsoundstart")]
     //public string Uicraftsoundstart { get; set; }
 
-    //[JsonProperty("@uicraftsoundfinish")]
+    //[JsonPropertyName("@uicraftsoundfinish")]
     //public string Uicraftsoundfinish { get; set; }
 
-    [JsonProperty("@canbeovercharged")]
+    [JsonPropertyName("@canbeovercharged")]
     public string CanBeOvercharged { get; set; }
-    [JsonProperty("canharvest")]
+    [JsonPropertyName("canharvest")]
     public CanHarvest CanHarvest { get; set; }
     public CraftingRequirements CraftingRequirements { get; set; }
     //public AudioInfo AudioInfo { get; set; }
     //public SocketPreset SocketPreset { get; set; }
 
-    [JsonProperty("@craftingcategory")]
+    [JsonPropertyName("@craftingcategory")]
     public string CraftingCategory { get; set; }
 
-    [JsonProperty("@descriptionlocatag")]
+    [JsonPropertyName("@descriptionlocatag")]
     public string DescriptionLocaTag { get; set; }
-    [JsonProperty("craftingspelllist")]
+    [JsonPropertyName("craftingspelllist")]
     public CraftingSpellList CraftingSpellList { get; set; }
 }

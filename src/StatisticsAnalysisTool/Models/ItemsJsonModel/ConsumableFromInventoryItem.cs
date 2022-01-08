@@ -1,70 +1,70 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class ConsumableFromInventoryItem
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 
-    [JsonProperty("@tradable")]
+    [JsonPropertyName("@tradable")]
     public string Tradable { get; set; }
 
-    [JsonProperty("@uisprite")]
+    [JsonPropertyName("@uisprite")]
     public string UiSprite { get; set; }
 
-    [JsonProperty("@abilitypower")]
+    [JsonPropertyName("@abilitypower")]
     public string AbilityPower { get; set; }
 
-    [JsonProperty("@consumespell")]
+    [JsonPropertyName("@consumespell")]
     public string ConsumeSpell { get; set; }
 
-    [JsonProperty("@ShopCategory")]
+    [JsonPropertyName("@ShopCategory")]
     public string ShopCategory { get; set; }
 
-    [JsonProperty("@shopsubcategory1")]
+    [JsonPropertyName("@shopsubcategory1")]
     public string ShopSubCategory1 { get; set; }
 
-    [JsonProperty("@tier")]
+    [JsonPropertyName("@tier")]
     public string Tier { get; set; }
 
-    [JsonProperty("@weight")]
+    [JsonPropertyName("@weight")]
     public string Weight { get; set; }
 
-    [JsonProperty("@dummyitempower")]
+    [JsonPropertyName("@dummyitempower")]
     public string DummyItemPower { get; set; }
 
-    [JsonProperty("@maxstacksize")]
+    [JsonPropertyName("@maxstacksize")]
     public string MaxStackSize { get; set; }
 
-    [JsonProperty("@unlockedtocraft")]
+    [JsonPropertyName("@unlockedtocraft")]
     public string UnlockedToCraft { get; set; }
 
-    //[JsonProperty("@uicraftsoundstart")]
+    //[JsonPropertyName("@uicraftsoundstart")]
     //public string Uicraftsoundstart { get; set; }
 
-    //[JsonProperty("@uicraftsoundfinish")]
+    //[JsonPropertyName("@uicraftsoundfinish")]
     //public string Uicraftsoundfinish { get; set; }
 
-    //[JsonProperty("@uispriteoverlay1")]
+    //[JsonPropertyName("@uispriteoverlay1")]
     //public string Uispriteoverlay1 { get; set; }
 
-    [JsonProperty("@itemvalue")]
+    [JsonPropertyName("@itemvalue")]
     public string ItemValue { get; set; }
     public CraftingRequirements CraftingRequirements { get; set; }
 
-    [JsonProperty("@allowfullstackusage")]
+    [JsonPropertyName("@allowfullstackusage")]
     public string AllowFullStackUsage { get; set; }
 
-    [JsonProperty("@logconsumption")]
+    [JsonPropertyName("@logconsumption")]
     public string LogConsumption { get; set; }
 
-    [JsonProperty("@enchantmentlevel")]
+    [JsonPropertyName("@enchantmentlevel")]
     public string EnchantmentLevel { get; set; }
 
-    [JsonProperty("@descriptionlocatag")]
+    [JsonPropertyName("@descriptionlocatag")]
     public string DescriptionLocaTag { get; set; }
 
-    [JsonProperty("@craftingcategory")]
+    [JsonPropertyName("@craftingcategory")]
     public string CraftingCategory { get; set; }
 }

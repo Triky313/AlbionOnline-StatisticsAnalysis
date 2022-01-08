@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class Seed
 {
-    [JsonProperty("@chance")]
+    [JsonPropertyName("@chance")]
     public string Chance { get; set; }
 
-    [JsonProperty("@amount")]
+    [JsonPropertyName("@amount")]
     public string Amount { get; set; }
 }

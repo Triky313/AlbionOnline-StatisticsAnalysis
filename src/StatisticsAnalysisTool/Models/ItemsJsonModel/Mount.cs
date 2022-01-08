@@ -1,172 +1,172 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class Mount
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 
-    [JsonProperty("@mountcategory")]
+    [JsonPropertyName("@mountcategory")]
     public string Mountcategory { get; set; }
 
-    [JsonProperty("@maxqualitylevel")]
+    [JsonPropertyName("@maxqualitylevel")]
     public string Maxqualitylevel { get; set; }
 
-    [JsonProperty("@itempower")]
+    [JsonPropertyName("@itempower")]
     public string Itempower { get; set; }
 
-    [JsonProperty("@abilitypower")]
+    [JsonPropertyName("@abilitypower")]
     public string AbilityPower { get; set; }
 
-    [JsonProperty("@slottype")]
+    [JsonPropertyName("@slottype")]
     public string SlotType { get; set; }
 
-    [JsonProperty("@ShopCategory")]
+    [JsonPropertyName("@ShopCategory")]
     public string ShopCategory { get; set; }
 
-    [JsonProperty("@shopsubcategory1")]
+    [JsonPropertyName("@shopsubcategory1")]
     public string ShopSubCategory1 { get; set; }
 
-    [JsonProperty("@mountedbuff")]
+    [JsonPropertyName("@mountedbuff")]
     public string MountedBuff { get; set; }
 
-    [JsonProperty("@halfmountedbuff")]
+    [JsonPropertyName("@halfmountedbuff")]
     public string HalfMountedBuff { get; set; }
 
-    [JsonProperty("@tier")]
+    [JsonPropertyName("@tier")]
     public string Tier { get; set; }
 
-    [JsonProperty("@weight")]
+    [JsonPropertyName("@weight")]
     public string Weight { get; set; }
 
-    [JsonProperty("@activespellslots")]
+    [JsonPropertyName("@activespellslots")]
     public string ActiveSpellSlots { get; set; }
 
-    [JsonProperty("@passivespellslots")]
+    [JsonPropertyName("@passivespellslots")]
     public string PassiveSpellSlots { get; set; }
 
-    [JsonProperty("@durability")]
+    [JsonPropertyName("@durability")]
     public string Durability { get; set; }
 
-    [JsonProperty("@durabilityloss_attack")]
+    [JsonPropertyName("@durabilityloss_attack")]
     public string DurabilityLossAttack { get; set; }
 
-    [JsonProperty("@durabilityloss_spelluse")]
+    [JsonPropertyName("@durabilityloss_spelluse")]
     public string DurabilityLossSpellUse { get; set; }
 
-    [JsonProperty("@durabilityloss_receivedattack")]
+    [JsonPropertyName("@durabilityloss_receivedattack")]
     public string DurabilityLossReceivedAttack { get; set; }
 
-    [JsonProperty("@durabilityloss_receivedspell")]
+    [JsonPropertyName("@durabilityloss_receivedspell")]
     public string DurabilityLossReceivedSpell { get; set; }
 
-    [JsonProperty("@durabilityloss_receivedattack_mounted")]
+    [JsonPropertyName("@durabilityloss_receivedattack_mounted")]
     public string DurabilityLossReceivedAttackMounted { get; set; }
 
-    [JsonProperty("@durabilityloss_receivedspell_mounted")]
+    [JsonPropertyName("@durabilityloss_receivedspell_mounted")]
     public string DurabilityLossReceivedSpellMounted { get; set; }
 
-    [JsonProperty("@durabilityloss_mounting")]
+    [JsonPropertyName("@durabilityloss_mounting")]
     public string DurabilityLossMounting { get; set; }
 
-    [JsonProperty("@unlockedtocraft")]
+    [JsonPropertyName("@unlockedtocraft")]
     public string UnlockedToCraft { get; set; }
 
-    [JsonProperty("@unlockedtoequip")]
+    [JsonPropertyName("@unlockedtoequip")]
     public string UnlockedToEquip { get; set; }
 
-    [JsonProperty("@mounttime")]
+    [JsonPropertyName("@mounttime")]
     public string MountTime { get; set; }
 
-    [JsonProperty("@dismounttime")]
+    [JsonPropertyName("@dismounttime")]
     public string DismountTime { get; set; }
 
-    [JsonProperty("@mounthitpointsmax")]
+    [JsonPropertyName("@mounthitpointsmax")]
     public string MountHitPointsMax { get; set; }
 
-    [JsonProperty("@mounthitpointsregeneration")]
+    [JsonPropertyName("@mounthitpointsregeneration")]
     public string MountHitPointsRegeneration { get; set; }
 
-    //[JsonProperty("@prefabname")]
+    //[JsonPropertyName("@prefabname")]
     //public string PrefabName { get; set; }
 
-    //[JsonProperty("@prefabscaling")]
+    //[JsonPropertyName("@prefabscaling")]
     //public string Prefabscaling { get; set; }
 
-    //[JsonProperty("@despawneffect")]
+    //[JsonPropertyName("@despawneffect")]
     //public string DespawnEffect { get; set; }
 
-    //[JsonProperty("@despawneffectscaling")]
+    //[JsonPropertyName("@despawneffectscaling")]
     //public string DespawnEffectScaling { get; set; }
 
-    [JsonProperty("@remountdistance")]
+    [JsonPropertyName("@remountdistance")]
     public string RemountDistance { get; set; }
 
-    [JsonProperty("@halfmountrange")]
+    [JsonPropertyName("@halfmountrange")]
     public string HalfMountRange { get; set; }
 
-    [JsonProperty("@forceddismountcooldown")]
+    [JsonPropertyName("@forceddismountcooldown")]
     public string ForcedDismountCooldown { get; set; }
 
-    [JsonProperty("@forceddismountspellcooldown")]
+    [JsonPropertyName("@forceddismountspellcooldown")]
     public string ForcedDismountSpellCooldown { get; set; }
 
-    [JsonProperty("@fulldismountcooldown")]
+    [JsonPropertyName("@fulldismountcooldown")]
     public string FullDismountCooldown { get; set; }
 
-    [JsonProperty("@remounttime")]
+    [JsonPropertyName("@remounttime")]
     public string RemountTime { get; set; }
 
-    //[JsonProperty("@uicraftsoundstart")]
+    //[JsonPropertyName("@uicraftsoundstart")]
     //public string Uicraftsoundstart { get; set; }
 
-    //[JsonProperty("@uicraftsoundfinish")]
+    //[JsonPropertyName("@uicraftsoundfinish")]
     //public string Uicraftsoundfinish { get; set; }
 
-    [JsonProperty("@dismountbuff")]
+    [JsonPropertyName("@dismountbuff")]
     public string DismountBuff { get; set; }
 
-    [JsonProperty("@forceddismountbuff")]
+    [JsonPropertyName("@forceddismountbuff")]
     public string ForcedDismountBuff { get; set; }
 
-    [JsonProperty("@hostiledismountbuff")]
+    [JsonPropertyName("@hostiledismountbuff")]
     public string Hostiledismountbuff { get; set; }
 
-    [JsonProperty("@showinmarketplace")]
+    [JsonPropertyName("@showinmarketplace")]
     public string ShowInMarketPlace { get; set; }
 
-    [JsonProperty("@hidefromplayer")]
+    [JsonPropertyName("@hidefromplayer")]
     public string HideFromPlayer { get; set; }
-    [JsonProperty("craftingrequirements")]
+    [JsonPropertyName("craftingrequirements")]
     public CraftingRequirements CraftingRequirements { get; set; }
-    [JsonProperty("craftingspelllist")]
+    [JsonPropertyName("craftingspelllist")]
     public CraftingSpellList CraftingSpellList { get; set; }
     //public SocketPreset SocketPreset { get; set; }
     //public AudioInfo AudioInfo { get; set; }
     //public AssetVfxPreset AssetVfxPreset { get; set; }
-    public FootStepVfxPreset FootStepVfxPreset { get; set; }
+    //public FootStepVfxPreset FootStepVfxPreset { get; set; }
 
-    [JsonProperty("@uisprite")]
+    [JsonPropertyName("@uisprite")]
     public string UiSprite { get; set; }
 
-    [JsonProperty("@nametagoffset")]
+    [JsonPropertyName("@nametagoffset")]
     public string NameTagOffset { get; set; }
 
-    [JsonProperty("@canuseingvg")]
+    [JsonPropertyName("@canuseingvg")]
     public string CanUseinGvg { get; set; }
-    [JsonProperty("mountspelllist")]
+    [JsonPropertyName("mountspelllist")]
     public MountSpellList MountSpellList { get; set; }
 
-    [JsonProperty("@enchantmentlevel")]
+    [JsonPropertyName("@enchantmentlevel")]
     public string EnchantmentLevel { get; set; }
 
-    //[JsonProperty("@vfxAddonKeyword")]
+    //[JsonPropertyName("@vfxAddonKeyword")]
     //public string VfxAddonKeyword { get; set; }
 
-    [JsonProperty("@canuseinfactionwarfare")]
+    [JsonPropertyName("@canuseinfactionwarfare")]
     public string CanUseInFactionWarfare { get; set; }
 
-    [JsonProperty("@itemvalue")]
+    [JsonPropertyName("@itemvalue")]
     public string ItemValue { get; set; }
 }

@@ -1,28 +1,28 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class Enchantment
 {
-    [JsonProperty("@enchantmentlevel")]
+    [JsonPropertyName("@enchantmentlevel")]
     public string EnchantmentLevel { get; set; }
 
-    [JsonProperty("@abilitypower")]
+    [JsonPropertyName("@abilitypower")]
     public string AbilityPower { get; set; }
 
-    [JsonProperty("@dummyitempower")]
+    [JsonPropertyName("@dummyitempower")]
     public string DummyItemPower { get; set; }
 
-    [JsonProperty("@consumespell")]
+    [JsonPropertyName("@consumespell")]
     public string ConsumeSpell { get; set; }
-    [JsonProperty("craftingrequirements")]
+    [JsonPropertyName("craftingrequirements")]
     public CraftingRequirements CraftingRequirements { get; set; }
-    [JsonProperty("upgraderequirements")]
+    [JsonPropertyName("upgraderequirements")]
     public UpgradeRequirements UpgradeRequirements { get; set; }
 
-    [JsonProperty("@itempower")]
+    [JsonPropertyName("@itempower")]
     public string ItemPower { get; set; }
 
-    [JsonProperty("@durability")]
+    [JsonPropertyName("@durability")]
     public string Durability { get; set; }
 }

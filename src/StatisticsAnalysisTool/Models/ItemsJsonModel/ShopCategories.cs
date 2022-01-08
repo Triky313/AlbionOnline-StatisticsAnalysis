@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class ShopCategories
 {
-    [JsonProperty("shopcategory")]
+    [JsonPropertyName("shopcategory")]
     public List<ShopCategory> ShopCategory { get; set; }
 }

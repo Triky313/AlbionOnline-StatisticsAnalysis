@@ -1,21 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class Harvest
 {
-    [JsonProperty("@growtime")]
+    [JsonPropertyName("@growtime")]
     public string GrowTime { get; set; }
 
-    [JsonProperty("@lootlist")]
+    [JsonPropertyName("@lootlist")]
     public string LootList { get; set; }
 
-    [JsonProperty("@lootchance")]
+    [JsonPropertyName("@lootchance")]
     public string LootChance { get; set; }
 
-    [JsonProperty("@fame")]
+    [JsonPropertyName("@fame")]
     public string Fame { get; set; }
 
-    [JsonProperty("seed")]
+    [JsonPropertyName("seed")]
     public Seed Seed { get; set; }
 }

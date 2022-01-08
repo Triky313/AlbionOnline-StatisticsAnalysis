@@ -1,62 +1,64 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Annotations;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class SimpleItem
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 
-    [JsonProperty("@tier")]
+    [JsonPropertyName("@tier")]
     public string Tier { get; set; }
 
-    [JsonProperty("@weight")]
+    [JsonPropertyName("@weight")]
     public string Weight { get; set; }
 
-    [JsonProperty("@maxstacksize")]
+    [JsonPropertyName("@maxstacksize")]
     public string MaxStackSize { get; set; }
 
-    [JsonProperty("@uisprite")]
+    [JsonPropertyName("@uisprite")]
     public string UiSprite { get; set; }
 
-    [JsonProperty("@ShopCategory")]
+    [JsonPropertyName("@ShopCategory")]
     public string ShopCategory { get; set; }
 
-    [JsonProperty("@shopsubcategory1")]
+    [JsonPropertyName("@shopsubcategory1")]
     public string ShopSubCategory1 { get; set; }
 
-    [JsonProperty("@unlockedtocraft")]
+    [JsonPropertyName("@unlockedtocraft")]
     public string UnlockedToCraft { get; set; }
 
-    [JsonProperty("@itemvalue")]
+    [JsonPropertyName("@itemvalue")]
     public string ItemValue { get; set; }
 
-    [JsonProperty("@nutrition")]
+    [JsonPropertyName("@nutrition")]
     public string Nutrition { get; set; }
 
-    [JsonProperty("@foodcategory")]
+    [JsonPropertyName("@foodcategory")]
     public string FoodCategory { get; set; }
 
-    [JsonProperty("@resourcetype")]
+    [JsonPropertyName("@resourcetype")]
     public string ResourceType { get; set; }
 
-    [JsonProperty("@famevalue")]
+    [JsonPropertyName("@famevalue")]
     public string FameValue { get; set; }
 
-    [JsonProperty("@enchantmentlevel")]
+    [JsonPropertyName("@enchantmentlevel")]
     public string EnchantmentLevel { get; set; }
 
-    [JsonProperty("@fishingfame")]
+    [JsonPropertyName("@fishingfame")]
     public string FishingFame { get; set; }
 
-    [JsonProperty("@fishingminigamesetting")]
+    [JsonPropertyName("@fishingminigamesetting")]
     public string FishingMiniGameSetting { get; set; }
-    [JsonProperty("craftingrequirements")]
+    [JsonPropertyName("craftingrequirements")]
+
     public object CraftingRequirements { get; set; }
 
-    [JsonProperty("@descriptionlocatag")]
+    [JsonPropertyName("@descriptionlocatag")]
     public string DescriptionLocaTag { get; set; }
 
-    [JsonProperty("@fasttravelfactor")]
+    [JsonPropertyName("@fasttravelfactor")]
     public string FastTravelFactor { get; set; }
 }

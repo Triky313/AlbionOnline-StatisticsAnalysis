@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class FameFillingMissions
 {
-    [JsonProperty("gatherfame")]
+    [JsonPropertyName("gatherfame")]
     public GatherFame GatherFame { get; set; }
-    [JsonProperty("craftitemfame")]
+    [JsonPropertyName("craftitemfame")]
     public CraftItemFame CraftItemFame { get; set; }
 }

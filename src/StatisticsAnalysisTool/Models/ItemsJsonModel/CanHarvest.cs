@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class CanHarvest
 {
-    [JsonProperty("@resourcetype")]
+    [JsonPropertyName("@resourcetype")]
     public string ResourceType { get; set; }
 }

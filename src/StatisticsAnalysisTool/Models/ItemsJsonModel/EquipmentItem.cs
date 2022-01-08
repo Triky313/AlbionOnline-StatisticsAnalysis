@@ -1,171 +1,171 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class EquipmentItem
 {
-    [JsonProperty("@uniquename")]
+    [JsonPropertyName("@uniquename")]
     public string UniqueName { get; set; }
 
-    [JsonProperty("@uisprite")]
+    [JsonPropertyName("@uisprite")]
     public string UiSprite { get; set; }
 
-    [JsonProperty("@maxqualitylevel")]
+    [JsonPropertyName("@maxqualitylevel")]
     public string MaxQualityLevel { get; set; }
 
-    [JsonProperty("@abilitypower")]
+    [JsonPropertyName("@abilitypower")]
     public string AbilityPower { get; set; }
 
-    [JsonProperty("@slottype")]
+    [JsonPropertyName("@slottype")]
     public string Slottype { get; set; }
 
-    [JsonProperty("@itempowerprogressiontype")]
+    [JsonPropertyName("@itempowerprogressiontype")]
     public string ItemPowerProgressionType { get; set; }
 
-    [JsonProperty("@ShopCategory")]
+    [JsonPropertyName("@ShopCategory")]
     public string ShopCategory { get; set; }
 
-    [JsonProperty("@shopsubcategory1")]
+    [JsonPropertyName("@shopsubcategory1")]
     public string ShopSubCategory1 { get; set; }
 
-    //[JsonProperty("@uicraftsoundstart")]
+    //[JsonPropertyName("@uicraftsoundstart")]
     //public string Uicraftsoundstart { get; set; }
 
-    //[JsonProperty("@uicraftsoundfinish")]
+    //[JsonPropertyName("@uicraftsoundfinish")]
     //public string Uicraftsoundfinish { get; set; }
 
-    [JsonProperty("@skincount")]
+    [JsonPropertyName("@skincount")]
     public string SkinCount { get; set; }
 
-    [JsonProperty("@tier")]
+    [JsonPropertyName("@tier")]
     public string Tier { get; set; }
 
-    [JsonProperty("@weight")]
+    [JsonPropertyName("@weight")]
     public string Weight { get; set; }
 
-    [JsonProperty("@activespellslots")]
+    [JsonPropertyName("@activespellslots")]
     public string ActiveSpellSlots { get; set; }
 
-    [JsonProperty("@passivespellslots")]
+    [JsonPropertyName("@passivespellslots")]
     public string PassiveSpellSlots { get; set; }
 
-    [JsonProperty("@physicalarmor")]
+    [JsonPropertyName("@physicalarmor")]
     public string PhysicalArmor { get; set; }
 
-    [JsonProperty("@magicresistance")]
+    [JsonPropertyName("@magicresistance")]
     public string MagicResistance { get; set; }
 
-    [JsonProperty("@durability")]
+    [JsonPropertyName("@durability")]
     public string Durability { get; set; }
 
-    [JsonProperty("@durabilityloss_attack")]
+    [JsonPropertyName("@durabilityloss_attack")]
     public string DurabilityLossAttack { get; set; }
 
-    [JsonProperty("@durabilityloss_spelluse")]
+    [JsonPropertyName("@durabilityloss_spelluse")]
     public string DurabilityLossSpellUse { get; set; }
 
-    [JsonProperty("@durabilityloss_receivedattack")]
+    [JsonPropertyName("@durabilityloss_receivedattack")]
     public string DurabilityLossReceivedAttack { get; set; }
 
-    [JsonProperty("@durabilityloss_receivedspell")]
+    [JsonPropertyName("@durabilityloss_receivedspell")]
     public string DurabilityLossReceivedSpell { get; set; }
 
-    [JsonProperty("@offhandanimationtype")]
+    [JsonPropertyName("@offhandanimationtype")]
     public string OffHandAnimationType { get; set; }
 
-    [JsonProperty("@unlockedtocraft")]
+    [JsonPropertyName("@unlockedtocraft")]
     public string UnlockedToCraft { get; set; }
 
-    [JsonProperty("@unlockedtoequip")]
+    [JsonPropertyName("@unlockedtoequip")]
     public string UnlockedToEquip { get; set; }
 
-    [JsonProperty("@hitpointsmax")]
+    [JsonPropertyName("@hitpointsmax")]
     public string HitPointsMax { get; set; }
 
-    [JsonProperty("@hitpointsregenerationbonus")]
+    [JsonPropertyName("@hitpointsregenerationbonus")]
     public string HitPointsRegenerationBonus { get; set; }
 
-    [JsonProperty("@energymax")]
+    [JsonPropertyName("@energymax")]
     public string EnergyMax { get; set; }
 
-    [JsonProperty("@energyregenerationbonus")]
+    [JsonPropertyName("@energyregenerationbonus")]
     public string EnergyRegenerationBonus { get; set; }
 
-    [JsonProperty("@crowdcontrolresistance")]
+    [JsonPropertyName("@crowdcontrolresistance")]
     public string CrowdControlResistance { get; set; }
 
-    [JsonProperty("@itempower")]
+    [JsonPropertyName("@itempower")]
     public string ItemPower { get; set; }
 
-    [JsonProperty("@physicalattackdamagebonus")]
+    [JsonPropertyName("@physicalattackdamagebonus")]
     public string PhysicalAttackDamageBonus { get; set; }
 
-    [JsonProperty("@magicattackdamagebonus")]
+    [JsonPropertyName("@magicattackdamagebonus")]
     public string MagicAttackDamageBonus { get; set; }
 
-    [JsonProperty("@physicalspelldamagebonus")]
+    [JsonPropertyName("@physicalspelldamagebonus")]
     public string PhysicalSpellDamageBonus { get; set; }
 
-    [JsonProperty("@magicspelldamagebonus")]
+    [JsonPropertyName("@magicspelldamagebonus")]
     public string MagicSpellDamageBonus { get; set; }
 
-    [JsonProperty("@healbonus")]
+    [JsonPropertyName("@healbonus")]
     public string HealBonus { get; set; }
 
-    [JsonProperty("@bonusccdurationvsplayers")]
+    [JsonPropertyName("@bonusccdurationvsplayers")]
     public string BonusCcDurationVsPlayers { get; set; }
 
-    [JsonProperty("@bonusccdurationvsmobs")]
+    [JsonPropertyName("@bonusccdurationvsmobs")]
     public string BonusCcDurationVsMobs { get; set; }
 
-    [JsonProperty("@threatbonus")]
+    [JsonPropertyName("@threatbonus")]
     public string ThreatBonus { get; set; }
 
-    [JsonProperty("@magiccooldownreduction")]
+    [JsonPropertyName("@magiccooldownreduction")]
     public string MagicCooldownReduction { get; set; }
 
-    [JsonProperty("@bonusdefensevsplayers")]
+    [JsonPropertyName("@bonusdefensevsplayers")]
     public string BonusDefenseVsPlayers { get; set; }
 
-    [JsonProperty("@bonusdefensevsmobs")]
+    [JsonPropertyName("@bonusdefensevsmobs")]
     public string BonusDefenseVsMobs { get; set; }
 
-    [JsonProperty("@magiccasttimereduction")]
+    [JsonPropertyName("@magiccasttimereduction")]
     public string MagicCastTimeReduction { get; set; }
 
-    [JsonProperty("@attackspeedbonus")]
+    [JsonPropertyName("@attackspeedbonus")]
     public string AttackSpeedBonus { get; set; }
 
-    [JsonProperty("@movespeedbonus")]
+    [JsonPropertyName("@movespeedbonus")]
     public string MoveSpeedBonus { get; set; }
 
-    [JsonProperty("@healmodifier")]
+    [JsonPropertyName("@healmodifier")]
     public string HealModifier { get; set; }
 
-    [JsonProperty("@canbeovercharged")]
+    [JsonPropertyName("@canbeovercharged")]
     public string CanBeOvercharged { get; set; }
 
-    [JsonProperty("@showinmarketplace")]
+    [JsonPropertyName("@showinmarketplace")]
     public string ShowInMarketPlace { get; set; }
 
-    [JsonProperty("@energycostreduction")]
+    [JsonPropertyName("@energycostreduction")]
     public string EnergyCostReduction { get; set; }
 
-    [JsonProperty("@masterymodifier")]
+    [JsonPropertyName("@masterymodifier")]
     public string MasteryModifier { get; set; }
-    [JsonProperty("craftingrequirements")]
+    [JsonPropertyName("craftingrequirements")]
     public object CraftingRequirements { get; set; }
 
-    [JsonProperty("@craftingcategory")]
+    [JsonPropertyName("@craftingcategory")]
     public string CraftingCategory { get; set; }
 
-    [JsonProperty("@combatspecachievement")]
+    [JsonPropertyName("@combatspecachievement")]
     public string CombatSpecAchievement { get; set; }
     //public SocketPreset SocketPreset { get; set; }
-    [JsonProperty("enchantments")]
+    [JsonPropertyName("enchantments")]
     public Enchantments Enchantments { get; set; }
 
-    [JsonProperty("@destinycraftfamefactor")]
+    [JsonPropertyName("@destinycraftfamefactor")]
     public string Destinycraftfamefactor { get; set; }
     //public AssetVfxPreset AssetVfxPreset { get; set; }
 }

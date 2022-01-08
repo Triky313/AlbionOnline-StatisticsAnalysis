@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class Container
 {
-    [JsonProperty("@capacity")]
+    [JsonPropertyName("@capacity")]
     public string Capacity { get; set; }
 
-    [JsonProperty("@weightlimit")]
+    [JsonPropertyName("@weightlimit")]
     public string WeightLimit { get; set; }
 }

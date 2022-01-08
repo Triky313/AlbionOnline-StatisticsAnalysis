@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class AssetVfxPreset
 {
-    [JsonProperty("@name")]
+    [JsonPropertyName("@name")]
     public string Name { get; set; }
 }

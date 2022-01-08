@@ -370,7 +370,9 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             await ItemController.SetFavoriteItemsFromLocalFileAsync();
-            await ItemController.GetItemInformationListFromLocalAsync();
+            await ItemController.GetItemsJsonAsync();
+
+            // TODO: Veraltet, löschen!
             IsFullItemInformationCompleteCheck();
 
             ItemsView = new ListCollectionView(ItemController.Items);

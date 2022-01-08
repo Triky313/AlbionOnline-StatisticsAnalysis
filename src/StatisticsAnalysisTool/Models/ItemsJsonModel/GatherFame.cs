@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
 public class GatherFame
 {
-    [JsonProperty("@mintier")]
+    [JsonPropertyName("@mintier")]
     public string Mintier { get; set; }
 
-    [JsonProperty("@value")]
+    [JsonPropertyName("@value")]
     public string Value { get; set; }
-    [JsonProperty("validitem")]
+    [JsonPropertyName("validitem")]
     public List<ValidItem> ValidItem { get; set; }
 }
