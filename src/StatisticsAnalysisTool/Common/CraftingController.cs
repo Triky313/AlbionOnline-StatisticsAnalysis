@@ -17,8 +17,7 @@ namespace StatisticsAnalysisTool.Common
     public static class CraftingController
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
-        private static IAsyncEnumerable<SimpleItemData> _simpleItemData = new List<SimpleItemData>().ToAsyncEnumerable();
+        
         private static IAsyncEnumerable<ItemSpriteToJournalStruct> _craftingJournalData = new List<ItemSpriteToJournalStruct>().ToAsyncEnumerable();
 
         public static double GetRequiredJournalAmount(Item item, double itemQuantityToBeCrafted)
@@ -112,10 +111,9 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<bool> LoadAsync()
         {
-            _simpleItemData = await GetSimpleItemDataFromLocalAsync();
             _craftingJournalData = await GetJournalNameFromLocalAsync();
 
-            if (_simpleItemData != null && await _simpleItemData.CountAsync() <= 0 || _craftingJournalData != null && await _craftingJournalData.CountAsync() <= 0)
+            if (_craftingJournalData != null && await _craftingJournalData.CountAsync() <= 0)
             {
                 Log.Warn($"{nameof(LoadAsync)}: No Simple item data found.");
                 return false;
@@ -123,28 +121,7 @@ namespace StatisticsAnalysisTool.Common
 
             return true;
         }
-
-        private static async Task<IAsyncEnumerable<SimpleItemData>> GetSimpleItemDataFromLocalAsync()
-        {
-            try
-            {
-                var options = new JsonSerializerOptions()
-                {
-                    ReadCommentHandling = JsonCommentHandling.Skip,
-                    NumberHandling = JsonNumberHandling.AllowReadingFromString
-                };
-
-                var localItemString = await File.ReadAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemsFileName), Encoding.UTF8);
-                return (JsonSerializer.Deserialize<List<SimpleItemData>>(localItemString, options) ?? new List<SimpleItemData>()).ToAsyncEnumerable();
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                return new List<SimpleItemData>().ToAsyncEnumerable();
-            }
-        }
-
+        
         public static async Task<IAsyncEnumerable<ItemSpriteToJournalStruct>> GetJournalNameFromLocalAsync()
         {
             try

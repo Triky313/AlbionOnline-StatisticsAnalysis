@@ -15,6 +15,6 @@
         Hideout,
         Mount,
         MountSkin,
-        CrystalLeagueItem
+        CrystalLeague
     }
 }

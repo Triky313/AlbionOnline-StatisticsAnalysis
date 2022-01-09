@@ -288,18 +288,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Items.json")]
-        public string ItemsFileName {
-            get {
-                return ((string)(this["ItemsFileName"]));
-            }
-            set {
-                this["ItemsFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ItemSpriteToJournal.json")]
         public string ItemSpriteToJournalFileName {
             get {

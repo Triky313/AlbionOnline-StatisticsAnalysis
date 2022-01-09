@@ -127,36 +127,6 @@ namespace StatisticsAnalysisTool.Common
 
         #region Item specific
 
-        public static async Task<ItemType> GetItemTypeAsync(int index)
-        {
-            var item = Items?.FirstOrDefault(i => i.Index == index);
-
-            if (item != null)
-            {
-                // TODO: Need rework
-                //var fullItemInfo = await GetFullItemInformationAsync(item);
-                //item.FullItemInformation = fullItemInfo;
-            }
-
-            //var itemType = !string.IsNullOrEmpty(item?.FullItemInformation?.ItemType) ? item.FullItemInformation?.ItemType : "UNKNOWN";
-
-            return ItemType.Unknown;
-
-            //return itemType.ToUpper() switch
-            //{
-            //    "WEAPON" => ItemType.Weapon,
-            //    "EQUIPMENT" => ItemType.Equipment,
-            //    "SIMPLE" => ItemType.Simple,
-            //    "FARMABLE" => ItemType.Farmable,
-            //    "CONSUMABLE" => ItemType.Consumable,
-            //    "CONSUMABLEFROMINVENTORY" => ItemType.ConsumableFromInventory,
-            //    "JOURNAL" => ItemType.Journal,
-            //    "LABOURERCONTRACT" => ItemType.LabourerContract,
-            //    "FURNITURE" => ItemType.Furniture,
-            //    _ => ItemType.Unknown
-            //};
-        }
-
         public static int GetItemLevel(string uniqueName)
         {
             if (uniqueName == null || !uniqueName.Contains("@"))
@@ -179,12 +149,6 @@ namespace StatisticsAnalysisTool.Common
             {
                 return result;
             }
-
-            // TODO: Rework
-            //if (item.FullItemInformation?.Tier != null)
-            //{
-            //    return item.FullItemInformation.Tier;
-            //}
 
             return -1;
         }
@@ -388,67 +352,145 @@ namespace StatisticsAnalysisTool.Common
                 return ItemsJson.Items.HideoutItem;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.FarmableItem.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.FarmableItem.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+
+                return item;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.SimpleItem.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.SimpleItem.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+                return item;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.ConsumableItem.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+                return item;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.ConsumableFromInventoryItem.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+                return item;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.EquipmentItem.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.EquipmentItem.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+                return item;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.Weapon.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.Weapon.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+                return item;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.Mount.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.Mount.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+                return item;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.FurnitureItem.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.FurnitureItem.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+                return item;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.JournalItem.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.JournalItem.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+                return item;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.LabourerContract.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.LabourerContract.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+                return item;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.MountSkin.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.MountSkin.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+                return item;
             }
 
-            foreach (var simpleItem in ItemsJson.Items.CrystalLeagueItem.Where(simpleItem => simpleItem.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.CrystalLeagueItem.Where(item => item.UniqueName == uniqueName))
             {
-                return simpleItem;
+                return item;
             }
 
             return null;
+        }
+
+        public static ItemType GetItemType(int index)
+        {
+            var itemObject = Items?.FirstOrDefault(i => i.Index == index);
+
+            if (itemObject == null || ItemsJson.Items == null)
+            {
+                return ItemType.Unknown;
+            }
+
+            if (ItemsJson.Items.HideoutItem?.UniqueName == itemObject.UniqueName)
+            {
+                return ItemType.Hideout;
+            }
+
+            if (ItemsJson.Items.FarmableItem.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Farmable;
+            }
+
+            if (ItemsJson.Items.SimpleItem.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Simple;
+            }
+
+            if (ItemsJson.Items.ConsumableItem.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Consumable;
+            }
+
+            if (ItemsJson.Items.ConsumableFromInventoryItem.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.ConsumableFromInventory;
+            }
+
+            if (ItemsJson.Items.EquipmentItem.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Equipment;
+            }
+
+            if (ItemsJson.Items.Weapon.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Weapon;
+            }
+
+            if (ItemsJson.Items.Mount.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Mount;
+            }
+
+            if (ItemsJson.Items.FurnitureItem.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Furniture;
+            }
+
+            if (ItemsJson.Items.JournalItem.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Journal;
+            }
+
+            if (ItemsJson.Items.LabourerContract.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.LabourerContract;
+            }
+
+            if (ItemsJson.Items.MountSkin.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.MountSkin;
+            }
+
+            if (ItemsJson.Items.CrystalLeagueItem.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.CrystalLeague;
+            }
+
+            return ItemType.Unknown;
         }
 
         [Obsolete("Must be rebuilt because ItemInfo no longer exists.")]
@@ -570,26 +612,7 @@ namespace StatisticsAnalysisTool.Common
             newSourceUrl = tempSourceUrl;
             return newSourceUrl;
         }
-
-        [Obsolete]
-        private static string GetItemListSourceUrlIfExist()
-        {
-            var url = SettingsController.CurrentSettings.ItemListSourceUrl ?? string.Empty;
-
-            if (string.IsNullOrEmpty(url))
-            {
-                url = Settings.Default.DefaultItemListSourceUrl ?? string.Empty;
-
-                if (!string.IsNullOrEmpty(url))
-                {
-                    SettingsController.CurrentSettings.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
-                    _ = MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
-                }
-            }
-
-            return url;
-        }
-
+        
         #endregion
     }
 }
