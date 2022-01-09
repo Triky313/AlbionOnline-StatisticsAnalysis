@@ -2,10 +2,10 @@
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class ConsumableFromInventoryItem
+public class ConsumableFromInventoryItem : ItemJsonObject
 {
     [JsonPropertyName("@uniquename")]
-    public string UniqueName { get; set; }
+    public override string UniqueName { get; set; }
 
     [JsonPropertyName("@tradable")]
     public string Tradable { get; set; }

@@ -1,12 +1,11 @@
 ﻿using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Annotations;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class SimpleItem
+public class SimpleItem : ItemJsonObject
 {
     [JsonPropertyName("@uniquename")]
-    public string UniqueName { get; set; }
+    public override string UniqueName { get; set; }
 
     [JsonPropertyName("@tier")]
     public string Tier { get; set; }

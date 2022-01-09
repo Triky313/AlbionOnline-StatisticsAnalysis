@@ -2,10 +2,10 @@
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class Weapon
+public class Weapon : ItemJsonObject
 {
     [JsonPropertyName("@uniquename")]
-    public string UniqueName { get; set; }
+    public override string UniqueName { get; set; }
 
     [JsonPropertyName("@mesh")]
     public string Mesh { get; set; }

@@ -19,24 +19,18 @@
             <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Text.1}" MouseUp="FilterReset_MouseUp" />
         </Grid>
         <ComboBox ItemsSource="{Binding ItemParentCategories}" SelectedValue="{Binding SelectedItemParentCategory}" 
-                  Visibility="{Binding ItemParentCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="260,10,0,0" VerticalAlignment="Top" Width="150" />
+                  SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="260,10,0,0" VerticalAlignment="Top" Width="150" />
         <ComboBox ItemsSource="{Binding ItemCategories}" SelectedValue="{Binding SelectedItemCategory}" 
-                  Visibility="{Binding ItemCategoriesVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="260,37,0,0" VerticalAlignment="Top" Width="150" />
+                  SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="260,37,0,0" VerticalAlignment="Top" Width="150" />
         <ComboBox ItemsSource="{Binding ItemTiers}" SelectedValue="{Binding SelectedItemTier}" 
-                  Visibility="{Binding ItemTiersVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="415,10,0,0" VerticalAlignment="Top" Width="44" MinWidth="80" />
+                  SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="415,10,0,0" VerticalAlignment="Top" Width="44" MinWidth="80" />
         <ComboBox ItemsSource="{Binding ItemLevels}" SelectedValue="{Binding SelectedItemLevel}" 
-                  Visibility="{Binding ItemLevelsVisibility}" SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="500,10,0,0" VerticalAlignment="Top" Width="54" MinWidth="80" />
+                  SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="500,10,0,0" VerticalAlignment="Top" Width="54" MinWidth="80" />
 
         <userControls:ItemSearchImageCounterControl VerticalAlignment="Top" HorizontalAlignment="Right" LocalImageCounter="{Binding LocalImageCounter}" 
                                                     ItemCounterString="{Binding ItemCounterString}" />
-        <Button Content="{Binding Translation.LoadFullItemInfo, FallbackValue=LOAD__FULL__ITEM__INFO}" 
-                            IsEnabled="{Binding IsLoadFullItemInfoButtonEnabled, FallbackValue=true}" 
-                            Visibility="{Binding LoadFullItemInfoButtonVisibility, FallbackValue=Visible}" 
-                            Height="22" Margin="0,38,10,0" VerticalAlignment="Top" Click="LoadFullItemInfoButton_Click" HorizontalAlignment="Right" Width="176" />
 
         <Grid IsEnabled="{Binding IsItemSearchCheckboxesEnabled}">
-            <CheckBox Content="{Binding Translation.FullItemInfoSearch, FallbackValue=FULL__ITEM__INFO__SEARCH}" 
-                      IsChecked="{Binding IsFullItemInfoSearchActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="245" />
             <CheckBox Content="{Binding Translation.ShowOnlyItemsWithAlertOn, FallbackValue=SHOW__ONLY__ITEMS__WITH__ALERT__ON}" 
                       IsChecked="{Binding IsShowOnlyItemsWithAlertOnActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Width="245" />
             <CheckBox Content="{Binding Translation.ShowOnlyFavorites, FallbackValue=SHOW__ONLY__FAVORITES}" 
@@ -65,16 +59,6 @@
 
                     <GridViewColumn Header="{Binding Translation.Name, FallbackValue=NAME}" Width="400" 
                                                 DisplayMemberBinding="{Binding (models:Item.LocalizedNameAndEnglish)}" />
-
-                    <GridViewColumn Header="{Binding Translation.FullItemInformationExistLocal, FallbackValue=FULL_ITEM_INFORMATION_EXIST_LOCAL}" Width="100">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Image Source="{Binding (models:Item.ExistFullItemInformationLocal)}" Width="17" Height="18" Stretch="Fill" />
-                                </Grid>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
 
                     <GridViewColumn Header="{Binding Translation.IsAlertActive, FallbackValue=IS_ALERT_ACTIVE}" Width="100">
                         <GridViewColumn.CellTemplate>
@@ -110,17 +94,5 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
-        <Grid Visibility="{Binding LoadFullItemInfoProBarGridVisibility, FallbackValue=Hidden}">
-            <ProgressBar Minimum="{Binding LoadFullItemInfoProBarMin, IsAsync=True, FallbackValue=0}" 
-                         Maximum="{Binding LoadFullItemInfoProBarMax, IsAsync=True, FallbackValue=0}" 
-                         Value="{Binding LoadFullItemInfoProBarValue, IsAsync=True, FallbackValue=0}" 
-                         Height="22" Margin="0,38,36,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150" />
-            <Label Content="{Binding LoadFullItemInfoProBarCounter, FallbackValue=0/0}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="24" Margin="0,36,36,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150"></Label>
-            <Grid Margin="0,38,10,0" HorizontalAlignment="Right" Width="24" Height="22" VerticalAlignment="Top">
-                <fa5:ImageAwesome Icon="Regular_StopCircle" SpinDuration="5" Foreground="{StaticResource SolidColorBrush.Text.1}" MouseUp="StopLoadFullItemInfo_MouseUp" />
-            </Grid>
-        </Grid>
     </Grid>
 </UserControl>

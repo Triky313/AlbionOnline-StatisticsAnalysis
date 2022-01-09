@@ -124,30 +124,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("FullItemInformation.json")]
-        public string FullItemInformationFileName {
-            get {
-                return ((string)(this["FullItemInformationFileName"]));
-            }
-            set {
-                this["FullItemInformationFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsFullItemInfoSearchActive {
-            get {
-                return ((bool)(this["IsFullItemInfoSearchActive"]));
-            }
-            set {
-                this["IsFullItemInfoSearchActive"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Sounds")]
         public string SoundDirectoryName {
             get {

@@ -2,10 +2,10 @@
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class LabourerContract
+public class LabourerContract : ItemJsonObject
 {
     [JsonPropertyName("@uniquename")]
-    public string UniqueName { get; set; }
+    public override string UniqueName { get; set; }
 
     [JsonPropertyName("@tier")]
     public string Tier { get; set; }

@@ -171,7 +171,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObject.Value.Damage);
                 fragment.HealPercentage = entities.GetHealPercentage(healthChangeObject.Value.Heal);
 
-                _trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, itemInfo?.FullItemInformation?.CategoryId);
+                // TODO: Rework
+                //_trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, itemInfo?.FullItemInformation?.CategoryId);
             }
         }
 
@@ -210,7 +211,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 damageMeter.Add(damageMeterFragment);
             });
 
-            _trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, itemInfo?.FullItemInformation?.CategoryId);
+            // TODO: Rework
+            //_trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, itemInfo?.FullItemInformation?.CategoryId);
         }
 
         private bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
@@ -298,12 +300,13 @@ namespace StatisticsAnalysisTool.Network.Manager
             var item = ItemController.GetItemByIndex((int)newIndex);
             if (item == null) return currentItem;
 
-            var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);
-            if (ItemController.IsItemSlotType(fullItemInfo, "mainhand"))
-            {
-                item.FullItemInformation = fullItemInfo;
-                return item;
-            }
+            // TODO: Rework
+            //var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);
+            //if (ItemController.IsItemSlotType(fullItemInfo, "mainhand"))
+            //{
+            //    item.FullItemInformation = fullItemInfo;
+            //    return item;
+            //}
 
             return currentItem;
         }

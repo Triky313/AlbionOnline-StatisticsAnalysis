@@ -2,13 +2,13 @@
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class JournalItem
+public class JournalItem : ItemJsonObject
 {
     [JsonPropertyName("@salvageable")]
     public string Salvageable { get; set; }
 
     [JsonPropertyName("@uniquename")]
-    public string UniqueName { get; set; }
+    public override string UniqueName { get; set; }
 
     [JsonPropertyName("@tier")]
     public string Tier { get; set; }

@@ -32,12 +32,6 @@
     <Setting Name="GitHubRepoUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://github.com/Triky313/AlbionOnline-StatisticsAnalysis</Value>
     </Setting>
-    <Setting Name="FullItemInformationFileName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">FullItemInformation.json</Value>
-    </Setting>
-    <Setting Name="IsFullItemInfoSearchActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="SoundDirectoryName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Sounds</Value>
     </Setting>

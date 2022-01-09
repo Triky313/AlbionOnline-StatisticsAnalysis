@@ -189,7 +189,8 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _causerMainHand = value;
-                CategoryId = _causerMainHand?.FullItemInformation?.CategoryId;
+                // TODO: Rework
+                //CategoryId = _causerMainHand?.FullItemInformation?.CategoryId;
                 OnPropertyChanged();
             }
         }

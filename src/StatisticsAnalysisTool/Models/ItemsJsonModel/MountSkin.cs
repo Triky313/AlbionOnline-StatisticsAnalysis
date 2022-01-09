@@ -2,10 +2,10 @@
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel;
 
-public class MountSkin
+public class MountSkin : ItemJsonObject
 {
     [JsonPropertyName("@uniquename")]
-    public string UniqueName { get; set; }
+    public override string UniqueName { get; set; }
 
     [JsonPropertyName("@uisprite")]
     public string UiSprite { get; set; }

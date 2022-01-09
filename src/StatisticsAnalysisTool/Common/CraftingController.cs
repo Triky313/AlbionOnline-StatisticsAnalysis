@@ -28,9 +28,11 @@ namespace StatisticsAnalysisTool.Common
                 return 0;
             }
 
-            var totalBaseFame = GetTotalBaseFame(item.FullItemInformation.CraftingRequirements.TotalAmountResources, (ItemTier)item.Tier, (ItemLevel)item.Level);
-            var totalJournalFame = totalBaseFame * itemQuantityToBeCrafted;
-            return totalJournalFame / MaxJournalFame((ItemTier)item.Tier);
+            // TODO: Rework
+            //var totalBaseFame = GetTotalBaseFame(item.FullItemInformation.CraftingRequirements.TotalAmountResources, (ItemTier)item.Tier, (ItemLevel)item.Level);
+            //var totalJournalFame = totalBaseFame * itemQuantityToBeCrafted;
+            //return totalJournalFame / MaxJournalFame((ItemTier)item.Tier);
+            return 0;
         }
         
         public static async Task<Item> GetCraftingJournalItemAsync(int tier, string itemSpriteName)
@@ -93,10 +95,12 @@ namespace StatisticsAnalysisTool.Common
 
         public static double GetCraftingTax(int foodValue, Item item, int itemQuantity)
         {
+            // TODO: Rework
             try
             {
-                return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, item.FullItemInformation.CraftingRequirements.TotalAmountResources, 
-                    (ItemTier)item.Tier, (ItemLevel)item.Level, item.FullItemInformation.CraftingRequirements.CraftResourceList);
+                //return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, item.FullItemInformation.CraftingRequirements.TotalAmountResources, 
+                //    (ItemTier)item.Tier, (ItemLevel)item.Level, item.FullItemInformation.CraftingRequirements.CraftResourceList);
+                return 0;
             }
             catch (Exception e)
             {

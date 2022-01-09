@@ -159,14 +159,15 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async Task InitCraftingTabUiAsync()
         {
-            if (Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.Count > 0)
-            {
-                CraftingTabVisibility = Visibility.Visible;
+            // TODO: Rework
+            //if (Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.Count > 0)
+            //{
+            //    CraftingTabVisibility = Visibility.Visible;
 
-                SetEssentialCraftingValues();
-                await GetJournalInfoAsync();
-                await GetCraftInfoAsync();
-            }
+            //    SetEssentialCraftingValues();
+            //    await GetJournalInfoAsync();
+            //    await GetCraftInfoAsync();
+            //}
         }
 
         private void SetEssentialCraftingValues()
@@ -186,28 +187,31 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async Task GetCraftInfoAsync()
         {
-            var craftResourceList = Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.ToAsyncEnumerable();
+            // TODO: Rework
+            //var craftResourceList = Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.ToAsyncEnumerable();
 
-            await foreach (var craftResource in craftResourceList ?? new List<CraftResourceList>().ToAsyncEnumerable())
-            {
-                var item = GetSuitableResourceItem(craftResource.UniqueName);
-                var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false ? CraftingCalculation.PossibleItemCrafting : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
+            //await foreach (var craftResource in craftResourceList ?? new List<CraftResourceList>().ToAsyncEnumerable())
+            //{
+            //    var item = GetSuitableResourceItem(craftResource.UniqueName);
+            //    var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false ? CraftingCalculation.PossibleItemCrafting : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
 
-                RequiredResources.Add(new RequiredResource(this)
-                {
-                    CraftingResourceName = item?.LocalizedName,
-                    OneProductionAmount = craftResource.Count,
-                    Icon = item?.Icon,
-                    ResourceCost = 0,
-                    CraftingQuantity = craftingQuantity,
-                    IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
-                });
-            }
+            //    RequiredResources.Add(new RequiredResource(this)
+            //    {
+            //        CraftingResourceName = item?.LocalizedName,
+            //        OneProductionAmount = craftResource.Count,
+            //        Icon = item?.Icon,
+            //        ResourceCost = 0,
+            //        CraftingQuantity = craftingQuantity,
+            //        IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
+            //    });
+            //}
         }
 
         private async Task GetJournalInfoAsync()
         {
-            var craftingJournalType = await CraftingController.GetCraftingJournalItemAsync(Item.Tier, Item.FullItemInformation.SpriteName);
+            // TODO: Rework
+            //var craftingJournalType = await CraftingController.GetCraftingJournalItemAsync(Item.Tier, Item.FullItemInformation.SpriteName);
+            Item craftingJournalType = null;
             if (craftingJournalType == null)
             {
                 return;
@@ -308,9 +312,10 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             InformationLoadingImageVisibility = Visibility.Visible;
 
-            var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);
-            ItemInformation = fullItemInfo;
-            Item.FullItemInformation = fullItemInfo;
+            // TODO: Rework
+            //var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);
+            //ItemInformation = fullItemInfo;
+            //Item.FullItemInformation = fullItemInfo;
 
             InformationLoadingImageVisibility = Visibility.Hidden;
         }

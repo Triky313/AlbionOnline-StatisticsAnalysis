@@ -24,25 +24,13 @@ namespace StatisticsAnalysisTool.UserControls
             var item = (Item)((ListView)sender).SelectedValue;
             MainWindowViewModel.OpenItemWindow(item);
         }
-
-        private void LoadFullItemInfoButton_Click(object sender, RoutedEventArgs e)
-        {
-            var vm = (MainWindowViewModel)DataContext;
-            vm?.LoadAllFullItemInformationFromWeb();
-        }
-
+        
         private void FilterReset_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var vm = (MainWindowViewModel)DataContext;
             vm?.ItemFilterReset();
         }
-
-        private void StopLoadFullItemInfo_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            var vm = (MainWindowViewModel)DataContext;
-            vm.IsFullItemInfoLoading = false;
-        }
-
+        
         private void TxtBoxMinSellPriceIsUndercutPrice_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
