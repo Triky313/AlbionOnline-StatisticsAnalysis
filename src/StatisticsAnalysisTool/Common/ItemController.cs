@@ -2,7 +2,7 @@ using log4net;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.ItemWindowModel;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,8 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using StatisticsAnalysisTool.Common.Converters;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -41,6 +43,12 @@ namespace StatisticsAnalysisTool.Common
         public static Item GetItemByUniqueName(string uniqueName)
         {
             return Items?.FirstOrDefault(i => i.UniqueName == uniqueName);
+        }
+
+        public static string GetCleanUniqueName(string uniqueName)
+        {
+            var uniqueNameArray = uniqueName.Split("@");
+            return uniqueNameArray[0];
         }
 
         public static bool IsTrash(int index)
@@ -172,22 +180,22 @@ namespace StatisticsAnalysisTool.Common
             return FrequentlyValues.GameLanguages
                     .FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase))
                     .Key switch
-                {
-                    GameLanguage.UnitedStates => localizedNames.EnUs ?? alternativeName,
-                    GameLanguage.Germany => localizedNames.DeDe ?? alternativeName,
-                    GameLanguage.Russia => localizedNames.RuRu ?? alternativeName,
-                    GameLanguage.Poland => localizedNames.PlPl ?? alternativeName,
-                    GameLanguage.Brazil => localizedNames.PtBr ?? alternativeName,
-                    GameLanguage.France => localizedNames.FrFr ?? alternativeName,
-                    GameLanguage.Spain => localizedNames.EsEs ?? alternativeName,
-                    GameLanguage.Chinese => localizedNames.ZhCn ?? alternativeName,
-                    GameLanguage.Korean => localizedNames.KoKr ?? alternativeName,
-                    _ => alternativeName
-                };
+            {
+                GameLanguage.UnitedStates => localizedNames.EnUs ?? alternativeName,
+                GameLanguage.Germany => localizedNames.DeDe ?? alternativeName,
+                GameLanguage.Russia => localizedNames.RuRu ?? alternativeName,
+                GameLanguage.Poland => localizedNames.PlPl ?? alternativeName,
+                GameLanguage.Brazil => localizedNames.PtBr ?? alternativeName,
+                GameLanguage.France => localizedNames.FrFr ?? alternativeName,
+                GameLanguage.Spain => localizedNames.EsEs ?? alternativeName,
+                GameLanguage.Chinese => localizedNames.ZhCn ?? alternativeName,
+                GameLanguage.Korean => localizedNames.KoKr ?? alternativeName,
+                _ => alternativeName
+            };
         }
 
         #endregion
-        
+
         #region Items
 
         public static async Task<bool> GetItemListFromJsonAsync()
@@ -342,73 +350,75 @@ namespace StatisticsAnalysisTool.Common
 
         public static ItemJsonObject GetSpecificItemInfo(string uniqueName)
         {
+            var cleanUniqueName = GetCleanUniqueName(uniqueName);
+
             if (!IsItemsJsonLoaded())
             {
                 return null;
             }
 
-            if (ItemsJson.Items.HideoutItem.UniqueName == uniqueName)
+            if (ItemsJson.Items.HideoutItem.UniqueName == cleanUniqueName)
             {
                 return ItemsJson.Items.HideoutItem;
             }
 
-            foreach (var item in ItemsJson.Items.FarmableItem.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.FarmableItem.Where(item => item.UniqueName == cleanUniqueName))
             {
 
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.SimpleItem.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.SimpleItem.Where(item => item.UniqueName == cleanUniqueName))
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == cleanUniqueName))
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == cleanUniqueName))
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.EquipmentItem.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.EquipmentItem.Where(item => item.UniqueName == cleanUniqueName))
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.Weapon.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.Weapon.Where(item => item.UniqueName == cleanUniqueName))
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.Mount.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.Mount.Where(item => item.UniqueName == cleanUniqueName))
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.FurnitureItem.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.FurnitureItem.Where(item => item.UniqueName == cleanUniqueName))
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.JournalItem.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.JournalItem.Where(item => item.UniqueName == cleanUniqueName))
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.LabourerContract.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.LabourerContract.Where(item => item.UniqueName == cleanUniqueName))
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.MountSkin.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.MountSkin.Where(item => item.UniqueName == cleanUniqueName))
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.CrystalLeagueItem.Where(item => item.UniqueName == uniqueName))
+            foreach (var item in ItemsJson.Items.CrystalLeagueItem.Where(item => item.UniqueName == cleanUniqueName))
             {
                 return item;
             }
@@ -416,11 +426,16 @@ namespace StatisticsAnalysisTool.Common
             return null;
         }
 
+        public static ItemType GetItemType(string uniqueName)
+        {
+            return GetItemType(Items?.FirstOrDefault(x => x.UniqueName == uniqueName)?.Index ?? -1);
+        }
+
         public static ItemType GetItemType(int index)
         {
             var itemObject = Items?.FirstOrDefault(i => i.Index == index);
 
-            if (itemObject == null || ItemsJson.Items == null)
+            if (itemObject == null || ItemsJson?.Items == null)
             {
                 return ItemType.Unknown;
             }
@@ -492,7 +507,7 @@ namespace StatisticsAnalysisTool.Common
 
             return ItemType.Unknown;
         }
-
+        
         [Obsolete("Must be rebuilt because ItemInfo no longer exists.")]
         public static bool IsItemSlotType(ItemInformation itemInfo, string slotType)
         {
@@ -567,7 +582,11 @@ namespace StatisticsAnalysisTool.Common
                 var options = new JsonSerializerOptions()
                 {
                     NumberHandling = JsonNumberHandling.AllowReadingFromString
-                                     | JsonNumberHandling.WriteAsString
+                                     | JsonNumberHandling.WriteAsString,
+                    Converters =
+                    {
+                        new CraftingRequirementsToCraftingRequirementsList()
+                    }
                 };
 
                 var localFileString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
@@ -612,7 +631,7 @@ namespace StatisticsAnalysisTool.Common
             newSourceUrl = tempSourceUrl;
             return newSourceUrl;
         }
-        
+
         #endregion
     }
 }

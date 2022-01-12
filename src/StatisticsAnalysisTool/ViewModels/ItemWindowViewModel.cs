@@ -22,6 +22,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -159,15 +160,47 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async Task InitCraftingTabUiAsync()
         {
-            // TODO: Rework
-            //if (Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.Count > 0)
-            //{
-            //    CraftingTabVisibility = Visibility.Visible;
+            var areResourcesAvailable = false;
 
-            //    SetEssentialCraftingValues();
-            //    await GetJournalInfoAsync();
-            //    await GetCraftInfoAsync();
-            //}
+            if (Item?.FullItemInformation is Models.ItemsJsonModel.EquipmentItem equipmentItem)
+            {
+                try
+                {
+                    //var craftingRequirement = equipmentItem.CraftingRequirements as CraftingRequirements;
+
+                    //if (craftingRequirement == null)
+                    //{
+                    //    var craftingRequirements = equipmentItem.CraftingRequirements as List<CraftingRequirements>;
+
+                    //}
+                }
+                catch (Exception e)
+                {
+                    // ignore
+                }
+
+                if (equipmentItem.CraftingRequirements is CraftingRequirements)
+                {
+                    areResourcesAvailable = true;
+                } 
+                else if (equipmentItem.CraftingRequirements is List<CraftingRequirements>)
+                {
+                    areResourcesAvailable = true;
+                }
+            } 
+            else if (Item?.FullItemInformation is Weapon weapon && weapon.CraftingRequirements.Count > 0)
+            {
+                areResourcesAvailable = true;
+            }
+
+            if (areResourcesAvailable)
+            {
+                CraftingTabVisibility = Visibility.Visible;
+
+                SetEssentialCraftingValues();
+                await GetJournalInfoAsync();
+                await GetCraftInfoAsync();
+            }
         }
 
         private void SetEssentialCraftingValues()

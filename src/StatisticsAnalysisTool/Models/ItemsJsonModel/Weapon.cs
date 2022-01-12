@@ -1,20 +1,22 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common.Converters;
 
-namespace StatisticsAnalysisTool.Models.ItemWindowModel;
+namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 public class Weapon : ItemJsonObject
 {
     [JsonPropertyName("@uniquename")]
     public override string UniqueName { get; set; }
 
-    [JsonPropertyName("@mesh")]
-    public string Mesh { get; set; }
+    //[JsonPropertyName("@mesh")]
+    //public string Mesh { get; set; }
 
     [JsonPropertyName("@uisprite")]
     public string UiSprite { get; set; }
 
     [JsonPropertyName("@maxqualitylevel")]
-    public string Maxqualitylevel { get; set; }
+    public string MaxQualityLevel { get; set; }
 
     [JsonPropertyName("@abilitypower")]
     public string AbilityPower { get; set; }
@@ -83,7 +85,7 @@ public class Weapon : ItemJsonObject
     public string ItemPower { get; set; }
 
     [JsonPropertyName("@unequipincombat")]
-    public string UnequipInCombat { get; set; }
+    public string UnEquipInCombat { get; set; }
 
     //[JsonPropertyName("@uicraftsoundstart")]
     //public string Uicraftsoundstart { get; set; }
@@ -95,7 +97,10 @@ public class Weapon : ItemJsonObject
     public string CanBeOvercharged { get; set; }
     [JsonPropertyName("canharvest")]
     public CanHarvest CanHarvest { get; set; }
-    public CraftingRequirements CraftingRequirements { get; set; }
+
+    [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
+    [JsonPropertyName("craftingrequirements")]
+    public List<CraftingRequirements> CraftingRequirements { get; set; }
     //public AudioInfo AudioInfo { get; set; }
     //public SocketPreset SocketPreset { get; set; }
 
@@ -104,6 +109,7 @@ public class Weapon : ItemJsonObject
 
     [JsonPropertyName("@descriptionlocatag")]
     public string DescriptionLocaTag { get; set; }
+
     [JsonPropertyName("craftingspelllist")]
     public CraftingSpellList CraftingSpellList { get; set; }
 }

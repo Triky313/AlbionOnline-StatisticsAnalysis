@@ -1,6 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common.Converters;
 
-namespace StatisticsAnalysisTool.Models.ItemWindowModel;
+namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 public class Mount : ItemJsonObject
 {
@@ -138,8 +140,11 @@ public class Mount : ItemJsonObject
 
     [JsonPropertyName("@hidefromplayer")]
     public string HideFromPlayer { get; set; }
+
+    [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
     [JsonPropertyName("craftingrequirements")]
-    public CraftingRequirements CraftingRequirements { get; set; }
+    public List<CraftingRequirements> CraftingRequirements { get; set; }
+
     [JsonPropertyName("craftingspelllist")]
     public CraftingSpellList CraftingSpellList { get; set; }
     //public SocketPreset SocketPreset { get; set; }

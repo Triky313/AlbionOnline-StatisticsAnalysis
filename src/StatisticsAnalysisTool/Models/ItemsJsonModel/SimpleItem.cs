@@ -1,6 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common.Converters;
 
-namespace StatisticsAnalysisTool.Models.ItemWindowModel;
+namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 public class SimpleItem : ItemJsonObject
 {
@@ -51,9 +53,10 @@ public class SimpleItem : ItemJsonObject
 
     [JsonPropertyName("@fishingminigamesetting")]
     public string FishingMiniGameSetting { get; set; }
-    [JsonPropertyName("craftingrequirements")]
 
-    public object CraftingRequirements { get; set; }
+    [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
+    [JsonPropertyName("craftingrequirements")]
+    public List<CraftingRequirements> CraftingRequirements { get; set; }
 
     [JsonPropertyName("@descriptionlocatag")]
     public string DescriptionLocaTag { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.Models.ItemWindowModel;
+namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 public class CraftResource
 {
@@ -8,7 +8,7 @@ public class CraftResource
     public string UniqueName { get; set; }
 
     [JsonPropertyName("@count")]
-    public string Count { get; set; }
+    public int Count { get; set; }
 
     [JsonPropertyName("@maxreturnamount")]
     public string MaxReturnAmount { get; set; }

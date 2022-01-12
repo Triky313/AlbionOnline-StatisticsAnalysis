@@ -1,6 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common.Converters;
 
-namespace StatisticsAnalysisTool.Models.ItemWindowModel;
+namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 public class FarmableItem : ItemJsonObject
 {
@@ -60,7 +62,10 @@ public class FarmableItem : ItemJsonObject
 
     [JsonPropertyName("@itemvalue")]
     public string ItemValue { get; set; }
-    public CraftingRequirements CraftingRequirements { get; set; }
+
+    [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
+    [JsonPropertyName("craftingrequirements")]
+    public List<CraftingRequirements> CraftingRequirements { get; set; }
     //public AudioInfo AudioInfo { get; set; }
     [JsonPropertyName("harvest")]
     public Harvest Harvest { get; set; }

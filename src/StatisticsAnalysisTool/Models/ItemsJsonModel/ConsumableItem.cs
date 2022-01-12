@@ -1,6 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common.Converters;
 
-namespace StatisticsAnalysisTool.Models.ItemWindowModel;
+namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 public class ConsumableItem : ItemJsonObject
 {
@@ -67,7 +69,9 @@ public class ConsumableItem : ItemJsonObject
     [JsonPropertyName("@craftingcategory")]
     public string CraftingCategory { get; set; }
 
-    public CraftingRequirements CraftingRequirements { get; set; }
+    [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
+    [JsonPropertyName("craftingrequirements")]
+    public List<CraftingRequirements> CraftingRequirements { get; set; }
 
     [JsonPropertyName("enchantments")]
     public Enchantments Enchantments { get; set; }

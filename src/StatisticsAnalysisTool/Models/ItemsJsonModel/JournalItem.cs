@@ -1,6 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common.Converters;
 
-namespace StatisticsAnalysisTool.Models.ItemWindowModel;
+namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 public class JournalItem : ItemJsonObject
 {
@@ -34,8 +36,9 @@ public class JournalItem : ItemJsonObject
     [JsonPropertyName("@fasttravelfactor")]
     public string FastTravelFactor { get; set; }
 
+    [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
     [JsonPropertyName("craftingrequirements")]
-    public CraftingRequirements CraftingRequirements { get; set; }
+    public List<CraftingRequirements> CraftingRequirements { get; set; }
 
     [JsonPropertyName("famefillingmissions")]
     public FameFillingMissions FameFillingMissions { get; set; }

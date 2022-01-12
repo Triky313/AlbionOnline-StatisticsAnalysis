@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.ItemWindowModel;
 
 namespace StatisticsAnalysisTool.Models

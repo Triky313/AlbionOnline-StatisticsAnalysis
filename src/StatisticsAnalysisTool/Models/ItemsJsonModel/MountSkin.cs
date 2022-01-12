@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace StatisticsAnalysisTool.Models.ItemWindowModel;
+namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 public class MountSkin : ItemJsonObject
 {

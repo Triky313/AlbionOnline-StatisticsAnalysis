@@ -1,6 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common.Converters;
 
-namespace StatisticsAnalysisTool.Models.ItemWindowModel;
+namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 public class HideoutItem : ItemJsonObject
 {
@@ -45,6 +47,8 @@ public class HideoutItem : ItemJsonObject
 
     //[JsonPropertyName("@uicraftsoundfinish")]
     //public string Uicraftsoundfinish { get; set; }
+
+    [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
     [JsonPropertyName("craftingrequirements")]
-    public CraftingRequirements CraftingRequirements { get; set; }
+    public List<CraftingRequirements> CraftingRequirements { get; set; }
 }

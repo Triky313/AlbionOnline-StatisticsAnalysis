@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Models.ItemWindowModel;
+﻿namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 public abstract class ItemJsonObject
 {

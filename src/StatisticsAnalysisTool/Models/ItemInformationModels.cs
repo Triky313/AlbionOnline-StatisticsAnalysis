@@ -1,14 +1,13 @@
-using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text.Json.Serialization;
 using Formatting = StatisticsAnalysisTool.Common.Formatting;
 
 namespace StatisticsAnalysisTool.Models
 {
+    // TODO: Remove this
     public class ItemInformation
     {
         [JsonPropertyName("itemType")]
@@ -88,8 +87,8 @@ namespace StatisticsAnalysisTool.Models
         [JsonPropertyName("itemPowerProgressionType")]
         public string ItemPowerProgressionType { get; set; }
 
-        [JsonPropertyName("craftingRequirements")]
-        public CraftingRequirements CraftingRequirements { get; set; }
+        //[JsonPropertyName("craftingRequirements")]
+        //public CraftingRequirements CraftingRequirements { get; set; }
 
         [JsonPropertyName("unlockedToEquip")]
         public bool? UnlockedToEquip { get; set; }
@@ -181,23 +180,23 @@ namespace StatisticsAnalysisTool.Models
         [JsonPropertyName("count")] public int Count { get; set; }
     }
 
-    public class CraftingRequirements
-    {
-        [JsonPropertyName("time")]
-        public double Time { get; set; }
+    //public class CraftingRequirements
+    //{
+    //    [JsonPropertyName("time")]
+    //    public double Time { get; set; }
 
-        [JsonPropertyName("silver")]
-        public double? Silver { get; set; }
+    //    [JsonPropertyName("silver")]
+    //    public double? Silver { get; set; }
 
-        [JsonPropertyName("craftingFocus")]
-        public int CraftingFocus { get; set; }
+    //    [JsonPropertyName("craftingFocus")]
+    //    public int CraftingFocus { get; set; }
 
-        [JsonPropertyName("craftResourceList")]
-        public List<CraftResourceList> CraftResourceList { get; set; }
+    //    [JsonPropertyName("craftResourceList")]
+    //    public List<CraftResourceList> CraftResourceList { get; set; }
 
-        [JsonIgnore]
-        public int TotalAmountResources => CraftResourceList?.ToList().Where(x => x != null && x.UniqueName != "QUESTITEM_TOKEN_AVALON" && !x.UniqueName.Contains("ARTEFACT_TOKEN_FAVOR")).Sum(x => x.Count) ?? 0;
-    }
+    //    [JsonIgnore]
+    //    public int TotalAmountResources => CraftResourceList?.ToList().Where(x => x != null && x.UniqueName != "QUESTITEM_TOKEN_AVALON" && !x.UniqueName.Contains("ARTEFACT_TOKEN_FAVOR")).Sum(x => x.Count) ?? 0;
+    //}
 
     public class Enchantment
     {
@@ -210,9 +209,9 @@ namespace StatisticsAnalysisTool.Models
         [JsonPropertyName("durability")]
         public int Durability { get; set; }
 
-        [JsonPropertyName("craftingRequirements")]
-        [CanBeNull]
-        public CraftingRequirements CraftingRequirements { get; set; }
+        //[JsonPropertyName("craftingRequirements")]
+        //[CanBeNull]
+        //public CraftingRequirements CraftingRequirements { get; set; }
     }
 
     public class Enchantments
