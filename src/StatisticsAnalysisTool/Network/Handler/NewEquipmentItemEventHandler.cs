@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             //_trackingController.LootController.AddDiscoveredLoot(value.Loot);
 
-            _trackingController.EntityController.AddEquipmentItem(new EquipmentItem
+            _trackingController.EntityController.AddEquipmentItem(new EquipmentItemInternal
             {
                 ItemIndex = value.Loot.ItemId,
                 SpellDictionary = value.Loot.SpellDictionary

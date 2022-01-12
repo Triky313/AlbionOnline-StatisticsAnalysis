@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -143,7 +144,7 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResourceList> craftRequiredResources)
+        public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResource> craftRequiredResources)
         {
             var tierFactor = (tier, level) switch
             {
@@ -176,7 +177,7 @@ namespace StatisticsAnalysisTool.Common
             return safeFoodValue / 100 * numberOfMaterials * (tierFactor + GetArtifactFactor(craftRequiredResources));
         }
 
-        private static double GetArtifactFactor(IEnumerable<CraftResourceList> requiredResources, double craftingTaxDefault = 0.0)
+        private static double GetArtifactFactor(IEnumerable<CraftResource> requiredResources, double craftingTaxDefault = 0.0)
         {
             var artifactResource = requiredResources.FirstOrDefault(x => x.UniqueName.Contains("ARTEFACT_TOKEN_FAVOR"));
             

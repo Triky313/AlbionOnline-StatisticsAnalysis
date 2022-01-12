@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.ItemWindowModel;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -22,7 +23,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -51,7 +51,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _informationLoadingImageVisibility;
         private bool _isAutoUpdateActive;
         private Item _item;
-        private ItemInformation _itemInformation;
         private XmlLanguage _itemListViewLanguage;
         private string _itemName;
         private string _itemTierLevel;
@@ -99,7 +98,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void InitializeItemWindow(Item item)
         {
-            ItemInformation = null;
             ErrorBarVisibility = Visibility.Hidden;
             SetDefaultQualityIfNoOneChecked();
 
@@ -162,35 +160,12 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             var areResourcesAvailable = false;
 
-            if (Item?.FullItemInformation is Models.ItemsJsonModel.EquipmentItem equipmentItem)
+            switch (Item?.FullItemInformation)
             {
-                try
-                {
-                    //var craftingRequirement = equipmentItem.CraftingRequirements as CraftingRequirements;
-
-                    //if (craftingRequirement == null)
-                    //{
-                    //    var craftingRequirements = equipmentItem.CraftingRequirements as List<CraftingRequirements>;
-
-                    //}
-                }
-                catch (Exception e)
-                {
-                    // ignore
-                }
-
-                if (equipmentItem.CraftingRequirements is CraftingRequirements)
-                {
+                case EquipmentItem { CraftingRequirements.Count: > 0 }:
+                case Weapon { CraftingRequirements.Count: > 0 }:
                     areResourcesAvailable = true;
-                } 
-                else if (equipmentItem.CraftingRequirements is List<CraftingRequirements>)
-                {
-                    areResourcesAvailable = true;
-                }
-            } 
-            else if (Item?.FullItemInformation is Weapon weapon && weapon.CraftingRequirements.Count > 0)
-            {
-                areResourcesAvailable = true;
+                    break;
             }
 
             if (areResourcesAvailable)
@@ -273,7 +248,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             if (CraftingCalculation?.SetupFee != null && EssentialCraftingValues != null)
             {
-                CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, 
+                CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity,
                     EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
             }
 
@@ -882,16 +857,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _item = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ItemInformation ItemInformation
-        {
-            get => _itemInformation;
-            set
-            {
-                _itemInformation = value;
                 OnPropertyChanged();
             }
         }

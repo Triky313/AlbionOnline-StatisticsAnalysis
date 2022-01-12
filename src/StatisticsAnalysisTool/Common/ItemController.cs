@@ -508,12 +508,6 @@ namespace StatisticsAnalysisTool.Common
             return ItemType.Unknown;
         }
         
-        [Obsolete("Must be rebuilt because ItemInfo no longer exists.")]
-        public static bool IsItemSlotType(ItemInformation itemInfo, string slotType)
-        {
-            return itemInfo?.SlotType == slotType;
-        }
-
         public static async Task<bool> GetItemsJsonAsync()
         {
             var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
