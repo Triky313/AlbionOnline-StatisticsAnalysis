@@ -76,10 +76,10 @@ public class EquipmentItem : ItemJsonObject
     public string OffHandAnimationType { get; set; }
 
     [JsonPropertyName("@unlockedtocraft")]
-    public string UnlockedToCraft { get; set; }
+    public bool UnlockedToCraft { get; set; }
 
     [JsonPropertyName("@unlockedtoequip")]
-    public string UnlockedToEquip { get; set; }
+    public bool UnlockedToEquip { get; set; }
 
     [JsonPropertyName("@hitpointsmax")]
     public string HitPointsMax { get; set; }
@@ -145,7 +145,7 @@ public class EquipmentItem : ItemJsonObject
     public string HealModifier { get; set; }
 
     [JsonPropertyName("@canbeovercharged")]
-    public string CanBeOvercharged { get; set; }
+    public bool CanBeOvercharged { get; set; }
 
     [JsonPropertyName("@showinmarketplace")]
     public string ShowInMarketPlace { get; set; }

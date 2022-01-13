@@ -28,7 +28,7 @@ public class SimpleItem : ItemJsonObject
     public string ShopSubCategory1 { get; set; }
 
     [JsonPropertyName("@unlockedtocraft")]
-    public string UnlockedToCraft { get; set; }
+    public bool UnlockedToCraft { get; set; }
 
     [JsonPropertyName("@itemvalue")]
     public string ItemValue { get; set; }

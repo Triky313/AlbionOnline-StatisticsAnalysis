@@ -43,7 +43,7 @@ public class Weapon : ItemJsonObject
     public string AttackRange { get; set; }
 
     [JsonPropertyName("@twohanded")]
-    public string TwoHanded { get; set; }
+    public bool TwoHanded { get; set; }
 
     [JsonPropertyName("@tier")]
     public string Tier { get; set; }
@@ -76,16 +76,16 @@ public class Weapon : ItemJsonObject
     //public string Mainhandanimationtype { get; set; }
 
     [JsonPropertyName("@unlockedtocraft")]
-    public string UnlockedToCraft { get; set; }
+    public bool UnlockedToCraft { get; set; }
 
     [JsonPropertyName("@unlockedtoequip")]
-    public string UnlockedToEquip { get; set; }
+    public bool UnlockedToEquip { get; set; }
 
     [JsonPropertyName("@itempower")]
     public string ItemPower { get; set; }
 
     [JsonPropertyName("@unequipincombat")]
-    public string UnEquipInCombat { get; set; }
+    public bool UnEquipInCombat { get; set; }
 
     //[JsonPropertyName("@uicraftsoundstart")]
     //public string Uicraftsoundstart { get; set; }
@@ -94,7 +94,8 @@ public class Weapon : ItemJsonObject
     //public string Uicraftsoundfinish { get; set; }
 
     [JsonPropertyName("@canbeovercharged")]
-    public string CanBeOvercharged { get; set; }
+    public bool CanBeOvercharged { get; set; }
+
     [JsonPropertyName("canharvest")]
     public CanHarvest CanHarvest { get; set; }
 

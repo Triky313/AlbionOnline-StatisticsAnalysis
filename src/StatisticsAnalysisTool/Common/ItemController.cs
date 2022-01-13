@@ -364,7 +364,6 @@ namespace StatisticsAnalysisTool.Common
 
             foreach (var item in ItemsJson.Items.FarmableItem.Where(item => item.UniqueName == cleanUniqueName))
             {
-
                 return item;
             }
 
@@ -579,7 +578,8 @@ namespace StatisticsAnalysisTool.Common
                                      | JsonNumberHandling.WriteAsString,
                     Converters =
                     {
-                        new CraftingRequirementsToCraftingRequirementsList()
+                        new CraftingRequirementsToCraftingRequirementsList(), 
+                        new BoolConverter()
                     }
                 };
 

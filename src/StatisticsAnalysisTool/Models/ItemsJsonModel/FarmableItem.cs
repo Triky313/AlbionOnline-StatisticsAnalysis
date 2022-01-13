@@ -16,13 +16,13 @@ public class FarmableItem : ItemJsonObject
     public string PlaceFame { get; set; }
 
     [JsonPropertyName("@pickupable")]
-    public string Pickupable { get; set; }
+    public bool Pickupable { get; set; }
 
     [JsonPropertyName("@destroyable")]
-    public string Destroyable { get; set; }
+    public bool Destroyable { get; set; }
 
     [JsonPropertyName("@unlockedtoplace")]
-    public string UnlockedToPlace { get; set; }
+    public bool UnlockedToPlace { get; set; }
 
     [JsonPropertyName("@maxstacksize")]
     public string MaxStackSize { get; set; }
@@ -40,7 +40,7 @@ public class FarmableItem : ItemJsonObject
     public string Weight { get; set; }
 
     [JsonPropertyName("@unlockedtocraft")]
-    public string UnlockedToCraft { get; set; }
+    public bool UnlockedToCraft { get; set; }
 
     [JsonPropertyName("@animationid")]
     public string AnimationId { get; set; }
