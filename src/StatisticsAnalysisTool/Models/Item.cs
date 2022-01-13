@@ -1,10 +1,10 @@
 ﻿using FontAwesome5;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
-using StatisticsAnalysisTool.Models.ItemWindowModel;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -28,7 +28,7 @@ namespace StatisticsAnalysisTool.Models
 
         public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetItemImage(UniqueName));
 
-        public ItemJsonObject FullItemInformation => ItemController.GetSpecificItemInfo(UniqueName);
+        public ItemJsonObject FullItemInformation { get; set; }
 
         public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
         public bool IsAlertActive { get; set; }

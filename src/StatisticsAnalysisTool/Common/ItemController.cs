@@ -348,7 +348,15 @@ namespace StatisticsAnalysisTool.Common
 
         #region Item extra information
 
-        public static ItemJsonObject GetSpecificItemInfo(string uniqueName)
+        public static async Task SetFullItemInfoToItems()
+        {
+            await foreach (var item in Items.ToAsyncEnumerable())
+            {
+                item.FullItemInformation = await GetSpecificItemInfoAsync(item.UniqueName);
+            }
+        }
+
+        private static async Task<ItemJsonObject> GetSpecificItemInfoAsync(string uniqueName)
         {
             var cleanUniqueName = GetCleanUniqueName(uniqueName);
 
@@ -362,62 +370,62 @@ namespace StatisticsAnalysisTool.Common
                 return ItemsJson.Items.HideoutItem;
             }
 
-            foreach (var item in ItemsJson.Items.FarmableItem.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach (var item in ItemsJson.Items.FarmableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.SimpleItem.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach (var item in ItemsJson.Items.SimpleItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach(var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach(var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.EquipmentItem.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach (var item in ItemsJson.Items.EquipmentItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.Weapon.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach (var item in ItemsJson.Items.Weapon.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.Mount.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach (var item in ItemsJson.Items.Mount.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.FurnitureItem.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach (var item in ItemsJson.Items.FurnitureItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.JournalItem.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach (var item in ItemsJson.Items.JournalItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.LabourerContract.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach (var item in ItemsJson.Items.LabourerContract.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.MountSkin.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach (var item in ItemsJson.Items.MountSkin.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
 
-            foreach (var item in ItemsJson.Items.CrystalLeagueItem.Where(item => item.UniqueName == cleanUniqueName))
+            await foreach (var item in ItemsJson.Items.CrystalLeagueItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 return item;
             }
@@ -529,17 +537,20 @@ namespace StatisticsAnalysisTool.Common
                     if (await GetItemsJsonFromWebAsync(url))
                     {
                         ItemsJson = await GetItemsJsonFromLocal();
+                        await SetFullItemInfoToItems();
                     }
                     return ItemsJson?.Items != null;
                 }
 
                 ItemsJson = await GetItemsJsonFromLocal();
+                await SetFullItemInfoToItems();
                 return ItemsJson?.Items != null;
             }
 
             if (await GetItemsJsonFromWebAsync(url))
             {
                 ItemsJson = await GetItemsJsonFromLocal();
+                await SetFullItemInfoToItems();
             }
             return ItemsJson?.Items != null;
         }
