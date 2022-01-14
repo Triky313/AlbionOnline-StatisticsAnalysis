@@ -19,8 +19,6 @@ namespace StatisticsAnalysisTool.Common
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         
-        private static IAsyncEnumerable<ItemSpriteToJournalStruct> _craftingJournalData = new List<ItemSpriteToJournalStruct>().ToAsyncEnumerable();
-
         public static double GetRequiredJournalAmount(Item item, double itemQuantityToBeCrafted)
         {
             if (itemQuantityToBeCrafted == 0)
@@ -35,16 +33,63 @@ namespace StatisticsAnalysisTool.Common
             return 0;
         }
         
-        public static async Task<Item> GetCraftingJournalItemAsync(int tier, string itemSpriteName)
+        public static Item GetCraftingJournalItem(int tier, CraftingJournalType craftingJournalType)
         {
-            var data = await _craftingJournalData.FirstOrDefaultAsync(x => x.Name == itemSpriteName).ConfigureAwait(false);
-            return data.Id switch
+            return craftingJournalType switch
             {
                 CraftingJournalType.JournalMage => ItemController.GetItemByUniqueName($"T{tier}_JOURNAL_MAGE_EMPTY"),
                 CraftingJournalType.JournalHunter => ItemController.GetItemByUniqueName($"T{tier}_JOURNAL_HUNTER_EMPTY"),
                 CraftingJournalType.JournalWarrior => ItemController.GetItemByUniqueName($"T{tier}_JOURNAL_WARRIOR_EMPTY"),
                 CraftingJournalType.JournalToolMaker => ItemController.GetItemByUniqueName($"T{tier}_JOURNAL_TOOLMAKER_EMPTY"),
                 _ => null
+            };
+        }
+
+        public static CraftingJournalType GetCraftingJournalType(string uniqueName, string craftingCategory)
+        {
+            if (craftingCategory is "offhand" or null)
+            {
+                if (uniqueName.Contains("OFF_SCHIELD")
+                    || uniqueName.Contains("OFF_TOWERSHIELD")
+                    || uniqueName.Contains("OFF_SPIKEDSHIELD")
+                    || uniqueName.Contains("OFF_TOWERSHIELD"))
+                {
+                    return CraftingJournalType.JournalWarrior;
+                }
+                
+                if (uniqueName.Contains("OFF_JESTERCANE")
+                    || uniqueName.Contains("OFF_TORCH")
+                    || uniqueName.Contains("OFF_LAMP")
+                    || uniqueName.Contains("OFF_TALISMAN")
+                    || uniqueName.Contains("OFF_HORN"))
+                {
+                    return CraftingJournalType.JournalHunter;
+                }
+                
+                if (uniqueName.Contains("OFF_CENSER")
+                    || uniqueName.Contains("OFF_TOTEM")
+                    || uniqueName.Contains("OFF_DEMONSKULL")
+                    || uniqueName.Contains("OFF_ORB")
+                    || uniqueName.Contains("OFF_BOOK"))
+                {
+                    return CraftingJournalType.JournalMage;
+                }
+                
+                if (uniqueName.Contains("_CAPE")
+                    || uniqueName.Contains("_BAG") 
+                    || uniqueName.Contains("_BAG_INSIGHT"))
+                {
+                    return CraftingJournalType.JournalToolMaker;
+                }
+            }
+
+            return craftingCategory switch
+            {
+                "tools" or "gatherergear" => CraftingJournalType.JournalToolMaker,
+                "cloth_helmet" or "cloth_armor" or "cloth_shoes" or "cursestaff" or "firestaff" or "froststaff" or "arcanestaff" or "holystaff" => CraftingJournalType.JournalMage,
+                "plate_helmet" or "plate_armor" or "plate_shoes" or "crossbow" or "axe" or "sword" or "hammer" or "mace" or "knuckles" => CraftingJournalType.JournalWarrior,
+                "leather_helmet" or "leather_armor" or "leather_shoes" or "bow" or "naturestaff" or "dagger" or "spear" or "quarterstaff" => CraftingJournalType.JournalHunter,
+                _ => CraftingJournalType.Unknown
             };
         }
 
@@ -109,41 +154,7 @@ namespace StatisticsAnalysisTool.Common
                 return 0;
             }
         }
-
-        public static async Task<bool> LoadAsync()
-        {
-            _craftingJournalData = await GetJournalNameFromLocalAsync();
-
-            if (_craftingJournalData != null && await _craftingJournalData.CountAsync() <= 0)
-            {
-                Log.Warn($"{nameof(LoadAsync)}: No Simple item data found.");
-                return false;
-            }
-
-            return true;
-        }
         
-        public static async Task<IAsyncEnumerable<ItemSpriteToJournalStruct>> GetJournalNameFromLocalAsync()
-        {
-            try
-            {
-                var options = new JsonSerializerOptions()
-                {
-                    ReadCommentHandling = JsonCommentHandling.Skip,
-                    NumberHandling = JsonNumberHandling.AllowReadingFromString
-                };
-
-                var localItemString = await File.ReadAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.ItemSpriteToJournalFileName), Encoding.UTF8);
-                return (JsonSerializer.Deserialize<List<ItemSpriteToJournalStruct>>(localItemString, options) ?? new List<ItemSpriteToJournalStruct>()).ToAsyncEnumerable();
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                return new List<ItemSpriteToJournalStruct>().ToAsyncEnumerable();
-            }
-        }
-
         public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResource> craftRequiredResources)
         {
             var tierFactor = (tier, level) switch

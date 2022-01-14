@@ -35,26 +35,10 @@ namespace StatisticsAnalysisTool.Common
 
         #region General
 
-        public static Item GetItemByIndex(int index)
-        {
-            return Items?.FirstOrDefault(i => i.Index == index);
-        }
-
-        public static Item GetItemByUniqueName(string uniqueName)
-        {
-            return Items?.FirstOrDefault(i => i.UniqueName == uniqueName);
-        }
-
         public static string GetCleanUniqueName(string uniqueName)
         {
             var uniqueNameArray = uniqueName.Split("@");
             return uniqueNameArray[0];
-        }
-
-        public static bool IsTrash(int index)
-        {
-            var item = Items.FirstOrDefault(i => i.Index == index);
-            return (item != null && item.UniqueName.Contains("TRASH")) || item == null;
         }
 
         public static ItemQuality GetQuality(int value)
@@ -197,6 +181,22 @@ namespace StatisticsAnalysisTool.Common
         #endregion
 
         #region Items
+
+        public static Item GetItemByIndex(int index)
+        {
+            return Items?.FirstOrDefault(i => i.Index == index);
+        }
+
+        public static Item GetItemByUniqueName(string uniqueName)
+        {
+            return Items?.FirstOrDefault(i => i.UniqueName == uniqueName);
+        }
+
+        public static bool IsTrash(int index)
+        {
+            var item = Items.FirstOrDefault(i => i.Index == index);
+            return (item != null && item.UniqueName.Contains("TRASH")) || item == null;
+        }
 
         public static async Task<bool> GetItemListFromJsonAsync()
         {

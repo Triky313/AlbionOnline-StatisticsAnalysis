@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Converters;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
@@ -107,6 +109,9 @@ public class Weapon : ItemJsonObject
 
     [JsonPropertyName("@craftingcategory")]
     public string CraftingCategory { get; set; }
+
+    [JsonIgnore] 
+    public CraftingJournalType CraftingJournalType => CraftingController.GetCraftingJournalType(UniqueName, CraftingCategory);
 
     [JsonPropertyName("@descriptionlocatag")]
     public string DescriptionLocaTag { get; set; }

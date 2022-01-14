@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.Converters;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
@@ -162,6 +164,9 @@ public class EquipmentItem : ItemJsonObject
 
     [JsonPropertyName("@craftingcategory")]
     public string CraftingCategory { get; set; }
+
+    [JsonIgnore]
+    public CraftingJournalType CraftingJournalType => CraftingController.GetCraftingJournalType(UniqueName, CraftingCategory);
 
     [JsonPropertyName("@combatspecachievement")]
     public string CombatSpecAchievement { get; set; }

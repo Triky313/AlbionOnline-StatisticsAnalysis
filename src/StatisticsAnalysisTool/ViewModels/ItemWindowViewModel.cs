@@ -23,6 +23,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -177,7 +178,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 await GetCraftInfoAsync();
             }
         }
-
+        
         private void SetEssentialCraftingValues()
         {
             EssentialCraftingValues = new EssentialCraftingValuesTemplate(this)
@@ -218,8 +219,19 @@ namespace StatisticsAnalysisTool.ViewModels
         private async Task GetJournalInfoAsync()
         {
             // TODO: Rework
-            //var craftingJournalType = await CraftingController.GetCraftingJournalItemAsync(Item.Tier, Item.FullItemInformation.SpriteName);
             Item craftingJournalType = null;
+
+            if (Item?.FullItemInformation is Weapon weapon)
+            {
+                craftingJournalType = CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType);
+            }
+            else if (Item?.FullItemInformation is EquipmentItem equipmentItem)
+            {
+                craftingJournalType = CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType);
+            }
+
+            //var craftingJournalType = await CraftingController.GetCraftingJournalItem(Item.Tier, Item.FullItemInformation.SpriteName);
+           
             if (craftingJournalType == null)
             {
                 return;
