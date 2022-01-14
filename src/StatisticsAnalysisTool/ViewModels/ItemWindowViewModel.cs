@@ -23,7 +23,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -114,6 +113,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async void InitializeItemData(Item item)
         {
+            InformationLoadingImageVisibility = Visibility.Visible;
+
             Icon = null;
             ItemName = "-";
             ItemTierLevel = string.Empty;
@@ -125,7 +126,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             ItemTierLevel = Item?.Tier != -1 && Item?.Level != -1 ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
-            await SetFullItemInformationAsync(item);
             await InitCraftingTabUiAsync();
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
@@ -151,8 +151,10 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Title = $"{localizedName} (T{item.Tier})";
             });
 
-            StartAutoUpdater();
+            _ = StartAutoUpdaterAsync();
             RefreshSpin = IsAutoUpdateActive;
+
+            InformationLoadingImageVisibility = Visibility.Hidden;
         }
 
         #region Crafting tab
@@ -174,7 +176,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 CraftingTabVisibility = Visibility.Visible;
 
                 SetEssentialCraftingValues();
-                await GetJournalInfoAsync();
+                GetJournalInfo();
                 await GetCraftInfoAsync();
             }
         }
@@ -197,41 +199,44 @@ namespace StatisticsAnalysisTool.ViewModels
         private async Task GetCraftInfoAsync()
         {
             // TODO: Rework
-            //var craftResourceList = Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.ToAsyncEnumerable();
+            var craftingRequirements = Item?.FullItemInformation switch
+            {
+                Weapon weapon => weapon.CraftingRequirements,
+                EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
+                _ => null
+            };
 
-            //await foreach (var craftResource in craftResourceList ?? new List<CraftResourceList>().ToAsyncEnumerable())
-            //{
-            //    var item = GetSuitableResourceItem(craftResource.UniqueName);
-            //    var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false ? CraftingCalculation.PossibleItemCrafting : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
+            await foreach (var craftingRequirement in (craftingRequirements?.ToAsyncEnumerable() ?? new List<CraftingRequirements>().ToAsyncEnumerable()).ConfigureAwait(false))
+            {
+                foreach (var craftResource in craftingRequirement.CraftResource)
+                {
+                    var item = GetSuitableResourceItem(craftResource.UniqueName);
+                    var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false 
+                        ? CraftingCalculation.PossibleItemCrafting 
+                        : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
 
-            //    RequiredResources.Add(new RequiredResource(this)
-            //    {
-            //        CraftingResourceName = item?.LocalizedName,
-            //        OneProductionAmount = craftResource.Count,
-            //        Icon = item?.Icon,
-            //        ResourceCost = 0,
-            //        CraftingQuantity = craftingQuantity,
-            //        IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
-            //    });
-            //}
+                    RequiredResources.Add(new RequiredResource(this)
+                    {
+                        CraftingResourceName = item?.LocalizedName,
+                        OneProductionAmount = craftResource.Count,
+                        Icon = item?.Icon,
+                        ResourceCost = 0,
+                        CraftingQuantity = craftingQuantity,
+                        IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
+                    });
+                }
+            }
         }
 
-        private async Task GetJournalInfoAsync()
+        private void GetJournalInfo()
         {
-            // TODO: Rework
-            Item craftingJournalType = null;
-
-            if (Item?.FullItemInformation is Weapon weapon)
+            var craftingJournalType = Item?.FullItemInformation switch
             {
-                craftingJournalType = CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType);
-            }
-            else if (Item?.FullItemInformation is EquipmentItem equipmentItem)
-            {
-                craftingJournalType = CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType);
-            }
+                Weapon weapon => CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType),
+                EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType),
+                _ => null
+            };
 
-            //var craftingJournalType = await CraftingController.GetCraftingJournalItem(Item.Tier, Item.FullItemInformation.SpriteName);
-           
             if (craftingJournalType == null)
             {
                 return;
@@ -327,19 +332,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Crafting tab
-
-        private async Task SetFullItemInformationAsync(Item item)
-        {
-            InformationLoadingImageVisibility = Visibility.Visible;
-
-            // TODO: Rework
-            //var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);
-            //ItemInformation = fullItemInfo;
-            //Item.FullItemInformation = fullItemInfo;
-
-            InformationLoadingImageVisibility = Visibility.Hidden;
-        }
-
+        
         private void SetErrorValues(Error error)
         {
             switch (error)
@@ -396,7 +389,7 @@ namespace StatisticsAnalysisTool.ViewModels
             ErrorBarVisibility = visibility;
         }
 
-        private async void StartAutoUpdater()
+        private async Task StartAutoUpdaterAsync()
         {
             await Task.Run(async () =>
             {
