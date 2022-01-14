@@ -46,5 +46,8 @@ namespace StatisticsAnalysisTool.Models
         public string AveragePricesTooltip => LanguageController.Translation("AVERAGE_PRICES_TOOLTIP");
         public string RequiredResources => LanguageController.Translation("REQUIRED_RESOURCES");
         public string Crafting => LanguageController.Translation("CRAFTING");
+        public string ShopCategory => LanguageController.Translation("SHOP_CATEGORY");
+        public string ShopSubCategory => LanguageController.Translation("SHOP_SUB_CATEGORY");
+        public string CanBeOvercharged => LanguageController.Translation("CAN_BE_OVERCHARGED");
     }
 }

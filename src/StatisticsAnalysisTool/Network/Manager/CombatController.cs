@@ -298,7 +298,10 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             var item = ItemController.GetItemByIndex((int)newIndex);
-            if (item == null) return currentItem;
+            if (item == null)
+            {
+                return currentItem;
+            }
 
             // TODO: Rework
             //var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);

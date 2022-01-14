@@ -9,7 +9,7 @@ public class FurnitureItem : ItemJsonObject
     [JsonPropertyName("@uniquename")]
     public override string UniqueName { get; set; }
 
-    [JsonPropertyName("@ShopCategory")]
+    [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]
@@ -74,7 +74,7 @@ public class FurnitureItem : ItemJsonObject
     public Container container { get; set; }
 
     [JsonPropertyName("@showinmarketplace")]
-    public string ShowInMarketPlace { get; set; }
+    public bool ShowInMarketPlace { get; set; }
 
     [JsonPropertyName("@residencyslots")]
     public string ResidencySlots { get; set; }

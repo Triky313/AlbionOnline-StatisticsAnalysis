@@ -36,7 +36,7 @@ public class HideoutItem : ItemJsonObject
     [JsonPropertyName("@unlockedtocraft")]
     public string Unlockedtocraft { get; set; }
 
-    [JsonPropertyName("@ShopCategory")]
+    [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]

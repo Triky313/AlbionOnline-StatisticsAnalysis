@@ -10,6 +10,11 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class ExtensionMethod
     {
+        public static string SetYesOrNo(this bool value)
+        {
+            return (value) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
+        }
+
         public static void OrderByReference<T>(this ObservableCollection<T> collection, List<T> comparison)
         {
             for (var i = 0; i < comparison.Count; i++)
@@ -20,7 +25,7 @@ namespace StatisticsAnalysisTool.Common
                 }
             }
         }
-        
+
         public static Dictionary<int, T> ToDictionary<T>(this IEnumerable<T> array)
         {
             return array
@@ -35,7 +40,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static string ToTimerString(this int seconds)
         {
-            var span = new TimeSpan(0,0,0, seconds);
+            var span = new TimeSpan(0, 0, 0, seconds);
             return $"{span.Hours:00}:{span.Minutes:00}:{span.Seconds:00}";
         }
 

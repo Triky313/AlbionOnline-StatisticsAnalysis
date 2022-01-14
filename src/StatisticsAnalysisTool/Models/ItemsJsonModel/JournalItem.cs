@@ -21,7 +21,7 @@ public class JournalItem : ItemJsonObject
     [JsonPropertyName("@baselootamount")]
     public string BaseLootAmount { get; set; }
 
-    [JsonPropertyName("@ShopCategory")]
+    [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]

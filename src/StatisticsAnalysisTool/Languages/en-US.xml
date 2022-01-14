@@ -499,4 +499,7 @@
 	<translation name="TRACKING_MOB_LOOT">Tracking mob loot</translation>
 	<translation name="ITEMS_JSON_SOURCE_URL">Items.json source url</translation>
 	<translation name="UPDATE_ITEMS_JSON_BY_DAYS">Update items.json by days: </translation>
+	<translation name="SHOP_CATEGORY">Shop category</translation>
+	<translation name="SHOP_SUB_CATEGORY">Shop sub category</translation>
+	<translation name="CAN_BE_OVERCHARGED">Can be overcharged</translation>
 </translations>

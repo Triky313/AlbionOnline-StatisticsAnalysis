@@ -10,7 +10,7 @@ public class LabourerContract : ItemJsonObject
     [JsonPropertyName("@tier")]
     public string Tier { get; set; }
 
-    [JsonPropertyName("@ShopCategory")]
+    [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]

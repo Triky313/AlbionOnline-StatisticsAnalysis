@@ -24,7 +24,7 @@ public class Mount : ItemJsonObject
     [JsonPropertyName("@slottype")]
     public string SlotType { get; set; }
 
-    [JsonPropertyName("@ShopCategory")]
+    [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]
@@ -136,7 +136,7 @@ public class Mount : ItemJsonObject
     public string Hostiledismountbuff { get; set; }
 
     [JsonPropertyName("@showinmarketplace")]
-    public string ShowInMarketPlace { get; set; }
+    public bool ShowInMarketPlace { get; set; }
 
     [JsonPropertyName("@hidefromplayer")]
     public string HideFromPlayer { get; set; }

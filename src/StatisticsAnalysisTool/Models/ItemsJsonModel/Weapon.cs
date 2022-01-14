@@ -26,7 +26,7 @@ public class Weapon : ItemJsonObject
     [JsonPropertyName("@slottype")]
     public string SlotType { get; set; }
 
-    [JsonPropertyName("@ShopCategory")]
+    [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]
@@ -97,6 +97,9 @@ public class Weapon : ItemJsonObject
 
     [JsonPropertyName("@canbeovercharged")]
     public bool CanBeOvercharged { get; set; }
+
+    [JsonPropertyName("@showinmarketplace")]
+    public bool ShowInMarketPlace { get; set; }
 
     [JsonPropertyName("canharvest")]
     public CanHarvest CanHarvest { get; set; }

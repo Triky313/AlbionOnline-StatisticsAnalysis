@@ -21,7 +21,7 @@ public class ConsumableFromInventoryItem : ItemJsonObject
     [JsonPropertyName("@consumespell")]
     public string ConsumeSpell { get; set; }
 
-    [JsonPropertyName("@ShopCategory")]
+    [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]

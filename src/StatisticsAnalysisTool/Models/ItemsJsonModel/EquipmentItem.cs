@@ -26,7 +26,7 @@ public class EquipmentItem : ItemJsonObject
     [JsonPropertyName("@itempowerprogressiontype")]
     public string ItemPowerProgressionType { get; set; }
 
-    [JsonPropertyName("@ShopCategory")]
+    [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]
@@ -150,7 +150,7 @@ public class EquipmentItem : ItemJsonObject
     public bool CanBeOvercharged { get; set; }
 
     [JsonPropertyName("@showinmarketplace")]
-    public string ShowInMarketPlace { get; set; }
+    public bool ShowInMarketPlace { get; set; }
 
     [JsonPropertyName("@energycostreduction")]
     public string EnergyCostReduction { get; set; }

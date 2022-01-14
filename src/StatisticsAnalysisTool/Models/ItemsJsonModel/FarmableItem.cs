@@ -27,7 +27,7 @@ public class FarmableItem : ItemJsonObject
     [JsonPropertyName("@maxstacksize")]
     public string MaxStackSize { get; set; }
 
-    [JsonPropertyName("@ShopCategory")]
+    [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]
@@ -90,5 +90,5 @@ public class FarmableItem : ItemJsonObject
     public string UiSprite { get; set; }
 
     [JsonPropertyName("@showinmarketplace")]
-    public string ShowInMarketPlace { get; set; }
+    public bool ShowInMarketPlace { get; set; }
 }

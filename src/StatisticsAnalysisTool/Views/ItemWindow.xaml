@@ -295,33 +295,21 @@
                             <fa5:ImageAwesome Visibility="{Binding InformationLoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                         </Grid>
                         <StackPanel Margin="10,10,0,10" HorizontalAlignment="Left" Width="250">
-                            <Label Content="{Binding Translation.Equipable, FallbackValue=EQUIPABLE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.Stackable, FallbackValue=STACKABLE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.ShowInMarketplace, FallbackValue=SHOW_IN_MARKET_PLACE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.ItemType, FallbackValue=ITEM_TYPE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.CategoryId, FallbackValue=CATEGORY__ID}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.Revision, FallbackValue=REVISION}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.Category, FallbackValue=CATEGORY}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.ParentCategory, FallbackValue=PARENT_CATEGORY}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.Weight, FallbackValue=WEIGHT}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.ItemPower, FallbackValue=ITEM__POWER}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.ShopCategory, FallbackValue=SHOP_CATEGORY}" ContentStringFormat="{}{0:N2}:" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.ShopSubCategory, FallbackValue=SHOP_SUB_CATEGORY_1}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
                             <Label Content="{Binding Translation.Durability, FallbackValue=DURABILITY}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding Translation.LastFullInformationUpdate, FallbackValue=LAST_FULL_INFORMATION_UPDATE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                        </StackPanel>
+                            <Label Content="{Binding Translation.CanBeOvercharged, FallbackValue=CAN_BE_OVERCHARGED}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding Translation.ShowInMarketplace, FallbackValue=SHOW_IN_MARKETPLACE}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                             <Label Content="{Binding Translation.Weight, FallbackValue=WEIGHT}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                       </StackPanel>
                         <StackPanel Margin="265,10,0,10">
-                            <Label Content="{Binding ItemInformation.Equipable, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding ItemInformation.Stackable, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding ItemInformation.ShowInMarketplace, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding ItemInformation.ItemType, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding ItemInformation.CategoryId, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding ItemInformation.Revision, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding ItemInformation.CategoryObject.CategoryName, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding ItemInformation.CategoryObject.ParentCategoryName, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding ItemInformation.Weight, FallbackValue=-, IsAsync=true, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding ItemInformation.ItemPower, FallbackValue=-, IsAsync=true, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding ItemInformation.Durability, FallbackValue=-, IsAsync=true, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                            <Label Content="{Binding ItemInformation.LastFullItemInformationUpdate, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
-                        </StackPanel>
+                            <Label Content="{Binding ExtraItemInformation.ShopCategory, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ExtraItemInformation.ShopSubCategory1, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ExtraItemInformation.Durability, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ExtraItemInformation.CanBeOvercharged, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ExtraItemInformation.ShowInMarketPlace, FallbackValue=-, IsAsync=True, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                            <Label Content="{Binding ExtraItemInformation.Weight, FallbackValue=-, IsAsync=true, TargetNullValue=-}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
+                          </StackPanel>
                     </Grid>
                 </ScrollViewer>
             </TabItem>

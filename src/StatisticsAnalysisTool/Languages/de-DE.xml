@@ -499,4 +499,7 @@
 	<translation name="TRACKING_MOB_LOOT">Mob Loot tracken</translation>
 	<translation name="ITEMS_JSON_SOURCE_URL">Items.json Url Quelle</translation>
 	<translation name="UPDATE_ITEMS_JSON_BY_DAYS">items.json aktualisieren: </translation>
+	<translation name="SHOP_CATEGORY">Markt Kategorie</translation>
+	<translation name="SHOP_SUB_CATEGORY">Markt Unterkategorie</translation>
+	<translation name="CAN_BE_OVERCHARGED">Kann überladen werden</translation>
 </translations>

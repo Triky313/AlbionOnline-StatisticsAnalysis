@@ -75,6 +75,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _requiredJournalVisibility = Visibility.Collapsed;
         private Visibility _craftingTabVisibility = Visibility.Collapsed;
         private EssentialCraftingValuesTemplate _essentialCraftingValues;
+        private ExtraItemInformation _extraItemInformation = new();
 
         private CraftingCalculation _craftingCalculation = new()
         {
@@ -126,6 +127,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             ItemTierLevel = Item?.Tier != -1 && Item?.Level != -1 ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
+            InitExtraItemInformation();
             await InitCraftingTabUiAsync();
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
@@ -155,6 +157,84 @@ namespace StatisticsAnalysisTool.ViewModels
             RefreshSpin = IsAutoUpdateActive;
 
             InformationLoadingImageVisibility = Visibility.Hidden;
+        }
+
+        private void InitExtraItemInformation()
+        {
+            switch (Item?.FullItemInformation)
+            {
+                case Weapon weapon:
+                    ExtraItemInformation.ShopCategory = weapon.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = weapon.ShopSubCategory1;
+                    ExtraItemInformation.CanBeOvercharged = weapon.CanBeOvercharged.SetYesOrNo();
+                    ExtraItemInformation.Durability = weapon.Durability;
+                    ExtraItemInformation.ShowInMarketPlace = weapon.ShowInMarketPlace.SetYesOrNo();
+                    ExtraItemInformation.Weight = weapon.Weight;
+                    break;
+                case HideoutItem hideoutItem:
+                    ExtraItemInformation.ShopCategory = hideoutItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = hideoutItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = hideoutItem.Weight;
+                    break;
+                case FarmableItem farmableItem:
+                    ExtraItemInformation.ShopCategory = farmableItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = farmableItem.ShopSubCategory1;
+                    ExtraItemInformation.ShowInMarketPlace = farmableItem.ShowInMarketPlace.SetYesOrNo();
+                    ExtraItemInformation.Weight = farmableItem.Weight;
+                    break;
+                case SimpleItem simpleItem:
+                    ExtraItemInformation.ShopCategory = simpleItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = simpleItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = simpleItem.Weight;
+                    break;
+                case ConsumableItem consumableItem:
+                    ExtraItemInformation.ShopCategory = consumableItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = consumableItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = consumableItem.Weight;
+                    break;
+                case ConsumableFromInventoryItem consumableFromInventoryItem:
+                    ExtraItemInformation.ShopCategory = consumableFromInventoryItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = consumableFromInventoryItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = consumableFromInventoryItem.Weight;
+                    break;
+                case EquipmentItem equipmentItem:
+                    ExtraItemInformation.ShopCategory = equipmentItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = equipmentItem.ShopSubCategory1;
+                    ExtraItemInformation.CanBeOvercharged = equipmentItem.CanBeOvercharged.SetYesOrNo();
+                    ExtraItemInformation.Durability = equipmentItem.Durability;
+                    ExtraItemInformation.ShowInMarketPlace = equipmentItem.ShowInMarketPlace.SetYesOrNo();
+                    ExtraItemInformation.Weight = equipmentItem.Weight;
+                    break;
+                case Models.ItemsJsonModel.Mount mount:
+                    ExtraItemInformation.ShopCategory = mount.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = mount.ShopSubCategory1;
+                    ExtraItemInformation.Durability = mount.Durability;
+                    ExtraItemInformation.ShowInMarketPlace = mount.ShowInMarketPlace.SetYesOrNo();
+                    ExtraItemInformation.Weight = mount.Weight;
+                    break;
+                case FurnitureItem furnitureItem:
+                    ExtraItemInformation.ShopCategory = furnitureItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = furnitureItem.ShopSubCategory1;
+                    ExtraItemInformation.Durability = furnitureItem.Durability;
+                    ExtraItemInformation.ShowInMarketPlace = furnitureItem.ShowInMarketPlace.SetYesOrNo();
+                    ExtraItemInformation.Weight = furnitureItem.Weight;
+                    break;
+                case JournalItem journalItem:
+                    ExtraItemInformation.ShopCategory = journalItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = journalItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = journalItem.Weight;
+                    break;
+                case LabourerContract labourerContract:
+                    ExtraItemInformation.ShopCategory = labourerContract.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = labourerContract.ShopSubCategory1;
+                    ExtraItemInformation.Weight = labourerContract.Weight;
+                    break;
+                case CrystalLeagueItem crystalLeagueItem:
+                    ExtraItemInformation.ShopCategory = crystalLeagueItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = crystalLeagueItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = crystalLeagueItem.Weight;
+                    break;
+            }
         }
 
         #region Crafting tab
@@ -198,7 +278,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async Task GetCraftInfoAsync()
         {
-            // TODO: Rework
             var craftingRequirements = Item?.FullItemInformation switch
             {
                 Weapon weapon => weapon.CraftingRequirements,
@@ -1212,6 +1291,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _craftingTabVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ExtraItemInformation ExtraItemInformation
+        {
+            get => _extraItemInformation;
+            set
+            {
+                _extraItemInformation = value;
                 OnPropertyChanged();
             }
         }

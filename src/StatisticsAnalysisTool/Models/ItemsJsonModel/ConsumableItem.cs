@@ -33,7 +33,7 @@ public class ConsumableItem : ItemJsonObject
     [JsonPropertyName("@consumespell")]
     public string ConsumeSpell { get; set; }
 
-    [JsonPropertyName("@ShopCategory")]
+    [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]
@@ -60,11 +60,11 @@ public class ConsumableItem : ItemJsonObject
     [JsonPropertyName("@unlockedtoequip")]
     public string UnlockedToEquip { get; set; }
 
-    [JsonPropertyName("@uicraftsoundstart")]
-    public string UiCraftSoundStart { get; set; }
+    //[JsonPropertyName("@uicraftsoundstart")]
+    //public string UiCraftSoundStart { get; set; }
 
-    [JsonPropertyName("@uicraftsoundfinish")]
-    public string UiCraftSoundFinish { get; set; }
+    //[JsonPropertyName("@uicraftsoundfinish")]
+    //public string UiCraftSoundFinish { get; set; }
 
     [JsonPropertyName("@craftingcategory")]
     public string CraftingCategory { get; set; }

@@ -21,7 +21,7 @@ public class SimpleItem : ItemJsonObject
     [JsonPropertyName("@uisprite")]
     public string UiSprite { get; set; }
 
-    [JsonPropertyName("@ShopCategory")]
+    [JsonPropertyName("@shopcategory")]
     public string ShopCategory { get; set; }
 
     [JsonPropertyName("@shopsubcategory1")]
