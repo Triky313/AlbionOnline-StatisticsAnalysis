@@ -58,10 +58,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingActive;
         private bool _isTrackingResetByMapChangeActive;
         private bool _isTxtSearchEnabled;
-        private Dictionary<Category, string> _itemCategories = new();
+        private Dictionary<SubCategory, string> _itemSubCategories = new();
         private string _itemCounterString;
         private Dictionary<ItemLevel, string> _itemLevels = new();
-        private Dictionary<ParentCategory, string> _itemParentCategories = new();
+        private Dictionary<Category, string> _itemCategories = new();
         private ICollectionView _itemsView;
         private Dictionary<ItemTier, string> _itemTiers = new();
         private Visibility _loadIconVisibility;
@@ -72,9 +72,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private PlayerModeTranslation _playerModeTranslation = new();
         private string _savedPlayerInformationName;
         private string _searchText;
-        private Category _selectedItemCategories;
+        private SubCategory _selectedItemSubCategories;
         private ItemLevel _selectedItemLevel;
-        private ParentCategory _selectedItemParentCategories;
+        private Category _selectedItemCategories;
         private ItemTier _selectedItemTier;
         private string _trackingAllianceName;
         public TrackingController TrackingController;
@@ -147,10 +147,9 @@ namespace StatisticsAnalysisTool.ViewModels
             #endregion
 
             #region Full Item Info elements
-
-            // TODO: Change to new ItemsJson file
-            ItemParentCategories = CategoryController.ParentCategoryNames;
-            SelectedItemParentCategory = ParentCategory.Unknown;
+            
+            ItemCategories = CategoryController.CategoryNames;
+            SelectedItemCategory = Category.Unknown;
 
             ItemTiers = FrequentlyValues.ItemTiers;
             SelectedItemTier = ItemTier.Unknown;
@@ -248,8 +247,8 @@ namespace StatisticsAnalysisTool.ViewModels
         public void ItemFilterReset()
         {
             SearchText = string.Empty;
+            SelectedItemSubCategory = SubCategory.Unknown;
             SelectedItemCategory = Category.Unknown;
-            SelectedItemParentCategory = ParentCategory.Unknown;
             SelectedItemLevel = ItemLevel.Unknown;
             SelectedItemTier = ItemTier.Unknown;
         }
@@ -960,9 +959,9 @@ namespace StatisticsAnalysisTool.ViewModels
                     {
                         return item?.FullItemInformation != null &&
                                item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
-                               //&& (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory ||
-                               //    SelectedItemParentCategory == ParentCategory.Unknown)
-                               //&& (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                               && (ItemController.GetShopCategory(item.UniqueName).Result == SelectedItemCategory 
+                                   || SelectedItemCategory == Category.Unknown)
+                               //&& (item.FullItemInformation?.CategoryObject?.SubCategory == SelectedItemSubCategory || SelectedItemSubCategory == SubCategory.Unknown)
                                //&& ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
                                //&& ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
                                && item.IsAlertActive;
@@ -972,19 +971,19 @@ namespace StatisticsAnalysisTool.ViewModels
                     {
                         return item?.FullItemInformation != null &&
                                item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
-                               //&& (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory ||
-                               //    SelectedItemParentCategory == ParentCategory.Unknown)
-                               //&& (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                               && (ItemController.GetShopCategory(item.UniqueName).Result == SelectedItemCategory 
+                                   || SelectedItemCategory == Category.Unknown)
+                               //&& (item.FullItemInformation?.CategoryObject?.SubCategory == SelectedItemSubCategory || SelectedItemSubCategory == SubCategory.Unknown)
                                //&& ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
                                //&& ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
                                && item.IsFavorite;
                     }
 
                     return item?.FullItemInformation != null &&
-                           item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty);
-                    //&& (item.FullItemInformation?.CategoryObject?.ParentCategory == SelectedItemParentCategory ||
-                    //    SelectedItemParentCategory == ParentCategory.Unknown)
-                    //&& (item.FullItemInformation?.CategoryObject?.Category == SelectedItemCategory || SelectedItemCategory == Category.Unknown)
+                           item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) 
+                           && (ItemController.GetShopCategory(item.UniqueName).Result == SelectedItemCategory 
+                               || SelectedItemCategory == Category.Unknown);
+                    //&& (item.FullItemInformation?.CategoryObject?.SubCategory == SelectedItemSubCategory || SelectedItemSubCategory == SubCategory.Unknown)
                     //&& ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
                     //&& ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
                 };
@@ -1546,15 +1545,37 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public Dictionary<SubCategory, string> ItemSubCategories
+        {
+            get => _itemSubCategories;
+            set
+            {
+                var categories = value;
+                categories = new Dictionary<SubCategory, string> { { SubCategory.Unknown, string.Empty } }.Concat(categories)
+                    .ToDictionary(k => k.Key, v => v.Value);
+                _itemSubCategories = categories;
+                OnPropertyChanged();
+            }
+        }
+
+        public SubCategory SelectedItemSubCategory
+        {
+            get => _selectedItemSubCategories;
+            set
+            {
+                _selectedItemSubCategories = value;
+                ItemsViewFilter();
+                ItemsView?.Refresh();
+                OnPropertyChanged();
+            }
+        }
+
         public Dictionary<Category, string> ItemCategories
         {
             get => _itemCategories;
             set
             {
-                var categories = value;
-                categories = new Dictionary<Category, string> { { Category.Unknown, string.Empty } }.Concat(categories)
-                    .ToDictionary(k => k.Key, v => v.Value);
-                _itemCategories = categories;
+                _itemCategories = value;
                 OnPropertyChanged();
             }
         }
@@ -1565,30 +1586,8 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _selectedItemCategories = value;
-                ItemsViewFilter();
-                ItemsView?.Refresh();
-                OnPropertyChanged();
-            }
-        }
-
-        public Dictionary<ParentCategory, string> ItemParentCategories
-        {
-            get => _itemParentCategories;
-            set
-            {
-                _itemParentCategories = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ParentCategory SelectedItemParentCategory
-        {
-            get => _selectedItemParentCategories;
-            set
-            {
-                _selectedItemParentCategories = value;
-                ItemCategories = CategoryController.GetCategoriesByParentCategory(SelectedItemParentCategory);
-                SelectedItemCategory = Category.Unknown;
+                ItemSubCategories = CategoryController.GetSubCategoriesByCategory(SelectedItemCategory);
+                SelectedItemSubCategory = SubCategory.Unknown;
                 ItemsViewFilter();
                 ItemsView?.Refresh();
                 OnPropertyChanged();

@@ -1,24 +1,18 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.Common
 {
     public static class CraftingController
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        
+
         public static double GetRequiredJournalAmount(Item item, double itemQuantityToBeCrafted)
         {
             if (itemQuantityToBeCrafted == 0)
@@ -32,7 +26,7 @@ namespace StatisticsAnalysisTool.Common
             //return totalJournalFame / MaxJournalFame((ItemTier)item.Tier);
             return 0;
         }
-        
+
         public static Item GetCraftingJournalItem(int tier, CraftingJournalType craftingJournalType)
         {
             return craftingJournalType switch
@@ -56,7 +50,7 @@ namespace StatisticsAnalysisTool.Common
                 {
                     return CraftingJournalType.JournalWarrior;
                 }
-                
+
                 if (uniqueName.Contains("OFF_JESTERCANE")
                     || uniqueName.Contains("OFF_TORCH")
                     || uniqueName.Contains("OFF_LAMP")
@@ -65,7 +59,7 @@ namespace StatisticsAnalysisTool.Common
                 {
                     return CraftingJournalType.JournalHunter;
                 }
-                
+
                 if (uniqueName.Contains("OFF_CENSER")
                     || uniqueName.Contains("OFF_TOTEM")
                     || uniqueName.Contains("OFF_DEMONSKULL")
@@ -74,9 +68,9 @@ namespace StatisticsAnalysisTool.Common
                 {
                     return CraftingJournalType.JournalMage;
                 }
-                
+
                 if (uniqueName.Contains("_CAPE")
-                    || uniqueName.Contains("_BAG") 
+                    || uniqueName.Contains("_BAG")
                     || uniqueName.Contains("_BAG_INSIGHT"))
                 {
                     return CraftingJournalType.JournalToolMaker;
@@ -154,7 +148,7 @@ namespace StatisticsAnalysisTool.Common
                 return 0;
             }
         }
-        
+
         public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResource> craftRequiredResources)
         {
             var tierFactor = (tier, level) switch
@@ -191,7 +185,7 @@ namespace StatisticsAnalysisTool.Common
         private static double GetArtifactFactor(IEnumerable<CraftResource> requiredResources, double craftingTaxDefault = 0.0)
         {
             var artifactResource = requiredResources.FirstOrDefault(x => x.UniqueName.Contains("ARTEFACT_TOKEN_FAVOR"));
-            
+
             if (string.IsNullOrEmpty(artifactResource?.UniqueName) || !artifactResource.UniqueName.Contains("ARTEFACT_TOKEN_FAVOR"))
             {
                 return craftingTaxDefault;
@@ -222,7 +216,7 @@ namespace StatisticsAnalysisTool.Common
                 _ => craftingTaxDefault
             };
         }
-        
+
         #region Calculations
 
         public static double GetSetupFeeCalculation(int? craftingItemQuantity, double? setupFee, double? sellPricePerItem)

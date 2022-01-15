@@ -19,6 +19,7 @@ using System.Windows;
 using System.Windows.Media;
 using StatisticsAnalysisTool.Common.Converters;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using Mount = StatisticsAnalysisTool.Models.ItemsJsonModel.Mount;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -432,6 +433,33 @@ namespace StatisticsAnalysisTool.Common
 
             return null;
         }
+
+        public static async Task<Category> GetShopCategory(string uniqueName)
+        {
+            var item = await GetSpecificItemInfoAsync(uniqueName);
+
+            return item switch
+            {
+                HideoutItem hideoutItem => CategoryController.ShopCategoryToCategory(hideoutItem.ShopCategory),
+                FarmableItem farmableItem => CategoryController.ShopCategoryToCategory(farmableItem.ShopCategory),
+                SimpleItem simpleItem => CategoryController.ShopCategoryToCategory(simpleItem.ShopCategory),
+                ConsumableItem consumableItem => CategoryController.ShopCategoryToCategory(consumableItem.ShopCategory),
+                ConsumableFromInventoryItem consumableFromInventoryItem => CategoryController.ShopCategoryToCategory(consumableFromInventoryItem.ShopCategory),
+                EquipmentItem equipmentItem => CategoryController.ShopCategoryToCategory(equipmentItem.ShopCategory),
+                Weapon weapon => CategoryController.ShopCategoryToCategory(weapon.ShopCategory),
+                Mount mount => CategoryController.ShopCategoryToCategory(mount.ShopCategory),
+                FurnitureItem furnitureItem => CategoryController.ShopCategoryToCategory(furnitureItem.ShopCategory),
+                JournalItem journalItem => CategoryController.ShopCategoryToCategory(journalItem.ShopCategory),
+                LabourerContract labourerContract => CategoryController.ShopCategoryToCategory(labourerContract.ShopCategory),
+                CrystalLeagueItem crystalLeagueItem => CategoryController.ShopCategoryToCategory(crystalLeagueItem.ShopCategory),
+                _ => Category.Unknown
+            };
+        }
+
+        //public static ItemType GetShopSubCategory(string uniqueName)
+        //{
+        //    // TODO: Einbauen...
+        //}
 
         public static ItemType GetItemType(string uniqueName)
         {
