@@ -8,7 +8,7 @@ on:
       - '**/*.gitignore'
       - '**/*.gitattributes'
   pull_request:
-    branches: [ master, dotnet-desktop.yml-update ]
+    branches: [ dotnet-desktop.yml-update ]
 
 jobs:
 
