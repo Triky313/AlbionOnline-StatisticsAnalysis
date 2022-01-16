@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using StatisticsAnalysisTool.Enumerations;
+using ShopCategory = StatisticsAnalysisTool.Common.ShopCategory;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -30,7 +31,8 @@ namespace StatisticsAnalysisTool.Models
         public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetItemImage(UniqueName));
 
         public ItemJsonObject FullItemInformation { get; set; }
-
+        public ShopCategory ShopCategory { get; set; }
+        public ShopSubCategory ShopShopSubCategory1 { get; set; }
         public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
         public bool IsAlertActive { get; set; }
         public bool IsFavorite { get; set; }

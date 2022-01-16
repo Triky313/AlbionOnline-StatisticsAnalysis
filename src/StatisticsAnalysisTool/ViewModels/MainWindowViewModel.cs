@@ -58,10 +58,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingActive;
         private bool _isTrackingResetByMapChangeActive;
         private bool _isTxtSearchEnabled;
-        private Dictionary<SubCategory, string> _itemSubCategories = new();
+        private Dictionary<ShopSubCategory, string> _itemSubCategories = new();
         private string _itemCounterString;
         private Dictionary<ItemLevel, string> _itemLevels = new();
-        private Dictionary<Category, string> _itemCategories = new();
+        private Dictionary<ShopCategory, string> _itemCategories = new();
         private ICollectionView _itemsView;
         private Dictionary<ItemTier, string> _itemTiers = new();
         private Visibility _loadIconVisibility;
@@ -72,9 +72,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private PlayerModeTranslation _playerModeTranslation = new();
         private string _savedPlayerInformationName;
         private string _searchText;
-        private SubCategory _selectedItemSubCategories;
+        private ShopSubCategory _selectedItemShopSubCategories;
         private ItemLevel _selectedItemLevel;
-        private Category _selectedItemCategories;
+        private ShopCategory _selectedItemShopCategories;
         private ItemTier _selectedItemTier;
         private string _trackingAllianceName;
         public TrackingController TrackingController;
@@ -147,9 +147,9 @@ namespace StatisticsAnalysisTool.ViewModels
             #endregion
 
             #region Full Item Info elements
-            
+
             ItemCategories = CategoryController.CategoryNames;
-            SelectedItemCategory = Category.Unknown;
+            SelectedItemShopCategory = ShopCategory.Unknown;
 
             ItemTiers = FrequentlyValues.ItemTiers;
             SelectedItemTier = ItemTier.Unknown;
@@ -247,8 +247,8 @@ namespace StatisticsAnalysisTool.ViewModels
         public void ItemFilterReset()
         {
             SearchText = string.Empty;
-            SelectedItemSubCategory = SubCategory.Unknown;
-            SelectedItemCategory = Category.Unknown;
+            SelectedItemShopSubCategory = ShopSubCategory.Unknown;
+            SelectedItemShopCategory = ShopCategory.Unknown;
             SelectedItemLevel = ItemLevel.Unknown;
             SelectedItemTier = ItemTier.Unknown;
         }
@@ -950,60 +950,35 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            // TODO: Search rework
-            if (true)
-                ItemsView.Filter = i =>
+            ItemsView.Filter = i =>
+            {
+                var item = i as Item;
+                if (IsShowOnlyItemsWithAlertOnActive)
                 {
-                    var item = i as Item;
-                    if (IsShowOnlyItemsWithAlertOnActive)
-                    {
-                        return item?.FullItemInformation != null &&
-                               item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
-                               && (ItemController.GetShopCategory(item.UniqueName).Result == SelectedItemCategory 
-                                   || SelectedItemCategory == Category.Unknown)
-                               //&& (item.FullItemInformation?.CategoryObject?.SubCategory == SelectedItemSubCategory || SelectedItemSubCategory == SubCategory.Unknown)
-                               //&& ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                               //&& ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
-                               && item.IsAlertActive;
-                    }
+                    return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
+                           && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
+                           && (item.ShopShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
+                           && ((ItemTier)item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                           && ((ItemLevel)item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
+                           && item.IsAlertActive;
+                }
 
-                    if (IsShowOnlyFavoritesActive)
-                    {
-                        return item?.FullItemInformation != null &&
-                               item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
-                               && (ItemController.GetShopCategory(item.UniqueName).Result == SelectedItemCategory 
-                                   || SelectedItemCategory == Category.Unknown)
-                               //&& (item.FullItemInformation?.CategoryObject?.SubCategory == SelectedItemSubCategory || SelectedItemSubCategory == SubCategory.Unknown)
-                               //&& ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                               //&& ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
-                               && item.IsFavorite;
-                    }
-
-                    return item?.FullItemInformation != null &&
-                           item.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) 
-                           && (ItemController.GetShopCategory(item.UniqueName).Result == SelectedItemCategory 
-                               || SelectedItemCategory == Category.Unknown);
-                    //&& (item.FullItemInformation?.CategoryObject?.SubCategory == SelectedItemSubCategory || SelectedItemSubCategory == SubCategory.Unknown)
-                    //&& ((ItemTier)item.FullItemInformation?.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
-                    //&& ((ItemLevel)item.FullItemInformation?.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
-                };
-            else
-                ItemsView.Filter = i =>
+                if (IsShowOnlyFavoritesActive)
                 {
-                    var item = i as Item;
+                    return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
+                           && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
+                           && (item.ShopShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
+                           && ((ItemTier)item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                           && ((ItemLevel)item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown)
+                           && item.IsFavorite;
+                }
 
-                    if (IsShowOnlyItemsWithAlertOnActive)
-                    {
-                        return (item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false) && item.IsAlertActive;
-                    }
-
-                    if (IsShowOnlyFavoritesActive)
-                    {
-                        return (item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false) && item.IsFavorite;
-                    }
-
-                    return item?.LocalizedNameAndEnglish.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false;
-                };
+                return (item?.LocalizedNameAndEnglish?.ToLower().Contains(SearchText?.ToLower() ?? string.Empty) ?? false)
+                       && (item.ShopCategory == SelectedItemShopCategory || SelectedItemShopCategory == ShopCategory.Unknown)
+                       && (item.ShopShopSubCategory1 == SelectedItemShopSubCategory || SelectedItemShopSubCategory == ShopSubCategory.Unknown)
+                       && ((ItemTier)item.Tier == SelectedItemTier || SelectedItemTier == ItemTier.Unknown)
+                       && ((ItemLevel)item.Level == SelectedItemLevel || SelectedItemLevel == ItemLevel.Unknown);
+            };
 
             SetItemCounterAsync();
         }
@@ -1545,32 +1520,32 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Dictionary<SubCategory, string> ItemSubCategories
+        public Dictionary<ShopSubCategory, string> ItemSubCategories
         {
             get => _itemSubCategories;
             set
             {
                 var categories = value;
-                categories = new Dictionary<SubCategory, string> { { SubCategory.Unknown, string.Empty } }.Concat(categories)
+                categories = new Dictionary<ShopSubCategory, string> { { ShopSubCategory.Unknown, string.Empty } }.Concat(categories)
                     .ToDictionary(k => k.Key, v => v.Value);
                 _itemSubCategories = categories;
                 OnPropertyChanged();
             }
         }
 
-        public SubCategory SelectedItemSubCategory
+        public ShopSubCategory SelectedItemShopSubCategory
         {
-            get => _selectedItemSubCategories;
+            get => _selectedItemShopSubCategories;
             set
             {
-                _selectedItemSubCategories = value;
+                _selectedItemShopSubCategories = value;
                 ItemsViewFilter();
                 ItemsView?.Refresh();
                 OnPropertyChanged();
             }
         }
 
-        public Dictionary<Category, string> ItemCategories
+        public Dictionary<ShopCategory, string> ItemCategories
         {
             get => _itemCategories;
             set
@@ -1580,14 +1555,14 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public Category SelectedItemCategory
+        public ShopCategory SelectedItemShopCategory
         {
-            get => _selectedItemCategories;
+            get => _selectedItemShopCategories;
             set
             {
-                _selectedItemCategories = value;
-                ItemSubCategories = CategoryController.GetSubCategoriesByCategory(SelectedItemCategory);
-                SelectedItemSubCategory = SubCategory.Unknown;
+                _selectedItemShopCategories = value;
+                ItemSubCategories = CategoryController.GetSubCategoriesByCategory(SelectedItemShopCategory);
+                SelectedItemShopSubCategory = ShopSubCategory.Unknown;
                 ItemsViewFilter();
                 ItemsView?.Refresh();
                 OnPropertyChanged();

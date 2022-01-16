@@ -4,18 +4,18 @@ namespace StatisticsAnalysisTool.Models
 {
     public class CategoryObject
     {
-        public CategoryObject(string categoryId, SubCategory subCategory, Category category)
+        public CategoryObject(string categoryId, ShopSubCategory shopSubCategory, ShopCategory shopCategory)
         {
             CategoryId = categoryId;
-            SubCategory = subCategory;
-            Category = category;
+            ShopSubCategory = shopSubCategory;
+            ShopCategory = shopCategory;
         }
 
         public string CategoryId { get; set; }
-        public SubCategory SubCategory { get; set; }
-        public Category Category { get; set; }
+        public ShopSubCategory ShopSubCategory { get; set; }
+        public ShopCategory ShopCategory { get; set; }
 
-        public string SubCategoryName => CategoryController.GetSubCategoryName(SubCategory);
-        public string CategoryName => CategoryController.GetCategoryName(Category);
+        public string SubCategoryName => CategoryController.GetSubCategoryName(ShopSubCategory);
+        public string CategoryName => CategoryController.GetCategoryName(ShopCategory);
     }
 }

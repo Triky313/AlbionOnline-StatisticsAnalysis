@@ -18,9 +18,9 @@
         <Grid Margin="235,11,0,0" Height="20" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left" IsEnabled="{Binding IsFilterResetEnabled, FallbackValue=false}">
             <fa5:ImageAwesome Icon="Solid_Redo" Foreground="{StaticResource SolidColorBrush.Text.1}" MouseUp="FilterReset_MouseUp" />
         </Grid>
-        <ComboBox ItemsSource="{Binding ItemCategories}" SelectedValue="{Binding SelectedItemCategory}" 
+        <ComboBox ItemsSource="{Binding ItemCategories}" SelectedValue="{Binding SelectedItemShopCategory}" 
                   SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="260,10,0,0" VerticalAlignment="Top" Width="150" />
-        <ComboBox ItemsSource="{Binding ItemSubCategories}" SelectedValue="{Binding SelectedItemSubCategory}" 
+        <ComboBox ItemsSource="{Binding ItemSubCategories}" SelectedValue="{Binding SelectedItemShopSubCategory}" 
                   SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="260,37,0,0" VerticalAlignment="Top" Width="150" />
         <ComboBox ItemsSource="{Binding ItemTiers}" SelectedValue="{Binding SelectedItemTier}" 
                   SelectedValuePath="Key" DisplayMemberPath="Value" HorizontalAlignment="Left" Margin="415,10,0,0" VerticalAlignment="Top" Width="44" MinWidth="80" />

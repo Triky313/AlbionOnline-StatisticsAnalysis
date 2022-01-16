@@ -354,6 +354,8 @@ namespace StatisticsAnalysisTool.Common
             await foreach (var item in Items.ToAsyncEnumerable())
             {
                 item.FullItemInformation = await GetSpecificItemInfoAsync(item.UniqueName);
+                item.ShopCategory = GetShopCategory(item.FullItemInformation?.UniqueName);
+                item.ShopShopSubCategory1 = GetShopSubCategory(item.FullItemInformation?.UniqueName);
             }
         }
 
@@ -373,93 +375,122 @@ namespace StatisticsAnalysisTool.Common
 
             await foreach (var item in ItemsJson.Items.FarmableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.Farmable;
                 return item;
             }
 
             await foreach (var item in ItemsJson.Items.SimpleItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.Simple;
                 return item;
             }
 
             await foreach(var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.Consumable;
                 return item;
             }
 
             await foreach(var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.ConsumableFromInventory;
                 return item;
             }
 
             await foreach (var item in ItemsJson.Items.EquipmentItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.Equipment;
                 return item;
             }
 
             await foreach (var item in ItemsJson.Items.Weapon.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.Weapon;
                 return item;
             }
 
             await foreach (var item in ItemsJson.Items.Mount.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.Mount;
                 return item;
             }
 
             await foreach (var item in ItemsJson.Items.FurnitureItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.Furniture;
                 return item;
             }
 
             await foreach (var item in ItemsJson.Items.JournalItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.Journal;
                 return item;
             }
 
             await foreach (var item in ItemsJson.Items.LabourerContract.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.LabourerContract;
                 return item;
             }
 
             await foreach (var item in ItemsJson.Items.MountSkin.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.MountSkin;
                 return item;
             }
 
             await foreach (var item in ItemsJson.Items.CrystalLeagueItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
+                item.ItemType = ItemType.CrystalLeague;
                 return item;
             }
 
             return null;
         }
 
-        public static async Task<Category> GetShopCategory(string uniqueName)
+        public static ShopCategory GetShopCategory(string uniqueName)
         {
-            var item = await GetSpecificItemInfoAsync(uniqueName);
+            var item = GetItemByUniqueName(uniqueName)?.FullItemInformation;
 
             return item switch
             {
-                HideoutItem hideoutItem => CategoryController.ShopCategoryToCategory(hideoutItem.ShopCategory),
-                FarmableItem farmableItem => CategoryController.ShopCategoryToCategory(farmableItem.ShopCategory),
-                SimpleItem simpleItem => CategoryController.ShopCategoryToCategory(simpleItem.ShopCategory),
-                ConsumableItem consumableItem => CategoryController.ShopCategoryToCategory(consumableItem.ShopCategory),
-                ConsumableFromInventoryItem consumableFromInventoryItem => CategoryController.ShopCategoryToCategory(consumableFromInventoryItem.ShopCategory),
-                EquipmentItem equipmentItem => CategoryController.ShopCategoryToCategory(equipmentItem.ShopCategory),
-                Weapon weapon => CategoryController.ShopCategoryToCategory(weapon.ShopCategory),
-                Mount mount => CategoryController.ShopCategoryToCategory(mount.ShopCategory),
-                FurnitureItem furnitureItem => CategoryController.ShopCategoryToCategory(furnitureItem.ShopCategory),
-                JournalItem journalItem => CategoryController.ShopCategoryToCategory(journalItem.ShopCategory),
-                LabourerContract labourerContract => CategoryController.ShopCategoryToCategory(labourerContract.ShopCategory),
-                CrystalLeagueItem crystalLeagueItem => CategoryController.ShopCategoryToCategory(crystalLeagueItem.ShopCategory),
-                _ => Category.Unknown
+                HideoutItem hideoutItem => CategoryController.ShopCategoryStringToCategory(hideoutItem.ShopCategory),
+                FarmableItem farmableItem => CategoryController.ShopCategoryStringToCategory(farmableItem.ShopCategory),
+                SimpleItem simpleItem => CategoryController.ShopCategoryStringToCategory(simpleItem.ShopCategory),
+                ConsumableItem consumableItem => CategoryController.ShopCategoryStringToCategory(consumableItem.ShopCategory),
+                ConsumableFromInventoryItem consumableFromInventoryItem => CategoryController.ShopCategoryStringToCategory(consumableFromInventoryItem.ShopCategory),
+                EquipmentItem equipmentItem => CategoryController.ShopCategoryStringToCategory(equipmentItem.ShopCategory),
+                Weapon weapon => CategoryController.ShopCategoryStringToCategory(weapon.ShopCategory),
+                Mount mount => CategoryController.ShopCategoryStringToCategory(mount.ShopCategory),
+                FurnitureItem furnitureItem => CategoryController.ShopCategoryStringToCategory(furnitureItem.ShopCategory),
+                JournalItem journalItem => CategoryController.ShopCategoryStringToCategory(journalItem.ShopCategory),
+                LabourerContract labourerContract => CategoryController.ShopCategoryStringToCategory(labourerContract.ShopCategory),
+                CrystalLeagueItem crystalLeagueItem => CategoryController.ShopCategoryStringToCategory(crystalLeagueItem.ShopCategory),
+                _ => ShopCategory.Unknown
             };
         }
 
-        //public static ItemType GetShopSubCategory(string uniqueName)
-        //{
-        //    // TODO: Einbauen...
-        //}
+        public static ShopSubCategory GetShopSubCategory(string uniqueName)
+        {
+            var item = GetItemByUniqueName(uniqueName)?.FullItemInformation;
+
+            return item switch
+            {
+                HideoutItem hideoutItem => CategoryController.ShopSubCategoryStringToShopSubCategory(hideoutItem.ShopSubCategory1),
+                FarmableItem farmableItem => CategoryController.ShopSubCategoryStringToShopSubCategory(farmableItem.ShopSubCategory1),
+                SimpleItem simpleItem => CategoryController.ShopSubCategoryStringToShopSubCategory(simpleItem.ShopSubCategory1),
+                ConsumableItem consumableItem => CategoryController.ShopSubCategoryStringToShopSubCategory(consumableItem.ShopSubCategory1),
+                ConsumableFromInventoryItem consumableFromInventoryItem => CategoryController.ShopSubCategoryStringToShopSubCategory(consumableFromInventoryItem.ShopSubCategory1),
+                EquipmentItem equipmentItem => CategoryController.ShopSubCategoryStringToShopSubCategory(equipmentItem.ShopSubCategory1),
+                Weapon weapon => CategoryController.ShopSubCategoryStringToShopSubCategory(weapon.ShopSubCategory1),
+                Mount mount => CategoryController.ShopSubCategoryStringToShopSubCategory(mount.ShopSubCategory1),
+                FurnitureItem furnitureItem => CategoryController.ShopSubCategoryStringToShopSubCategory(furnitureItem.ShopSubCategory1),
+                JournalItem journalItem => CategoryController.ShopSubCategoryStringToShopSubCategory(journalItem.ShopSubCategory1),
+                LabourerContract labourerContract => CategoryController.ShopSubCategoryStringToShopSubCategory(labourerContract.ShopSubCategory1),
+                CrystalLeagueItem crystalLeagueItem => CategoryController.ShopSubCategoryStringToShopSubCategory(crystalLeagueItem.ShopSubCategory1),
+                _ => ShopSubCategory.Unknown
+            };
+        }
 
         public static ItemType GetItemType(string uniqueName)
         {
