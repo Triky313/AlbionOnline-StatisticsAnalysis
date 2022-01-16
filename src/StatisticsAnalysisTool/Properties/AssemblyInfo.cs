@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("StatisticsAnalysisTool")]
-[assembly: AssemblyCopyright("Copyright ©  2021")]
+[assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: SupportedOSPlatform("windows10.0")]
@@ -57,5 +57,5 @@ using System.Windows;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("5.2.0.*")]
-[assembly: AssemblyFileVersion("5.2.0.0")]
+[assembly: AssemblyVersion("5.3.0.*")]
+[assembly: AssemblyFileVersion("5.3.0.0")]
