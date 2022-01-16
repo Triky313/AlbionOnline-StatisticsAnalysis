@@ -13,18 +13,39 @@ namespace StatisticsAnalysisTool.Common
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        public static double GetRequiredJournalAmount(Item item, double itemQuantityToBeCrafted)
+        public static int GetTotalAmountResources(List<CraftingRequirements> craftingRequirements)
         {
-            if (itemQuantityToBeCrafted == 0)
+            var craftingRequirement = craftingRequirements.FirstOrDefault();
+            if (craftingRequirement == null)
             {
                 return 0;
             }
 
-            // TODO: Rework
-            //var totalBaseFame = GetTotalBaseFame(item.FullItemInformation.CraftingRequirements.TotalAmountResources, (ItemTier)item.Tier, (ItemLevel)item.Level);
-            //var totalJournalFame = totalBaseFame * itemQuantityToBeCrafted;
-            //return totalJournalFame / MaxJournalFame((ItemTier)item.Tier);
-            return 0;
+            return craftingRequirement.CraftResource
+                .Where(x => x.UniqueName.ToUpper().Contains("PLANKS") 
+                            || x.UniqueName.ToUpper().Contains("METALBAR") 
+                            || x.UniqueName.ToUpper().Contains("METALBAR") 
+                            || x.UniqueName.ToUpper().Contains("LEATHER") 
+                            || x.UniqueName.ToUpper().Contains("CLOTH")).Sum(craftResource => craftResource.Count);
+        }
+
+        public static double GetRequiredJournalAmount(Item item, double itemQuantityToBeCrafted)
+        {
+            if (itemQuantityToBeCrafted == 0 || item == null)
+            {
+                return 0;
+            }
+
+            var resources = item.FullItemInformation switch
+            {
+                Weapon weapon => GetTotalAmountResources(weapon.CraftingRequirements),
+                EquipmentItem equipmentItem => GetTotalAmountResources(equipmentItem.CraftingRequirements),
+                _ => 0
+            };
+
+            var totalBaseFame = GetTotalBaseFame(resources, (ItemTier)item.Tier, (ItemLevel)item.Level);
+            var totalJournalFame = totalBaseFame * itemQuantityToBeCrafted;
+            return totalJournalFame / MaxJournalFame((ItemTier)item.Tier);
         }
 
         public static Item GetCraftingJournalItem(int tier, CraftingJournalType craftingJournalType)
@@ -134,11 +155,22 @@ namespace StatisticsAnalysisTool.Common
 
         public static double GetCraftingTax(int foodValue, Item item, int itemQuantity)
         {
-            // TODO: Rework
             try
             {
-                //return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, item.FullItemInformation.CraftingRequirements.TotalAmountResources, 
-                //    (ItemTier)item.Tier, (ItemLevel)item.Level, item.FullItemInformation.CraftingRequirements.CraftResourceList);
+                switch (item.FullItemInformation)
+                {
+                    case Weapon weapon:
+                    {
+                        var resources = GetTotalAmountResources(weapon.CraftingRequirements);
+                        return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                    }
+                    case EquipmentItem equipmentItem:
+                    {
+                        var resources = GetTotalAmountResources(equipmentItem.CraftingRequirements);
+                        return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                    }
+                }
+
                 return 0;
             }
             catch (Exception e)
@@ -149,7 +181,7 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResource> craftRequiredResources)
+        public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResource> craftResource)
         {
             var tierFactor = (tier, level) switch
             {
@@ -179,7 +211,7 @@ namespace StatisticsAnalysisTool.Common
             };
 
             var safeFoodValue = (foodValue <= 0) ? 1 : foodValue;
-            return safeFoodValue / 100 * numberOfMaterials * (tierFactor + GetArtifactFactor(craftRequiredResources));
+            return safeFoodValue / 100 * numberOfMaterials * (tierFactor + GetArtifactFactor(craftResource));
         }
 
         private static double GetArtifactFactor(IEnumerable<CraftResource> requiredResources, double craftingTaxDefault = 0.0)
