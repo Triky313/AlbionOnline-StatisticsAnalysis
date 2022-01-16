@@ -503,4 +503,6 @@
 	<translation name="SHOP_SUB_CATEGORY">Shop sub category</translation>
 	<translation name="CAN_BE_OVERCHARGED">Can be overcharged</translation>
 	<translation name="WAR_GLOVES">War gloves</translation>
+	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Try downloading the item.json again</translation>
+	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Item.json can not be loaded.</translation>
 </translations>

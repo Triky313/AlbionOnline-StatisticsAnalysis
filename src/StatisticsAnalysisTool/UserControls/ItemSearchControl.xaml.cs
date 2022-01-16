@@ -42,12 +42,6 @@ namespace StatisticsAnalysisTool.UserControls
             vm?.ToggleAlertSender(sender);
         }
 
-        private void BtnTryToLoadTheItemListAgain_Click(object sender, RoutedEventArgs e)
-        {
-            var vm = (MainWindowViewModel)DataContext;
-            vm?.InitItemsAsync().ConfigureAwait(false);
-        }
-
         #endregion
     }
 }

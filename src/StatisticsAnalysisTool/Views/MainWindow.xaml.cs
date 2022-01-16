@@ -112,5 +112,10 @@ namespace StatisticsAnalysisTool.Views
                 _ => WindowState
             };
         }
+
+        private void BtnTryToLoadTheItemListAgain_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel?.InitItemsAsync().ConfigureAwait(false);
+        }
     }
 }

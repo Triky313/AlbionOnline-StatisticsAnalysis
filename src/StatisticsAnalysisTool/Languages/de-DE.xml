@@ -503,4 +503,6 @@
 	<translation name="SHOP_SUB_CATEGORY">Markt Unterkategorie</translation>
 	<translation name="CAN_BE_OVERCHARGED">Kann überladen werden</translation>
 	<translation name="WAR_GLOVES">Kriegshandschuhe</translation>
+	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Herunterladen der Item.json erneut versuchen</translation>
+	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Item.json kann nicht geladen werden.</translation>
 </translations>

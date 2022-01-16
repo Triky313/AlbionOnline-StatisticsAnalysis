@@ -119,6 +119,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _loggingSearchText;
         private ObservableCollection<LoggingFilterObject> _loggingFilters = new();
         private bool _isTrackingMobLoot;
+        private Visibility _gridTryToLoadTheItemJsonAgainVisibility;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -336,6 +337,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsFilterResetEnabled = false;
             LoadIconVisibility = Visibility.Visible;
             GridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
+            GridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
 
             if (!ItemController.IsItemsLoaded())
             {
@@ -355,7 +357,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 if (!isItemsJsonLoaded)
                 {
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_JSON_CAN_NOT_BE_LOADED"));
-                    GridTryToLoadTheItemListAgainVisibility = Visibility.Visible;
+                    GridTryToLoadTheItemJsonAgainVisibility = Visibility.Visible;
 
                     return;
                 }
@@ -1791,6 +1793,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _gridTryToLoadTheItemListAgainVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility GridTryToLoadTheItemJsonAgainVisibility
+        {
+            get => _gridTryToLoadTheItemJsonAgainVisibility;
+            set
+            {
+                _gridTryToLoadTheItemJsonAgainVisibility = value;
                 OnPropertyChanged();
             }
         }

@@ -37,14 +37,8 @@
                       IsChecked="{Binding IsShowOnlyFavoritesActive, FallbackValue=false}" HorizontalAlignment="Left" Margin="260,59,0,0" VerticalAlignment="Top" Width="235" />
         </Grid>
 
-        <Grid ZIndex="1" Margin="0,97,0,40" Visibility="{Binding GridTryToLoadTheItemListAgainVisibility, FallbackValue=Collapsed}">
-            <Button Height="32" Width="auto" MinWidth="200" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                    Content="{Binding Translation.TryDownloadingTheItemListAgain, FallbackValue=TRY__DOWNLOADING__THE__ITEM__LIST__AGAIN}" 
-                    Click="BtnTryToLoadTheItemListAgain_Click"/>
-        </Grid>
-
         <ListView SnapsToDevicePixels="True" ItemsSource="{Binding ItemsView}" ItemContainerStyle="{StaticResource {x:Type ListViewItem}}" 
-                              Margin="0,97,0,0" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
+                  Margin="0,97,0,0" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="{Binding Translation.Icon, FallbackValue=ICON}" Width="80">
