@@ -2,7 +2,7 @@ name: .NET Desktop
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, dotnet-desktop.yml-update ]
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
@@ -18,7 +18,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
 
-    runs-on: windows-latest  # For a list of available runner types, refer to
+    runs-on: windows-2022    # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
@@ -30,15 +30,19 @@ jobs:
       with:
         fetch-depth: 0
 
-    # Install the .NET Core workload
+    # Install the .NET workload
     - name: Install .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+    - run: dotnet build src\StatisticsAnalysisTool
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+    #    vs-version: '[17.0,17.0]'
+        msbuild-architecture: x64
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
