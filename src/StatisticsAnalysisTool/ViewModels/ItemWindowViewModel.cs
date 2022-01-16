@@ -206,7 +206,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     ExtraItemInformation.ShowInMarketPlace = equipmentItem.ShowInMarketPlace.SetYesOrNo();
                     ExtraItemInformation.Weight = equipmentItem.Weight;
                     break;
-                case Models.ItemsJsonModel.Mount mount:
+                case Mount mount:
                     ExtraItemInformation.ShopCategory = mount.ShopCategory;
                     ExtraItemInformation.ShopSubCategory1 = mount.ShopSubCategory1;
                     ExtraItemInformation.Durability = mount.Durability;
@@ -246,8 +246,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
             switch (Item?.FullItemInformation)
             {
-                case EquipmentItem { CraftingRequirements.Count: > 0 }:
-                case Weapon { CraftingRequirements.Count: > 0 }:
+                case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+                case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+                case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
                     areResourcesAvailable = true;
                     break;
             }
@@ -276,19 +277,24 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsCraftingWithFocus = false
             };
         }
-
-        [SuppressMessage("ReSharper", "ConstantConditionalAccessQualifier")]
+        
         private async Task GetCraftInfoAsync()
         {
             var craftingRequirements = Item?.FullItemInformation switch
             {
                 Weapon weapon => weapon.CraftingRequirements,
                 EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
+                Mount mount => mount.CraftingRequirements,
                 _ => null
             };
 
-            await foreach (var craftResource in craftingRequirements?
-                               .SelectMany(x => x.CraftResource)?.ToList()?.GroupBy(x => x.UniqueName)?.Select(grp => grp?.FirstOrDefault())?.ToAsyncEnumerable().ConfigureAwait(false))
+            if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
+            {
+                return;
+            }
+
+            await foreach (var craftResource in craftingRequirements
+                               .SelectMany(x => x.CraftResource).ToList().GroupBy(x => x.UniqueName).Select(grp => grp.FirstOrDefault()).ToAsyncEnumerable().ConfigureAwait(false))
             {
                 var item = GetSuitableResourceItem(craftResource.UniqueName);
                 var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
