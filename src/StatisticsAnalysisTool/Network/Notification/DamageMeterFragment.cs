@@ -189,7 +189,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _causerMainHand = value;
-                ShopSubCategory = CategoryController.ShopSubCategoryToShopSubCategoryString(_causerMainHand.ShopShopSubCategory1);
+                ShopSubCategory = CategoryController.ShopSubCategoryToShopSubCategoryString(_causerMainHand?.ShopShopSubCategory1 ?? Common.ShopSubCategory.Unknown);
                 OnPropertyChanged();
             }
         }

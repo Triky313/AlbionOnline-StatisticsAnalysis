@@ -174,18 +174,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _mainWindowViewModel.PartyMemberNumber = _knownPartyEntities.Count;
             });
         }
-
-        public void SetPartyCircleColor(Guid userGuid, ShopCategory shopCategory)
-        {
-            var categoryId = CategoryController.GetCategoryIdByShopCategory(shopCategory);
-            var memberObject = _mainWindowViewModel?.PartyMemberCircles?.FirstOrDefault(x => x.UserGuid == userGuid);
-            if (memberObject?.WeaponCategoryId != null && memberObject.WeaponCategoryId != categoryId)
-            {
-                memberObject.WeaponCategoryId = categoryId;
-            }
-
-        }
-
+        
         public bool IsUserInParty(string name)
         {
             return _knownPartyEntities.Any(x => x.Value == name);

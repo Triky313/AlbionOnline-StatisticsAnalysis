@@ -1,7 +1,6 @@
 using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
@@ -175,8 +174,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObject.Value.Damage);
                 fragment.HealPercentage = entities.GetHealPercentage(healthChangeObject.Value.Heal);
-                
-                _trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, fragment.CauserMainHand.ShopCategory);
             }
         }
 
@@ -208,13 +205,11 @@ namespace StatisticsAnalysisTool.Network.Manager
                 Name = healthChangeObject.Value.Name,
                 CauserMainHand = item
             };
-            
+
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 damageMeter.Add(damageMeterFragment);
             });
-            
-            _trackingController.EntityController.SetPartyCircleColor(healthChangeObject.Value.UserGuid, item.ShopCategory);
         }
 
         private bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
@@ -227,8 +222,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 var damageMeterWithoutDupes = (from dmf in damageMeter.ToList()
-                    group dmf by dmf.Name into x
-                    select new DamageMeterFragment(x.FirstOrDefault())).ToList();
+                                               group dmf by dmf.Name into x
+                                               select new DamageMeterFragment(x.FirstOrDefault())).ToList();
 
                 if (damageMeterWithoutDupes.Count <= 0)
                 {
@@ -291,7 +286,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         }
 
         private HealthChangeType GetHealthChangeType(double healthChange) => healthChange <= 0 ? HealthChangeType.Damage : HealthChangeType.Heal;
-        
+
         private DateTime _lastDamageUiUpdate;
 
         private bool IsUiUpdateAllowed(int waitTimeInSeconds = 1)
