@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -276,6 +277,7 @@ namespace StatisticsAnalysisTool.ViewModels
             };
         }
 
+        [SuppressMessage("ReSharper", "ConstantConditionalAccessQualifier")]
         private async Task GetCraftInfoAsync()
         {
             var craftingRequirements = Item?.FullItemInformation switch
@@ -285,25 +287,23 @@ namespace StatisticsAnalysisTool.ViewModels
                 _ => null
             };
 
-            await foreach (var craftingRequirement in (craftingRequirements?.ToAsyncEnumerable() ?? new List<CraftingRequirements>().ToAsyncEnumerable()).ConfigureAwait(false))
+            await foreach (var craftResource in craftingRequirements?
+                               .SelectMany(x => x.CraftResource)?.ToList()?.GroupBy(x => x.UniqueName)?.Select(grp => grp?.FirstOrDefault())?.ToAsyncEnumerable().ConfigureAwait(false))
             {
-                foreach (var craftResource in craftingRequirement.CraftResource)
-                {
-                    var item = GetSuitableResourceItem(craftResource.UniqueName);
-                    var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false 
-                        ? CraftingCalculation.PossibleItemCrafting 
-                        : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
+                var item = GetSuitableResourceItem(craftResource.UniqueName);
+                var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
+                    ? CraftingCalculation.PossibleItemCrafting
+                    : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
 
-                    RequiredResources.Add(new RequiredResource(this)
-                    {
-                        CraftingResourceName = item?.LocalizedName,
-                        OneProductionAmount = craftResource.Count,
-                        Icon = item?.Icon,
-                        ResourceCost = 0,
-                        CraftingQuantity = craftingQuantity,
-                        IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
-                    });
-                }
+                RequiredResources.Add(new RequiredResource(this)
+                {
+                    CraftingResourceName = item?.LocalizedName,
+                    OneProductionAmount = craftResource.Count,
+                    Icon = item?.Icon,
+                    ResourceCost = 0,
+                    CraftingQuantity = craftingQuantity,
+                    IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
+                });
             }
         }
 
