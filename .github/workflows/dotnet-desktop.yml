@@ -2,7 +2,7 @@ name: .NET Desktop
 
 on:
   push:
-    branches: [ master, dotnet-desktop.yml-update ]
+    branches: [ master ]
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
