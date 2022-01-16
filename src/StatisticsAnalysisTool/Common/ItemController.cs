@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -351,12 +352,16 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task SetFullItemInfoToItems()
         {
-            await foreach (var item in Items.ToAsyncEnumerable())
-            {
-                item.FullItemInformation = await GetSpecificItemInfoAsync(item.UniqueName);
-                item.ShopCategory = GetShopCategory(item.FullItemInformation?.UniqueName);
-                item.ShopShopSubCategory1 = GetShopSubCategory(item.FullItemInformation?.UniqueName);
-            }
+            var tasks = await Items.ToAsyncEnumerable()
+                .Select(item => Task.Run(async () =>
+                {
+                    item.FullItemInformation = await GetSpecificItemInfoAsync(item.UniqueName);
+                    item.ShopCategory = GetShopCategory(item.FullItemInformation?.UniqueName);
+                    item.ShopShopSubCategory1 = GetShopSubCategory(item.FullItemInformation?.UniqueName);
+                }))
+                .ToListAsync();
+
+            await Task.WhenAll(tasks);
         }
 
         private static async Task<ItemJsonObject> GetSpecificItemInfoAsync(string uniqueName)
@@ -598,11 +603,13 @@ namespace StatisticsAnalysisTool.Common
                         ItemsJson = await GetItemsJsonFromLocal();
                         await SetFullItemInfoToItems();
                     }
+                    
                     return ItemsJson?.Items != null;
                 }
 
                 ItemsJson = await GetItemsJsonFromLocal();
                 await SetFullItemInfoToItems();
+                
                 return ItemsJson?.Items != null;
             }
 
@@ -611,6 +618,7 @@ namespace StatisticsAnalysisTool.Common
                 ItemsJson = await GetItemsJsonFromLocal();
                 await SetFullItemInfoToItems();
             }
+            
             return ItemsJson?.Items != null;
         }
 

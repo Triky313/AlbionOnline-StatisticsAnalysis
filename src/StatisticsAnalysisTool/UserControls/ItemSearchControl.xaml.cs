@@ -45,7 +45,7 @@ namespace StatisticsAnalysisTool.UserControls
         private void BtnTryToLoadTheItemListAgain_Click(object sender, RoutedEventArgs e)
         {
             var vm = (MainWindowViewModel)DataContext;
-            vm?.InitItemListAsync().ConfigureAwait(false);
+            vm?.InitItemsAsync().ConfigureAwait(false);
         }
 
         #endregion
