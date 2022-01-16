@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Notification
@@ -59,11 +58,11 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public async Task SetTypeAsync(bool forceSetType = false)
+        public void SetType(bool forceSetType = false)
         {
             if (Type == NotificationType.Unknown && _trySetTypeCounter <= _setTypesMaxTries || forceSetType)
             {
-                Type = GetNotificationType(await ItemController.GetItemTypeAsync(_itemIndex));
+                Type = GetNotificationType(ItemController.GetItemType(_itemIndex));
             }
 
             _trySetTypeCounter++;

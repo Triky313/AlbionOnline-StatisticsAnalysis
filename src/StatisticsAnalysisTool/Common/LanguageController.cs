@@ -86,7 +86,10 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                if (_translations.TryGetValue(key, out var value)) return !string.IsNullOrEmpty(value) ? value : key;
+                if (_translations.TryGetValue(key, out var value))
+                {
+                    return !string.IsNullOrEmpty(value) ? value : key;
+                }
             }
             catch (ArgumentNullException)
             {

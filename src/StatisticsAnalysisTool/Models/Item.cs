@@ -1,8 +1,12 @@
 ﻿using FontAwesome5;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Enumerations;
+using ShopCategory = StatisticsAnalysisTool.Common.ShopCategory;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -25,9 +29,10 @@ namespace StatisticsAnalysisTool.Models
         public int Tier => ItemController.GetItemTier(this);
 
         public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetItemImage(UniqueName));
-        public BitmapImage ExistFullItemInformationLocal => ItemController.ExistFullItemInformationLocal(UniqueName);
-        public ItemInformation FullItemInformation { get; set; }
 
+        public ItemJsonObject FullItemInformation { get; set; }
+        public ShopCategory ShopCategory { get; set; }
+        public ShopSubCategory ShopShopSubCategory1 { get; set; }
         public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
         public bool IsAlertActive { get; set; }
         public bool IsFavorite { get; set; }

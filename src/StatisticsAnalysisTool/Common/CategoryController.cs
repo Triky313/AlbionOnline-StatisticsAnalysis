@@ -1,477 +1,550 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using StatisticsAnalysisTool.Models;
-// ReSharper disable All
 
 namespace StatisticsAnalysisTool.Common
 {
     public static class CategoryController
     {
-        public readonly static List<CategoryObject> Categories = new()
+        public static readonly List<CategoryObject> SubCategories = new()
         {
-            new ("bag", Category.Bag, ParentCategory.Accessories),
-            new ("cape", Category.Cape, ParentCategory.Accessories),
+            new ("bag", ShopSubCategory.Bag, ShopCategory.Accessories),
+            new ("cape", ShopSubCategory.Cape, ShopCategory.Accessories),
 
-            new ("cloth_armor", Category.ClothArmor, ParentCategory.Armor),
-            new ("cloth_helmet", Category.ClothHelmet, ParentCategory.Armor),
-            new ("cloth_shoes", Category.ClothShoes, ParentCategory.Armor),
-            new ("leather_armor", Category.LeatherArmor, ParentCategory.Armor),
-            new ("leather_helmet", Category.LeatherHelmet, ParentCategory.Armor),
-            new ("leather_shoes", Category.LeatherShoes, ParentCategory.Armor),
-            new ("plate_armor", Category.PlateArmor, ParentCategory.Armor),
-            new ("plate_helmet", Category.PlateHelmet, ParentCategory.Armor),
-            new ("plate_shoes", Category.PlateShoes, ParentCategory.Armor),
-            new ("unique_armor", Category.UniqueArmor, ParentCategory.Armor),
-            new ("unique_helmet", Category.UniqueHelmet, ParentCategory.Armor),
-            new ("unique_shoes", Category.UniqueShoes, ParentCategory.Armor),
+            new ("cloth_armor", ShopSubCategory.ClothArmor, ShopCategory.Armor),
+            new ("cloth_helmet", ShopSubCategory.ClothHelmet, ShopCategory.Armor),
+            new ("cloth_shoes", ShopSubCategory.ClothShoes, ShopCategory.Armor),
+            new ("leather_armor", ShopSubCategory.LeatherArmor, ShopCategory.Armor),
+            new ("leather_helmet", ShopSubCategory.LeatherHelmet, ShopCategory.Armor),
+            new ("leather_shoes", ShopSubCategory.LeatherShoes, ShopCategory.Armor),
+            new ("plate_armor", ShopSubCategory.PlateArmor, ShopCategory.Armor),
+            new ("plate_helmet", ShopSubCategory.PlateHelmet, ShopCategory.Armor),
+            new ("plate_shoes", ShopSubCategory.PlateShoes, ShopCategory.Armor),
+            new ("unique_armor", ShopSubCategory.UniqueArmor, ShopCategory.Armor),
+            new ("unique_helmet", ShopSubCategory.UniqueHelmet, ShopCategory.Armor),
+            new ("unique_shoes", ShopSubCategory.UniqueShoes, ShopCategory.Armor),
 
-            new ("armor_artefact", Category.ArmorArtefact, ParentCategory.Artifact),
-            new ("magic_artefact", Category.MagicArtefact, ParentCategory.Artifact),
-            new ("melee_artefact", Category.MeleeArtefact, ParentCategory.Artifact),
-            new ("offhand_artefact", Category.OffhandArtefact, ParentCategory.Artifact),
-            new ("ranged_artefact", Category.RangedArtefact, ParentCategory.Artifact),
+            new ("armor_artefact", ShopSubCategory.ArmorArtefact, ShopCategory.Artifact),
+            new ("magic_artefact", ShopSubCategory.MagicArtefact, ShopCategory.Artifact),
+            new ("melee_artefact", ShopSubCategory.MeleeArtefact, ShopCategory.Artifact),
+            new ("offhand_artefact", ShopSubCategory.OffhandArtefact, ShopCategory.Artifact),
+            new ("ranged_artefact", ShopSubCategory.RangedArtefact, ShopCategory.Artifact),
 
-            new ("beastheart", Category.BeastHeart, ParentCategory.CityResources),
-            new ("mountainheart", Category.MountainHeart, ParentCategory.CityResources),
-            new ("rockheart", Category.RockHeart, ParentCategory.CityResources),
-            new ("treeheart", Category.TreeHeart, ParentCategory.CityResources),
-            new ("vineheart", Category.VineHeart, ParentCategory.CityResources),
+            new ("beastheart", ShopSubCategory.BeastHeart, ShopCategory.CityResources),
+            new ("mountainheart", ShopSubCategory.MountainHeart, ShopCategory.CityResources),
+            new ("rockheart", ShopSubCategory.RockHeart, ShopCategory.CityResources),
+            new ("treeheart", ShopSubCategory.TreeHeart, ShopCategory.CityResources),
+            new ("vineheart", ShopSubCategory.VineHeart, ShopCategory.CityResources),
 
-            new ("cooked", Category.Cooked, ParentCategory.Consumable),
-            new ("fish", Category.Fish, ParentCategory.Consumable),
-            new ("fishingbait", Category.FishingBait, ParentCategory.Consumable),
-            new ("maps", Category.Maps, ParentCategory.Consumable),
-            new ("Other", Category.Other, ParentCategory.Consumable),
-            new ("potion", Category.Potion, ParentCategory.Consumable),
-            new ("skillbook", Category.SkillBook, ParentCategory.Consumable),
-            new ("vanity", Category.Vanity, ParentCategory.Consumable),
+            new ("cooked", ShopSubCategory.Cooked, ShopCategory.Consumables),
+            new ("fish", ShopSubCategory.Fish, ShopCategory.Consumables),
+            new ("fishingbait", ShopSubCategory.FishingBait, ShopCategory.Consumables),
+            new ("maps", ShopSubCategory.Maps, ShopCategory.Consumables),
+            new ("Other", ShopSubCategory.Other, ShopCategory.Consumables),
+            new ("potion", ShopSubCategory.Potion, ShopCategory.Consumables),
+            new ("skillbook", ShopSubCategory.SkillBook, ShopCategory.Consumables),
+            new ("vanity", ShopSubCategory.Vanity, ShopCategory.Consumables),
 
-            new ("animals", Category.Animals, ParentCategory.Farmable),
-            new ("seed", Category.Seed, ParentCategory.Farmable),
+            new ("animals", ShopSubCategory.Animals, ShopCategory.Farmable),
+            new ("seed", ShopSubCategory.Seed, ShopCategory.Farmable),
 
-            new ("banner", Category.Banner, ParentCategory.Furniture),
-            new ("bed", Category.Bed, ParentCategory.Furniture),
-            new ("chest", Category.Chest, ParentCategory.Furniture),
-            new ("decoration_furniture", Category.DecorationFurniture, ParentCategory.Furniture),
-            new ("flag", Category.Flag, ParentCategory.Furniture),
-            new ("heretic_furniture", Category.HereticFurniture, ParentCategory.Furniture),
-            new ("keeper_furniture", Category.KeeperFurniture, ParentCategory.Furniture),
-            new ("morgana_furniture", Category.MorganaFurniture, ParentCategory.Furniture),
-            new ("table", Category.Table, ParentCategory.Furniture),
-            new ("repairkit", Category.RepairKit, ParentCategory.Furniture),
-            new ("unique", Category.Unique, ParentCategory.Furniture),
+            new ("banner", ShopSubCategory.Banner, ShopCategory.Furniture),
+            new ("bed", ShopSubCategory.Bed, ShopCategory.Furniture),
+            new ("chest", ShopSubCategory.Chest, ShopCategory.Furniture),
+            new ("decoration_furniture", ShopSubCategory.DecorationFurniture, ShopCategory.Furniture),
+            new ("flag", ShopSubCategory.Flag, ShopCategory.Furniture),
+            new ("heretic_furniture", ShopSubCategory.HereticFurniture, ShopCategory.Furniture),
+            new ("keeper_furniture", ShopSubCategory.KeeperFurniture, ShopCategory.Furniture),
+            new ("morgana_furniture", ShopSubCategory.MorganaFurniture, ShopCategory.Furniture),
+            new ("table", ShopSubCategory.Table, ShopCategory.Furniture),
+            new ("repairkit", ShopSubCategory.RepairKit, ShopCategory.Furniture),
+            new ("unique", ShopSubCategory.Unique, ShopCategory.Furniture),
 
-            new ("fibergatherer_armor", Category.FibergathererArmor, ParentCategory.GatheringGear),
-            new ("fibergatherer_helmet", Category.FibergathererHelmet, ParentCategory.GatheringGear),
-            new ("fibergatherer_shoes", Category.FibergathererShoes, ParentCategory.GatheringGear),
-            new ("fibergatherer_backpack", Category.FibergathererBackpack, ParentCategory.GatheringGear),
+            new ("fibergatherer_armor", ShopSubCategory.FibergathererArmor, ShopCategory.GatheringGear),
+            new ("fibergatherer_helmet", ShopSubCategory.FibergathererHelmet, ShopCategory.GatheringGear),
+            new ("fibergatherer_shoes", ShopSubCategory.FibergathererShoes, ShopCategory.GatheringGear),
+            new ("fibergatherer_backpack", ShopSubCategory.FibergathererBackpack, ShopCategory.GatheringGear),
 
-            new ("fishgatherer_armor", Category.FishgathererArmor, ParentCategory.GatheringGear),
-            new ("fishgatherer_helmet", Category.FishgathererHelmet, ParentCategory.GatheringGear),
-            new ("fishgatherer_shoes", Category.FishgathererShoes, ParentCategory.GatheringGear),
-            new ("fishgatherer_backpack", Category.FishgathererBackpack, ParentCategory.GatheringGear),
+            new ("fishgatherer_armor", ShopSubCategory.FishgathererArmor, ShopCategory.GatheringGear),
+            new ("fishgatherer_helmet", ShopSubCategory.FishgathererHelmet, ShopCategory.GatheringGear),
+            new ("fishgatherer_shoes", ShopSubCategory.FishgathererShoes, ShopCategory.GatheringGear),
+            new ("fishgatherer_backpack", ShopSubCategory.FishgathererBackpack, ShopCategory.GatheringGear),
 
-            new ("hidegatherer_armor", Category.HidegathererArmor, ParentCategory.GatheringGear),
-            new ("hidegatherer_helmet", Category.HidegathererHelmet, ParentCategory.GatheringGear),
-            new ("hidegatherer_shoes", Category.HidegathererShoes, ParentCategory.GatheringGear),
-            new ("hidegatherer_backpack", Category.HidegathererBackpack, ParentCategory.GatheringGear),
+            new ("hidegatherer_armor", ShopSubCategory.HidegathererArmor, ShopCategory.GatheringGear),
+            new ("hidegatherer_helmet", ShopSubCategory.HidegathererHelmet, ShopCategory.GatheringGear),
+            new ("hidegatherer_shoes", ShopSubCategory.HidegathererShoes, ShopCategory.GatheringGear),
+            new ("hidegatherer_backpack", ShopSubCategory.HidegathererBackpack, ShopCategory.GatheringGear),
 
-            new ("oregatherer_armor", Category.OregathererArmor, ParentCategory.GatheringGear),
-            new ("oregatherer_helmet", Category.OregathererHelmet, ParentCategory.GatheringGear),
-            new ("oregatherer_shoes", Category.OregathererShoes, ParentCategory.GatheringGear),
-            new ("oregatherer_backpack", Category.OregathererBackpack, ParentCategory.GatheringGear),
+            new ("oregatherer_armor", ShopSubCategory.OregathererArmor, ShopCategory.GatheringGear),
+            new ("oregatherer_helmet", ShopSubCategory.OregathererHelmet, ShopCategory.GatheringGear),
+            new ("oregatherer_shoes", ShopSubCategory.OregathererShoes, ShopCategory.GatheringGear),
+            new ("oregatherer_backpack", ShopSubCategory.OregathererBackpack, ShopCategory.GatheringGear),
 
-            new ("rockgatherer_armor", Category.RockgathererArmor, ParentCategory.GatheringGear),
-            new ("rockgatherer_helmet", Category.RockgathererHelmet, ParentCategory.GatheringGear),
-            new ("rockgatherer_shoes", Category.RockgathererShoes, ParentCategory.GatheringGear),
-            new ("rockgatherer_backpack", Category.RockgathererBackpack, ParentCategory.GatheringGear),
+            new ("rockgatherer_armor", ShopSubCategory.RockgathererArmor, ShopCategory.GatheringGear),
+            new ("rockgatherer_helmet", ShopSubCategory.RockgathererHelmet, ShopCategory.GatheringGear),
+            new ("rockgatherer_shoes", ShopSubCategory.RockgathererShoes, ShopCategory.GatheringGear),
+            new ("rockgatherer_backpack", ShopSubCategory.RockgathererBackpack, ShopCategory.GatheringGear),
 
-            new ("woodgatherer_armor", Category.WoodgathererArmor, ParentCategory.GatheringGear),
-            new ("woodgatherer_helmet", Category.WoodgathererHelmet, ParentCategory.GatheringGear),
-            new ("woodgatherer_shoes", Category.WoodgathererShoes, ParentCategory.GatheringGear),
-            new ("woodgatherer_backpack", Category.WoodgathererBackpack, ParentCategory.GatheringGear),
+            new ("woodgatherer_armor", ShopSubCategory.WoodgathererArmor, ShopCategory.GatheringGear),
+            new ("woodgatherer_helmet", ShopSubCategory.WoodgathererHelmet, ShopCategory.GatheringGear),
+            new ("woodgatherer_shoes", ShopSubCategory.WoodgathererShoes, ShopCategory.GatheringGear),
+            new ("woodgatherer_backpack", ShopSubCategory.WoodgathererBackpack, ShopCategory.GatheringGear),
 
-            new ("bridgewatch", Category.Bridgewatch, ParentCategory.LuxuryGoods),
-            new ("caerleon", Category.Caerleon, ParentCategory.LuxuryGoods),
-            new ("fortsterling", Category.FortSterling, ParentCategory.LuxuryGoods),
-            new ("lymhurst", Category.Lymhurst, ParentCategory.LuxuryGoods),
-            new ("martlock", Category.Martlock, ParentCategory.LuxuryGoods),
-            new ("thetford", Category.Thetford, ParentCategory.LuxuryGoods),
+            new ("bridgewatch", ShopSubCategory.Bridgewatch, ShopCategory.LuxuryGoods),
+            new ("caerleon", ShopSubCategory.Caerleon, ShopCategory.LuxuryGoods),
+            new ("fortsterling", ShopSubCategory.FortSterling, ShopCategory.LuxuryGoods),
+            new ("lymhurst", ShopSubCategory.Lymhurst, ShopCategory.LuxuryGoods),
+            new ("martlock", ShopSubCategory.Martlock, ShopCategory.LuxuryGoods),
+            new ("thetford", ShopSubCategory.Thetford, ShopCategory.LuxuryGoods),
 
-            new ("arcanestaff", Category.ArcaneStaff, ParentCategory.Magic),
-            new ("cursestaff", Category.CurseStaff, ParentCategory.Magic),
-            new ("firestaff", Category.FireStaff, ParentCategory.Magic),
-            new ("froststaff", Category.FrostStaff, ParentCategory.Magic),
-            new ("holystaff", Category.HolyStaff, ParentCategory.Magic),
-            new ("naturestaff", Category.NatureStaff, ParentCategory.Magic),
+            new ("arcanestaff", ShopSubCategory.ArcaneStaff, ShopCategory.Magic),
+            new ("cursestaff", ShopSubCategory.CurseStaff, ShopCategory.Magic),
+            new ("firestaff", ShopSubCategory.FireStaff, ShopCategory.Magic),
+            new ("froststaff", ShopSubCategory.FrostStaff, ShopCategory.Magic),
+            new ("holystaff", ShopSubCategory.HolyStaff, ShopCategory.Magic),
+            new ("naturestaff", ShopSubCategory.NatureStaff, ShopCategory.Magic),
 
-            new ("essence", Category.Essence, ParentCategory.Materials),
-            new ("other", Category.OtherMaterials, ParentCategory.Materials),
-            new ("relic", Category.Relic, ParentCategory.Materials),
-            new ("rune", Category.Rune, ParentCategory.Materials),
-            new ("soul", Category.Soul, ParentCategory.Materials),
+            new ("essence", ShopSubCategory.Essence, ShopCategory.Materials),
+            new ("other", ShopSubCategory.OtherMaterials, ShopCategory.Materials),
+            new ("relic", ShopSubCategory.Relic, ShopCategory.Materials),
+            new ("rune", ShopSubCategory.Rune, ShopCategory.Materials),
+            new ("soul", ShopSubCategory.Soul, ShopCategory.Materials),
 
-            new ("axe", Category.Axe, ParentCategory.Melee),
-            new ("dagger", Category.Dagger, ParentCategory.Melee),
-            new ("hammer", Category.Hammer, ParentCategory.Melee),
-            new ("mace", Category.Mace, ParentCategory.Melee),
-            new ("quarterstaff", Category.QuarterStaff, ParentCategory.Melee),
-            new ("spear", Category.Spear, ParentCategory.Melee),
-            new ("sword", Category.Sword, ParentCategory.Melee),
-            new ("knuckles", Category.Knuckles, ParentCategory.Melee),
+            new ("axe", ShopSubCategory.Axe, ShopCategory.Melee),
+            new ("dagger", ShopSubCategory.Dagger, ShopCategory.Melee),
+            new ("hammer", ShopSubCategory.Hammer, ShopCategory.Melee),
+            new ("mace", ShopSubCategory.Mace, ShopCategory.Melee),
+            new ("quarterstaff", ShopSubCategory.QuarterStaff, ShopCategory.Melee),
+            new ("spear", ShopSubCategory.Spear, ShopCategory.Melee),
+            new ("sword", ShopSubCategory.Sword, ShopCategory.Melee),
+            new ("knuckles", ShopSubCategory.Knuckles, ShopCategory.Melee),
 
-            new ("armoredhorse", Category.ArmoredHorse, ParentCategory.Mount),
-            new ("ox", Category.Ox, ParentCategory.Mount),
-            new ("rare_mount", Category.RareMount, ParentCategory.Mount),
-            new ("ridinghorse", Category.RidingHorse, ParentCategory.Mount),
+            new ("armoredhorse", ShopSubCategory.ArmoredHorse, ShopCategory.Mounts),
+            new ("ox", ShopSubCategory.Ox, ShopCategory.Mounts),
+            new ("rare_mount", ShopSubCategory.RareMount, ShopCategory.Mounts),
+            new ("ridinghorse", ShopSubCategory.RidingHorse, ShopCategory.Mounts),
 
-            new ("book", Category.Book, ParentCategory.OffHand),
-            new ("horn", Category.Horn, ParentCategory.OffHand),
-            new ("orb", Category.Orb, ParentCategory.OffHand),
-            new ("shield", Category.Shield, ParentCategory.OffHand),
-            new ("torch", Category.Torch, ParentCategory.OffHand),
-            new ("totem", Category.Totem, ParentCategory.OffHand),
+            new ("book", ShopSubCategory.Book, ShopCategory.OffHand),
+            new ("horn", ShopSubCategory.Horn, ShopCategory.OffHand),
+            new ("orb", ShopSubCategory.Orb, ShopCategory.OffHand),
+            new ("shield", ShopSubCategory.Shield, ShopCategory.OffHand),
+            new ("torch", ShopSubCategory.Torch, ShopCategory.OffHand),
+            new ("totem", ShopSubCategory.Totem, ShopCategory.OffHand),
 
-            new ("trash", Category.Trash, ParentCategory.Other),
-            new ("farming", Category.Farming, ParentCategory.Product),
-            new ("journal", Category.Journal, ParentCategory.Product),
+            new ("trash", ShopSubCategory.Trash, ShopCategory.Other),
+            new ("farming", ShopSubCategory.Farming, ShopCategory.Products),
+            new ("journal", ShopSubCategory.Journal, ShopCategory.Products),
 
-            new ("bow", Category.Bow, ParentCategory.Ranged),
-            new ("crossbow", Category.Crossbow, ParentCategory.Ranged),
+            new ("bow", ShopSubCategory.Bow, ShopCategory.Ranged),
+            new ("crossbow", ShopSubCategory.Crossbow, ShopCategory.Ranged),
 
-            new ("cloth", Category.Cloth, ParentCategory.Resource),
-            new ("fiber", Category.Fiber, ParentCategory.Resource),
-            new ("hide", Category.Hide, ParentCategory.Resource),
-            new ("leather", Category.Leather, ParentCategory.Resource),
-            new ("metalbar", Category.Metalbar, ParentCategory.Resource),
-            new ("ore", Category.Ore, ParentCategory.Resource),
-            new ("wood", Category.Wood, ParentCategory.Resource),
-            new ("planks", Category.Planks, ParentCategory.Resource),
-            new ("rock", Category.Rock, ParentCategory.Resource),
-            new ("stoneblock", Category.Stoneblock, ParentCategory.Resource),
+            new ("cloth", ShopSubCategory.Cloth, ShopCategory.Resources),
+            new ("fiber", ShopSubCategory.Fiber, ShopCategory.Resources),
+            new ("hide", ShopSubCategory.Hide, ShopCategory.Resources),
+            new ("leather", ShopSubCategory.Leather, ShopCategory.Resources),
+            new ("metalbar", ShopSubCategory.Metalbar, ShopCategory.Resources),
+            new ("ore", ShopSubCategory.Ore, ShopCategory.Resources),
+            new ("wood", ShopSubCategory.Wood, ShopCategory.Resources),
+            new ("planks", ShopSubCategory.Planks, ShopCategory.Resources),
+            new ("rock", ShopSubCategory.Rock, ShopCategory.Resources),
+            new ("stoneblock", ShopSubCategory.Stoneblock, ShopCategory.Resources),
 
-            new ("arenasigils", Category.ArenaSigils, ParentCategory.Token),
-            new ("event", Category.Event, ParentCategory.Token),
-            new ("royalsigils", Category.RoyalSigils, ParentCategory.Token),
+            new ("arenasigils", ShopSubCategory.ArenaSigils, ShopCategory.Token),
+            new ("event", ShopSubCategory.Event, ShopCategory.Token),
+            new ("royalsigils", ShopSubCategory.RoyalSigils, ShopCategory.Token),
 
-            new ("demolitionhammer", Category.DemolitionHammer, ParentCategory.Tool),
-            new ("fishing", Category.Fishing, ParentCategory.Tool),
-            new ("pickaxe", Category.Pickaxe, ParentCategory.Tool),
-            new ("sickle", Category.Sickle, ParentCategory.Tool),
-            new ("skinningknife", Category.SkinningKnife, ParentCategory.Tool),
-            new ("stonehammer", Category.StoneHammer, ParentCategory.Tool),
-            new ("woodaxe", Category.WoodAxe, ParentCategory.Tool),
+            new ("demolitionhammer", ShopSubCategory.DemolitionHammer, ShopCategory.Tools),
+            new ("fishing", ShopSubCategory.Fishing, ShopCategory.Tools),
+            new ("pickaxe", ShopSubCategory.Pickaxe, ShopCategory.Tools),
+            new ("sickle", ShopSubCategory.Sickle, ShopCategory.Tools),
+            new ("skinningknife", ShopSubCategory.SkinningKnife, ShopCategory.Tools),
+            new ("stonehammer", ShopSubCategory.StoneHammer, ShopCategory.Tools),
+            new ("woodaxe", ShopSubCategory.WoodAxe, ShopCategory.Tools),
 
-            new ("fibertrophy", Category.FiberTrophy, ParentCategory.Trophies),
-            new ("fishtrophy", Category.FishTrophy, ParentCategory.Trophies),
-            new ("generaltrophy", Category.GeneralTrophy, ParentCategory.Trophies),
-            new ("hidetrophy", Category.HideTrophy, ParentCategory.Trophies),
-            new ("mercenarytrophy", Category.MercenaryTrophy, ParentCategory.Trophies),
-            new ("oretrophy", Category.OreTrophy, ParentCategory.Trophies),
-            new ("rocktrophy", Category.RockTrophy, ParentCategory.Trophies),
-            new ("woodtrophy", Category.WoodTrophy, ParentCategory.Trophies)
+            new ("fibertrophy", ShopSubCategory.FiberTrophy, ShopCategory.Trophies),
+            new ("fishtrophy", ShopSubCategory.FishTrophy, ShopCategory.Trophies),
+            new ("generaltrophy", ShopSubCategory.GeneralTrophy, ShopCategory.Trophies),
+            new ("hidetrophy", ShopSubCategory.HideTrophy, ShopCategory.Trophies),
+            new ("mercenarytrophy", ShopSubCategory.MercenaryTrophy, ShopCategory.Trophies),
+            new ("oretrophy", ShopSubCategory.OreTrophy, ShopCategory.Trophies),
+            new ("rocktrophy", ShopSubCategory.RockTrophy, ShopCategory.Trophies),
+            new ("woodtrophy", ShopSubCategory.WoodTrophy, ShopCategory.Trophies)
         };
 
-        public static readonly Dictionary<Category, string> CategoryNames = new()
+        public static readonly Dictionary<ShopSubCategory, string> SubCategoryNames = new()
         {
-            {Category.Unknown, LanguageController.Translation("UNKNOWN")},
+            {ShopSubCategory.Unknown, LanguageController.Translation("UNKNOWN")},
 
             #region Accessories
 
-            {Category.Bag, LanguageController.Translation("BAG")},
-            {Category.Cape, LanguageController.Translation("CAPE")},
+            {ShopSubCategory.Bag, LanguageController.Translation("BAG")},
+            {ShopSubCategory.Cape, LanguageController.Translation("CAPE")},
 
             #endregion Accessories
 
             #region Armor
 
-            {Category.ClothArmor, LanguageController.Translation("CLOTH_ARMOR")},
-            {Category.ClothHelmet, LanguageController.Translation("CLOTH_HELMET")},
-            {Category.ClothShoes, LanguageController.Translation("CLOTH_SHOES")},
-            {Category.LeatherArmor, LanguageController.Translation("LEATHER_ARMOR")},
-            {Category.LeatherHelmet, LanguageController.Translation("LEATHER_HELMET")},
-            {Category.LeatherShoes, LanguageController.Translation("LEATHER_SHOES")},
-            {Category.PlateArmor, LanguageController.Translation("PLATE_ARMOR")},
-            {Category.PlateHelmet, LanguageController.Translation("PLATE_HELMET")},
-            {Category.PlateShoes, LanguageController.Translation("PLATE_SHOES")},
-            {Category.UniqueArmor, LanguageController.Translation("UNIQUE_ARMOR")},
-            {Category.UniqueHelmet, LanguageController.Translation("UNIQUE_HELMET")},
-            {Category.UniqueShoes, LanguageController.Translation("UNIQUE_SHOES")},
+            {ShopSubCategory.ClothArmor, LanguageController.Translation("CLOTH_ARMOR")},
+            {ShopSubCategory.ClothHelmet, LanguageController.Translation("CLOTH_HELMET")},
+            {ShopSubCategory.ClothShoes, LanguageController.Translation("CLOTH_SHOES")},
+            {ShopSubCategory.LeatherArmor, LanguageController.Translation("LEATHER_ARMOR")},
+            {ShopSubCategory.LeatherHelmet, LanguageController.Translation("LEATHER_HELMET")},
+            {ShopSubCategory.LeatherShoes, LanguageController.Translation("LEATHER_SHOES")},
+            {ShopSubCategory.PlateArmor, LanguageController.Translation("PLATE_ARMOR")},
+            {ShopSubCategory.PlateHelmet, LanguageController.Translation("PLATE_HELMET")},
+            {ShopSubCategory.PlateShoes, LanguageController.Translation("PLATE_SHOES")},
+            {ShopSubCategory.UniqueArmor, LanguageController.Translation("UNIQUE_ARMOR")},
+            {ShopSubCategory.UniqueHelmet, LanguageController.Translation("UNIQUE_HELMET")},
+            {ShopSubCategory.UniqueShoes, LanguageController.Translation("UNIQUE_SHOES")},
 
             #endregion Armor
 
             #region Artifact
 
-            {Category.ArmorArtefact, LanguageController.Translation("ARMOR_ARTEFACT")},
-            {Category.MagicArtefact, LanguageController.Translation("MAGIC_ARTEFACT")},
-            {Category.MeleeArtefact, LanguageController.Translation("MELEE_ARTEFACT")},
-            {Category.OffhandArtefact, LanguageController.Translation("OFFHAND_ARTEFACT")},
-            {Category.RangedArtefact, LanguageController.Translation("RANGED_ARTEFACT")},
+            {ShopSubCategory.ArmorArtefact, LanguageController.Translation("ARMOR_ARTEFACT")},
+            {ShopSubCategory.MagicArtefact, LanguageController.Translation("MAGIC_ARTEFACT")},
+            {ShopSubCategory.MeleeArtefact, LanguageController.Translation("MELEE_ARTEFACT")},
+            {ShopSubCategory.OffhandArtefact, LanguageController.Translation("OFFHAND_ARTEFACT")},
+            {ShopSubCategory.RangedArtefact, LanguageController.Translation("RANGED_ARTEFACT")},
 
             #endregion Artifact
 
             #region CityResources
 
-            {Category.BeastHeart, LanguageController.Translation("BEASTHEART")},
-            {Category.MountainHeart, LanguageController.Translation("MOUNTAINHEART")},
-            {Category.RockHeart, LanguageController.Translation("ROCKHEART")},
-            {Category.TreeHeart, LanguageController.Translation("TREEHEART")},
-            {Category.VineHeart, LanguageController.Translation("VINEHEART")},
+            {ShopSubCategory.BeastHeart, LanguageController.Translation("BEASTHEART")},
+            {ShopSubCategory.MountainHeart, LanguageController.Translation("MOUNTAINHEART")},
+            {ShopSubCategory.RockHeart, LanguageController.Translation("ROCKHEART")},
+            {ShopSubCategory.TreeHeart, LanguageController.Translation("TREEHEART")},
+            {ShopSubCategory.VineHeart, LanguageController.Translation("VINEHEART")},
 
             #endregion CityResources
 
             #region Consumable
 
-            {Category.Cooked, LanguageController.Translation("COOKED")},
-            {Category.Fish, LanguageController.Translation("FISH")},
-            {Category.FishingBait, LanguageController.Translation("FISHING_BAIT")},
-            {Category.Maps, LanguageController.Translation("MAPS")},
-            {Category.Other, LanguageController.Translation("OTHER")},
-            {Category.Potion, LanguageController.Translation("POTION")},
-            {Category.SkillBook, LanguageController.Translation("SKILL_BOOK")},
-            {Category.Vanity, LanguageController.Translation("VANITY")},
+            {ShopSubCategory.Cooked, LanguageController.Translation("COOKED")},
+            {ShopSubCategory.Fish, LanguageController.Translation("FISH")},
+            {ShopSubCategory.FishingBait, LanguageController.Translation("FISHING_BAIT")},
+            {ShopSubCategory.Maps, LanguageController.Translation("MAPS")},
+            {ShopSubCategory.Other, LanguageController.Translation("OTHER")},
+            {ShopSubCategory.Potion, LanguageController.Translation("POTION")},
+            {ShopSubCategory.SkillBook, LanguageController.Translation("SKILL_BOOK")},
+            {ShopSubCategory.Vanity, LanguageController.Translation("VANITY")},
 
             #endregion Consumable
 
             #region Farmable
 
-            {Category.Animals, LanguageController.Translation("ANIMALS")},
-            {Category.Seed, LanguageController.Translation("SEED")},
+            {ShopSubCategory.Animals, LanguageController.Translation("ANIMALS")},
+            {ShopSubCategory.Seed, LanguageController.Translation("SEED")},
 
             #endregion Farmable
 
             #region Furniture
 
-            {Category.Banner, LanguageController.Translation("BANNER")},
-            {Category.Bed, LanguageController.Translation("BED")},
-            {Category.Chest, LanguageController.Translation("CHEST")},
-            {Category.DecorationFurniture, LanguageController.Translation("DECORATION_FURNITURE")},
-            {Category.Flag, LanguageController.Translation("FLAG")},
-            {Category.HereticFurniture, LanguageController.Translation("HERETIC_FURNITURE")},
-            {Category.KeeperFurniture, LanguageController.Translation("KEEPER_FURNITURE")},
-            {Category.MorganaFurniture, LanguageController.Translation("MORGANA_FURNITURE")},
-            {Category.Table, LanguageController.Translation("TABLE")},
-            {Category.RepairKit, LanguageController.Translation("REPAIR_KIT")},
-            {Category.Unique, LanguageController.Translation("UNIQUE")},
+            {ShopSubCategory.Banner, LanguageController.Translation("BANNER")},
+            {ShopSubCategory.Bed, LanguageController.Translation("BED")},
+            {ShopSubCategory.Chest, LanguageController.Translation("CHEST")},
+            {ShopSubCategory.DecorationFurniture, LanguageController.Translation("DECORATION_FURNITURE")},
+            {ShopSubCategory.Flag, LanguageController.Translation("FLAG")},
+            {ShopSubCategory.HereticFurniture, LanguageController.Translation("HERETIC_FURNITURE")},
+            {ShopSubCategory.KeeperFurniture, LanguageController.Translation("KEEPER_FURNITURE")},
+            {ShopSubCategory.MorganaFurniture, LanguageController.Translation("MORGANA_FURNITURE")},
+            {ShopSubCategory.Table, LanguageController.Translation("TABLE")},
+            {ShopSubCategory.RepairKit, LanguageController.Translation("REPAIR_KIT")},
+            {ShopSubCategory.Unique, LanguageController.Translation("UNIQUE")},
 
             #endregion Furniture
 
             #region GatheringGear
 
-            {Category.FibergathererArmor, LanguageController.Translation("FIBERGATHERER_ARMOR")},
-            {Category.FibergathererHelmet, LanguageController.Translation("FIBERGATHERER_HELMET")},
-            {Category.FibergathererShoes, LanguageController.Translation("FIBERGATHERER_SHOES")},
-            {Category.FibergathererBackpack, LanguageController.Translation("FIBERGATHERER_BACKPACK")},
+            {ShopSubCategory.FibergathererArmor, LanguageController.Translation("FIBERGATHERER_ARMOR")},
+            {ShopSubCategory.FibergathererHelmet, LanguageController.Translation("FIBERGATHERER_HELMET")},
+            {ShopSubCategory.FibergathererShoes, LanguageController.Translation("FIBERGATHERER_SHOES")},
+            {ShopSubCategory.FibergathererBackpack, LanguageController.Translation("FIBERGATHERER_BACKPACK")},
 
-            {Category.FishgathererArmor, LanguageController.Translation("FISHGATHERER_ARMOR")},
-            {Category.FishgathererHelmet, LanguageController.Translation("FISHGATHERER_HELMET")},
-            {Category.FishgathererShoes, LanguageController.Translation("FISHGATHERER_SHOES")},
-            {Category.FishgathererBackpack, LanguageController.Translation("FISHGATHERER_BACKPACK")},
+            {ShopSubCategory.FishgathererArmor, LanguageController.Translation("FISHGATHERER_ARMOR")},
+            {ShopSubCategory.FishgathererHelmet, LanguageController.Translation("FISHGATHERER_HELMET")},
+            {ShopSubCategory.FishgathererShoes, LanguageController.Translation("FISHGATHERER_SHOES")},
+            {ShopSubCategory.FishgathererBackpack, LanguageController.Translation("FISHGATHERER_BACKPACK")},
 
-            {Category.HidegathererArmor, LanguageController.Translation("HIDEGATHERER_ARMOR")},
-            {Category.HidegathererHelmet, LanguageController.Translation("HIDEGATHERER_HELMET")},
-            {Category.HidegathererShoes, LanguageController.Translation("HIDEGATHERER_SHOES")},
-            {Category.HidegathererBackpack, LanguageController.Translation("HIDEGATHERERR_BACKPACK")},
+            {ShopSubCategory.HidegathererArmor, LanguageController.Translation("HIDEGATHERER_ARMOR")},
+            {ShopSubCategory.HidegathererHelmet, LanguageController.Translation("HIDEGATHERER_HELMET")},
+            {ShopSubCategory.HidegathererShoes, LanguageController.Translation("HIDEGATHERER_SHOES")},
+            {ShopSubCategory.HidegathererBackpack, LanguageController.Translation("HIDEGATHERERR_BACKPACK")},
 
-            {Category.OregathererArmor, LanguageController.Translation("OREGATHERER_ARMOR")},
-            {Category.OregathererHelmet, LanguageController.Translation("OREGATHERER_HELMET")},
-            {Category.OregathererShoes, LanguageController.Translation("OREGATHERER_SHOES")},
-            {Category.OregathererBackpack, LanguageController.Translation("OREGATHERER_BACKPACK")},
+            {ShopSubCategory.OregathererArmor, LanguageController.Translation("OREGATHERER_ARMOR")},
+            {ShopSubCategory.OregathererHelmet, LanguageController.Translation("OREGATHERER_HELMET")},
+            {ShopSubCategory.OregathererShoes, LanguageController.Translation("OREGATHERER_SHOES")},
+            {ShopSubCategory.OregathererBackpack, LanguageController.Translation("OREGATHERER_BACKPACK")},
 
-            {Category.RockgathererArmor, LanguageController.Translation("ROCKGATHERER_ARMOR")},
-            {Category.RockgathererHelmet, LanguageController.Translation("ROCKGATHERER_HELMET")},
-            {Category.RockgathererShoes, LanguageController.Translation("ROCKGATHERER_SHOES")},
-            {Category.RockgathererBackpack, LanguageController.Translation("ROCKGATHERER_BACKPACK")},
+            {ShopSubCategory.RockgathererArmor, LanguageController.Translation("ROCKGATHERER_ARMOR")},
+            {ShopSubCategory.RockgathererHelmet, LanguageController.Translation("ROCKGATHERER_HELMET")},
+            {ShopSubCategory.RockgathererShoes, LanguageController.Translation("ROCKGATHERER_SHOES")},
+            {ShopSubCategory.RockgathererBackpack, LanguageController.Translation("ROCKGATHERER_BACKPACK")},
 
-            {Category.WoodgathererArmor, LanguageController.Translation("WOODGATHERER_ARMOR")},
-            {Category.WoodgathererHelmet, LanguageController.Translation("WOODGATHERER_HELMET")},
-            {Category.WoodgathererShoes, LanguageController.Translation("WOODGATHERER_SHOES")},
-            {Category.WoodgathererBackpack, LanguageController.Translation("WOODGATHERER_BACKPACK")},
+            {ShopSubCategory.WoodgathererArmor, LanguageController.Translation("WOODGATHERER_ARMOR")},
+            {ShopSubCategory.WoodgathererHelmet, LanguageController.Translation("WOODGATHERER_HELMET")},
+            {ShopSubCategory.WoodgathererShoes, LanguageController.Translation("WOODGATHERER_SHOES")},
+            {ShopSubCategory.WoodgathererBackpack, LanguageController.Translation("WOODGATHERER_BACKPACK")},
 
             #endregion GatheringGear
 
             #region LuxuryGoods
 
-            {Category.Bridgewatch, LanguageController.Translation("BRIDGEWATCH")},
-            {Category.Caerleon, LanguageController.Translation("CAERLEON")},
-            {Category.FortSterling, LanguageController.Translation("FORT_STERLING")},
-            {Category.Lymhurst, LanguageController.Translation("LYMHURST")},
-            {Category.Martlock, LanguageController.Translation("MARTLOCK")},
-            {Category.Thetford, LanguageController.Translation("THETFORD")},
+            {ShopSubCategory.Bridgewatch, LanguageController.Translation("BRIDGEWATCH")},
+            {ShopSubCategory.Caerleon, LanguageController.Translation("CAERLEON")},
+            {ShopSubCategory.FortSterling, LanguageController.Translation("FORT_STERLING")},
+            {ShopSubCategory.Lymhurst, LanguageController.Translation("LYMHURST")},
+            {ShopSubCategory.Martlock, LanguageController.Translation("MARTLOCK")},
+            {ShopSubCategory.Thetford, LanguageController.Translation("THETFORD")},
 
             #endregion LuxuryGoods
 
             #region Magic
 
-            {Category.ArcaneStaff, LanguageController.Translation("ARCANE_STAFF")},
-            {Category.CurseStaff, LanguageController.Translation("CURSE_STAFF")},
-            {Category.FireStaff, LanguageController.Translation("FIRE_STAFF")},
-            {Category.FrostStaff, LanguageController.Translation("FROST_STAFF")},
-            {Category.HolyStaff, LanguageController.Translation("HOLY_STAFF")},
-            {Category.NatureStaff, LanguageController.Translation("NATURE_STAFF")},
+            {ShopSubCategory.ArcaneStaff, LanguageController.Translation("ARCANE_STAFF")},
+            {ShopSubCategory.CurseStaff, LanguageController.Translation("CURSE_STAFF")},
+            {ShopSubCategory.FireStaff, LanguageController.Translation("FIRE_STAFF")},
+            {ShopSubCategory.FrostStaff, LanguageController.Translation("FROST_STAFF")},
+            {ShopSubCategory.HolyStaff, LanguageController.Translation("HOLY_STAFF")},
+            {ShopSubCategory.NatureStaff, LanguageController.Translation("NATURE_STAFF")},
 
             #endregion Magic
 
             #region Materials
 
-            {Category.Essence, LanguageController.Translation("ESSENCE")},
-            {Category.OtherMaterials, LanguageController.Translation("OTHER")},
-            {Category.Relic, LanguageController.Translation("RELIC")},
-            {Category.Rune, LanguageController.Translation("RUNE")},
-            {Category.Soul, LanguageController.Translation("SOUL")},
+            {ShopSubCategory.Essence, LanguageController.Translation("ESSENCE")},
+            {ShopSubCategory.OtherMaterials, LanguageController.Translation("OTHER")},
+            {ShopSubCategory.Relic, LanguageController.Translation("RELIC")},
+            {ShopSubCategory.Rune, LanguageController.Translation("RUNE")},
+            {ShopSubCategory.Soul, LanguageController.Translation("SOUL")},
 
             #endregion Materials
 
             #region Melee
 
-            {Category.Axe, LanguageController.Translation("AXE")},
-            {Category.Dagger, LanguageController.Translation("DAGGER")},
-            {Category.Hammer, LanguageController.Translation("HAMMER")},
-            {Category.Mace, LanguageController.Translation("MACE")},
-            {Category.QuarterStaff, LanguageController.Translation("QUARTER_STAFF")},
-            {Category.Spear, LanguageController.Translation("SPEAR")},
-            {Category.Sword, LanguageController.Translation("SWORD")},
-            {Category.Knuckles, LanguageController.Translation("KNUCKLES") },
+            {ShopSubCategory.Axe, LanguageController.Translation("AXE")},
+            {ShopSubCategory.Dagger, LanguageController.Translation("DAGGER")},
+            {ShopSubCategory.Hammer, LanguageController.Translation("HAMMER")},
+            {ShopSubCategory.Mace, LanguageController.Translation("MACE")},
+            {ShopSubCategory.QuarterStaff, LanguageController.Translation("QUARTER_STAFF")},
+            {ShopSubCategory.Spear, LanguageController.Translation("SPEAR")},
+            {ShopSubCategory.Sword, LanguageController.Translation("SWORD")},
+            {ShopSubCategory.Knuckles, LanguageController.Translation("WAR_GLOVES") },
 
             #endregion Melee
 
             #region Mount
 
-            {Category.ArmoredHorse, LanguageController.Translation("ARMORED_HORSE")},
-            {Category.Ox, LanguageController.Translation("OX")},
-            {Category.RareMount, LanguageController.Translation("RARE_MOUNT")},
-            {Category.RidingHorse, LanguageController.Translation("RIDING_HORSE")},
+            {ShopSubCategory.ArmoredHorse, LanguageController.Translation("ARMORED_HORSE")},
+            {ShopSubCategory.Ox, LanguageController.Translation("OX")},
+            {ShopSubCategory.RareMount, LanguageController.Translation("RARE_MOUNT")},
+            {ShopSubCategory.RidingHorse, LanguageController.Translation("RIDING_HORSE")},
 
             #endregion Mount
 
             #region Off-Hand
 
-            {Category.Book, LanguageController.Translation("BOOK")},
-            {Category.Horn, LanguageController.Translation("HORN")},
-            {Category.Orb, LanguageController.Translation("ORB")},
-            {Category.Shield, LanguageController.Translation("SHIELD")},
-            {Category.Torch, LanguageController.Translation("TORCH")},
-            {Category.Totem, LanguageController.Translation("TOTEM")},
+            {ShopSubCategory.Book, LanguageController.Translation("BOOK")},
+            {ShopSubCategory.Horn, LanguageController.Translation("HORN")},
+            {ShopSubCategory.Orb, LanguageController.Translation("ORB")},
+            {ShopSubCategory.Shield, LanguageController.Translation("SHIELD")},
+            {ShopSubCategory.Torch, LanguageController.Translation("TORCH")},
+            {ShopSubCategory.Totem, LanguageController.Translation("TOTEM")},
 
             #endregion Off-Hand
 
             #region Other
 
-            {Category.Trash, LanguageController.Translation("TRASH")},
+            {ShopSubCategory.Trash, LanguageController.Translation("TRASH")},
 
             #endregion Other
 
             #region Product
 
-            {Category.Farming, LanguageController.Translation("FARMING")},
-            {Category.Journal, LanguageController.Translation("JOURNAL")},
+            {ShopSubCategory.Farming, LanguageController.Translation("FARMING")},
+            {ShopSubCategory.Journal, LanguageController.Translation("JOURNAL")},
 
             #endregion Product
 
             #region Ranged
 
-            {Category.Bow, LanguageController.Translation("BOW")},
-            {Category.Crossbow, LanguageController.Translation("CROSSBOW")},
+            {ShopSubCategory.Bow, LanguageController.Translation("BOW")},
+            {ShopSubCategory.Crossbow, LanguageController.Translation("CROSSBOW")},
 
             #endregion Ranged
 
             #region Resource
 
-            {Category.Cloth, LanguageController.Translation("CLOTH")},
-            {Category.Fiber, LanguageController.Translation("FIBER")},
-            {Category.Hide, LanguageController.Translation("HIDE")},
-            {Category.Leather, LanguageController.Translation("LEATHER")},
-            {Category.Metalbar, LanguageController.Translation("METALBAR")},
-            {Category.Ore, LanguageController.Translation("ORE")},
-            {Category.Planks, LanguageController.Translation("PLANKS")},
-            {Category.Wood, LanguageController.Translation("WOOD")},
-            {Category.Rock, LanguageController.Translation("ROCK")},
-            {Category.Stoneblock, LanguageController.Translation("STONEBLOCK")},
+            {ShopSubCategory.Cloth, LanguageController.Translation("CLOTH")},
+            {ShopSubCategory.Fiber, LanguageController.Translation("FIBER")},
+            {ShopSubCategory.Hide, LanguageController.Translation("HIDE")},
+            {ShopSubCategory.Leather, LanguageController.Translation("LEATHER")},
+            {ShopSubCategory.Metalbar, LanguageController.Translation("METALBAR")},
+            {ShopSubCategory.Ore, LanguageController.Translation("ORE")},
+            {ShopSubCategory.Planks, LanguageController.Translation("PLANKS")},
+            {ShopSubCategory.Wood, LanguageController.Translation("WOOD")},
+            {ShopSubCategory.Rock, LanguageController.Translation("ROCK")},
+            {ShopSubCategory.Stoneblock, LanguageController.Translation("STONEBLOCK")},
 
             #endregion Resource
 
             #region Token
 
-            {Category.ArenaSigils, LanguageController.Translation("ARENA_SIGILS")},
-            {Category.Event, LanguageController.Translation("EVENT")},
-            {Category.RoyalSigils, LanguageController.Translation("ROYAL_SIGILS")},
+            {ShopSubCategory.ArenaSigils, LanguageController.Translation("ARENA_SIGILS")},
+            {ShopSubCategory.Event, LanguageController.Translation("EVENT")},
+            {ShopSubCategory.RoyalSigils, LanguageController.Translation("ROYAL_SIGILS")},
 
             #endregion Token
 
             #region Tool
 
-            {Category.DemolitionHammer, LanguageController.Translation("DEMOLITION_HAMMER")},
-            {Category.Fishing, LanguageController.Translation("FISHING")},
-            {Category.Pickaxe, LanguageController.Translation("PICKAXE")},
-            {Category.Sickle, LanguageController.Translation("SICKLE")},
-            {Category.SkinningKnife, LanguageController.Translation("SKINNING_KNIFE")},
-            {Category.StoneHammer, LanguageController.Translation("STONE_HAMMER")},
-            {Category.WoodAxe, LanguageController.Translation("WOOD_AXE")},
+            {ShopSubCategory.DemolitionHammer, LanguageController.Translation("DEMOLITION_HAMMER")},
+            {ShopSubCategory.Fishing, LanguageController.Translation("FISHING")},
+            {ShopSubCategory.Pickaxe, LanguageController.Translation("PICKAXE")},
+            {ShopSubCategory.Sickle, LanguageController.Translation("SICKLE")},
+            {ShopSubCategory.SkinningKnife, LanguageController.Translation("SKINNING_KNIFE")},
+            {ShopSubCategory.StoneHammer, LanguageController.Translation("STONE_HAMMER")},
+            {ShopSubCategory.WoodAxe, LanguageController.Translation("WOOD_AXE")},
 
             #endregion Tool
 
             #region Trophies
 
-            {Category.FiberTrophy, LanguageController.Translation("FIBER_TROPHY")},
-            {Category.FishTrophy, LanguageController.Translation("FISH_TROPHY")},
-            {Category.GeneralTrophy, LanguageController.Translation("GENERAL_TROPHY")},
-            {Category.HideTrophy, LanguageController.Translation("HIDE_TROPHY")},
-            {Category.MercenaryTrophy, LanguageController.Translation("MERCENARY_TROPHY")},
-            {Category.OreTrophy, LanguageController.Translation("ORE_TROPHY")},
-            {Category.RockTrophy, LanguageController.Translation("ROCK_TROPHY")},
-            {Category.WoodTrophy, LanguageController.Translation("WOOD_TROPHY")},
+            {ShopSubCategory.FiberTrophy, LanguageController.Translation("FIBER_TROPHY")},
+            {ShopSubCategory.FishTrophy, LanguageController.Translation("FISH_TROPHY")},
+            {ShopSubCategory.GeneralTrophy, LanguageController.Translation("GENERAL_TROPHY")},
+            {ShopSubCategory.HideTrophy, LanguageController.Translation("HIDE_TROPHY")},
+            {ShopSubCategory.MercenaryTrophy, LanguageController.Translation("MERCENARY_TROPHY")},
+            {ShopSubCategory.OreTrophy, LanguageController.Translation("ORE_TROPHY")},
+            {ShopSubCategory.RockTrophy, LanguageController.Translation("ROCK_TROPHY")},
+            {ShopSubCategory.WoodTrophy, LanguageController.Translation("WOOD_TROPHY")},
 
             #endregion Trophies
         };
 
-        public static readonly Dictionary<ParentCategory, string> ParentCategoryNames = new()
+        public static readonly Dictionary<ShopCategory, string> CategoryNames = new()
         {
-            {ParentCategory.Unknown, string.Empty},
-            {ParentCategory.Accessories, LanguageController.Translation("ACCESSORIES")},
-            {ParentCategory.Armor, LanguageController.Translation("ARMOR")},
-            {ParentCategory.Artifact, LanguageController.Translation("ARTEFACT")},
-            {ParentCategory.CityResources, LanguageController.Translation("CITY_RESOURCES")},
-            {ParentCategory.Consumable, LanguageController.Translation("CONSUMABLE")},
-            {ParentCategory.Farmable, LanguageController.Translation("FARMABLE")},
-            {ParentCategory.Furniture, LanguageController.Translation("FURNITURE")},
-            {ParentCategory.GatheringGear, LanguageController.Translation("GATHERING_GEAR")},
-            {ParentCategory.LuxuryGoods, LanguageController.Translation("LUXURY_GOODS")},
-            {ParentCategory.Magic, LanguageController.Translation("MAGIC")},
-            {ParentCategory.Materials, LanguageController.Translation("MATERIALS")},
-            {ParentCategory.Melee, LanguageController.Translation("MELEE")},
-            {ParentCategory.Mount, LanguageController.Translation("MOUNT")},
-            {ParentCategory.OffHand, LanguageController.Translation("OFFHAND")},
-            {ParentCategory.Other, LanguageController.Translation("OTHER")},
-            {ParentCategory.Product, LanguageController.Translation("PRODUCT")},
-            {ParentCategory.Ranged, LanguageController.Translation("RANGED")},
-            {ParentCategory.Resource, LanguageController.Translation("RESOURCE")},
-            {ParentCategory.Token, LanguageController.Translation("TOKEN")},
-            {ParentCategory.Tool, LanguageController.Translation("TOOL")},
-            {ParentCategory.Trophies, LanguageController.Translation("TROPHIES")}
+            {ShopCategory.Unknown, string.Empty},
+            {ShopCategory.Accessories, LanguageController.Translation("ACCESSORIES")},
+            {ShopCategory.Armor, LanguageController.Translation("ARMOR")},
+            {ShopCategory.Artifact, LanguageController.Translation("ARTEFACT")},
+            {ShopCategory.CityResources, LanguageController.Translation("CITY_RESOURCES")},
+            {ShopCategory.Consumables, LanguageController.Translation("CONSUMABLE")},
+            {ShopCategory.Farmable, LanguageController.Translation("FARMABLE")},
+            {ShopCategory.Furniture, LanguageController.Translation("FURNITURE")},
+            {ShopCategory.GatheringGear, LanguageController.Translation("GATHERING_GEAR")},
+            {ShopCategory.LuxuryGoods, LanguageController.Translation("LUXURY_GOODS")},
+            {ShopCategory.Magic, LanguageController.Translation("MAGIC")},
+            {ShopCategory.Materials, LanguageController.Translation("MATERIALS")},
+            {ShopCategory.Melee, LanguageController.Translation("MELEE")},
+            {ShopCategory.Mounts, LanguageController.Translation("MOUNT")},
+            {ShopCategory.OffHand, LanguageController.Translation("OFFHAND")},
+            {ShopCategory.Other, LanguageController.Translation("OTHER")},
+            {ShopCategory.Products, LanguageController.Translation("PRODUCT")},
+            {ShopCategory.Ranged, LanguageController.Translation("RANGED")},
+            {ShopCategory.Resources, LanguageController.Translation("RESOURCE")},
+            {ShopCategory.Token, LanguageController.Translation("TOKEN")},
+            {ShopCategory.Tools, LanguageController.Translation("TOOL")},
+            {ShopCategory.Trophies, LanguageController.Translation("TROPHIES")}
         };
 
-        public static CategoryObject GetCategory(string categoryId)
+        public static readonly Dictionary<ShopCategory, string> Categories = new ()
         {
-            return Categories.SingleOrDefault(x => x.CategoryId == categoryId);
+            {ShopCategory.Unknown, string.Empty},
+            {ShopCategory.Accessories, "accessories" },
+            {ShopCategory.Armor, "armor" },
+            {ShopCategory.Artifact, "artefacts" },
+            {ShopCategory.CityResources, "cityresources" },
+            {ShopCategory.Consumables, "consumables" },
+            {ShopCategory.Farmable, "farmables" },
+            {ShopCategory.Furniture, "furniture" },
+            {ShopCategory.GatheringGear, "gatherergear" },
+            {ShopCategory.LuxuryGoods, "luxurygoods" },
+            {ShopCategory.Magic, "magic" },
+            {ShopCategory.Materials, "materials" },
+            {ShopCategory.Melee, "melee" },
+            {ShopCategory.Mounts, "mounts"},
+            {ShopCategory.OffHand, "offhand"},
+            {ShopCategory.Other, "other" },
+            {ShopCategory.Products, "products" },
+            {ShopCategory.Ranged, "ranged" },
+            {ShopCategory.Resources, "resources" },
+            {ShopCategory.Token, "token" },
+            {ShopCategory.Tools, "tools" },
+            {ShopCategory.Trophies, "trophies" },
+            {ShopCategory.SkillBooks, "skillbooks" },
+            {ShopCategory.Labourers, "labourers" }
+        };
+
+        public static ShopCategory ShopCategoryStringToCategory(string value)
+        {
+            return value.ToLower() switch
+            {
+                "melee" => ShopCategory.Melee,
+                "magic" => ShopCategory.Magic,
+                "ranged" => ShopCategory.Ranged,
+                "offhand" => ShopCategory.OffHand,
+                "armor" => ShopCategory.Armor,
+                "accessories" => ShopCategory.Accessories,
+                "mounts" => ShopCategory.Mounts,
+                "gatherergear" => ShopCategory.GatheringGear,
+                "tools" => ShopCategory.Tools,
+                "consumables" => ShopCategory.Consumables,
+                "skillbooks" => ShopCategory.SkillBooks,
+                "resources" => ShopCategory.Resources,
+                "cityresources" => ShopCategory.CityResources,
+                "artefacts" => ShopCategory.Artifact,
+                "materials" => ShopCategory.Materials,
+                "token" => ShopCategory.Token,
+                "farmables" => ShopCategory.Farmable,
+                "products" => ShopCategory.Products,
+                "luxurygoods" => ShopCategory.LuxuryGoods,
+                "trophies" => ShopCategory.Trophies,
+                "furniture" => ShopCategory.Furniture,
+                "labourers" => ShopCategory.Labourers,
+                "other" => ShopCategory.Other,
+                _ => ShopCategory.Unknown
+            };
         }
 
-        public static string GetCategoryName(Category category)
+        public static ShopSubCategory ShopSubCategoryStringToShopSubCategory(string value)
         {
-            return CategoryNames.TryGetValue(category, out var name) ? name : null;
+            return SubCategories?.FirstOrDefault(x => x.CategoryId == value)?.ShopSubCategory ?? ShopSubCategory.Unknown;
         }
 
-        public static string GetParentCategoryName(ParentCategory parentCategory)
+        public static string ShopSubCategoryToShopSubCategoryString(ShopSubCategory shopSubCategory)
         {
-            return ParentCategoryNames.TryGetValue(parentCategory, out var name) ? name : null;
+            return SubCategories?.FirstOrDefault(x => x.ShopSubCategory == shopSubCategory)?.CategoryId ?? "unknown";
         }
 
-        public static Dictionary<Category, string> GetCategoriesByParentCategory(ParentCategory parentCategory)
+        public static CategoryObject GetSubCategory(string categoryId)
         {
-            return Categories?.Where(x => x.ParentCategory == parentCategory).ToDictionary(x => x.Category, x => x.CategoryName);
+            return SubCategories.SingleOrDefault(x => x.CategoryId == categoryId);
+        }
+
+        public static string GetCategoryIdByShopCategory(ShopCategory shopCategory)
+        {
+            return Categories.ContainsKey(shopCategory) ? Categories[shopCategory] : "unknown";
+        }
+
+        public static string GetSubCategoryName(ShopSubCategory shopSubCategory)
+        {
+            return SubCategoryNames.TryGetValue(shopSubCategory, out var name) ? name : null;
+        }
+
+        public static string GetCategoryName(ShopCategory shopCategory)
+        {
+            return CategoryNames.TryGetValue(shopCategory, out var name) ? name : null;
+        }
+
+        public static Dictionary<ShopSubCategory, string> GetSubCategoriesByCategory(ShopCategory shopCategory)
+        {
+            return SubCategories?.Where(x => x.ShopCategory == shopCategory).ToDictionary(x => x.ShopSubCategory, x => x.SubCategoryName);
         }
     }
 
-    public enum Category
+    public enum ShopSubCategory
     {
         Unknown,
         Bag,
@@ -613,29 +686,31 @@ namespace StatisticsAnalysisTool.Common
         WoodTrophy
     }
 
-    public enum ParentCategory
+    public enum ShopCategory
     {
         Unknown,
-        Accessories,
-        Armor,
-        Artifact,
-        CityResources,
-        Consumable,
-        Farmable,
-        Furniture,
-        GatheringGear,
-        LuxuryGoods,
-        Magic,
-        Materials,
-        Melee,
-        Mount,
-        OffHand,
-        Other,
-        Product,
-        Ranged,
-        Resource,
-        Token,
-        Tool,
-        Trophies
+        Melee = 10,
+        Ranged = 11,
+        Magic = 12,
+        OffHand = 20,
+        Armor = 30,
+        Accessories = 40,
+        Mounts = 50,
+        GatheringGear = 60,
+        Tools = 61,
+        Consumables = 70,
+        SkillBooks = 71,
+        Resources = 72,
+        CityResources = 73,
+        Artifact = 74,
+        Materials = 75,
+        Token = 76,
+        Farmable = 80,
+        Products = 81,
+        LuxuryGoods = 82,
+        Trophies = 83,
+        Furniture = 100,
+        Labourers = 101,
+        Other = 111,
     }
 }

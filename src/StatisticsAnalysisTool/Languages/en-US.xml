@@ -497,4 +497,12 @@
 	<translation name="USAGE_FEE_PER_HUNDRED_FOOD">Usage fee per 100 food</translation>
 	<translation name="SHOW_LOOT_FROM_MOBS">Show loot from mobs</translation>
 	<translation name="TRACKING_MOB_LOOT">Tracking mob loot</translation>
+	<translation name="ITEMS_JSON_SOURCE_URL">Items.json source url</translation>
+	<translation name="UPDATE_ITEMS_JSON_BY_DAYS">Update items.json by days: </translation>
+	<translation name="SHOP_CATEGORY">Shop category</translation>
+	<translation name="SHOP_SUB_CATEGORY">Shop sub category</translation>
+	<translation name="CAN_BE_OVERCHARGED">Can be overcharged</translation>
+	<translation name="WAR_GLOVES">War gloves</translation>
+	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Try downloading the item.json again</translation>
+	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Item.json can not be loaded.</translation>
 </translations>

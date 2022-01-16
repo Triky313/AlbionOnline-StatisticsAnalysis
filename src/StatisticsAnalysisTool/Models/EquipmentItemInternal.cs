@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Models
 {
-    public class EquipmentItem
+    public class EquipmentItemInternal
     {
-        public EquipmentItem()
+        public EquipmentItemInternal()
         {
             TimeStamp = DateTime.UtcNow;
         }

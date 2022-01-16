@@ -7,16 +7,12 @@ namespace StatisticsAnalysisTool.Models
         public static string Update => LanguageController.Translation("UPDATE");
         public static string NumberOfValues => LanguageController.Translation("NUMBER_OF_VALUES");
         public static string Load => LanguageController.Translation("LOAD");
-        public static string FullItemInformationExistLocal => LanguageController.Translation("FULL_ITEM_INFORMATION_EXIST_LOCAL");
-        public static string FullItemInfoSearch => LanguageController.Translation("FULL_ITEM_INFO_SEARCH");
         public static string Icon => LanguageController.Translation("ICON");
         public static string Name => LanguageController.Translation("NAME");
-        public static string LoadFullItemInfo => LanguageController.Translation("LOAD_FULL_ITEM_INFO");
         public static string ShowOnlyItemsWithAlertOn => LanguageController.Translation("SHOW_ONLY_ITEMS_WITH_ALERT_ON");
         public static string ShowOnlyFavorites => LanguageController.Translation("SHOW_ONLY_FAVORITES");
         public static string IsAlertActive => LanguageController.Translation("IS_ALERT_ACTIVATE");
         public static string UndercuttingPrice => LanguageController.Translation("UNDERCUTTING_PRICE");
-        public static string IsTrackingActive => LanguageController.Translation("IS_TRACKING_ACTIVE");
         public static string Username => LanguageController.Translation("USERNAME");
         public static string Guild => LanguageController.Translation("GUILD");
         public static string Alliance => LanguageController.Translation("ALLIANCE");
@@ -63,8 +59,8 @@ namespace StatisticsAnalysisTool.Models
         public static string CopyToClipboard => LanguageController.Translation("COPY_TO_CLIPBOARD");
         public static string MapHistory => LanguageController.Translation("MAP_HISTORY");
         public static string TryDownloadingTheItemListAgain => LanguageController.Translation("TRY_DOWNLOADING_THE_ITEM_LIST_AGAIN");
+        public static string TryDownloadingTheItemJsonAgain => LanguageController.Translation("TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN");
         public static string DamageMeterOnOff => LanguageController.Translation("DAMAGE_METER_ON_OFF");
-        public static string TrackerOnOff => LanguageController.Translation("TRACKER_ON_OFF");
         public static string DeleteSelectedDungeons => LanguageController.Translation("DELETE_SELECTED_DUNGEONS");
         public static string SeasonPoints => LanguageController.Translation("SEASON_POINTS");
         public static string ExportLootToFile => LanguageController.Translation("EXPORT_LOOT_TO_FILE");

@@ -24,7 +24,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private ObservableCollection<FileInformation> _alertSounds = new();
         private FileInformation _alertSoundSelection;
-        private int _fullItemInformationUpdateCycleDays;
         private bool _isOpenItemWindowInNewWindowChecked;
         private bool _showInfoWindowOnStartChecked;
         private SettingsWindowTranslation _translation;
@@ -33,6 +32,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _goldStatsApiUrl;
         private bool _isLootLoggerSaveReminderActive;
         private string _automaticLootLoggerSavePath;
+        private string _itemsJsonSourceUrl;
+        private ObservableCollection<FileSettingInformation> _updateItemsJsonByDays = new();
+        private FileSettingInformation _updateItemsJsonByDaysSelection;
 
         public SettingsWindowViewModel()
         {
@@ -94,10 +96,21 @@ namespace StatisticsAnalysisTool.ViewModels
             UpdateItemListByDaysSelection = UpdateItemListByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateItemListByDays);
 
             ItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
-            IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
-            ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
-            FullItemInformationUpdateCycleDays = SettingsController.CurrentSettings.FullItemInformationUpdateCycleDays;
 
+            #endregion
+
+            #region Update items.json by days
+
+            UpdateItemsJsonByDays.Clear();
+            UpdateItemsJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
+            UpdateItemsJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
+            UpdateItemsJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
+            UpdateItemsJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
+            UpdateItemsJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
+            UpdateItemsJsonByDaysSelection = UpdateItemsJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateItemsJsonByDays);
+
+            ItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
+            
             #endregion
 
             #region Alert Sounds
@@ -126,16 +139,20 @@ namespace StatisticsAnalysisTool.ViewModels
             IsLootLoggerSaveReminderActive = SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive;
 
             #endregion
+
+            IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
+            ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
         }
 
         public void SaveSettings()
         {
             SettingsController.CurrentSettings.ItemListSourceUrl = ItemListSourceUrl;
+            SettingsController.CurrentSettings.ItemsJsonSourceUrl = ItemsJsonSourceUrl;
             SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
             SettingsController.CurrentSettings.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
+            SettingsController.CurrentSettings.UpdateItemsJsonByDays = UpdateItemsJsonByDaysSelection.Value;
             SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
             SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
-            SettingsController.CurrentSettings.FullItemInformationUpdateCycleDays = FullItemInformationUpdateCycleDays;
             SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
 
             LanguageController.CurrentCultureInfo = new CultureInfo(LanguagesSelection.FileName);
@@ -189,17 +206,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public int FullItemInformationUpdateCycleDays
-        {
-            get => _fullItemInformationUpdateCycleDays;
-            set
-            {
-                _fullItemInformationUpdateCycleDays = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public FileSettingInformation UpdateItemListByDaysSelection
         {
             get => _updateItemListByDaysSelection;
@@ -210,12 +217,32 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public FileSettingInformation UpdateItemsJsonByDaysSelection
+        {
+            get => _updateItemsJsonByDaysSelection;
+            set
+            {
+                _updateItemsJsonByDaysSelection = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<FileSettingInformation> UpdateItemListByDays
         {
             get => _updateItemListByDays;
             set
             {
                 _updateItemListByDays = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<FileSettingInformation> UpdateItemsJsonByDays
+        {
+            get => _updateItemsJsonByDays;
+            set
+            {
+                _updateItemsJsonByDays = value;
                 OnPropertyChanged();
             }
         }
@@ -266,6 +293,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _itemListSourceUrl = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ItemsJsonSourceUrl
+        {
+            get => _itemsJsonSourceUrl;
+            set
+            {
+                _itemsJsonSourceUrl = value;
                 OnPropertyChanged();
             }
         }

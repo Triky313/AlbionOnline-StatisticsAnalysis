@@ -149,7 +149,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task AddNotificationAsync(TrackingNotification item)
         {
-            await item.SetTypeAsync();
+            item.SetType();
 
             if (_mainWindowViewModel?.TrackingNotifications == null)
             {
@@ -297,7 +297,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 await foreach (var notification in _mainWindowViewModel.TrackingNotifications.ToAsyncEnumerable())
                 {
-                    await notification.SetTypeAsync();
+                    notification.SetType();
                 }
             });
         }

@@ -124,30 +124,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("FullItemInformation.json")]
-        public string FullItemInformationFileName {
-            get {
-                return ((string)(this["FullItemInformationFileName"]));
-            }
-            set {
-                this["FullItemInformationFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsFullItemInfoSearchActive {
-            get {
-                return ((bool)(this["IsFullItemInfoSearchActive"]));
-            }
-            set {
-                this["IsFullItemInfoSearchActive"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Sounds")]
         public string SoundDirectoryName {
             get {
@@ -312,18 +288,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Items.json")]
-        public string ItemsFileName {
-            get {
-                return ((string)(this["ItemsFileName"]));
-            }
-            set {
-                this["ItemsFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ItemSpriteToJournal.json")]
         public string ItemSpriteToJournalFileName {
             get {
@@ -331,6 +295,30 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["ItemSpriteToJournalFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json")]
+        public string DefaultItemsJsonSourceUrl {
+            get {
+                return ((string)(this["DefaultItemsJsonSourceUrl"]));
+            }
+            set {
+                this["DefaultItemsJsonSourceUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Items.json")]
+        public string ItemsJsonFileName {
+            get {
+                return ((string)(this["ItemsJsonFileName"]));
+            }
+            set {
+                this["ItemsJsonFileName"] = value;
             }
         }
     }

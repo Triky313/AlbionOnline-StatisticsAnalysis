@@ -28,6 +28,14 @@
                         <TextBox Text="{Binding ItemListSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.UpdateItemsJsonByDays, FallbackValue=UPDATE__ITEMS_JSON__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding UpdateItemsJsonByDays}" SelectedItem="{Binding UpdateItemsJsonByDaysSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.ItemsJsonSourceUrl, FallbackValue=ITEMS_JSON_SOURCE_URL}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding ItemsJsonSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding IsOpenItemWindowInNewWindowChecked}" Height="21" VerticalContentAlignment="Center" />
                     </DockPanel>
@@ -35,10 +43,6 @@
                         <Label Content="{Binding Translation.ShowInfoWindowOnStart, FallbackValue=SHOW__INFO__WINDOW__ON__START}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding ShowInfoWindowOnStartChecked}" Height="21" VerticalContentAlignment="Center"  />
                     </DockPanel>-->
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.FullItemInformationUpdateCycleDays, FallbackValue=FULL__ITEM__INFO__UPDATE__CYCLE__DAYS}" MinWidth="300" VerticalAlignment="Top" />
-                        <TextBox Text="{Binding FullItemInformationUpdateCycleDays, FallbackValue=90}" Height="26" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
-                    </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.AlarmSoundUsed, FallbackValue=ALERT__SOUND__USED}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding AlertSounds}" SelectedItem="{Binding AlertSoundSelection}" IsSynchronizedWithCurrentItem="True" 

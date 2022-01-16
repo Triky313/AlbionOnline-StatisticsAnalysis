@@ -23,7 +23,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new();
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private readonly ObservableCollection<EquipmentItem> _newEquipmentItems = new();
+        private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = new();
         private readonly ObservableCollection<SpellEffect> _spellEffects = new();
         private readonly ConcurrentDictionary<long, CharacterEquipmentData> _tempCharacterEquipmentData = new();
         private double _lastLocalEntityGuildTaxInPercent;
@@ -174,17 +174,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _mainWindowViewModel.PartyMemberNumber = _knownPartyEntities.Count;
             });
         }
-
-        public void SetPartyCircleColor(Guid userGuid, string weaponCategoryId)
-        {
-            var memberObject = _mainWindowViewModel?.PartyMemberCircles?.FirstOrDefault(x => x.UserGuid == userGuid);
-            if (memberObject?.WeaponCategoryId != null && memberObject.WeaponCategoryId != weaponCategoryId)
-            {
-                memberObject.WeaponCategoryId = weaponCategoryId;
-            }
-
-        }
-
+        
         public bool IsUserInParty(string name)
         {
             return _knownPartyEntities.Any(x => x.Value == name);
@@ -233,18 +223,18 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        public void AddEquipmentItem(EquipmentItem item)
+        public void AddEquipmentItem(EquipmentItemInternal itemInternal)
         {
             lock (_newEquipmentItems)
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    if (_newEquipmentItems.ToList().Any(x => x == null || x.ItemIndex.Equals(item?.ItemIndex) && x.SpellDictionary?.Values == item.SpellDictionary?.Values))
+                    if (_newEquipmentItems.ToList().Any(x => x == null || x.ItemIndex.Equals(itemInternal?.ItemIndex) && x.SpellDictionary?.Values == itemInternal.SpellDictionary?.Values))
                     {
                         return;
                     }
 
-                    _newEquipmentItems.Add(item);
+                    _newEquipmentItems.Add(itemInternal);
                 });
             }
 

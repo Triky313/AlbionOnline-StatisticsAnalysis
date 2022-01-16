@@ -10,7 +10,6 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common
@@ -18,65 +17,7 @@ namespace StatisticsAnalysisTool.Common
     public static class ApiController
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        
-        public static async Task<ItemInformation> GetItemInfoFromJsonAsync(string uniqueName)
-        {
-            var url = $"https://gameinfo.albiononline.com/api/gameinfo/items/{uniqueName}/data";
 
-            using var clientHandler = new HttpClientHandler();
-            clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
-            using var client = new HttpClient(clientHandler);
-            client.Timeout = TimeSpan.FromSeconds(300);
-
-            try
-            {
-                using var response = await client.GetAsync(url);
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-                using var content = response.Content;
-                var emptyItemInfo = new ItemInformation
-                {
-                    UniqueName = uniqueName,
-                    LastUpdate = DateTime.Now
-                };
-
-                if (response.StatusCode == HttpStatusCode.NotFound)
-                {
-                    emptyItemInfo.HttpStatus = HttpStatusCode.NotFound;
-                    return emptyItemInfo;
-                }
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var options = new JsonSerializerOptions()
-                    {
-                        NumberHandling = JsonNumberHandling.AllowReadingFromString
-                    };
-
-                    var itemInfo = JsonSerializer.Deserialize<ItemInformation>(await content.ReadAsStringAsync(), options);
-                    if (itemInfo != null)
-                    {
-                        itemInfo.HttpStatus = HttpStatusCode.OK;
-                        return itemInfo;
-                    }
-                }
-
-                emptyItemInfo.HttpStatus = response.StatusCode;
-                return emptyItemInfo;
-            }
-            catch (TaskCanceledException ex)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-                return null;
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                return null;
-            }
-        }
-        
         /// <summary>
         ///     Returns all city item prices bye uniqueName, locations and qualities.
         /// </summary>
@@ -84,7 +25,7 @@ namespace StatisticsAnalysisTool.Common
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName)
         {
             var locations = Locations.GetLocationsListByArea(true, true, true, true);
-            return await GetCityItemPricesFromJsonAsync(uniqueName, locations, new List<int> {1, 2, 3, 4, 5});
+            return await GetCityItemPricesFromJsonAsync(uniqueName, locations, new List<int> { 1, 2, 3, 4, 5 });
         }
 
         /// <summary>
@@ -117,7 +58,7 @@ namespace StatisticsAnalysisTool.Common
 
                 using var response = await client.GetAsync(url);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-                if (response.StatusCode == (HttpStatusCode) 429)
+                if (response.StatusCode == (HttpStatusCode)429)
                 {
                     throw new TooManyRequestsException();
                 }
@@ -164,7 +105,7 @@ namespace StatisticsAnalysisTool.Common
                 using var response = await client.GetAsync(url);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                 using var content = response.Content;
-                if (response.StatusCode == (HttpStatusCode) 429)
+                if (response.StatusCode == (HttpStatusCode)429)
                 {
                     throw new TooManyRequestsException();
                 }

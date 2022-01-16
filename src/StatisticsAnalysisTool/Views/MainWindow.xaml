@@ -129,6 +129,20 @@
             </TabItem>
         </TabControl>
 
+        <Grid ZIndex="2" Margin="0,97,0,40" Height="100" Visibility="{Binding GridTryToLoadTheItemListAgainVisibility, FallbackValue=Visible}" 
+              Background="{StaticResource SolidColorBrush.Background.4}">
+            <Button Height="32" Width="auto" MinWidth="200" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                    Content="{Binding Translation.TryDownloadingTheItemListAgain, FallbackValue=TRY__DOWNLOADING__THE__ITEM__LIST__AGAIN}" 
+                    Click="BtnTryToLoadTheItemListAgain_Click"/>
+        </Grid>
+
+        <Grid ZIndex="2" Margin="0,97,0,40" Height="100" Visibility="{Binding GridTryToLoadTheItemJsonAgainVisibility, FallbackValue=Collapsed}" 
+              Background="{StaticResource SolidColorBrush.Background.4}">
+            <Button Height="32" Width="auto" MinWidth="200" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                    Content="{Binding Translation.TryDownloadingTheItemJsonAgain, FallbackValue=TRY__DOWNLOADING__THE__ITEM.JSON__AGAIN}" 
+                    Click="BtnTryToLoadTheItemListAgain_Click"/>
+        </Grid>
+
         <userControls:FooterControl VerticalAlignment="Bottom" Height="40" />
         <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Hidden}" ErrorBarText="{Binding ErrorBarText}" />
     </Grid>

@@ -2,13 +2,14 @@ using log4net;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -17,7 +18,9 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using StatisticsAnalysisTool.Common.Converters;
+using JsonSerializer = System.Text.Json.JsonSerializer;
+using Mount = StatisticsAnalysisTool.Models.ItemsJsonModel.Mount;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -26,117 +29,18 @@ namespace StatisticsAnalysisTool.Common
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static ObservableCollection<Item> Items;
-
-        private static readonly string FullItemInformationFilePath =
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.FullItemInformationFileName);
-
-        private static ObservableCollection<ItemInformation> _itemInformationList = new();
+        public static ItemsJson ItemsJson;
 
         public static readonly Brush ToggleOnColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Accent.Blue.2"]);
 
         public static readonly Brush ToggleOffColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
 
-        public static Item GetItemByIndex(int index)
+        #region General
+
+        public static string GetCleanUniqueName(string uniqueName)
         {
-            return Items?.FirstOrDefault(i => i.Index == index);
-        }
-
-        public static Item GetItemByUniqueName(string uniqueName)
-        {
-            return Items?.FirstOrDefault(i => i.UniqueName == uniqueName);
-        }
-
-        public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
-        {
-            if (localizedNames == null)
-            {
-                return alternativeName;
-            }
-
-            if (string.IsNullOrEmpty(currentLanguage))
-            {
-                currentLanguage = LanguageController.CurrentCultureInfo?.TextInfo.CultureName.ToUpper();
-            }
-
-            return FrequentlyValues.GameLanguages
-                    .FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase))
-                    .Key switch
-                {
-                    GameLanguage.UnitedStates => localizedNames.EnUs ?? alternativeName,
-                    GameLanguage.Germany => localizedNames.DeDe ?? alternativeName,
-                    GameLanguage.Russia => localizedNames.RuRu ?? alternativeName,
-                    GameLanguage.Poland => localizedNames.PlPl ?? alternativeName,
-                    GameLanguage.Brazil => localizedNames.PtBr ?? alternativeName,
-                    GameLanguage.France => localizedNames.FrFr ?? alternativeName,
-                    GameLanguage.Spain => localizedNames.EsEs ?? alternativeName,
-                    GameLanguage.Chinese => localizedNames.ZhCn ?? alternativeName,
-                    GameLanguage.Korean => localizedNames.KoKr ?? alternativeName,
-                    _ => alternativeName
-                };
-        }
-
-        public static bool IsTrash(int index)
-        {
-            var item = Items.FirstOrDefault(i => i.Index == index);
-            return (item != null && item.UniqueName.Contains("TRASH")) || item == null;
-        }
-
-        public static async Task<ItemType> GetItemTypeAsync(int index)
-        {
-            var item = Items?.FirstOrDefault(i => i.Index == index);
-
-            if (item != null)
-            {
-                var fullItemInfo = await GetFullItemInformationAsync(item);
-                item.FullItemInformation = fullItemInfo;
-            }
-
-            var itemType = !string.IsNullOrEmpty(item?.FullItemInformation?.ItemType) ? item.FullItemInformation?.ItemType : "UNKNOWN";
-
-            return itemType.ToUpper() switch
-            {
-                "WEAPON" => ItemType.Weapon,
-                "EQUIPMENT" => ItemType.Equipment,
-                "SIMPLE" => ItemType.Simple,
-                "FARMABLE" => ItemType.Farmable,
-                "CONSUMABLE" => ItemType.Consumable,
-                "CONSUMABLEFROMINVENTORY" => ItemType.ConsumableFromInventory,
-                "JOURNAL" => ItemType.Journal,
-                "LABOURERCONTRACT" => ItemType.LabourerContract,
-                "FURNITURE" => ItemType.Furniture,
-                _ => ItemType.Unknown
-            };
-        }
-
-        public static int GetItemLevel(string uniqueName)
-        {
-            if (uniqueName == null || !uniqueName.Contains("@"))
-            {
-                return 0;
-            }
-
-            return int.TryParse(uniqueName.Split('@')[1], out var number) ? number : 0;
-        }
-
-        public static int GetItemTier(Item item)
-        {
-            if (item?.UniqueName == null)
-            {
-                return -1;
-            }
-
-            var itemNameTierText = item.UniqueName.Split('_')[0];
-            if (itemNameTierText[..1] == "T" && int.TryParse(itemNameTierText.Substring(1, 1), out var result))
-            {
-                return result;
-            }
-
-            if (item.FullItemInformation?.Tier != null)
-            {
-                return item.FullItemInformation.Tier;
-            }
-
-            return -1;
+            var uniqueNameArray = uniqueName.Split("@");
+            return uniqueNameArray[0];
         }
 
         public static ItemQuality GetQuality(int value)
@@ -212,11 +116,96 @@ namespace StatisticsAnalysisTool.Common
             return min;
         }
 
-        #region Item list
+
+        #endregion
+
+        #region Item specific
+
+        public static int GetItemLevel(string uniqueName)
+        {
+            if (uniqueName == null || !uniqueName.Contains("@"))
+            {
+                return 0;
+            }
+
+            return int.TryParse(uniqueName.Split('@')[1], out var number) ? number : 0;
+        }
+
+        public static int GetItemTier(Item item)
+        {
+            if (item?.UniqueName == null)
+            {
+                return -1;
+            }
+
+            var itemNameTierText = item.UniqueName.Split('_')[0];
+            if (itemNameTierText[..1] == "T" && int.TryParse(itemNameTierText.Substring(1, 1), out var result))
+            {
+                return result;
+            }
+
+            return -1;
+        }
+
+        #endregion
+
+        #region Localized
+
+        public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
+        {
+            if (localizedNames == null)
+            {
+                return alternativeName;
+            }
+
+            if (string.IsNullOrEmpty(currentLanguage))
+            {
+                currentLanguage = LanguageController.CurrentCultureInfo?.TextInfo.CultureName.ToUpper();
+            }
+
+            return FrequentlyValues.GameLanguages
+                    .FirstOrDefault(x => string.Equals(x.Value, currentLanguage, StringComparison.CurrentCultureIgnoreCase))
+                    .Key switch
+            {
+                GameLanguage.UnitedStates => localizedNames.EnUs ?? alternativeName,
+                GameLanguage.Germany => localizedNames.DeDe ?? alternativeName,
+                GameLanguage.Russia => localizedNames.RuRu ?? alternativeName,
+                GameLanguage.Poland => localizedNames.PlPl ?? alternativeName,
+                GameLanguage.Brazil => localizedNames.PtBr ?? alternativeName,
+                GameLanguage.France => localizedNames.FrFr ?? alternativeName,
+                GameLanguage.Spain => localizedNames.EsEs ?? alternativeName,
+                GameLanguage.Chinese => localizedNames.ZhCn ?? alternativeName,
+                GameLanguage.Korean => localizedNames.KoKr ?? alternativeName,
+                _ => alternativeName
+            };
+        }
+
+        #endregion
+
+        #region Items
+
+        public static Item GetItemByIndex(int index)
+        {
+            return Items?.FirstOrDefault(i => i.Index == index);
+        }
+
+        public static Item GetItemByUniqueName(string uniqueName)
+        {
+            return Items?.FirstOrDefault(i => i.UniqueName == uniqueName);
+        }
+
+        public static bool IsTrash(int index)
+        {
+            var item = Items.FirstOrDefault(i => i.Index == index);
+            return (item != null && item.UniqueName.Contains("TRASH")) || item == null;
+        }
 
         public static async Task<bool> GetItemListFromJsonAsync()
         {
-            var url = GetItemListSourceUrlIfExist();
+            var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
+            var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemListSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
+            SettingsController.CurrentSettings.ItemListSourceUrl = currentSettingsItemsJsonSourceUrl;
+
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}";
 
             if (string.IsNullOrEmpty(url))
@@ -248,24 +237,6 @@ namespace StatisticsAnalysisTool.Common
             return Items?.Count > 0;
         }
 
-        private static string GetItemListSourceUrlIfExist()
-        {
-            var url = SettingsController.CurrentSettings.ItemListSourceUrl ?? string.Empty;
-
-            if (string.IsNullOrEmpty(url))
-            {
-                url = Settings.Default.DefaultItemListSourceUrl ?? string.Empty;
-
-                if (!string.IsNullOrEmpty(url))
-                {
-                    SettingsController.CurrentSettings.ItemListSourceUrl = Settings.Default.DefaultItemListSourceUrl;
-                    _ = MessageBox.Show(LanguageController.Translation("DEFAULT_ITEMLIST_HAS_BEEN_LOADED"), LanguageController.Translation("NOTE"));
-                }
-            }
-
-            return url;
-        }
-
         private static async Task<ObservableCollection<Item>> GetItemListFromLocal()
         {
             try
@@ -277,32 +248,16 @@ namespace StatisticsAnalysisTool.Common
                 };
 
                 var localItemString = await File.ReadAllTextAsync($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", Encoding.UTF8);
-                return ConvertItemJsonObjectToItem(JsonSerializer.Deserialize<ObservableCollection<ItemJsonObject>>(localItemString, options));
+                return ConvertItemJsonObjectToItem(JsonSerializer.Deserialize<ObservableCollection<ItemListObject>>(localItemString, options));
             }
             catch
             {
-                DeleteItemList();
+                DeleteLocalFile($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
                 return new ObservableCollection<Item>();
             }
         }
 
-        private static void DeleteItemList()
-        {
-            if (File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}"))
-            {
-                try
-                {
-                    File.Delete($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}");
-                }
-                catch (Exception e)
-                {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
-                }
-            }
-        }
-
-        private static ObservableCollection<Item> ConvertItemJsonObjectToItem(ObservableCollection<ItemJsonObject> itemJsonObjectList)
+        private static ObservableCollection<Item> ConvertItemJsonObjectToItem(IEnumerable<ItemListObject> itemJsonObjectList)
         {
             var result = itemJsonObjectList.Select(item => new Item
             {
@@ -386,150 +341,369 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        #endregion Item list
-
-        #region ItemInformation
-
-        public static bool IsFullItemInformationComplete =>
-            Items?.All(item => IsItemInformationUpToDate(item?.FullItemInformation?.LastUpdate)) ?? false;
-
-        public static async Task<ItemInformation> GetFullItemInformationAsync(Item item)
+        public static bool IsItemsLoaded()
         {
-            ItemInformation itemInformation;
-
-            lock (_itemInformationList)
-            {
-                itemInformation = _itemInformationList.ToList().FirstOrDefault(x => x?.UniqueName == item?.UniqueName);
-            }
-
-            if (itemInformation?.HttpStatus == HttpStatusCode.NotFound)
-            {
-                return itemInformation;
-            }
-
-            if (string.IsNullOrEmpty(itemInformation?.UniqueName) || !IsItemInformationUpToDate(itemInformation.LastUpdate))
-            {
-                itemInformation = SetEssentialItemInformation(await ApiController.GetItemInfoFromJsonAsync(item?.UniqueName), item?.UniqueName);
-                AddItemInformationToLocal(itemInformation);
-            }
-
-            return itemInformation;
+            return Items?.Count > 0;
         }
 
-        private static ItemInformation SetEssentialItemInformation(ItemInformation itemInformation, string uniqueName)
+        #endregion Item list
+
+        #region Item extra information
+
+        public static async Task SetFullItemInfoToItems()
         {
-            if (itemInformation == null)
+            var tasks = await Items.ToAsyncEnumerable()
+                .Select(item => Task.Run(async () =>
+                {
+                    item.FullItemInformation = await GetSpecificItemInfoAsync(item.UniqueName);
+                    item.ShopCategory = GetShopCategory(item.FullItemInformation?.UniqueName);
+                    item.ShopShopSubCategory1 = GetShopSubCategory(item.FullItemInformation?.UniqueName);
+                }))
+                .ToListAsync();
+
+            await Task.WhenAll(tasks);
+        }
+
+        private static async Task<ItemJsonObject> GetSpecificItemInfoAsync(string uniqueName)
+        {
+            var cleanUniqueName = GetCleanUniqueName(uniqueName);
+
+            if (!IsItemsJsonLoaded())
             {
                 return null;
             }
 
-            itemInformation.Level = GetItemLevel(uniqueName);
-            itemInformation.UniqueName = uniqueName;
-            return itemInformation;
-        }
-
-        private static void AddItemInformationToLocal(ItemInformation currentItemInformation)
-        {
-            if (currentItemInformation == null)
+            if (ItemsJson.Items.HideoutItem.UniqueName == cleanUniqueName)
             {
-                return;
+                return ItemsJson.Items.HideoutItem;
             }
 
-            lock (_itemInformationList)
+            await foreach (var item in ItemsJson.Items.FarmableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
-                var localItemInfo = _itemInformationList.ToList().FirstOrDefault(x => x?.UniqueName == currentItemInformation.UniqueName);
-                _ = _itemInformationList.Remove(localItemInfo);
-
-                currentItemInformation.LastUpdate = DateTime.Now;
-                _itemInformationList.Add(currentItemInformation);
-            }
-        }
-
-        private static bool IsItemInformationUpToDate(DateTime? lastUpdate)
-        {
-            if (lastUpdate == null || lastUpdate.Value.Year == 1)
-            {
-                return false;
+                item.ItemType = ItemType.Farmable;
+                return item;
             }
 
-            var lastUpdateWithCycleDays = lastUpdate.Value.AddDays(SettingsController.CurrentSettings.FullItemInformationUpdateCycleDays);
-            return lastUpdateWithCycleDays >= DateTime.UtcNow;
-        }
-
-        public static BitmapImage ExistFullItemInformationLocal(string uniqueName)
-        {
-            if (_itemInformationList.Any(x => x.UniqueName == uniqueName)
-                && IsItemInformationUpToDate(_itemInformationList.FirstOrDefault(x => x.UniqueName == uniqueName)?.LastUpdate))
+            await foreach (var item in ItemsJson.Items.SimpleItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
-                return new BitmapImage(new Uri(@"pack://application:,,,/Resources/check.png"));
+                item.ItemType = ItemType.Simple;
+                return item;
             }
 
-            if (_itemInformationList.Any(x => x.UniqueName == uniqueName)
-                && !IsItemInformationUpToDate(_itemInformationList.FirstOrDefault(x => x.UniqueName == uniqueName)?.LastUpdate))
+            await foreach(var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
-                return new BitmapImage(new Uri(@"pack://application:,,,/Resources/outdated.png"));
+                item.ItemType = ItemType.Consumable;
+                return item;
+            }
+
+            await foreach(var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            {
+                item.ItemType = ItemType.ConsumableFromInventory;
+                return item;
+            }
+
+            await foreach (var item in ItemsJson.Items.EquipmentItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            {
+                item.ItemType = ItemType.Equipment;
+                return item;
+            }
+
+            await foreach (var item in ItemsJson.Items.Weapon.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            {
+                item.ItemType = ItemType.Weapon;
+                return item;
+            }
+
+            await foreach (var item in ItemsJson.Items.Mount.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            {
+                item.ItemType = ItemType.Mount;
+                return item;
+            }
+
+            await foreach (var item in ItemsJson.Items.FurnitureItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            {
+                item.ItemType = ItemType.Furniture;
+                return item;
+            }
+
+            await foreach (var item in ItemsJson.Items.JournalItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            {
+                item.ItemType = ItemType.Journal;
+                return item;
+            }
+
+            await foreach (var item in ItemsJson.Items.LabourerContract.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            {
+                item.ItemType = ItemType.LabourerContract;
+                return item;
+            }
+
+            await foreach (var item in ItemsJson.Items.MountSkin.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            {
+                item.ItemType = ItemType.MountSkin;
+                return item;
+            }
+
+            await foreach (var item in ItemsJson.Items.CrystalLeagueItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            {
+                item.ItemType = ItemType.CrystalLeague;
+                return item;
             }
 
             return null;
         }
 
-        public static void SaveItemInformationLocal()
+        public static ShopCategory GetShopCategory(string uniqueName)
         {
-            var list = _itemInformationList;
-            if (list == null)
+            var item = GetItemByUniqueName(uniqueName)?.FullItemInformation;
+
+            return item switch
             {
-                return;
+                HideoutItem hideoutItem => CategoryController.ShopCategoryStringToCategory(hideoutItem.ShopCategory),
+                FarmableItem farmableItem => CategoryController.ShopCategoryStringToCategory(farmableItem.ShopCategory),
+                SimpleItem simpleItem => CategoryController.ShopCategoryStringToCategory(simpleItem.ShopCategory),
+                ConsumableItem consumableItem => CategoryController.ShopCategoryStringToCategory(consumableItem.ShopCategory),
+                ConsumableFromInventoryItem consumableFromInventoryItem => CategoryController.ShopCategoryStringToCategory(consumableFromInventoryItem.ShopCategory),
+                EquipmentItem equipmentItem => CategoryController.ShopCategoryStringToCategory(equipmentItem.ShopCategory),
+                Weapon weapon => CategoryController.ShopCategoryStringToCategory(weapon.ShopCategory),
+                Mount mount => CategoryController.ShopCategoryStringToCategory(mount.ShopCategory),
+                FurnitureItem furnitureItem => CategoryController.ShopCategoryStringToCategory(furnitureItem.ShopCategory),
+                JournalItem journalItem => CategoryController.ShopCategoryStringToCategory(journalItem.ShopCategory),
+                LabourerContract labourerContract => CategoryController.ShopCategoryStringToCategory(labourerContract.ShopCategory),
+                CrystalLeagueItem crystalLeagueItem => CategoryController.ShopCategoryStringToCategory(crystalLeagueItem.ShopCategory),
+                _ => ShopCategory.Unknown
+            };
+        }
+
+        public static ShopSubCategory GetShopSubCategory(string uniqueName)
+        {
+            var item = GetItemByUniqueName(uniqueName)?.FullItemInformation;
+
+            return item switch
+            {
+                HideoutItem hideoutItem => CategoryController.ShopSubCategoryStringToShopSubCategory(hideoutItem.ShopSubCategory1),
+                FarmableItem farmableItem => CategoryController.ShopSubCategoryStringToShopSubCategory(farmableItem.ShopSubCategory1),
+                SimpleItem simpleItem => CategoryController.ShopSubCategoryStringToShopSubCategory(simpleItem.ShopSubCategory1),
+                ConsumableItem consumableItem => CategoryController.ShopSubCategoryStringToShopSubCategory(consumableItem.ShopSubCategory1),
+                ConsumableFromInventoryItem consumableFromInventoryItem => CategoryController.ShopSubCategoryStringToShopSubCategory(consumableFromInventoryItem.ShopSubCategory1),
+                EquipmentItem equipmentItem => CategoryController.ShopSubCategoryStringToShopSubCategory(equipmentItem.ShopSubCategory1),
+                Weapon weapon => CategoryController.ShopSubCategoryStringToShopSubCategory(weapon.ShopSubCategory1),
+                Mount mount => CategoryController.ShopSubCategoryStringToShopSubCategory(mount.ShopSubCategory1),
+                FurnitureItem furnitureItem => CategoryController.ShopSubCategoryStringToShopSubCategory(furnitureItem.ShopSubCategory1),
+                JournalItem journalItem => CategoryController.ShopSubCategoryStringToShopSubCategory(journalItem.ShopSubCategory1),
+                LabourerContract labourerContract => CategoryController.ShopSubCategoryStringToShopSubCategory(labourerContract.ShopSubCategory1),
+                CrystalLeagueItem crystalLeagueItem => CategoryController.ShopSubCategoryStringToShopSubCategory(crystalLeagueItem.ShopSubCategory1),
+                _ => ShopSubCategory.Unknown
+            };
+        }
+
+        public static ItemType GetItemType(string uniqueName)
+        {
+            return GetItemType(Items?.FirstOrDefault(x => x.UniqueName == uniqueName)?.Index ?? -1);
+        }
+
+        public static ItemType GetItemType(int index)
+        {
+            var itemObject = Items?.FirstOrDefault(i => i.Index == index);
+
+            if (itemObject == null || ItemsJson?.Items == null)
+            {
+                return ItemType.Unknown;
             }
 
-            var itemInformationString = JsonSerializer.Serialize(list);
-
-            using var writer = new StreamWriter(FullItemInformationFilePath);
-            writer.Write(itemInformationString);
-        }
-
-        public static async Task GetItemInformationListFromLocalAsync()
-        {
-            await Task.Run(() =>
+            if (ItemsJson.Items.HideoutItem?.UniqueName == itemObject.UniqueName)
             {
-                if (_itemInformationList is { Count: > 0 })
-                {
-                    return;
-                }
-
-                if (File.Exists(FullItemInformationFilePath))
-                {
-                    using var streamReader = new StreamReader(FullItemInformationFilePath, Encoding.UTF8);
-                    var readContents = streamReader.ReadToEnd();
-                    _itemInformationList = JsonSerializer.Deserialize<ObservableCollection<ItemInformation>>(readContents);
-                }
-                else
-                {
-                    _itemInformationList = new ObservableCollection<ItemInformation>();
-                }
-
-                SetItemInformationToItems(Items);
-            });
-        }
-
-        private static void SetItemInformationToItems(ObservableCollection<Item> items)
-        {
-            if (items == null)
-            {
-                return;
+                return ItemType.Hideout;
             }
 
-            foreach (var item in items.ToList())
+            if (ItemsJson.Items.FarmableItem.Any(item => item.UniqueName == itemObject.UniqueName))
             {
-                var itemInformation = _itemInformationList.ToList().FirstOrDefault(x => x.UniqueName == item?.UniqueName);
-                item.FullItemInformation = itemInformation;
+                return ItemType.Farmable;
+            }
+
+            if (ItemsJson.Items.SimpleItem.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Simple;
+            }
+
+            if (ItemsJson.Items.ConsumableItem.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Consumable;
+            }
+
+            if (ItemsJson.Items.ConsumableFromInventoryItem.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.ConsumableFromInventory;
+            }
+
+            if (ItemsJson.Items.EquipmentItem.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Equipment;
+            }
+
+            if (ItemsJson.Items.Weapon.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Weapon;
+            }
+
+            if (ItemsJson.Items.Mount.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Mount;
+            }
+
+            if (ItemsJson.Items.FurnitureItem.Any(item => item.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Furniture;
+            }
+
+            if (ItemsJson.Items.JournalItem.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.Journal;
+            }
+
+            if (ItemsJson.Items.LabourerContract.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.LabourerContract;
+            }
+
+            if (ItemsJson.Items.MountSkin.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.MountSkin;
+            }
+
+            if (ItemsJson.Items.CrystalLeagueItem.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
+            {
+                return ItemType.CrystalLeague;
+            }
+
+            return ItemType.Unknown;
+        }
+        
+        public static async Task<bool> GetItemsJsonAsync()
+        {
+            var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
+            var url = GetSourceUrlOrDefault(Settings.Default.DefaultItemsJsonSourceUrl, currentSettingsItemsJsonSourceUrl, ref currentSettingsItemsJsonSourceUrl);
+            SettingsController.CurrentSettings.ItemsJsonSourceUrl = currentSettingsItemsJsonSourceUrl;
+
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
+
+            if (string.IsNullOrEmpty(url))
+            {
+                return false;
+            }
+
+            if (File.Exists(localFilePath))
+            {
+                var fileDateTime = File.GetLastWriteTime(localFilePath);
+
+                if (fileDateTime.AddDays(SettingsController.CurrentSettings.UpdateItemsJsonByDays) < DateTime.Now)
+                {
+                    if (await GetItemsJsonFromWebAsync(url))
+                    {
+                        ItemsJson = await GetItemsJsonFromLocal();
+                        await SetFullItemInfoToItems();
+                    }
+                    
+                    return ItemsJson?.Items != null;
+                }
+
+                ItemsJson = await GetItemsJsonFromLocal();
+                await SetFullItemInfoToItems();
+                
+                return ItemsJson?.Items != null;
+            }
+
+            if (await GetItemsJsonFromWebAsync(url))
+            {
+                ItemsJson = await GetItemsJsonFromLocal();
+                await SetFullItemInfoToItems();
+            }
+            
+            return ItemsJson?.Items != null;
+        }
+
+        private static async Task<bool> GetItemsJsonFromWebAsync(string url)
+        {
+            using var client = new HttpClient
+            {
+                Timeout = TimeSpan.FromSeconds(300)
+            };
+
+            try
+            {
+                using var response = await client.GetAsync(url);
+                using var content = response.Content;
+
+                var fileString = await content.ReadAsStringAsync();
+                await File.WriteAllTextAsync($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}", fileString, Encoding.UTF8);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
-        public static bool IsItemSlotType(ItemInformation itemInfo, string slotType)
+        private static async Task<ItemsJson> GetItemsJsonFromLocal()
         {
-            return itemInfo?.SlotType == slotType;
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
+
+            try
+            {
+                var options = new JsonSerializerOptions()
+                {
+                    NumberHandling = JsonNumberHandling.AllowReadingFromString
+                                     | JsonNumberHandling.WriteAsString,
+                    Converters =
+                    {
+                        new CraftingRequirementsToCraftingRequirementsList(), 
+                        new BoolConverter()
+                    }
+                };
+
+                var localFileString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
+                return JsonSerializer.Deserialize<ItemsJson>(localFileString, options);
+            }
+            catch
+            {
+                DeleteLocalFile(localFilePath);
+                return new ItemsJson();
+            }
         }
 
-        #endregion ItemInformation
+        public static bool IsItemsJsonLoaded()
+        {
+            return ItemsJson?.Items != null;
+        }
+
+        #endregion
+
+        #region Util methods
+
+        private static void DeleteLocalFile(string localFileString)
+        {
+            if (File.Exists(localFileString))
+            {
+                try
+                {
+                    File.Delete(localFileString);
+                }
+                catch (Exception e)
+                {
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.Name, e);
+                }
+            }
+        }
+
+        // ReSharper disable once RedundantAssignment
+        private static string GetSourceUrlOrDefault(string defaultUrl, string sourceUrl, ref string newSourceUrl)
+        {
+            var tempSourceUrl = string.IsNullOrEmpty(sourceUrl) ? defaultUrl : sourceUrl;
+            newSourceUrl = tempSourceUrl;
+            return newSourceUrl;
+        }
+
+        #endregion
     }
 }

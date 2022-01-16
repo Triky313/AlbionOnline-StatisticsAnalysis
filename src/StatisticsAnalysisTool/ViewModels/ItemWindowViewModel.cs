@@ -7,12 +7,14 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.ItemWindowModel;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -50,7 +52,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _informationLoadingImageVisibility;
         private bool _isAutoUpdateActive;
         private Item _item;
-        private ItemInformation _itemInformation;
         private XmlLanguage _itemListViewLanguage;
         private string _itemName;
         private string _itemTierLevel;
@@ -75,6 +76,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _requiredJournalVisibility = Visibility.Collapsed;
         private Visibility _craftingTabVisibility = Visibility.Collapsed;
         private EssentialCraftingValuesTemplate _essentialCraftingValues;
+        private ExtraItemInformation _extraItemInformation = new();
 
         private CraftingCalculation _craftingCalculation = new()
         {
@@ -98,7 +100,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void InitializeItemWindow(Item item)
         {
-            ItemInformation = null;
             ErrorBarVisibility = Visibility.Hidden;
             SetDefaultQualityIfNoOneChecked();
 
@@ -114,6 +115,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async void InitializeItemData(Item item)
         {
+            InformationLoadingImageVisibility = Visibility.Visible;
+
             Icon = null;
             ItemName = "-";
             ItemTierLevel = string.Empty;
@@ -125,7 +128,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             ItemTierLevel = Item?.Tier != -1 && Item?.Level != -1 ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
-            await SetFullItemInformationAsync(item);
+            InitExtraItemInformation();
             await InitCraftingTabUiAsync();
 
             await _mainWindow.Dispatcher.InvokeAsync(() =>
@@ -151,24 +154,115 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Title = $"{localizedName} (T{item.Tier})";
             });
 
-            StartAutoUpdater();
+            _ = StartAutoUpdaterAsync();
             RefreshSpin = IsAutoUpdateActive;
+
+            InformationLoadingImageVisibility = Visibility.Hidden;
+        }
+
+        private void InitExtraItemInformation()
+        {
+            switch (Item?.FullItemInformation)
+            {
+                case Weapon weapon:
+                    ExtraItemInformation.ShopCategory = weapon.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = weapon.ShopSubCategory1;
+                    ExtraItemInformation.CanBeOvercharged = weapon.CanBeOvercharged.SetYesOrNo();
+                    ExtraItemInformation.Durability = weapon.Durability;
+                    ExtraItemInformation.ShowInMarketPlace = weapon.ShowInMarketPlace.SetYesOrNo();
+                    ExtraItemInformation.Weight = weapon.Weight;
+                    break;
+                case HideoutItem hideoutItem:
+                    ExtraItemInformation.ShopCategory = hideoutItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = hideoutItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = hideoutItem.Weight;
+                    break;
+                case FarmableItem farmableItem:
+                    ExtraItemInformation.ShopCategory = farmableItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = farmableItem.ShopSubCategory1;
+                    ExtraItemInformation.ShowInMarketPlace = farmableItem.ShowInMarketPlace.SetYesOrNo();
+                    ExtraItemInformation.Weight = farmableItem.Weight;
+                    break;
+                case SimpleItem simpleItem:
+                    ExtraItemInformation.ShopCategory = simpleItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = simpleItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = simpleItem.Weight;
+                    break;
+                case ConsumableItem consumableItem:
+                    ExtraItemInformation.ShopCategory = consumableItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = consumableItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = consumableItem.Weight;
+                    break;
+                case ConsumableFromInventoryItem consumableFromInventoryItem:
+                    ExtraItemInformation.ShopCategory = consumableFromInventoryItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = consumableFromInventoryItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = consumableFromInventoryItem.Weight;
+                    break;
+                case EquipmentItem equipmentItem:
+                    ExtraItemInformation.ShopCategory = equipmentItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = equipmentItem.ShopSubCategory1;
+                    ExtraItemInformation.CanBeOvercharged = equipmentItem.CanBeOvercharged.SetYesOrNo();
+                    ExtraItemInformation.Durability = equipmentItem.Durability;
+                    ExtraItemInformation.ShowInMarketPlace = equipmentItem.ShowInMarketPlace.SetYesOrNo();
+                    ExtraItemInformation.Weight = equipmentItem.Weight;
+                    break;
+                case Mount mount:
+                    ExtraItemInformation.ShopCategory = mount.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = mount.ShopSubCategory1;
+                    ExtraItemInformation.Durability = mount.Durability;
+                    ExtraItemInformation.ShowInMarketPlace = mount.ShowInMarketPlace.SetYesOrNo();
+                    ExtraItemInformation.Weight = mount.Weight;
+                    break;
+                case FurnitureItem furnitureItem:
+                    ExtraItemInformation.ShopCategory = furnitureItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = furnitureItem.ShopSubCategory1;
+                    ExtraItemInformation.Durability = furnitureItem.Durability;
+                    ExtraItemInformation.ShowInMarketPlace = furnitureItem.ShowInMarketPlace.SetYesOrNo();
+                    ExtraItemInformation.Weight = furnitureItem.Weight;
+                    break;
+                case JournalItem journalItem:
+                    ExtraItemInformation.ShopCategory = journalItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = journalItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = journalItem.Weight;
+                    break;
+                case LabourerContract labourerContract:
+                    ExtraItemInformation.ShopCategory = labourerContract.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = labourerContract.ShopSubCategory1;
+                    ExtraItemInformation.Weight = labourerContract.Weight;
+                    break;
+                case CrystalLeagueItem crystalLeagueItem:
+                    ExtraItemInformation.ShopCategory = crystalLeagueItem.ShopCategory;
+                    ExtraItemInformation.ShopSubCategory1 = crystalLeagueItem.ShopSubCategory1;
+                    ExtraItemInformation.Weight = crystalLeagueItem.Weight;
+                    break;
+            }
         }
 
         #region Crafting tab
 
         private async Task InitCraftingTabUiAsync()
         {
-            if (Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.Count > 0)
+            var areResourcesAvailable = false;
+
+            switch (Item?.FullItemInformation)
+            {
+                case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+                case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+                case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+                    areResourcesAvailable = true;
+                    break;
+            }
+
+            if (areResourcesAvailable)
             {
                 CraftingTabVisibility = Visibility.Visible;
 
                 SetEssentialCraftingValues();
-                await GetJournalInfoAsync();
+                GetJournalInfo();
                 await GetCraftInfoAsync();
             }
         }
-
+        
         private void SetEssentialCraftingValues()
         {
             EssentialCraftingValues = new EssentialCraftingValuesTemplate(this)
@@ -183,15 +277,29 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsCraftingWithFocus = false
             };
         }
-
+        
         private async Task GetCraftInfoAsync()
         {
-            var craftResourceList = Item?.FullItemInformation?.CraftingRequirements?.CraftResourceList?.ToAsyncEnumerable();
+            var craftingRequirements = Item?.FullItemInformation switch
+            {
+                Weapon weapon => weapon.CraftingRequirements,
+                EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
+                Mount mount => mount.CraftingRequirements,
+                _ => null
+            };
 
-            await foreach (var craftResource in craftResourceList ?? new List<CraftResourceList>().ToAsyncEnumerable())
+            if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
+            {
+                return;
+            }
+
+            await foreach (var craftResource in craftingRequirements
+                               .SelectMany(x => x.CraftResource).ToList().GroupBy(x => x.UniqueName).Select(grp => grp.FirstOrDefault()).ToAsyncEnumerable().ConfigureAwait(false))
             {
                 var item = GetSuitableResourceItem(craftResource.UniqueName);
-                var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false ? CraftingCalculation.PossibleItemCrafting : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
+                var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
+                    ? CraftingCalculation.PossibleItemCrafting
+                    : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
 
                 RequiredResources.Add(new RequiredResource(this)
                 {
@@ -205,9 +313,15 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        private async Task GetJournalInfoAsync()
+        private void GetJournalInfo()
         {
-            var craftingJournalType = await CraftingController.GetCraftingJournalItemAsync(Item.Tier, Item.FullItemInformation.SpriteName);
+            var craftingJournalType = Item?.FullItemInformation switch
+            {
+                Weapon weapon => CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType),
+                EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType),
+                _ => null
+            };
+
             if (craftingJournalType == null)
             {
                 return;
@@ -236,7 +350,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             if (CraftingCalculation?.SetupFee != null && EssentialCraftingValues != null)
             {
-                CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, 
+                CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity,
                     EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
             }
 
@@ -303,18 +417,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Crafting tab
-
-        private async Task SetFullItemInformationAsync(Item item)
-        {
-            InformationLoadingImageVisibility = Visibility.Visible;
-
-            var fullItemInfo = await ItemController.GetFullItemInformationAsync(item);
-            ItemInformation = fullItemInfo;
-            Item.FullItemInformation = fullItemInfo;
-
-            InformationLoadingImageVisibility = Visibility.Hidden;
-        }
-
+        
         private void SetErrorValues(Error error)
         {
             switch (error)
@@ -371,7 +474,7 @@ namespace StatisticsAnalysisTool.ViewModels
             ErrorBarVisibility = visibility;
         }
 
-        private async void StartAutoUpdater()
+        private async Task StartAutoUpdaterAsync()
         {
             await Task.Run(async () =>
             {
@@ -848,16 +951,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ItemInformation ItemInformation
-        {
-            get => _itemInformation;
-            set
-            {
-                _itemInformation = value;
-                OnPropertyChanged();
-            }
-        }
-
         public string ItemName
         {
             get => _itemName;
@@ -1204,6 +1297,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _craftingTabVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ExtraItemInformation ExtraItemInformation
+        {
+            get => _extraItemInformation;
+            set
+            {
+                _extraItemInformation = value;
                 OnPropertyChanged();
             }
         }
