@@ -2,13 +2,13 @@ name: .NET Desktop
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, dotnet-desktop.yml-update ]
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
       - '**/*.gitattributes'
   pull_request:
-    branches: [ dotnet-desktop.yml-update ]
+    branches: [ master ]
 
 jobs:
 
