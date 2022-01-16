@@ -12,52 +12,52 @@
     <Style TargetType="ProgressBar" x:Key="DamageMeter.ProgressBar.Colors">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.UnknownWeaponType}" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding CategoryId}" Value="sword">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="sword">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Sword}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="spear">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="spear">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Spear}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="quarterstaff">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="quarterstaff">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Quarterstaff}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="naturestaff">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="naturestaff">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.NatureStaff}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="mace">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="mace">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Mace}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="holystaff">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="holystaff">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.HolyStaff}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="hammer">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="hammer">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Hammer}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="froststaff">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="froststaff">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.FrostStaff}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="firestaff">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="firestaff">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.FireStaff}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="dagger">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="dagger">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Dagger}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="cursestaff">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="cursestaff">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.CursedStaff}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="knuckles">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="knuckles">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Knuckles}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="crossbow">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="crossbow">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Crossbow}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="bow">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="bow">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Bow}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="axe">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="axe">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.Axe}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding CategoryId}" Value="arcanestaff">
+            <DataTrigger Binding="{Binding ShopSubCategory}" Value="arcanestaff">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.ArcaneStaff}" />
             </DataTrigger>
         </Style.Triggers>

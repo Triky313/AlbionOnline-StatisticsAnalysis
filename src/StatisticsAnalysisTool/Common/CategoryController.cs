@@ -449,6 +449,34 @@ namespace StatisticsAnalysisTool.Common
             {ShopCategory.Trophies, LanguageController.Translation("TROPHIES")}
         };
 
+        public static readonly Dictionary<ShopCategory, string> Categories = new ()
+        {
+            {ShopCategory.Unknown, string.Empty},
+            {ShopCategory.Accessories, "accessories" },
+            {ShopCategory.Armor, "armor" },
+            {ShopCategory.Artifact, "artefacts" },
+            {ShopCategory.CityResources, "cityresources" },
+            {ShopCategory.Consumables, "consumables" },
+            {ShopCategory.Farmable, "farmables" },
+            {ShopCategory.Furniture, "furniture" },
+            {ShopCategory.GatheringGear, "gatherergear" },
+            {ShopCategory.LuxuryGoods, "luxurygoods" },
+            {ShopCategory.Magic, "magic" },
+            {ShopCategory.Materials, "materials" },
+            {ShopCategory.Melee, "melee" },
+            {ShopCategory.Mounts, "mounts"},
+            {ShopCategory.OffHand, "offhand"},
+            {ShopCategory.Other, "other" },
+            {ShopCategory.Products, "products" },
+            {ShopCategory.Ranged, "ranged" },
+            {ShopCategory.Resources, "resources" },
+            {ShopCategory.Token, "token" },
+            {ShopCategory.Tools, "tools" },
+            {ShopCategory.Trophies, "trophies" },
+            {ShopCategory.SkillBooks, "skillbooks" },
+            {ShopCategory.Labourers, "labourers" }
+        };
+
         public static ShopCategory ShopCategoryStringToCategory(string value)
         {
             return value.ToLower() switch
@@ -485,9 +513,19 @@ namespace StatisticsAnalysisTool.Common
             return SubCategories?.FirstOrDefault(x => x.CategoryId == value)?.ShopSubCategory ?? ShopSubCategory.Unknown;
         }
 
+        public static string ShopSubCategoryToShopSubCategoryString(ShopSubCategory shopSubCategory)
+        {
+            return SubCategories?.FirstOrDefault(x => x.ShopSubCategory == shopSubCategory)?.CategoryId ?? "unknown";
+        }
+
         public static CategoryObject GetSubCategory(string categoryId)
         {
             return SubCategories.SingleOrDefault(x => x.CategoryId == categoryId);
+        }
+
+        public static string GetCategoryIdByShopCategory(ShopCategory shopCategory)
+        {
+            return Categories.ContainsKey(shopCategory) ? Categories[shopCategory] : "unknown";
         }
 
         public static string GetSubCategoryName(ShopSubCategory shopSubCategory)

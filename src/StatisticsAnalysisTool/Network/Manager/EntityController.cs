@@ -175,12 +175,13 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
-        public void SetPartyCircleColor(Guid userGuid, string weaponCategoryId)
+        public void SetPartyCircleColor(Guid userGuid, ShopCategory shopCategory)
         {
+            var categoryId = CategoryController.GetCategoryIdByShopCategory(shopCategory);
             var memberObject = _mainWindowViewModel?.PartyMemberCircles?.FirstOrDefault(x => x.UserGuid == userGuid);
-            if (memberObject?.WeaponCategoryId != null && memberObject.WeaponCategoryId != weaponCategoryId)
+            if (memberObject?.WeaponCategoryId != null && memberObject.WeaponCategoryId != categoryId)
             {
-                memberObject.WeaponCategoryId = weaponCategoryId;
+                memberObject.WeaponCategoryId = categoryId;
             }
 
         }

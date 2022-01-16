@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 {
     public class DamageMeterFragment : INotifyPropertyChanged
     {
-        private string _categoryId;
+        private string _shopSubCategory;
         private Guid _causerGuid;
         private Item _causerMainHand;
         private long _damage;
@@ -189,18 +189,17 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _causerMainHand = value;
-                // TODO: Rework
-                //CategoryId = _causerMainHand?.FullItemInformation?.CategoryId;
+                ShopSubCategory = CategoryController.ShopSubCategoryToShopSubCategoryString(_causerMainHand.ShopShopSubCategory1);
                 OnPropertyChanged();
             }
         }
 
-        public string CategoryId
+        public string ShopSubCategory
         {
-            get => _categoryId;
+            get => _shopSubCategory;
             set
             {
-                _categoryId = value;
+                _shopSubCategory = value;
                 OnPropertyChanged();
             }
         }
