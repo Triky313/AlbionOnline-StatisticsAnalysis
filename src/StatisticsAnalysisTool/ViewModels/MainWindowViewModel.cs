@@ -128,7 +128,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.LoadSettings();
             UpgradeSettings();
             InitWindowSettings();
-            Utilities.AutoUpdate();
+            AutoUpdateController.AutoUpdate();
 
             if (!LanguageController.InitializeLanguage())
             {

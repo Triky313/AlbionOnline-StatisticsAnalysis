@@ -31,10 +31,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _cityPricesHistoryApiUrl;
         private string _goldStatsApiUrl;
         private bool _isLootLoggerSaveReminderActive;
-        private string _automaticLootLoggerSavePath;
         private string _itemsJsonSourceUrl;
         private ObservableCollection<FileSettingInformation> _updateItemsJsonByDays = new();
         private FileSettingInformation _updateItemsJsonByDaysSelection;
+        private bool _isSuggestPreReleaseUpdatesActive;
 
         public SettingsWindowViewModel()
         {
@@ -140,6 +140,12 @@ namespace StatisticsAnalysisTool.ViewModels
 
             #endregion
 
+            #region Auto update
+
+            IsSuggestPreReleaseUpdatesActive = SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive;
+
+            #endregion
+
             IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
             ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
         }
@@ -163,6 +169,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.CurrentSettings.GoldStatsApiUrl = string.IsNullOrEmpty(GoldStatsApiUrl) ? Settings.Default.GoldStatsApiUrlDefault : GoldStatsApiUrl;
 
             SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive = IsLootLoggerSaveReminderActive;
+            SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
 
             SetAppSettingsAndTranslations();
         }
@@ -377,16 +384,16 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string AutomaticLootLoggerSavePath
+        public bool IsSuggestPreReleaseUpdatesActive
         {
-            get => _automaticLootLoggerSavePath;
+            get => _isSuggestPreReleaseUpdatesActive;
             set
             {
-                _automaticLootLoggerSavePath = value;
+                _isSuggestPreReleaseUpdatesActive = value;
                 OnPropertyChanged();
             }
         }
-
+        
         public string ToolDirectory => System.AppDomain.CurrentDomain.BaseDirectory;
 
         public event PropertyChangedEventHandler PropertyChanged;

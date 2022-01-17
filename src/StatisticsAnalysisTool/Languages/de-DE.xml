@@ -478,7 +478,7 @@
 	<translation name="TOTAL_JOURNAL_SELLS">Gesamter Journal Verkauf</translation>
 	<translation name="TOTAL_SELLS">Gesamter Verkauf</translation>
 	<translation name="GRAND_TOTAL">Gesamtsumme</translation>
-	<translation name="IS_LOOT_LOGGER_SAVE_REMINDER_ACTIVE">Ist Loot Logger Speichererinnerung aktiv?</translation>
+	<translation name="IS_LOOT_LOGGER_SAVE_REMINDER_ACTIVE">Ist Loot Logger Speichererinnerung aktiv</translation>
 	<translation name="SAVE_LOOT_LOGGER_NOW">Loot Logger jetzt speichern?</translation>
 	<translation name="SAVE_LOOT_LOGGER">Loot Logger speichern</translation>
 	<translation name="TRACKING_SILVER">Silber tracken</translation>
@@ -505,4 +505,6 @@
 	<translation name="WAR_GLOVES">Kriegshandschuhe</translation>
 	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Herunterladen der Item.json erneut versuchen</translation>
 	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Item.json kann nicht geladen werden.</translation>
+	<translation name="SUGGEST_PRE_RELEASE_UPDATES">Pre-Release Updates vorschlagen</translation>
+	<translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">Achtung! Diese Versionen werden noch getestet</translation>
 </translations>
