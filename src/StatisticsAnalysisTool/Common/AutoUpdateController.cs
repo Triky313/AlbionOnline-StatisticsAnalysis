@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
-using AutoUpdaterDotNET;
-using Newtonsoft.Json;
+﻿using AutoUpdaterDotNET;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
+using System;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Common;
 
