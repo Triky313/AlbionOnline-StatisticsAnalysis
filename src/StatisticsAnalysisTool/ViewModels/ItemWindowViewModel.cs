@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -262,7 +261,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 await GetCraftInfoAsync();
             }
         }
-        
+
         private void SetEssentialCraftingValues()
         {
             EssentialCraftingValues = new EssentialCraftingValuesTemplate(this)
@@ -277,7 +276,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsCraftingWithFocus = false
             };
         }
-        
+
         private async Task GetCraftInfoAsync()
         {
             var craftingRequirements = Item?.FullItemInformation switch
@@ -417,7 +416,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Crafting tab
-        
+
         private void SetErrorValues(Error error)
         {
             switch (error)
