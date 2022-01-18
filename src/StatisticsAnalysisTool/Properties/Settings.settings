@@ -86,5 +86,8 @@
     <Setting Name="ItemsJsonFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Items.json</Value>
     </Setting>
+    <Setting Name="AutoUpdatePreReleaseConfigUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master/src/StatisticsAnalysisTool/ao-pre-release-update-check.xml</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

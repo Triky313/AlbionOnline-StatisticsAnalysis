@@ -1,10 +1,7 @@
-﻿using AutoUpdaterDotNET;
-using StatisticsAnalysisTool.Properties;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -12,32 +9,11 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class Utilities
     {
-        public static void AutoUpdate()
-        {
-#pragma warning disable CA1416 // Validate platform compatibility
-            AutoUpdater.Start(Settings.Default.AutoUpdateConfigUrl);
-            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
-            AutoUpdater.RunUpdateAsAdmin = false;
-            AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExitAsync;
-#pragma warning restore CA1416 // Validate platform compatibility
-        }
-
-        private static async void AutoUpdaterApplicationExitAsync()
-        {
-            await Task.Delay(5000);
-            Application.Current.Shutdown();
-        }
-
         public static bool IsWindowOpen<T>(string name = "") where T : Window
         {
             return string.IsNullOrEmpty(name)
                 ? Application.Current.Windows.OfType<T>().Any()
                 : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
-        }
-
-        public static string LongNumberToString(long value)
-        {
-            return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
         }
 
         public static string UlongMarketPriceToString(ulong value)
@@ -50,11 +26,6 @@ namespace StatisticsAnalysisTool.Common
             return Formatting.CurrentDateTimeFormat(value);
         }
 
-        public static string GetValuePerHourInShort(double value, TimeSpan span)
-        {
-            return Formatting.ToStringShort(GetValuePerHourToDouble(value, span.TotalSeconds));
-        }
-        
         public static double GetValuePerHourToDouble(double value, double seconds)
         {
             try
@@ -74,7 +45,7 @@ namespace StatisticsAnalysisTool.Common
 
             if (time.Ticks <= 1 && combatStart != null)
             {
-                var startTimeSpan = DateTime.UtcNow - (DateTime) combatStart;
+                var startTimeSpan = DateTime.UtcNow - (DateTime)combatStart;
                 var calculation = value / startTimeSpan.TotalSeconds;
                 return calculation > maxValue ? maxValue : calculation;
             }
@@ -114,10 +85,13 @@ namespace StatisticsAnalysisTool.Common
         #region Window Flash
 
         private const uint FlashwStop = 0; //Stop flashing. The system restores the window to its original state.
+        // ReSharper disable once UnusedMember.Local
         private const uint FlashwCaption = 1; //Flash the window caption.        
+        // ReSharper disable once UnusedMember.Local
         private const uint FlashwTray = 2; //Flash the taskbar button.        
         private const uint FlashwAll = 3; //Flash both the window caption and taskbar button.        
         private const uint FlashwTimer = 4; //Flash continuously, until the FLASHW_STOP flag is set.        
+        // ReSharper disable once UnusedMember.Local
         private const uint FlashwTimernofg = 12; //Flash continuously until the window comes to the foreground.  
 
         [StructLayout(LayoutKind.Sequential)]
@@ -164,7 +138,7 @@ namespace StatisticsAnalysisTool.Common
             win.Dispatcher.Invoke(() =>
             {
                 var h = new WindowInteropHelper(win);
-                var info = new FlashInfo {hwnd = h.Handle};
+                var info = new FlashInfo { hwnd = h.Handle };
                 info.cbSize = Convert.ToUInt32(Marshal.SizeOf(info));
                 info.dwFlags = FlashwStop;
                 info.uCount = uint.MaxValue;

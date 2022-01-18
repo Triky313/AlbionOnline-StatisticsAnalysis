@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="650" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:SettingsWindowViewModel}">
     <Grid>
         <Grid Margin="0,0,0,44">
@@ -77,6 +77,13 @@
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.IsLootLoggerSaveReminderActive, FallbackValue=IS__LOOT__LOGGER__SAVE__REMINDER__ACTIVE}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding IsLootLoggerSaveReminderActive}" Height="21" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.SuggestPreReleaseUpdates, FallbackValue=SUGGEST__PRE__RELEASE__UPDATES}" MinWidth="300" VerticalAlignment="Top" />
+                        <CheckBox IsChecked="{Binding IsSuggestPreReleaseUpdatesActive}" Height="21" VerticalAlignment="Top" VerticalContentAlignment="Top">
+                            <Label Content="{Binding Translation.AttentionTheseVersionsAreStillBeingTested, FallbackValue=ATTENTION__THESE__VERSION__ARE__STILL__BEING__TESTED}" 
+                                   MinWidth="300" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" ContentStringFormat="{}({0})" />
+                        </CheckBox>
                     </DockPanel>
                 </StackPanel>
             </ScrollViewer>
