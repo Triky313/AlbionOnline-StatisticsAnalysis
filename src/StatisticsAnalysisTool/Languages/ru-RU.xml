@@ -42,7 +42,7 @@
   <translation name="REVENUE_WITHOUT_FEE">Выручка без комиссии</translation>
   <translation name="PROFIT">Прибыль</translation>
   <translation name="PURCHASE_CITY">Город покупки</translation>
-  <translation name="DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE">В языковом файле существует двойное значение</translation>
+  <translation name="DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE">В языковом файле существует дублированное значение</translation>
   <translation name="EVERY_DAY">Каждый день</translation>
   <translation name="EVERY_3_DAYS">Каждые 3 дня</translation>
   <translation name="EVERY_7_DAYS">Каждые 7 дней</translation>
@@ -389,9 +389,9 @@
   <translation name="FAME_SHRINE">Чаша Опыта</translation>
   <translation name="COMBAT_BUFF">Боевой бафф</translation>
 
-  <translation name="CITY_PRICES_API_URL">Городские цены API URL</translation>
-  <translation name="CITY_PRICES_HISTORY_API_URL">История цен в городе API URL</translation>
-  <translation name="GOLD_STATS_API_URL">Статистика по золоту API URL</translation>
+  <translation name="CITY_PRICES_API_URL">Ссылка на API городских цен</translation>
+  <translation name="CITY_PRICES_HISTORY_API_URL">Ссылка на API истории цен</translation>
+  <translation name="GOLD_STATS_API_URL">Ссылка на API цен на золото</translation>
 
   <translation name="SAFE">Безопасно</translation>
   <translation name="DUNGEON_TIMER">Таймер подземелья</translation>
@@ -498,4 +498,17 @@
   <translation name="MIGHT">Могущество</translation>
   <translation name="FAVOR">Благосклонность</translation>
   <translation name="USAGE_FEE_PER_HUNDRED_FOOD">Налог за 100 единиц еды</translation>
+  <translation name="SHOW_LOOT_FROM_MOBS">Показывать лут с мобов</translation>
+  <translation name="TRACKING_MOB_LOOT">Отслеживать лут с мобов</translation>
+  <translation name="ITEMS_JSON_SOURCE_URL">Ссылка на источник для Items.json</translation>
+  <translation name="UPDATE_ITEMS_JSON_BY_DAYS">Обвновлять items.json раз в дней: </translation>
+  <translation name="SHOP_CATEGORY">Категория рынка</translation>
+  <translation name="SHOP_SUB_CATEGORY">Подкатегория рынка</translation>
+  <translation name="CAN_BE_OVERCHARGED">Может прогреться</translation>
+  <translation name="WAR_GLOVES">Боевые перчатки</translation>
+  <translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Попробуйте скачать item.json снова</translation>
+  <translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Item.json не может установиться.</translation>
+
+  <translation name="SUGGEST_PRE_RELEASE_UPDATES">Предлагать тестовые версии</translation>
+  <translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">ВНИМАНИЕ! Эта версия ещё тестируется!</translation>
 </translations>
