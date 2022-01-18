@@ -1,7 +1,10 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
@@ -21,6 +24,36 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         {
             _itemWindowViewModel = itemWindowViewModel;
         }
+
+        #region Command methods
+        
+        private ICommand _loadPriceCommand;
+
+        public ICommand LoadPriceCommand
+        {
+            get
+            {
+                return _loadPriceCommand ??= new RelayCommand(
+                    _ => LoadPrice(),
+                    _ => CanLoadPrice()
+                );
+            }
+        }
+
+        private bool CanLoadPrice()
+        {
+            return true;
+        }
+
+        private void LoadPrice()
+        {
+            Debug.Print("GEHT");
+            // Save command execution logic
+        }
+
+        #endregion
+
+        #region Bindings
 
         public int CraftingItemQuantity
         {
@@ -125,5 +158,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

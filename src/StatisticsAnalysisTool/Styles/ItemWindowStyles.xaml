@@ -103,7 +103,10 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                 <Label Content="{Binding TranslationSellPricePerItem, FallbackValue=SELL__PRICE__PER__ITEM}" Style="{StaticResource Label.Crafting}" />
-                <TextBox Text="{Binding SellPricePerItem}" Style="{StaticResource TextBox.Crafting}" Margin="0,-2,0,0" common:TextBoxHelper.OnlyNumeric="Int" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="{Binding SellPricePerItem}" Style="{StaticResource TextBox.Crafting}" Margin="0,-2,0,0" common:TextBoxHelper.OnlyNumeric="Int" />
+                    <Button Margin="5,-2,0,0" Content="GET__PRICE" Command="{Binding LoadPriceCommand}" />
+                </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                 <Label Content="{Binding TranslationSetupFeePercent, FallbackValue=SETUP__FEE__%}" Style="{StaticResource Label.Crafting}" />
