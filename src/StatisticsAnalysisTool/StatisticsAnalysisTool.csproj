@@ -100,6 +100,9 @@
     <Content Include="Languages\es-ES.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Languages\fr-FR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Languages\pt-BR.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -372,6 +375,7 @@
     <None Remove="Languages\de-DE.xml" />
     <None Remove="Languages\en-US.xml" />
     <None Remove="Languages\es-ES.xml" />
+    <None Remove="Languages\fr-FR.xml" />
     <None Remove="Languages\pt-BR.xml" />
     <None Remove="Languages\ru-RU.xml" />
     <None Remove="Languages\tr-TR.xml" />
