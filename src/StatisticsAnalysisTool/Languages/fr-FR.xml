@@ -505,4 +505,8 @@
 	<translation name="WAR_GLOVES">Gantelets de Guerre</translation>
 	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Essayez de télécharger item.json à nouveau</translation>
 	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Item.json ne peut pas être chargé.</translation>
+
+	<translation name="SUGGEST_PRE_RELEASE_UPDATES">Suggérer des mises à jour en pré-version</translation>
+    <translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">ATTENTION! Ces versions sont encore en cours de test</translation>
+
 </translations>
