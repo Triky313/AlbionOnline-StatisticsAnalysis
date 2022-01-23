@@ -632,42 +632,48 @@
                                     </Label>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Height="24">
-                                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
+                                    <Grid HorizontalAlignment="Center" Margin="5,0,0,0" VerticalAlignment="Center" 
+                                          ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
                                         <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
                                     <Label Content="{Binding Fame, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" 
                                        Margin="0 0 10 0" MinWidth="75" />
 
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                          ToolTip="{Binding TranslationDungeonReSpec, FallbackValue=DUNGEON__RESPEC}">
                                         <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
                                     <Label Content="{Binding ReSpec, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestReSpec}" VerticalAlignment="Center" 
                                    Margin="0 0 10 0" MinWidth="75" />
 
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                          ToolTip="{Binding TranslationDungeonSilver, FallbackValue=DUNGEON__SILVER}">
                                         <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
                                     <Label Content="{Binding Silver, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestSilver}" VerticalAlignment="Center" 
                                    Margin="0 0 10 0" MinWidth="75" />
 
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                          ToolTip="{Binding TranslationDungeonFamePerHour, FallbackValue=DUNGEON__FAME__PER__HOUR}">
                                         <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
                                     <Label Content="{Binding FamePerHour, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFamePerHour}" VerticalAlignment="Center" 
                                    Margin="0 0 10 0" MinWidth="85" />
 
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                          ToolTip="{Binding TranslationDungeonReSpecPerHour, FallbackValue=DUNGEON__RESPEC__PER__HOUR}">
                                         <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
                                     <Label Content="{Binding ReSpecPerHour, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestReSpecPerHour}" VerticalAlignment="Center" 
                                    Margin="0 0 10 0" MinWidth="85" />
 
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                          ToolTip="{Binding TranslationDungeonSilverPerHour, FallbackValue=DUNGEON__SILVER__PER__HOUR}">
                                         <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
                                     <Label Content="{Binding SilverPerHour, IsAsync=True, FallbackValue=-}" 

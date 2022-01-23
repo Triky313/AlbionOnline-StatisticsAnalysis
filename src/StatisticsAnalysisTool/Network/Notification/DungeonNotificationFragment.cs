@@ -740,6 +740,16 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         [JsonIgnore] public string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
 
+        [JsonIgnore] public string TranslationDungeonReSpec => LanguageController.Translation("DUNGEON_RESPEC");
+
+        [JsonIgnore] public string TranslationDungeonSilver => LanguageController.Translation("DUNGEON_SILVER");
+
+        [JsonIgnore] public string TranslationDungeonFamePerHour => LanguageController.Translation("DUNGEON_FAME_PER_HOUR");
+
+        [JsonIgnore] public string TranslationDungeonReSpecPerHour => LanguageController.Translation("DUNGEON_RESPEC_PER_HOUR");
+
+        [JsonIgnore] public string TranslationDungeonSilverPerHour => LanguageController.Translation("DUNGEON_SILVER_PER_HOUR");
+
         [JsonIgnore] public string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
 
         [JsonIgnore] public string TranslationNumberOfDungeonFloors => LanguageController.Translation("NUMBER_OF_DUNGEON_FLOORS");
