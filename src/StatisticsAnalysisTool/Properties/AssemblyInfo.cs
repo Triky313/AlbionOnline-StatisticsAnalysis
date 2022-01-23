@@ -15,9 +15,7 @@ using System.Windows;
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: SupportedOSPlatform("windows10.0")]
-[assembly: UnsupportedOSPlatform("windows7.0")]
-[assembly: UnsupportedOSPlatform("windows8.0")]
+[assembly: SupportedOSPlatform("windows")]
 
 // Log4net
 [assembly: XmlConfigurator(ConfigFile = "Log4Net.config", Watch = true)]
