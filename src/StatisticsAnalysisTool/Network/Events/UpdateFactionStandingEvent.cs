@@ -21,7 +21,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 if (parameters.ContainsKey(0))
                 {
-                    CityFaction = FactionWarfareController.GetCityFactionFlagType(parameters[0].ObjectToByte());
+                    CityFaction = GetCityFactionFlagType(parameters[0].ObjectToByte());
                 }
 
                 if (parameters.ContainsKey(1))
@@ -43,6 +43,20 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
+        }
+
+        public static CityFaction GetCityFactionFlagType(byte id)
+        {
+            return id switch
+            {
+                6 => CityFaction.Caerleon,
+                5 => CityFaction.Thetford,
+                4 => CityFaction.FortSterling,
+                3 => CityFaction.Bridgewatch,
+                2 => CityFaction.Lymhurst,
+                1 => CityFaction.Martlock,
+                _ => CityFaction.Unknown
+            };
         }
     }
 }
