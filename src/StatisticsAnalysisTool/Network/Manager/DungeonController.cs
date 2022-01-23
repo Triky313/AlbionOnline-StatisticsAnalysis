@@ -65,8 +65,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
 
                 _dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
-
-                var newDungeon = new DungeonObject(_trackingController.CurrentCluster.MainClusterIndex, (Guid)mapGuid!, DungeonStatus.Active, _trackingController.CurrentCluster.Tier);
+                
+                var newDungeon = new DungeonObject(_trackingController.CurrentCluster.MainClusterIndex, 
+                    mapGuid ?? new Guid(0,0,0,0,0,0,0,0,0,0,0), DungeonStatus.Active, _trackingController.CurrentCluster.Tier);
                 SetDungeonMapType(newDungeon, mapType);
 
                 _dungeons.Insert(0, newDungeon);
