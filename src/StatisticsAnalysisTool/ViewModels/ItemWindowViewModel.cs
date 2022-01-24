@@ -273,7 +273,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 SellPricePerItem = 0,
                 SetupFee = 1.5d,
                 OtherCosts = 0,
-                IsCraftingWithFocus = false
+                IsCraftingWithFocus = false,
+                CurrentCityPrices = CurrentCityPrices,
+                Item = Item
             };
         }
 
@@ -986,6 +988,11 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _currentCityPrices = value;
+                if (EssentialCraftingValues != null)
+                {
+                    EssentialCraftingValues.CurrentCityPrices = value;
+                }
+
                 OnPropertyChanged();
             }
         }

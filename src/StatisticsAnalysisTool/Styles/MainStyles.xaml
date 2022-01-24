@@ -599,8 +599,7 @@
                               MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                 <Border 
                                 x:Name="DropDownBorder"
-                                Background="{StaticResource SolidColorBrush.Background.2}"
-
+                                Background="{StaticResource SolidColorBrush.Background.3}"
                                 BorderThickness="1"
                                 BorderBrush="{StaticResource SolidColorBrush.Background.3}"/>
                                 <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">

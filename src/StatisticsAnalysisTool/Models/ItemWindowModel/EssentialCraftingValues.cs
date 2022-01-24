@@ -1,9 +1,10 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
@@ -19,6 +20,8 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private int _craftingBonus;
         private bool _isCraftingWithFocus;
         private int _otherCosts;
+        public Item Item { get; set; }
+        public List<MarketResponse> CurrentCityPrices { get; set; }
 
         public EssentialCraftingValuesTemplate(ItemWindowViewModel itemWindowViewModel)
         {
@@ -26,29 +29,33 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         }
 
         #region Command methods
-        
+
         private ICommand _loadPriceCommand;
 
         public ICommand LoadPriceCommand
         {
             get
             {
-                return _loadPriceCommand ??= new RelayCommand(
-                    _ => LoadPrice(),
-                    _ => CanLoadPrice()
+                return _loadPriceCommand ??= new RelayCommand(LoadSellPrice,
+                        _ => CanLoadSellPrice()
                 );
             }
         }
 
-        private bool CanLoadPrice()
+        private bool CanLoadSellPrice()
         {
             return true;
         }
 
-        private void LoadPrice()
+        private void LoadSellPrice(object location)
         {
-            Debug.Print("GEHT");
-            // Save command execution logic
+            var locationString = (string)location;
+            var sellPriceMin = CurrentCityPrices?.FirstOrDefault(x => string.Equals(x?.City, locationString, StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
+
+            if (sellPriceMin != null)
+            {
+                SellPricePerItem = (long)sellPriceMin;
+            }
         }
 
         #endregion
