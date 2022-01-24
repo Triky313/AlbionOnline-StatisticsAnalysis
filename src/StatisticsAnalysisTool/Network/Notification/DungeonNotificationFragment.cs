@@ -48,7 +48,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private double _factionFlagsPerHour;
         private double _factionFlags;
         private double _factionCoins;
-        private Visibility _isFactionWarfareVisible = Visibility.Hidden;
+        private Visibility _isFactionWarfareVisible = Visibility.Collapsed;
         private bool _isBestFactionCoinsPerHour;
         private bool _isBestFactionFlagsPerHour;
         private bool _isBestFactionFlags;
@@ -59,6 +59,15 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool? _isSelectedForDeletion = false;
         private Visibility _visibility;
         private Tier _tier = Tier.Unknown;
+        private double _might;
+        private double _favor;
+        private double _mightPerHour;
+        private double _favorPerHour;
+        private Visibility _isMightFavorVisible = Visibility.Collapsed;
+        private bool _isBestMight;
+        private bool _isBestFavor;
+        private bool _isBestMightPerHour;
+        private bool _isBestFavorPerHour;
 
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
 
@@ -84,6 +93,8 @@ namespace StatisticsAnalysisTool.Network.Notification
             CityFaction = dungeonObject.CityFaction;
             FactionCoins = dungeonObject.FactionCoins;
             FactionFlags = dungeonObject.FactionFlags;
+            Might = dungeonObject.Might;
+            Favor = dungeonObject.Favor;
             Mode = dungeonObject.Mode;
             Status = dungeonObject.Status;
             Tier = dungeonObject.Tier;
@@ -375,14 +386,14 @@ namespace StatisticsAnalysisTool.Network.Notification
                 _factionCoins = value;
                 FactionCoinsPerHour = Utilities.GetValuePerHourToDouble(FactionCoins, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
 
-                if (FactionCoins > 0 && IsFactionWarfareVisible == Visibility.Hidden)
+                if (FactionCoins > 0 && IsFactionWarfareVisible == Visibility.Collapsed && IsMightFavorVisible == Visibility.Collapsed)
                 {
                     IsFactionWarfareVisible = Visibility.Visible;
                 }
                 OnPropertyChanged();
             }
         }
-
+        
         public double FactionFlagsPerHour {
             get
             {
@@ -413,6 +424,78 @@ namespace StatisticsAnalysisTool.Network.Notification
             private set
             {
                 _factionCoinsPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double Might
+        {
+            get => _might;
+            // ReSharper disable once UnusedMember.Local
+            private set
+            {
+                _might = value;
+                MightPerHour = Utilities.GetValuePerHourToDouble(Might, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+
+                if (Might > 0 && IsMightFavorVisible != Visibility.Visible)
+                {
+                    IsMightFavorVisible = Visibility.Visible;
+                    IsFactionWarfareVisible = Visibility.Collapsed;
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        public double Favor
+        {
+            get => _favor;
+            // ReSharper disable once UnusedMember.Local
+            private set
+            {
+                _favor = value;
+                FavorPerHour = Utilities.GetValuePerHourToDouble(Favor, TotalRunTimeInSeconds <= 0 ? (DateTime.UtcNow - EnterDungeonFirstTime).Seconds : TotalRunTimeInSeconds);
+
+                if (Favor > 0 && IsMightFavorVisible != Visibility.Visible)
+                {
+                    IsMightFavorVisible = Visibility.Visible;
+                    IsFactionWarfareVisible = Visibility.Collapsed;
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        public double MightPerHour
+        {
+            get
+            {
+                if (double.IsNaN(_mightPerHour))
+                {
+                    return 0;
+                }
+
+                return _mightPerHour;
+            }
+            private set
+            {
+                _mightPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double FavorPerHour
+        {
+            get
+            {
+                if (double.IsNaN(_favorPerHour))
+                {
+                    return 0;
+                }
+
+                return _favorPerHour;
+            }
+            private set
+            {
+                _favorPerHour = value;
                 OnPropertyChanged();
             }
         }
@@ -484,6 +567,15 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _isFactionWarfareVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility IsMightFavorVisible {
+            get => _isMightFavorVisible;
+            set
+            {
+                _isMightFavorVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -564,6 +656,46 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        public bool IsBestMight
+        {
+            get => _isBestMight;
+            set
+            {
+                _isBestMight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestFavor
+        {
+            get => _isBestFavor;
+            set
+            {
+                _isBestFavor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestMightPerHour
+        {
+            get => _isBestMightPerHour;
+            set
+            {
+                _isBestMightPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBestFavorPerHour
+        {
+            get => _isBestFavorPerHour;
+            set
+            {
+                _isBestFavorPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsBestFamePerHour
         {
             get => _isBestFamePerHour;
@@ -607,6 +739,16 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonIgnore] public string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
 
         [JsonIgnore] public string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
+
+        [JsonIgnore] public string TranslationDungeonReSpec => LanguageController.Translation("DUNGEON_RESPEC");
+
+        [JsonIgnore] public string TranslationDungeonSilver => LanguageController.Translation("DUNGEON_SILVER");
+
+        [JsonIgnore] public string TranslationDungeonFamePerHour => LanguageController.Translation("DUNGEON_FAME_PER_HOUR");
+
+        [JsonIgnore] public string TranslationDungeonReSpecPerHour => LanguageController.Translation("DUNGEON_RESPEC_PER_HOUR");
+
+        [JsonIgnore] public string TranslationDungeonSilverPerHour => LanguageController.Translation("DUNGEON_SILVER_PER_HOUR");
 
         [JsonIgnore] public string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
 

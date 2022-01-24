@@ -22,6 +22,9 @@ namespace StatisticsAnalysisTool.Network.Handler
             _countUpTimer.Add(ValueType.Might, value.Might.DoubleValue);
             _countUpTimer.Add(ValueType.Favor, value.Favor.DoubleValue);
 
+            _trackingController.DungeonController?.AddValueToDungeon(value.Might.DoubleValue, ValueType.Might);
+            _trackingController.DungeonController?.AddValueToDungeon(value.Favor.DoubleValue, ValueType.Favor);
+
             await Task.CompletedTask;
         }
     }

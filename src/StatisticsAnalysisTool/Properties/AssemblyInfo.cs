@@ -15,9 +15,7 @@ using System.Windows;
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: SupportedOSPlatform("windows10.0")]
-[assembly: UnsupportedOSPlatform("windows7.0")]
-[assembly: UnsupportedOSPlatform("windows8.0")]
+[assembly: SupportedOSPlatform("windows")]
 
 // Log4net
 [assembly: XmlConfigurator(ConfigFile = "Log4Net.config", Watch = true)]
@@ -57,5 +55,5 @@ using System.Windows;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("5.3.0.*")]
-[assembly: AssemblyFileVersion("5.3.0.0")]
+[assembly: AssemblyVersion("5.3.1.*")]
+[assembly: AssemblyFileVersion("5.3.1.0")]

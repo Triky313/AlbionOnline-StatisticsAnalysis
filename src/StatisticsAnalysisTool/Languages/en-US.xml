@@ -507,4 +507,9 @@
 	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Item.json can not be loaded.</translation>
 	<translation name="SUGGEST_PRE_RELEASE_UPDATES">Suggest pre-release updates</translation>
 	<translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">ATTENTION! These versions are still being tested</translation>
+	<translation name="DUNGEON_RESPEC">Dungeon respec</translation>
+	<translation name="DUNGEON_SILVER">Dungeon silver</translation>
+	<translation name="DUNGEON_FAME_PER_HOUR">Dungeon fame per hour</translation>
+	<translation name="DUNGEON_RESPEC_PER_HOUR">Dungeon respec per hour</translation>
+	<translation name="DUNGEON_SILVER_PER_HOUR">Dungeon silver per hour</translation>
 </translations>
