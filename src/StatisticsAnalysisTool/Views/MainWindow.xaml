@@ -129,7 +129,7 @@
             </TabItem>
         </TabControl>
 
-        <Grid ZIndex="2" Margin="0,97,0,40" Height="100" Visibility="{Binding GridTryToLoadTheItemListAgainVisibility, FallbackValue=Visible}" 
+        <Grid ZIndex="2" Margin="0,97,0,40" Height="100" Visibility="{Binding GridTryToLoadTheItemListAgainVisibility, FallbackValue=Collapsed}" 
               Background="{StaticResource SolidColorBrush.Background.4}">
             <Button Height="32" Width="auto" MinWidth="200" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                     Content="{Binding Translation.TryDownloadingTheItemListAgain, FallbackValue=TRY__DOWNLOADING__THE__ITEM__LIST__AGAIN}" 

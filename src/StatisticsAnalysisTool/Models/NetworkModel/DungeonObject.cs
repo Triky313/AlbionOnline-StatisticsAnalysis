@@ -23,6 +23,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         public double Fame { get; set; }
         public double ReSpec { get; set; }
         public double Silver { get; set; }
+        public double Might { get; set; }
+        public double Favor { get; set; }
         public double FactionCoins { get; set; }
         public double FactionFlags { get; set; }
         public string DiedName { get; set; }
@@ -65,21 +67,29 @@ namespace StatisticsAnalysisTool.Network.Notification
                     {
                         return;
                     }
-
                     ReSpec += internalReSpecValue;
                     return;
                 case ValueType.Silver:
                     Silver += value;
                     return;
                 case ValueType.FactionFame:
-                    FactionFlags += value;
-                    return;
-                case ValueType.FactionPoints:
-                    FactionCoins += value;
                     if (cityFaction != CityFaction.Unknown)
                     {
+                        FactionFlags += value;
+                    }
+                    return;
+                case ValueType.FactionPoints:
+                    if (cityFaction != CityFaction.Unknown)
+                    {
+                        FactionCoins += value;
                         CityFaction = cityFaction;
                     }
+                    return;
+                case ValueType.Might:
+                    Might += value;
+                    return;
+                case ValueType.Favor:
+                    Favor += value;
                     return;
             }
         }

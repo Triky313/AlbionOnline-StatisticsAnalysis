@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 if (parameters.ContainsKey(2))
                 {
-                    CityFaction = FactionWarfareController.GetCityFactionType(parameters[2].ObjectToByte());
+                    CityFaction = GetCityCurrencyType(parameters[2].ObjectToByte());
                 }
 
                 if (parameters.ContainsKey(3))
@@ -56,6 +56,20 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
+        }
+
+        public static CityFaction GetCityCurrencyType(byte id)
+        {
+            return id switch
+            {
+                6 => CityFaction.Caerleon,
+                5 => CityFaction.Thetford,
+                4 => CityFaction.Bridgewatch,
+                3 => CityFaction.FortSterling,
+                2 => CityFaction.Martlock,
+                1 => CityFaction.Lymhurst,
+                _ => CityFaction.Unknown
+            };
         }
     }
 }

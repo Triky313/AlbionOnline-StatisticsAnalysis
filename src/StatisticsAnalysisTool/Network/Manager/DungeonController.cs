@@ -65,8 +65,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
 
                 _dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
-
-                var newDungeon = new DungeonObject(_trackingController.CurrentCluster.MainClusterIndex, (Guid)mapGuid!, DungeonStatus.Active, _trackingController.CurrentCluster.Tier);
+                
+                var newDungeon = new DungeonObject(_trackingController.CurrentCluster.MainClusterIndex, 
+                    mapGuid ?? new Guid(0,0,0,0,0,0,0,0,0,0,0), DungeonStatus.Active, _trackingController.CurrentCluster.Tier);
                 SetDungeonMapType(newDungeon, mapType);
 
                 _dungeons.Insert(0, newDungeon);
@@ -402,6 +403,10 @@ namespace StatisticsAnalysisTool.Network.Manager
                 x.IsBestSilverPerHour = false;
                 x.IsBestFactionFlagsPerHour = false;
                 x.IsBestFactionCoinsPerHour = false;
+                x.IsBestMight = false;
+                x.IsBestMightPerHour = false;
+                x.IsBestFavor = false;
+                x.IsBestFavorPerHour = false;
             })).ConfigureAwait(false);
         }
 
@@ -454,6 +459,22 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonCoins.IsBestFactionCoins = true;
             }
 
+            var highestMight = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Might > 0).Select(x => x?.Might).MaxAsync();
+            var bestDungeonMight = await dungeons.FirstOrDefaultAsync(x => x.Might.CompareTo(highestMight) == 0);
+
+            if (bestDungeonMight != null)
+            {
+                bestDungeonMight.IsBestMight = true;
+            }
+
+            var highestFavor = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Favor > 0).Select(x => x?.Favor).MaxAsync();
+            var bestDungeonFavor = await dungeons.FirstOrDefaultAsync(x => x.Favor.CompareTo(highestFavor) == 0);
+
+            if (bestDungeonFavor != null)
+            {
+                bestDungeonFavor.IsBestMightPerHour = true;
+            }
+
             var highestFamePerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0).Select(x => x?.FamePerHour).MaxAsync();
             var bestDungeonFamePerHour = await dungeons.FirstOrDefaultAsync(x => x.FamePerHour.CompareTo(highestFamePerHour) == 0);
 
@@ -492,6 +513,22 @@ namespace StatisticsAnalysisTool.Network.Manager
             if (bestDungeonFactionCoinsPerHour != null)
             {
                 bestDungeonFactionCoinsPerHour.IsBestFactionCoinsPerHour = true;
+            }
+
+            var highestMightPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.MightPerHour > 0).Select(x => x?.MightPerHour).MaxAsync();
+            var bestDungeonMightPerHour = await dungeons.FirstOrDefaultAsync(x => x.MightPerHour.CompareTo(highestMightPerHour) == 0);
+
+            if (bestDungeonMightPerHour != null)
+            {
+                bestDungeonMightPerHour.IsBestMightPerHour = true;
+            }
+
+            var highestFavorPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FavorPerHour > 0).Select(x => x?.FavorPerHour).MaxAsync();
+            var bestDungeonFavorPerHour = await dungeons.FirstOrDefaultAsync(x => x.FavorPerHour.CompareTo(highestFavorPerHour) == 0);
+
+            if (bestDungeonFavorPerHour != null)
+            {
+                bestDungeonFavorPerHour.IsBestFavorPerHour = true;
             }
         }
 
