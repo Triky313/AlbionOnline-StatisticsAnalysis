@@ -87,7 +87,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <TextBox Text="{Binding ResourceCost}" Style="{StaticResource TextBox.Crafting}" common:TextBoxHelper.OnlyNumeric="Int" />
-                        <ComboBox VerticalAlignment="Center" Margin="0,1,0,0" MinWidth="120" Width="120" Height="18" ItemsSource="{Binding ItemPricesLocations}" 
+                        <ComboBox VerticalAlignment="Center" Margin="0,1,0,0" MinWidth="96" Width="96" Height="18" ItemsSource="{Binding ItemPricesLocations}" 
                                   SelectedValue="{Binding ItemPricesLocationSelected}" SelectedValuePath="Key" DisplayMemberPath="Value">
                         </ComboBox>
                         <Label Content="{Binding OneProductionAmount}" Style="{StaticResource Label.Crafting}" />
@@ -109,16 +109,8 @@
                 <Label Content="{Binding TranslationSellPricePerItem, FallbackValue=SELL__PRICE__PER__ITEM}" Style="{StaticResource Label.Crafting}" />
                 <StackPanel Orientation="Horizontal">
                     <TextBox Text="{Binding SellPricePerItem}" Style="{StaticResource TextBox.Crafting}" Margin="0,0,0,0" common:TextBoxHelper.OnlyNumeric="Int" />
-                    <ComboBox VerticalAlignment="Center" Margin="5,0,0,0" MinWidth="90" Width="90" Height="18">
-                        <Button Content="Martlock" Command="{Binding LoadPriceCommand}" CommandParameter="martlock" />
-                        <Button Content="Thetford" Command="{Binding LoadPriceCommand}" CommandParameter="thetford" />
-                        <Button Content="Fort Sterling" Command="{Binding LoadPriceCommand}" CommandParameter="fort sterling" />
-                        <Button Content="Lymhurst" Command="{Binding LoadPriceCommand}" CommandParameter="lymhurst" />
-                        <Button Content="Bridgewatch" Command="{Binding LoadPriceCommand}" CommandParameter="bridgewatch" />
-                        <Button Content="Caerleon" Command="{Binding LoadPriceCommand}" CommandParameter="caerleon" />
-                        <Button Content="Merlyn's Rest" Command="{Binding LoadPriceCommand}" CommandParameter="merlyns rest" />
-                        <Button Content="Morganas Rest" Command="{Binding LoadPriceCommand}" CommandParameter="morganas rest" />
-                        <Button Content="Arthur's Rest" Command="{Binding LoadPriceCommand}" CommandParameter="arthurs rest" />
+                    <ComboBox VerticalAlignment="Center" Margin="5,0,0,0" MinWidth="96" Width="96" Height="18" ItemsSource="{Binding ItemPricesLocations}" 
+                              SelectedValue="{Binding ItemPricesLocationSelected}" SelectedValuePath="Key" DisplayMemberPath="Value">
                     </ComboBox>
                 </StackPanel>
             </StackPanel>

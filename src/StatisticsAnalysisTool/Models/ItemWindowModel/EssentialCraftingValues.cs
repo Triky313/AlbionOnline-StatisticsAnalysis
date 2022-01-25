@@ -1,11 +1,11 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
@@ -20,45 +20,57 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private int _craftingBonus;
         private bool _isCraftingWithFocus;
         private int _otherCosts;
-        public Item Item { get; set; }
         public List<MarketResponse> CurrentCityPrices { get; set; }
+
+        public string UniqueName;
+        private List<MarketResponse> _marketResponse = new();
+        private Location _itemPricesLocationSelected;
+        private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
+
+        private static readonly KeyValuePair<Location, string>[] _itemPricesLocations = {
+            new (Location.Martlock, Locations.GetName(Location.Martlock)),
+            new (Location.Thetford, Locations.GetName(Location.Thetford)),
+            new (Location.FortSterling, Locations.GetName(Location.FortSterling)),
+            new (Location.Lymhurst, Locations.GetName(Location.Lymhurst)),
+            new (Location.Bridgewatch, Locations.GetName(Location.Bridgewatch)),
+            new (Location.Caerleon, Locations.GetName(Location.Caerleon)),
+            new (Location.MerlynsRest, Locations.GetName(Location.MerlynsRest)),
+            new (Location.MorganasRest, Locations.GetName(Location.MorganasRest)),
+            new (Location.ArthursRest, Locations.GetName(Location.ArthursRest))
+        };
 
         public EssentialCraftingValuesTemplate(ItemWindowViewModel itemWindowViewModel)
         {
             _itemWindowViewModel = itemWindowViewModel;
         }
 
-        #region Command methods
-
-        private ICommand _loadPriceCommand;
-
-        public ICommand LoadPriceCommand
+        private async void LoadSellPriceAsync(Location location)
         {
-            get
+            if (_lastUpdate.AddMilliseconds(SettingsController.CurrentSettings.RefreshRate) < DateTime.UtcNow)
             {
-                return _loadPriceCommand ??= new RelayCommand(LoadSellPrice,
-                        _ => CanLoadSellPrice()
-                );
+                _marketResponse = await ApiController.GetCityItemPricesFromJsonAsync(UniqueName);
+                _lastUpdate = DateTime.UtcNow;
             }
-        }
 
-        private bool CanLoadSellPrice()
-        {
-            return true;
-        }
-
-        private void LoadSellPrice(object location)
-        {
-            var locationString = (string)location;
-            var sellPriceMin = CurrentCityPrices?.FirstOrDefault(x => string.Equals(x?.City, locationString, StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
-
+            var sellPriceMin = _marketResponse?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
             if (sellPriceMin != null)
             {
                 SellPricePerItem = (long)sellPriceMin;
             }
         }
 
-        #endregion
+        public KeyValuePair<Location, string>[] ItemPricesLocations => _itemPricesLocations;
+
+        public Location ItemPricesLocationSelected
+        {
+            get => _itemPricesLocationSelected;
+            set
+            {
+                _itemPricesLocationSelected = value;
+                LoadSellPriceAsync(value);
+                OnPropertyChanged();
+            }
+        }
 
         #region Bindings
 

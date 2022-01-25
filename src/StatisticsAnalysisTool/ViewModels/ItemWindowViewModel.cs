@@ -275,7 +275,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OtherCosts = 0,
                 IsCraftingWithFocus = false,
                 CurrentCityPrices = CurrentCityPrices,
-                Item = Item
+                UniqueName = Item.UniqueName
             };
         }
 
