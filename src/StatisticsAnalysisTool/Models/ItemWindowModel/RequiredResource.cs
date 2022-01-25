@@ -12,6 +12,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
     public class RequiredResource : INotifyPropertyChanged
     {
+        public string UniqueName { get; set; }
         private string _craftingResourceName;
         private long _resourceCost;
         private BitmapImage _icon;
@@ -21,7 +22,6 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private long _oneProductionAmount;
         private readonly ItemWindowViewModel _itemWindowViewModel;
         private bool _isArtifactResource;
-        private string _uniqueName;
         private List<MarketResponse> _marketResponse = new ();
         private Location _itemPricesLocationSelected;
         private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
@@ -70,17 +70,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 OnPropertyChanged();
             }
         }
-
-        public string UniqueName
-        {
-            get => _uniqueName;
-            set
-            {
-                _uniqueName = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public string CraftingResourceName
         {
             get => _craftingResourceName;
