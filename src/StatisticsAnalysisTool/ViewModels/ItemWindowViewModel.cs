@@ -305,6 +305,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 RequiredResources.Add(new RequiredResource(this)
                 {
                     CraftingResourceName = item?.LocalizedName,
+                    UniqueName = item?.UniqueName,
                     OneProductionAmount = craftResource.Count,
                     Icon = item?.Icon,
                     ResourceCost = 0,

@@ -80,12 +80,16 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
                         <Label Content="{Binding TranslationCost, FallbackValue=COST__A}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                        <Label Content="{Binding TranslationGetPrice, FallbackValue=GET__PRICE}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                         <Label Content="{Binding TranslationOneProductionAmount, FallbackValue=ONE__PRODUCTION__AMOUNT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                         <Label Content="{Binding TranslationTotalQuantity, FallbackValue=TOTAL__QUANTITY}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                         <Label Content="{Binding TranslationTotalCost, FallbackValue=TOTAL__COST}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <TextBox Text="{Binding ResourceCost}" Style="{StaticResource TextBox.Crafting}" common:TextBoxHelper.OnlyNumeric="Int" />
+                        <ComboBox VerticalAlignment="Center" Margin="0,1,0,0" MinWidth="120" Width="120" Height="18" ItemsSource="{Binding ItemPricesLocations}" 
+                                  SelectedValue="{Binding ItemPricesLocationSelected}" SelectedValuePath="Key" DisplayMemberPath="Value">
+                        </ComboBox>
                         <Label Content="{Binding OneProductionAmount}" Style="{StaticResource Label.Crafting}" />
                         <Label Content="{Binding TotalQuantity}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
                         <Label Content="{Binding TotalCost}" ContentStringFormat="{}{0:N0}" Style="{StaticResource Label.Crafting}" />
