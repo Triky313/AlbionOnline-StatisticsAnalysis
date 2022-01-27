@@ -161,15 +161,15 @@ namespace StatisticsAnalysisTool.Common
                 switch (item.FullItemInformation)
                 {
                     case Weapon weapon:
-                    {
-                        var resources = GetTotalAmountResources(weapon.CraftingRequirements);
-                        return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource);
-                    }
+                        {
+                            var resources = GetTotalAmountResources(weapon.CraftingRequirements);
+                            return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                        }
                     case EquipmentItem equipmentItem:
-                    {
-                        var resources = GetTotalAmountResources(equipmentItem.CraftingRequirements);
-                        return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource);
-                    }
+                        {
+                            var resources = GetTotalAmountResources(equipmentItem.CraftingRequirements);
+                            return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                        }
                 }
 
                 return 0;
@@ -263,11 +263,5 @@ namespace StatisticsAnalysisTool.Common
         }
 
         #endregion
-
-        public struct ItemSpriteToJournalStruct
-        {
-            public string Name { get; set; }
-            public CraftingJournalType Id { get; set; }
-        }
     }
 }
