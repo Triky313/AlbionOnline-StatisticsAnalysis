@@ -67,9 +67,9 @@
   <translation name="GUILD_ID">ID Гильдии</translation>
   <translation name="ALLIANCE_NAME">Название альянса</translation>
   <translation name="ALLIANCE_ID">ID альянса</translation>
-  <translation name="DEATH_FAME">Слава за смерти</translation>
-  <translation name="KILL_FAME">Слава за убийство игроков</translation>
-  <translation name="FAME_RATIO">Соотношение славы</translation>
+  <translation name="DEATH_FAME">Опыт за смерти</translation>
+  <translation name="KILL_FAME">Опыт за убийство игроков</translation>
+  <translation name="FAME_RATIO">Соотношение опыта</translation>
   <translation name="TOTAL_KILLS">Всего убийств</translation>
   <translation name="GVG_KILLS">Убийств в GVG</translation>
   <translation name="GVG_WON">Побед в GVG</translation>
@@ -307,14 +307,14 @@
   <translation name="REAL_MONEY_PRICE">Цена в реальных деньгах</translation>
   <translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Слишком много запросов, закройте несколько окон или подождите несколько минут.</translation>
 
-  <translation name="ALARM_SOUND_USED">Звук сигнала используется</translation>
+  <translation name="ALARM_SOUND_USED">Звук оповещений</translation>
   <translation name="ITEM_PRICE_UNDERCUT">Снижение цены товара</translation>
   <translation name="THE_PRICE_OF">Цена</translation>
   <translation name="IN">в</translation>
-  <translation name="SHOW_ONLY_ITEMS_WITH_ALERT_ON">Только незагруженные</translation>
+  <translation name="SHOW_ONLY_ITEMS_WITH_ALERT_ON">Предметы с оповещением</translation>
   <translation name="SHOW_ONLY_FAVORITES">Показать только избранное</translation>
   <translation name="HAS_BEEN_UNDERCUT">был подрезан</translation>
-  <translation name="IS_ALERT_ACTIVATE">Оповещение</translation>
+  <translation name="IS_ALERT_ACTIVATE">Оповещать</translation>
   <translation name="UNDERCUTTING_PRICE">Подрезка</translation>
   <translation name="AVERAGE_PRICES">Средние цены</translation>
   <translation name="AVERAGE_PRICES_TOOLTIP">Цена продажи мин. | Цена продажи макс. | Цена покупки мин. | Цена покупки макс.</translation>
@@ -369,7 +369,7 @@
 
   <translation name="MAIN_TRACKER_DESCRIPTION_1">При правильной работе трекера значок Wi-Fi должен быть зеленым. Для достижения этого статуса необходимо изменить свою локацию.</translation>
   <translation name="MAIN_TRACKER_DESCRIPTION_2">Присоединяйтесь к группе или пригласите кого-нибудь в свою группу, чтобы обновить кол-во людей в счётчике. Неважно, приглашаете ли вы игроков в группу сами или кто-то другой.</translation>
-  <translation name="MAIN_TRACKER_DESCRIPTION_3">Слава, которую отслеживает трекер - настоящая всеобщая слава. То есть с Premium и Satchel Fame. Слава в профиле игрока - это обычная слава, без усилений к славе.</translation>
+  <translation name="MAIN_TRACKER_DESCRIPTION_3">Слава, которую отслеживает трекер - настоящая всеобщая слава. То есть с Премиумом и Кошелем Интуиции. Слава в профиле игрока - это обычный опыт, без усилений к опыту.</translation>
   <translation name="DAMAGE_METER_DESCRIPTION_1">Чтобы можно было распознать урон от других игроков в группе, сначала необходимо активировать инструмент, а затем игрок должен покинуть группу или присоединиться к ней.</translation>
 
   <translation name="SORT_BY_DAMAGE">Сортировать по урону</translation>
@@ -485,7 +485,7 @@
   <translation name="SAVE_LOOT_LOGGER_NOW">Сохранить логи лута?</translation>
   <translation name="SAVE_LOOT_LOGGER">Сохранить логи</translation>
   <translation name="TRACKING_SILVER">Отслеживать серебро</translation>
-  <translation name="TRACKING_FAME">Отслеживать славу</translation>
+  <translation name="TRACKING_FAME">Отслеживать опыт</translation>
   <translation name="ITEM_SEARCH">Предметы</translation>
   <translation name="DUNGEONS">Подземелья</translation>
   <translation name="PLAYER_INFORMATION">Информация о игроке</translation>
@@ -511,4 +511,10 @@
 
   <translation name="SUGGEST_PRE_RELEASE_UPDATES">Предлагать тестовые версии</translation>
   <translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">ВНИМАНИЕ! Эта версия ещё тестируется!</translation>
+
+  <translation name="DUNGEON_RESPEC">Свободки за данж</translation>
+  <translation name="DUNGEON_SILVER">Серебра за данж</translation>
+  <translation name="DUNGEON_FAME_PER_HOUR">Опыт с данжа в час</translation>
+  <translation name="DUNGEON_RESPEC_PER_HOUR">Свободки с данжа в час</translation>
+  <translation name="DUNGEON_SILVER_PER_HOUR">Серебра с данжа в час</translation>
 </translations>
