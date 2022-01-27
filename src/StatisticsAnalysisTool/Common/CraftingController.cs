@@ -22,11 +22,12 @@ namespace StatisticsAnalysisTool.Common
             }
 
             return craftingRequirement.CraftResource
-                .Where(x => x.UniqueName.ToUpper().Contains("PLANKS") 
-                            || x.UniqueName.ToUpper().Contains("METALBAR") 
-                            || x.UniqueName.ToUpper().Contains("METALBAR") 
-                            || x.UniqueName.ToUpper().Contains("LEATHER") 
-                            || x.UniqueName.ToUpper().Contains("CLOTH")).Sum(craftResource => craftResource.Count);
+                .Where(x => x.UniqueName.ToUpper().Contains("PLANKS") && !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_")
+                            || x.UniqueName.ToUpper().Contains("METALBAR") && !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_")
+                            || x.UniqueName.ToUpper().Contains("METALBAR") && !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_")
+                            || x.UniqueName.ToUpper().Contains("LEATHER") && !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_")
+                            || x.UniqueName.ToUpper().Contains("CLOTH") && !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_"))
+                .Sum(craftResource => craftResource.Count);
         }
 
         public static double GetRequiredJournalAmount(Item item, double itemQuantityToBeCrafted)
@@ -130,25 +131,25 @@ namespace StatisticsAnalysisTool.Common
                 (ItemTier.T2, ItemLevel.Level0) => numberOfMaterials * 1.5,
                 (ItemTier.T3, ItemLevel.Level0) => numberOfMaterials * 7.5,
                 (ItemTier.T4, ItemLevel.Level0) => numberOfMaterials * 22.5,
-                (ItemTier.T4, ItemLevel.Level1) => numberOfMaterials * 37.5,
-                (ItemTier.T4, ItemLevel.Level2) => numberOfMaterials * 52.5,
-                (ItemTier.T4, ItemLevel.Level3) => numberOfMaterials * 67.5,
+                (ItemTier.T4, ItemLevel.Level1) => numberOfMaterials * 45,
+                (ItemTier.T4, ItemLevel.Level2) => numberOfMaterials * 90,
+                (ItemTier.T4, ItemLevel.Level3) => numberOfMaterials * 180,
                 (ItemTier.T5, ItemLevel.Level0) => numberOfMaterials * 90,
-                (ItemTier.T5, ItemLevel.Level1) => numberOfMaterials * 172.5,
-                (ItemTier.T5, ItemLevel.Level2) => numberOfMaterials * 255,
-                (ItemTier.T5, ItemLevel.Level3) => numberOfMaterials * 337.5,
+                (ItemTier.T5, ItemLevel.Level1) => numberOfMaterials * 180,
+                (ItemTier.T5, ItemLevel.Level2) => numberOfMaterials * 360,
+                (ItemTier.T5, ItemLevel.Level3) => numberOfMaterials * 720,
                 (ItemTier.T6, ItemLevel.Level0) => numberOfMaterials * 270,
-                (ItemTier.T6, ItemLevel.Level1) => numberOfMaterials * 532.5,
-                (ItemTier.T6, ItemLevel.Level2) => numberOfMaterials * 795,
-                (ItemTier.T6, ItemLevel.Level3) => numberOfMaterials * 1057.5,
+                (ItemTier.T6, ItemLevel.Level1) => numberOfMaterials * 540,
+                (ItemTier.T6, ItemLevel.Level2) => numberOfMaterials * 1080,
+                (ItemTier.T6, ItemLevel.Level3) => numberOfMaterials * 2160,
                 (ItemTier.T7, ItemLevel.Level0) => numberOfMaterials * 645,
-                (ItemTier.T7, ItemLevel.Level1) => numberOfMaterials * 1282.5,
-                (ItemTier.T7, ItemLevel.Level2) => numberOfMaterials * 1920,
-                (ItemTier.T7, ItemLevel.Level3) => numberOfMaterials * 2557.5,
+                (ItemTier.T7, ItemLevel.Level1) => numberOfMaterials * 1290,
+                (ItemTier.T7, ItemLevel.Level2) => numberOfMaterials * 2580,
+                (ItemTier.T7, ItemLevel.Level3) => numberOfMaterials * 5160,
                 (ItemTier.T8, ItemLevel.Level0) => numberOfMaterials * 1395,
-                (ItemTier.T8, ItemLevel.Level1) => numberOfMaterials * 2782.5,
-                (ItemTier.T8, ItemLevel.Level2) => numberOfMaterials * 4170,
-                (ItemTier.T8, ItemLevel.Level3) => numberOfMaterials * 5557.5,
+                (ItemTier.T8, ItemLevel.Level1) => numberOfMaterials * 2790,
+                (ItemTier.T8, ItemLevel.Level2) => numberOfMaterials * 5580,
+                (ItemTier.T8, ItemLevel.Level3) => numberOfMaterials * 11160,
                 _ => 0
             };
         }
@@ -160,15 +161,15 @@ namespace StatisticsAnalysisTool.Common
                 switch (item.FullItemInformation)
                 {
                     case Weapon weapon:
-                    {
-                        var resources = GetTotalAmountResources(weapon.CraftingRequirements);
-                        return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource);
-                    }
+                        {
+                            var resources = GetTotalAmountResources(weapon.CraftingRequirements);
+                            return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                        }
                     case EquipmentItem equipmentItem:
-                    {
-                        var resources = GetTotalAmountResources(equipmentItem.CraftingRequirements);
-                        return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource);
-                    }
+                        {
+                            var resources = GetTotalAmountResources(equipmentItem.CraftingRequirements);
+                            return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                        }
                 }
 
                 return 0;
@@ -262,11 +263,5 @@ namespace StatisticsAnalysisTool.Common
         }
 
         #endregion
-
-        public struct ItemSpriteToJournalStruct
-        {
-            public string Name { get; set; }
-            public CraftingJournalType Id { get; set; }
-        }
     }
 }

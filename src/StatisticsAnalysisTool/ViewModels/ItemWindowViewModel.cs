@@ -273,7 +273,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 SellPricePerItem = 0,
                 SetupFee = 1.5d,
                 OtherCosts = 0,
-                IsCraftingWithFocus = false
+                IsCraftingWithFocus = false,
+                CurrentCityPrices = CurrentCityPrices,
+                UniqueName = Item.UniqueName
             };
         }
 
@@ -303,6 +305,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 RequiredResources.Add(new RequiredResource(this)
                 {
                     CraftingResourceName = item?.LocalizedName,
+                    UniqueName = item?.UniqueName,
                     OneProductionAmount = craftResource.Count,
                     Icon = item?.Icon,
                     ResourceCost = 0,
@@ -986,6 +989,11 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _currentCityPrices = value;
+                if (EssentialCraftingValues != null)
+                {
+                    EssentialCraftingValues.CurrentCityPrices = value;
+                }
+
                 OnPropertyChanged();
             }
         }

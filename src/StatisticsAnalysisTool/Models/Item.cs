@@ -1,11 +1,9 @@
 ﻿using FontAwesome5;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Enumerations;
 using ShopCategory = StatisticsAnalysisTool.Common.ShopCategory;
 
 namespace StatisticsAnalysisTool.Models
