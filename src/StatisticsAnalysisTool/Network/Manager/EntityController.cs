@@ -381,6 +381,14 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
+        public void ResetEntitiesHeal()
+        {
+            foreach (var entity in _knownEntities)
+            {
+                entity.Value.Heal = 0;
+            }
+        }
+
         #endregion
 
         #region Health

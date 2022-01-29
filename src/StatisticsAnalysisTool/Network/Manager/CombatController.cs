@@ -244,6 +244,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             _trackingController.EntityController.ResetEntitiesDamageTimes();
             _trackingController.EntityController.ResetEntitiesDamage();
+            _trackingController.EntityController.ResetEntitiesHeal();
             _trackingController.EntityController.ResetEntitiesDamageStartTime();
 
             Application.Current?.Dispatcher?.InvokeAsync(() =>
