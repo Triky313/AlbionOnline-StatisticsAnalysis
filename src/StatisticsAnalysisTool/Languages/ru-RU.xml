@@ -517,4 +517,6 @@
   <translation name="DUNGEON_FAME_PER_HOUR">Опыт с данжа в час</translation>
   <translation name="DUNGEON_RESPEC_PER_HOUR">Свободки с данжа в час</translation>
   <translation name="DUNGEON_SILVER_PER_HOUR">Серебра с данжа в час</translation>
+
+  <translation name="GET_PRICE">Получить цены из</translation>
 </translations>
