@@ -764,7 +764,14 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         [JsonIgnore] public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
 
-        
+        [JsonIgnore] public string TranslationFactionFlags => LanguageController.Translation("FACTION_FLAGS");
+
+        [JsonIgnore] public string TranslationFactionFlagsPerHour => LanguageController.Translation("FACTION_FLAGS_PER_HOUR");
+
+        [JsonIgnore] public string TranslationFactionCoins => LanguageController.Translation("FACTION_COINS");
+
+        [JsonIgnore] public string TranslationFactionCoinsPerHour => LanguageController.Translation("FACTION_COINS_PER_HOUR");
+
         public event PropertyChangedEventHandler PropertyChanged;
         
         [NotifyPropertyChangedInvocator]

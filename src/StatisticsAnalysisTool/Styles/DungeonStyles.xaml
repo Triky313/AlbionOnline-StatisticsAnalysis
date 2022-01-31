@@ -684,26 +684,25 @@
                                 <!-- Faction points and coins -->
                                 <StackPanel Orientation="Horizontal" Height="24" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Collapsed}">
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,2,0">
-                                        <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
+                                        <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}" ToolTip="{Binding TranslationFactionFlags, FallbackValue=FACTION__FLAGS}"/>
                                     </Grid>
                                     <Label Content="{Binding FactionFlags, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionFlags}" VerticalAlignment="Center" 
-                                       Margin="0 0 5 0" MinWidth="82" />
+                                       ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionFlags}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="82"/>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}"/>
+                                        <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}" ToolTip="{Binding TranslationFactionFlagsPerHour, FallbackValue=FACTION__FLAGS__PER__HOUR}"/>
                                     </Grid>
                                     <Label Content="{Binding FactionFlagsPerHour, IsAsync=True, FallbackValue=-}" 
-                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionFlagsPerHour}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80" />
+                                       ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionFlagsPerHour}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80"/>
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0">
-                                        <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
+                                        <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" ToolTip="{Binding TranslationFactionCoins, FallbackValue=FACTION__COINS}"/>
                                     </Grid>
                                     <Label Content="{Binding FactionCoins, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionCoins}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85" />
 
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Collapsed}">
-                                        <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}"/>
+                                        <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" ToolTip="{Binding TranslationFactionCoinsPerHour, FallbackValue=FACTION__COINS__PER__HOUR}"/>
                                     </Grid>
                                     <Label Content="{Binding FactionCoinsPerHour, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionCoinsPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205" />
@@ -711,7 +710,7 @@
                                     <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}">
                                         <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                     </Grid>
-                                    <Label Content="{Binding NumberOfDungeonFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55" />
+                                    <Label Content="{Binding NumberOfDungeonFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55"/>
                                 </StackPanel>
 
                                 <!-- Might - Favor -->

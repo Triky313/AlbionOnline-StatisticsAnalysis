@@ -513,4 +513,8 @@
 	<translation name="DUNGEON_RESPEC_PER_HOUR">Dungeon ReSpec pro Stunde</translation>
 	<translation name="DUNGEON_SILVER_PER_HOUR">Dungeon Silber pro Stunde</translation>
 	<translation name="GET_PRICE">Preis erhalten</translation>
+	<translation name="FACTION_FLAGS">Fraktions-Flaggen</translation>
+	<translation name="FACTION_FLAGS_PER_HOUR">Fraktions-Flaggen pro Stunde</translation>
+	<translation name="FACTION_COINS">Fraktions Münzen</translation>
+	<translation name="FACTION_COINS_PER_HOUR">Fraktions Münzen pro Stunde</translation>
 </translations>

@@ -513,4 +513,8 @@
 	<translation name="DUNGEON_RESPEC_PER_HOUR">Dungeon respec per hour</translation>
 	<translation name="DUNGEON_SILVER_PER_HOUR">Dungeon silver per hour</translation>
 	<translation name="GET_PRICE">Get price</translation>
+	<translation name="FACTION_FLAGS">Faction flags</translation>
+	<translation name="FACTION_FLAGS_PER_HOUR">Faction flags per hour</translation>
+	<translation name="FACTION_COINS">Faction coins</translation>
+	<translation name="FACTION_COINS_PER_HOUR">Faction coins per hour</translation>
 </translations>
