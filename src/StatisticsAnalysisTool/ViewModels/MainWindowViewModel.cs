@@ -611,7 +611,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             var dialog = new SaveFileDialog
             {
-                FileName = $"log-{DateTime.UtcNow:yy-MMM-dd}",
+                FileName = $"log-{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}utc",
                 DefaultExt = ".csv",
                 Filter = "CSV documents (.csv)|*.csv"
             };
