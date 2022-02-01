@@ -5,8 +5,11 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Manager
@@ -147,10 +150,15 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        public string GetLootLoggerObjectsAsCsv()
+        public string GetLootLoggerObjectsAsCsv(bool isItemRealNameInLoggingExportActive = true)
         {
             try
             {
+                if (isItemRealNameInLoggingExportActive)
+                {
+                    return string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutputWithRealItemName).ToArray()).ToString(CultureInfo.CurrentCulture);
+                }
+
                 return string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
             }
             catch (Exception e)
