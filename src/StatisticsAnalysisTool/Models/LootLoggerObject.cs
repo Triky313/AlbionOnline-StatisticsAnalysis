@@ -1,8 +1,6 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
@@ -25,7 +23,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         {
             var item = ItemController.GetItemByUniqueName(UniqueName);
             var itemName = (string.IsNullOrEmpty(item?.LocalizedName)) ? UniqueName : item.LocalizedName;
-            
+
             return $"{UtcPickupTime.ToString("MM/dd/yyyy H:mm:ss", CultureInfo.InvariantCulture)};{LooterName};{itemName.ToString(CultureInfo.InvariantCulture)};{Quantity};{BodyName}";
         }
     }

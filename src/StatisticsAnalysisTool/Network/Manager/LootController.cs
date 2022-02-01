@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.Unicode;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Manager
@@ -100,7 +98,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             _discoveredLoot.Add(loot);
         }
-        
+
         public async Task AddPutLootAsync(long? objectId, Guid? interactGuid)
         {
             if (_trackingController.EntityController.GetLocalEntity()?.Value?.InteractGuid != interactGuid)
@@ -110,7 +108,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             if (objectId != null && interactGuid != null && !_putLoot.ContainsKey((long)objectId))
             {
-                _putLoot.Add((long) objectId, (Guid)interactGuid);
+                _putLoot.Add((long)objectId, (Guid)interactGuid);
             }
 
             await LootMergeAsync();
@@ -173,7 +171,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             return new TrackingNotification(DateTime.Now, new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity), item.Index);
         }
-        
+
         #region Debug methods
 
         private static readonly Random _random = new(DateTime.Now.Millisecond);
