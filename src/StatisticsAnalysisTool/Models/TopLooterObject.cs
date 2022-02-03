@@ -8,13 +8,15 @@ namespace StatisticsAnalysisTool.Models
     {
         private string _playerName;
         private int _quantity;
-        private int _placement = 1;
+        private int _lootActions;
+        private int _placement;
 
-        public TopLooterObject(string playerName, int quantity, int placement)
+        public TopLooterObject(string playerName, int quantity, int placement, int lootActions)
         {
-            _playerName = playerName;
-            _quantity = quantity;
-            _placement = placement;
+            PlayerName = playerName;
+            Quantity = quantity;
+            LootActions = lootActions;
+            Placement = placement;
         }
 
         public string PlayerName
@@ -33,6 +35,16 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _quantity = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int LootActions
+        {
+            get => _lootActions;
+            set
+            {
+                _lootActions = value;
                 OnPropertyChanged();
             }
         }

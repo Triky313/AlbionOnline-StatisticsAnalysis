@@ -10,7 +10,6 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -63,7 +62,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 UniqueName = item.UniqueName
             });
 
-            AddToTopLooters(loot.LooterName, loot.Quantity);
+            AddTopLooter(loot.LooterName, loot.Quantity);
             await UpdateTopLootersUi();
 
             await RemoveLootIfMoreThanLimitAsync(_maxLoot);
@@ -183,42 +182,60 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Top looters
 
-        private void AddToTopLooters(string name, int quantity)
+        private void AddTopLooter(string name, int quantity)
         {
             var looter = _topLooters.ToList().FirstOrDefault(x => x.PlayerName == name);
             if (looter != null)
             {
                 looter.Quantity += quantity;
+                looter.LootActions++;
                 return;
             }
 
-            _topLooters.Add(new TopLooter(name, quantity));
+            _topLooters.Add(new TopLooter(name, quantity, 1));
         }
 
         private async Task UpdateTopLootersUi()
         {
-            var topLooters = _topLooters.OrderByDescending(x => x.Quantity).Take(3).ToList();
-            
-            var looters = new ObservableRangeCollection<TopLooterObject>();
-            
-            var placement = 0;
-            foreach (var looter in topLooters)
+            var topLooters = _topLooters.OrderByDescending(x => x.LootActions).ThenByDescending(x => x.Quantity).Take(3).ToList();
+
+            await foreach (var topLooter in _mainWindowViewModel.TopLooters.ToList().ToAsyncEnumerable())
             {
-                looters.Add(new TopLooterObject(looter.PlayerName, looter.Quantity, ++placement));
+                var removableLooter = topLooters.FirstOrDefault(x => x.PlayerName == topLooter.PlayerName);
+                if (removableLooter == null)
+                {
+                    _mainWindowViewModel.TopLooters.Remove(topLooter);
+                }
             }
 
-            _mainWindowViewModel.TopLooters = looters;
+            if (topLooters.Count != _mainWindowViewModel.TopLooters.Count)
+            {
+                await foreach (var looter in topLooters.Where(looter => _mainWindowViewModel.TopLooters.All(x => x.PlayerName != looter.PlayerName)).ToList().ToAsyncEnumerable())
+                {
+                    _mainWindowViewModel.TopLooters.Add(new TopLooterObject(looter.PlayerName, looter.Quantity, 1, looter.LootActions));
+                }
+            }
+
+            var placement = 0;
+            foreach (var looter in _mainWindowViewModel.TopLooters.OrderByDescending(x => x.LootActions).ThenByDescending(x => x.Quantity))
+            {
+                looter.Placement = ++placement;
+            }
+
+            _mainWindowViewModel.TopLooters.OrderByReference(_mainWindowViewModel.TopLooters.OrderBy(x => x.Placement).ToList());
         }
 
         public class TopLooter
         {
-            public TopLooter(string name, int quantity)
+            public TopLooter(string name, int quantity, int lootActions)
             {
                 PlayerName = name;
+                LootActions = lootActions;
                 Quantity = quantity;
             }
 
             public string PlayerName { get; init; }
+            public int LootActions { get; set; }
             public int Quantity { get; set; }
         }
 
