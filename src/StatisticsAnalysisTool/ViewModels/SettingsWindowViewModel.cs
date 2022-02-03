@@ -180,14 +180,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private void SetAppSettingsAndTranslations()
         {
             Translation = new SettingsWindowTranslation();
-
-            // TODO: Rework
-            //_mainWindowViewModel.SetUiElements();
-            //_mainWindowViewModel.IsFullItemInformationCompleteCheck();
-            //_mainWindowViewModel.PlayerModeTranslation = new PlayerModeTranslation();
-            //_mainWindowViewModel.LoadTranslation = LanguageController.Translation("LOAD");
-            //_mainWindowViewModel.NumberOfValuesTranslation = LanguageController.Translation("NUMBER_OF_VALUES");
-            //_mainWindowViewModel.UpdateTranslation = LanguageController.Translation("UPDATE");
         }
 
         public struct FileSettingInformation
