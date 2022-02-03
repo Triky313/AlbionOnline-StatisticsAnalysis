@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.UserControls
@@ -26,6 +28,11 @@ namespace StatisticsAnalysisTool.UserControls
         {
             var vm = (MainWindowViewModel)DataContext;
             vm?.ExportLootToFile();
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
         }
 
         #endregion

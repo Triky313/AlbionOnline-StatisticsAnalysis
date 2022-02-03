@@ -10,14 +10,20 @@
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
 
     <Grid>
-        <Grid Height="65" Width="auto" HorizontalAlignment="Right" VerticalAlignment="Top">
-            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Vertical">
+        <Grid Height="85" Width="auto" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Vertical" Margin="0,0,2,0">
                 <Button Content="{Binding Translation.ResetTrackingNotifications, FallbackValue=RESET__TRACKING__NOTIFICATIONS}" Height="26" MaxWidth="500" MinWidth="250" 
                                         Margin="0,2,0,5" Width="auto" VerticalAlignment="Top" Click="BtnTrackingNotificationsReset_Click"  />
                 <Grid Height="26" Width="26" VerticalAlignment="Center" HorizontalAlignment="Right">
                     <fa5:ImageAwesome Icon="Solid_FileCsv" ToolTip="{Binding Translation.ExportLootToFile}" 
                                                       Foreground="{StaticResource  SolidColorBrush.Accent.Green.4}" MouseUp="BtnExportLootToFile_MouseUp" />
                 </Grid>
+                <TextBlock HorizontalAlignment="Right" TextDecorations="Underline" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="Bold">
+                    <Hyperlink NavigateUri="{Binding LootLoggerViewer}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}" 
+                               Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}">
+                        ao-loot-logger-viewer
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
         </Grid>
         <Grid Height="auto" Width="auto" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -54,7 +60,8 @@
             </StackPanel>
         </Grid>
         <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,100,0,0" VerticalAlignment="Top"/>
-        <ScrollViewer Margin="0,104,0,0">
+
+        <ScrollViewer Margin="0,104,0,40">
             <ItemsControl ItemsSource="{Binding TrackingNotificationsCollectionView, IsAsync=True, Mode=OneWay}" />
         </ScrollViewer>
     </Grid>

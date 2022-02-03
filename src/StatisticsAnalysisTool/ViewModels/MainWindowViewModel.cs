@@ -1873,6 +1873,8 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public static string LootLoggerViewer => "https://matheus.sampaio.us/ao-loot-logger-viewer/";
+
         public static string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;
