@@ -3,12 +3,14 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -16,18 +18,21 @@ namespace StatisticsAnalysisTool.Network.Manager
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly TrackingController _trackingController;
+        private readonly MainWindowViewModel _mainWindowViewModel;
 
         private readonly Dictionary<long, Guid> _putLoot = new();
         private readonly List<DiscoveredLoot> _discoveredLoot = new();
         private readonly List<LootLoggerObject> _lootLoggerObjects = new();
+        private readonly List<TopLooter> _topLooters = new();
 
         private const int _maxLoot = 5000;
 
         public bool IsPartyLootOnly;
 
-        public LootController(TrackingController trackingController)
+        public LootController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
             _trackingController = trackingController;
+            _mainWindowViewModel = mainWindowViewModel;
 
 #if DEBUG
             _ = AddTestLootNotificationsAsync(30);
@@ -58,6 +63,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                 UniqueName = item.UniqueName
             });
 
+            AddToTopLooters(loot.LooterName, loot.Quantity);
+            await UpdateTopLootersUi();
+
             await RemoveLootIfMoreThanLimitAsync(_maxLoot);
         }
 
@@ -87,6 +95,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void ClearLootLogger()
         {
             _lootLoggerObjects.Clear();
+            _topLooters.Clear();
         }
 
         public void AddDiscoveredLoot(DiscoveredLoot loot)
@@ -172,6 +181,49 @@ namespace StatisticsAnalysisTool.Network.Manager
             return new TrackingNotification(DateTime.Now, new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity), item.Index);
         }
 
+        #region Top looters
+
+        private void AddToTopLooters(string name, int quantity)
+        {
+            var looter = _topLooters.ToList().FirstOrDefault(x => x.PlayerName == name);
+            if (looter != null)
+            {
+                looter.Quantity += quantity;
+                return;
+            }
+
+            _topLooters.Add(new TopLooter(name, quantity));
+        }
+
+        private async Task UpdateTopLootersUi()
+        {
+            var topLooters = _topLooters.OrderByDescending(x => x.Quantity).Take(3).ToList();
+            
+            var looters = new ObservableRangeCollection<TopLooterObject>();
+            
+            var placement = 0;
+            foreach (var looter in topLooters)
+            {
+                looters.Add(new TopLooterObject(looter.PlayerName, looter.Quantity, ++placement));
+            }
+
+            _mainWindowViewModel.TopLooters = looters;
+        }
+
+        public class TopLooter
+        {
+            public TopLooter(string name, int quantity)
+            {
+                PlayerName = name;
+                Quantity = quantity;
+            }
+
+            public string PlayerName { get; init; }
+            public int Quantity { get; set; }
+        }
+
+        #endregion
+
         #region Debug methods
 
         private static readonly Random _random = new(DateTime.Now.Millisecond);
@@ -194,7 +246,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     ItemIndex = randomItem.Index,
                     LooterName = TestMethods.GenerateName(8),
                     IsSilver = false,
-                    Quantity = 1
+                    Quantity = _random.Next(1, 250)
                 });
                 await Task.Delay(100);
             }

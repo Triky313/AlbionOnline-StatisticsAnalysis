@@ -77,5 +77,6 @@ namespace StatisticsAnalysisTool.Models
         public static string Dashboard => LanguageController.Translation("DASHBOARD");
         public static string ShowLootFromMobs => LanguageController.Translation("SHOW_LOOT_FROM_MOBS");
         public static string TrackingMobLoot => LanguageController.Translation("TRACKING_MOB_LOOT");
+        public static string TopLooters => LanguageController.Translation("TOP_LOOTERS");
     }
 }

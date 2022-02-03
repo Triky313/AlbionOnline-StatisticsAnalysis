@@ -119,6 +119,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<LoggingFilterObject> _loggingFilters = new();
         private bool _isTrackingMobLoot;
         private Visibility _gridTryToLoadTheItemJsonAgainVisibility;
+        private ObservableCollection<TopLooterObject> _topLooters = new ();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1360,6 +1361,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingNotificationsCollectionView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<TopLooterObject> TopLooters
+        {
+            get => _topLooters;
+            set
+            {
+                _topLooters = value;
                 OnPropertyChanged();
             }
         }
