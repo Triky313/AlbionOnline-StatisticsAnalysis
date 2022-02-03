@@ -4,24 +4,27 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.Models
 {
     public class LoggingFilterObject : INotifyPropertyChanged
     {
         private readonly TrackingController _trackingController;
+        private readonly MainWindowViewModel _mainWindowViewModel;
         private bool? _isSelected;
         private string _name;
 
-        public LoggingFilterObject(TrackingController trackingController, LoggingFilterType loggingFilterType)
+        public LoggingFilterObject(TrackingController trackingController, MainWindowViewModel mainWindowViewModel, LoggingFilterType loggingFilterType)
         {
             _trackingController = trackingController;
+            _mainWindowViewModel = mainWindowViewModel;
             LoggingFilterType = loggingFilterType;
         }
 
         public LoggingFilterType LoggingFilterType { get; }
 
-        private void SetFilter()
+        private void SetFilter(string searchText)
         {
             switch (LoggingFilterType)
             {
@@ -121,13 +124,25 @@ namespace StatisticsAnalysisTool.Models
 
                     SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints = IsSelected ?? false;
                     break;
+                case LoggingFilterType.Kill:
+                    if (IsSelected ?? false)
+                    {
+                        _trackingController?.AddFilterType(NotificationType.Kill);
+                    }
+                    else
+                    {
+                        _trackingController?.RemoveFilterType(NotificationType.Kill);
+                    }
+
+                    SettingsController.CurrentSettings.IsMainTrackerFilterKill = IsSelected ?? false;
+                    break;
                 case LoggingFilterType.ShowLootFromMob:
                     _trackingController.IsLootFromMobShown = IsSelected ?? false;
                     SettingsController.CurrentSettings.IsLootFromMobShown = IsSelected ?? false;
                     break;
             }
-
-            _trackingController?.NotificationUiFilteringAsync();
+            
+            _trackingController?.NotificationUiFilteringAsync(searchText);
         }
 
         public bool? IsSelected
@@ -136,7 +151,7 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _isSelected = value;
-                SetFilter();
+                SetFilter(_mainWindowViewModel.LoggingSearchText);
                 OnPropertyChanged();
             }
         }

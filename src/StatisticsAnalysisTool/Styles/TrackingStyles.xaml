@@ -365,6 +365,15 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type notification:KillNotificationFragment}">
+        <StackPanel Orientation="Horizontal" Height="24">
+            <TextBlock Text="{Binding Died, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
+            <TextBlock Text="{Binding ValueText, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+            <TextBlock Text="{Binding KilledBy, IsAsync=True, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
+            <Image Source="../Resources/skull.png" Margin="0,-5,0,0" Height="24" Width="24" />
+        </StackPanel>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type models:MainStatObject}">
         <StackPanel Orientation="Vertical" Margin="10,0,10,0" Visibility="{Binding Visibility}">
             <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" ToolTip="{Binding TranslationTotalFactionPoints, FallbackValue='TOTAL__FACTION__POINTS'}" />

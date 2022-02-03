@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler

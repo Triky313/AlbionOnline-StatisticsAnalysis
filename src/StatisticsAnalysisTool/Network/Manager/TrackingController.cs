@@ -219,7 +219,6 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             try
             {
-
                 if (!string.IsNullOrEmpty(text))
                 {
                     await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable()?.ForEachAsync(d =>
@@ -231,11 +230,18 @@ namespace StatisticsAnalysisTool.Network.Manager
                         (_notificationTypesFilters?.Contains(x.Type) ?? true)
                         && 
                         (
-                            ((OtherGrabbedLootNotificationFragment)x.Fragment).Looter.ToLower().Contains(text.ToLower())
-                            || ((OtherGrabbedLootNotificationFragment)x.Fragment).LocalizedName.ToLower().Contains(text.ToLower())
-                            || ((OtherGrabbedLootNotificationFragment)x.Fragment).LootedPlayer.ToLower().Contains(text.ToLower())
-                        )
-                        && (IsLootFromMobShown || !((OtherGrabbedLootNotificationFragment)x.Fragment).IsLootedPlayerMob)
+                            x.Fragment is OtherGrabbedLootNotificationFragment fragment &&
+                            (fragment.Looter.ToLower().Contains(text.ToLower())
+                            || fragment.LocalizedName.ToLower().Contains(text.ToLower())
+                            || fragment.LootedPlayer.ToLower().Contains(text.ToLower())
+                            )
+                            ||
+                            x.Fragment is KillNotificationFragment killFragment &&
+                            (killFragment.Died.ToLower().Contains(text.ToLower())
+                             || killFragment.KilledBy.ToLower().Contains(text.ToLower())
+                            )
+                        ) 
+                        && (IsLootFromMobShown || x.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment)
                     ).ForEachAsync(d =>
                     {
                         d.Visibility = Visibility.Visible;
@@ -250,12 +256,12 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                     await _mainWindowViewModel?.TrackingNotifications?.Where(x => 
                         (_notificationTypesFilters?.Contains(x.Type) ?? false)
-                        && (IsLootFromMobShown || !((OtherGrabbedLootNotificationFragment)x.Fragment).IsLootedPlayerMob))?.ToAsyncEnumerable().ForEachAsync(d =>
+                        && (IsLootFromMobShown || x.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment)
+                        )?.ToAsyncEnumerable().ForEachAsync(d =>
                     {
                         d.Visibility = Visibility.Visible;
                     });
                 }
-
             }
             catch (Exception)
             {

@@ -10,6 +10,7 @@
         ConsumableLoot,
         SimpleLoot,
         UnknownLoot,
-        SeasonPoints
+        SeasonPoints,
+        Kill
     }
 }
