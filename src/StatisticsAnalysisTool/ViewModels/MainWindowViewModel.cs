@@ -407,61 +407,61 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             // Logging
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.Fame)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Fame)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFame,
                 Name = MainWindowTranslation.Fame
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.Silver)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Silver)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSilver,
                 Name = MainWindowTranslation.Silver
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.Faction)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Faction)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFaction,
                 Name = MainWindowTranslation.Faction
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.SeasonPoints)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.SeasonPoints)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints,
                 Name = MainWindowTranslation.SeasonPoints
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.ConsumableLoot)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.ConsumableLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot,
                 Name = MainWindowTranslation.ConsumableLoot
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.EquipmentLoot)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.EquipmentLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot,
                 Name = MainWindowTranslation.EquipmentLoot
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.SimpleLoot)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.SimpleLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot,
                 Name = MainWindowTranslation.SimpleLoot
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.UnknownLoot)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.UnknownLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot,
                 Name = MainWindowTranslation.UnknownLoot
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.ShowLootFromMob)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.ShowLootFromMob)
             {
                 IsSelected = SettingsController.CurrentSettings.IsLootFromMobShown,
                 Name = MainWindowTranslation.ShowLootFromMobs
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.Kill)
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Kill)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterKill,
                 Name = MainWindowTranslation.ShowKills

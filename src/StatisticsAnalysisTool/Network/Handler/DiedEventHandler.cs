@@ -16,8 +16,6 @@ namespace StatisticsAnalysisTool.Network.Handler
         public DiedEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
-
-            //_trackingController.AddNotificationAsync(SetKillNotification("Dicky", "Aaron"));
         }
 
         public async Task OnActionAsync(DiedEvent value)

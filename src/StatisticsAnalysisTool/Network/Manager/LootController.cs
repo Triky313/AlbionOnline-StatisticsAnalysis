@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -204,16 +205,19 @@ namespace StatisticsAnalysisTool.Network.Manager
                 var removableLooter = topLooters.FirstOrDefault(x => x.PlayerName == topLooter.PlayerName);
                 if (removableLooter == null)
                 {
-                    _mainWindowViewModel.TopLooters.Remove(topLooter);
+                    await Application.Current.Dispatcher.InvokeAsync(() => _mainWindowViewModel.TopLooters.Remove(topLooter));
                 }
             }
 
             if (topLooters.Count != _mainWindowViewModel.TopLooters.Count)
             {
-                await foreach (var looter in topLooters.Where(looter => _mainWindowViewModel.TopLooters.All(x => x.PlayerName != looter.PlayerName)).ToList().ToAsyncEnumerable())
+                await Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
-                    _mainWindowViewModel.TopLooters.Add(new TopLooterObject(looter.PlayerName, looter.Quantity, 1, looter.LootActions));
-                }
+                    await foreach (var looter in topLooters.Where(looter => _mainWindowViewModel.TopLooters.All(x => x.PlayerName != looter.PlayerName)).ToList().ToAsyncEnumerable())
+                    {
+                        _mainWindowViewModel.TopLooters.Add(new TopLooterObject(looter.PlayerName, looter.Quantity, 1, looter.LootActions));
+                    }
+                });
             }
 
             var placement = 0;
@@ -222,7 +226,10 @@ namespace StatisticsAnalysisTool.Network.Manager
                 looter.Placement = ++placement;
             }
 
-            _mainWindowViewModel.TopLooters.OrderByReference(_mainWindowViewModel.TopLooters.OrderBy(x => x.Placement).ToList());
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                _mainWindowViewModel.TopLooters.OrderByReference(_mainWindowViewModel.TopLooters.OrderBy(x => x.Placement).ToList());
+            });
         }
 
         public class TopLooter
