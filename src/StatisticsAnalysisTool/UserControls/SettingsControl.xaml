@@ -79,6 +79,10 @@
                         <CheckBox IsChecked="{Binding IsLootLoggerSaveReminderActive}" Height="21" VerticalContentAlignment="Center" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.ExportLootLoggingFileWithRealItemName, FallbackValue=EXPORT__LOOT__LOGGING__FILE__WITH__REAL__ITEM__NAME}" MinWidth="300" VerticalAlignment="Top" />
+                        <CheckBox IsChecked="{Binding IsItemRealNameInLoggingExportActive}" Height="21" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.SuggestPreReleaseUpdates, FallbackValue=SUGGEST__PRE__RELEASE__UPDATES}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding IsSuggestPreReleaseUpdatesActive}" Height="21" VerticalAlignment="Top" VerticalContentAlignment="Top">
                             <Label Content="{Binding Translation.AttentionTheseVersionsAreStillBeingTested, FallbackValue=ATTENTION__THESE__VERSION__ARE__STILL__BEING__TESTED}" 

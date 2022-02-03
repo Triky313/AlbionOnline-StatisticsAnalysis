@@ -605,4 +605,13 @@
         </Setter>
     </Style>
 
+    <!-- Loot logger styles -->
+    <DataTemplate DataType="{x:Type models:TopLooterObject}">
+        <StackPanel Orientation="Horizontal" Margin="5,-5,5,0" Height="20">
+            <Label Content="{Binding Placement}" ContentStringFormat="{}{0:N0}." Padding="0,5,0,0"/>
+            <Label Content="{Binding PlayerName}" ContentStringFormat="{}{0:N0}" Padding="0,5,0,0"/>
+            <Label Content="{Binding LootActions}" ContentStringFormat="{}({0:N0})" Padding="0,5,0,0"/>
+        </StackPanel>
+    </DataTemplate>
+
 </ResourceDictionary>

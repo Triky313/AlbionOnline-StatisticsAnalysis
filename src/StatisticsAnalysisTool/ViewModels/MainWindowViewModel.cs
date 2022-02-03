@@ -119,6 +119,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<LoggingFilterObject> _loggingFilters = new();
         private bool _isTrackingMobLoot;
         private Visibility _gridTryToLoadTheItemJsonAgainVisibility;
+        private ObservableCollection<TopLooterObject> _topLooters = new ();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -611,7 +612,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             var dialog = new SaveFileDialog
             {
-                FileName = $"log-{DateTime.UtcNow:yy-MMM-dd}",
+                FileName = $"log-{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}utc",
                 DefaultExt = ".csv",
                 Filter = "CSV documents (.csv)|*.csv"
             };
@@ -621,7 +622,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 try
                 {
-                    File.WriteAllText(dialog.FileName, TrackingController.LootController.GetLootLoggerObjectsAsCsv());
+                    File.WriteAllText(dialog.FileName, TrackingController.LootController.GetLootLoggerObjectsAsCsv(SettingsController.CurrentSettings.IsItemRealNameInLoggingExportActive));
                 }
                 catch (Exception e)
                 {
@@ -828,6 +829,7 @@ namespace StatisticsAnalysisTool.ViewModels
             if (dialogResult is true)
             {
                 await TrackingController.ClearNotificationsAsync().ConfigureAwait(false);
+                Application.Current.Dispatcher.Invoke(() => TopLooters.Clear());
                 TrackingController.LootController.ClearLootLogger();
             }
         }
@@ -1360,6 +1362,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingNotificationsCollectionView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<TopLooterObject> TopLooters
+        {
+            get => _topLooters;
+            set
+            {
+                _topLooters = value;
                 OnPropertyChanged();
             }
         }

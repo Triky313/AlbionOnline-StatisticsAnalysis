@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Common;
+using System;
 using System.Globalization;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
@@ -16,5 +17,14 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public string BodyName { get; set; }
         public string LooterName { get; set; }
         public string CsvOutput => $"{UtcPickupTime.ToString("MM/dd/yyyy H:mm:ss", CultureInfo.InvariantCulture)};{LooterName};{UniqueName};{Quantity};{BodyName}";
+        public string CsvOutputWithRealItemName => GetCsvOutputStringWithRealItemName();
+
+        private string GetCsvOutputStringWithRealItemName()
+        {
+            var item = ItemController.GetItemByUniqueName(UniqueName);
+            var itemName = (string.IsNullOrEmpty(item?.LocalizedName)) ? UniqueName : item.LocalizedName;
+
+            return $"{UtcPickupTime.ToString("MM/dd/yyyy H:mm:ss", CultureInfo.InvariantCulture)};{LooterName};{itemName.ToString(CultureInfo.InvariantCulture)};{Quantity};{BodyName}";
+        }
     }
 }

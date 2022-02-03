@@ -35,6 +35,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<FileSettingInformation> _updateItemsJsonByDays = new();
         private FileSettingInformation _updateItemsJsonByDaysSelection;
         private bool _isSuggestPreReleaseUpdatesActive;
+        private bool _isItemRealNameInLoggingExportActive;
 
         public SettingsWindowViewModel()
         {
@@ -137,6 +138,7 @@ namespace StatisticsAnalysisTool.ViewModels
             #region Loot logger
 
             IsLootLoggerSaveReminderActive = SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive;
+            IsItemRealNameInLoggingExportActive = SettingsController.CurrentSettings.IsItemRealNameInLoggingExportActive;
 
             #endregion
 
@@ -169,6 +171,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.CurrentSettings.GoldStatsApiUrl = string.IsNullOrEmpty(GoldStatsApiUrl) ? Settings.Default.GoldStatsApiUrlDefault : GoldStatsApiUrl;
 
             SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive = IsLootLoggerSaveReminderActive;
+            SettingsController.CurrentSettings.IsItemRealNameInLoggingExportActive = IsItemRealNameInLoggingExportActive;
             SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
 
             SetAppSettingsAndTranslations();
@@ -178,6 +181,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             Translation = new SettingsWindowTranslation();
 
+            // TODO: Rework
             //_mainWindowViewModel.SetUiElements();
             //_mainWindowViewModel.IsFullItemInformationCompleteCheck();
             //_mainWindowViewModel.PlayerModeTranslation = new PlayerModeTranslation();
@@ -380,6 +384,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isLootLoggerSaveReminderActive = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsItemRealNameInLoggingExportActive
+        {
+            get => _isItemRealNameInLoggingExportActive;
+            set
+            {
+                _isItemRealNameInLoggingExportActive = value;
                 OnPropertyChanged();
             }
         }

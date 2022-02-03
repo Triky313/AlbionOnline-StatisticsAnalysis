@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Common
         {
             return (value) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
         }
-
+        
         public static void OrderByReference<T>(this ObservableCollection<T> collection, List<T> comparison)
         {
             for (var i = 0; i < comparison.Count; i++)

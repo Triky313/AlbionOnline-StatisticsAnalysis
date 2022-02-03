@@ -3,8 +3,10 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -15,18 +17,21 @@ namespace StatisticsAnalysisTool.Network.Manager
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly TrackingController _trackingController;
+        private readonly MainWindowViewModel _mainWindowViewModel;
 
         private readonly Dictionary<long, Guid> _putLoot = new();
         private readonly List<DiscoveredLoot> _discoveredLoot = new();
         private readonly List<LootLoggerObject> _lootLoggerObjects = new();
+        private readonly List<TopLooter> _topLooters = new();
 
         private const int _maxLoot = 5000;
 
         public bool IsPartyLootOnly;
 
-        public LootController(TrackingController trackingController)
+        public LootController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
             _trackingController = trackingController;
+            _mainWindowViewModel = mainWindowViewModel;
 
 #if DEBUG
             _ = AddTestLootNotificationsAsync(30);
@@ -57,6 +62,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                 UniqueName = item.UniqueName
             });
 
+            AddTopLooter(loot.LooterName, loot.Quantity);
+            await UpdateTopLootersUi();
+
             await RemoveLootIfMoreThanLimitAsync(_maxLoot);
         }
 
@@ -86,6 +94,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void ClearLootLogger()
         {
             _lootLoggerObjects.Clear();
+            _topLooters.Clear();
         }
 
         public void AddDiscoveredLoot(DiscoveredLoot loot)
@@ -97,7 +106,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             _discoveredLoot.Add(loot);
         }
-        
+
         public async Task AddPutLootAsync(long? objectId, Guid? interactGuid)
         {
             if (_trackingController.EntityController.GetLocalEntity()?.Value?.InteractGuid != interactGuid)
@@ -107,7 +116,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             if (objectId != null && interactGuid != null && !_putLoot.ContainsKey((long)objectId))
             {
-                _putLoot.Add((long) objectId, (Guid)interactGuid);
+                _putLoot.Add((long)objectId, (Guid)interactGuid);
             }
 
             await LootMergeAsync();
@@ -147,10 +156,15 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        public string GetLootLoggerObjectsAsCsv()
+        public string GetLootLoggerObjectsAsCsv(bool isItemRealNameInLoggingExportActive = true)
         {
             try
             {
+                if (isItemRealNameInLoggingExportActive)
+                {
+                    return string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutputWithRealItemName).ToArray()).ToString(CultureInfo.CurrentCulture);
+                }
+
                 return string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
             }
             catch (Exception e)
@@ -165,7 +179,68 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             return new TrackingNotification(DateTime.Now, new OtherGrabbedLootNotificationFragment(looter, lootedPlayer, item, quantity), item.Index);
         }
-        
+
+        #region Top looters
+
+        private void AddTopLooter(string name, int quantity)
+        {
+            var looter = _topLooters.ToList().FirstOrDefault(x => x.PlayerName == name);
+            if (looter != null)
+            {
+                looter.Quantity += quantity;
+                looter.LootActions++;
+                return;
+            }
+
+            _topLooters.Add(new TopLooter(name, quantity, 1));
+        }
+
+        private async Task UpdateTopLootersUi()
+        {
+            var topLooters = _topLooters.OrderByDescending(x => x.LootActions).ThenByDescending(x => x.Quantity).Take(3).ToList();
+
+            await foreach (var topLooter in _mainWindowViewModel.TopLooters.ToList().ToAsyncEnumerable())
+            {
+                var removableLooter = topLooters.FirstOrDefault(x => x.PlayerName == topLooter.PlayerName);
+                if (removableLooter == null)
+                {
+                    _mainWindowViewModel.TopLooters.Remove(topLooter);
+                }
+            }
+
+            if (topLooters.Count != _mainWindowViewModel.TopLooters.Count)
+            {
+                await foreach (var looter in topLooters.Where(looter => _mainWindowViewModel.TopLooters.All(x => x.PlayerName != looter.PlayerName)).ToList().ToAsyncEnumerable())
+                {
+                    _mainWindowViewModel.TopLooters.Add(new TopLooterObject(looter.PlayerName, looter.Quantity, 1, looter.LootActions));
+                }
+            }
+
+            var placement = 0;
+            foreach (var looter in _mainWindowViewModel.TopLooters.OrderByDescending(x => x.LootActions).ThenByDescending(x => x.Quantity))
+            {
+                looter.Placement = ++placement;
+            }
+
+            _mainWindowViewModel.TopLooters.OrderByReference(_mainWindowViewModel.TopLooters.OrderBy(x => x.Placement).ToList());
+        }
+
+        public class TopLooter
+        {
+            public TopLooter(string name, int quantity, int lootActions)
+            {
+                PlayerName = name;
+                LootActions = lootActions;
+                Quantity = quantity;
+            }
+
+            public string PlayerName { get; init; }
+            public int LootActions { get; set; }
+            public int Quantity { get; set; }
+        }
+
+        #endregion
+
         #region Debug methods
 
         private static readonly Random _random = new(DateTime.Now.Millisecond);
@@ -188,7 +263,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     ItemIndex = randomItem.Index,
                     LooterName = TestMethods.GenerateName(8),
                     IsSilver = false,
-                    Quantity = 1
+                    Quantity = _random.Next(1, 250)
                 });
                 await Task.Delay(100);
             }
