@@ -26,6 +26,7 @@
         public bool IsMainTrackerFilterConsumableLoot { get; set; }
         public bool IsMainTrackerFilterSimpleLoot { get; set; }
         public bool IsMainTrackerFilterUnknownLoot { get; set; }
+        public bool IsMainTrackerFilterKill { get; set; }
         public bool IsDamageMeterTrackingActive { get; set; } = true;
         public bool IsTrackingPartyLootOnly { get; set; }
         public bool IsTrackingSilver { get; set; }

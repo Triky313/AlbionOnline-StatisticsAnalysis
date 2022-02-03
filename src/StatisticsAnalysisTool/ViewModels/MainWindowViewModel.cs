@@ -461,6 +461,11 @@ namespace StatisticsAnalysisTool.ViewModels
                 Name = MainWindowTranslation.ShowLootFromMobs
             });
 
+            LoggingFilters.Add(new LoggingFilterObject(TrackingController, LoggingFilterType.Kill)
+            {
+                IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterKill,
+                Name = MainWindowTranslation.ShowKills
+            });
         }
 
         #endregion

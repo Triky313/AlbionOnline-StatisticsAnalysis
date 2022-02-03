@@ -121,6 +121,18 @@ namespace StatisticsAnalysisTool.Models
 
                     SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints = IsSelected ?? false;
                     break;
+                case LoggingFilterType.Kill:
+                    if (IsSelected ?? false)
+                    {
+                        _trackingController?.AddFilterType(NotificationType.Kill);
+                    }
+                    else
+                    {
+                        _trackingController?.RemoveFilterType(NotificationType.Kill);
+                    }
+
+                    SettingsController.CurrentSettings.IsMainTrackerFilterKill = IsSelected ?? false;
+                    break;
                 case LoggingFilterType.ShowLootFromMob:
                     _trackingController.IsLootFromMobShown = IsSelected ?? false;
                     SettingsController.CurrentSettings.IsLootFromMobShown = IsSelected ?? false;

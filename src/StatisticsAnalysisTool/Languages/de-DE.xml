@@ -341,7 +341,6 @@
 	<translation name="DAYS">Tage</translation>
 	<translation name="OVER_A_YEAR">Über ein Jahr</translation>
 	<translation name="CURRENT_MAP">AKTUELLE MAP</translation>
-	<translation name="KILLDED_BY">getötet von</translation>
 	<translation name="DUNGEON">Dungeon</translation>
 	<translation name="ARENA">Arena</translation>
 	<translation name="CORRUPTED_LAIR">Korrumpierter Dungeon</translation>
@@ -521,4 +520,6 @@
 	<translation name="MIGHT_PER_HOUR">Stärke pro Stunde</translation>
 	<translation name="FAVOR_PER_HOUR">Gunst pro Stunde</translation>
 	<translation name="TOP_LOOTERS">Top Plünderer</translation>
+	<translation name="WAS_KILLED_BY">wurde getötet von</translation>
+	<translation name="SHOW_KILLS">Zeige Tötungen</translation>
 </translations>

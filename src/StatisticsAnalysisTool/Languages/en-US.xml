@@ -341,7 +341,6 @@
 	<translation name="DAYS">Days</translation>
 	<translation name="OVER_A_YEAR">Over a Year</translation>
 	<translation name="CURRENT_MAP">CURRENT MAP</translation>
-	<translation name="KILLDED_BY">killed by</translation>
 	<translation name="DUNGEON">Dungeon</translation>
 	<translation name="ARENA">Arena</translation>
 	<translation name="CORRUPTED_LAIR">Corrupted Lair</translation>
@@ -521,4 +520,6 @@
 	<translation name="MIGHT_PER_HOUR">Might per hour</translation>
 	<translation name="FAVOR_PER_HOUR">Favor per hour</translation>
 	<translation name="TOP_LOOTERS">Top looters</translation>
+	<translation name="WAS_KILLED_BY">was killed by</translation>
+	<translation name="SHOW_KILLS">Show kills</translation>
 </translations>
