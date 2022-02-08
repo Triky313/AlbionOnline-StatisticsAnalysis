@@ -96,11 +96,11 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private static bool IsUiUpdateActive;
+        private static bool _isUiUpdateActive;
 
         public async Task UpdateDamageMeterUiAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
-            IsUiUpdateActive = true;
+            _isUiUpdateActive = true;
 
             var highestDamage = entities.GetHighestDamage();
             var highestHeal = entities.GetHighestHeal();
@@ -131,10 +131,10 @@ namespace StatisticsAnalysisTool.Network.Manager
                 await RemoveDuplicatesAsync(_mainWindowViewModel.DamageMeter);
             }
 
-            IsUiUpdateActive = false;
+            _isUiUpdateActive = false;
         }
 
-        private void UpdateDamageMeterFragment(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject, List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
+        private static void UpdateDamageMeterFragment(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject, List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
             if (healthChangeObject.Value?.CharacterEquipment?.MainHand != null)
             {
@@ -177,7 +177,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private async Task AddDamageMeterFragmentAsync(ObservableCollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
+        private static async Task AddDamageMeterFragmentAsync(ObservableCollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
             List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
             if (healthChangeObject.Value == null
@@ -212,7 +212,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
-        private bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
+        private static bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
         {
             return damageMeter.ToList().GroupBy(x => x.Name).Any(g => g.Count() > 1);
         }
@@ -286,7 +286,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private HealthChangeType GetHealthChangeType(double healthChange) => healthChange <= 0 ? HealthChangeType.Damage : HealthChangeType.Heal;
+        private static HealthChangeType GetHealthChangeType(double healthChange) => healthChange <= 0 ? HealthChangeType.Damage : HealthChangeType.Heal;
 
         private DateTime _lastDamageUiUpdate;
 
@@ -294,7 +294,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             var currentDateTime = DateTime.UtcNow;
             var difference = currentDateTime.Subtract(_lastDamageUiUpdate);
-            if (difference.Seconds >= waitTimeInSeconds && !IsUiUpdateActive)
+            if (difference.Seconds >= waitTimeInSeconds && !_isUiUpdateActive)
             {
                 _lastDamageUiUpdate = currentDateTime;
                 return true;
@@ -349,7 +349,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Debug methods
 
-        private static readonly Random _random = new(DateTime.Now.Millisecond);
+        private static readonly Random Random = new(DateTime.Now.Millisecond);
 
         private async void RunDamageMeterDebugAsync(int player = 20, int damageRuns = 100)
         {
@@ -368,11 +368,11 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             for (var i = 0; i < runs; i++)
             {
-                var damage = _random.Next(-100, 100);
-                await AddDamageAsync(9999, entity.ObjectId ?? -1, damage, _random.Next(2000, 3000));
+                var damage = Random.Next(-100, 100);
+                await AddDamageAsync(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000));
                 //Debug.Print($"--- AddDamage - {entity.Name}: {damage}");
 
-                await Task.Delay(_random.Next(1, 1000));
+                await Task.Delay(Random.Next(1, 1000));
             }
         }
 
@@ -380,9 +380,9 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             for (var i = 0; i < playerAmount; i++)
             {
-                var guid = new Guid($"{_random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
+                var guid = new Guid($"{Random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
                 var interactGuid = Guid.NewGuid();
-                var name = TestMethods.GenerateName(_random.Next(3, 10));
+                var name = TestMethods.GenerateName(Random.Next(3, 10));
 
                 _trackingController?.EntityController?.AddEntity(i, guid, interactGuid, name, GameObjectType.Player, GameObjectSubType.Mob);
 

@@ -9,7 +9,6 @@ using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -19,8 +18,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 {
     public class TrackingController : ITrackingController
     {
-        private const int _maxNotifications = 4000;
-        private const int _maxEnteredCluster = 500;
+        private const int MaxNotifications = 4000;
+        private const int MaxEnteredCluster = 500;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindow _mainWindow;
@@ -119,7 +118,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             foreach (var cluster in _mainWindowViewModel.EnteredCluster.OrderBy(x => x.Entered))
             {
-                if (_mainWindowViewModel.EnteredCluster?.Count <= _maxEnteredCluster)
+                if (_mainWindowViewModel.EnteredCluster?.Count <= MaxEnteredCluster)
                 {
                     break;
                 }
@@ -191,7 +190,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             _isRemovesUnnecessaryNotificationsActive = true;
 
-            var numberToBeRemoved = _mainWindowViewModel.TrackingNotifications.Count - _maxNotifications;
+            var numberToBeRemoved = _mainWindowViewModel.TrackingNotifications.Count - MaxNotifications;
             if (numberToBeRemoved > 0)
             {
                 await foreach (var notification in _mainWindowViewModel.TrackingNotifications.OrderBy(x => x.DateTime).ToList().Take(numberToBeRemoved).ToAsyncEnumerable())
@@ -213,54 +212,53 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _mainWindowViewModel.TrackingNotifications.Clear();
             });
         }
-        
-        [SuppressMessage("ReSharper", "ConstantConditionalAccessQualifier")]
+
         public async Task NotificationUiFilteringAsync(string text = null)
         {
             try
             {
                 if (!string.IsNullOrEmpty(text))
                 {
-                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable()?.ForEachAsync(d =>
+                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable().ForEachAsync(d =>
                     {
                         d.Visibility = Visibility.Collapsed;
-                    });
+                    })!;
 
-                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable()?.Where(x =>
+                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable().Where(x =>
                         (_notificationTypesFilters?.Contains(x.Type) ?? true)
-                        && 
+                        &&
                         (
                             x.Fragment is OtherGrabbedLootNotificationFragment fragment &&
                             (fragment.Looter.ToLower().Contains(text.ToLower())
-                            || fragment.LocalizedName.ToLower().Contains(text.ToLower())
-                            || fragment.LootedPlayer.ToLower().Contains(text.ToLower())
+                             || fragment.LocalizedName.ToLower().Contains(text.ToLower())
+                             || fragment.LootedPlayer.ToLower().Contains(text.ToLower())
                             )
                             ||
                             x.Fragment is KillNotificationFragment killFragment &&
                             (killFragment.Died.ToLower().Contains(text.ToLower())
                              || killFragment.KilledBy.ToLower().Contains(text.ToLower())
                             )
-                        ) 
+                        )
                         && (IsLootFromMobShown || x.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment)
                     ).ForEachAsync(d =>
                     {
                         d.Visibility = Visibility.Visible;
-                    });
+                    })!;
                 }
                 else
                 {
-                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable()?.ForEachAsync(d =>
+                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable().ForEachAsync(d =>
                     {
                         d.Visibility = Visibility.Collapsed;
-                    });
+                    })!;
 
-                    await _mainWindowViewModel?.TrackingNotifications?.Where(x => 
+                    await _mainWindowViewModel?.TrackingNotifications?.Where(x =>
                         (_notificationTypesFilters?.Contains(x.Type) ?? false)
                         && (IsLootFromMobShown || x.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment)
-                        )?.ToAsyncEnumerable().ForEachAsync(d =>
+                    ).ToAsyncEnumerable().ForEachAsync(d =>
                     {
                         d.Visibility = Visibility.Visible;
-                    });
+                    })!;
                 }
             }
             catch (Exception)
