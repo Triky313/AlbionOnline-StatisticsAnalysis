@@ -200,7 +200,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             var topLooters = _topLooters.OrderByDescending(x => x.LootActions).ThenByDescending(x => x.Quantity).Take(3).ToList();
 
-            await foreach (var topLooter in _mainWindowViewModel.TopLooters.ToList().ToAsyncEnumerable())
+            foreach (var topLooter in _mainWindowViewModel.TopLooters.ToList())
             {
                 var removableLooter = topLooters.FirstOrDefault(x => x.PlayerName == topLooter.PlayerName);
                 if (removableLooter == null)
@@ -211,9 +211,9 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             if (topLooters.Count != _mainWindowViewModel.TopLooters.Count)
             {
-                await Application.Current.Dispatcher.InvokeAsync(async () =>
+                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    await foreach (var looter in topLooters.Where(looter => _mainWindowViewModel.TopLooters.All(x => x.PlayerName != looter.PlayerName)).ToList().ToAsyncEnumerable())
+                    foreach (var looter in topLooters.Where(looter => _mainWindowViewModel.TopLooters.All(x => x.PlayerName != looter.PlayerName)).ToList())
                     {
                         _mainWindowViewModel.TopLooters.Add(new TopLooterObject(looter.PlayerName, looter.Quantity, 1, looter.LootActions));
                     }
