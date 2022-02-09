@@ -17,10 +17,10 @@ namespace StatisticsAnalysisTool.Network
     {
         private static PhotonParser _receiver;
         private static MainWindowViewModel _mainWindowViewModel;
-        private static readonly List<ICaptureDevice> _capturedDevices = new();
+        private static readonly List<ICaptureDevice> CapturedDevices = new();
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        public static bool IsNetworkCaptureRunning => _capturedDevices.Where(device => device.Started).Any(device => device.Started);
+        public static bool IsNetworkCaptureRunning => CapturedDevices.Where(device => device.Started).Any(device => device.Started);
 
         public static bool StartNetworkCapture(MainWindowViewModel mainWindowViewModel, TrackingController trackingController)
         {
@@ -29,7 +29,7 @@ namespace StatisticsAnalysisTool.Network
 
             try
             {
-                _capturedDevices.AddRange(CaptureDeviceList.Instance);
+                CapturedDevices.AddRange(CaptureDeviceList.Instance);
                 return StartDeviceCapture();
             }
             catch (Exception e)
@@ -44,14 +44,14 @@ namespace StatisticsAnalysisTool.Network
 
         private static bool StartDeviceCapture()
         {
-            if (_capturedDevices.Count <= 0)
+            if (CapturedDevices.Count <= 0)
             {
                 return false;
             }
 
             try
             {
-                foreach (var device in _capturedDevices)
+                foreach (var device in CapturedDevices)
                 {
                     PacketEvent(device);
                 }
@@ -70,13 +70,13 @@ namespace StatisticsAnalysisTool.Network
 
         public static void StopNetworkCapture()
         {
-            foreach (var device in _capturedDevices.Where(device => device.Started))
+            foreach (var device in CapturedDevices.Where(device => device.Started))
             {
                 device.StopCapture();
                 device.Close();
             }
 
-            _capturedDevices.Clear();
+            CapturedDevices.Clear();
         }
 
         private static void PacketEvent(ICaptureDevice device)
@@ -106,12 +106,10 @@ namespace StatisticsAnalysisTool.Network
             catch (InvalidOperationException ioe)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ioe);
-                Log.Error(nameof(Device_OnPacketArrival), ioe);
             }
             catch (OverflowException ex)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-                Log.Error(nameof(Device_OnPacketArrival), ex);
             }
             catch (Exception exc)
             {
