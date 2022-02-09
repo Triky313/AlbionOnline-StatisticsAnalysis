@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 {
     public class DungeonController
     {
-        private const int _maxDungeons = 9999;
+        private const int MaxDungeons = 9999;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
@@ -80,7 +80,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 lastDungeon.Status = DungeonStatus.Done;
             }
 
-            RemoveDungeonsAfterCertainNumber(_dungeons, _maxDungeons);
+            RemoveDungeonsAfterCertainNumber(_dungeons, MaxDungeons);
 
             _lastMapGuid = mapGuid;
 
