@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -185,7 +185,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void AddTopLooter(string name, int quantity)
         {
-            var looter = _topLooters.ToList().FirstOrDefault(x => x.PlayerName == name);
+            var looter = _topLooters.ToList().FirstOrDefault(x => string.Equals(x.PlayerName, name, StringComparison.CurrentCultureIgnoreCase));
             if (looter != null)
             {
                 looter.Quantity += quantity;
@@ -217,6 +217,22 @@ namespace StatisticsAnalysisTool.Network.Manager
                     {
                         _mainWindowViewModel.TopLooters.Add(new TopLooterObject(looter.PlayerName, looter.Quantity, 1, looter.LootActions));
                     }
+                });
+            }
+
+            foreach (var looter in topLooters)
+            {
+                await Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    var topLooter = _mainWindowViewModel.TopLooters.FirstOrDefault(x => x.PlayerName == looter.PlayerName);
+
+                    if (topLooter == null)
+                    {
+                        return;
+                    }
+
+                    topLooter.LootActions = looter.LootActions;
+                    topLooter.Quantity = looter.Quantity;
                 });
             }
 
