@@ -395,24 +395,24 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void HealthUpdate(
             long objectId,
-            GameTimeStamp TimeStamp,
-            double HealthChange,
-            double NewHealthValue,
-            EffectType EffectType,
-            EffectOrigin EffectOrigin,
-            long CauserId,
-            int CausingSpellType
+            GameTimeStamp timeStamp,
+            double healthChange,
+            double newHealthValue,
+            EffectType effectType,
+            EffectOrigin effectOrigin,
+            long causerId,
+            int causingSpellType
         )
         {
             OnHealthUpdate?.Invoke(
                 objectId,
-                TimeStamp,
-                HealthChange,
-                NewHealthValue,
-                EffectType,
-                EffectOrigin,
-                CauserId,
-                CausingSpellType
+                timeStamp,
+                healthChange,
+                newHealthValue,
+                effectType,
+                effectOrigin,
+                causerId,
+                causingSpellType
             );
         }
 
