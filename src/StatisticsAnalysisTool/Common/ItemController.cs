@@ -274,7 +274,7 @@ namespace StatisticsAnalysisTool.Common
         {
             using var client = new HttpClient
             {
-                Timeout = TimeSpan.FromSeconds(300)
+                Timeout = TimeSpan.FromSeconds(600)
             };
             try
             {
@@ -625,7 +625,7 @@ namespace StatisticsAnalysisTool.Common
         {
             using var client = new HttpClient
             {
-                Timeout = TimeSpan.FromSeconds(300)
+                Timeout = TimeSpan.FromSeconds(600)
             };
 
             try
