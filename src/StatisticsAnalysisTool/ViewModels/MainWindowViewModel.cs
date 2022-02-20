@@ -95,7 +95,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
         private double _dungeonStatsGridHeight = 82;
         private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
-        private bool IsDungeonStatsGridUnfold;
+        private bool _isDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
         private TrackingIconType _trackingActivityColor;
         private int _partyMemberNumber;
@@ -574,19 +574,19 @@ namespace StatisticsAnalysisTool.ViewModels
             var unfoldGridHeight = 290;
             var foldGridHeight = 82;
 
-            if (IsDungeonStatsGridUnfold)
+            if (_isDungeonStatsGridUnfold)
             {
                 DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
                 DungeonStatsGridHeight = foldGridHeight;
                 DungeonStatsScrollViewerMargin = new Thickness(0, foldGridHeight, 0, 0);
-                IsDungeonStatsGridUnfold = false;
+                _isDungeonStatsGridUnfold = false;
             }
             else
             {
                 DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleUp;
                 DungeonStatsGridHeight = unfoldGridHeight;
                 DungeonStatsScrollViewerMargin = new Thickness(0, unfoldGridHeight, 0, 0);
-                IsDungeonStatsGridUnfold = true;
+                _isDungeonStatsGridUnfold = true;
             }
         }
 
