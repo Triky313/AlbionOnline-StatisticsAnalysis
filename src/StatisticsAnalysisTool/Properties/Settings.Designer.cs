@@ -222,7 +222,7 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://discord.com/invite/sahSrSPmaJ")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://discord.gg/R2MrB2FwtU")]
         public string DiscordUrl {
             get {
                 return ((string)(this["DiscordUrl"]));

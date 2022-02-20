@@ -95,7 +95,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
         private double _dungeonStatsGridHeight = 82;
         private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
-        private bool IsDungeonStatsGridUnfold;
+        private bool _isDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
         private TrackingIconType _trackingActivityColor;
         private int _partyMemberNumber;
@@ -469,30 +469,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-
-        #region Save Settings
-
-        public void SaveSettings(WindowState windowState, Rect restoreBounds, double height, double width)
-        {
-            #region Window
-
-            if (windowState != WindowState.Maximized)
-            {
-                SettingsController.CurrentSettings.MainWindowHeight = double.IsNegativeInfinity(height) || double.IsPositiveInfinity(height) ? 0 : height;
-                SettingsController.CurrentSettings.MainWindowWidth = double.IsNegativeInfinity(width) || double.IsPositiveInfinity(width) ? 0 : width;
-            }
-
-            SettingsController.CurrentSettings.MainWindowMaximized = windowState == WindowState.Maximized;
-
-            #endregion
-
-            SettingsController.Save();
-
-            ItemController.SaveFavoriteItemsToLocalFile();
-        }
-
-        #endregion
-
+        
         #region Save loot logger
 
         public void SaveLootLogger()
@@ -597,19 +574,19 @@ namespace StatisticsAnalysisTool.ViewModels
             var unfoldGridHeight = 290;
             var foldGridHeight = 82;
 
-            if (IsDungeonStatsGridUnfold)
+            if (_isDungeonStatsGridUnfold)
             {
                 DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
                 DungeonStatsGridHeight = foldGridHeight;
                 DungeonStatsScrollViewerMargin = new Thickness(0, foldGridHeight, 0, 0);
-                IsDungeonStatsGridUnfold = false;
+                _isDungeonStatsGridUnfold = false;
             }
             else
             {
                 DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleUp;
                 DungeonStatsGridHeight = unfoldGridHeight;
                 DungeonStatsScrollViewerMargin = new Thickness(0, unfoldGridHeight, 0, 0);
-                IsDungeonStatsGridUnfold = true;
+                _isDungeonStatsGridUnfold = true;
             }
         }
 
@@ -691,79 +668,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Player information (Player Mode)
-
-        #region Gold (Gold Mode)
-
-#pragma warning disable 1998
-        public async void SetGoldChart(int count)
-#pragma warning restore 1998
-        {
-            //var goldPriceList = await ApiController.GetGoldPricesFromJsonAsync(null, count).ConfigureAwait(true) as IEnumerable<GoldResponseModel>;
-            //var values = goldPriceList.Select(x => x.Price);
-
-            //Series = new ObservableCollection<ISeries>
-            //{
-            //    new ColumnSeries<int>
-            //    {
-            //        Values = values
-            //    }
-            //};
-
-            //XAxes = new List<Axis>
-            //{
-            //    new()
-            //    {
-            //        IsVisible = true,
-            //        MaxLimit = goldPriceList.Count(),
-            //        //Labels = goldPriceList.Select(x => x.Timestamp.ToString(CultureInfo.CurrentCulture)) as IList<string>,
-            //        ShowSeparatorLines = false
-            //    }
-            //};
-
-            //YAxes = new List<Axis>
-            //{
-            //    new()
-            //    {
-            //        IsVisible = true,
-            //        MaxLimit = goldPriceList.Max(x => x.Price + 1),
-            //        MinLimit = goldPriceList.Min(x => x.Price - 1),
-            //        ShowSeparatorLines = false
-            //    }
-            //};
-        }
-
-        //public ObservableCollection<ISeries> Series
-        //{
-        //    get => _series;
-        //    set
-        //    {
-        //        _series = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        //public List<Axis> XAxes 
-        //{
-        //    get => _xAxes;
-        //    set
-        //    {
-        //        _xAxes = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        //public List<Axis> YAxes 
-        //{
-        //    get => _yAxes;
-        //    set
-        //    {
-        //        _yAxes = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        #endregion Gold (Gold Mode)
-
+        
         #region Tracking Mode
 
         public void StartTracking()

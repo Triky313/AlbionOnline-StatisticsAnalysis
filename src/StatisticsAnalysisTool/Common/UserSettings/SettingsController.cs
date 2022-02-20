@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Common.UserSettings
 {
@@ -14,6 +15,25 @@ namespace StatisticsAnalysisTool.Common.UserSettings
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private static bool _haveSettingsAlreadyBeenLoaded;
+
+        public static void SaveSettings(WindowState windowState, double height, double width)
+        {
+            #region Window
+
+            if (windowState != WindowState.Maximized)
+            {
+                CurrentSettings.MainWindowHeight = double.IsNegativeInfinity(height) || double.IsPositiveInfinity(height) ? 0 : height;
+                CurrentSettings.MainWindowWidth = double.IsNegativeInfinity(width) || double.IsPositiveInfinity(width) ? 0 : width;
+            }
+
+            CurrentSettings.MainWindowMaximized = windowState == WindowState.Maximized;
+
+            #endregion
+
+            SaveToLocalFile();
+
+            ItemController.SaveFavoriteItemsToLocalFile();
+        }
 
         public static void LoadSettings()
         {
@@ -40,7 +60,7 @@ namespace StatisticsAnalysisTool.Common.UserSettings
             }
         }
 
-        public static void Save()
+        private static void SaveToLocalFile()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.SettingsFileName}";
 

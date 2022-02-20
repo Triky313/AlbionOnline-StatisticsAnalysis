@@ -7,7 +7,6 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -275,7 +274,7 @@ namespace StatisticsAnalysisTool.Common
         {
             using var client = new HttpClient
             {
-                Timeout = TimeSpan.FromSeconds(300)
+                Timeout = TimeSpan.FromSeconds(600)
             };
             try
             {
@@ -626,7 +625,7 @@ namespace StatisticsAnalysisTool.Common
         {
             using var client = new HttpClient
             {
-                Timeout = TimeSpan.FromSeconds(300)
+                Timeout = TimeSpan.FromSeconds(600)
             };
 
             try

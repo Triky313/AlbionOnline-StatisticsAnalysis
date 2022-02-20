@@ -502,7 +502,7 @@
 	<translation name="SHOP_SUB_CATEGORY">Shop sub category</translation>
 	<translation name="CAN_BE_OVERCHARGED">Can be overcharged</translation>
 	<translation name="WAR_GLOVES">War gloves</translation>
-	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Try downloading the item.json again</translation>
+	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Try downloading the Item.json again</translation>
 	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Item.json can not be loaded.</translation>
 	<translation name="SUGGEST_PRE_RELEASE_UPDATES">Suggest pre-release updates</translation>
 	<translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">ATTENTION! These versions are still being tested</translation>
