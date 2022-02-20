@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Views
 {
@@ -78,7 +79,7 @@ namespace StatisticsAnalysisTool.Views
         private void MainWindow_OnClosed(object sender, EventArgs eventArgs)
         {
             _mainWindowViewModel.SaveLootLogger();
-            _mainWindowViewModel.SaveSettings(WindowState, RestoreBounds, Height, Width);
+            SettingsController.SaveSettings(WindowState, Height, Width);
 
             if (_mainWindowViewModel.IsTrackingActive)
             {
