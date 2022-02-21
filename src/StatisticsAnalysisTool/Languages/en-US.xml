@@ -522,4 +522,7 @@
 	<translation name="TOP_LOOTERS">Top looters</translation>
 	<translation name="WAS_KILLED_BY">was killed by</translation>
 	<translation name="SHOW_KILLS">Show kills</translation>
+	<translation name="TOOL_TASKS">Tool tasks</translation>
+	<translation name="GET_ITEM_LIST_JSON">Get ItemList.json</translation>
+	<translation name="GET_ITEMS_JSON">Get Items.json</translation>
 </translations>

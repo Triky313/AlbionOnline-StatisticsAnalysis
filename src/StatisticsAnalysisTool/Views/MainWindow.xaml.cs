@@ -118,5 +118,17 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel?.InitItemsAsync().ConfigureAwait(false);
         }
+
+        private void ToolTasksCloseButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel?.SetToolTasksVisibility(Visibility.Collapsed);
+        }
+
+        private void ToolTasksOpenClose_PreviewMouseDown(object sender, RoutedEventArgs e)
+        {
+            _mainWindowViewModel?.SwitchToolTasksState();
+        }
+
+        
     }
 }

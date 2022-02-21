@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:fa5="http://schemas.fontawesome.com/icons/">
+                    xmlns:fa5="http://schemas.fontawesome.com/icons/"
+                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models">
 
     <Style x:Key="MainWindowStyle" TargetType="{x:Type Window}">
         <Setter Property="BorderThickness" Value="1,1,1,1" />
@@ -81,5 +82,19 @@
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Margin" Value="0"/>
     </Style>
+
+    <Style TargetType="ItemsControl" x:Key="ToolTask.TaskObject">
+        <Setter Property="Margin" Value="0,2,0,2"/>
+    </Style>
+
+    <DataTemplate DataType="{x:Type models:TaskTextObject}">
+        <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+            <Grid Margin="5,0,5,0">
+                <fa5:ImageAwesome Height="16" Width="16" Spin="{Binding StatusIconSpin, FallbackValue=true}" SpinDuration="5" 
+                                  Icon="{Binding StatusIcon, FallbackValue=Solid_CircleNotch}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+            </Grid>
+            <TextBlock Foreground="{StaticResource SolidColorBrush.Text.1}" Text="{Binding Text}" />
+        </StackPanel>
+    </DataTemplate>
 
 </ResourceDictionary>
