@@ -16,7 +16,7 @@ public static class ToolTaskController
 
     public static void Add(TaskTextObject taskTextObject)
     {
-        _mainWindowViewModel.ToolTaskObjects.Add(taskTextObject);
+        _mainWindowViewModel.ToolTaskObjects.Insert(0, taskTextObject);
         RemoveIfThereAreTooManyObjects();
     }
 

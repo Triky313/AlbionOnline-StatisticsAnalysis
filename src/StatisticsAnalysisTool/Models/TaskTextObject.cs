@@ -10,6 +10,7 @@ namespace StatisticsAnalysisTool.Models
         private string _statusIcon = "Solid_CircleNotch";
         private bool _statusIconSpin = true;
         private bool _isTaskDone;
+        private TaskTextObjectStatus _status = TaskTextObjectStatus.Check;
         private string _text;
 
         public TaskTextObject(string text)
@@ -18,19 +19,39 @@ namespace StatisticsAnalysisTool.Models
             CreateAt = DateTime.UtcNow;
         }
 
-        public void SetStatus(bool done)
+        public void SetStatus(TaskTextObjectStatus taskTextObjectStatus)
         {
-            if (done)
+            switch (taskTextObjectStatus)
             {
-                StatusIcon = "Regular_CheckCircle";
-                StatusIconSpin = false;
-                IsTaskDone = true;
+                case TaskTextObjectStatus.Done:
+                    StatusIcon = "Regular_CheckCircle";
+                    StatusIconSpin = false;
+                    Status = TaskTextObjectStatus.Done;
+                    break;
+                case TaskTextObjectStatus.Canceled:
+                    StatusIcon = "Solid_Ban";
+                    StatusIconSpin = false;
+                    Status = TaskTextObjectStatus.Canceled;
+                    break;
+                case TaskTextObjectStatus.Check:
+                    StatusIcon = "Solid_CircleNotch";
+                    StatusIconSpin = true;
+                    Status = TaskTextObjectStatus.Check;
+                    break;
             }
-            else
+        }
+
+        public enum TaskTextObjectStatus { Check, Canceled, Done }
+
+        public TaskTextObjectStatus Status
+        {
+            get => _status;
+            private set
             {
-                StatusIcon = "Solid_CircleNotch";
-                StatusIconSpin = true;
-                IsTaskDone = false;
+                _status = value;
+                IsTaskDone = _status == TaskTextObjectStatus.Done;
+
+                OnPropertyChanged();
             }
         }
 

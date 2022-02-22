@@ -356,10 +356,12 @@ namespace StatisticsAnalysisTool.ViewModels
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"));
                     GridTryToLoadTheItemListAgainVisibility = Visibility.Visible;
                     IsTaskProgressbarIndeterminate = false;
-                    return;
+                    itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
                 }
-
-                itemListTaskTextObject.SetStatus(true);
+                else
+                {
+                    itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
+                }
             }
 
             if (!ItemController.IsItemsJsonLoaded())
@@ -372,10 +374,12 @@ namespace StatisticsAnalysisTool.ViewModels
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_JSON_CAN_NOT_BE_LOADED"));
                     GridTryToLoadTheItemJsonAgainVisibility = Visibility.Visible;
                     IsTaskProgressbarIndeterminate = false;
-                    return;
+                    itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
                 }
-
-                itemsTaskTextObject.SetStatus(true);
+                else
+                {
+                    itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
+                }
             }
 
             await ItemController.SetFavoriteItemsFromLocalFileAsync();
