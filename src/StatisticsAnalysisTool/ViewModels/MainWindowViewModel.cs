@@ -120,6 +120,12 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingMobLoot;
         private Visibility _gridTryToLoadTheItemJsonAgainVisibility;
         private ObservableCollection<TopLooterObject> _topLooters = new ();
+        private Visibility _toolTasksVisibility = Visibility.Collapsed;
+        private ObservableCollection<TaskTextObject> _toolTaskObjects = new ();
+        private double _taskProgressbarMinimum;
+        private double _taskProgressbarMaximum = 100;
+        private double _taskProgressbarValue;
+        private bool _isTaskProgressbarIndeterminate;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -321,10 +327,10 @@ namespace StatisticsAnalysisTool.ViewModels
         private async Task InitMainWindowDataAsync()
         {
             Translation = new MainWindowTranslation();
-
+            ToolTaskController.SetToolTaskController(this);
             SetUiElements();
 
-            // TODO: Info Window vorrübergehend deaktiviert
+            // TODO: Info window temporarily disabled
             //ShowInfoWindow();
 
             await InitItemsAsync().ConfigureAwait(false);
@@ -332,6 +338,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public async Task InitItemsAsync()
         {
+            IsTaskProgressbarIndeterminate = true;
             IsTxtSearchEnabled = false;
             IsItemSearchCheckboxesEnabled = false;
             IsFilterResetEnabled = false;
@@ -341,25 +348,37 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (!ItemController.IsItemsLoaded())
             {
+                var itemListTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEM_LIST_JSON"));
+                ToolTaskController.Add(itemListTaskTextObject);
                 var isItemListLoaded = await ItemController.GetItemListFromJsonAsync().ConfigureAwait(true);
                 if (!isItemListLoaded)
                 {
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_LIST_CAN_NOT_BE_LOADED"));
                     GridTryToLoadTheItemListAgainVisibility = Visibility.Visible;
-
-                    return;
+                    IsTaskProgressbarIndeterminate = false;
+                    itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
+                }
+                else
+                {
+                    itemListTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
                 }
             }
 
             if (!ItemController.IsItemsJsonLoaded())
             {
+                var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_ITEMS_JSON"));
+                ToolTaskController.Add(itemsTaskTextObject);
                 var isItemsJsonLoaded = await ItemController.GetItemsJsonAsync().ConfigureAwait(true);
                 if (!isItemsJsonLoaded)
                 {
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ITEM_JSON_CAN_NOT_BE_LOADED"));
                     GridTryToLoadTheItemJsonAgainVisibility = Visibility.Visible;
-
-                    return;
+                    IsTaskProgressbarIndeterminate = false;
+                    itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
+                }
+                else
+                {
+                    itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
                 }
             }
 
@@ -372,6 +391,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsFilterResetEnabled = true;
             IsItemSearchCheckboxesEnabled = true;
             IsTxtSearchEnabled = true;
+            IsTaskProgressbarIndeterminate = false;
 
             //_mainWindow.Dispatcher?.Invoke(() => { _ = _mainWindow.TxtSearch.Focus(); });
         }
@@ -469,7 +489,26 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-        
+
+        #region Tool tasks
+
+        public void SetToolTasksVisibility(Visibility value)
+        {
+            ToolTasksVisibility = value;
+        }
+
+        public void SwitchToolTasksState()
+        {
+            ToolTasksVisibility = ToolTasksVisibility switch
+            {
+                Visibility.Collapsed => Visibility.Visible,
+                Visibility.Visible => Visibility.Collapsed,
+                _ => ToolTasksVisibility
+            };
+        }
+
+        #endregion
+
         #region Save loot logger
 
         public void SaveLootLogger()
@@ -1734,6 +1773,66 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _loggingFilters = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TaskProgressbarMinimum
+        {
+            get => _taskProgressbarMinimum;
+            set
+            {
+                _taskProgressbarMinimum = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TaskProgressbarMaximum
+        {
+            get => _taskProgressbarMaximum;
+            set
+            {
+                _taskProgressbarMaximum = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TaskProgressbarValue
+        {
+            get => _taskProgressbarValue;
+            set
+            {
+                _taskProgressbarValue = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool IsTaskProgressbarIndeterminate
+        {
+            get => _isTaskProgressbarIndeterminate;
+            set
+            {
+                _isTaskProgressbarIndeterminate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ToolTasksVisibility
+        {
+            get => _toolTasksVisibility;
+            set
+            {
+                _toolTasksVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<TaskTextObject> ToolTaskObjects
+        {
+            get => _toolTaskObjects;
+            set
+            {
+                _toolTaskObjects = value;
                 OnPropertyChanged();
             }
         }

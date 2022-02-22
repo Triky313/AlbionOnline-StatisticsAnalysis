@@ -79,5 +79,6 @@ namespace StatisticsAnalysisTool.Models
         public static string ShowKills => LanguageController.Translation("SHOW_KILLS");
         public static string TrackingMobLoot => LanguageController.Translation("TRACKING_MOB_LOOT");
         public static string TopLooters => LanguageController.Translation("TOP_LOOTERS");
+        public static string ToolTasks => LanguageController.Translation("TOOL_TASKS");
     }
 }
