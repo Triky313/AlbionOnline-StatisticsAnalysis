@@ -52,5 +52,10 @@ namespace StatisticsAnalysisTool.UserControls
         {
             ConsoleManager.Toggle();
         }
+
+        private void ReloadSettings_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            _settingsWindowViewModel.ReloadSettings();
+        }
     }
 }

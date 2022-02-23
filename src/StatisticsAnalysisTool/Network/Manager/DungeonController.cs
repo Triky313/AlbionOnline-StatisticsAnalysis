@@ -41,6 +41,11 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task AddDungeonAsync(MapType mapType, Guid? mapGuid)
         {
+            if (!_trackingController.IsTrackingAllowedByMainCharacter())
+            {
+                return;
+            }
+
             UpdateDungeonSaveTimerUi();
 
             _currentGuid = mapGuid;

@@ -525,4 +525,5 @@
 	<translation name="TOOL_TASKS">Tool tasks</translation>
 	<translation name="GET_ITEM_LIST_JSON">Get ItemList.json</translation>
 	<translation name="GET_ITEMS_JSON">Get Items.json</translation>
+	<translation name="CHARACTER_NAME_TO_TRACK">Character name to track</translation>
 </translations>
