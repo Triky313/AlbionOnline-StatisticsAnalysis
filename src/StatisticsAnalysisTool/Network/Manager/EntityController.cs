@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using log4net;
+using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -120,7 +121,10 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task AddToPartyAsync(Guid guid, string username)
         {
-            if (_knownPartyEntities.All(x => x.Key != guid)) _knownPartyEntities.TryAdd(guid, username);
+            if (_knownPartyEntities.All(x => x.Key != guid))
+            {
+                _knownPartyEntities.TryAdd(guid, username);
+            }
 
             await SetPartyMemberUiAsync();
         }

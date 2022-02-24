@@ -11,8 +11,24 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
     public class JoinResponse
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
         public long? UserObjectId;
+        public Guid? Guid { get; }
+        public string Username { get; }
+        public string MapIndex { get; }
+        public Guid? DungeonGuid { get; }
+        public MapType MapType { get; }
+        public double CurrentFocusPoints { get; }
+        public double MaxCurrentFocusPoints { get; }
+        public FixPoint LearningPoints { get; }
+        public double Reputation { get; }
+        public FixPoint ReSpecPoints { get; }
+        public FixPoint Silver { get; }
+        public FixPoint Gold { get; }
+        public Guid? InteractGuid { get; }
+        public string GuildName { get; }
+        public string MainMapIndex { get; set; }
+        public int PlayTimeInSeconds { get; set; }
+        public string AllianceName { get; }
 
         public JoinResponse(Dictionary<byte, object> parameters)
         {
@@ -96,23 +112,5 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 Log.Debug(nameof(JoinResponse), e);
             }
         }
-
-        public Guid? Guid { get; }
-        public string Username { get; }
-        public string MapIndex { get; }
-        public Guid? DungeonGuid { get; }
-        public MapType MapType { get; }
-        public double CurrentFocusPoints { get; }
-        public double MaxCurrentFocusPoints { get; }
-        public FixPoint LearningPoints { get; }
-        public double Reputation { get; }
-        public FixPoint ReSpecPoints { get; }
-        public FixPoint Silver { get; }
-        public FixPoint Gold { get; }
-        public Guid? InteractGuid { get; }
-        public string GuildName { get; }
-        public string MainMapIndex { get; set; }
-        public int PlayTimeInSeconds { get; set; }
-        public string AllianceName { get; }
     }
 }

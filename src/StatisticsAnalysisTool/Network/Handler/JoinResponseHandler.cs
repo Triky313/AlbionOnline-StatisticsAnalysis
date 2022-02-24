@@ -7,6 +7,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -53,11 +54,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                 IsVisible = Visibility.Collapsed
             };
 
-            if (value.Guid != null && value.InteractGuid  != null && value.UserObjectId != null)
-            {
-                _trackingController.EntityController.AddEntity((long) value.UserObjectId, (Guid) value.Guid, (Guid) value.InteractGuid, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
-                await _trackingController.EntityController.AddToPartyAsync((Guid) value.Guid, value.Username);
-            }
+            await AddEntityAsync(value.UserObjectId, value.Guid, value.InteractGuid, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
 
             _trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.DungeonGuid).ConfigureAwait(false);
 
@@ -65,6 +62,20 @@ namespace StatisticsAnalysisTool.Network.Handler
             SetTrackingActivityText();
 
             await Task.CompletedTask;
+        }
+
+        private async Task AddEntityAsync(long? userObjectId, Guid? guid, Guid? interactGuid, string name, GameObjectType gameObjectType, GameObjectSubType gameObjectSubType)
+        {
+            if (guid == null || interactGuid == null || userObjectId == null)
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainTrackingCharacterName) || name == SettingsController.CurrentSettings.MainTrackingCharacterName)
+            {
+                _trackingController.EntityController.AddEntity((long)userObjectId, (Guid)guid, interactGuid, name, GameObjectType.Player, GameObjectSubType.LocalPlayer);
+                await _trackingController.EntityController.AddToPartyAsync((Guid)guid, name);
+            }
         }
 
         private void SetTrackingActivityText()
