@@ -62,6 +62,11 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void AddValue(ValueType type, double gainedValue)
         {
+            if (!_trackingController.IsTrackingAllowedByMainCharacter())
+            {
+                return;
+            }
+
             gainedValue = GetGainedValue(type, gainedValue);
 
             var dateTimeNow = DateTime.Now;

@@ -43,7 +43,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
             LootController = new LootController(this, mainWindowViewModel);
             StatisticController = new StatisticController(this, mainWindowViewModel);
-            CountUpTimer = new CountUpTimer(mainWindowViewModel);
+            CountUpTimer = new CountUpTimer(this, mainWindowViewModel);
         }
 
         public ClusterInfo CurrentCluster { get; private set; }
@@ -151,7 +151,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             item.SetType();
 
-            if (!IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Fame || !IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Silver)
+            if (!IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Fame || !IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Silver 
+                || !IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Faction)
             {
                 return;
             }
