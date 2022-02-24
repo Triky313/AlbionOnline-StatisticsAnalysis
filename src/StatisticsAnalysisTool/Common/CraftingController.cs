@@ -170,6 +170,11 @@ namespace StatisticsAnalysisTool.Common
                             var resources = GetTotalAmountResources(equipmentItem.CraftingRequirements);
                             return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource);
                         }
+                    case Mount mount:
+                        {
+                            var resources = GetTotalAmountResources(mount.CraftingRequirements);
+                            return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, mount.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                        }
                 }
 
                 return 0;
