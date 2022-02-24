@@ -4,6 +4,7 @@
     {
         public string CurrentLanguageCultureName { get; set; } = "en-US";
         public int RefreshRate { get; set; } = 10000;
+        public string MainTrackingCharacterName { get; set; }
         public int UpdateItemListByDays { get; set; } = 7;
         public int UpdateItemsJsonByDays { get; set; } = 7;
         public string ItemListSourceUrl { get; set; } = "https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json";

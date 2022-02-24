@@ -17,13 +17,17 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(MightFavorPointsEvent value)
         {
-            _trackingController.StatisticController?.AddValue(ValueType.Might, value.Might.DoubleValue);
-            _trackingController.StatisticController?.AddValue(ValueType.Favor, value.Favor.DoubleValue);
-            _countUpTimer.Add(ValueType.Might, value.Might.DoubleValue);
-            _countUpTimer.Add(ValueType.Favor, value.Favor.DoubleValue);
 
-            _trackingController.DungeonController?.AddValueToDungeon(value.Might.DoubleValue, ValueType.Might);
-            _trackingController.DungeonController?.AddValueToDungeon(value.Favor.DoubleValue, ValueType.Favor);
+            if (_trackingController.IsTrackingAllowedByMainCharacter())
+            {
+                _trackingController.StatisticController?.AddValue(ValueType.Might, value.Might.DoubleValue);
+                _trackingController.StatisticController?.AddValue(ValueType.Favor, value.Favor.DoubleValue);
+                _countUpTimer.Add(ValueType.Might, value.Might.DoubleValue);
+                _countUpTimer.Add(ValueType.Favor, value.Favor.DoubleValue);
+
+                _trackingController.DungeonController?.AddValueToDungeon(value.Might.DoubleValue, ValueType.Might);
+                _trackingController.DungeonController?.AddValueToDungeon(value.Favor.DoubleValue, ValueType.Favor);
+            }
 
             await Task.CompletedTask;
         }

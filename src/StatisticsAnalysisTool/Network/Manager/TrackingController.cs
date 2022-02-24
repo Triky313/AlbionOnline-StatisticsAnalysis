@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -37,12 +38,12 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
-            EntityController = new EntityController(mainWindowViewModel);
+            EntityController = new EntityController(this, mainWindowViewModel);
             DungeonController = new DungeonController(this, mainWindowViewModel);
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
             LootController = new LootController(this, mainWindowViewModel);
             StatisticController = new StatisticController(this, mainWindowViewModel);
-            CountUpTimer = new CountUpTimer(mainWindowViewModel);
+            CountUpTimer = new CountUpTimer(this, mainWindowViewModel);
         }
 
         public ClusterInfo CurrentCluster { get; private set; }
@@ -149,6 +150,12 @@ namespace StatisticsAnalysisTool.Network.Manager
         public async Task AddNotificationAsync(TrackingNotification item)
         {
             item.SetType();
+
+            if (!IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Fame || !IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Silver 
+                || !IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Faction)
+            {
+                return;
+            }
 
             if (_mainWindowViewModel?.TrackingNotifications == null)
             {
@@ -322,6 +329,42 @@ namespace StatisticsAnalysisTool.Network.Manager
             return false;
         }
 
+        #endregion
+
+        #region Main tracking character name
+
+        public void SetMainCharacterNameForTracking(string currentUsername)
+        {
+            if (SettingsController.CurrentSettings.MainTrackingCharacterName != null)
+            {
+                return;
+            }
+
+            SettingsController.CurrentSettings.MainTrackingCharacterName = currentUsername;
+        }
+
+        public bool IsTrackingAllowedByMainCharacter()
+        {
+            var localEntity = EntityController.GetLocalEntity();
+
+            if (localEntity?.Value?.Name == null || string.IsNullOrEmpty(SettingsController.CurrentSettings.MainTrackingCharacterName))
+            {
+                return true;
+            }
+
+            if (localEntity.Value.Value.Name == SettingsController.CurrentSettings.MainTrackingCharacterName)
+            {
+                return true;
+            }
+
+            if (localEntity.Value.Value.Name != SettingsController.CurrentSettings.MainTrackingCharacterName)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        
         #endregion
     }
 }

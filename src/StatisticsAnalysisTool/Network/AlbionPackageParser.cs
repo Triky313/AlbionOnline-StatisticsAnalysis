@@ -14,71 +14,71 @@ namespace StatisticsAnalysisTool.Network
 {
     public class AlbionPackageParser : PhotonParser
     {
-        private readonly NewEquipmentItemEventHandler NewEquipmentItemEventHandler;
-        private readonly OtherGrabbedLootEventHandler GrabbedLootEventHandler;
-        private readonly InventoryDeleteItemEventHandler InventoryDeleteItemEventHandler;
-        private readonly InventoryPutItemEventHandler InventoryPutItemEventHandler;
-        private readonly TakeSilverEventHandler TakeSilverEventHandler;
-        private readonly UpdateFameEventHandler UpdateFameEventHandler;
-        private readonly UpdateSilverEventHandler UpdateSilverEventHandler;
-        private readonly UpdateReSpecPointsEventHandler UpdateReSpecPointsEventHandler;
-        private readonly UpdateCurrencyEventHandler UpdateCurrencyEventHandler;
-        private readonly DiedEventHandler DiedEventHandler;
-        private readonly NewLootChestEventHandler NewLootChestEventHandler;
-        private readonly LootChestOpenedEventHandler LootChestOpenedEventHandler;
-        private readonly InCombatStateUpdateEventHandler InCombatStateUpdateEventHandler;
-        private readonly NewShrineEventHandler NewShrineEventHandler;
-        private readonly HealthUpdateEventHandler HealthUpdateEventHandler;
-        private readonly PartyPlayerJoinedEventHandler PartyPlayerJoinedHandler;
-        private readonly PartyChangedOrderEventHandler PartyChangedOrderEventHandler;
-        private readonly NewCharacterEventHandler NewCharacterEventHandler;
-        private readonly SiegeCampClaimStartEventHandler SiegeCampClaimStartEventHandler;
-        private readonly CharacterEquipmentChangedEventHandler CharacterEquipmentChangedEventHandler;
-        private readonly NewMobEventHandler NewMobEventHandler;
-        private readonly ActiveSpellEffectsUpdateEventHandler ActiveSpellEffectsUpdateEventHandler;
-        private readonly UpdateFactionStandingEventHandler UpdateFactionStandingEventHandler;
-        private readonly ReceivedSeasonPointsEventHandler ReceivedSeasonPointsEventHandler;
-        private readonly MightFavorPointsEventHandler MightFavorPointsEventHandler;
+        private readonly NewEquipmentItemEventHandler _newEquipmentItemEventHandler;
+        private readonly OtherGrabbedLootEventHandler _grabbedLootEventHandler;
+        private readonly InventoryDeleteItemEventHandler _inventoryDeleteItemEventHandler;
+        private readonly InventoryPutItemEventHandler _inventoryPutItemEventHandler;
+        private readonly TakeSilverEventHandler _takeSilverEventHandler;
+        private readonly UpdateFameEventHandler _updateFameEventHandler;
+        private readonly UpdateSilverEventHandler _updateSilverEventHandler;
+        private readonly UpdateReSpecPointsEventHandler _updateReSpecPointsEventHandler;
+        private readonly UpdateCurrencyEventHandler _updateCurrencyEventHandler;
+        private readonly DiedEventHandler _diedEventHandler;
+        private readonly NewLootChestEventHandler _newLootChestEventHandler;
+        private readonly LootChestOpenedEventHandler _lootChestOpenedEventHandler;
+        private readonly InCombatStateUpdateEventHandler _inCombatStateUpdateEventHandler;
+        private readonly NewShrineEventHandler _newShrineEventHandler;
+        private readonly HealthUpdateEventHandler _healthUpdateEventHandler;
+        private readonly PartyPlayerJoinedEventHandler _partyPlayerJoinedHandler;
+        private readonly PartyChangedOrderEventHandler _partyChangedOrderEventHandler;
+        private readonly NewCharacterEventHandler _newCharacterEventHandler;
+        private readonly SiegeCampClaimStartEventHandler _siegeCampClaimStartEventHandler;
+        private readonly CharacterEquipmentChangedEventHandler _characterEquipmentChangedEventHandler;
+        private readonly NewMobEventHandler _newMobEventHandler;
+        private readonly ActiveSpellEffectsUpdateEventHandler _activeSpellEffectsUpdateEventHandler;
+        private readonly UpdateFactionStandingEventHandler _updateFactionStandingEventHandler;
+        private readonly ReceivedSeasonPointsEventHandler _receivedSeasonPointsEventHandler;
+        private readonly MightFavorPointsEventHandler _mightFavorPointsEventHandler;
 
-        private readonly UseShrineRequestHandler UseShrineRequestHandler;
+        private readonly UseShrineRequestHandler _useShrineRequestHandler;
 
-        private readonly ChangeClusterResponseHandler ChangeClusterResponseHandler;
-        private readonly PartyMakeLeaderResponseHandler PartyMakeLeaderResponseHandler;
-        private readonly JoinResponseHandler JoinResponseHandler;
+        private readonly ChangeClusterResponseHandler _changeClusterResponseHandler;
+        private readonly PartyMakeLeaderResponseHandler _partyMakeLeaderResponseHandler;
+        private readonly JoinResponseHandler _joinResponseHandler;
 
         public AlbionPackageParser(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
-            NewEquipmentItemEventHandler = new NewEquipmentItemEventHandler(trackingController);
-            GrabbedLootEventHandler = new OtherGrabbedLootEventHandler(trackingController);
-            InventoryDeleteItemEventHandler = new InventoryDeleteItemEventHandler(trackingController);
-            InventoryPutItemEventHandler = new InventoryPutItemEventHandler(trackingController);
-            TakeSilverEventHandler = new TakeSilverEventHandler(trackingController);
-            UpdateFameEventHandler = new UpdateFameEventHandler(trackingController);
-            UpdateSilverEventHandler = new UpdateSilverEventHandler(trackingController);
-            UpdateReSpecPointsEventHandler = new UpdateReSpecPointsEventHandler(trackingController);
-            UpdateCurrencyEventHandler = new UpdateCurrencyEventHandler(trackingController);
-            DiedEventHandler = new DiedEventHandler(trackingController);
-            NewLootChestEventHandler = new NewLootChestEventHandler(trackingController);
-            LootChestOpenedEventHandler = new LootChestOpenedEventHandler(trackingController);
-            InCombatStateUpdateEventHandler = new InCombatStateUpdateEventHandler(trackingController);
-            NewShrineEventHandler = new NewShrineEventHandler(trackingController);
-            HealthUpdateEventHandler = new HealthUpdateEventHandler(trackingController);
-            PartyPlayerJoinedHandler = new PartyPlayerJoinedEventHandler(trackingController);
-            PartyChangedOrderEventHandler = new PartyChangedOrderEventHandler(trackingController);
-            NewCharacterEventHandler = new NewCharacterEventHandler(trackingController);
-            SiegeCampClaimStartEventHandler = new SiegeCampClaimStartEventHandler(trackingController);
-            CharacterEquipmentChangedEventHandler = new CharacterEquipmentChangedEventHandler(trackingController);
-            NewMobEventHandler = new NewMobEventHandler(trackingController);
-            ActiveSpellEffectsUpdateEventHandler = new ActiveSpellEffectsUpdateEventHandler(trackingController);
-            UpdateFactionStandingEventHandler = new UpdateFactionStandingEventHandler(trackingController);
-            ReceivedSeasonPointsEventHandler = new ReceivedSeasonPointsEventHandler(trackingController);
-            MightFavorPointsEventHandler = new MightFavorPointsEventHandler(trackingController);
+            _newEquipmentItemEventHandler = new NewEquipmentItemEventHandler(trackingController);
+            _grabbedLootEventHandler = new OtherGrabbedLootEventHandler(trackingController);
+            _inventoryDeleteItemEventHandler = new InventoryDeleteItemEventHandler(trackingController);
+            _inventoryPutItemEventHandler = new InventoryPutItemEventHandler(trackingController);
+            _takeSilverEventHandler = new TakeSilverEventHandler(trackingController);
+            _updateFameEventHandler = new UpdateFameEventHandler(trackingController);
+            _updateSilverEventHandler = new UpdateSilverEventHandler(trackingController);
+            _updateReSpecPointsEventHandler = new UpdateReSpecPointsEventHandler(trackingController);
+            _updateCurrencyEventHandler = new UpdateCurrencyEventHandler(trackingController);
+            _diedEventHandler = new DiedEventHandler(trackingController);
+            _newLootChestEventHandler = new NewLootChestEventHandler(trackingController);
+            _lootChestOpenedEventHandler = new LootChestOpenedEventHandler(trackingController);
+            _inCombatStateUpdateEventHandler = new InCombatStateUpdateEventHandler(trackingController);
+            _newShrineEventHandler = new NewShrineEventHandler(trackingController);
+            _healthUpdateEventHandler = new HealthUpdateEventHandler(trackingController);
+            _partyPlayerJoinedHandler = new PartyPlayerJoinedEventHandler(trackingController);
+            _partyChangedOrderEventHandler = new PartyChangedOrderEventHandler(trackingController);
+            _newCharacterEventHandler = new NewCharacterEventHandler(trackingController);
+            _siegeCampClaimStartEventHandler = new SiegeCampClaimStartEventHandler(trackingController);
+            _characterEquipmentChangedEventHandler = new CharacterEquipmentChangedEventHandler(trackingController);
+            _newMobEventHandler = new NewMobEventHandler(trackingController);
+            _activeSpellEffectsUpdateEventHandler = new ActiveSpellEffectsUpdateEventHandler(trackingController);
+            _updateFactionStandingEventHandler = new UpdateFactionStandingEventHandler(trackingController);
+            _receivedSeasonPointsEventHandler = new ReceivedSeasonPointsEventHandler(trackingController);
+            _mightFavorPointsEventHandler = new MightFavorPointsEventHandler(trackingController);
 
-            UseShrineRequestHandler = new UseShrineRequestHandler(trackingController);
+            _useShrineRequestHandler = new UseShrineRequestHandler(trackingController);
 
-            ChangeClusterResponseHandler = new ChangeClusterResponseHandler(trackingController);
-            PartyMakeLeaderResponseHandler = new PartyMakeLeaderResponseHandler(trackingController);
-            JoinResponseHandler = new JoinResponseHandler(trackingController, mainWindowViewModel);
+            _changeClusterResponseHandler = new ChangeClusterResponseHandler(trackingController);
+            _partyMakeLeaderResponseHandler = new PartyMakeLeaderResponseHandler(trackingController);
+            _joinResponseHandler = new JoinResponseHandler(trackingController, mainWindowViewModel);
         }
 
         #region Actions
@@ -251,151 +251,151 @@ namespace StatisticsAnalysisTool.Network
         private async Task NewEquipmentItemEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new NewEquipmentItemEvent(parameters);
-            await NewEquipmentItemEventHandler.OnActionAsync(value);
+            await _newEquipmentItemEventHandler.OnActionAsync(value);
         }
 
         private async Task GrabbedLootEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new GrabbedLootEvent(parameters);
-            await GrabbedLootEventHandler.OnActionAsync(value);
+            await _grabbedLootEventHandler.OnActionAsync(value);
         }
 
         private async Task InventoryDeleteItemEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new InventoryDeleteItemEvent(parameters);
-            await InventoryDeleteItemEventHandler.OnActionAsync(value);
+            await _inventoryDeleteItemEventHandler.OnActionAsync(value);
         }
 
         private async Task InventoryPutItemEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new InventoryPutItemEvent(parameters);
-            await InventoryPutItemEventHandler.OnActionAsync(value);
+            await _inventoryPutItemEventHandler.OnActionAsync(value);
         }
 
         private async Task TakeSilverEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new TakeSilverEvent(parameters);
-            await TakeSilverEventHandler.OnActionAsync(value);
+            await _takeSilverEventHandler.OnActionAsync(value);
         }
 
         private async Task UpdateFameEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new UpdateFameEvent(parameters);
-            await UpdateFameEventHandler.OnActionAsync(value);
+            await _updateFameEventHandler.OnActionAsync(value);
         }
 
         private async Task UpdateSilverEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new UpdateSilverEvent(parameters);
-            await UpdateSilverEventHandler.OnActionAsync(value);
+            await _updateSilverEventHandler.OnActionAsync(value);
         }
 
         private async Task UpdateReSpecPointsEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new UpdateReSpecPointsEvent(parameters);
-            await UpdateReSpecPointsEventHandler.OnActionAsync(value);
+            await _updateReSpecPointsEventHandler.OnActionAsync(value);
         }
 
         private async Task UpdateCurrencyEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new UpdateCurrencyEvent(parameters);
-            await UpdateCurrencyEventHandler.OnActionAsync(value);
+            await _updateCurrencyEventHandler.OnActionAsync(value);
         }
 
         private async Task DiedEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new DiedEvent(parameters);
-            await DiedEventHandler.OnActionAsync(value);
+            await _diedEventHandler.OnActionAsync(value);
         }
 
         private async Task NewLootChestEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new NewLootChestEvent(parameters);
-            await NewLootChestEventHandler.OnActionAsync(value);
+            await _newLootChestEventHandler.OnActionAsync(value);
         }
 
         private async Task LootChestOpenedEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new LootChestOpenedEvent(parameters);
-            await LootChestOpenedEventHandler.OnActionAsync(value);
+            await _lootChestOpenedEventHandler.OnActionAsync(value);
         }
 
         private async Task InCombatStateUpdateEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new InCombatStateUpdateEvent(parameters);
-            await InCombatStateUpdateEventHandler.OnActionAsync(value);
+            await _inCombatStateUpdateEventHandler.OnActionAsync(value);
         }
 
         private async Task NewShrineEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new NewShrineEvent(parameters);
-            await NewShrineEventHandler.OnActionAsync(value);
+            await _newShrineEventHandler.OnActionAsync(value);
         }
 
         private async Task HealthUpdateEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new HealthUpdateEvent(parameters);
-            await HealthUpdateEventHandler.OnActionAsync(value);
+            await _healthUpdateEventHandler.OnActionAsync(value);
         }
 
         private async Task PartyPlayerJoinedHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new PartyPlayerJoinedEvent(parameters);
-            await PartyPlayerJoinedHandler.OnActionAsync(value);
+            await _partyPlayerJoinedHandler.OnActionAsync(value);
         }
 
         private async Task PartyChangedOrderEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new PartyChangedOrderEvent(parameters);
-            await PartyChangedOrderEventHandler.OnActionAsync(value);
+            await _partyChangedOrderEventHandler.OnActionAsync(value);
         }
 
         private async Task NewCharacterEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new NewCharacterEvent(parameters);
-            await NewCharacterEventHandler.OnActionAsync(value);
+            await _newCharacterEventHandler.OnActionAsync(value);
         }
 
         private async Task SiegeCampClaimStartEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new SiegeCampClaimStartEvent(parameters);
-            await SiegeCampClaimStartEventHandler.OnActionAsync(value);
+            await _siegeCampClaimStartEventHandler.OnActionAsync(value);
         }
 
         private async Task NewMobEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new NewMobEvent(parameters);
-            await NewMobEventHandler.OnActionAsync(value);
+            await _newMobEventHandler.OnActionAsync(value);
         }
 
         private async Task CharacterEquipmentChangedEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new CharacterEquipmentChangedEvent(parameters);
-            await CharacterEquipmentChangedEventHandler.OnActionAsync(value);
+            await _characterEquipmentChangedEventHandler.OnActionAsync(value);
         }
 
         private async Task ActiveSpellEffectsUpdateEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new ActiveSpellEffectsUpdateEvent(parameters);
-            await ActiveSpellEffectsUpdateEventHandler.OnActionAsync(value);
+            await _activeSpellEffectsUpdateEventHandler.OnActionAsync(value);
         }
 
         private async Task UpdateFactionStandingEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new UpdateFactionStandingEvent(parameters);
-            await UpdateFactionStandingEventHandler.OnActionAsync(value);
+            await _updateFactionStandingEventHandler.OnActionAsync(value);
         }
 
         private async Task ReceivedSeasonPointsEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new ReceivedSeasonPointsEvent(parameters);
-            await ReceivedSeasonPointsEventHandler.OnActionAsync(value);
+            await _receivedSeasonPointsEventHandler.OnActionAsync(value);
         }
 
         private async Task MightFavorPointsEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new MightFavorPointsEvent(parameters);
-            await MightFavorPointsEventHandler.OnActionAsync(value);
+            await _mightFavorPointsEventHandler.OnActionAsync(value);
         }
 
         #endregion
@@ -405,7 +405,7 @@ namespace StatisticsAnalysisTool.Network
         private async Task UseShrineRequestHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new UseShrineRequest(parameters);
-            await UseShrineRequestHandler.OnActionAsync(value);
+            await _useShrineRequestHandler.OnActionAsync(value);
         }
 
         #endregion
@@ -415,19 +415,19 @@ namespace StatisticsAnalysisTool.Network
         private async Task ChangeClusterResponseHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new ChangeClusterResponse(parameters);
-            await ChangeClusterResponseHandler.OnActionAsync(value);
+            await _changeClusterResponseHandler.OnActionAsync(value);
         }
 
         private async Task PartyMakeLeaderEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new PartyMakeLeaderResponse(parameters);
-            await PartyMakeLeaderResponseHandler.OnActionAsync(value);
+            await _partyMakeLeaderResponseHandler.OnActionAsync(value);
         }
 
         private async Task JoinResponseHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new JoinResponse(parameters);
-            await JoinResponseHandler.OnActionAsync(value);
+            await _joinResponseHandler.OnActionAsync(value);
         }
 
         #endregion

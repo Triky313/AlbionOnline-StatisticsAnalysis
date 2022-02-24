@@ -36,6 +36,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private FileSettingInformation _updateItemsJsonByDaysSelection;
         private bool _isSuggestPreReleaseUpdatesActive;
         private bool _isItemRealNameInLoggingExportActive;
+        private string _mainTrackingCharacterName;
 
         public SettingsWindowViewModel()
         {
@@ -83,6 +84,12 @@ namespace StatisticsAnalysisTool.ViewModels
             RefreshRates.Add(new FileSettingInformation { Name = Translation.SixtySeconds, Value = 60000 });
             RefreshRates.Add(new FileSettingInformation { Name = Translation.FiveMinutes, Value = 300000 });
             RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
+
+            #endregion
+
+            #region MainTrackingCharacterName
+
+            MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
 
             #endregion
 
@@ -157,6 +164,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.CurrentSettings.ItemListSourceUrl = ItemListSourceUrl;
             SettingsController.CurrentSettings.ItemsJsonSourceUrl = ItemsJsonSourceUrl;
             SettingsController.CurrentSettings.RefreshRate = RefreshRatesSelection.Value;
+            SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
             SettingsController.CurrentSettings.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
             SettingsController.CurrentSettings.UpdateItemsJsonByDays = UpdateItemsJsonByDaysSelection.Value;
             SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
@@ -175,6 +183,11 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
 
             SetAppSettingsAndTranslations();
+        }
+
+        public void ReloadSettings()
+        {
+            MainTrackingCharacterName = SettingsController.CurrentSettings.MainTrackingCharacterName;
         }
 
         private void SetAppSettingsAndTranslations()
@@ -266,6 +279,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _refreshRates = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string MainTrackingCharacterName
+        {
+            get => _mainTrackingCharacterName;
+            set
+            {
+                _mainTrackingCharacterName = value;
                 OnPropertyChanged();
             }
         }

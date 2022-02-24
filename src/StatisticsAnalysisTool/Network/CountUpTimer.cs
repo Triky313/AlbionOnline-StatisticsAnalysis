@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Network.Manager;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network
@@ -44,14 +45,21 @@ namespace StatisticsAnalysisTool.Network
         private double _totalGainedFactionPointsInSession;
         private CityFaction _currentCityFaction = CityFaction.Unknown;
         private double? _lastReSpecValue;
+        private readonly TrackingController _trackingController;
 
-        public CountUpTimer(MainWindowViewModel mainWindowViewModel)
+        public CountUpTimer(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
+            _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
         }
-
+        
         public void Add(ValueType valueType, double value, CityFaction cityFaction = CityFaction.Unknown)
         {
+            if (!_trackingController.IsTrackingAllowedByMainCharacter())
+            {
+                return;
+            }
+
             switch (valueType)
             {
                 case ValueType.Fame:

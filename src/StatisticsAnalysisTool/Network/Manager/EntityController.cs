@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using log4net;
+using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -22,6 +23,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new();
+        private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = new();
         private readonly ObservableCollection<SpellEffect> _spellEffects = new();
@@ -31,17 +33,23 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public LocalUserData LocalUserData { get; set; }
 
-        public EntityController(MainWindowViewModel mainWindowViewModel)
+        public EntityController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
+            _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
         }
-
+        
         #region Entities
 
         public event Action<GameObject> OnAddEntity;
 
         public void AddEntity(long objectId, Guid userGuid, Guid? interactGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
         {
+            if (objectSubType == GameObjectSubType.LocalPlayer)
+            {
+                _trackingController.SetMainCharacterNameForTracking(name);
+            }
+
             PlayerGameObject gameObject;
 
             if (_knownEntities.TryRemove(userGuid, out var oldEntity))
@@ -92,12 +100,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 x.Value.ObjectSubType == GameObjectSubType.LocalPlayer || _knownPartyEntities.ContainsKey(x.Key)))
                 entity.Value.ObjectId = null;
         }
-
-        public bool ExistLocalEntity()
-        {
-            return _knownEntities?.Any(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer) ?? false;
-        }
-
+        
         public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
         {
             return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
@@ -112,15 +115,16 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public bool IsEntityInParty(string name) => GetAllEntities(true).Any(x => x.Value.Name == name);
 
-        public KeyValuePair<Guid, PlayerGameObject>? GetLocalEntity() => _knownEntities?.ToArray().FirstOrDefault(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer);
-
         #endregion
 
         #region Party
 
         public async Task AddToPartyAsync(Guid guid, string username)
         {
-            if (_knownPartyEntities.All(x => x.Key != guid)) _knownPartyEntities.TryAdd(guid, username);
+            if (_knownPartyEntities.All(x => x.Key != guid))
+            {
+                _knownPartyEntities.TryAdd(guid, username);
+            }
 
             await SetPartyMemberUiAsync();
         }
@@ -435,6 +439,13 @@ namespace StatisticsAnalysisTool.Network.Manager
         }
 
         public FixPoint GetLastLocalEntityGuildTax(FixPoint yieldPreTax) => FixPoint.FromFloatingPointValue(yieldPreTax.DoubleValue / 100 * _lastLocalEntityGuildTaxInPercent);
+
+        public bool ExistLocalEntity()
+        {
+            return _knownEntities?.Any(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer) ?? false;
+        }
+
+        public KeyValuePair<Guid, PlayerGameObject>? GetLocalEntity() => _knownEntities?.ToArray().FirstOrDefault(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer);
 
         #endregion
     }

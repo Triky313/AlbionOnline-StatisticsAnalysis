@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
@@ -22,27 +21,27 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             var localEntity = _trackingController.EntityController.GetLocalEntity()?.Value;
 
-            var IsObjectLocalEntity = value.ObjectId != null && localEntity?.ObjectId == value.ObjectId;
-            var IsObjectPartyEntityAndNotTargetEntity = value.ObjectId != null && _trackingController.EntityController.IsEntityInParty((long) value.ObjectId) && value.ObjectId != value.TargetEntityId;
-            var IsObjectLocalEntityAndTargetEntity = value.ObjectId != null && localEntity?.ObjectId == value.ObjectId && value.ObjectId == value.TargetEntityId;
+            var isObjectLocalEntity = value.ObjectId != null && localEntity?.ObjectId == value.ObjectId;
+            var isObjectPartyEntityAndNotTargetEntity = value.ObjectId != null && _trackingController.EntityController.IsEntityInParty((long)value.ObjectId) && value.ObjectId != value.TargetEntityId;
+            var isObjectLocalEntityAndTargetEntity = value.ObjectId != null && localEntity?.ObjectId == value.ObjectId && value.ObjectId == value.TargetEntityId;
 
-            if (IsObjectLocalEntity || IsObjectPartyEntityAndNotTargetEntity || IsObjectLocalEntityAndTargetEntity)
+            if (isObjectLocalEntity || isObjectPartyEntityAndNotTargetEntity || isObjectLocalEntityAndTargetEntity)
             {
                 // Set guild tax % to local player
-                if (IsObjectLocalEntity && !IsObjectLocalEntityAndTargetEntity)
+                if (isObjectLocalEntity && !isObjectLocalEntityAndTargetEntity)
                 {
                     _trackingController.EntityController.SetLastLocalEntityGuildTax(value.YieldPreTax, value.GuildTax);
                     _trackingController.EntityController.SetLastLocalEntityClusterTax(value.YieldPreTax, value.ClusterTax);
                 }
 
                 // Include guild + cluster tax if a party member takes silver
-                if (IsObjectPartyEntityAndNotTargetEntity && !IsObjectLocalEntity)
+                if (isObjectPartyEntityAndNotTargetEntity && !isObjectLocalEntity)
                 {
                     value.GuildTax = _trackingController.EntityController.GetLastLocalEntityGuildTax(value.YieldPreTax);
-                    var YieldAfterGuildTax = value.YieldPreTax - value.GuildTax;
-                    value.ClusterTax = _trackingController.EntityController.GetLastLocalEntityClusterTax(YieldAfterGuildTax);
-                    
-                    var yieldAfterGuildTaxAndClusterTax = YieldAfterGuildTax - value.ClusterTax;
+                    var yieldAfterGuildTax = value.YieldPreTax - value.GuildTax;
+                    value.ClusterTax = _trackingController.EntityController.GetLastLocalEntityClusterTax(yieldAfterGuildTax);
+
+                    var yieldAfterGuildTaxAndClusterTax = yieldAfterGuildTax - value.ClusterTax;
                     value.YieldAfterTax = yieldAfterGuildTaxAndClusterTax;
                 }
 
