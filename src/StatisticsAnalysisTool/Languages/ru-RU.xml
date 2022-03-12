@@ -522,10 +522,14 @@
   <translation name="FACTION_FLAGS_PER_HOUR">Фракционных очков в час</translation>
   <translation name="FACTION_COINS">Фракционные монеты</translation>
   <translation name="FACTION_COINS_PER_HOUR">Фракционных монет в час</translation>
-  <translation name="EXPORT_LOOT_LOGGING_FILE_WITH_REAL_ITEM_NAME">Экспортировать логи с реальными названиями</translation>
+  <translation name="EXPORT_LOOT_LOGGING_FILE_WITH_REAL_ITEM_NAME">Экспортировать логи с игровыми названиями</translation>
   <translation name="MIGHT_PER_HOUR">Могущества в час</translation>
   <translation name="FAVOR_PER_HOUR">Благосклонности в час</translation>
   <translation name="TOP_LOOTERS">Топ лутеров</translation>
   <translation name="WAS_KILLED_BY">убит</translation>
   <translation name="SHOW_KILLS">Показать убийства</translation>
+  <translation name="TOOL_TASKS">Требования</translation>
+  <translation name="GET_ITEM_LIST_JSON">Получить ItemList.json</translation>
+  <translation name="GET_ITEMS_JSON">Получить Items.json</translation>
+  <translation name="CHARACTER_NAME_TO_TRACK">Отслеживать по нику</translation>
 </translations>
