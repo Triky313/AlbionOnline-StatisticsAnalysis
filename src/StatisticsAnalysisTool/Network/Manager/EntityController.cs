@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using log4net;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -12,8 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using log4net;
-using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -38,7 +37,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
         }
-        
+
         #region Entities
 
         public event Action<GameObject> OnAddEntity;
@@ -100,7 +99,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 x.Value.ObjectSubType == GameObjectSubType.LocalPlayer || _knownPartyEntities.ContainsKey(x.Key)))
                 entity.Value.ObjectId = null;
         }
-        
+
         public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
         {
             return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
@@ -178,7 +177,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _mainWindowViewModel.PartyMemberNumber = _knownPartyEntities.Count;
             });
         }
-        
+
         public bool IsUserInParty(string name)
         {
             return _knownPartyEntities.Any(x => x.Value == name);
@@ -252,7 +251,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            lock(_spellEffects)
+            lock (_spellEffects)
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -278,9 +277,11 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     foreach (var item in _newEquipmentItems.ToList())
                     {
-                        foreach (var spell in 
-                                 (from itemSpell in item.SpellDictionary.ToArray() 
-                                     from spell in _spellEffects.ToArray() where spell != null && spell.SpellIndex.Equals(itemSpell.Value) select spell).ToArray())
+                        foreach (var spell in
+                                 (from itemSpell in item.SpellDictionary.ToArray()
+                                  from spell in _spellEffects.ToArray()
+                                  where spell != null && spell.SpellIndex.Equals(itemSpell.Value)
+                                  select spell).ToArray())
                         {
                             if (playerItemList.Any(x => x.Key.Equals(spell.CauserId)))
                             {
