@@ -368,11 +368,11 @@ namespace StatisticsAnalysisTool.Enumerations
         TutorialUpdate,
         TriggerHintBox,
         RandomDungeonPositionInfo,
-        NewLootChest = 367, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367]
-        UpdateLootChest = 368, // map[0:23 1:4 2:637734315213820408 3:[] 4:[] 9:true 252:368]
-        LootChestOpened = 369, // map[0:23 252:369]
-        NewShrine = 371, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
-        UpdateShrine = 372, // map[0:19 1:2 2:637734313445294913 252:372]
+        NewLootChest = 368, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367]
+        UpdateLootChest = 369, // map[0:23 1:4 2:637734315213820408 3:[] 4:[] 9:true 252:368]
+        LootChestOpened = 370, // map[0:23 252:369]
+        NewShrine = 372, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
+        UpdateShrine = 373, // map[0:19 1:2 2:637734313445294913 252:372]
         MutePlayerUpdate,
         ShopTileUpdate,
         ShopUpdate,
