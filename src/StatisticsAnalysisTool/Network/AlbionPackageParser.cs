@@ -7,7 +7,10 @@ using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Operations.Responses;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
+using log4net;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Operations.Requests;
 
 namespace StatisticsAnalysisTool.Network
@@ -45,6 +48,8 @@ namespace StatisticsAnalysisTool.Network
         private readonly ChangeClusterResponseHandler _changeClusterResponseHandler;
         private readonly PartyMakeLeaderResponseHandler _partyMakeLeaderResponseHandler;
         private readonly JoinResponseHandler _joinResponseHandler;
+
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public AlbionPackageParser(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
@@ -92,83 +97,91 @@ namespace StatisticsAnalysisTool.Network
                 return;
             }
 
-            switch (eventCode)
+            try
             {
-                case EventCodes.NewEquipmentItem:
-                    await NewEquipmentItemEventHandlerAsync(parameters);
-                    return;
-                case EventCodes.GrabbedLoot:
-                    await GrabbedLootEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.InventoryDeleteItem:
-                    await InventoryDeleteItemEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.InventoryPutItem:
-                    await InventoryPutItemEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.TakeSilver:
-                    await TakeSilverEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.UpdateFame:
-                    await UpdateFameEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.UpdateSilver:
-                    await UpdateSilverEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.UpdateReSpecPoints:
-                    await UpdateReSpecPointsEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.UpdateCurrency:
-                    await UpdateCurrencyEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.Died:
-                    await DiedEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.NewLootChest:
-                    await NewLootChestEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.LootChestOpened:
-                    await LootChestOpenedEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.InCombatStateUpdate:
-                    await InCombatStateUpdateEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.NewShrine:
-                    await NewShrineEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.HealthUpdate:
-                    await HealthUpdateEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.PartyPlayerJoined:
-                    await PartyPlayerJoinedHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.PartyChangedOrder:
-                    await PartyChangedOrderEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.NewCharacter:
-                    await NewCharacterEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.SiegeCampClaimStart:
-                    await SiegeCampClaimStartEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.NewMob:
-                    await NewMobEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.CharacterEquipmentChanged:
-                    await CharacterEquipmentChangedEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.ActiveSpellEffectsUpdate:
-                    await ActiveSpellEffectsUpdateEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.UpdateFactionStanding:
-                    await UpdateFactionStandingEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.ReceivedSeasonPoints:
-                    await ReceivedSeasonPointsEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
-                case EventCodes.MightFavorPoints:
-                    await MightFavorPointsEventHandlerAsync(parameters).ConfigureAwait(false);
-                    return;
+                switch (eventCode)
+                {
+                    case EventCodes.NewEquipmentItem:
+                        await NewEquipmentItemEventHandlerAsync(parameters);
+                        return;
+                    case EventCodes.GrabbedLoot:
+                        await GrabbedLootEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.InventoryDeleteItem:
+                        await InventoryDeleteItemEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.InventoryPutItem:
+                        await InventoryPutItemEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.TakeSilver:
+                        await TakeSilverEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.UpdateFame:
+                        await UpdateFameEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.UpdateSilver:
+                        await UpdateSilverEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.UpdateReSpecPoints:
+                        await UpdateReSpecPointsEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.UpdateCurrency:
+                        await UpdateCurrencyEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.Died:
+                        await DiedEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.NewLootChest:
+                        await NewLootChestEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.LootChestOpened:
+                        await LootChestOpenedEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.InCombatStateUpdate:
+                        await InCombatStateUpdateEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.NewShrine:
+                        await NewShrineEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.HealthUpdate:
+                        await HealthUpdateEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.PartyPlayerJoined:
+                        await PartyPlayerJoinedHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.PartyChangedOrder:
+                        await PartyChangedOrderEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.NewCharacter:
+                        await NewCharacterEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.SiegeCampClaimStart:
+                        await SiegeCampClaimStartEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.NewMob:
+                        await NewMobEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.CharacterEquipmentChanged:
+                        await CharacterEquipmentChangedEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.ActiveSpellEffectsUpdate:
+                        await ActiveSpellEffectsUpdateEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.UpdateFactionStanding:
+                        await UpdateFactionStandingEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.ReceivedSeasonPoints:
+                        await ReceivedSeasonPointsEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.MightFavorPoints:
+                        await MightFavorPointsEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                }
+            }
+            catch (Exception ex)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                Log.Error(nameof(OnEvent), ex);
             }
         }
 
