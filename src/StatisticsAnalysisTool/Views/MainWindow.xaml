@@ -86,7 +86,7 @@
                          Value="{Binding TaskProgressbarValue}" IsIndeterminate="{Binding IsTaskProgressbarIndeterminate}" />
 
             <Grid Height="20" Width="20" Margin="0,64,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" PreviewMouseDown="ToolTasksOpenClose_PreviewMouseDown">
-                <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <fa5:ImageAwesome Icon="Solid_Tasks" Foreground="{StaticResource SolidColorBrush.Text.1}" />
             </Grid>
         </Grid>
 
