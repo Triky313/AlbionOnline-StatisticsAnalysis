@@ -70,12 +70,9 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 return;
             }
-
-            if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainTrackingCharacterName) || name == SettingsController.CurrentSettings.MainTrackingCharacterName)
-            {
-                _trackingController.EntityController.AddEntity((long)userObjectId, (Guid)guid, interactGuid, name, GameObjectType.Player, GameObjectSubType.LocalPlayer);
-                await _trackingController.EntityController.AddToPartyAsync((Guid)guid, name);
-            }
+            
+            _trackingController.EntityController.AddEntity((long)userObjectId, (Guid)guid, interactGuid, name, GameObjectType.Player, GameObjectSubType.LocalPlayer);
+            await _trackingController.EntityController.AddToPartyAsync((Guid)guid, name);
         }
 
         private void SetTrackingActivityText()
