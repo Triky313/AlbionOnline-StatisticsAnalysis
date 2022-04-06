@@ -90,7 +90,10 @@ namespace StatisticsAnalysisTool.Network.Manager
                 $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'",
                 ConsoleManager.EventMapChangeColor);
 
-            OnChangeCluster?.Invoke(CurrentCluster);
+            if (IsTrackingAllowedByMainCharacter())
+            {
+                OnChangeCluster?.Invoke(CurrentCluster);
+            }
         }
 
         private bool TryChangeCluster(string index, string mapName)

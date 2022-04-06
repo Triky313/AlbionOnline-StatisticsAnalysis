@@ -42,6 +42,10 @@
                             <StackPanel Orientation="Horizontal" Visibility="{Binding UsernameInformationVisibility, FallbackValue=Hidden}">
                                 <Label Style="{StaticResource HeaderStyle.Tracking.Title}" Content="{Binding Translation.Username, FallbackValue=USERNAME}" ContentStringFormat="{}{0}: "/>
                                 <Label Style="{StaticResource HeaderStyle.Tracking.Content}" Content="{Binding TrackingUsername, FallbackValue=USERNAME}"/>
+                                <Grid Visibility="{Binding CharacterIsNotTrackedInfoVisibility, FallbackValue=Collapsed}" Height="20" Width="20" Margin="5,0,0,3" VerticalAlignment="Center" 
+                                      ToolTip="{Binding Translation.ThisCharacterIsNotTracked, FallbackValue=´THIS_CHARACTER_IS_NOT_TRACKED}">
+                                    <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+                                </Grid>
                                 <Label Content=" | "/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Visibility="{Binding GuildInformationVisibility, FallbackValue=Hidden}">
@@ -82,7 +86,7 @@
                          Value="{Binding TaskProgressbarValue}" IsIndeterminate="{Binding IsTaskProgressbarIndeterminate}" />
 
             <Grid Height="20" Width="20" Margin="0,64,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" PreviewMouseDown="ToolTasksOpenClose_PreviewMouseDown">
-                <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <fa5:ImageAwesome Icon="Solid_Tasks" Foreground="{StaticResource SolidColorBrush.Text.1}" />
             </Grid>
         </Grid>
 

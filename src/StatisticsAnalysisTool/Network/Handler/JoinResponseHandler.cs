@@ -49,6 +49,8 @@ namespace StatisticsAnalysisTool.Network.Handler
             _mainWindowViewModel.TrackingAllianceName = value.AllianceName;
             _mainWindowViewModel.TrackingCurrentMapName = WorldData.GetUniqueNameOrDefault(value.MapIndex);
 
+            SetCharacterTrackedVisibility(value.Username);
+
             _mainWindowViewModel.DungeonCloseTimer = new DungeonCloseTimer
             {
                 IsVisible = Visibility.Collapsed
@@ -60,8 +62,6 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             ResetFameCounterByMapChangeIfActive();
             SetTrackingActivityText();
-
-            await Task.CompletedTask;
         }
 
         private async Task AddEntityAsync(long? userObjectId, Guid? guid, Guid? interactGuid, string name, GameObjectType gameObjectType, GameObjectSubType gameObjectSubType)
@@ -70,12 +70,9 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 return;
             }
-
-            if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainTrackingCharacterName) || name == SettingsController.CurrentSettings.MainTrackingCharacterName)
-            {
-                _trackingController.EntityController.AddEntity((long)userObjectId, (Guid)guid, interactGuid, name, GameObjectType.Player, GameObjectSubType.LocalPlayer);
-                await _trackingController.EntityController.AddToPartyAsync((Guid)guid, name);
-            }
+            
+            _trackingController.EntityController.AddEntity((long)userObjectId, (Guid)guid, interactGuid, name, GameObjectType.Player, GameObjectSubType.LocalPlayer);
+            await _trackingController.EntityController.AddToPartyAsync((Guid)guid, name);
         }
 
         private void SetTrackingActivityText()
@@ -92,6 +89,18 @@ namespace StatisticsAnalysisTool.Network.Handler
             if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
             {
                 _mainWindowViewModel.ResetMainCounters();
+            }
+        }
+
+        private void SetCharacterTrackedVisibility(string name)
+        {
+            if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainTrackingCharacterName) || name == SettingsController.CurrentSettings.MainTrackingCharacterName)
+            {
+                _mainWindowViewModel.CharacterIsNotTrackedInfoVisibility = Visibility.Collapsed;
+            }
+            else
+            {
+                _mainWindowViewModel.CharacterIsNotTrackedInfoVisibility = Visibility.Visible;
             }
         }
     }

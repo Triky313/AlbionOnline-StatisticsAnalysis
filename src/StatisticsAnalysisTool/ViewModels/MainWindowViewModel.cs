@@ -126,6 +126,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _taskProgressbarMaximum = 100;
         private double _taskProgressbarValue;
         private bool _isTaskProgressbarIndeterminate;
+        private Visibility _characterIsNotTrackedInfoVisibility;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1368,6 +1369,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingActiveText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility CharacterIsNotTrackedInfoVisibility
+        {
+            get => _characterIsNotTrackedInfoVisibility;
+            set
+            {
+                _characterIsNotTrackedInfoVisibility = value;
                 OnPropertyChanged();
             }
         }

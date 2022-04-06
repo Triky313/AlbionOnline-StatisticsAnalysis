@@ -44,10 +44,10 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void AddEntity(long objectId, Guid userGuid, Guid? interactGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
         {
-            if (objectSubType == GameObjectSubType.LocalPlayer)
-            {
-                _trackingController.SetMainCharacterNameForTracking(name);
-            }
+            //if (objectSubType == GameObjectSubType.LocalPlayer)
+            //{
+            //    _trackingController.SetMainCharacterNameForTracking(name);
+            //}
 
             PlayerGameObject gameObject;
 
