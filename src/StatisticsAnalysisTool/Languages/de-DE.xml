@@ -526,4 +526,5 @@
 	<translation name="GET_ITEM_LIST_JSON">ItemList.json erhalten</translation>
 	<translation name="GET_ITEMS_JSON">Items.json erhalten</translation>
 	<translation name="CHARACTER_NAME_TO_TRACK">Charaktername zum tracken</translation>
+	<translation name="THIS_CHARACTER_IS_NOT_TRACKED">Dieser Charakter wird nicht getrackt</translation>
 </translations>
