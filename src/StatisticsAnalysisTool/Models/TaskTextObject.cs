@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Annotations;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -114,5 +114,5 @@ namespace StatisticsAnalysisTool.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    };
+    }
 }

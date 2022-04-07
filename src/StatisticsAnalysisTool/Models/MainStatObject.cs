@@ -1,9 +1,9 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -12,7 +12,7 @@ namespace StatisticsAnalysisTool.Models
         private CityFaction _cityFaction = CityFaction.Unknown;
         private double _value;
         private double _valuePerHour;
-        private Visibility visibility = Visibility.Hidden;
+        private Visibility _visibility = Visibility.Hidden;
 
         public CityFaction CityFaction {
             get => _cityFaction;
@@ -43,15 +43,15 @@ namespace StatisticsAnalysisTool.Models
         }
 
         public Visibility Visibility {
-            get => visibility;
+            get => _visibility;
             set
             {
-                visibility = value;
+                _visibility = value;
                 OnPropertyChanged();
             }
         }
 
-        public string TranslationTotalFactionPoints => LanguageController.Translation("TOTAL_FACTION_POINTS");
+        public static string TranslationTotalFactionPoints => LanguageController.Translation("TOTAL_FACTION_POINTS");
 
         public event PropertyChangedEventHandler PropertyChanged;
         

@@ -171,7 +171,7 @@ namespace StatisticsAnalysisTool.Network
             CurrentTimerUpdate();
         }
 
-        private void RemoveValueFromValuePerHour(List<ValuePerHour> valueList, double perHourValue)
+        private static void RemoveValueFromValuePerHour(List<ValuePerHour> valueList, double perHourValue)
         {
             var removeList = valueList.Where(x => x.DateTime < DateTime.UtcNow.AddHours(-1));
 
@@ -215,7 +215,6 @@ namespace StatisticsAnalysisTool.Network
                         factionPointStat.CityFaction = _currentCityFaction;
                         factionPointStat.ValuePerHour = Utilities.GetValuePerHourToDouble(_factionPointsPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
                         factionPointStat.Value = _totalGainedFactionPointsInSession;
-
                     }
 
                     _mainWindowViewModel.DashboardObject.FamePerHour = Utilities.GetValuePerHourToDouble(_famePerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);

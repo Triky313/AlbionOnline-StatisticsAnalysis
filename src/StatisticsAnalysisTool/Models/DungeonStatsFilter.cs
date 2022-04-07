@@ -1,10 +1,10 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Models
         private bool? _expeditionCheckbox = true;
         private bool? _corruptedCheckbox = true;
         private bool? _unknownCheckbox = true;
-        private List<DungeonMode> _dungeonModeFilters = new List<DungeonMode>()
+        private List<DungeonMode> _dungeonModeFilters = new ()
         {
             DungeonMode.Solo,
             DungeonMode.Standard,
@@ -146,21 +146,20 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public string TranslationFilter => LanguageController.Translation("FILTER");
-        public string TranslationSolo => LanguageController.Translation("SOLO");
-        public string TranslationSoloDungeon => LanguageController.Translation("SOLO_DUNGEON");
-        public string TranslationStandard => LanguageController.Translation("STANDARD");
-        public string TranslationStandardDungeon => LanguageController.Translation("STANDARD_DUNGEON");
-        public string TranslationAva => LanguageController.Translation("AVA");
-        public string TranslationAvalonianDungeon => LanguageController.Translation("AVALONIAN_DUNGEON");
-        public string TranslationHg => LanguageController.Translation("HG");
-        public string TranslationHellGate => LanguageController.Translation("HELLGATE");
-        public string TranslationCorrupted => LanguageController.Translation("CORRUPTED");
-        public string TranslationCorruptedDungeon => LanguageController.Translation("CORRUPTED_LAIR");
-        public string TranslationExped => LanguageController.Translation("EXPED");
-        public string TranslationExpedition => LanguageController.Translation("EXPEDITION");
-        public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
-
+        public static string TranslationFilter => LanguageController.Translation("FILTER");
+        public static string TranslationSolo => LanguageController.Translation("SOLO");
+        public static string TranslationSoloDungeon => LanguageController.Translation("SOLO_DUNGEON");
+        public static string TranslationStandard => LanguageController.Translation("STANDARD");
+        public static string TranslationStandardDungeon => LanguageController.Translation("STANDARD_DUNGEON");
+        public static string TranslationAva => LanguageController.Translation("AVA");
+        public static string TranslationAvalonianDungeon => LanguageController.Translation("AVALONIAN_DUNGEON");
+        public static string TranslationHg => LanguageController.Translation("HG");
+        public static string TranslationHellGate => LanguageController.Translation("HELLGATE");
+        public static string TranslationCorrupted => LanguageController.Translation("CORRUPTED");
+        public static string TranslationCorruptedDungeon => LanguageController.Translation("CORRUPTED_LAIR");
+        public static string TranslationExped => LanguageController.Translation("EXPED");
+        public static string TranslationExpedition => LanguageController.Translation("EXPEDITION");
+        public static string TranslationUnknown => LanguageController.Translation("UNKNOWN");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

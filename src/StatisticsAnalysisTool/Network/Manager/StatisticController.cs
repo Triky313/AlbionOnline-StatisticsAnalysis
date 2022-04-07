@@ -188,13 +188,11 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private double GetGainedValue(ValueType type, double gainedValue)
         {
-            switch (type)
+            return type switch
             {
-                case ValueType.ReSpec:
-                    return Utilities.AddValue(gainedValue, _lastReSpecValue, out _lastReSpecValue);
-                default:
-                    return gainedValue;
-            }
+                ValueType.ReSpec => Utilities.AddValue(gainedValue, _lastReSpecValue, out _lastReSpecValue),
+                _ => gainedValue
+            };
         }
 
         private class DashboardHourObject

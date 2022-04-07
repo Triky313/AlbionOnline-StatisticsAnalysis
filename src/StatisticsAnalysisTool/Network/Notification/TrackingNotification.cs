@@ -1,16 +1,16 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
     public class TrackingNotification : INotifyPropertyChanged
     {
-        private const int _setTypesMaxTries = 3;
+        private const int SetTypesMaxTries = 3;
 
         private NotificationType _type;
         private Visibility _visibility;
@@ -60,7 +60,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public void SetType(bool forceSetType = false)
         {
-            if (Type == NotificationType.Unknown && _trySetTypeCounter <= _setTypesMaxTries || forceSetType)
+            if ((Type == NotificationType.Unknown && _trySetTypeCounter <= SetTypesMaxTries) || forceSetType)
             {
                 Type = GetNotificationType(ItemController.GetItemType(_itemIndex));
             }

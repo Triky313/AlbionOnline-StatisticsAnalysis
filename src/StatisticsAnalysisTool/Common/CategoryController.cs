@@ -261,27 +261,22 @@ namespace StatisticsAnalysisTool.Common
             {ShopSubCategory.FibergathererHelmet, LanguageController.Translation("FIBERGATHERER_HELMET")},
             {ShopSubCategory.FibergathererShoes, LanguageController.Translation("FIBERGATHERER_SHOES")},
             {ShopSubCategory.FibergathererBackpack, LanguageController.Translation("FIBERGATHERER_BACKPACK")},
-
             {ShopSubCategory.FishgathererArmor, LanguageController.Translation("FISHGATHERER_ARMOR")},
             {ShopSubCategory.FishgathererHelmet, LanguageController.Translation("FISHGATHERER_HELMET")},
             {ShopSubCategory.FishgathererShoes, LanguageController.Translation("FISHGATHERER_SHOES")},
             {ShopSubCategory.FishgathererBackpack, LanguageController.Translation("FISHGATHERER_BACKPACK")},
-
             {ShopSubCategory.HidegathererArmor, LanguageController.Translation("HIDEGATHERER_ARMOR")},
             {ShopSubCategory.HidegathererHelmet, LanguageController.Translation("HIDEGATHERER_HELMET")},
             {ShopSubCategory.HidegathererShoes, LanguageController.Translation("HIDEGATHERER_SHOES")},
             {ShopSubCategory.HidegathererBackpack, LanguageController.Translation("HIDEGATHERERR_BACKPACK")},
-
             {ShopSubCategory.OregathererArmor, LanguageController.Translation("OREGATHERER_ARMOR")},
             {ShopSubCategory.OregathererHelmet, LanguageController.Translation("OREGATHERER_HELMET")},
             {ShopSubCategory.OregathererShoes, LanguageController.Translation("OREGATHERER_SHOES")},
             {ShopSubCategory.OregathererBackpack, LanguageController.Translation("OREGATHERER_BACKPACK")},
-
             {ShopSubCategory.RockgathererArmor, LanguageController.Translation("ROCKGATHERER_ARMOR")},
             {ShopSubCategory.RockgathererHelmet, LanguageController.Translation("ROCKGATHERER_HELMET")},
             {ShopSubCategory.RockgathererShoes, LanguageController.Translation("ROCKGATHERER_SHOES")},
             {ShopSubCategory.RockgathererBackpack, LanguageController.Translation("ROCKGATHERER_BACKPACK")},
-
             {ShopSubCategory.WoodgathererArmor, LanguageController.Translation("WOODGATHERER_ARMOR")},
             {ShopSubCategory.WoodgathererHelmet, LanguageController.Translation("WOODGATHERER_HELMET")},
             {ShopSubCategory.WoodgathererShoes, LanguageController.Translation("WOODGATHERER_SHOES")},

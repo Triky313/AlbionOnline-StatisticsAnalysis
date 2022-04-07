@@ -24,7 +24,6 @@ using System;
 
 // ReSharper disable InheritdocConsiderUsage
 
-#pragma warning disable 1591
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -32,7 +31,7 @@ using System;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
 
-namespace StatisticsAnalysisTool.Annotations
+namespace StatisticsAnalysisTool.Properties
 {
     /// <summary>
     ///     Indicates that the value of the marked element could be <c>null</c> sometimes,

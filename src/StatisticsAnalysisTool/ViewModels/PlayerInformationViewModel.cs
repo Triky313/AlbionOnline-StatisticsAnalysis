@@ -1,5 +1,4 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using System;
@@ -7,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.ViewModels
 {

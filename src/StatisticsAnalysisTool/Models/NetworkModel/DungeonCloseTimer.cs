@@ -1,10 +1,10 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
@@ -75,9 +75,9 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
 
         public ICommand RefreshDungeonTimer => _refreshDungeonTimer ??= new CommandHandler(PerformRefreshDungeonTimer, true);
 
-        public string TranslationSafe => LanguageController.Translation("SAFE");
-        public string TranslationDungeonTimer => LanguageController.Translation("DUNGEON_TIMER");
-        public string TranslationResetDungeonTimer => LanguageController.Translation("RESET_DUNGEON_TIMER");
+        public static string TranslationSafe => LanguageController.Translation("SAFE");
+        public static string TranslationDungeonTimer => LanguageController.Translation("DUNGEON_TIMER");
+        public static string TranslationResetDungeonTimer => LanguageController.Translation("RESET_DUNGEON_TIMER");
 
         public event PropertyChangedEventHandler PropertyChanged;
 
