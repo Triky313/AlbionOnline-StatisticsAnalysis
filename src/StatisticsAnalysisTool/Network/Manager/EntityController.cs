@@ -255,7 +255,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    if (_spellEffects.Any(x => x == null || x.CauserId.Equals(spell.CauserId) && x.SpellIndex.Equals(spell.SpellIndex)))
+                    if (_spellEffects.Any(x => x == null || (x.CauserId.Equals(spell.CauserId) && x.SpellIndex.Equals(spell.SpellIndex))))
                     {
                         return;
                     }

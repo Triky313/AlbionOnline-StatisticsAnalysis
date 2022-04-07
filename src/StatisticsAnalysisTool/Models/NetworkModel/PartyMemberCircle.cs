@@ -1,7 +1,7 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {

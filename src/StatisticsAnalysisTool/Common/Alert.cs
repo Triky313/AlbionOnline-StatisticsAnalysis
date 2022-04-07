@@ -1,5 +1,4 @@
 using log4net;
-using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Views;
@@ -10,6 +9,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common
 {

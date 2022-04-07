@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.ViewModels
