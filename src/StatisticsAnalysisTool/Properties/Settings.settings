@@ -89,5 +89,8 @@
     <Setting Name="AutoUpdatePreReleaseConfigUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master/src/StatisticsAnalysisTool/ao-pre-release-update-check.xml</Value>
     </Setting>
+    <Setting Name="StatsFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Stats.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

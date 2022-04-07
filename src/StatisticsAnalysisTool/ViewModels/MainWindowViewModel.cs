@@ -723,6 +723,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
             TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
+            TrackingController?.StatisticController?.LoadStatisticsFromFile();
 
             TrackingController?.CountUpTimer.Start();
 
@@ -735,6 +736,7 @@ namespace StatisticsAnalysisTool.ViewModels
         public void StopTracking()
         {
             TrackingController?.DungeonController?.SaveDungeonsInFile();
+            TrackingController?.StatisticController?.SaveStatisticsInFile();
             TrackingController?.UnregisterEvents();
             TrackingController?.CountUpTimer?.Stop();
 

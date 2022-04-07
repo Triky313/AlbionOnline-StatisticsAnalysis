@@ -2,14 +2,21 @@
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using log4net;
 using SkiaSharp;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
@@ -18,12 +25,15 @@ namespace StatisticsAnalysisTool.Network.Manager
 {
     public class StatisticController
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
         private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly ObservableCollection<DashboardHourObject> _stats = new();
         private readonly List<ValueType> _valueTypes = new() { ValueType.Fame, ValueType.Silver, ValueType.ReSpec, ValueType.FactionFame, ValueType.FactionPoints, ValueType.Might, ValueType.Favor };
         private double? _lastReSpecValue;
         private DateTime _lastChartUpdate;
+        private DashboardStatistics _dashboardStatistics = new();
 
         public StatisticController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
@@ -196,6 +206,51 @@ namespace StatisticsAnalysisTool.Network.Manager
             public double Value { get; set; }
             public DateTime Date { get; init; }
             public int Hour => Date.Hour;
+        }
+
+        #endregion
+
+        #region Load / Save local file data
+
+        public void LoadStatisticsFromFile()
+        {
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.StatsFileName}";
+
+            if (File.Exists(localFilePath))
+            {
+                try
+                {
+                    var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
+                    var stats = JsonSerializer.Deserialize<DashboardStatistics>(localFileString) ?? new DashboardStatistics();
+                    _dashboardStatistics = stats;
+                    return;
+                }
+                catch (Exception e)
+                {
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    _dashboardStatistics = new DashboardStatistics();
+                    return;
+                }
+            }
+
+            _dashboardStatistics = new DashboardStatistics();
+        }
+
+        public void SaveStatisticsInFile()
+        {
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.StatsFileName}";
+
+            try
+            {
+                var fileString = JsonSerializer.Serialize(_dashboardStatistics);
+                File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            }
         }
 
         #endregion
