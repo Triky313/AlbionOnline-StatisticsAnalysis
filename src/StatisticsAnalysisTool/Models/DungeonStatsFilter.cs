@@ -161,7 +161,6 @@ namespace StatisticsAnalysisTool.Models
         public static string TranslationExpedition => LanguageController.Translation("EXPEDITION");
         public static string TranslationUnknown => LanguageController.Translation("UNKNOWN");
 
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
