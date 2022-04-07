@@ -257,7 +257,6 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         public string DiedMessage 
         {
-
             get => _diedMessage;
             set {
                 _diedMessage = value;

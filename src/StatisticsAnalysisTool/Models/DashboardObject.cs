@@ -118,7 +118,6 @@ namespace StatisticsAnalysisTool.Models
 
         #region Percent values
 
-
         public double FameInPercent
         {
             get => _fameInPercent;

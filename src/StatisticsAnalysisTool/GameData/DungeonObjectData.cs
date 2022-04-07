@@ -197,7 +197,6 @@ namespace StatisticsAnalysisTool.GameData
             return !value.Contains("BOSS_BUFF") && value.Contains("BOSS");
         }
 
-
         #endregion
 
         #region Shrine
