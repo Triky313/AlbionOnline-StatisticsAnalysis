@@ -93,7 +93,7 @@
       <Value Profile="(Default)">Stats.json</Value>
     </Setting>
     <Setting Name="KeepDashboardStatisticsForDays" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">90</Value>
+      <Value Profile="(Default)">-90</Value>
     </Setting>
   </Settings>
 </SettingsFile>

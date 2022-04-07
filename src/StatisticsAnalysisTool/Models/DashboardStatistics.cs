@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Models;
 
 public class DashboardStatistics
 {
-    public List<DailyValues> DailyValues { get; set; }
+    public List<DailyValues> DailyValues { get; set; } = new ();
 
     [JsonIgnore]
     private bool _wasExecuted;

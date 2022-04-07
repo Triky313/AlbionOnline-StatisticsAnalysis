@@ -9,7 +9,7 @@ public class DailyValues
     {
         ValueType = valueType;
         Value = value;
-        Date = date;
+        Date = date.Date;
     }
 
     public ValueType ValueType { get; set; }
