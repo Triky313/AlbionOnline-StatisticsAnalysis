@@ -215,7 +215,6 @@ namespace StatisticsAnalysisTool.Network
                         factionPointStat.CityFaction = _currentCityFaction;
                         factionPointStat.ValuePerHour = Utilities.GetValuePerHourToDouble(_factionPointsPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
                         factionPointStat.Value = _totalGainedFactionPointsInSession;
-
                     }
 
                     _mainWindowViewModel.DashboardObject.FamePerHour = Utilities.GetValuePerHourToDouble(_famePerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);

@@ -36,6 +36,5 @@ namespace StatisticsAnalysisTool.Network.Manager
         void AddFilterType(NotificationType notificationType) { }
 
         void RemoveFilterType(NotificationType notificationType) { }
-
     }
 }
