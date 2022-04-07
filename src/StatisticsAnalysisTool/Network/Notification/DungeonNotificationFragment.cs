@@ -737,28 +737,28 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        [JsonIgnore] public string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
-        [JsonIgnore] public string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
-        [JsonIgnore] public string TranslationDungeonReSpec => LanguageController.Translation("DUNGEON_RESPEC");
-        [JsonIgnore] public string TranslationDungeonSilver => LanguageController.Translation("DUNGEON_SILVER");
-        [JsonIgnore] public string TranslationDungeonFamePerHour => LanguageController.Translation("DUNGEON_FAME_PER_HOUR");
-        [JsonIgnore] public string TranslationDungeonReSpecPerHour => LanguageController.Translation("DUNGEON_RESPEC_PER_HOUR");
-        [JsonIgnore] public string TranslationDungeonSilverPerHour => LanguageController.Translation("DUNGEON_SILVER_PER_HOUR");
-        [JsonIgnore] public string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
-        [JsonIgnore] public string TranslationNumberOfDungeonFloors => LanguageController.Translation("NUMBER_OF_DUNGEON_FLOORS");
-        [JsonIgnore] public string TranslationExpedition => LanguageController.Translation("EXPEDITION");
-        [JsonIgnore] public string TranslationSolo => LanguageController.Translation("SOLO");
-        [JsonIgnore] public string TranslationStandard => LanguageController.Translation("STANDARD");
-        [JsonIgnore] public string TranslationAvalon => LanguageController.Translation("AVALON");
-        [JsonIgnore] public string TranslationUnknown => LanguageController.Translation("UNKNOWN");
-        [JsonIgnore] public string TranslationFactionFlags => LanguageController.Translation("FACTION_FLAGS");
-        [JsonIgnore] public string TranslationFactionFlagsPerHour => LanguageController.Translation("FACTION_FLAGS_PER_HOUR");
-        [JsonIgnore] public string TranslationFactionCoins => LanguageController.Translation("FACTION_COINS");
-        [JsonIgnore] public string TranslationFactionCoinsPerHour => LanguageController.Translation("FACTION_COINS_PER_HOUR");
-        [JsonIgnore] public string TranslationMight => LanguageController.Translation("MIGHT");
-        [JsonIgnore] public string TranslationMightPerHour => LanguageController.Translation("MIGHT_PER_HOUR");
-        [JsonIgnore] public string TranslationFavor => LanguageController.Translation("FAVOR");
-        [JsonIgnore] public string TranslationFavorPerHour => LanguageController.Translation("FAVOR_PER_HOUR");
+        [JsonIgnore] public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
+        [JsonIgnore] public static string TranslationDungeonFame => LanguageController.Translation("DUNGEON_FAME");
+        [JsonIgnore] public static string TranslationDungeonReSpec => LanguageController.Translation("DUNGEON_RESPEC");
+        [JsonIgnore] public static string TranslationDungeonSilver => LanguageController.Translation("DUNGEON_SILVER");
+        [JsonIgnore] public static string TranslationDungeonFamePerHour => LanguageController.Translation("DUNGEON_FAME_PER_HOUR");
+        [JsonIgnore] public static string TranslationDungeonReSpecPerHour => LanguageController.Translation("DUNGEON_RESPEC_PER_HOUR");
+        [JsonIgnore] public static string TranslationDungeonSilverPerHour => LanguageController.Translation("DUNGEON_SILVER_PER_HOUR");
+        [JsonIgnore] public static string TranslationDungeonRunTime => LanguageController.Translation("DUNGEON_RUN_TIME");
+        [JsonIgnore] public static string TranslationNumberOfDungeonFloors => LanguageController.Translation("NUMBER_OF_DUNGEON_FLOORS");
+        [JsonIgnore] public static string TranslationExpedition => LanguageController.Translation("EXPEDITION");
+        [JsonIgnore] public static string TranslationSolo => LanguageController.Translation("SOLO");
+        [JsonIgnore] public static string TranslationStandard => LanguageController.Translation("STANDARD");
+        [JsonIgnore] public static string TranslationAvalon => LanguageController.Translation("AVALON");
+        [JsonIgnore] public static string TranslationUnknown => LanguageController.Translation("UNKNOWN");
+        [JsonIgnore] public static string TranslationFactionFlags => LanguageController.Translation("FACTION_FLAGS");
+        [JsonIgnore] public static string TranslationFactionFlagsPerHour => LanguageController.Translation("FACTION_FLAGS_PER_HOUR");
+        [JsonIgnore] public static string TranslationFactionCoins => LanguageController.Translation("FACTION_COINS");
+        [JsonIgnore] public static string TranslationFactionCoinsPerHour => LanguageController.Translation("FACTION_COINS_PER_HOUR");
+        [JsonIgnore] public static string TranslationMight => LanguageController.Translation("MIGHT");
+        [JsonIgnore] public static string TranslationMightPerHour => LanguageController.Translation("MIGHT_PER_HOUR");
+        [JsonIgnore] public static string TranslationFavor => LanguageController.Translation("FAVOR");
+        [JsonIgnore] public static string TranslationFavorPerHour => LanguageController.Translation("FAVOR_PER_HOUR");
 
         public event PropertyChangedEventHandler PropertyChanged;
         

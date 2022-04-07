@@ -126,31 +126,31 @@ namespace StatisticsAnalysisTool.Network.Notification
         public string Hash => $"{Id}{UniqueName}";
 
         [JsonIgnore] 
-        public string TranslationStandard => LanguageController.Translation("STANDARD");
+        public static string TranslationStandard => LanguageController.Translation("STANDARD");
 
         [JsonIgnore] 
-        public string TranslationUncommon => LanguageController.Translation("UNCOMMON");
+        public static string TranslationUncommon => LanguageController.Translation("UNCOMMON");
 
         [JsonIgnore] 
-        public string TranslationRare => LanguageController.Translation("RARE");
+        public static string TranslationRare => LanguageController.Translation("RARE");
 
         [JsonIgnore] 
-        public string TranslationLegendary => LanguageController.Translation("LEGENDARY");
+        public static string TranslationLegendary => LanguageController.Translation("LEGENDARY");
 
         [JsonIgnore] 
-        public string TranslationBossChest => LanguageController.Translation("BOSS_CHEST");
+        public static string TranslationBossChest => LanguageController.Translation("BOSS_CHEST");
 
         [JsonIgnore] 
-        public string TranslationBookChest => LanguageController.Translation("BOOK_CHEST");
+        public static string TranslationBookChest => LanguageController.Translation("BOOK_CHEST");
 
         [JsonIgnore] 
-        public string TranslationCombatBuff => LanguageController.Translation("COMBAT_BUFF");
+        public static string TranslationCombatBuff => LanguageController.Translation("COMBAT_BUFF");
 
         [JsonIgnore] 
-        public string TranslationSilverShrine => LanguageController.Translation("SILVER_SHRINE");
+        public static string TranslationSilverShrine => LanguageController.Translation("SILVER_SHRINE");
 
         [JsonIgnore] 
-        public string TranslationFameShrine => LanguageController.Translation("FAME_SHRINE");
+        public static string TranslationFameShrine => LanguageController.Translation("FAME_SHRINE");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

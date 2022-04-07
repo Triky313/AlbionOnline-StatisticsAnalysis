@@ -51,7 +51,7 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public string TranslationTotalFactionPoints => LanguageController.Translation("TOTAL_FACTION_POINTS");
+        public static string TranslationTotalFactionPoints => LanguageController.Translation("TOTAL_FACTION_POINTS");
 
         public event PropertyChangedEventHandler PropertyChanged;
         

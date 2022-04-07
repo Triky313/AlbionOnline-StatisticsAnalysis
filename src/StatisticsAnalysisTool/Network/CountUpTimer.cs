@@ -171,7 +171,7 @@ namespace StatisticsAnalysisTool.Network
             CurrentTimerUpdate();
         }
 
-        private void RemoveValueFromValuePerHour(List<ValuePerHour> valueList, double perHourValue)
+        private static void RemoveValueFromValuePerHour(List<ValuePerHour> valueList, double perHourValue)
         {
             var removeList = valueList.Where(x => x.DateTime < DateTime.UtcNow.AddHours(-1));
 
