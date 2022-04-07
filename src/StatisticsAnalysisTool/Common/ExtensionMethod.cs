@@ -192,7 +192,6 @@ namespace StatisticsAnalysisTool.Common
             return healthChange >= 0d ? 0d : healthChange.ToPositive();
         }
 
-
         #endregion
 
         #region Player Objects

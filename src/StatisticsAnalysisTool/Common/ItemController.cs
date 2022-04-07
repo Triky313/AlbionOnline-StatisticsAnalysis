@@ -115,7 +115,6 @@ namespace StatisticsAnalysisTool.Common
             return min;
         }
 
-
         #endregion
 
         #region Item specific

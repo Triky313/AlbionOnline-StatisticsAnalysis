@@ -10,7 +10,6 @@
     /// </summary>
     public partial class ItemWindow
     {
-
         private readonly ItemWindowViewModel _itemWindowViewModel;
 
         public ItemWindow(Item item)

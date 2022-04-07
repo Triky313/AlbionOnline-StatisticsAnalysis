@@ -6,7 +6,6 @@ using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models
 {
-
     public class DashboardObject : INotifyPropertyChanged
     {
         private double _famePerHour;

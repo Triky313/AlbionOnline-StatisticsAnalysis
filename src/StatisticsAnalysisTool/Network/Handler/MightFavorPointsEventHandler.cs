@@ -17,7 +17,6 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(MightFavorPointsEvent value)
         {
-
             if (_trackingController.IsTrackingAllowedByMainCharacter())
             {
                 _trackingController.StatisticController?.AddValue(ValueType.Might, value.Might.DoubleValue);
