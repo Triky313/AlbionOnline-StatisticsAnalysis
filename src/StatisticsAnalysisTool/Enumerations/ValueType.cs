@@ -1,13 +1,12 @@
-﻿namespace StatisticsAnalysisTool.Enumerations
+﻿namespace StatisticsAnalysisTool.Enumerations;
+
+public enum ValueType
 {
-    public enum ValueType
-    {
-        Fame,
-        ReSpec,
-        Silver,
-        FactionFame,
-        FactionPoints,
-        Might,
-        Favor
-    }
+    Fame,
+    ReSpec,
+    Silver,
+    FactionFame,
+    FactionPoints,
+    Might,
+    Favor
 }

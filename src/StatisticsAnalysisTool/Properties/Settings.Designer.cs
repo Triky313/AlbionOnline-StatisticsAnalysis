@@ -346,5 +346,14 @@ namespace StatisticsAnalysisTool.Properties {
                 this["StatsFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("90")]
+        public int KeepDashboardStatisticsForDays {
+            get {
+                return ((int)(this["KeepDashboardStatisticsForDays"]));
+            }
+        }
     }
 }

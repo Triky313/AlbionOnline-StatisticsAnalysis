@@ -70,17 +70,17 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        public void AddValue(ValueType type, double gainedValue)
+        public void AddValue(ValueType valueType, double gainedValue)
         {
             if (!_trackingController.IsTrackingAllowedByMainCharacter())
             {
                 return;
             }
 
-            gainedValue = GetGainedValue(type, gainedValue);
+            gainedValue = GetGainedValue(valueType, gainedValue);
 
             var dateTimeNow = DateTime.Now;
-            var dbHourObject = _stats?.FirstOrDefault(x => x.Type == type);
+            var dbHourObject = _stats?.FirstOrDefault(x => x.Type == valueType);
 
             var dbHourValues = dbHourObject?.HourValues?.FirstOrDefault(x => x.Date.Date.Equals(dateTimeNow.Date) && x.Hour.Equals(dateTimeNow.Hour));
 
@@ -91,9 +91,11 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             dbHourValues.Value += gainedValue;
 
+            _dashboardStatistics.Add(new DailyValues(valueType, gainedValue, dateTimeNow));
+
             UpdateHourChart(_stats);
         }
-
+        
         private void UpdateHourChart(ObservableCollection<DashboardHourObject> stats)
         {
             if (!IsUpdateChartAllowed())
