@@ -3,7 +3,6 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using log4net;
 using Microsoft.Win32;
-using StatisticsAnalysisTool.Annotations;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;

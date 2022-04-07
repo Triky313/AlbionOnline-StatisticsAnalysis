@@ -128,7 +128,5 @@ namespace StatisticsAnalysisTool.Views
         {
             _mainWindowViewModel?.SwitchToolTasksState();
         }
-
-        
     }
 }

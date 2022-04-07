@@ -100,7 +100,6 @@ namespace StatisticsAnalysisTool.Common
             public uint cbSize; //The size of the structure in bytes.            
             public IntPtr hwnd; //A Handle to the Window to be Flashed. The window can be either opened or minimized.
 
-
             public uint dwFlags; //The Flash Status.            
             public uint uCount; // number of times to flash the window            
 

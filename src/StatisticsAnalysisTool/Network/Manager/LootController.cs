@@ -141,7 +141,6 @@ namespace StatisticsAnalysisTool.Network.Manager
                 var discoveredLoot = _discoveredLoot.FirstOrDefault(x => x.ObjectId == lootedObject.Key);
                 if (discoveredLoot != null)
                 {
-
                     var loot = new Loot()
                     {
                         LootedBody = discoveredLoot.BodyName,

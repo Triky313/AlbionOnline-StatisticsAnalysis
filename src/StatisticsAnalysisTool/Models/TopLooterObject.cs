@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models
 {

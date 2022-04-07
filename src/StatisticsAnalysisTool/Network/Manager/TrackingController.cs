@@ -336,7 +336,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Main tracking character name
 
-        public void SetMainCharacterNameForTracking(string currentUsername)
+        public static void SetMainCharacterNameForTracking(string currentUsername)
         {
             if (SettingsController.CurrentSettings.MainTrackingCharacterName != null)
             {

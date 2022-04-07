@@ -115,14 +115,13 @@ namespace StatisticsAnalysisTool.Common
             return min;
         }
 
-
         #endregion
 
         #region Item specific
 
         public static int GetItemLevel(string uniqueName)
         {
-            if (uniqueName == null || !uniqueName.Contains("@"))
+            if (uniqueName == null || !uniqueName.Contains('@'))
             {
                 return 0;
             }
@@ -138,7 +137,7 @@ namespace StatisticsAnalysisTool.Common
             }
 
             var itemNameTierText = item.UniqueName.Split('_')[0];
-            if (itemNameTierText[..1] == "T" && int.TryParse(itemNameTierText.Substring(1, 1), out var result))
+            if (itemNameTierText[..1] == "T" && int.TryParse(itemNameTierText.AsSpan(1, 1), out var result))
             {
                 return result;
             }

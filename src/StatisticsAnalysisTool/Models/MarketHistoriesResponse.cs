@@ -1,6 +1,6 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models
 {

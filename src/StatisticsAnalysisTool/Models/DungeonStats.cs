@@ -1,7 +1,7 @@
-﻿using StatisticsAnalysisTool.Annotations;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -137,17 +137,17 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public string TranslationEnteredDungeon => LanguageController.Translation("ENTERED_DUNGEON");
-        public string TranslationOpenedStandardChests => LanguageController.Translation("OPENED_STANDARD_CHESTS");
-        public string TranslationOpenedUncommonChests => LanguageController.Translation("OPENED_UNCOMMON_CHESTS");
-        public string TranslationOpenedRareChests => LanguageController.Translation("OPENED_RARE_CHESTS");
-        public string TranslationOpenedLegendaryChests => LanguageController.Translation("OPENED_LEGENDARY_CHESTS");
-        public string TranslationFame => LanguageController.Translation("FAME");
-        public string TranslationReSpec => LanguageController.Translation("RESPEC");
-        public string TranslationSilver => LanguageController.Translation("SILVER");
-        public string TranslationAverageFame => LanguageController.Translation("AVERAGE_FAME");
-        public string TranslationAverageReSpec => LanguageController.Translation("AVERAGE_RESPEC");
-        public string TranslationAverageSilver => LanguageController.Translation("AVERAGE_SILVER");
+        public static string TranslationEnteredDungeon => LanguageController.Translation("ENTERED_DUNGEON");
+        public static string TranslationOpenedStandardChests => LanguageController.Translation("OPENED_STANDARD_CHESTS");
+        public static string TranslationOpenedUncommonChests => LanguageController.Translation("OPENED_UNCOMMON_CHESTS");
+        public static string TranslationOpenedRareChests => LanguageController.Translation("OPENED_RARE_CHESTS");
+        public static string TranslationOpenedLegendaryChests => LanguageController.Translation("OPENED_LEGENDARY_CHESTS");
+        public static string TranslationFame => LanguageController.Translation("FAME");
+        public static string TranslationReSpec => LanguageController.Translation("RESPEC");
+        public static string TranslationSilver => LanguageController.Translation("SILVER");
+        public static string TranslationAverageFame => LanguageController.Translation("AVERAGE_FAME");
+        public static string TranslationAverageReSpec => LanguageController.Translation("AVERAGE_RESPEC");
+        public static string TranslationAverageSilver => LanguageController.Translation("AVERAGE_SILVER");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

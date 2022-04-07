@@ -49,8 +49,10 @@ namespace StatisticsAnalysisTool.Common
 
         private static void DependencyPropertiesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!(d is TextBox textBox))
+            if (d is not TextBox textBox)
+            {
                 throw new Exception("Attached property must be used with TextBox.");
+            }
 
             switch (e.Property.Name)
             {
@@ -267,13 +269,19 @@ namespace StatisticsAnalysisTool.Common
                                     case EvenOddConstraint.OnlyEven:
 
                                         if (number % 2 != 0)
+                                        {
                                             e.CancelCommand();
+                                        }
+
                                         break;
 
                                     case EvenOddConstraint.OnlyOdd:
 
                                         if (number % 2 == 0)
+                                        {
                                             e.CancelCommand();
+                                        }
+
                                         break;
                                 }
                             }
@@ -291,15 +299,18 @@ namespace StatisticsAnalysisTool.Common
                                     case EvenOddConstraint.OnlyEven:
 
                                         if (number % 2 != 0)
+                                        {
                                             e.CancelCommand();
+                                        }
 
                                         break;
 
                                     case EvenOddConstraint.OnlyOdd:
 
                                         if (number % 2 == 0)
+                                        {
                                             e.CancelCommand();
-
+                                        }
 
                                         break;
                                 }
@@ -320,15 +331,18 @@ namespace StatisticsAnalysisTool.Common
                                     case EvenOddConstraint.OnlyEven:
 
                                         if (number % 2 != 0)
+                                        {
                                             e.CancelCommand();
+                                        }
 
                                         break;
 
                                     case EvenOddConstraint.OnlyOdd:
 
                                         if (number % 2 == 0)
+                                        {
                                             e.CancelCommand();
-
+                                        }
 
                                         break;
                                 }
@@ -353,14 +367,18 @@ namespace StatisticsAnalysisTool.Common
                                         case EvenOddConstraint.OnlyEven:
 
                                             if (number % 2 != 0)
+                                            {
                                                 e.CancelCommand();
+                                            }
 
                                             break;
 
                                         case EvenOddConstraint.OnlyOdd:
 
                                             if (number % 2 == 0)
+                                            {
                                                 e.CancelCommand();
+                                            }
 
                                             break;
                                     }
@@ -399,14 +417,18 @@ namespace StatisticsAnalysisTool.Common
                                 case EvenOddConstraint.OnlyEven:
 
                                     if (number % 2 != 0)
+                                    {
                                         textBox.Text = defaultValue;
+                                    }
 
                                     break;
 
                                 case EvenOddConstraint.OnlyOdd:
 
                                     if (number % 2 == 0)
+                                    {
                                         textBox.Text = defaultValue;
+                                    }
 
                                     break;
                             }
@@ -426,14 +448,18 @@ namespace StatisticsAnalysisTool.Common
                                 case EvenOddConstraint.OnlyEven:
 
                                     if (number % 2 != 0)
+                                    {
                                         textBox.Text = defaultValue;
+                                    }
 
                                     break;
 
                                 case EvenOddConstraint.OnlyOdd:
 
                                     if (number % 2 == 0)
+                                    {
                                         textBox.Text = defaultValue;
+                                    }
 
                                     break;
                             }
@@ -453,14 +479,18 @@ namespace StatisticsAnalysisTool.Common
                                 case EvenOddConstraint.OnlyEven:
 
                                     if (number % 2 != 0)
+                                    {
                                         textBox.Text = defaultValue;
+                                    }
 
                                     break;
 
                                 case EvenOddConstraint.OnlyOdd:
 
                                     if (number % 2 == 0)
+                                    {
                                         textBox.Text = defaultValue;
+                                    }
 
                                     break;
                             }
@@ -484,14 +514,18 @@ namespace StatisticsAnalysisTool.Common
                                     case EvenOddConstraint.OnlyEven:
 
                                         if (number % 2 != 0)
+                                        {
                                             textBox.Text = defaultValue;
+                                        }
 
                                         break;
 
                                     case EvenOddConstraint.OnlyOdd:
 
                                         if (number % 2 == 0)
+                                        {
                                             textBox.Text = defaultValue;
+                                        }
 
                                         break;
                                 }

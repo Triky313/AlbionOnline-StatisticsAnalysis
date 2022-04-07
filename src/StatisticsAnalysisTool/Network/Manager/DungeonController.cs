@@ -59,7 +59,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
             }
             // Add new dungeon
-            else if (IsDungeonCluster(mapType, mapGuid) && !ExistDungeon(_lastMapGuid) || IsDungeonCluster(mapType, mapGuid) && mapType is MapType.CorruptedDungeon or MapType.HellGate)
+            else if ((IsDungeonCluster(mapType, mapGuid) && !ExistDungeon(_lastMapGuid)) || (IsDungeonCluster(mapType, mapGuid) && mapType is MapType.CorruptedDungeon or MapType.HellGate))
             {
                 UpdateDungeonSaveTimerUi(mapType);
 
