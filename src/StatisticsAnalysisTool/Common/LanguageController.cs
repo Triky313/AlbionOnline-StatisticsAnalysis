@@ -10,13 +10,14 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Markup;
 using System.Xml;
 
 namespace StatisticsAnalysisTool.Common
 {
     public static class LanguageController
     {
-        private static readonly Dictionary<string, string> _translations = new();
+        private static readonly Dictionary<string, string> Translations = new();
         private static CultureInfo _currentCultureInfo;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         public static List<FileInformation> LanguageFiles { get; set; }
@@ -31,6 +32,8 @@ namespace StatisticsAnalysisTool.Common
                 try
                 {
                     Thread.CurrentThread.CurrentUICulture = value;
+                    Thread.CurrentThread.CurrentCulture = value;
+                    FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
                 }
                 catch (Exception e)
                 {
@@ -86,7 +89,7 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                if (_translations.TryGetValue(key, out var value))
+                if (Translations.TryGetValue(key, out var value))
                 {
                     return !string.IsNullOrEmpty(value) ? value : key;
                 }
@@ -146,7 +149,7 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                _translations.Clear();
+                Translations.Clear();
                 var xmlReader = XmlReader.Create(filePath);
                 while (xmlReader.Read())
                     if (xmlReader.Name == "translation" && xmlReader.HasAttributes)
@@ -167,13 +170,13 @@ namespace StatisticsAnalysisTool.Common
         {
             while (xmlReader.MoveToNextAttribute())
             {
-                if (_translations.ContainsKey(xmlReader.Value))
+                if (Translations.ContainsKey(xmlReader.Value))
                 {
                     Log.Warn($"{nameof(AddTranslationsToDictionary)}: {Translation("DOUBLE_VALUE_EXISTS_IN_THE_LANGUAGE_FILE")}: {xmlReader.Value}");
                 }
                 else if (xmlReader.Name == "name")
                 {
-                    _translations.Add(xmlReader.Value, xmlReader.ReadString());
+                    Translations.Add(xmlReader.Value, xmlReader.ReadString());
                 }
             }
         }

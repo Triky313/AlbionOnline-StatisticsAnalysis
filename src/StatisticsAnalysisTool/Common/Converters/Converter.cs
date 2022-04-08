@@ -1,4 +1,4 @@
-﻿namespace StatisticsAnalysisTool.Common
+﻿namespace StatisticsAnalysisTool.Common.Converters
 {
     public static class Converter
     {

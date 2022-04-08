@@ -86,5 +86,8 @@ namespace StatisticsAnalysisTool.Models
         public static string Deaths => LanguageController.Translation("DEATHS");
         public static string LastUpdate => LanguageController.Translation("LAST_UPDATE");
         public static string DataFromAlbionOnlineServers => LanguageController.Translation("DATA_FROM_ALBION_ONLINE_SERVERS");
+        public static string AverageItemPowerWhenKilling => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_KILLING");
+        public static string AverageItemPowerOfTheKilledEnemies => LanguageController.Translation("AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES");
+        public static string AverageItemPowerWhenDying => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_DYING");
     }
 }

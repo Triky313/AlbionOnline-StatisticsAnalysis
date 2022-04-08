@@ -531,4 +531,7 @@
 	<translation name="WEEK">Woche</translation>
 	<translation name="KILLS">Tötungen</translation>
 	<translation name="DEATHS">Tode</translation>
+	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Durchschnittliche Gegenstandsstärke beim Töten</translation>
+	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Durchschnittliche Gegenstandsstärke der getöteten Feinde</translation>
+	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Durchschnittliche Gegenstandsstärke beim Sterben</translation>
 </translations>

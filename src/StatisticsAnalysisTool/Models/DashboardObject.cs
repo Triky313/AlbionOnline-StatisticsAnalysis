@@ -30,6 +30,9 @@ namespace StatisticsAnalysisTool.Models
         private int _killsThisWeek;
         private int _deathsThisWeek;
         private DateTime? _lastUpdate;
+        private double _averageItemPowerWhenKilling;
+        private double _averageItemPowerOfTheKilledEnemies;
+        private double _averageItemPowerWhenDying;
 
         public double GetHighestValue()
         {
@@ -272,6 +275,36 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _deathsThisWeek = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double AverageItemPowerWhenKilling
+        {
+            get => _averageItemPowerWhenKilling;
+            set
+            {
+                _averageItemPowerWhenKilling = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double AverageItemPowerOfTheKilledEnemies
+        {
+            get => _averageItemPowerOfTheKilledEnemies;
+            set
+            {
+                _averageItemPowerOfTheKilledEnemies = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double AverageItemPowerWhenDying
+        {
+            get => _averageItemPowerWhenDying;
+            set
+            {
+                _averageItemPowerWhenDying = value;
                 OnPropertyChanged();
             }
         }

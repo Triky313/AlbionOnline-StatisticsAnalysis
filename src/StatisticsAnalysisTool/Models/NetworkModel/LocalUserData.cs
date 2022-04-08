@@ -31,9 +31,11 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public int DeathsToday => Deaths?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date) ?? 0;
         public int KillsWeek => Kills?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)) ?? 0;
         public int DeathsWeek => Deaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)) ?? 0;
-
         public DateTime? LastUpdate;
-        
+        public double AverageItemPowerWhenKilling => Kills.Select(x => x?.Killer?.AverageItemPower).Sum() / Kills.Count ?? 0;
+        public double AverageItemPowerOfTheKilledEnemies => Kills.Select(x => x?.Victim?.AverageItemPower).Sum() / Kills.Count ?? 0;
+        public double AverageItemPowerWhenDying => Deaths.Select(x => x?.Victim?.AverageItemPower).Sum() / Deaths.Count ?? 0;
+
         public async Task SetValuesAsync(LocalUserData localUserData)
         {
             await GetApiData(Username, localUserData.Username);

@@ -236,7 +236,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #endregion
 
-        #region Kill / Death View
+        #region Kill / Death infos
 
         public void SetKillsDeathsValues()
         {
@@ -244,6 +244,10 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel.DashboardObject.DeathsToday = _trackingController.EntityController.LocalUserData.DeathsToday;
             _mainWindowViewModel.DashboardObject.KillsThisWeek = _trackingController.EntityController.LocalUserData.KillsWeek;
             _mainWindowViewModel.DashboardObject.DeathsThisWeek = _trackingController.EntityController.LocalUserData.DeathsWeek;
+
+            _mainWindowViewModel.DashboardObject.AverageItemPowerWhenKilling = _trackingController.EntityController.LocalUserData.AverageItemPowerWhenKilling;
+            _mainWindowViewModel.DashboardObject.AverageItemPowerOfTheKilledEnemies = _trackingController.EntityController.LocalUserData.AverageItemPowerOfTheKilledEnemies;
+            _mainWindowViewModel.DashboardObject.AverageItemPowerWhenDying = _trackingController.EntityController.LocalUserData.AverageItemPowerWhenDying;
 
             _mainWindowViewModel.DashboardObject.LastUpdate = _trackingController.EntityController.LocalUserData.LastUpdate;
         }
