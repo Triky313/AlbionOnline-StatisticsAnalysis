@@ -94,6 +94,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 OnChangeCluster?.Invoke(CurrentCluster);
             }
+
+            StatisticController.SetKillsDeathsValues();
         }
 
         private bool TryChangeCluster(string index, string mapName)

@@ -527,4 +527,8 @@
 	<translation name="GET_ITEMS_JSON">Items.json erhalten</translation>
 	<translation name="CHARACTER_NAME_TO_TRACK">Charaktername zum tracken</translation>
 	<translation name="THIS_CHARACTER_IS_NOT_TRACKED">Dieser Charakter wird nicht getrackt</translation>
+	<translation name="DATA_FROM_ALBION_ONLINE_SERVERS">Daten von Albion Online Servern</translation>
+	<translation name="WEEK">Woche</translation>
+	<translation name="KILLS">Tötungen</translation>
+	<translation name="DEATHS">Tode</translation>
 </translations>

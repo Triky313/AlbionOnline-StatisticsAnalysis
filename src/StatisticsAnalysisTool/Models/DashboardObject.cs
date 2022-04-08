@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -24,6 +25,11 @@ namespace StatisticsAnalysisTool.Models
         private double _reSpecPointsInPercent;
         private double _mightInPercent;
         private double _favorInPercent;
+        private int _killsToday;
+        private int _deathsToday;
+        private int _killsThisWeek;
+        private int _deathsThisWeek;
+        private DateTime? _lastUpdate;
 
         public double GetHighestValue()
         {
@@ -226,6 +232,56 @@ namespace StatisticsAnalysisTool.Models
                 _totalGainedFavorInSession = value;
                 HighestValue = GetHighestValue();
                 FavorInPercent = _totalGainedFavorInSession / HighestValue * 100;
+                OnPropertyChanged();
+            }
+        }
+
+        public int KillsToday
+        {
+            get => _killsToday;
+            set
+            {
+                _killsToday = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int DeathsToday
+        {
+            get => _deathsToday;
+            set
+            {
+                _deathsToday = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int KillsThisWeek
+        {
+            get => _killsThisWeek;
+            set
+            {
+                _killsThisWeek = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int DeathsThisWeek
+        {
+            get => _deathsThisWeek;
+            set
+            {
+                _deathsThisWeek = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime? LastUpdate
+        {
+            get => _lastUpdate;
+            set
+            {
+                _lastUpdate = value;
                 OnPropertyChanged();
             }
         }

@@ -1,14 +1,14 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models;
 
 public class DashboardStatistics
 {
-    public List<DailyValues> DailyValues { get; set; } = new ();
+    public List<DailyValues> DailyValues { get; set; } = new();
 
     [JsonIgnore]
     private bool _wasExecuted;
@@ -39,7 +39,7 @@ public class DashboardStatistics
             return;
         }
 
-        DailyValues.RemoveAll(x => x.Date.Date < afterDateDataWillBeDeleted);
+        DailyValues.RemoveAll(x => x.Date.Date < afterDateDataWillBeDeleted.Date);
 
         _wasExecuted = true;
     }

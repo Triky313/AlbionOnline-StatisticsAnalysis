@@ -93,10 +93,10 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             _dashboardStatistics.Add(new DailyValues(valueType, gainedValue, dateTimeNow));
 
-            UpdateHourChart(_stats);
+            UpdateDailyChart(_stats);
         }
         
-        private void UpdateHourChart(ObservableCollection<DashboardHourObject> stats)
+        private void UpdateDailyChart(ObservableCollection<DashboardHourObject> stats)
         {
             if (!IsUpdateChartAllowed())
             {
@@ -151,6 +151,32 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel.SeriesDashboardHourValues = seriesCollection;
 
             _lastChartUpdate = DateTime.Now;
+
+            // TODO: Bar chart for Fame, ReSpec etc.
+            //var series = new ISeries[]
+            //{
+            //    new ColumnSeries<double>
+            //    {
+            //        Values = new double[] {2, 5, 4}
+            //    },
+            //    new ColumnSeries<double>
+            //    {
+            //        Values = new double[] {2, 5, 4}
+            //    }
+            //};
+
+            //_mainWindowViewModel.SeriesDashboardFameDailyValues = series;
+
+            //var axis = new[]
+            //{
+            //    new Axis
+            //    {
+            //        Labels = new [] {"08.04.2022", "07.04.2022", "06.04.2022"},
+            //        LabelsRotation = 15
+            //    }
+            //};
+
+            //_mainWindowViewModel.XAxesDashboardFameDailyValues = axis;
         }
 
         private bool IsUpdateChartAllowed()
@@ -207,6 +233,21 @@ namespace StatisticsAnalysisTool.Network.Manager
             public DateTime Date { get; init; }
             public int Hour => Date.Hour;
         }
+
+        #endregion
+
+        #region Kill / Death View
+
+        public void SetKillsDeathsValues()
+        {
+            _mainWindowViewModel.DashboardObject.KillsToday = _trackingController.EntityController.LocalUserData.KillsToday;
+            _mainWindowViewModel.DashboardObject.DeathsToday = _trackingController.EntityController.LocalUserData.DeathsToday;
+            _mainWindowViewModel.DashboardObject.KillsThisWeek = _trackingController.EntityController.LocalUserData.KillsWeek;
+            _mainWindowViewModel.DashboardObject.DeathsThisWeek = _trackingController.EntityController.LocalUserData.DeathsWeek;
+
+            _mainWindowViewModel.DashboardObject.LastUpdate = _trackingController.EntityController.LocalUserData.LastUpdate;
+        }
+        
 
         #endregion
 

@@ -462,4 +462,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\ApiModel\" />
+  </ItemGroup>
 </Project>
