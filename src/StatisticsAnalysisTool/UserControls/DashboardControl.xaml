@@ -57,7 +57,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="{Binding DashboardObject.KillsToday, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                <TextBlock Text="{Binding Translation.Day, StringFormat='{}/{0:N0}', FallbackValue=/day}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding Translation.Today, StringFormat='{}/{0:N0}', FallbackValue=/today}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="{Binding DashboardObject.KillsThisWeek, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
@@ -71,7 +71,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="{Binding DashboardObject.DeathsToday, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
-                                <TextBlock Text="{Binding Translation.Day, StringFormat='{}/{0:N0}', FallbackValue=/day}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding Translation.Today, StringFormat='{}/{0:N0}', FallbackValue=/today}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="{Binding DashboardObject.DeathsThisWeek, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />

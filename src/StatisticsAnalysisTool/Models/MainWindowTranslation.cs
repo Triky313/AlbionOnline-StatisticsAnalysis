@@ -81,10 +81,11 @@ namespace StatisticsAnalysisTool.Models
         public static string TopLooters => LanguageController.Translation("TOP_LOOTERS");
         public static string ToolTasks => LanguageController.Translation("TOOL_TASKS");
         public static string ThisCharacterIsNotTracked => LanguageController.Translation("THIS_CHARACTER_IS_NOT_TRACKED");
-        public static string Week => LanguageController.Translation("WEEK");
+        public static string Week => LanguageController.Translation("WEEK").ToLower();
         public static string Kills => LanguageController.Translation("KILLS");
         public static string Deaths => LanguageController.Translation("DEATHS");
         public static string LastUpdate => LanguageController.Translation("LAST_UPDATE");
+        public static string Today => LanguageController.Translation("TODAY").ToLower();
         public static string DataFromAlbionOnlineServers => LanguageController.Translation("DATA_FROM_ALBION_ONLINE_SERVERS");
         public static string AverageItemPowerWhenKilling => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_KILLING");
         public static string AverageItemPowerOfTheKilledEnemies => LanguageController.Translation("AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES");
