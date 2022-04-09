@@ -6,6 +6,5 @@ public enum UnitOfTime
     Week,
     LastWeek,
     Month,
-    LastMonth,
-    Year
+    LastMonth
 }

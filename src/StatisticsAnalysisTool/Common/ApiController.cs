@@ -212,7 +212,6 @@ namespace StatisticsAnalysisTool.Common
                 UnitOfTime.LastWeek => "lastWeek",
                 UnitOfTime.Month => "month",
                 UnitOfTime.LastMonth => "lastMonth",
-                UnitOfTime.Year => "year",
                 _ => ""
             };
 
@@ -247,7 +246,6 @@ namespace StatisticsAnalysisTool.Common
                 UnitOfTime.LastWeek => "lastWeek",
                 UnitOfTime.Month => "month",
                 UnitOfTime.LastMonth => "lastMonth",
-                UnitOfTime.Year => "year",
                 _ => ""
             };
 
