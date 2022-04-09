@@ -241,9 +241,14 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void SetKillsDeathsValues()
         {
             _mainWindowViewModel.DashboardObject.KillsToday = _trackingController.EntityController.LocalUserData.KillsToday;
+            _mainWindowViewModel.DashboardObject.SoloKillsToday = _trackingController.EntityController.LocalUserData.SoloKillsToday;
             _mainWindowViewModel.DashboardObject.DeathsToday = _trackingController.EntityController.LocalUserData.DeathsToday;
             _mainWindowViewModel.DashboardObject.KillsThisWeek = _trackingController.EntityController.LocalUserData.KillsWeek;
+            _mainWindowViewModel.DashboardObject.SoloKillsThisWeek = _trackingController.EntityController.LocalUserData.SoloKillsWeek;
             _mainWindowViewModel.DashboardObject.DeathsThisWeek = _trackingController.EntityController.LocalUserData.DeathsWeek;
+            _mainWindowViewModel.DashboardObject.KillsThisMonth = _trackingController.EntityController.LocalUserData.KillsMonth;
+            _mainWindowViewModel.DashboardObject.SoloKillsThisMonth = _trackingController.EntityController.LocalUserData.SoloKillsMonth;
+            _mainWindowViewModel.DashboardObject.DeathsThisMonth = _trackingController.EntityController.LocalUserData.DeathsMonth;
 
             _mainWindowViewModel.DashboardObject.AverageItemPowerWhenKilling = _trackingController.EntityController.LocalUserData.AverageItemPowerWhenKilling;
             _mainWindowViewModel.DashboardObject.AverageItemPowerOfTheKilledEnemies = _trackingController.EntityController.LocalUserData.AverageItemPowerOfTheKilledEnemies;

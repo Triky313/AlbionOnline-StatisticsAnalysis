@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models
@@ -33,6 +34,14 @@ namespace StatisticsAnalysisTool.Models
         private double _averageItemPowerWhenKilling;
         private double _averageItemPowerOfTheKilledEnemies;
         private double _averageItemPowerWhenDying;
+        private Visibility _deathsTodayVisibility = Visibility.Collapsed;
+        private Visibility _deathsThisWeekVisibility = Visibility.Collapsed;
+        private Visibility _deathsThisMonthVisibility = Visibility.Collapsed;
+        private int _killsThisMonth;
+        private int _deathsThisMonth;
+        private int _soloKillsToday;
+        private int _soloKillsThisWeek;
+        private int _soloKillsThisMonth;
 
         public double GetHighestValue()
         {
@@ -239,22 +248,42 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
+        public int SoloKillsToday
+        {
+            get => _soloKillsToday;
+            set
+            {
+                _soloKillsToday = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SoloKillsThisWeek
+        {
+            get => _soloKillsThisWeek;
+            set
+            {
+                _soloKillsThisWeek = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SoloKillsThisMonth
+        {
+            get => _soloKillsThisMonth;
+            set
+            {
+                _soloKillsThisMonth = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int KillsToday
         {
             get => _killsToday;
             set
             {
                 _killsToday = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int DeathsToday
-        {
-            get => _deathsToday;
-            set
-            {
-                _deathsToday = value;
                 OnPropertyChanged();
             }
         }
@@ -269,12 +298,75 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
+        public int KillsThisMonth
+        {
+            get => _killsThisMonth;
+            set
+            {
+                _killsThisMonth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int DeathsToday
+        {
+            get => _deathsToday;
+            set
+            {
+                _deathsToday = value;
+                DeathsTodayVisibility = value > 10 ? Visibility.Visible : Visibility.Collapsed;
+                OnPropertyChanged();
+            }
+        }
+
         public int DeathsThisWeek
         {
             get => _deathsThisWeek;
             set
             {
                 _deathsThisWeek = value;
+                DeathsThisWeekVisibility = value > 10 ? Visibility.Visible : Visibility.Collapsed;
+                OnPropertyChanged();
+            }
+        }
+
+        public int DeathsThisMonth
+        {
+            get => _deathsThisMonth;
+            set
+            {
+                _deathsThisMonth = value;
+                DeathsThisMonthVisibility = value > 10 ? Visibility.Visible : Visibility.Collapsed;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility DeathsTodayVisibility
+        {
+            get => _deathsTodayVisibility;
+            set
+            {
+                _deathsTodayVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility DeathsThisWeekVisibility
+        {
+            get => _deathsThisWeekVisibility;
+            set
+            {
+                _deathsThisWeekVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility DeathsThisMonthVisibility
+        {
+            get => _deathsThisMonthVisibility;
+            set
+            {
+                _deathsThisMonthVisibility = value;
                 OnPropertyChanged();
             }
         }

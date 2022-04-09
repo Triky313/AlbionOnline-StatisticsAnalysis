@@ -25,17 +25,22 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public string AllianceName { get; set; }
         public string WebApiUserId { get; set; }
         public DateTime? LastUpdate;
-        public List<GameInfoPlayerKillsDeaths> TopKillsMonth { get; private set; }
-        public List<GameInfoPlayerKillsDeaths> SoloKillsMonth { get; private set; }
-        public List<GameInfoPlayerKillsDeaths> Deaths { get; private set; }
+        public List<GameInfoPlayerKillsDeaths> TopKillsMonthValues { get; private set; }
+        public List<GameInfoPlayerKillsDeaths> SoloKillsMonthValues { get; private set; }
+        public List<GameInfoPlayerKillsDeaths> DeathsValues { get; private set; }
 
-        public int KillsToday => TopKillsMonth?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date) ?? 0;
-        public int DeathsToday => Deaths?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date) ?? 0;
-        public int KillsWeek => TopKillsMonth?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)) ?? 0;
-        public int DeathsWeek => Deaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)) ?? 0;
-        public double AverageItemPowerWhenKilling => TopKillsMonth.Select(x => x?.Killer?.AverageItemPower).Sum() / TopKillsMonth.Count ?? 0;
-        public double AverageItemPowerOfTheKilledEnemies => TopKillsMonth.Select(x => x?.Victim?.AverageItemPower).Sum() / TopKillsMonth.Count ?? 0;
-        public double AverageItemPowerWhenDying => Deaths.Select(x => x?.Victim?.AverageItemPower).Sum() / Deaths.Count ?? 0;
+        public int SoloKillsToday => SoloKillsMonthValues?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date) ?? 0;
+        public int SoloKillsWeek => SoloKillsMonthValues?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)) ?? 0;
+        public int SoloKillsMonth => SoloKillsMonthValues?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-30)) ?? 0;
+        public int KillsToday => TopKillsMonthValues?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date) ?? 0;
+        public int KillsWeek => TopKillsMonthValues?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)) ?? 0;
+        public int KillsMonth => TopKillsMonthValues?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-30)) ?? 0;
+        public int DeathsToday => DeathsValues?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date) ?? 0;
+        public int DeathsWeek => DeathsValues?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)) ?? 0;
+        public int DeathsMonth => DeathsValues?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-30)) ?? 0;
+        public double AverageItemPowerWhenKilling => TopKillsMonthValues.Select(x => x?.Killer?.AverageItemPower).Sum() / TopKillsMonthValues.Count ?? 0;
+        public double AverageItemPowerOfTheKilledEnemies => TopKillsMonthValues.Select(x => x?.Victim?.AverageItemPower).Sum() / TopKillsMonthValues.Count ?? 0;
+        public double AverageItemPowerWhenDying => DeathsValues.Select(x => x?.Victim?.AverageItemPower).Sum() / DeathsValues.Count ?? 0;
 
         public async Task SetValuesAsync(LocalUserData localUserData)
         {
@@ -63,9 +68,9 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
                 var info = await ApiController.GetGameInfoSearchFromJsonAsync(newUsername);
                 WebApiUserId = info.SearchPlayer.FirstOrDefault(x => x.Name == newUsername)?.Id;
                 
-                Deaths = await ApiController.GetGameInfoPlayerKillsDeathsFromJsonAsync(WebApiUserId, GameInfoPlayersType.Deaths);
-                TopKillsMonth = await ApiController.GetGameInfoPlayerTopKillsFromJsonAsync(WebApiUserId, UnitOfTime.Month);
-                SoloKillsMonth = await ApiController.GetGameInfoPlayerSoloKillsFromJsonAsync(WebApiUserId, UnitOfTime.Month);
+                DeathsValues = await ApiController.GetGameInfoPlayerKillsDeathsFromJsonAsync(WebApiUserId, GameInfoPlayersType.Deaths);
+                TopKillsMonthValues = await ApiController.GetGameInfoPlayerTopKillsFromJsonAsync(WebApiUserId, UnitOfTime.Month);
+                SoloKillsMonthValues = await ApiController.GetGameInfoPlayerSoloKillsFromJsonAsync(WebApiUserId, UnitOfTime.Month);
 
                 LastUpdate = DateTime.UtcNow;
             }

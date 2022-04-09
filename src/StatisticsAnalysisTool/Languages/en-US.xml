@@ -528,11 +528,13 @@
 	<translation name="CHARACTER_NAME_TO_TRACK">Character name to track</translation>
 	<translation name="THIS_CHARACTER_IS_NOT_TRACKED">This character is not tracked</translation>
 	<translation name="DATA_FROM_ALBION_ONLINE_SERVERS">Data from Albion Online servers</translation>
+	<translation name="TODAY">Today</translation>
 	<translation name="WEEK">Week</translation>
+	<translation name="MONTH">Month</translation>
 	<translation name="KILLS">Kills</translation>
+	<translation name="SOLO_KILLS">Solo kills</translation>
 	<translation name="DEATHS">Deaths</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Average item power when killing</translation>
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Average item power of the killed enemies</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Average item power when dying</translation>
-	<translation name="TODAY">Today</translation>
 </translations>
