@@ -2,14 +2,21 @@
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using log4net;
 using SkiaSharp;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
@@ -18,12 +25,15 @@ namespace StatisticsAnalysisTool.Network.Manager
 {
     public class StatisticController
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
         private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly ObservableCollection<DashboardHourObject> _stats = new();
         private readonly List<ValueType> _valueTypes = new() { ValueType.Fame, ValueType.Silver, ValueType.ReSpec, ValueType.FactionFame, ValueType.FactionPoints, ValueType.Might, ValueType.Favor };
         private double? _lastReSpecValue;
         private DateTime _lastChartUpdate;
+        private DashboardStatistics _dashboardStatistics = new();
 
         public StatisticController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
@@ -60,17 +70,17 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        public void AddValue(ValueType type, double gainedValue)
+        public void AddValue(ValueType valueType, double gainedValue)
         {
             if (!_trackingController.IsTrackingAllowedByMainCharacter())
             {
                 return;
             }
 
-            gainedValue = GetGainedValue(type, gainedValue);
+            gainedValue = GetGainedValue(valueType, gainedValue);
 
             var dateTimeNow = DateTime.Now;
-            var dbHourObject = _stats?.FirstOrDefault(x => x.Type == type);
+            var dbHourObject = _stats?.FirstOrDefault(x => x.Type == valueType);
 
             var dbHourValues = dbHourObject?.HourValues?.FirstOrDefault(x => x.Date.Date.Equals(dateTimeNow.Date) && x.Hour.Equals(dateTimeNow.Hour));
 
@@ -81,10 +91,12 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             dbHourValues.Value += gainedValue;
 
-            UpdateHourChart(_stats);
-        }
+            _dashboardStatistics.Add(new DailyValues(valueType, gainedValue, dateTimeNow));
 
-        private void UpdateHourChart(ObservableCollection<DashboardHourObject> stats)
+            UpdateDailyChart(_stats);
+        }
+        
+        private void UpdateDailyChart(ObservableCollection<DashboardHourObject> stats)
         {
             if (!IsUpdateChartAllowed())
             {
@@ -139,6 +151,32 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel.SeriesDashboardHourValues = seriesCollection;
 
             _lastChartUpdate = DateTime.Now;
+
+            // TODO: Bar chart for Fame, ReSpec etc.
+            //var series = new ISeries[]
+            //{
+            //    new ColumnSeries<double>
+            //    {
+            //        Values = new double[] {2, 5, 4}
+            //    },
+            //    new ColumnSeries<double>
+            //    {
+            //        Values = new double[] {2, 5, 4}
+            //    }
+            //};
+
+            //_mainWindowViewModel.SeriesDashboardFameDailyValues = series;
+
+            //var axis = new[]
+            //{
+            //    new Axis
+            //    {
+            //        Labels = new [] {"08.04.2022", "07.04.2022", "06.04.2022"},
+            //        LabelsRotation = 15
+            //    }
+            //};
+
+            //_mainWindowViewModel.XAxesDashboardFameDailyValues = axis;
         }
 
         private bool IsUpdateChartAllowed()
@@ -194,6 +232,75 @@ namespace StatisticsAnalysisTool.Network.Manager
             public double Value { get; set; }
             public DateTime Date { get; init; }
             public int Hour => Date.Hour;
+        }
+
+        #endregion
+
+        #region Kill / Death infos
+
+        public void SetKillsDeathsValues()
+        {
+            _mainWindowViewModel.DashboardObject.KillsToday = _trackingController.EntityController.LocalUserData.KillsToday;
+            _mainWindowViewModel.DashboardObject.SoloKillsToday = _trackingController.EntityController.LocalUserData.SoloKillsToday;
+            _mainWindowViewModel.DashboardObject.DeathsToday = _trackingController.EntityController.LocalUserData.DeathsToday;
+            _mainWindowViewModel.DashboardObject.KillsThisWeek = _trackingController.EntityController.LocalUserData.KillsWeek;
+            _mainWindowViewModel.DashboardObject.SoloKillsThisWeek = _trackingController.EntityController.LocalUserData.SoloKillsWeek;
+            _mainWindowViewModel.DashboardObject.DeathsThisWeek = _trackingController.EntityController.LocalUserData.DeathsWeek;
+            _mainWindowViewModel.DashboardObject.KillsThisMonth = _trackingController.EntityController.LocalUserData.KillsMonth;
+            _mainWindowViewModel.DashboardObject.SoloKillsThisMonth = _trackingController.EntityController.LocalUserData.SoloKillsMonth;
+            _mainWindowViewModel.DashboardObject.DeathsThisMonth = _trackingController.EntityController.LocalUserData.DeathsMonth;
+
+            _mainWindowViewModel.DashboardObject.AverageItemPowerWhenKilling = _trackingController.EntityController.LocalUserData.AverageItemPowerWhenKilling;
+            _mainWindowViewModel.DashboardObject.AverageItemPowerOfTheKilledEnemies = _trackingController.EntityController.LocalUserData.AverageItemPowerOfTheKilledEnemies;
+            _mainWindowViewModel.DashboardObject.AverageItemPowerWhenDying = _trackingController.EntityController.LocalUserData.AverageItemPowerWhenDying;
+
+            _mainWindowViewModel.DashboardObject.LastUpdate = _trackingController.EntityController.LocalUserData.LastUpdate;
+        }
+        
+
+        #endregion
+
+        #region Load / Save local file data
+
+        public void LoadStatisticsFromFile()
+        {
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.StatsFileName}";
+
+            if (File.Exists(localFilePath))
+            {
+                try
+                {
+                    var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
+                    var stats = JsonSerializer.Deserialize<DashboardStatistics>(localFileString) ?? new DashboardStatistics();
+                    _dashboardStatistics = stats;
+                    return;
+                }
+                catch (Exception e)
+                {
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    _dashboardStatistics = new DashboardStatistics();
+                    return;
+                }
+            }
+
+            _dashboardStatistics = new DashboardStatistics();
+        }
+
+        public void SaveStatisticsInFile()
+        {
+            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.StatsFileName}";
+
+            try
+            {
+                var fileString = JsonSerializer.Serialize(_dashboardStatistics);
+                File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            }
         }
 
         #endregion

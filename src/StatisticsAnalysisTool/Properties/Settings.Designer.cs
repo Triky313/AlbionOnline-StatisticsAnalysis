@@ -222,7 +222,7 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://discord.gg/R2MrB2FwtU")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://discord.com/invite/sahSrSPmaJ")]
         public string DiscordUrl {
             get {
                 return ((string)(this["DiscordUrl"]));
@@ -332,6 +332,27 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["AutoUpdatePreReleaseConfigUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Stats.json")]
+        public string StatsFileName {
+            get {
+                return ((string)(this["StatsFileName"]));
+            }
+            set {
+                this["StatsFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-90")]
+        public int KeepDashboardStatisticsForDays {
+            get {
+                return ((int)(this["KeepDashboardStatisticsForDays"]));
             }
         }
     }

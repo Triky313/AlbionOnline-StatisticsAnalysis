@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -126,6 +127,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _taskProgressbarValue;
         private bool _isTaskProgressbarIndeterminate;
         private Visibility _characterIsNotTrackedInfoVisibility;
+        private CultureInfo _currentCulture;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -722,6 +724,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
             TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
+            TrackingController?.StatisticController?.LoadStatisticsFromFile();
 
             TrackingController?.CountUpTimer.Start();
 
@@ -734,6 +737,7 @@ namespace StatisticsAnalysisTool.ViewModels
         public void StopTracking()
         {
             TrackingController?.DungeonController?.SaveDungeonsInFile();
+            TrackingController?.StatisticController?.SaveStatisticsInFile();
             TrackingController?.UnregisterEvents();
             TrackingController?.CountUpTimer?.Stop();
 
@@ -1866,7 +1870,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public string UpdateTranslation
         {
             get => _updateTranslation;

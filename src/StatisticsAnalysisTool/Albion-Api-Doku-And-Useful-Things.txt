@@ -14,6 +14,14 @@ https://gameinfo.albiononline.com/api/gameinfo/events
 Player info
 https://gameinfo.albiononline.com/api/gameinfo/players/{player_id}
 
+Player topkills info
+https://gameinfo.albiononline.com/api/gameinfo/players/{player_id}/topkills?range=month&offset=0&limit=11
+(range=day,week,lastWeek,month,lastMonth)
+
+Player solokills info
+https://gameinfo.albiononline.com/api/gameinfo/players/{player_id}/solokills?range=week&offset=0&limit=11
+(range=day,week,lastWeek,month,lastMonth)
+
 Guild info
 https://gameinfo.albiononline.com/api/gameinfo/guilds/{guild_id} https://gameinfo.albiononline.com/api/gameinfo/guilds/{guild_id}/members
 

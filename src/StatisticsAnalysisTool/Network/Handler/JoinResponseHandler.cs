@@ -25,24 +25,9 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(JoinResponse value)
         {
-            _trackingController.SetNewCluster(value.MapType, value.DungeonGuid, value.MapIndex, value.MainMapIndex);
+            await SetLocalUserData(value);
 
-            _trackingController.EntityController.LocalUserData = new LocalUserData
-            {
-                UserObjectId = value.UserObjectId,
-                Guid = value.Guid,
-                InteractGuid = value.InteractGuid,
-                Username = value.Username,
-                LearningPoints = value.LearningPoints,
-                Reputation = value.Reputation,
-                ReSpecPoints = value.ReSpecPoints,
-                Silver = value.Silver,
-                Gold = value.Gold,
-                GuildName = value.GuildName,
-                MainMapIndex = value.MainMapIndex,
-                PlayTimeInSeconds = value.PlayTimeInSeconds,
-                AllianceName = value.AllianceName,
-            };
+            _trackingController.SetNewCluster(value.MapType, value.DungeonGuid, value.MapIndex, value.MainMapIndex);
 
             _mainWindowViewModel.TrackingUsername = value.Username;
             _mainWindowViewModel.TrackingGuildName = value.GuildName;
@@ -62,6 +47,26 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             ResetFameCounterByMapChangeIfActive();
             SetTrackingActivityText();
+        }
+
+        private async Task SetLocalUserData(JoinResponse value)
+        {
+            await _trackingController.EntityController.LocalUserData.SetValuesAsync(new LocalUserData
+            {
+                UserObjectId = value.UserObjectId,
+                Guid = value.Guid,
+                InteractGuid = value.InteractGuid,
+                Username = value.Username,
+                LearningPoints = value.LearningPoints,
+                Reputation = value.Reputation,
+                ReSpecPoints = value.ReSpecPoints,
+                Silver = value.Silver,
+                Gold = value.Gold,
+                GuildName = value.GuildName,
+                MainMapIndex = value.MainMapIndex,
+                PlayTimeInSeconds = value.PlayTimeInSeconds,
+                AllianceName = value.AllianceName
+            });
         }
 
         private async Task AddEntityAsync(long? userObjectId, Guid? guid, Guid? interactGuid, string name, GameObjectType gameObjectType, GameObjectSubType gameObjectSubType)

@@ -30,7 +30,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private double _lastLocalEntityGuildTaxInPercent;
         private double _lastLocalEntityClusterTaxInPercent;
 
-        public LocalUserData LocalUserData { get; set; }
+        public LocalUserData LocalUserData { get; set; } = new ();
 
         public EntityController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {

@@ -11,6 +11,8 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models.ApiModel;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -133,7 +135,7 @@ namespace StatisticsAnalysisTool.Common
             using var clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
             using var client = new HttpClient(clientHandler);
-            client.Timeout = TimeSpan.FromSeconds(120);
+            client.Timeout = TimeSpan.FromSeconds(600);
             try
             {
                 using var response = await client.GetAsync(url);
@@ -171,6 +173,100 @@ namespace StatisticsAnalysisTool.Common
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return gameInfoPlayerResponse;
+            }
+        }
+
+        public static async Task<List<GameInfoPlayerKillsDeaths>> GetGameInfoPlayerKillsDeathsFromJsonAsync(string userid, GameInfoPlayersType gameInfoPlayersType)
+        {
+            var values = new List<GameInfoPlayerKillsDeaths>();
+
+            var killsDeathsExtensionString = gameInfoPlayersType == GameInfoPlayersType.Kills ? "kills" : "deaths";
+            var url = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}/{killsDeathsExtensionString}";
+
+            using var clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            using var client = new HttpClient(clientHandler);
+            client.Timeout = TimeSpan.FromSeconds(600);
+            try
+            {
+                using var response = await client.GetAsync(url);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var content = response.Content;
+                return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(await content.ReadAsStringAsync()) ?? values;
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                return values;
+            }
+        }
+
+        public static async Task<List<GameInfoPlayerKillsDeaths>> GetGameInfoPlayerTopKillsFromJsonAsync(string userid, UnitOfTime unitOfTime)
+        {
+            var values = new List<GameInfoPlayerKillsDeaths>();
+            var unitOfTimeString = unitOfTime switch
+            {
+                UnitOfTime.Day => "day",
+                UnitOfTime.Week => "week",
+                UnitOfTime.LastWeek => "lastWeek",
+                UnitOfTime.Month => "month",
+                UnitOfTime.LastMonth => "lastMonth",
+                _ => ""
+            };
+
+            var url = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}/topkills?range={unitOfTimeString}&offset=0";
+
+            using var clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            using var client = new HttpClient(clientHandler);
+            client.Timeout = TimeSpan.FromSeconds(600);
+            try
+            {
+                using var response = await client.GetAsync(url);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var content = response.Content;
+                return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(await content.ReadAsStringAsync()) ?? values;
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                return values;
+            }
+        }
+
+        public static async Task<List<GameInfoPlayerKillsDeaths>> GetGameInfoPlayerSoloKillsFromJsonAsync(string userid, UnitOfTime unitOfTime)
+        {
+            var values = new List<GameInfoPlayerKillsDeaths>();
+            var unitOfTimeString = unitOfTime switch
+            {
+                UnitOfTime.Day => "day",
+                UnitOfTime.Week => "week",
+                UnitOfTime.LastWeek => "lastWeek",
+                UnitOfTime.Month => "month",
+                UnitOfTime.LastMonth => "lastMonth",
+                _ => ""
+            };
+
+            var url = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}/solokills?range={unitOfTimeString}&offset=0";
+
+            using var clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            using var client = new HttpClient(clientHandler);
+            client.Timeout = TimeSpan.FromSeconds(600);
+            try
+            {
+                using var response = await client.GetAsync(url);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var content = response.Content;
+                return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(await content.ReadAsStringAsync()) ?? values;
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                return values;
             }
         }
 
