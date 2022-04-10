@@ -532,4 +532,15 @@
   <translation name="GET_ITEM_LIST_JSON">Получить ItemList.json</translation>
   <translation name="GET_ITEMS_JSON">Получить Items.json</translation>
   <translation name="CHARACTER_NAME_TO_TRACK">Отслеживать по нику</translation>
+  <translation name="THIS_CHARACTER_IS_NOT_TRACKED">Этот персонаж не отслеживается</translation>
+  <translation name="DATA_FROM_ALBION_ONLINE_SERVERS">Информация взята с серверов Albion Online</translation>
+  <translation name="TODAY">За сегодня</translation>
+  <translation name="WEEK">За неделю</translation>
+  <translation name="MONTH">За месяц</translation>
+  <translation name="KILLS">Убийств:</translation>
+  <translation name="SOLO_KILLS">Одиночных убийтсв:</translation>
+  <translation name="DEATHS">Смертей:</translation>
+  <translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Средний IP при убийствах</translation>
+  <translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Средний IP убийц</translation>
+  <translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Средний IP при смертях</translation>
 </translations>
