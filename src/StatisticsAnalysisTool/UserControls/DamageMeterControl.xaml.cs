@@ -35,7 +35,7 @@ namespace StatisticsAnalysisTool.UserControls
             }
         }
 
-        public void OpenDamageMeterWindow()
+        private void OpenDamageMeterWindow()
         {
             try
             {

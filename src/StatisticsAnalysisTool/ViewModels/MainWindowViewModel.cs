@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -119,15 +118,14 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<LoggingFilterObject> _loggingFilters = new();
         private bool _isTrackingMobLoot;
         private Visibility _gridTryToLoadTheItemJsonAgainVisibility;
-        private ObservableCollection<TopLooterObject> _topLooters = new ();
+        private ObservableCollection<TopLooterObject> _topLooters = new();
         private Visibility _toolTasksVisibility = Visibility.Collapsed;
-        private ObservableCollection<TaskTextObject> _toolTaskObjects = new ();
+        private ObservableCollection<TaskTextObject> _toolTaskObjects = new();
         private double _taskProgressbarMinimum;
         private double _taskProgressbarMaximum = 100;
         private double _taskProgressbarValue;
         private bool _isTaskProgressbarIndeterminate;
         private Visibility _characterIsNotTrackedInfoVisibility;
-        private CultureInfo _currentCulture;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -560,28 +558,6 @@ namespace StatisticsAnalysisTool.ViewModels
         //    }
         //}
 
-        public void OpenDamageMeterWindow()
-        {
-            try
-            {
-                if (Utilities.IsWindowOpen<DamageMeterWindow>())
-                {
-                    var existItemWindow = Application.Current.Windows.OfType<DamageMeterWindow>().FirstOrDefault();
-                    existItemWindow?.Activate();
-                }
-                else
-                {
-                    var itemWindow = new DamageMeterWindow(DamageMeter);
-                    itemWindow.Show();
-                }
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
-        }
-
         public static void OpenItemWindow(Item item)
         {
             if (string.IsNullOrEmpty(item?.UniqueName))
@@ -709,7 +685,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Player information (Player Mode)
-        
+
         #region Tracking Mode
 
         public void StartTracking()
@@ -1820,7 +1796,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public bool IsTaskProgressbarIndeterminate
         {
             get => _isTaskProgressbarIndeterminate;
@@ -1870,7 +1846,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public string UpdateTranslation
         {
             get => _updateTranslation;
