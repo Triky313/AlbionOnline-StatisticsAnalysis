@@ -1,5 +1,12 @@
-﻿using StatisticsAnalysisTool.ViewModels;
+﻿using log4net;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.ViewModels;
+using StatisticsAnalysisTool.Views;
+using System;
+using System.Linq;
+using System.Reflection;
 using System.Windows;
+using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.UserControls
 {
@@ -8,9 +15,34 @@ namespace StatisticsAnalysisTool.UserControls
     /// </summary>
     public partial class DashboardControl
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
         public DashboardControl()
         {
             InitializeComponent();
+        }
+
+        private void OpenDashboardWindow()
+        {
+            try
+            {
+                if (Utilities.IsWindowOpen<DashboardWindow>())
+                {
+                    var existItemWindow = Application.Current.Windows.OfType<DashboardWindow>().FirstOrDefault();
+                    existItemWindow?.Activate();
+                }
+                else
+                {
+                    var vm = (MainWindowViewModel)DataContext;
+                    var itemWindow = new DashboardWindow(vm?.DashboardObject, vm?.FactionPointStats);
+                    itemWindow.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            }
         }
 
         #region Ui events
@@ -19,6 +51,11 @@ namespace StatisticsAnalysisTool.UserControls
         {
             var vm = (MainWindowViewModel)DataContext;
             vm.ResetMainCounters();
+        }
+
+        private void OpenDashboardWindow_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            OpenDashboardWindow();
         }
 
         #endregion
