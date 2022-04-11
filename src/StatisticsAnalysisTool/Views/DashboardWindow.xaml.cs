@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Views
         public DashboardWindow(DashboardObject dashboardObject, ObservableCollection<MainStatObject> factionPointStats)
         {
             InitializeComponent();
-            DataContext = new DashboardWindowViewModel(this, dashboardObject, factionPointStats);
+            DataContext = new DashboardWindowViewModel(dashboardObject, factionPointStats);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
