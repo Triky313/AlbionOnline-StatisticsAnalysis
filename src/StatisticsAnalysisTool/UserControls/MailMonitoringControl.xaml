@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="StatisticsAnalysisTool.UserControls.MailMonitoringControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
+
+    <Grid>
+        <Grid Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+            <Grid Height="20" Width="20" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                  MouseEnter="OpenMailMonitoringPopup_MouseEnter" MouseLeave="CloseMailMonitoringPopup_MouseLeave">
+                <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+            </Grid>
+        </Grid>
+
+        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,31,0,0" VerticalAlignment="Top"/>
+        <ScrollViewer Margin="0,35,0,0">
+            <ItemsControl ItemsSource="{Binding Mails, IsAsync=True, Mode=OneWay}"/>
+        </ScrollViewer>
+
+        <Grid Visibility="{Binding IsMailMonitoringPopupVisible, FallbackValue=Hidden}" Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
+            <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
+                <DockPanel Margin="0,0,0,16">
+                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                    </Grid>
+                    <TextBlock Text="{Binding Translation.MailMonitoringDescription1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                               FontSize="16" TextWrapping="Wrap" Width="auto"></TextBlock>
+                </DockPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

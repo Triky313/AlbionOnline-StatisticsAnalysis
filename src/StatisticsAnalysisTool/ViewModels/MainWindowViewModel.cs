@@ -126,6 +126,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _taskProgressbarValue;
         private bool _isTaskProgressbarIndeterminate;
         private Visibility _characterIsNotTrackedInfoVisibility;
+        private Visibility _isMailMonitoringPopupVisible = Visibility.Hidden;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -956,6 +957,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isDamageMeterPopupVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility IsMailMonitoringPopupVisible
+        {
+            get => _isMailMonitoringPopupVisible;
+            set
+            {
+                _isMailMonitoringPopupVisible = value;
                 OnPropertyChanged();
             }
         }
