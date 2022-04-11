@@ -32,6 +32,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         public EntityController EntityController;
         public LootController LootController;
         public StatisticController StatisticController;
+        public MailController MailController;
         private readonly List<NotificationType> _notificationTypesFilters = new();
 
         public TrackingController(MainWindowViewModel mainWindowViewModel, MainWindow mainWindow)
@@ -43,6 +44,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
             LootController = new LootController(this, mainWindowViewModel);
             StatisticController = new StatisticController(this, mainWindowViewModel);
+            MailController = new MailController(this, mainWindowViewModel);
             CountUpTimer = new CountUpTimer(this, mainWindowViewModel);
         }
 

@@ -48,6 +48,8 @@ namespace StatisticsAnalysisTool.Network
         private readonly ChangeClusterResponseHandler _changeClusterResponseHandler;
         private readonly PartyMakeLeaderResponseHandler _partyMakeLeaderResponseHandler;
         private readonly JoinResponseHandler _joinResponseHandler;
+        private readonly GetMailInfosResponseHandler _getMailInfosResponseHandler;
+        private readonly ReadMailResponseHandler _readMailResponseHandler;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
@@ -84,6 +86,8 @@ namespace StatisticsAnalysisTool.Network
             _changeClusterResponseHandler = new ChangeClusterResponseHandler(trackingController);
             _partyMakeLeaderResponseHandler = new PartyMakeLeaderResponseHandler(trackingController);
             _joinResponseHandler = new JoinResponseHandler(trackingController, mainWindowViewModel);
+            _getMailInfosResponseHandler = new GetMailInfosResponseHandler(trackingController);
+            _readMailResponseHandler = new ReadMailResponseHandler(trackingController);
         }
 
         #region Actions
@@ -222,10 +226,16 @@ namespace StatisticsAnalysisTool.Network
                         await ChangeClusterResponseHandlerAsync(parameters);
                         return;
                     case OperationCodes.PartyMakeLeader:
-                        await PartyMakeLeaderEventHandlerAsync(parameters);
+                        await PartyMakeLeaderResponseHandlerAsync(parameters);
                         return;
                     case OperationCodes.Join:
                         await JoinResponseHandlerAsync(parameters);
+                        return;
+                    case OperationCodes.GetMailInfos:
+                        await GetMailInfosResponseHandlerAsync(parameters);
+                        return;
+                    case OperationCodes.ReadMail:
+                        await ReadMailResponseHandlerAsync(parameters);
                         return;
                 }
             });
@@ -431,7 +441,7 @@ namespace StatisticsAnalysisTool.Network
             await _changeClusterResponseHandler.OnActionAsync(value);
         }
 
-        private async Task PartyMakeLeaderEventHandlerAsync(Dictionary<byte, object> parameters)
+        private async Task PartyMakeLeaderResponseHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new PartyMakeLeaderResponse(parameters);
             await _partyMakeLeaderResponseHandler.OnActionAsync(value);
@@ -441,6 +451,18 @@ namespace StatisticsAnalysisTool.Network
         {
             var value = new JoinResponse(parameters);
             await _joinResponseHandler.OnActionAsync(value);
+        }
+
+        private async Task GetMailInfosResponseHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new GetMailInfosResponse(parameters);
+            await _getMailInfosResponseHandler.OnActionAsync(value);
+        }
+
+        private async Task ReadMailResponseHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new ReadMailResponse(parameters);
+            await _readMailResponseHandler.OnActionAsync(value);
         }
 
         #endregion

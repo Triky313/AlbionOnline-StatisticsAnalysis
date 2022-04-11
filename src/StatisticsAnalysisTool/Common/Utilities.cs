@@ -9,6 +9,21 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class Utilities
     {
+        public static long GetHighestLength(params Array[] arrays)
+        {
+            long highestLength = 0;
+
+            foreach (var array in arrays)
+            {
+                if (array.Length > highestLength)
+                {
+                    highestLength = array.Length;
+                }
+            }
+
+            return highestLength;
+        }
+
         public static void CenterWindowOnScreen(Window window)
         {
             var screenWidth = SystemParameters.PrimaryScreenWidth;
