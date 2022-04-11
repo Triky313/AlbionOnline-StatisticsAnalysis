@@ -1,5 +1,4 @@
 ﻿using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
