@@ -120,7 +120,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
-        public void RemovesClusterIfMoreThanLimit()
+        private void RemovesClusterIfMoreThanLimit()
         {
             foreach (var cluster in _mainWindowViewModel.EnteredCluster.OrderBy(x => x.Entered))
             {
@@ -336,18 +336,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #endregion
 
-        #region Main tracking character name
-
-        public static void SetMainCharacterNameForTracking(string currentUsername)
-        {
-            if (SettingsController.CurrentSettings.MainTrackingCharacterName != null)
-            {
-                return;
-            }
-
-            SettingsController.CurrentSettings.MainTrackingCharacterName = currentUsername;
-        }
-
+        #region Specific character name tracking
+        
         public bool IsTrackingAllowedByMainCharacter()
         {
             var localEntity = EntityController.GetLocalEntity();
