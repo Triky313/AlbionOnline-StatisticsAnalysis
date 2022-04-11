@@ -25,17 +25,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             Translation = new DamageMeterWindowTranslation();
         }
-
-        public void CenterWindowOnScreen()
-        {
-            var screenWidth = SystemParameters.PrimaryScreenWidth;
-            var screenHeight = SystemParameters.PrimaryScreenHeight;
-            var windowWidth = _damageMeterWindow.Width;
-            var windowHeight = _damageMeterWindow.Height;
-            _damageMeterWindow.Left = screenWidth / 2 - windowWidth / 2;
-            _damageMeterWindow.Top = screenHeight / 2 - windowHeight / 2;
-        }
-
+        
         public ObservableCollection<DamageMeterFragment> DamageMeter {
             get => _damageMeter;
             set {

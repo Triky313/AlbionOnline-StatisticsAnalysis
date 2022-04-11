@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 using System.Windows.Input;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Views
 {
@@ -30,7 +31,7 @@ namespace StatisticsAnalysisTool.Views
             if (_isWindowMaximized)
             {
                 WindowState = WindowState.Normal;
-                _dashboardWindowViewModel.CenterWindowOnScreen();
+                Utilities.CenterWindowOnScreen(this);
                 MaximizedButton.Content = 1;
                 _isWindowMaximized = false;
             }

@@ -26,17 +26,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             Translation = new DashboardWindowTranslation();
         }
-
-        public void CenterWindowOnScreen()
-        {
-            var screenWidth = SystemParameters.PrimaryScreenWidth;
-            var screenHeight = SystemParameters.PrimaryScreenHeight;
-            var windowWidth = _dashboardWindow.Width;
-            var windowHeight = _dashboardWindow.Height;
-            _dashboardWindow.Left = screenWidth / 2 - windowWidth / 2;
-            _dashboardWindow.Top = screenHeight / 2 - windowHeight / 2;
-        }
-
+        
         public DashboardObject DashboardObject
         {
             get => _dashboardObject;

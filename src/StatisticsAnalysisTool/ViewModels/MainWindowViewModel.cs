@@ -318,7 +318,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     _mainWindow.WindowState = WindowState.Maximized;
                 }
 
-                CenterWindowOnScreen();
+                Utilities.CenterWindowOnScreen(_mainWindow);
 
                 #endregion Set MainWindow height and width and center window
             });
@@ -538,17 +538,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion
 
         #region Ui utility methods
-
-        public static void CenterWindowOnScreen()
-        {
-            var screenWidth = SystemParameters.PrimaryScreenWidth;
-            var screenHeight = SystemParameters.PrimaryScreenHeight;
-            var windowWidth = _mainWindow.Width;
-            var windowHeight = _mainWindow.Height;
-            _mainWindow.Left = screenWidth / 2 - windowWidth / 2;
-            _mainWindow.Top = screenHeight / 2 - windowHeight / 2;
-        }
-
+        
         //private static void ShowInfoWindow()
         //{
         //    if (SettingsController.CurrentSettings.IsInfoWindowShownOnStart)
