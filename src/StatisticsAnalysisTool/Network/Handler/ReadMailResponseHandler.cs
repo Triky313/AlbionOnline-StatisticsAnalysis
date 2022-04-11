@@ -15,10 +15,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(ReadMailResponse value)
         {
-            //if (value.ObjectId != null)
-            //{
-            //    TrackingController.EntityController.RemoveEntity((long)value.ObjectId);
-            //}
+            _trackingController.MailController.AddMail(value.MailId, value.Content);
             await Task.CompletedTask;
         }
     }

@@ -1,7 +1,13 @@
-﻿using log4net;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using log4net;
 using StatisticsAnalysisTool.ViewModels;
 using System.Reflection;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -12,25 +18,62 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
 
+        public List<Mail> Mails = new();
+        public List<MailInfoObject> CurrentMailInfos = new();
+
         public MailController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
             _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
         }
 
-        public void AddMailIndexList()
+        public void SetMailInfos(List<MailInfoObject> currentMailInfos)
         {
-
+            CurrentMailInfos.Clear();
+            CurrentMailInfos.AddRange(currentMailInfos);
         }
 
-        public void AddMail(string typeString, string content)
+        public void AddMail(long mailId, string content)
         {
+            if (Mails.Any(x => x.MailId == mailId))
+            {
+                return;
+            }
+            
+            var mailInfo = CurrentMailInfos.FirstOrDefault(x => x.MailId == mailId);
 
+            if (mailInfo?.MailType == null)
+            {
+                return;
+            }
+
+            var mailContent = ContentToObject(mailInfo.MailType, content);
+            Mails.Add(new Mail(mailId, mailInfo.ClusterIndex, mailInfo.MailType, mailContent));
         }
 
-        public void ContentToObject(MailType type, string content)
+        private static MailContent ContentToObject(MailType type, string content)
         {
+            switch (type)
+            {
+                case MailType.MarketplaceBuyOrderFinished:
+                case MailType.MarketplaceSellOrderFinished:
+                    var contentObject = content.Split("|");
 
+                    if (contentObject.Length < 3)
+                    {
+                        return new MailContent();
+                    }
+
+                    var quantity = contentObject[0].ObjectToInt();
+                    var uniqueItemName = contentObject[1];
+                    var totalPrice = FixPoint.FromInternalValue(contentObject[2].ObjectToLong() ?? 0);
+                    var unitPrice = FixPoint.FromInternalValue(contentObject[3].ObjectToLong() ?? 0);
+
+                    return new MailContent(quantity, uniqueItemName, totalPrice, unitPrice);
+
+                default:
+                    return new MailContent();
+            }
         }
 
         public static MailType ConvertToMailType(string typeString)

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses
 {
@@ -13,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        public List<MailObject> MailInfos = new();
+        public List<MailInfoObject> MailInfos = new();
 
         public GetMailInfosResponse(Dictionary<byte, object> parameters)
         {
@@ -37,7 +38,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                         var clusterIndex = mailTypeArray[i];
                         var mailType = mailTypeArray[i];
 
-                        MailInfos.Add(new MailObject(mailId, clusterIndex, MailController.ConvertToMailType(mailType)));
+                        MailInfos.Add(new MailInfoObject(mailId, clusterIndex, MailController.ConvertToMailType(mailType)));
                     }
                 }
             }

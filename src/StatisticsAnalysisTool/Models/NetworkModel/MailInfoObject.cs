@@ -1,10 +1,10 @@
 ﻿using StatisticsAnalysisTool.Enumerations;
 
-namespace StatisticsAnalysisTool.Models;
+namespace StatisticsAnalysisTool.Models.NetworkModel;
 
-public class MailObject
+public class MailInfoObject
 {
-    public MailObject(long mailId, string clusterIndex, MailType mailType)
+    public MailInfoObject(long mailId, string clusterIndex, MailType mailType)
     {
         MailId = mailId;
         ClusterIndex = clusterIndex;
