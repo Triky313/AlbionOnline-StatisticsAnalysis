@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Views
 {
@@ -12,13 +13,11 @@ namespace StatisticsAnalysisTool.Views
     public partial class DamageMeterWindow
     {
         private static bool _isWindowMaximized;
-        private readonly DamageMeterWindowViewModel _damageMeterWindowViewModel;
 
         public DamageMeterWindow(ObservableCollection<DamageMeterFragment> damageMeter)
         {
             InitializeComponent();
-            _damageMeterWindowViewModel = new DamageMeterWindowViewModel(this, damageMeter);
-            DataContext = _damageMeterWindowViewModel;
+            DataContext = new DamageMeterWindowViewModel(damageMeter);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
@@ -30,7 +29,7 @@ namespace StatisticsAnalysisTool.Views
             if (_isWindowMaximized)
             {
                 WindowState = WindowState.Normal;
-                _damageMeterWindowViewModel.CenterWindowOnScreen();
+                Utilities.CenterWindowOnScreen(this);
                 MaximizedButton.Content = 1;
                 _isWindowMaximized = false;
             }

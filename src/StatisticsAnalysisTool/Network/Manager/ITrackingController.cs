@@ -21,8 +21,6 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         void SetNewCluster(MapType mapType, Guid? mapGuid, string clusterIndex, string mainClusterIndex) { }
 
-        void RemovesClusterIfMoreThanLimit() { }
-
         bool IsMainWindowNull();
 
         Task AddNotificationAsync(TrackingNotification item);
@@ -36,5 +34,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         void AddFilterType(NotificationType notificationType) { }
 
         void RemoveFilterType(NotificationType notificationType) { }
+
+        void IsTrackingAllowedByMainCharacter() { }
     }
 }

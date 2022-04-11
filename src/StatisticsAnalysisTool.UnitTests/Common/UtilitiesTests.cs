@@ -7,7 +7,7 @@ namespace StatisticsAnalysisTool.UnitTests.Common
     [Parallelizable]
     public class UtilitiesTests
     {
-        private static readonly DateTime _someDateTime = new (2021, 9, 7, 14, 22, 50);
+        private static readonly DateTime SomeDateTime = new (2021, 9, 7, 14, 22, 50);
 
         [SetUp]
         public void Setup()
@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.UnitTests.Common
         [Test]
         public void GetValuePerSecondToDouble_WithValidValues_ReturnValidValue()
         {
-            var result = Utilities.GetValuePerSecondToDouble(500, _someDateTime, new TimeSpan(0, 0, 2, 9));
+            var result = Utilities.GetValuePerSecondToDouble(500, SomeDateTime, new TimeSpan(0, 0, 2, 9));
             var expected = 3.8759689922480618;
 
             Assert.AreEqual(expected, result, 0);
