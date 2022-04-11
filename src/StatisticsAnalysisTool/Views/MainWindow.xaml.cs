@@ -42,18 +42,17 @@ namespace StatisticsAnalysisTool.Views
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2 && WindowState == WindowState.Normal)
+            switch (e.ClickCount)
             {
-                SwitchState();
-                _isWindowMaximized = true;
-                return;
-            }
-
-            if (e.ClickCount == 2 && WindowState == WindowState.Maximized)
-            {
-                SwitchState();
-                Utilities.CenterWindowOnScreen(this);
-                _isWindowMaximized = false;
+                case 2 when WindowState == WindowState.Normal:
+                    SwitchState();
+                    _isWindowMaximized = true;
+                    return;
+                case 2 when WindowState == WindowState.Maximized:
+                    SwitchState();
+                    Utilities.CenterWindowOnScreen(this);
+                    _isWindowMaximized = false;
+                    break;
             }
         }
 

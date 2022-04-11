@@ -1,22 +1,18 @@
 ﻿using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Notification;
-using StatisticsAnalysisTool.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
     public class DamageMeterWindowViewModel : INotifyPropertyChanged
     {
-        private readonly DamageMeterWindow _damageMeterWindow;
         private ObservableCollection<DamageMeterFragment> _damageMeter;
         private DamageMeterWindowTranslation _translation;
 
-        public DamageMeterWindowViewModel(DamageMeterWindow damageMeterWindow, ObservableCollection<DamageMeterFragment> damageMeter)
+        public DamageMeterWindowViewModel(ObservableCollection<DamageMeterFragment> damageMeter)
         {
-            _damageMeterWindow = damageMeterWindow;
             DamageMeter = damageMeter;
             Init();
         }
@@ -25,18 +21,22 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             Translation = new DamageMeterWindowTranslation();
         }
-        
-        public ObservableCollection<DamageMeterFragment> DamageMeter {
+
+        public ObservableCollection<DamageMeterFragment> DamageMeter
+        {
             get => _damageMeter;
-            set {
+            set
+            {
                 _damageMeter = value;
                 OnPropertyChanged();
             }
         }
 
-        public DamageMeterWindowTranslation Translation {
+        public DamageMeterWindowTranslation Translation
+        {
             get => _translation;
-            set {
+            set
+            {
                 _translation = value;
                 OnPropertyChanged();
             }

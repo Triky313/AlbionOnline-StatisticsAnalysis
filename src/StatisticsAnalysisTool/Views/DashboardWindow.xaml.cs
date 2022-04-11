@@ -13,13 +13,11 @@ namespace StatisticsAnalysisTool.Views
     public partial class DashboardWindow
     {
         private static bool _isWindowMaximized;
-        private readonly DashboardWindowViewModel _dashboardWindowViewModel;
 
         public DashboardWindow(DashboardObject dashboardObject, ObservableCollection<MainStatObject> factionPointStats)
         {
             InitializeComponent();
-            _dashboardWindowViewModel = new DashboardWindowViewModel(this, dashboardObject, factionPointStats);
-            DataContext = _dashboardWindowViewModel;
+            DataContext = new DashboardWindowViewModel(this, dashboardObject, factionPointStats);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();

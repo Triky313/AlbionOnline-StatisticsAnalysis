@@ -13,13 +13,11 @@ namespace StatisticsAnalysisTool.Views
     public partial class DamageMeterWindow
     {
         private static bool _isWindowMaximized;
-        private readonly DamageMeterWindowViewModel _damageMeterWindowViewModel;
 
         public DamageMeterWindow(ObservableCollection<DamageMeterFragment> damageMeter)
         {
             InitializeComponent();
-            _damageMeterWindowViewModel = new DamageMeterWindowViewModel(this, damageMeter);
-            DataContext = _damageMeterWindowViewModel;
+            DataContext = new DamageMeterWindowViewModel(damageMeter);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
