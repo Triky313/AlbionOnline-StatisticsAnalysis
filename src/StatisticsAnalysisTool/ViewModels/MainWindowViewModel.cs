@@ -250,7 +250,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion
 
-        #region Item list (Normal Mode)
+        #region Item list
 
         public void ItemFilterReset()
         {
@@ -623,7 +623,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion
 
-        #region Player information (Player Mode)
+        #region Player information
 
         public async Task SetComparedPlayerModeInfoValues()
         {
