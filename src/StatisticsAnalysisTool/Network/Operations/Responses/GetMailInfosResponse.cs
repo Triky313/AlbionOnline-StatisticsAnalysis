@@ -24,8 +24,12 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
             try
             {
-                if (parameters.ContainsKey(3) && parameters[3] != null && parameters.ContainsKey(6) && parameters[6] != null && parameters.ContainsKey(10) && parameters[10] != null)
+                if (parameters.ContainsKey(0) && parameters[0] != null 
+                    && parameters.ContainsKey(3) && parameters[3] != null 
+                    && parameters.ContainsKey(6) && parameters[6] != null 
+                    && parameters.ContainsKey(10) && parameters[10] != null)
                 {
+                    var guid = parameters[0].ObjectToGuid();
                     var mailIdArray = ((long[])parameters[3]).ToArray();
                     var clusterIndexArray = ((string[])parameters[6]).ToArray();
                     var mailTypeArray = ((string[])parameters[10]).ToArray();
@@ -35,10 +39,10 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                     for (var i = 0; i < length; i++)
                     {
                         var mailId = mailIdArray[i];
-                        var clusterIndex = mailTypeArray[i];
+                        var clusterIndex = clusterIndexArray[i];
                         var mailType = mailTypeArray[i];
 
-                        MailInfos.Add(new MailInfoObject(mailId, clusterIndex, MailController.ConvertToMailType(mailType)));
+                        MailInfos.Add(new MailInfoObject(guid, mailId, clusterIndex, MailController.ConvertToMailType(mailType)));
                     }
                 }
             }

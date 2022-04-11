@@ -6,9 +6,10 @@ namespace StatisticsAnalysisTool.Models;
 
 public class Mail
 {
-    public Mail(long mailId, string clusterIndex, MailType mailType, MailContent mailContent)
+    public Mail(Guid? guid, long mailId, string clusterIndex, MailType mailType, MailContent mailContent)
     {
         Timestamp = DateTime.UtcNow;
+        Guid = guid ?? default;
         MailId = mailId;
         ClusterIndex = clusterIndex;
         MailType = mailType;
@@ -16,6 +17,7 @@ public class Mail
     }
 
     public DateTime Timestamp { get; init; }
+    public Guid Guid { get; init; }
     public long MailId { get; set; }
     public string ClusterIndex { get; set; }
     public MailType MailType { get; set; }
