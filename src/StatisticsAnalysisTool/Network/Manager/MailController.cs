@@ -45,11 +45,9 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             var mailInfo = CurrentMailInfos.FirstOrDefault(x => x.MailId == mailId);
+            var mailContent = ContentToObject(mailInfo?.MailType ?? MailType.Unknown, content);
 
-            var mailType = mailInfo?.MailType ?? MailType.Unknown;
-
-            var mailContent = ContentToObject(mailType, content);
-            Mails.Add(new Mail(mailInfo?.Guid, mailId, mailInfo?.ClusterIndex, mailType, mailContent));
+            Mails.Add(new Mail(mailInfo?.Tick, mailInfo?.Guid, mailId, mailInfo?.Subject, mailInfo?.MailTypeText, mailContent));
         }
 
         private static MailContent ContentToObject(MailType type, string content)
@@ -77,12 +75,17 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
+        /// <summary>
+        /// Converted a string to MailType.
+        /// </summary>
+        /// <param name="typeString"></param>
+        /// <returns>Returns a enum as MailType.</returns>
         public static MailType ConvertToMailType(string typeString)
         {
             return typeString switch
             {
                 "MARKETPLACE_BUYORDER_FINISHED_SUMMARY" => MailType.MarketplaceBuyOrderFinished,
-                "MARKETPLACE_SELLORDER_FINISHED_SUMMARY" => MailType.MarketplaceBuyOrderFinished,
+                "MARKETPLACE_SELLORDER_FINISHED_SUMMARY" => MailType.MarketplaceSellOrderFinished,
                 _ => MailType.Unknown
             };
         }

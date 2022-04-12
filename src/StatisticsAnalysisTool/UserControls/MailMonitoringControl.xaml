@@ -18,8 +18,20 @@
         </Grid>
 
         <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,31,0,0" VerticalAlignment="Top"/>
-        <ScrollViewer Margin="0,35,0,0">
-            <ItemsControl ItemsSource="{Binding Mails, IsAsync=True, Mode=OneWay}"/>
+        <ScrollViewer Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.1}">
+            <!--<ItemsControl ItemsSource="{Binding Mails, IsAsync=True, Mode=OneWay}"/>-->
+            <Grid Margin="0,20,0,0">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Verkauft" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        <TextBlock Text="[31.08.2022 - 12:12:00]" Width="150" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="2x" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        <TextBlock Text="Teufelsbratenjacke" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
         </ScrollViewer>
 
         <Grid Visibility="{Binding IsMailMonitoringPopupVisible, FallbackValue=Hidden}" Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.2}">

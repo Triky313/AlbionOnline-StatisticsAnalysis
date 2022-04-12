@@ -396,6 +396,10 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Styles\MailMonitoringStyle.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Styles\DamageMeterStyles.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
