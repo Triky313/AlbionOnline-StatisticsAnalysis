@@ -25,7 +25,7 @@ namespace StatisticsAnalysisTool.GameData
         public static string GetUniqueNameOrDefault(string index)
         {
             var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;
-            var splitName = name?.Split(new[] {"@"}, StringSplitOptions.None);
+            var splitName = name?.Split(new[] { "@" }, StringSplitOptions.None);
 
             if (splitName is { Length: > 0 } && name.ToLower().Contains('@'))
             {
@@ -39,7 +39,7 @@ namespace StatisticsAnalysisTool.GameData
         {
             try
             {
-                var splitName = index.Split(new[] {"@"}, StringSplitOptions.RemoveEmptyEntries);
+                var splitName = index.Split(new[] { "@" }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (splitName.Length > 1 && index.ToLower().Contains('@'))
                 {
@@ -89,7 +89,7 @@ namespace StatisticsAnalysisTool.GameData
             if (index.ToUpper().Contains("EXPEDITION")) return MapType.Expedition;
 
             if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
-            
+
             return MapType.Unknown;
         }
 
@@ -245,9 +245,9 @@ namespace StatisticsAnalysisTool.GameData
 
         public static bool IsAvalonClusterTunnel(string type)
         {
-            return type.ToUpper().Contains("TUNNEL_BLACK_LOW") 
-                   || (type.ToUpper().Contains("TUNNEL_BLACK_MEDIUM")) 
-                   || (type.ToUpper().Contains("TUNNEL_BLACK_HIGH")) 
+            return type.ToUpper().Contains("TUNNEL_BLACK_LOW")
+                   || (type.ToUpper().Contains("TUNNEL_BLACK_MEDIUM"))
+                   || (type.ToUpper().Contains("TUNNEL_BLACK_HIGH"))
                    || (type.ToUpper().Contains("TUNNEL_LOW"))
                    || (type.ToUpper().Contains("TUNNEL_MEDIUM"))
                    || (type.ToUpper().Contains("TUNNEL_HIGH"))

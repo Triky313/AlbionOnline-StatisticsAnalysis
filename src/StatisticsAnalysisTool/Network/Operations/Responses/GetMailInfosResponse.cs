@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 var mailIdArray = ((long[])parameters[3]).ToArray();
                 var subjectArray = ((string[])parameters[6]).ToArray();
                 var mailTypeTextArray = ((string[])parameters[10]).ToArray();
-                var timeStampArray = ((string[])parameters[11]).ToArray();
+                var timeStampArray = ((long[])parameters[11]).ToArray();
 
                 var length = Utilities.GetHighestLength(mailIdArray, subjectArray, mailTypeTextArray);
 

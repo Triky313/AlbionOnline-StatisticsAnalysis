@@ -10,11 +10,6 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class ExtensionMethod
     {
-        public static bool IsDefault<T>(this T value) where T : struct
-        {
-            return value.Equals(default(T));
-        }
-
         public static string SetYesOrNo(this bool value)
         {
             return (value) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");

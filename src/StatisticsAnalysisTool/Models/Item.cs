@@ -26,6 +26,15 @@ namespace StatisticsAnalysisTool.Models
         public int Level => ItemController.GetItemLevel(UniqueName);
         public int Tier => ItemController.GetItemTier(this);
 
+        public string TierLevelString
+        {
+            get
+            {
+                var tier = (Tier is <= 8 and >= 1) ? Tier.ToString() : "?";
+                return $"T{tier}.{Level}";
+            }
+        }
+
         public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetItemImage(UniqueName));
 
         public ItemJsonObject FullItemInformation { get; set; }

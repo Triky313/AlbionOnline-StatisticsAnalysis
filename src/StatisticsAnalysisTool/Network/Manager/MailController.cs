@@ -1,17 +1,17 @@
-﻿using System;
-using log4net;
+﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -39,15 +39,24 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void AddMail(long mailId, string content)
         {
-            if (Mails.Any(x => x.MailId == mailId))
+            if (Mails.ToArray().Any(x => x.MailId == mailId))
             {
                 return;
             }
 
             var mailInfo = CurrentMailInfos.FirstOrDefault(x => x.MailId == mailId);
-            var mailContent = ContentToObject(mailInfo?.MailType ?? MailType.Unknown, content);
 
-            Mails.Add(new Mail(mailInfo?.Tick, mailInfo?.Guid, mailId, mailInfo?.Subject, mailInfo?.MailTypeText, mailContent));
+            if (mailInfo == null)
+            {
+                return;
+            }
+
+            var mailContent = ContentToObject(mailInfo.MailType, content);
+
+            var mail = new Mail(mailInfo.Tick, mailInfo.Guid, mailId, mailInfo.Subject, mailInfo.MailTypeText, mailContent);
+
+            Mails.Add(mail);
+            _mainWindowViewModel.AddMail(mail);
         }
 
         private static MailContent ContentToObject(MailType type, string content)
@@ -62,7 +71,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     {
                         return new MailContent();
                     }
-                    
+
                     _ = int.TryParse(contentObject[0], out var quantity);
                     var uniqueItemName = contentObject[1];
                     _ = long.TryParse(contentObject[2], out var totalPriceLong);

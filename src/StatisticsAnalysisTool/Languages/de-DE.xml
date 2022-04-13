@@ -538,4 +538,9 @@
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Durchschnittliche Gegenstandsstärke der getöteten Feinde</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Durchschnittliche Gegenstandsstärke beim Sterben</translation>
 	<translation name="MAIL_MONITORING">Post Überwachung</translation>
+	<translation name="MAIL">Nachricht</translation>
+	<translation name="BOUGHT">Gekauft</translation>
+	<translation name="SOLD">Verkauft</translation>
+	<translation name="COST_PER_ITEM">Kosten pro Item</translation>
+	<translation name="TOTAL_COST">Gesamte Kosten</translation>
 </translations>

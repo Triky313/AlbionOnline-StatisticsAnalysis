@@ -1,3 +1,4 @@
+using System;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System.Collections.Generic;
@@ -60,6 +61,11 @@ namespace StatisticsAnalysisTool.Common
         public static Location GetName(string location)
         {
             return ParameterNames.FirstOrDefault(x => x.Value == location).Key;
+        }
+
+        public static Location GetLocationByIndex(string index)
+        {
+            return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
         }
 
         public static List<string> GetLocationsListByArea(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket)
@@ -157,6 +163,7 @@ namespace StatisticsAnalysisTool.Common
 
     public enum Location
     {
+        Unknown = 0,
         SwampCross = 4,
         Thetford = 7,
         Lymhurst = 1002,

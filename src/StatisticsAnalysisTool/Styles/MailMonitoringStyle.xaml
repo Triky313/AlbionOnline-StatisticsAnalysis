@@ -1,10 +1,124 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models">
+                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+                    xmlns:common="clr-namespace:StatisticsAnalysisTool.Common">
+
+
+    <Style TargetType="Image" x:Key="Mail.Icon">
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Width" Value="50"/>
+    </Style>
+
+    <Style TargetType="Grid" x:Key="Mail.City.Colors">
+        <Setter Property="Width" Value="3" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="ToolTip" Value="{Binding LocationName}" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.Default}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Location}" Value="Caerleon">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.Caerleon}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location}" Value="Thetford">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.Thetford}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location}" Value="Bridgewatch">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.Bridgewatch}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location}" Value="Martlock">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.Martlock}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location}" Value="Lymhurst">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.Lymhurst}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location}" Value="FortSterling">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.FortSterling}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location}" Value="ArthursRest">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.ArthursRest}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location}" Value="MerlynsRest">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.MerlynsRest}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location}" Value="MorganasRest">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.MorganasRest}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location}" Value="BlackMarket">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.City.BlackMarket}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Grid" x:Key="Mail.Type.Colors">
+        <Setter Property="Width" Value="3" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Background" Value="{StaticResource SolidColorBrush.Text.4}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding MailType}" Value="MarketplaceSellOrderFinished">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MailType}" Value="MarketplaceBuyOrderFinished">
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="Mail.Text.Colors">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding MailType}" Value="MarketplaceSellOrderFinished">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.3}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding MailType}" Value="MarketplaceBuyOrderFinished">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="Mail.Text.Tier">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Margin" Value="0,0,3,0" />
+        <Setter Property="Text" Value="{Binding Item.TierLevelString, StringFormat='{}{0}', FallbackValue='T?'}" />
+    </Style>
+
+    <Style TargetType="Image" x:Key="Mail.Image.Style">
+        <Setter Property="Source" Value="../Resources/silver.png" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
+    </Style>
 
     <DataTemplate DataType="{x:Type models:Mail}">
-        <Grid>
-
+        <Grid Height="50" Margin="0,5,0,5">
+            <Grid Style="{StaticResource Mail.Type.Colors}" />
+            <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="10,0,10,0">
+                <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="{Binding Item.Icon}" Style="{StaticResource Mail.Icon}" />
+                </Grid>
+                <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Vertical">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding MailTypeDescription, StringFormat='{}{0}: ', FallbackValue=MAIL}" Style="{StaticResource Mail.Text.Colors}" />
+                            <TextBlock Text="{Binding MailContent.Quantity, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            <TextBlock Style="{StaticResource Mail.Text.Tier}" />
+                            <TextBlock Text="{Binding Item.LocalizedName}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Timestamp, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
+                    </DockPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding TranslationCostPerItem, FallbackValue=COST_PER_ITEM}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                        <TextBlock Text="{Binding TranslationTotalCost, FallbackValue=TOTAL_COST}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                        <TextBlock Text="{common:CultureAwareBinding MailContent.UnitPrice.DoubleValue, StringFormat='{}{0:N0}', FallbackValue=0}" Width="200"
+                                   Style="{StaticResource Mail.Text.Colors}" />
+                        <Image Style="{StaticResource Mail.Image.Style}" />
+                        <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPrice.DoubleValue, StringFormat='{}{0:N0}', FallbackValue=0}" Width="200"
+                                   Style="{StaticResource Mail.Text.Colors}" />
+                    </StackPanel>
+                </VirtualizingStackPanel>
+            </DockPanel>
+            <Grid Style="{StaticResource Mail.City.Colors}" />
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

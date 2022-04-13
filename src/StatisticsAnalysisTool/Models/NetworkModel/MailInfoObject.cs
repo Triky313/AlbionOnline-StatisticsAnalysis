@@ -6,7 +6,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel;
 
 public class MailInfoObject
 {
-    public MailInfoObject(Guid? guid, long mailId, string subject, string mailTypeText, string tick)
+    public MailInfoObject(Guid? guid, long mailId, string subject, string mailTypeText, long tick)
     {
         Guid = guid;
         MailId = mailId;
@@ -21,5 +21,5 @@ public class MailInfoObject
     public string Subject { get; set; }
     public MailType MailType { get; set; }
     public string MailTypeText { get; set; }
-    public string Tick { get; set; }
+    public long Tick { get; set; }
 }

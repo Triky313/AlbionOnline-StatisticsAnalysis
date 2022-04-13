@@ -29,15 +29,7 @@ namespace StatisticsAnalysisTool.UserControls
         //        vm?.TrackingController?.CombatController?.ResetDamageMeter();
         //    }
         //}
-
-        //public void DamageMeterActivationToggle()
-        //{
-        //    if (DataContext is MainWindowViewModel vm)
-        //    {
-        //        vm.IsDamageMeterTrackingActive = !vm.IsDamageMeterTrackingActive;
-        //    }
-        //}
-
+        
         #region Ui events
 
         private void OpenMailMonitoringPopup_MouseEnter(object sender, MouseEventArgs e)

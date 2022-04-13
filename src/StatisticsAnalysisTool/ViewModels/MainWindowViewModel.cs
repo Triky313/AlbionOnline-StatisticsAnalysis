@@ -128,6 +128,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTaskProgressbarIndeterminate;
         private Visibility _characterIsNotTrackedInfoVisibility;
         private Visibility _isMailMonitoringPopupVisible = Visibility.Hidden;
+        private ObservableCollectionEx<Mail> _mails = new ();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -540,7 +541,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion
 
         #region Ui utility methods
-        
+
         //private static void ShowInfoWindow()
         //{
         //    if (SettingsController.CurrentSettings.IsInfoWindowShownOnStart)
@@ -716,6 +717,27 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");
         }
+
+        #region Mails
+
+        public async void AddMail(Mail mail)
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                Mails.Add(mail);
+                Mails.SortDescending(x => x.Tick);
+            });
+        }
+
+        public async void RemoveMail(Mail mail)
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                Mails.Remove(mail);
+            });
+        }
+
+        #endregion
 
         public void ResetMainCounters()
         {
@@ -1827,6 +1849,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _toolTaskObjects = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollectionEx<Mail> Mails
+        {
+            get => _mails;
+            set
+            {
+                _mails = value;
                 OnPropertyChanged();
             }
         }

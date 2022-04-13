@@ -22,6 +22,7 @@
                 <ResourceDictionary Source="Styles/TrackingStyles.xaml" />
                 <ResourceDictionary Source="Styles/DungeonStyles.xaml" />
                 <ResourceDictionary Source="Styles/DamageMeterStyles.xaml" />
+                <ResourceDictionary Source="Styles/MailMonitoringStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
