@@ -43,7 +43,7 @@
                                Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                         <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.SoldToday, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                        <TextBlock Text="{Binding MailStatsObject.SoldYear, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
                     </StackPanel>
                     <TextBlock Text="{Binding Translation.SoldTotal, FallbackValue=SOLD_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 

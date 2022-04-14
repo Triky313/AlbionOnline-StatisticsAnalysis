@@ -22,6 +22,14 @@ namespace StatisticsAnalysisTool.Common
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         public static List<FileInformation> LanguageFiles { get; set; }
 
+        static LanguageController()
+        {
+            Application.Current.Dispatcher.Invoke((() =>
+            {
+                FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+            }));
+        }
+
         public static CultureInfo CurrentCultureInfo
         {
             get => _currentCultureInfo;
@@ -33,7 +41,6 @@ namespace StatisticsAnalysisTool.Common
                 {
                     Thread.CurrentThread.CurrentUICulture = value;
                     Thread.CurrentThread.CurrentCulture = value;
-                    FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
                 }
                 catch (Exception e)
                 {
