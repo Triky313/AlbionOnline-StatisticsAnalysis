@@ -193,7 +193,7 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type notification:FameNotificationFragment}">
-        <StackPanel Orientation="Horizontal">
+        <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
 
@@ -247,11 +247,11 @@
             </TextBlock>
 
             <TextBlock Text="{Binding EndText, StringFormat='{}) {0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-        </StackPanel>
+        </VirtualizingStackPanel>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type notification:SilverNotificationFragment}">
-        <StackPanel Orientation="Horizontal">
+        <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
 
@@ -280,11 +280,11 @@
 
 
             <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-        </StackPanel>
+        </VirtualizingStackPanel>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type notification:FactionPointsNotificationFragment}">
-        <StackPanel Orientation="Horizontal">
+        <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
 
@@ -300,11 +300,11 @@
                 </TextBlock.Style>
             </TextBlock>
             <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-        </StackPanel>
+        </VirtualizingStackPanel>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type notification:FactionFlagPointsNotificationFragment}">
-        <StackPanel Orientation="Horizontal">
+        <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
 
@@ -320,11 +320,11 @@
                 </TextBlock.Style>
             </TextBlock>
             <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-        </StackPanel>
+        </VirtualizingStackPanel>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type notification:SeasonPointsNotificationFragment}">
-        <StackPanel Orientation="Horizontal">
+        <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding StartText, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock DataContext="{Binding Operator}" Style="{StaticResource OperatorTextBlockStyle}" />
 
@@ -340,19 +340,19 @@
                 </TextBlock.Style>
             </TextBlock>
             <TextBlock Text="{Binding EndText, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-        </StackPanel>
+        </VirtualizingStackPanel>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type notification:CombatNotificationFragment}">
-        <StackPanel Orientation="Horizontal">
+        <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding CauserName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock Text="{Binding Damage, IsAsync=True, StringFormat='{}{0:N0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}"/>
             <TextBlock Text="{Binding TargetName, IsAsync=True, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
-        </StackPanel>
+        </VirtualizingStackPanel>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type notification:OtherGrabbedLootNotificationFragment}">
-        <StackPanel Orientation="Horizontal">
+        <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
             <TextBlock Text="{Binding Looter, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
             <TextBlock Text="{Binding LootedTranslation, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
 
@@ -362,16 +362,16 @@
 
             <TextBlock Text="{Binding FromTranslation, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock Text="{Binding LootedPlayer, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
-        </StackPanel>
+        </VirtualizingStackPanel>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type notification:KillNotificationFragment}">
-        <StackPanel Orientation="Horizontal" Height="24">
+        <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal" Height="24">
             <TextBlock Text="{Binding Died, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
             <TextBlock Text="{Binding ValueText, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
             <TextBlock Text="{Binding KilledBy, IsAsync=True, StringFormat='{}{0}'}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
             <Image Source="../Resources/skull.png" Margin="0,-5,0,0" Height="24" Width="24" />
-        </StackPanel>
+        </VirtualizingStackPanel>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type models:MainStatObject}">
