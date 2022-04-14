@@ -5,18 +5,6 @@ namespace StatisticsAnalysisTool.Models.NetworkModel;
 
 public class MailContent
 {
-    public MailContent()
-    {
-    }
-
-    public MailContent(int quantity, string uniqueItemName, long internalTotalPrice, long internalUnitPrice)
-    {
-        Quantity = quantity;
-        UniqueItemName = uniqueItemName;
-        InternalTotalPrice = internalTotalPrice;
-        InternalUnitPrice = internalUnitPrice;
-    }
-
     public int Quantity { get; set; }
     public string UniqueItemName { get; set; }
     public long InternalTotalPrice { get; set; }

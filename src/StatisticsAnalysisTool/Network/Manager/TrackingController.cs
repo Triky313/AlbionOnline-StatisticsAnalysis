@@ -44,7 +44,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
             LootController = new LootController(this, mainWindowViewModel);
             StatisticController = new StatisticController(this, mainWindowViewModel);
-            MailController = new MailController(this, mainWindowViewModel);
+            MailController = new MailController(mainWindowViewModel);
             CountUpTimer = new CountUpTimer(this, mainWindowViewModel);
         }
 

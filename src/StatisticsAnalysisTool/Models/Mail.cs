@@ -2,31 +2,24 @@
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Manager;
+using StatisticsAnalysisTool.Properties;
 using System;
-using System.Diagnostics;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class Mail : IComparable<Mail>
+public class Mail : IComparable<Mail>, INotifyPropertyChanged
 {
-    public Mail(long tick, Guid? guid, long mailId, string clusterIndex, string mailTypeText, MailContent mailContent)
-    {
-        Tick = tick;
-        Timestamp = new DateTime(tick);
-        Guid = guid ?? default;
-        MailId = mailId;
-        ClusterIndex = clusterIndex;
-        MailTypeText = mailTypeText;
-        MailContent = mailContent;
-    }
-
-    public long Tick { get; init; }
+    private bool? _isSelectedForDeletion = false;
+    
+    public long Tick { get; set; }
     [JsonIgnore]
-    public DateTime Timestamp { get; init; }
-    public Guid Guid { get; init; }
-    public long MailId { get; init; }
-    public string ClusterIndex { get; init; }
+    public DateTime Timestamp => new (Tick);
+    public Guid Guid { get; set; }
+    public long MailId { get; set; }
+    public string ClusterIndex { get; set; }
     [JsonIgnore]
     public Location Location => Locations.GetLocationByIndex(ClusterIndex);
     [JsonIgnore]
@@ -35,8 +28,8 @@ public class Mail : IComparable<Mail>
     [JsonIgnore]
     public MailType MailType => MailController.ConvertToMailType(MailTypeText);
     public MailContent MailContent { get; set; }
+    [JsonIgnore]
     public Item Item => ItemController.GetItemByUniqueName(MailContent.UniqueItemName);
-
     [JsonIgnore]
     public string MailTypeDescription
     {
@@ -50,14 +43,27 @@ public class Mail : IComparable<Mail>
             };
         }
     }
+    [JsonIgnore]
+    public bool? IsSelectedForDeletion
+    {
+        get => _isSelectedForDeletion;
+        set
+        {
+            _isSelectedForDeletion = value;
+            OnPropertyChanged();
+        }
+    }
 
     #region Translations
+
     [JsonIgnore]
     public string TranslationSilver => LanguageController.Translation("SILVER");
     [JsonIgnore]
     public string TranslationCostPerItem => LanguageController.Translation("COST_PER_ITEM");
     [JsonIgnore]
     public string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
+    [JsonIgnore] 
+    public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
 
     #endregion
 
@@ -70,5 +76,13 @@ public class Mail : IComparable<Mail>
         var guidComparison = Guid.CompareTo(other.Guid);
         if (guidComparison != 0) return guidComparison;
         return MailId.CompareTo(other.MailId);
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

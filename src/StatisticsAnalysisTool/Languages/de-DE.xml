@@ -543,4 +543,19 @@
 	<translation name="SOLD">Verkauft</translation>
 	<translation name="COST_PER_ITEM">Kosten pro Item</translation>
 	<translation name="TOTAL_COST">Gesamte Kosten</translation>
+	<translation name="DELETE_SELECTED_MAILS">Ausgewählte Nachrichten löschen</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Ausgewählte Nachrichten wirklich löschen?</translation>
+	<translation name="MAIL_MONITORING_DESCRIPTION1">Um neue Nachrichten zu erkennen, muss im Spiel das Postfach geöffnet werden und zusätzlich jede Nachricht einmalig.</translation>
+	<translation name="SOLD_TODAY">Verkauft heute</translation>
+	<translation name="SOLD_MONTH">Verkauft Monat</translation>
+	<translation name="SOLD_YEAR">Verkauft Jahr</translation>
+	<translation name="BOUGHT_TODAY">Gekauft heute</translation>
+	<translation name="BOUGHT_MONTH">Gekauft Monat</translation>
+	<translation name="BOUGHT_YEAR">Gekauft Jahr</translation>
+	<translation name="SOLD_TOTAL">Gesamt verkauft</translation>
+	<translation name="BOUGHT_TOTAL">Gesamt gekauft</translation>
+	<translation name="SALES_TODAY">Umsatz heute</translation>
+	<translation name="SALES_MONTH">Umsatz Monat</translation>
+	<translation name="SALES_YEAR">Umsatz Jahr</translation>
+	<translation name="SALES_TOTAL">Gesamtumsatz</translation>
 </translations>

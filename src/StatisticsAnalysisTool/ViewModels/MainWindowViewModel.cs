@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -128,7 +127,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTaskProgressbarIndeterminate;
         private Visibility _characterIsNotTrackedInfoVisibility;
         private Visibility _isMailMonitoringPopupVisible = Visibility.Hidden;
-        private ObservableCollectionEx<Mail> _mails = new ();
+        private ObservableCollectionEx<Mail> _mails = new();
+        private MailStatsObject _mailStatsObject = new ();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -218,7 +218,7 @@ namespace StatisticsAnalysisTool.ViewModels
             DamageMeterSort.Add(sortByHealStruct);
             DamageMeterSort.Add(sortByHpsStruct);
             DamageMeterSortSelection = sortByDamageStruct;
-
+            
             #endregion
         }
 
@@ -717,28 +717,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");
         }
-
-        #region Mails
-
-        public async void AddMail(Mail mail)
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                Mails.Add(mail);
-                Mails.SortDescending(x => x.Tick);
-            });
-        }
-
-        public async void RemoveMail(Mail mail)
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                Mails.Remove(mail);
-            });
-        }
-
-        #endregion
-
+        
         public void ResetMainCounters()
         {
             TrackingController?.CountUpTimer?.Reset();
@@ -887,7 +866,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
         }
-
+        
         #endregion
 
         #region Item View Filters
@@ -1859,6 +1838,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _mails = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public MailStatsObject MailStatsObject
+        {
+            get => _mailStatsObject;
+            set
+            {
+                _mailStatsObject = value;
                 OnPropertyChanged();
             }
         }
