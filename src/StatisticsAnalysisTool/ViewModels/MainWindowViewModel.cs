@@ -126,6 +126,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _taskProgressbarValue;
         private bool _isTaskProgressbarIndeterminate;
         private Visibility _characterIsNotTrackedInfoVisibility;
+        private Visibility _isMailMonitoringPopupVisible = Visibility.Hidden;
+        private ObservableCollectionEx<Mail> _mails = new();
+        private MailStatsObject _mailStatsObject = new ();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -215,7 +218,7 @@ namespace StatisticsAnalysisTool.ViewModels
             DamageMeterSort.Add(sortByHealStruct);
             DamageMeterSort.Add(sortByHpsStruct);
             DamageMeterSortSelection = sortByDamageStruct;
-
+            
             #endregion
         }
 
@@ -538,7 +541,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion
 
         #region Ui utility methods
-        
+
         //private static void ShowInfoWindow()
         //{
         //    if (SettingsController.CurrentSettings.IsInfoWindowShownOnStart)
@@ -690,7 +693,8 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
             TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
-            TrackingController?.StatisticController?.LoadStatisticsFromFile();
+            TrackingController?.StatisticController?.LoadFromFile();
+            TrackingController?.MailController?.LoadFromFile();
 
             TrackingController?.CountUpTimer.Start();
 
@@ -703,7 +707,8 @@ namespace StatisticsAnalysisTool.ViewModels
         public void StopTracking()
         {
             TrackingController?.DungeonController?.SaveDungeonsInFile();
-            TrackingController?.StatisticController?.SaveStatisticsInFile();
+            TrackingController?.StatisticController?.SaveInFile();
+            TrackingController?.MailController?.SaveInFile();
             TrackingController?.UnregisterEvents();
             TrackingController?.CountUpTimer?.Stop();
 
@@ -712,7 +717,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");
         }
-
+        
         public void ResetMainCounters()
         {
             TrackingController?.CountUpTimer?.Reset();
@@ -861,7 +866,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
         }
-
+        
         #endregion
 
         #region Item View Filters
@@ -954,6 +959,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isDamageMeterPopupVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility IsMailMonitoringPopupVisible
+        {
+            get => _isMailMonitoringPopupVisible;
+            set
+            {
+                _isMailMonitoringPopupVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -1813,6 +1828,26 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _toolTaskObjects = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollectionEx<Mail> Mails
+        {
+            get => _mails;
+            set
+            {
+                _mails = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public MailStatsObject MailStatsObject
+        {
+            get => _mailStatsObject;
+            set
+            {
+                _mailStatsObject = value;
                 OnPropertyChanged();
             }
         }

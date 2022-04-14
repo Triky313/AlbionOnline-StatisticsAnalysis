@@ -355,5 +355,17 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((int)(this["KeepDashboardStatisticsForDays"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Mails.json")]
+        public string MailsFileName {
+            get {
+                return ((string)(this["MailsFileName"]));
+            }
+            set {
+                this["MailsFileName"] = value;
+            }
+        }
     }
 }

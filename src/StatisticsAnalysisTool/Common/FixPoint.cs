@@ -6,7 +6,7 @@ namespace StatisticsAnalysisTool.Common
     public readonly struct FixPoint
     {
         public const long InternalFactor = 10000L;
-        public static readonly FixPoint One = new FixPoint(InternalFactor);
+        public static readonly FixPoint One = new (InternalFactor);
         public double DoubleValue => (double) InternalValue / InternalFactor;
         public long IntegerValue => InternalValue / InternalFactor;
 

@@ -70,6 +70,7 @@ namespace StatisticsAnalysisTool.Models
         public static string ItemSearch => LanguageController.Translation("ITEM_SEARCH");
         public static string Dungeons => LanguageController.Translation("DUNGEONS");
         public static string PlayerInformation => LanguageController.Translation("PLAYER_INFORMATION");
+        public static string MailMonitoring => LanguageController.Translation("MAIL_MONITORING");
         public static string Logging => LanguageController.Translation("LOGGING");
         public static string TrackingIsActive => LanguageController.Translation("TRACKING_IS_ACTIVE");
         public static string TrackingIsPartiallyActive => LanguageController.Translation("TRACKING_IS_PARTIALLY_ACTIVE");
@@ -92,5 +93,19 @@ namespace StatisticsAnalysisTool.Models
         public static string AverageItemPowerWhenKilling => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_KILLING");
         public static string AverageItemPowerOfTheKilledEnemies => LanguageController.Translation("AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES");
         public static string AverageItemPowerWhenDying => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_DYING");
+        public static string DeleteSelectedMails => LanguageController.Translation("DELETE_SELECTED_MAILS");
+        public static string SoldToday => LanguageController.Translation("SOLD_TODAY");
+        public static string SoldMonth => LanguageController.Translation("SOLD_MONTH");
+        public static string SoldYear => LanguageController.Translation("SOLD_YEAR");
+        public static string BoughtToday => LanguageController.Translation("BOUGHT_TODAY");
+        public static string BoughtMonth => LanguageController.Translation("BOUGHT_MONTH");
+        public static string BoughtYear => LanguageController.Translation("BOUGHT_YEAR");
+        public static string SoldTotal => LanguageController.Translation("SOLD_TOTAL");
+        public static string BoughtTotal => LanguageController.Translation("BOUGHT_TOTAL");
+        public static string SalesToday => LanguageController.Translation("SALES_TODAY");
+        public static string SalesMonth => LanguageController.Translation("SALES_MONTH");
+        public static string SalesYear => LanguageController.Translation("SALES_YEAR");
+        public static string SalesTotal => LanguageController.Translation("SALES_TOTAL");
+        public static string MailMonitoringDescription1 => LanguageController.Translation("MAIL_MONITORING_DESCRIPTION1");
     }
 }

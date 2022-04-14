@@ -262,7 +262,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Load / Save local file data
 
-        public void LoadStatisticsFromFile()
+        public void LoadFromFile()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.StatsFileName}";
 
@@ -287,7 +287,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _dashboardStatistics = new DashboardStatistics();
         }
 
-        public void SaveStatisticsInFile()
+        public void SaveInFile()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.StatsFileName}";
 

@@ -537,4 +537,25 @@
 	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Average item power when killing</translation>
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Average item power of the killed enemies</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Average item power when dying</translation>
+	<translation name="MAIL_MONITORING">Mail Monitoring</translation>
+	<translation name="MAIL">Mail</translation>
+	<translation name="BOUGHT">Bought</translation>
+	<translation name="SOLD">Sold</translation>
+	<translation name="COST_PER_ITEM">Cost per item</translation>
+	<translation name="TOTAL_COST">Total cost</translation>
+	<translation name="DELETE_SELECTED_MAILS">Delete selected mails</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Are you sure you want to delete selected mails?</translation>
+	<translation name="MAIL_MONITORING_DESCRIPTION1">In order to recognize new messages, the inbox must be opened in game and additionally each message once.</translation>
+	<translation name="SOLD_TODAY">Sold today</translation>
+	<translation name="SOLD_MONTH">Sold month</translation>
+	<translation name="SOLD_YEAR">Sold year</translation>
+	<translation name="BOUGHT_TODAY">Bought today</translation>
+	<translation name="BOUGHT_MONTH">Bought month</translation>
+	<translation name="BOUGHT_YEAR">Bought year</translation>
+	<translation name="SOLD_TOTAL">Sold total</translation>
+	<translation name="BOUGHT_TOTAL">Bought total</translation>
+	<translation name="SALES_TODAY">Sales today</translation>
+	<translation name="SALES_MONTH">Sales month</translation>
+	<translation name="SALES_YEAR">Sales year</translation>
+	<translation name="SALES_TOTAL">Sales total</translation>
 </translations>
