@@ -543,4 +543,25 @@
   <translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Средний IP при убийствах</translation>
   <translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Средний IP убийц</translation>
   <translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Средний IP при смертях</translation>
+  <translation name="MAIL_MONITORING">Почта</translation>
+  <translation name="MAIL">Письмо</translation>
+  <translation name="BOUGHT">Куплено</translation>
+  <translation name="SOLD">Продано</translation>
+  <translation name="COST_PER_ITEM">Цена за предмет</translation>
+  <translation name="TOTAL_COST">Всего продано</translation>
+  <translation name="DELETE_SELECTED_MAILS">Удалить выбранные письма</translation>
+  <translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Вы уверены что хотите удалить выбранные письма?</translation>
+  <translation name="MAIL_MONITORING_DESCRIPTION1">Для получения новых писем, вы должны открыть почту и нажать на каждое письмо отдельно.</translation>
+  <translation name="SOLD_TODAY">Продано за сегодня</translation>
+  <translation name="SOLD_MONTH">Продано за месяц</translation>
+  <translation name="SOLD_YEAR">Продано за год</translation>
+  <translation name="BOUGHT_TODAY">Куплено за сегодня</translation>
+  <translation name="BOUGHT_MONTH">Куплено за месяц</translation>
+  <translation name="BOUGHT_YEAR">Куплено за год</translation>
+  <translation name="SOLD_TOTAL">Всего продано</translation>
+  <translation name="BOUGHT_TOTAL">Всего куплено</translation>
+  <translation name="SALES_TODAY">Прибыль за сегодня</translation>
+  <translation name="SALES_MONTH">Прибыль за месяц</translation>
+  <translation name="SALES_YEAR">Прибыль за год</translation>
+  <translation name="SALES_TOTAL">Всего прибыли</translation>
 </translations>
