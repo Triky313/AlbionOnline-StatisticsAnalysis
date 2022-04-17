@@ -34,16 +34,16 @@ public class MailStatsObject : INotifyPropertyChanged
     public void SetMailStats(List<Mail> mails)
     {
         var currentUtc = DateTime.UtcNow;
-        SoldToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType == MailType.MarketplaceSellOrderFinished).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        SoldMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType == MailType.MarketplaceSellOrderFinished).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        SoldYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType == MailType.MarketplaceSellOrderFinished).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        SoldToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        SoldMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        SoldYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
 
-        BoughtToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType == MailType.MarketplaceBuyOrderFinished).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        BoughtMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType == MailType.MarketplaceBuyOrderFinished).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        BoughtYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType == MailType.MarketplaceBuyOrderFinished).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        BoughtToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        BoughtMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        BoughtYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
 
-        SoldTotal = mails.Where(x => x.MailType == MailType.MarketplaceSellOrderFinished).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        BoughtTotal = mails.Where(x => x.MailType == MailType.MarketplaceBuyOrderFinished).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        SoldTotal = mails.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        BoughtTotal = mails.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
         
         SalesToday = SoldToday - BoughtToday;
         SalesMonth = SoldMonth - BoughtMonth;

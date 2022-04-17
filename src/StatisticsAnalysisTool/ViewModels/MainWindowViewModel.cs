@@ -130,6 +130,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollectionEx<Mail> _mails = new();
         private MailStatsObject _mailStatsObject = new ();
         private ListCollectionView _mailCollectionView;
+        private string _mailsSearchText;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1870,6 +1871,18 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _mailStatsObject = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string MailsSearchText
+        {
+            get => _mailsSearchText;
+            set
+            {
+                _mailsSearchText = value;
+                MailCollectionView.Filter = TrackingController.MailController.MailTextSearch;
+                MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
                 OnPropertyChanged();
             }
         }

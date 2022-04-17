@@ -185,6 +185,20 @@ namespace StatisticsAnalysisTool.Network.Manager
             };
         }
 
+        #region Filtering
+
+        public bool MailTextSearch(object obj)
+        {
+            return obj is Mail mail && (
+                mail.LocationName.ToLower().Contains(_mainWindowViewModel.MailsSearchText.ToLower()) 
+                || mail.MailTypeDescription.ToLower().Contains(_mainWindowViewModel.MailsSearchText.ToLower())
+                || mail.Item.LocalizedName.ToLower().Contains(_mainWindowViewModel.MailsSearchText.ToLower())
+                || mail.MailContent.UnitPrice.ToString().Contains(_mainWindowViewModel.MailsSearchText.ToLower())
+                || mail.MailContent.TotalPrice.ToString().Contains(_mainWindowViewModel.MailsSearchText.ToLower()));
+        }
+
+        #endregion
+
         #region Load / Save local file data
 
         public void LoadFromFile()

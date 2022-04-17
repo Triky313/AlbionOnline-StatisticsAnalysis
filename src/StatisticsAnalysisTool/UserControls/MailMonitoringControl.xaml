@@ -11,10 +11,16 @@
 
     <Grid>
         <Grid Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="{Binding Translation.DeleteSelectedMails, FallbackValue=DELETE__SELECTED__MAILS}" Height="26" Width="200" MaxWidth="350" MinWidth="80" 
-                        HorizontalAlignment="Right" Click="BtnDeleteSelectedMails_Click" />
-                <Grid Height="20" Width="20" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+            <StackPanel Orientation="Horizontal" MaxWidth="400" HorizontalAlignment="Left">
+                <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
+                <!--<ComboBox VerticalAlignment="Center" Margin="2,0,6,0" Width="150" Height="24" ItemsSource="{Binding LoggingFilters}" 
+                          ItemTemplate="{StaticResource MailsFilterObject}" />-->
+                <TextBox Text="{Binding MailsSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="24" HorizontalAlignment="Left" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" MaxWidth="300" HorizontalAlignment="Right">
+                <Button Content="{Binding Translation.DeleteSelectedMails, FallbackValue=DELETE__SELECTED__MAILS}" Margin="5,0,0,0"
+                        Height="26" Width="200" MaxWidth="350" MinWidth="80" Click="BtnDeleteSelectedMails_Click" />
+                <Grid Height="20" Width="20" Margin="5,0,0,0" VerticalAlignment="Center"
                       MouseEnter="OpenMailMonitoringPopup_MouseEnter" MouseLeave="CloseMailMonitoringPopup_MouseLeave">
                     <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                 </Grid>
