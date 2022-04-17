@@ -85,7 +85,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindowViewModel.Mails.Add(mail);
-                _mainWindowViewModel.Mails.SortDescending(x => x.Tick);
+                _mainWindowViewModel.MailCollectionView?.Refresh();
             });
         }
         
@@ -163,7 +163,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     _mainWindowViewModel?.Mails.Add(item);
                 }
 
-                _mainWindowViewModel?.Mails.SortDescending(x => x.Tick);
+                _mainWindowViewModel?.MailCollectionView?.Refresh();
                 _mainWindowViewModel?.MailStatsObject.SetMailStats(mails);
             });
         }

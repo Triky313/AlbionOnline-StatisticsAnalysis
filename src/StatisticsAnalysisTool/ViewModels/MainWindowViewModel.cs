@@ -129,6 +129,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _isMailMonitoringPopupVisible = Visibility.Hidden;
         private ObservableCollectionEx<Mail> _mails = new();
         private MailStatsObject _mailStatsObject = new ();
+        private ListCollectionView _mailCollectionView;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -489,6 +490,17 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterKill,
                 Name = MainWindowTranslation.ShowKills
             });
+
+            // Mails
+            MailCollectionView = CollectionViewSource.GetDefaultView(Mails) as ListCollectionView;
+            if (MailCollectionView != null)
+            {
+                MailCollectionView.IsLiveSorting = true;
+                MailCollectionView.IsLiveFiltering = true;
+                MailCollectionView.SortDescriptions.Add(new SortDescription("Tick", ListSortDirection.Descending));
+            }
+
+            MailCollectionView?.Refresh();
         }
 
         #endregion
@@ -1828,6 +1840,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _toolTaskObjects = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ListCollectionView MailCollectionView
+        {
+            get => _mailCollectionView;
+            set
+            {
+                _mailCollectionView = value;
                 OnPropertyChanged();
             }
         }

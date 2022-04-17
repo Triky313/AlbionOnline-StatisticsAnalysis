@@ -119,7 +119,7 @@
 
         <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,216,0,0" VerticalAlignment="Top"/>
         <ScrollViewer Margin="0,220,0,0">
-            <ItemsControl ItemsSource="{Binding Mails, IsAsync=True, Mode=OneWay}" />
+            <ItemsControl ItemsSource="{Binding MailCollectionView, IsAsync=True, Mode=OneWay}" />
         </ScrollViewer>
 
         <Grid Visibility="{Binding IsMailMonitoringPopupVisible, FallbackValue=Hidden}" Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
