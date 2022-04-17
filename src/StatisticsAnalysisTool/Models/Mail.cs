@@ -23,7 +23,7 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
     [JsonIgnore]
     public Location Location => Locations.GetLocationByIndex(ClusterIndex);
     [JsonIgnore]
-    public string LocationName => Locations.GetName(Location);
+    public string LocationName => Locations.GetName(Location) ?? LanguageController.Translation("UNKNOWN");
     public string MailTypeText { get; set; }
     [JsonIgnore]
     public MailType MailType => MailController.ConvertToMailType(MailTypeText);

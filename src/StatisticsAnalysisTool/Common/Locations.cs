@@ -65,6 +65,11 @@ namespace StatisticsAnalysisTool.Common
 
         public static Location GetLocationByIndex(string index)
         {
+            if (index.Equals("@BLACK_MARKET"))
+            {
+                return Location.BlackMarket;
+            }
+
             return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
         }
 

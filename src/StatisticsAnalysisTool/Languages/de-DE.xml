@@ -542,7 +542,6 @@
 	<translation name="BOUGHT">Gekauft</translation>
 	<translation name="SOLD">Verkauft</translation>
 	<translation name="COST_PER_ITEM">Kosten pro Item</translation>
-	<translation name="TOTAL_COST">Gesamte Kosten</translation>
 	<translation name="DELETE_SELECTED_MAILS">Ausgewählte Nachrichten löschen</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Ausgewählte Nachrichten wirklich löschen?</translation>
 	<translation name="MAIL_MONITORING_DESCRIPTION1">Um neue Nachrichten zu erkennen, muss im Spiel das Postfach geöffnet werden und zusätzlich jede Nachricht einmalig.</translation>
