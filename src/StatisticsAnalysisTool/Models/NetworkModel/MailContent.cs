@@ -5,6 +5,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel;
 
 public class MailContent
 {
+    public int UsedQuantity { get; set; }
     public int Quantity { get; set; }
     public string UniqueItemName { get; set; }
     public long InternalTotalPrice { get; set; }

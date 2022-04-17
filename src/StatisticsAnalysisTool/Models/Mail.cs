@@ -39,6 +39,8 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
             {
                 MailType.MarketplaceBuyOrderFinished => LanguageController.Translation("BOUGHT"),
                 MailType.MarketplaceSellOrderFinished => LanguageController.Translation("SOLD"),
+                MailType.MarketplaceSellOrderExpired => LanguageController.Translation("SELL_EXPIRED"),
+                MailType.MarketplaceBuyOrderExpired => LanguageController.Translation("BUY_EXPIRED"),
                 _ => LanguageController.Translation("MAIL")
             };
         }
@@ -64,6 +66,8 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
     public string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
     [JsonIgnore] 
     public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
+    [JsonIgnore] 
+    public static string TranslationFrom => LanguageController.Translation("FROM");
 
     #endregion
 
