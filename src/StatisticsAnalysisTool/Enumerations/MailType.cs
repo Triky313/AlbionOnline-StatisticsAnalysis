@@ -4,5 +4,7 @@ public enum MailType
 {
     Unknown,
     MarketplaceBuyOrderFinished,
-    MarketplaceSellOrderFinished
+    MarketplaceSellOrderFinished,
+    MarketplaceSellOrderExpired,
+    MarketplaceBuyOrderExpired
 }

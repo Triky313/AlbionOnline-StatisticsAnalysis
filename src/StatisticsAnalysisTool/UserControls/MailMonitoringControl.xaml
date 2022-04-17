@@ -10,117 +10,139 @@
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
 
     <Grid>
-        <Grid Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="{Binding Translation.DeleteSelectedMails, FallbackValue=DELETE__SELECTED__MAILS}" Height="26" Width="200" MaxWidth="350" MinWidth="80" 
-                        HorizontalAlignment="Right" Click="BtnDeleteSelectedMails_Click" />
-                <Grid Height="20" Width="20" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+        <Grid Margin="0,0,0,0" Height="60" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" MaxWidth="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
+                <TextBox Text="{Binding MailsSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="24" HorizontalAlignment="Left" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Button Content="{Binding Translation.DeleteSelectedMails, FallbackValue=DELETE__SELECTED__MAILS}" Margin="5,0,0,0"
+                        Height="26" Width="200" MaxWidth="350" MinWidth="80" Click="BtnDeleteSelectedMails_Click" />
+                <Grid Height="20" Width="20" Margin="5,0,0,0" VerticalAlignment="Center"
                       MouseEnter="OpenMailMonitoringPopup_MouseEnter" MouseLeave="CloseMailMonitoringPopup_MouseLeave">
                     <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                 </Grid>
             </StackPanel>
-        </Grid>
-        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,31,0,0" VerticalAlignment="Top"/>
-
-        <Grid Margin="0,35,0,205" HorizontalAlignment="Center">
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Vertical" Margin="5,0,5,0">
-                    <TextBlock Text="{Binding Translation.SoldToday, FallbackValue=SOLD_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.SoldToday, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Text="{Binding Translation.SoldMonth, FallbackValue=SOLD_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.SoldMonth, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Text="{Binding Translation.SoldYear, FallbackValue=SOLD_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.SoldYear, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Text="{Binding Translation.SoldTotal, FallbackValue=SOLD_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.SoldTotal, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Orientation="Vertical" Margin="5,0,5,0">
-                    <TextBlock Text="{Binding Translation.BoughtToday, FallbackValue=BOUGHT_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.BoughtToday, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Text="{Binding Translation.BoughtMonth, FallbackValue=BOUGHT_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.BoughtMonth, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Text="{Binding Translation.BoughtYear, FallbackValue=BOUGHT_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.BoughtYear, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Text="{Binding Translation.BoughtTotal, FallbackValue=BOUGHT_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.BoughtTotal, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Orientation="Vertical" Margin="5,0,5,0">
-                    <TextBlock Text="{Binding Translation.SalesToday, FallbackValue=SALES_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.SalesToday, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Text="{Binding Translation.SalesMonth, FallbackValue=SALES_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.SalesMonth, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Text="{Binding Translation.SalesYear, FallbackValue=SALES_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.SalesYear, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                               FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Text="{Binding Translation.SalesTotal, FallbackValue=SALES_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
-                               Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
-                        <TextBlock Text="{Binding MailStatsObject.SalesTotal, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
-                    </StackPanel>
-                </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="30" Margin="25,30,0,0">
+                <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" SelectedDate="{Binding DatePickerMailsFrom}" 
+                            Background="Transparent" BorderThickness="0" Margin="0,0,0,0" />
+                <TextBlock Text="{Binding Translation.To, StringFormat='{}{0} ', FallbackValue=TO}" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" SelectedDate="{Binding DatePickerMailsTo}" 
+                            Background="Transparent" BorderThickness="0" Margin="6,0,0,0" />
             </StackPanel>
         </Grid>
+        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,61,0,0" VerticalAlignment="Top"/>
 
-        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,216,0,0" VerticalAlignment="Top"/>
-        <ScrollViewer Margin="0,220,0,0">
-            <ItemsControl ItemsSource="{Binding Mails, IsAsync=True, Mode=OneWay}" />
-        </ScrollViewer>
+        <Grid Margin="0,60,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+
+            <Grid Row="0" Margin="0,5,0,0" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical" Margin="5,0,5,0">
+                        <TextBlock Text="{Binding Translation.SoldToday, FallbackValue=SOLD_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.SoldToday, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Translation.SoldMonth, FallbackValue=SOLD_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.SoldMonth, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Translation.SoldYear, FallbackValue=SOLD_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.SoldYear, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Translation.SoldTotal, FallbackValue=SOLD_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.SoldTotal, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,0,5,0">
+                        <TextBlock Text="{Binding Translation.BoughtToday, FallbackValue=BOUGHT_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.BoughtToday, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Translation.BoughtMonth, FallbackValue=BOUGHT_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.BoughtMonth, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Translation.BoughtYear, FallbackValue=BOUGHT_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.BoughtYear, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Translation.BoughtTotal, FallbackValue=BOUGHT_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.BoughtTotal, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                       FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,0,5,0">
+                        <TextBlock Text="{Binding Translation.SalesToday, FallbackValue=SALES_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.SalesToday, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Translation.SalesMonth, FallbackValue=SALES_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.SalesMonth, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Translation.SalesYear, FallbackValue=SALES_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.SalesYear, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Translation.SalesTotal, FallbackValue=SALES_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding Translation.Silver}" />
+                            <TextBlock Text="{Binding MailStatsObject.SalesTotal, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                       FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <Grid Row="2">
+                <ScrollViewer Margin="0,0,0,0">
+                    <ItemsControl ItemsSource="{Binding MailCollectionView, IsAsync=True, Mode=OneWay}" />
+                </ScrollViewer>
+            </Grid>
+        </Grid>
 
         <Grid Visibility="{Binding IsMailMonitoringPopupVisible, FallbackValue=Hidden}" Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
             <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">

@@ -558,4 +558,7 @@
 	<translation name="SALES_MONTH">Umsatz Monat</translation>
 	<translation name="SALES_YEAR">Umsatz Jahr</translation>
 	<translation name="SALES_TOTAL">Gesamtumsatz</translation>
+	<translation name="SELL_EXPIRED">Verkauf abgelaufen</translation>
+	<translation name="BUY_EXPIRED">Kauf abgelaufen</translation>
+	<translation name="TO">bis</translation>
 </translations>

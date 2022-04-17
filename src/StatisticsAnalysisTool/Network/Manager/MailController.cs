@@ -71,7 +71,12 @@ namespace StatisticsAnalysisTool.Network.Manager
                 MailTypeText = mailInfo.MailTypeText,
                 MailContent = mailContent
             };
-            
+
+            if (mail.MailType == MailType.Unknown)
+            {
+                return;
+            }
+
             AddMailToListAndSort(mail);
         }
 
@@ -80,7 +85,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindowViewModel.Mails.Add(mail);
-                _mainWindowViewModel.Mails.SortDescending(x => x.Tick);
+                _mainWindowViewModel.MailCollectionView?.Refresh();
             });
         }
         
@@ -120,7 +125,30 @@ namespace StatisticsAnalysisTool.Network.Manager
                         InternalUnitPrice = unitPriceLong,
                         UniqueItemName = uniqueItemName
                     };
+                case MailType.MarketplaceSellOrderExpired:
+                case MailType.MarketplaceBuyOrderExpired:
+                    var contentExpiredObject = content.Split("|");
 
+                    if (contentExpiredObject.Length < 4)
+                    {
+                        return new MailContent();
+                    }
+
+                    _ = int.TryParse(contentExpiredObject[0], out var usedExpiredQuantity);
+                    _ = int.TryParse(contentExpiredObject[1], out var expiredQuantity);
+                    _ = long.TryParse(contentExpiredObject[2], out var totalExpiredPriceLong);
+                    var uniqueItemExpiredName = contentExpiredObject[3];
+                    
+                    var totalExpiredPrice = FixPoint.FromInternalValue(totalExpiredPriceLong);
+
+                    return new MailContent()
+                    {
+                        UsedQuantity = usedExpiredQuantity,
+                        Quantity = expiredQuantity,
+                        InternalTotalPrice = totalExpiredPriceLong,
+                        InternalUnitPrice = FixPoint.FromFloatingPointValue(totalExpiredPrice.DoubleValue / expiredQuantity).InternalValue,
+                        UniqueItemName = uniqueItemExpiredName
+                    };
                 default:
                     return new MailContent();
             }
@@ -135,7 +163,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     _mainWindowViewModel?.Mails.Add(item);
                 }
 
-                _mainWindowViewModel?.Mails.SortDescending(x => x.Tick);
+                _mainWindowViewModel?.MailCollectionView?.Refresh();
                 _mainWindowViewModel?.MailStatsObject.SetMailStats(mails);
             });
         }
@@ -151,9 +179,27 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 "MARKETPLACE_BUYORDER_FINISHED_SUMMARY" => MailType.MarketplaceBuyOrderFinished,
                 "MARKETPLACE_SELLORDER_FINISHED_SUMMARY" => MailType.MarketplaceSellOrderFinished,
+                "MARKETPLACE_SELLORDER_EXPIRED_SUMMARY" => MailType.MarketplaceSellOrderExpired,
+                "MARKETPLACE_BUYORDER_EXPIRED_SUMMARY" => MailType.MarketplaceBuyOrderExpired,
                 _ => MailType.Unknown
             };
         }
+
+        #region Filter
+
+        public bool Filter(object obj)
+        {
+            return obj is Mail mail 
+                && mail.Timestamp.Date >= _mainWindowViewModel?.DatePickerMailsFrom.Date
+                && mail.Timestamp.Date <= _mainWindowViewModel?.DatePickerMailsTo.Date && (
+                mail.LocationName.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty) 
+                || mail.MailTypeDescription.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty)
+                || mail.Item.LocalizedName.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty)
+                || mail.MailContent.UnitPrice.ToString().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty)
+                || mail.MailContent.TotalPrice.ToString().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty));
+        }
+
+        #endregion
 
         #region Load / Save local file data
 
