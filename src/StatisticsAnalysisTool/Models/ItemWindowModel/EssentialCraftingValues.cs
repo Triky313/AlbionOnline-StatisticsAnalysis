@@ -40,6 +40,17 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 _lastUpdate = DateTime.UtcNow;
             }
 
+            if (location == Location.BlackMarket)
+            {
+                var buyPriceMax = _marketResponse?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.BuyPriceMax;
+                if (buyPriceMax != null)
+                {
+                    SellPricePerItem = (long)buyPriceMax;
+                }
+
+                return;
+            }
+
             var sellPriceMin = _marketResponse?.FirstOrDefault(x => string.Equals(x?.City, Locations.GetParameterName(location), StringComparison.CurrentCultureIgnoreCase))?.SellPriceMin;
             if (sellPriceMin != null)
             {
@@ -49,6 +60,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
 
         public KeyValuePair<Location, string>[] ItemPricesLocations { get; } =
         {
+            new (Location.BlackMarket, Locations.GetName(Location.BlackMarket)),
             new (Location.Martlock, Locations.GetName(Location.Martlock)),
             new (Location.Thetford, Locations.GetName(Location.Thetford)),
             new (Location.FortSterling, Locations.GetName(Location.FortSterling)),
