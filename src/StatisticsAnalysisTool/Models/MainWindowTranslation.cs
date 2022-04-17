@@ -107,5 +107,6 @@ namespace StatisticsAnalysisTool.Models
         public static string SalesYear => LanguageController.Translation("SALES_YEAR");
         public static string SalesTotal => LanguageController.Translation("SALES_TOTAL");
         public static string MailMonitoringDescription1 => LanguageController.Translation("MAIL_MONITORING_DESCRIPTION1");
+        public static string To => LanguageController.Translation("TO");
     }
 }

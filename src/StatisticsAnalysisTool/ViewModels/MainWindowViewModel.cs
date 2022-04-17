@@ -131,6 +131,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private MailStatsObject _mailStatsObject = new ();
         private ListCollectionView _mailCollectionView;
         private string _mailsSearchText;
+        private DateTime _datePickerMailsFrom = new (2017, 1, 1);
+        private DateTime _datePickerMailsTo = DateTime.UtcNow.AddDays(1);
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1881,7 +1883,31 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _mailsSearchText = value;
-                MailCollectionView.Filter = TrackingController.MailController.MailTextSearch;
+                MailCollectionView.Filter = TrackingController.MailController.Filter;
+                MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime DatePickerMailsFrom
+        {
+            get => _datePickerMailsFrom;
+            set
+            {
+                _datePickerMailsFrom = value;
+                MailCollectionView.Filter = TrackingController.MailController.Filter;
+                MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime DatePickerMailsTo
+        {
+            get => _datePickerMailsTo;
+            set
+            {
+                _datePickerMailsTo = value;
+                MailCollectionView.Filter = TrackingController.MailController.Filter;
                 MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
                 OnPropertyChanged();
             }

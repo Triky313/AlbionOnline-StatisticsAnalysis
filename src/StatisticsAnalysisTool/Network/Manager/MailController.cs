@@ -185,16 +185,18 @@ namespace StatisticsAnalysisTool.Network.Manager
             };
         }
 
-        #region Filtering
+        #region Filter
 
-        public bool MailTextSearch(object obj)
+        public bool Filter(object obj)
         {
-            return obj is Mail mail && (
-                mail.LocationName.ToLower().Contains(_mainWindowViewModel.MailsSearchText.ToLower()) 
-                || mail.MailTypeDescription.ToLower().Contains(_mainWindowViewModel.MailsSearchText.ToLower())
-                || mail.Item.LocalizedName.ToLower().Contains(_mainWindowViewModel.MailsSearchText.ToLower())
-                || mail.MailContent.UnitPrice.ToString().Contains(_mainWindowViewModel.MailsSearchText.ToLower())
-                || mail.MailContent.TotalPrice.ToString().Contains(_mainWindowViewModel.MailsSearchText.ToLower()));
+            return obj is Mail mail 
+                && mail.Timestamp.Date >= _mainWindowViewModel?.DatePickerMailsFrom.Date
+                && mail.Timestamp.Date <= _mainWindowViewModel?.DatePickerMailsTo.Date && (
+                mail.LocationName.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty) 
+                || mail.MailTypeDescription.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty)
+                || mail.Item.LocalizedName.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty)
+                || mail.MailContent.UnitPrice.ToString().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty)
+                || mail.MailContent.TotalPrice.ToString().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty));
         }
 
         #endregion
