@@ -542,7 +542,6 @@
 	<translation name="BOUGHT">Bought</translation>
 	<translation name="SOLD">Sold</translation>
 	<translation name="COST_PER_ITEM">Cost per item</translation>
-	<translation name="TOTAL_COST">Total cost</translation>
 	<translation name="DELETE_SELECTED_MAILS">Delete selected mails</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Are you sure you want to delete selected mails?</translation>
 	<translation name="MAIL_MONITORING_DESCRIPTION1">In order to recognize new messages, the inbox must be opened in game and additionally each message once.</translation>
