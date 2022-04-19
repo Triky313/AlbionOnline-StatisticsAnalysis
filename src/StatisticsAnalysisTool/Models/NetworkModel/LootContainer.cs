@@ -11,7 +11,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         Player
     }
 
-    public class Container
+    public class LootContainer
     {
         public string Id { get; set; }
 

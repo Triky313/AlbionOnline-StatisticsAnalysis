@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             _trackingController.EntityController.AddEquipmentItem(new EquipmentItemInternal
             {
-                ItemIndex = value.Item.ItemId,
+                ItemIndex = value.Item.ItemIndex,
                 SpellDictionary = value.Item.SpellDictionary
             });
             await Task.CompletedTask;

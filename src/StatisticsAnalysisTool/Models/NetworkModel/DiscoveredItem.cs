@@ -11,7 +11,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         }
 
         public long ObjectId { get; set; }
-        public int ItemId { get; set; }
+        public int ItemIndex { get; set; }
         public DateTime UtcDiscoveryTime { get; }
         public int Quantity { get; set; }
         public string BodyName { get; set; }

@@ -40,7 +40,7 @@ namespace StatisticsAnalysisTool.Network.Events
                     Item = new DiscoveredItem()
                     {
                         ObjectId = (long)_objectId,
-                        ItemId = _itemId,
+                        ItemIndex = _itemId,
                         Quantity = _quantity
                     };
                 }

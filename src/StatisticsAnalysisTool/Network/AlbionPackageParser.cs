@@ -48,6 +48,7 @@ namespace StatisticsAnalysisTool.Network
         private readonly MightFavorPointsEventHandler _mightFavorPointsEventHandler;
         private readonly BaseVaultInfoEventHandler _baseVaultInfoEventHandler;
         private readonly GuildVaultInfoEventHandler _guildVaultInfoEventHandler;
+        private readonly AttachItemContainerEventHandler _attachItemContainerEventHandler;
 
         private readonly UseShrineRequestHandler _useShrineRequestHandler;
 
@@ -92,6 +93,7 @@ namespace StatisticsAnalysisTool.Network
             _mightFavorPointsEventHandler = new MightFavorPointsEventHandler(trackingController);
             _baseVaultInfoEventHandler = new BaseVaultInfoEventHandler(trackingController);
             _guildVaultInfoEventHandler = new GuildVaultInfoEventHandler(trackingController);
+            _attachItemContainerEventHandler = new AttachItemContainerEventHandler(trackingController);
 
             _useShrineRequestHandler = new UseShrineRequestHandler(trackingController);
 
@@ -209,6 +211,9 @@ namespace StatisticsAnalysisTool.Network
                         return;
                     case EventCodes.RecoveryVaultPlayerInfo:
                         await RecoveryVaultPlayerInfoEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.AttachItemContainer:
+                        await AttachItemContainerEventHandlerAsync(parameters).ConfigureAwait(true);
                         return;
                 }
             }
@@ -485,6 +490,12 @@ namespace StatisticsAnalysisTool.Network
         {
             var value = new GuildVaultInfoEvent(parameters);
             await _guildVaultInfoEventHandler.OnActionAsync(value);
+        }
+
+        private async Task AttachItemContainerEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new AttachItemContainerEvent(parameters);
+            await _attachItemContainerEventHandler.OnActionAsync(value);
         }
 
         #endregion

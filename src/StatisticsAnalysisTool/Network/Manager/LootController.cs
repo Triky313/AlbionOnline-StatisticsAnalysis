@@ -144,8 +144,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                     var loot = new Loot()
                     {
                         LootedBody = discoveredLoot.BodyName,
-                        IsTrash = ItemController.IsTrash(discoveredLoot.ItemId),
-                        ItemIndex = discoveredLoot.ItemId,
+                        IsTrash = ItemController.IsTrash(discoveredLoot.ItemIndex),
+                        ItemIndex = discoveredLoot.ItemIndex,
                         LooterName = discoveredLoot.LooterName,
                         Quantity = discoveredLoot.Quantity
                     };

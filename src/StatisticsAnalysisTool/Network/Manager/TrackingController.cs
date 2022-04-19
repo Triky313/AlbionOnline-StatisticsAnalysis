@@ -101,6 +101,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             StatisticController.SetKillsDeathsValues();
             VaultController.ResetDiscoveredItems();
+            VaultController.ResetVaultContainer();
         }
 
         private bool TryChangeCluster(string index, string mapName)
