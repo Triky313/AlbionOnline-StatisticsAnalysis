@@ -96,7 +96,7 @@
         AuctionGetMyOpenAuctions,
         AuctionGetItemAverageStats,
         AuctionGetItemAverageValue,
-        ContainerOpen,
+        ContainerOpen = 92, // map[0: ObjectId = 405 1:1 2: ObjectGuid = [-46 37 -21 125 -40 -77 125 76 -96 -6 39 120 -46 -21 11 -39] 253:92]
         ContainerClose,
         ContainerManageSubContainer,
         Respawn,

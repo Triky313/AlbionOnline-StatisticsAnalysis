@@ -42,6 +42,8 @@ namespace StatisticsAnalysisTool.Network
         private readonly UpdateFactionStandingEventHandler _updateFactionStandingEventHandler;
         private readonly ReceivedSeasonPointsEventHandler _receivedSeasonPointsEventHandler;
         private readonly MightFavorPointsEventHandler _mightFavorPointsEventHandler;
+        private readonly BaseVaultInfoEventHandler _baseVaultInfoEventHandler;
+        private readonly GuildVaultInfoEventHandler _guildVaultInfoEventHandler;
 
         private readonly UseShrineRequestHandler _useShrineRequestHandler;
 
@@ -80,6 +82,8 @@ namespace StatisticsAnalysisTool.Network
             _updateFactionStandingEventHandler = new UpdateFactionStandingEventHandler(trackingController);
             _receivedSeasonPointsEventHandler = new ReceivedSeasonPointsEventHandler(trackingController);
             _mightFavorPointsEventHandler = new MightFavorPointsEventHandler(trackingController);
+            _baseVaultInfoEventHandler = new BaseVaultInfoEventHandler(trackingController);
+            _guildVaultInfoEventHandler = new GuildVaultInfoEventHandler(trackingController);
 
             _useShrineRequestHandler = new UseShrineRequestHandler(trackingController);
 
@@ -179,6 +183,12 @@ namespace StatisticsAnalysisTool.Network
                         return;
                     case EventCodes.MightFavorPoints:
                         await MightFavorPointsEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.BaseVaultInfo:
+                        await BaseVaultInfoEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.RecoveryVaultPlayerInfo:
+                        await RecoveryVaultPlayerInfoEventHandlerAsync(parameters).ConfigureAwait(true);
                         return;
                 }
             }
@@ -419,6 +429,18 @@ namespace StatisticsAnalysisTool.Network
         {
             var value = new MightFavorPointsEvent(parameters);
             await _mightFavorPointsEventHandler.OnActionAsync(value);
+        }
+
+        private async Task BaseVaultInfoEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new BaseVaultInfoEvent(parameters);
+            await _baseVaultInfoEventHandler.OnActionAsync(value);
+        }
+
+        private async Task RecoveryVaultPlayerInfoEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new GuildVaultInfoEvent(parameters);
+            await _guildVaultInfoEventHandler.OnActionAsync(value);
         }
 
         #endregion
