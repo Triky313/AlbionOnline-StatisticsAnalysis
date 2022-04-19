@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class NewSimpleItemEvent
+    public class NewJournalItemEvent
     {
         public DiscoveredItem Item;
 
@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Events
         private readonly int _itemId;
         private readonly int _quantity;
 
-        public NewSimpleItemEvent(Dictionary<byte, object> parameters)
+        public NewJournalItemEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 

@@ -46,7 +46,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             LootController = new LootController(this, mainWindowViewModel);
             StatisticController = new StatisticController(this, mainWindowViewModel);
             MailController = new MailController(mainWindowViewModel);
-            VaultController = new VaultController(mainWindowViewModel);
+            VaultController = new VaultController(this, mainWindowViewModel);
             CountUpTimer = new CountUpTimer(this, mainWindowViewModel);
         }
 
@@ -100,6 +100,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             StatisticController.SetKillsDeathsValues();
+            VaultController.ResetDiscoveredItems();
         }
 
         private bool TryChangeCluster(string index, string mapName)

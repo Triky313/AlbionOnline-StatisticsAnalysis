@@ -16,7 +16,11 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(BaseVaultInfoEvent value)
         {
-            _trackingController.VaultController.SetCurrentVault(new Vault(value.ObjectId, value.Location, value.VaultGuidList, value.VaultNames, value.IconTags));
+            if (_trackingController.IsTrackingAllowedByMainCharacter())
+            {
+                _trackingController.VaultController.SetCurrentVault(new Vault(value.ObjectId, value.Location, value.VaultGuidList, value.VaultNames, value.IconTags));
+            }
+
             await Task.CompletedTask;
         }
     }

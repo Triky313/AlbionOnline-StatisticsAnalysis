@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class NewSimpleItemEventHandler
+    public class NewLaborerItemEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public NewSimpleItemEventHandler(TrackingController trackingController)
+        public NewLaborerItemEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        public async Task OnActionAsync(NewSimpleItemEvent value)
+        public async Task OnActionAsync(NewLaborerItemEvent value)
         {
             if (_trackingController.IsTrackingAllowedByMainCharacter())
             {

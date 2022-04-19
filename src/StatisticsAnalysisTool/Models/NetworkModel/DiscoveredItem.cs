@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
 {
-    public class DiscoveredLoot
+    public class DiscoveredItem
     {
-        public DiscoveredLoot()
+        public DiscoveredItem()
         {
-            UtcPickupTime = DateTime.UtcNow;
+            UtcDiscoveryTime = DateTime.UtcNow;
         }
 
         public long ObjectId { get; set; }
         public int ItemId { get; set; }
-        public DateTime UtcPickupTime { get; }
+        public DateTime UtcDiscoveryTime { get; }
         public int Quantity { get; set; }
         public string BodyName { get; set; }
         public string LooterName { get; set; }

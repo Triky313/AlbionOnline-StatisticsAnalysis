@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Network.Events
 {
     public class NewEquipmentItemEvent
     {
-        public DiscoveredLoot Loot;
+        public DiscoveredItem Item;
 
         private readonly long? _objectId;
         private readonly int _itemId;
@@ -67,7 +67,7 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (_objectId != null)
                 {
-                    Loot = new DiscoveredLoot()
+                    Item = new DiscoveredItem()
                     {
                         ObjectId = (long)_objectId,
                         ItemId = _itemId,
@@ -77,7 +77,7 @@ namespace StatisticsAnalysisTool.Network.Events
                 }
                 else
                 {
-                    Loot = null;
+                    Item = null;
                 }
             }
             catch (Exception e)
