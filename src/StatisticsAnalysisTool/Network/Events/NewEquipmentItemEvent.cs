@@ -8,12 +8,12 @@ namespace StatisticsAnalysisTool.Network.Events
 {
     public class NewEquipmentItemEvent
     {
-        public DiscoveredLoot Loot;
+        public DiscoveredItem Item;
 
         private readonly long? _objectId;
         private readonly int _itemId;
         private readonly int _quantity;
-        private Dictionary<int, int> _spellDictionary { get; } = new ();
+        private Dictionary<int, int> SpellDictionary { get; } = new ();
 
         public NewEquipmentItemEvent(Dictionary<byte, object> parameters)
         {
@@ -44,7 +44,7 @@ namespace StatisticsAnalysisTool.Network.Events
                         var spells = ((byte[]) parameters[8]).ToDictionary();
                         foreach (var spell in spells)
                         {
-                            _spellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
+                            SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
                         }
                     }
                     else if (valueType.IsArray && typeof(short[]).Name == valueType.Name)
@@ -52,7 +52,7 @@ namespace StatisticsAnalysisTool.Network.Events
                         var spells = ((short[]) parameters[8]).ToDictionary();
                         foreach (var spell in spells)
                         {
-                            _spellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
+                            SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
                         }
                     }
                     else if (valueType.IsArray && typeof(int[]).Name == valueType.Name)
@@ -60,24 +60,24 @@ namespace StatisticsAnalysisTool.Network.Events
                         var spells = ((int[]) parameters[8]).ToDictionary();
                         foreach (var spell in spells)
                         {
-                            _spellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
+                            SpellDictionary.Add(spell.Key, spell.Value.ObjectToInt());
                         }
                     }
                 }
 
                 if (_objectId != null)
                 {
-                    Loot = new DiscoveredLoot()
+                    Item = new DiscoveredItem()
                     {
                         ObjectId = (long)_objectId,
-                        ItemId = _itemId,
+                        ItemIndex = _itemId,
                         Quantity = _quantity,
-                        SpellDictionary = _spellDictionary
+                        SpellDictionary = SpellDictionary
                     };
                 }
                 else
                 {
-                    Loot = null;
+                    Item = null;
                 }
             }
             catch (Exception e)

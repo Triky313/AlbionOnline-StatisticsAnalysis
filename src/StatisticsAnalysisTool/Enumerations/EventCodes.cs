@@ -30,9 +30,9 @@ namespace StatisticsAnalysisTool.Enumerations
         NewCharacter = 26,
         NewEquipmentItem = 27, //  map[0:657 1:2036 2:1 4:28169331 5:Apolo540 6:3 7:90000000 8:[] 9:[0] 252:27] (0: ObjectId, 1: ItemId, 2: Amount, 4: Avarage Market Price, 5: CrafterName)
         NewSimpleItem = 28, //  map[0:505 1:7006 2:1 3:true 4:29033970 252:27] (0: ObjectId, 1: ItemId, 2: Amount)
-        NewFurnitureItem,
-        NewJournalItem,
-        NewLaborerItem,
+        NewFurnitureItem = 29,
+        NewJournalItem = 30,
+        NewLaborerItem = 31,
         NewSimpleHarvestableObject,
         NewSimpleHarvestableObjectList,
         NewHarvestableObject,
@@ -91,7 +91,7 @@ namespace StatisticsAnalysisTool.Enumerations
         RegenerationPlayerComboChanged,
         DurabilityChanged,
         NewLoot,
-        AttachItemContainer, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
+        AttachItemContainer = 88, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
         DetachItemContainer, //  map[0:[-95 72 -77 -75 -70 34 127 73 -114 -96 28 8 75 -107 -106 125] 252:90]
         InvalidateItemContainer,
         LockItemContainer,
@@ -380,8 +380,8 @@ namespace StatisticsAnalysisTool.Enumerations
         UnlockVanityUnlock,
         AvatarUnlocked,
         CustomizationChanged,
-        BaseVaultInfo,
-        GuildVaultInfo,
+        GuildVaultInfo = 385,
+        BaseVaultInfo = 386,
         BankVaultInfo,
         RecoveryVaultPlayerInfo,
         RecoveryVaultGuildInfo,

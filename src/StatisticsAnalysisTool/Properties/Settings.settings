@@ -98,5 +98,8 @@
     <Setting Name="MailsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Mails.json</Value>
     </Setting>
+    <Setting Name="VaultsFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Vaults.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

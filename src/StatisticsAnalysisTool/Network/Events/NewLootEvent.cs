@@ -21,7 +21,7 @@ namespace StatisticsAnalysisTool.Network.Events
                 // 2 = mob id?
                 var bodyName = (string) parameters[3];
 
-                var container = new Container
+                var container = new LootContainer
                 {
                     Id = containerId, Owner = bodyName,
                     Type = BodyName.StartsWith("@MOB") ? ContainerType.Monster : ContainerType.Player

@@ -17,12 +17,15 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(NewEquipmentItemEvent value)
         {
-            //_trackingController.LootController.AddDiscoveredLoot(value.Loot);
+            if (_trackingController.IsTrackingAllowedByMainCharacter())
+            {
+                _trackingController.VaultController.Add(value.Item);
+            }
 
             _trackingController.EntityController.AddEquipmentItem(new EquipmentItemInternal
             {
-                ItemIndex = value.Loot.ItemId,
-                SpellDictionary = value.Loot.SpellDictionary
+                ItemIndex = value.Item.ItemIndex,
+                SpellDictionary = value.Item.SpellDictionary
             });
             await Task.CompletedTask;
         }

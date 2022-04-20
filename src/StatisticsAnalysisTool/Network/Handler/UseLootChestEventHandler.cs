@@ -16,7 +16,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(UseLootChestResponse value)
         {
-            Debug.Print($"Loot: {value.Loot.LooterName}");
+            Debug.Print($"Loot: {value.Item.LooterName}");
             await Task.CompletedTask;
         }
     }

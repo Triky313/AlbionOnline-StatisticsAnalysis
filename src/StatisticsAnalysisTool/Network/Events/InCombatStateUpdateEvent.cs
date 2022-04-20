@@ -1,10 +1,10 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using log4net;
+using StatisticsAnalysisTool.Common;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Events
 {
     public class InCombatStateUpdateEvent
     {

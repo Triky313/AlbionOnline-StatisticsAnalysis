@@ -71,6 +71,7 @@ namespace StatisticsAnalysisTool.Models
         public static string Dungeons => LanguageController.Translation("DUNGEONS");
         public static string PlayerInformation => LanguageController.Translation("PLAYER_INFORMATION");
         public static string MailMonitoring => LanguageController.Translation("MAIL_MONITORING");
+        public static string StorageHistory => LanguageController.Translation("STORAGE_HISTORY");
         public static string Logging => LanguageController.Translation("LOGGING");
         public static string TrackingIsActive => LanguageController.Translation("TRACKING_IS_ACTIVE");
         public static string TrackingIsPartiallyActive => LanguageController.Translation("TRACKING_IS_PARTIALLY_ACTIVE");

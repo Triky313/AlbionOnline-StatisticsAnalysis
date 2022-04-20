@@ -18,6 +18,10 @@ namespace StatisticsAnalysisTool.Network
     public class AlbionPackageParser : PhotonParser
     {
         private readonly NewEquipmentItemEventHandler _newEquipmentItemEventHandler;
+        private readonly NewSimpleItemEventHandler _newSimpleItemEventHandler;
+        private readonly NewFurnitureItemEventHandler _newFurnitureItemEventHandler;
+        private readonly NewJournalItemEventHandler _newJournalItemEventHandler;
+        private readonly NewLaborerItemEventHandler _newLaborerItemEventHandler;
         private readonly OtherGrabbedLootEventHandler _grabbedLootEventHandler;
         private readonly InventoryDeleteItemEventHandler _inventoryDeleteItemEventHandler;
         private readonly InventoryPutItemEventHandler _inventoryPutItemEventHandler;
@@ -42,6 +46,9 @@ namespace StatisticsAnalysisTool.Network
         private readonly UpdateFactionStandingEventHandler _updateFactionStandingEventHandler;
         private readonly ReceivedSeasonPointsEventHandler _receivedSeasonPointsEventHandler;
         private readonly MightFavorPointsEventHandler _mightFavorPointsEventHandler;
+        private readonly BaseVaultInfoEventHandler _baseVaultInfoEventHandler;
+        private readonly GuildVaultInfoEventHandler _guildVaultInfoEventHandler;
+        private readonly AttachItemContainerEventHandler _attachItemContainerEventHandler;
 
         private readonly UseShrineRequestHandler _useShrineRequestHandler;
 
@@ -56,6 +63,10 @@ namespace StatisticsAnalysisTool.Network
         public AlbionPackageParser(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
             _newEquipmentItemEventHandler = new NewEquipmentItemEventHandler(trackingController);
+            _newSimpleItemEventHandler = new NewSimpleItemEventHandler(trackingController);
+            _newFurnitureItemEventHandler = new NewFurnitureItemEventHandler(trackingController);
+            _newJournalItemEventHandler = new NewJournalItemEventHandler(trackingController);
+            _newLaborerItemEventHandler = new NewLaborerItemEventHandler(trackingController);
             _grabbedLootEventHandler = new OtherGrabbedLootEventHandler(trackingController);
             _inventoryDeleteItemEventHandler = new InventoryDeleteItemEventHandler(trackingController);
             _inventoryPutItemEventHandler = new InventoryPutItemEventHandler(trackingController);
@@ -80,6 +91,9 @@ namespace StatisticsAnalysisTool.Network
             _updateFactionStandingEventHandler = new UpdateFactionStandingEventHandler(trackingController);
             _receivedSeasonPointsEventHandler = new ReceivedSeasonPointsEventHandler(trackingController);
             _mightFavorPointsEventHandler = new MightFavorPointsEventHandler(trackingController);
+            _baseVaultInfoEventHandler = new BaseVaultInfoEventHandler(trackingController);
+            _guildVaultInfoEventHandler = new GuildVaultInfoEventHandler(trackingController);
+            _attachItemContainerEventHandler = new AttachItemContainerEventHandler(trackingController);
 
             _useShrineRequestHandler = new UseShrineRequestHandler(trackingController);
 
@@ -107,6 +121,18 @@ namespace StatisticsAnalysisTool.Network
                 {
                     case EventCodes.NewEquipmentItem:
                         await NewEquipmentItemEventHandlerAsync(parameters);
+                        return;
+                    case EventCodes.NewSimpleItem:
+                        await NewSimpleItemEventHandlerAsync(parameters);
+                        return;
+                    case EventCodes.NewFurnitureItem:
+                        await NewFurnitureItemEventHandlerAsync(parameters);
+                        return;
+                    case EventCodes.NewJournalItem:
+                        await NewJournalItemEventHandlerAsync(parameters);
+                        return;
+                    case EventCodes.NewLaborerItem:
+                        await NewLaborerItemEventHandlerAsync(parameters);
                         return;
                     case EventCodes.GrabbedLoot:
                         await GrabbedLootEventHandlerAsync(parameters).ConfigureAwait(true);
@@ -179,6 +205,15 @@ namespace StatisticsAnalysisTool.Network
                         return;
                     case EventCodes.MightFavorPoints:
                         await MightFavorPointsEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.BaseVaultInfo:
+                        await BaseVaultInfoEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.RecoveryVaultPlayerInfo:
+                        await RecoveryVaultPlayerInfoEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.AttachItemContainer:
+                        await AttachItemContainerEventHandlerAsync(parameters).ConfigureAwait(true);
                         return;
                 }
             }
@@ -275,6 +310,30 @@ namespace StatisticsAnalysisTool.Network
         {
             var value = new NewEquipmentItemEvent(parameters);
             await _newEquipmentItemEventHandler.OnActionAsync(value);
+        }
+
+        private async Task NewSimpleItemEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new NewSimpleItemEvent(parameters);
+            await _newSimpleItemEventHandler.OnActionAsync(value);
+        }
+
+        private async Task NewFurnitureItemEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new NewFurnitureItemEvent(parameters);
+            await _newFurnitureItemEventHandler.OnActionAsync(value);
+        }
+
+        private async Task NewJournalItemEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new NewJournalItemEvent(parameters);
+            await _newJournalItemEventHandler.OnActionAsync(value);
+        }
+
+        private async Task NewLaborerItemEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new NewLaborerItemEvent(parameters);
+            await _newLaborerItemEventHandler.OnActionAsync(value);
         }
 
         private async Task GrabbedLootEventHandlerAsync(Dictionary<byte, object> parameters)
@@ -419,6 +478,24 @@ namespace StatisticsAnalysisTool.Network
         {
             var value = new MightFavorPointsEvent(parameters);
             await _mightFavorPointsEventHandler.OnActionAsync(value);
+        }
+
+        private async Task BaseVaultInfoEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new BaseVaultInfoEvent(parameters);
+            await _baseVaultInfoEventHandler.OnActionAsync(value);
+        }
+
+        private async Task RecoveryVaultPlayerInfoEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new GuildVaultInfoEvent(parameters);
+            await _guildVaultInfoEventHandler.OnActionAsync(value);
+        }
+
+        private async Task AttachItemContainerEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new AttachItemContainerEvent(parameters);
+            await _attachItemContainerEventHandler.OnActionAsync(value);
         }
 
         #endregion

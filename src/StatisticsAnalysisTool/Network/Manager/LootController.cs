@@ -21,7 +21,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly MainWindowViewModel _mainWindowViewModel;
 
         private readonly Dictionary<long, Guid> _putLoot = new();
-        private readonly List<DiscoveredLoot> _discoveredLoot = new();
+        private readonly List<DiscoveredItem> _discoveredLoot = new();
         private readonly List<LootLoggerObject> _lootLoggerObjects = new();
         private readonly List<TopLooter> _topLooters = new();
 
@@ -98,14 +98,14 @@ namespace StatisticsAnalysisTool.Network.Manager
             _topLooters.Clear();
         }
 
-        public void AddDiscoveredLoot(DiscoveredLoot loot)
+        public void AddDiscoveredLoot(DiscoveredItem item)
         {
-            if (_discoveredLoot.Exists(x => x.ObjectId == loot.ObjectId))
+            if (_discoveredLoot.Exists(x => x.ObjectId == item.ObjectId))
             {
                 return;
             }
 
-            _discoveredLoot.Add(loot);
+            _discoveredLoot.Add(item);
         }
 
         public async Task AddPutLootAsync(long? objectId, Guid? interactGuid)
@@ -144,8 +144,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                     var loot = new Loot()
                     {
                         LootedBody = discoveredLoot.BodyName,
-                        IsTrash = ItemController.IsTrash(discoveredLoot.ItemId),
-                        ItemIndex = discoveredLoot.ItemId,
+                        IsTrash = ItemController.IsTrash(discoveredLoot.ItemIndex),
+                        ItemIndex = discoveredLoot.ItemIndex,
                         LooterName = discoveredLoot.LooterName,
                         Quantity = discoveredLoot.Quantity
                     };

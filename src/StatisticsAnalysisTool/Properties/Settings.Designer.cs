@@ -367,5 +367,17 @@ namespace StatisticsAnalysisTool.Properties {
                 this["MailsFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Vaults.json")]
+        public string VaultsFileName {
+            get {
+                return ((string)(this["VaultsFileName"]));
+            }
+            set {
+                this["VaultsFileName"] = value;
+            }
+        }
     }
 }

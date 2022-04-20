@@ -4,21 +4,17 @@ using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
-    public class NewSimpleItemEventHandler
+    public class GuildVaultInfoEventHandler
     {
         private readonly TrackingController _trackingController;
 
-        public NewSimpleItemEventHandler(TrackingController trackingController)
+        public GuildVaultInfoEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
         }
 
-        public async Task OnActionAsync(NewSimpleItemEvent value)
+        public async Task OnActionAsync(GuildVaultInfoEvent value)
         {
-            if (_trackingController.IsTrackingAllowedByMainCharacter())
-            {
-                _trackingController.VaultController.Add(value.Item);
-            }
 
             await Task.CompletedTask;
         }

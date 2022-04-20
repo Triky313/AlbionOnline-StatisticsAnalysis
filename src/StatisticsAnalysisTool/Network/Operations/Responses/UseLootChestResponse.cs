@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 {
     public class UseLootChestResponse
     {
-        public DiscoveredLoot Loot;
+        public DiscoveredItem Item;
 
         //private readonly long? _objectId;
         //private readonly string _deadPlayer;
