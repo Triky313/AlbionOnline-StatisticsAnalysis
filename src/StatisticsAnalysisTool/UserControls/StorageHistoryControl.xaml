@@ -9,14 +9,21 @@
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30">
-            <ComboBox Height="26" Width="200" Margin="5,0" ItemsSource="{Binding VaultBindings.Vaults}" 
-                      SelectedValue="{Binding VaultBindings.VaultSelected}" SelectedValuePath="Vault" DisplayMemberPath="LocationName" />
-            <!--<ComboBox Height="26" Width="200" Margin="5,0" ItemsSource="{Binding VaultBindings.VaultContainer}" 
-                      SelectedValue="{Binding VaultBindings.VaultContainerSelected}" SelectedValuePath="Key" DisplayMemberPath="Value" />-->
+            <ComboBox Height="26" Width="200" Margin="5,0" ItemsSource="{Binding VaultBindings.Vaults}" IsSynchronizedWithCurrentItem="True"
+                      SelectedValue="{Binding VaultBindings.VaultSelected}" DisplayMemberPath="LocationName" />
+
+            <ComboBox Height="26" Width="200" Margin="5,0" ItemsSource="{Binding VaultBindings.VaultContainer}" IsSynchronizedWithCurrentItem="True"
+                      SelectedValue="{Binding VaultBindings.VaultContainerSelected}" DisplayMemberPath="Name" />
         </StackPanel>
         <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,30,0,0" VerticalAlignment="Top"/>
         <ScrollViewer  Margin="0,34,0,0" HorizontalScrollBarVisibility="Disabled">
-            <ItemsControl ItemsSource="{Binding VaultBindings.VaultContainerContent, IsAsync=True, Mode=OneWay}" />
+            <ItemsControl Width="410" ItemsSource="{Binding VaultBindings.VaultContainerContent, IsAsync=True, Mode=OneWay}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
         </ScrollViewer>
     </Grid>
 </UserControl>

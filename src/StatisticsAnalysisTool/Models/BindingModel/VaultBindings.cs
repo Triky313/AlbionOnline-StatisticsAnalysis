@@ -2,15 +2,18 @@
 using StatisticsAnalysisTool.Properties;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
 public class VaultBindings : INotifyPropertyChanged
 {
-    private VaultContainerContent _vaultContainerContent;
+    private List<ContainerItem> _vaultContainerContent;
     private List<Vault> _vaults;
     private Vault _vaultSelected;
+    private List<VaultContainer> _vaultContainer;
+    private VaultContainer _vaultContainerSelected;
 
     public List<Vault> Vaults
     {
@@ -28,11 +31,33 @@ public class VaultBindings : INotifyPropertyChanged
         set
         {
             _vaultSelected = value;
+            VaultContainer = _vaultSelected.VaultContainer;
             OnPropertyChanged();
         }
     }
 
-    public VaultContainerContent VaultContainerContent
+    public List<VaultContainer> VaultContainer
+    {
+        get => _vaultContainer;
+        set
+        {
+            _vaultContainer = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public VaultContainer VaultContainerSelected
+    {
+        get => _vaultContainerSelected;
+        set
+        {
+            _vaultContainerSelected = value;
+            VaultContainerContent = _vaultContainer?.FirstOrDefault(x => x.Guid == _vaultContainerSelected.Guid)?.Items ?? new List<ContainerItem>();
+            OnPropertyChanged();
+        }
+    }
+
+    public List<ContainerItem> VaultContainerContent
     {
         get => _vaultContainerContent;
         set

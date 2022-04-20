@@ -1,3 +1,26 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel">
 
+    <DataTemplate DataType="{x:Type models:ContainerItem}">
+        <Grid Height="80" Width="80" Margin="1">
+            <Grid Background="{StaticResource SolidColorBrush.Background.3}">
+                <Image Source="{Binding Item.Icon}" Stretch="Fill" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+                <Border VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Border.Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Quantity}" Value="0">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Viewbox StretchDirection="DownOnly" Stretch="Uniform" Width="16" Height="16" Margin="0,0,12,14">
+                        <TextBlock Text="{Binding Quantity}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </Viewbox>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>

@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
+using StatisticsAnalysisTool.Models.BindingModel;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -175,7 +176,12 @@ public class VaultController
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
-            _mainWindowViewModel.VaultBindings.Vaults = _vaults.ToList();
+            var unknownVaultSelection = new Vault() { Location = "UNKNOWN" };
+            var list = _vaults.ToList();
+            list.Insert(0, unknownVaultSelection);
+
+            _mainWindowViewModel.VaultBindings.Vaults = list;
+            _mainWindowViewModel.VaultBindings.VaultSelected = unknownVaultSelection;
         });
     }
 

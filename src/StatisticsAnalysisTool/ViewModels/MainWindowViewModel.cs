@@ -135,6 +135,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private DateTime _datePickerMailsFrom = new (2017, 1, 1);
         private DateTime _datePickerMailsTo = DateTime.UtcNow.AddDays(1);
         private VaultBindings _vaultBindings = new ();
+        private Vault _vaultSelected;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1890,7 +1891,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public string MailsSearchText
         {
             get => _mailsSearchText;

@@ -1,9 +1,8 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -37,9 +36,9 @@ namespace StatisticsAnalysisTool.Network.Events
                 if (parameters.ContainsKey(3) && parameters[3] != null)
                 {
                     var valueType = parameters[3].GetType();
-                    if (valueType.IsArray && typeof(int[]) == valueType)
+                    if (valueType.IsArray && typeof(short[]) == valueType)
                     {
-                        var intArray = ((int[])parameters[3]).ToDictionary();
+                        var intArray = ((short[])parameters[3]).ToDictionary();
 
                         foreach (var slot in intArray)
                         {
@@ -50,7 +49,7 @@ namespace StatisticsAnalysisTool.Network.Events
                     {
                         var byteArray = ((byte[])parameters[3]).ToDictionary();
 
-                        foreach (var slot in byteArray)
+                        foreach (var unused in byteArray)
                         {
                             _containerSlots.Add(0);
                         }
