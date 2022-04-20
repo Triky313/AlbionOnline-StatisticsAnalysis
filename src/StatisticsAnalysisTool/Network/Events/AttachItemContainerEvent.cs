@@ -36,7 +36,16 @@ namespace StatisticsAnalysisTool.Network.Events
                 if (parameters.ContainsKey(3) && parameters[3] != null)
                 {
                     var valueType = parameters[3].GetType();
-                    if (valueType.IsArray && typeof(short[]) == valueType)
+                    if (valueType.IsArray && typeof(int[]) == valueType)
+                    {
+                        var intArray = ((int[])parameters[3]).ToDictionary();
+
+                        foreach (var slot in intArray)
+                        {
+                            _containerSlots.Add(slot.Value);
+                        }
+                    }
+                    else if (valueType.IsArray && typeof(short[]) == valueType)
                     {
                         var intArray = ((short[])parameters[3]).ToDictionary();
 

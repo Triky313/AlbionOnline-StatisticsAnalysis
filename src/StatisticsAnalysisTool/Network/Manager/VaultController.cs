@@ -7,22 +7,19 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
-using StatisticsAnalysisTool.Models.BindingModel;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
 public class VaultController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
-    private readonly TrackingController _trackingController;
+    
     private readonly MainWindowViewModel _mainWindowViewModel;
     private VaultInfo _currentVaultInfo;
     private readonly List<DiscoveredItem> _discoveredItems = new();
@@ -39,9 +36,8 @@ public class VaultController
         }
     }
 
-    public VaultController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    public VaultController(MainWindowViewModel mainWindowViewModel)
     {
-        _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
 
         OnVaultsChange += UpdateUi;
@@ -53,6 +49,7 @@ public class VaultController
     {
         if (vaultInfo == null || vaultInfo.VaultLocation == VaultLocation.Unknown)
         {
+            _currentVaultInfo = null;
             return;
         }
 
@@ -67,11 +64,6 @@ public class VaultController
         }
 
         _discoveredItems.Add(item);
-    }
-
-    public void ResetDiscoveredItems()
-    {
-        _discoveredItems.Clear();
     }
 
     public void AddContainer(ItemContainerObject newContainerObject)
@@ -95,6 +87,16 @@ public class VaultController
     public void ResetVaultContainer()
     {
         _vaultContainer.Clear();
+    }
+
+    public void ResetDiscoveredItems()
+    {
+        _discoveredItems.Clear();
+    }
+
+    public void ResetCurrentVaultInfo()
+    {
+        _currentVaultInfo = null;
     }
 
     private void ParseVault()
@@ -124,12 +126,15 @@ public class VaultController
                 {
                     Guid = _currentVaultInfo.ContainerGuidList[i],
                     Icon = _currentVaultInfo.ContainerIconTags[i],
-                    Name = _currentVaultInfo.ContainerNames[i]
+                    Name = (_currentVaultInfo.ContainerNames[i] == "@BUILDINGS_T1_BANK") ? LanguageController.Translation("BANK") : _currentVaultInfo.ContainerNames[i]
                 };
 
                 var itemContainer = _vaultContainer.FirstOrDefault(x => x.ContainerGuid == vaultContainer.Guid);
-
-                SetItemsToVaultContainer(itemContainer, vaultContainer, _discoveredItems);
+                if (itemContainer != null)
+                {
+                    vaultContainer.LastUpdate = itemContainer.LastUpdate;
+                    SetItemsToVaultContainer(itemContainer, vaultContainer, _discoveredItems);
+                }
 
                 vault.VaultContainer.Add(vaultContainer);
             }
@@ -186,12 +191,7 @@ public class VaultController
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
-            var unknownVaultSelection = new Vault() { Location = "UNKNOWN" };
-            var list = Vaults.ToList();
-            list.Insert(0, unknownVaultSelection);
-
-            _mainWindowViewModel.VaultBindings.Vaults = list;
-            _mainWindowViewModel.VaultBindings.VaultSelected = unknownVaultSelection;
+            _mainWindowViewModel.VaultBindings.Vaults = Vaults.ToList();
         });
     }
 

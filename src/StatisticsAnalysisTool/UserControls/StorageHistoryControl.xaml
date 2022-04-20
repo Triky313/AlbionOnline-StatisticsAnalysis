@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             xmlns:gl="clr-namespace:System.Globalization;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
@@ -14,6 +15,12 @@
 
             <ComboBox Height="26" Width="200" Margin="5,0" ItemsSource="{Binding VaultBindings.VaultContainer}" IsSynchronizedWithCurrentItem="True"
                       SelectedValue="{Binding VaultBindings.VaultContainerSelected}" DisplayMemberPath="Name" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding VaultBindings.LastUpdateVisibility}">
+                <TextBlock Text="{Binding Translation.LastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" 
+                           Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding VaultBindings.LastUpdate, StringFormat='{}{0} UTC', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=00:00:00}" 
+                           FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
+            </StackPanel>
         </StackPanel>
         <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,30,0,0" VerticalAlignment="Top"/>
         <ScrollViewer  Margin="0,34,0,0" HorizontalScrollBarVisibility="Disabled">

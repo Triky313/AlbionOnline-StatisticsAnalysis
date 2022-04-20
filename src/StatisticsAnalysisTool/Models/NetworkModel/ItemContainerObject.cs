@@ -10,8 +10,11 @@ public class ItemContainerObject
         ObjectId = objectId;
         ContainerGuid = containerGuid;
         SlotItemId = slotItemId;
+
+        LastUpdate = DateTime.UtcNow;
     }
 
+    public DateTime LastUpdate { get; }
     public long? ObjectId { get; set; }
     public Guid ContainerGuid { get; set; }
     public List<int> SlotItemId { get; set; }

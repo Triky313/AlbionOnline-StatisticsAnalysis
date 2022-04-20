@@ -5,6 +5,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel;
 
 public class VaultContainer
 {
+    public DateTime LastUpdate { get; set; }
     public Guid Guid { get; set; }
     public string Name { get; set; }
     public string Icon { get; set; }
