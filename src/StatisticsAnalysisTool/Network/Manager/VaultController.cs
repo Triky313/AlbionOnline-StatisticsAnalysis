@@ -27,7 +27,17 @@ public class VaultController
     private VaultInfo _currentVaultInfo;
     private readonly List<DiscoveredItem> _discoveredItems = new();
     private readonly List<ItemContainerObject> _vaultContainer = new();
-    private ObservableCollection<Vault> _vaults = new();
+    private ObservableCollection<Vault> _vault = new();
+
+    private ObservableCollection<Vault> Vaults
+    {
+        get => _vault;
+        set
+        {
+            _vault = value;
+            OnVaultsChange?.Invoke();
+        }
+    }
 
     public VaultController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
@@ -94,11 +104,11 @@ public class VaultController
             return;
         }
 
-        var removableVaultInfo = _vaults.FirstOrDefault(x => x.Location == _currentVaultInfo.Location);
+        var removableVaultInfo = Vaults.FirstOrDefault(x => x.Location == _currentVaultInfo.Location);
 
         if (removableVaultInfo != null)
         {
-            _vaults.Remove(removableVaultInfo);
+            Vaults.Remove(removableVaultInfo);
         }
 
         var vault = new Vault()
@@ -124,7 +134,7 @@ public class VaultController
                 vault.VaultContainer.Add(vaultContainer);
             }
 
-            _vaults.Add(vault);
+            Vaults.Add(vault);
             OnVaultsChange?.Invoke();
         }
         catch (Exception e)
@@ -177,7 +187,7 @@ public class VaultController
         Application.Current.Dispatcher.Invoke(() =>
         {
             var unknownVaultSelection = new Vault() { Location = "UNKNOWN" };
-            var list = _vaults.ToList();
+            var list = Vaults.ToList();
             list.Insert(0, unknownVaultSelection);
 
             _mainWindowViewModel.VaultBindings.Vaults = list;
@@ -199,19 +209,19 @@ public class VaultController
             {
                 var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
                 var vaults = JsonSerializer.Deserialize<List<Vault>>(localFileString) ?? new List<Vault>();
-                _vaults = new ObservableCollection<Vault>(vaults);
+                Vaults = new ObservableCollection<Vault>(vaults);
                 return;
             }
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                _vaults = new ObservableCollection<Vault>();
+                Vaults = new ObservableCollection<Vault>();
                 return;
             }
         }
 
-        _vaults = new ObservableCollection<Vault>();
+        Vaults = new ObservableCollection<Vault>();
     }
 
     public void SaveInFile()
@@ -220,7 +230,7 @@ public class VaultController
 
         try
         {
-            var fileString = JsonSerializer.Serialize(_vaults);
+            var fileString = JsonSerializer.Serialize(Vaults);
             File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
         }
         catch (Exception e)
