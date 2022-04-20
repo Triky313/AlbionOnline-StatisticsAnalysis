@@ -64,10 +64,10 @@
                 <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding MailType}" Value="MarketplaceSellOrderExpired">
-                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Green.4}" />
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Green.6}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding MailType}" Value="MarketplaceBuyOrderExpired">
-                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
+                <Setter Property="Background" Value="{StaticResource SolidColorBrush.Accent.Red.6}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -83,10 +83,10 @@
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.3}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding MailType}" Value="MarketplaceSellOrderExpired">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.6}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding MailType}" Value="MarketplaceBuyOrderExpired">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.4}" />
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Red.6}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>

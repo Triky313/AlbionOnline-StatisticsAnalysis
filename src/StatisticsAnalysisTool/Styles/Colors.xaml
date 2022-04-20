@@ -31,12 +31,14 @@
     <Color x:Key="Color.Accent.Red.3">#FFFA494C</Color>
     <Color x:Key="Color.Accent.Red.4">#FFE23B3E</Color>
     <Color x:Key="Color.Accent.Red.5">#FFCD3638</Color>
+    <Color x:Key="Color.Accent.Red.6">#FFB52F31</Color>
 
     <Color x:Key="Color.Accent.Green.1">#FF98EDB4</Color>
     <Color x:Key="Color.Accent.Green.2">#FF64E38E</Color>
     <Color x:Key="Color.Accent.Green.3">#FF35DB6C</Color>
     <Color x:Key="Color.Accent.Green.4">#FF22BF57</Color>
     <Color x:Key="Color.Accent.Green.5">#FF188C3F</Color>
+    <Color x:Key="Color.Accent.Green.6">#FF10602B</Color>
 
     <Color x:Key="Color.Accent.Yellow.1">#FFf2b83b</Color>
     <Color x:Key="Color.Accent.Yellow.2">#55f2b83b</Color>
@@ -164,12 +166,14 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.3" Color="{StaticResource Color.Accent.Red.3}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.4" Color="{StaticResource Color.Accent.Red.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.5" Color="{StaticResource Color.Accent.Red.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.6" Color="{StaticResource Color.Accent.Red.6}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.1" Color="{StaticResource Color.Accent.Green.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.2" Color="{StaticResource Color.Accent.Green.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.3" Color="{StaticResource Color.Accent.Green.3}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.4" Color="{StaticResource Color.Accent.Green.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.5" Color="{StaticResource Color.Accent.Green.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.6" Color="{StaticResource Color.Accent.Green.6}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.1" Color="{StaticResource Color.Accent.Yellow.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Yellow.2" Color="{StaticResource Color.Accent.Yellow.2}"/>
