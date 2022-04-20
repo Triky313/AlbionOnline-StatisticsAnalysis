@@ -2,18 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Network.Manager;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
     public class BaseVaultInfoEvent
     {
         public long? ObjectId;
-        public VaultLocation Location;
-        public List<Guid> VaultGuidList = new ();
-        public List<string> VaultNames = new ();
-        public List<string> IconTags = new ();
+        public string Location;
+        public List<Guid> VaultGuidList = new();
+        public List<string> VaultNames = new();
+        public List<string> IconTags = new();
 
         public BaseVaultInfoEvent(Dictionary<byte, object> parameters)
         {
@@ -28,7 +26,7 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (parameters.ContainsKey(1))
                 {
-                    Location = VaultController.GetVaultLocation(parameters[1].ToString());
+                    Location = parameters[1].ToString();
                 }
 
                 if (parameters.ContainsKey(2) && parameters[2] != null)

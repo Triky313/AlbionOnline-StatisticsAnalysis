@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using StatisticsAnalysisTool.Models.BindingModel;
 
 // ReSharper disable UnusedMember.Global
 
@@ -133,6 +134,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _mailsSearchText;
         private DateTime _datePickerMailsFrom = new (2017, 1, 1);
         private DateTime _datePickerMailsTo = DateTime.UtcNow.AddDays(1);
+        private VaultBindings _vaultBindings = new ();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -710,6 +712,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
             TrackingController?.StatisticController?.LoadFromFile();
             TrackingController?.MailController?.LoadFromFile();
+            TrackingController?.VaultController?.LoadFromFile();
 
             TrackingController?.CountUpTimer.Start();
 
@@ -724,6 +727,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.DungeonController?.SaveDungeonsInFile();
             TrackingController?.StatisticController?.SaveInFile();
             TrackingController?.MailController?.SaveInFile();
+            TrackingController?.VaultController?.SaveInFile();
             TrackingController?.UnregisterEvents();
             TrackingController?.CountUpTimer?.Stop();
 
@@ -1873,6 +1877,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _mailStatsObject = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public VaultBindings VaultBindings
+        {
+            get => _vaultBindings;
+            set
+            {
+                _vaultBindings = value;
                 OnPropertyChanged();
             }
         }

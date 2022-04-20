@@ -1,12 +1,19 @@
 ﻿using log4net;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using StatisticsAnalysisTool.Common;
+using System.Text;
+using System.Text.Json;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -17,18 +24,27 @@ public class VaultController
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private VaultInfo _currentVaultInfo;
-    private readonly List<DiscoveredItem> _discoveredItems = new ();
-    private readonly List<ItemContainerObject> _vaultContainer = new ();
-    private readonly List<Vault> _vaults = new ();
+    private readonly List<DiscoveredItem> _discoveredItems = new();
+    private readonly List<ItemContainerObject> _vaultContainer = new();
+    private ObservableCollection<Vault> _vaults = new();
 
     public VaultController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
+
+        OnVaultsChange += UpdateUi;
     }
+
+    public event Action OnVaultsChange;
 
     public void SetCurrentVault(VaultInfo vaultInfo)
     {
+        if (vaultInfo == null || vaultInfo.VaultLocation == VaultLocation.Unknown)
+        {
+            return;
+        }
+
         _currentVaultInfo = vaultInfo;
     }
 
@@ -72,7 +88,7 @@ public class VaultController
 
     private void ParseVault()
     {
-        if (_currentVaultInfo == null)
+        if (_currentVaultInfo == null || GetVaultLocation(_currentVaultInfo?.Location) == VaultLocation.Unknown)
         {
             return;
         }
@@ -108,6 +124,7 @@ public class VaultController
             }
 
             _vaults.Add(vault);
+            OnVaultsChange?.Invoke();
         }
         catch (Exception e)
         {
@@ -125,17 +142,16 @@ public class VaultController
             {
                 vaultContainer.Items.Add(new ContainerItem()
                 {
-                    Item = null,
+                    ItemIndex = 0,
                     Quantity = 0
                 });
 
                 continue;
             }
 
-            var item = ItemController.GetItemByIndex(slotItem.ItemIndex);
             vaultContainer.Items.Add(new ContainerItem()
             {
-                Item = item,
+                ItemIndex = slotItem.ItemIndex,
                 Quantity = slotItem.Quantity
             });
         }
@@ -146,6 +162,69 @@ public class VaultController
         var clusterInfoArray = value.Split("@");
         return clusterInfoArray.ElementAtOrDefault(1) != null ? GetVaultLocationByIndex(clusterInfoArray[1]) : VaultLocation.Unknown;
     }
+
+    public static string GetVaultLocationIndex(string value)
+    {
+        var clusterInfoArray = value.Split("@");
+        return clusterInfoArray.ElementAtOrDefault(1) != null ? clusterInfoArray[1] : "UNKNOWN";
+    }
+
+    #region Ui
+
+    private void UpdateUi()
+    {
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            _mainWindowViewModel.VaultBindings.Vaults = _vaults.ToList();
+        });
+    }
+
+    #endregion
+
+    #region Load / Save local file data
+
+    public void LoadFromFile()
+    {
+        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.VaultsFileName}";
+
+        if (File.Exists(localFilePath))
+        {
+            try
+            {
+                var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
+                var vaults = JsonSerializer.Deserialize<List<Vault>>(localFileString) ?? new List<Vault>();
+                _vaults = new ObservableCollection<Vault>(vaults);
+                return;
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                _vaults = new ObservableCollection<Vault>();
+                return;
+            }
+        }
+
+        _vaults = new ObservableCollection<Vault>();
+    }
+
+    public void SaveInFile()
+    {
+        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.VaultsFileName}";
+
+        try
+        {
+            var fileString = JsonSerializer.Serialize(_vaults);
+            File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+        }
+    }
+
+    #endregion
 
     #region Helper methods
 

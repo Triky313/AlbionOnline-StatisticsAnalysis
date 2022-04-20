@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="StatisticsAnalysisTool.UserControls.StorageHistoryControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
+    <Grid>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30">
+            <ComboBox Height="26" Width="200" Margin="5,0" ItemsSource="{Binding VaultBindings.Vaults}" 
+                      SelectedValue="{Binding VaultBindings.VaultSelected}" SelectedValuePath="Vault" DisplayMemberPath="LocationName" />
+            <!--<ComboBox Height="26" Width="200" Margin="5,0" ItemsSource="{Binding VaultBindings.VaultContainer}" 
+                      SelectedValue="{Binding VaultBindings.VaultContainerSelected}" SelectedValuePath="Key" DisplayMemberPath="Value" />-->
+        </StackPanel>
+        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,30,0,0" VerticalAlignment="Top"/>
+        <ScrollViewer  Margin="0,34,0,0" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{Binding VaultBindings.VaultContainerContent, IsAsync=True, Mode=OneWay}" />
+        </ScrollViewer>
+    </Grid>
+</UserControl>

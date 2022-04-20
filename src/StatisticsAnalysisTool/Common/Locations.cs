@@ -1,11 +1,10 @@
-using System;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -13,40 +12,40 @@ namespace StatisticsAnalysisTool.Common
     {
         public static readonly Dictionary<Location, string> Names = new()
         {
-            {Location.Thetford, "Thetford"},
-            {Location.SwampCross, "Swamp Cross"},
-            {Location.Lymhurst, "Lymhurst"},
-            {Location.ForestCross, "Forest Cross"},
-            {Location.Bridgewatch, "Bridgewatch"},
-            {Location.SteppeCross, "Steppe Cross"},
-            {Location.HighlandCross, "Highland Cross"},
-            {Location.BlackMarket, "Black Market"},
-            {Location.Martlock, "Martlock"},
-            {Location.Caerleon, "Caerleon"},
-            {Location.FortSterling, "Fort Sterling"},
-            {Location.MountainCross, "Mountain Cross"},
-            {Location.ArthursRest, "Arthur's Rest"},
-            {Location.MerlynsRest, "Merlyn's Rest"},
-            {Location.MorganasRest, "Morgana's Rest"}
+            { Location.Thetford, "Thetford" },
+            { Location.SwampCross, "Swamp Cross" },
+            { Location.Lymhurst, "Lymhurst" },
+            { Location.ForestCross, "Forest Cross" },
+            { Location.Bridgewatch, "Bridgewatch" },
+            { Location.SteppeCross, "Steppe Cross" },
+            { Location.HighlandCross, "Highland Cross" },
+            { Location.BlackMarket, "Black Market" },
+            { Location.Martlock, "Martlock" },
+            { Location.Caerleon, "Caerleon" },
+            { Location.FortSterling, "Fort Sterling" },
+            { Location.MountainCross, "Mountain Cross" },
+            { Location.ArthursRest, "Arthur's Rest" },
+            { Location.MerlynsRest, "Merlyn's Rest" },
+            { Location.MorganasRest, "Morgana's Rest" }
         };
 
         public static readonly Dictionary<Location, string> ParameterNames = new()
         {
-            {Location.Thetford, "Thetford"},
-            {Location.SwampCross, "Swamp Cross"},
-            {Location.Lymhurst, "Lymhurst"},
-            {Location.ForestCross, "Forest Cross"},
-            {Location.Bridgewatch, "Bridgewatch"},
-            {Location.SteppeCross, "Steppe Cross"},
-            {Location.HighlandCross, "Highland Cross"},
-            {Location.BlackMarket, "Black Market"},
-            {Location.Martlock, "Martlock"},
-            {Location.Caerleon, "Caerleon"},
-            {Location.FortSterling, "Fort Sterling"},
-            {Location.MountainCross, "Mountain Cross"},
-            {Location.ArthursRest, "Arthurs Rest"},
-            {Location.MerlynsRest, "Merlyns Rest"},
-            {Location.MorganasRest, "Morganas Rest"}
+            { Location.Thetford, "Thetford" },
+            { Location.SwampCross, "Swamp Cross" },
+            { Location.Lymhurst, "Lymhurst" },
+            { Location.ForestCross, "Forest Cross" },
+            { Location.Bridgewatch, "Bridgewatch" },
+            { Location.SteppeCross, "Steppe Cross" },
+            { Location.HighlandCross, "Highland Cross" },
+            { Location.BlackMarket, "Black Market" },
+            { Location.Martlock, "Martlock" },
+            { Location.Caerleon, "Caerleon" },
+            { Location.FortSterling, "Fort Sterling" },
+            { Location.MountainCross, "Mountain Cross" },
+            { Location.ArthursRest, "Arthurs Rest" },
+            { Location.MerlynsRest, "Merlyns Rest" },
+            { Location.MorganasRest, "Morganas Rest" }
         };
 
         public static string GetName(Location location)
