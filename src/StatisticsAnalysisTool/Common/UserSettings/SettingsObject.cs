@@ -1,4 +1,6 @@
-﻿namespace StatisticsAnalysisTool.Common.UserSettings
+﻿using System.Windows;
+
+namespace StatisticsAnalysisTool.Common.UserSettings
 {
     public class SettingsObject
     {
@@ -38,5 +40,6 @@
         public bool IsSuggestPreReleaseUpdatesActive { get; set; }
         public bool IsLootFromMobShown { get; set; }
         public bool IsItemRealNameInLoggingExportActive { get; set; }
+        public double GridSplitterPosition { get; set; } = 125;
     }
 }

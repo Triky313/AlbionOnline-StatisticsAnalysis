@@ -135,7 +135,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private DateTime _datePickerMailsFrom = new (2017, 1, 1);
         private DateTime _datePickerMailsTo = DateTime.UtcNow.AddDays(1);
         private VaultBindings _vaultBindings = new ();
-        private Vault _vaultSelected;
+        private GridLength _gridSplitterPosition = GridLength.Auto;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -192,6 +192,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             IsTrackingResetByMapChangeActive = SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive;
 
+            // Damage meter
             var sortByDamageStruct = new DamageMeterSortStruct
             {
                 Name = MainWindowTranslation.SortByDamage,
@@ -225,7 +226,10 @@ namespace StatisticsAnalysisTool.ViewModels
             DamageMeterSort.Add(sortByHealStruct);
             DamageMeterSort.Add(sortByHpsStruct);
             DamageMeterSortSelection = sortByDamageStruct;
-            
+
+            // Mail Monitoring
+            GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GridSplitterPosition);
+
             #endregion
         }
 
@@ -271,7 +275,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SelectedItemTier = ItemTier.Unknown;
         }
 
-        #endregion Item list (Normal Mode)
+        #endregion Item list
 
         #region Error bar
 
@@ -1868,6 +1872,17 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _mails = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public GridLength GridSplitterPosition
+        {
+            get => _gridSplitterPosition;
+            set
+            {
+                _gridSplitterPosition = value;
+                SettingsController.CurrentSettings.GridSplitterPosition = _gridSplitterPosition.Value;
                 OnPropertyChanged();
             }
         }

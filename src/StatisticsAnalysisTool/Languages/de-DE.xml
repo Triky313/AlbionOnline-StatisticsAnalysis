@@ -562,4 +562,14 @@
 	<translation name="TO">bis</translation>
 	<translation name="STORAGE_HISTORY">Lager Historie</translation>
 	<translation name="BANK">Bank</translation>
+	<translation name="SOLD_THIS_WEEK">Verkauft diese Woche</translation>
+	<translation name="SOLD_LAST_WEEK">Verkauft letzte Woche</translation>
+	<translation name="BOUGHT_THIS_WEEK">Gekauft diese Woche</translation>
+	<translation name="BOUGHT_LAST_WEEK">Gekauft letzte Woche</translation>
+	<translation name="NET_PROFIT_TODAY">Reingewinn heute</translation>
+	<translation name="NET_PROFIT_MONTH">Reingewinn Monat</translation>
+	<translation name="NET_PROFIT_YEAR">Reingewinn Jahr</translation>
+	<translation name="NET_PROFIT_TOTAL">Reingewinn gesamt</translation>
+	<translation name="NET_PROFIT_THIS_WEEK">Reingewinn diese Woche</translation>
+	<translation name="NET_PROFIT_LAST_WEEK">Reingewinn letzte Woche</translation>
 </translations>

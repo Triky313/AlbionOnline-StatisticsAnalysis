@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Common
         {
             return (value) ? LanguageController.Translation("YES") : LanguageController.Translation("NO");
         }
-        
+
         public static void OrderByReference<T>(this ObservableCollection<T> collection, List<T> comparison)
         {
             for (var i = 0; i < comparison.Count; i++)
@@ -32,7 +32,7 @@ namespace StatisticsAnalysisTool.Common
                 .Select((v, i) => new { Key = i, Value = v })
                 .ToDictionary(o => o.Key, o => o.Value);
         }
-        
+
         public static string ToTimerString(this TimeSpan span)
         {
             return $"{span.Hours:00}:{span.Minutes:00}:{span.Seconds:00}";
@@ -216,6 +216,15 @@ namespace StatisticsAnalysisTool.Common
         {
             var totalHeal = playerObjects.Sum(x => x.Value.Heal);
             return 100.00 / totalHeal * playerHeal;
+        }
+
+        #endregion
+
+        #region DateTime
+
+        public static bool IsDateInWeekOfYear(this DateTime date1, DateTime date2)
+        {
+            return ISOWeek.GetWeekOfYear(date1) == ISOWeek.GetWeekOfYear(date2);
         }
 
         #endregion
