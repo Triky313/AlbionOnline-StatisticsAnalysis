@@ -567,4 +567,6 @@
 	<translation name="SELL_EXPIRED">Неудачная продажа</translation>
 	<translation name="BUY_EXPIRED">Неудачная покупка</translation>
 	<translation name="TO">от / до</translation>
+	<translation name="STORAGE_HISTORY">Хранилища</translation>
+	<translation name="BANK">Банк</translation>
 </translations>
