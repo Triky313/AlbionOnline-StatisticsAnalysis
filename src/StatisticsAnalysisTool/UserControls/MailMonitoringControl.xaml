@@ -37,7 +37,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="5"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="{Binding GridSplitterPosition ,Mode=TwoWay, FallbackValue=*}"/>
             </Grid.RowDefinitions>
 
             <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
