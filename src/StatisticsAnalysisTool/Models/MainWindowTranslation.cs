@@ -95,18 +95,6 @@ namespace StatisticsAnalysisTool.Models
         public static string AverageItemPowerOfTheKilledEnemies => LanguageController.Translation("AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES");
         public static string AverageItemPowerWhenDying => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_DYING");
         public static string DeleteSelectedMails => LanguageController.Translation("DELETE_SELECTED_MAILS");
-        public static string SoldToday => LanguageController.Translation("SOLD_TODAY");
-        public static string SoldMonth => LanguageController.Translation("SOLD_MONTH");
-        public static string SoldYear => LanguageController.Translation("SOLD_YEAR");
-        public static string BoughtToday => LanguageController.Translation("BOUGHT_TODAY");
-        public static string BoughtMonth => LanguageController.Translation("BOUGHT_MONTH");
-        public static string BoughtYear => LanguageController.Translation("BOUGHT_YEAR");
-        public static string SoldTotal => LanguageController.Translation("SOLD_TOTAL");
-        public static string BoughtTotal => LanguageController.Translation("BOUGHT_TOTAL");
-        public static string SalesToday => LanguageController.Translation("SALES_TODAY");
-        public static string SalesMonth => LanguageController.Translation("SALES_MONTH");
-        public static string SalesYear => LanguageController.Translation("SALES_YEAR");
-        public static string SalesTotal => LanguageController.Translation("SALES_TOTAL");
         public static string MailMonitoringDescription1 => LanguageController.Translation("MAIL_MONITORING_DESCRIPTION1");
         public static string To => LanguageController.Translation("TO");
     }

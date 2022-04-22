@@ -105,6 +105,149 @@
         <Setter Property="Height" Value="16" />
     </Style>
 
+    <DataTemplate x:Key="MailStatsObjectTemplate"  DataType="{x:Type models:MailStatsObject}">
+        <Grid>
+            <ScrollViewer>
+                <Grid HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Margin="5,0,5,0">
+                            <TextBlock Text="{Binding TranslationSoldToday, FallbackValue=SOLD_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SoldToday, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationSoldThisWeek, FallbackValue=SOLD_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SoldThisWeek, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationSoldLastWeek, FallbackValue=SOLD_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SoldLastWeek, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationSoldMonth, FallbackValue=SOLD_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SoldMonth, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationSoldYear, FallbackValue=SOLD_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                       Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SoldYear, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationSoldTotal, FallbackValue=SOLD_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SoldTotal, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Green.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,0,5,0">
+                            <TextBlock Text="{Binding TranslationBoughtToday, FallbackValue=BOUGHT_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding BoughtToday, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationBoughtThisWeek, FallbackValue=BOUGHT_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding BoughtThisWeek, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationBoughtLastWeek, FallbackValue=BOUGHT_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding BoughtLastWeek, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationBoughtMonth, FallbackValue=BOUGHT_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding BoughtMonth, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationBoughtYear, FallbackValue=BOUGHT_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding BoughtYear, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationBoughtTotal, FallbackValue=BOUGHT_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding BoughtTotal, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                       FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,0,5,0">
+                            <TextBlock Text="{Binding TranslationNetProfitToday, FallbackValue=NET_PROFIT_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SalesToday, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationNetProfitThisWeek, FallbackValue=NET_PROFIT_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SalesThisWeek, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationNetProfitLastWeek, FallbackValue=NET_PROFIT_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SalesLastWeek, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationNetProfitMonth, FallbackValue=NET_PROFIT_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SalesMonth, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationNetProfitYear, FallbackValue=NET_PROFIT_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SalesYear, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationNetProfitTotal, FallbackValue=NET_PROFIT_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding SalesTotal, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                       FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type models:Mail}">
         <Grid Height="50" Margin="0,0,0,0">
             <Grid Style="{StaticResource Mail.Type.Colors}" />
