@@ -6,14 +6,21 @@ namespace StatisticsAnalysisTool.Models
 {
     public class ClusterInfo
     {
+        // Change cluster data
         public DateTime Entered { get; set; }
-        public string Index { get; set; }
-        public string MainClusterIndex { get; set; }
+        public MapType MapType { get; set; } = MapType.Unknown;
         public Guid? Guid { get; set; }
+        public string Index { get; set; }
+        public string IslandName { get; set; }
+        public string WorldMapDataType { get; set; }
+        public byte[] DungeonInformation { get; set; }
+
+        // Join data
+        public string MainClusterIndex { get; set; }
         public string UniqueName { get; set; }
         public string Type { get; set; }
         public string File { get; set; }
-        public MapType MapType { get; set; } = MapType.Unknown;
+
         public ClusterType ClusterType => WorldData.GetClusterType(Type);
         public bool IsAvalonClusterTunnel => WorldData.IsAvalonClusterTunnel(Type);
         public AvalonTunnelType AvalonTunnelType => WorldData.GetTunnelType(Type);

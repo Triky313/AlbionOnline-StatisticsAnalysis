@@ -710,7 +710,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            TrackingController?.RegisterEvents();
+            TrackingController?.ClusterController.RegisterEvents();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
             TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
@@ -733,7 +733,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.StatisticController?.SaveInFile();
             TrackingController?.MailController?.SaveInFile();
             TrackingController?.VaultController?.SaveInFile();
-            TrackingController?.UnregisterEvents();
+            TrackingController?.ClusterController.UnregisterEvents();
             TrackingController?.CountUpTimer?.Stop();
 
             NetworkManager.StopNetworkCapture();

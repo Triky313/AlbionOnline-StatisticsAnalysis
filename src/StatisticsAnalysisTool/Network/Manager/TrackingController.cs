@@ -1,34 +1,29 @@
 using log4net;
-using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
     public class TrackingController : ITrackingController
     {
         private const int MaxNotifications = 4000;
-        private const int MaxEnteredCluster = 500;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private string _lastClusterHash;
         public CountUpTimer CountUpTimer;
         public CombatController CombatController;
         public DungeonController DungeonController;
+        public ClusterController ClusterController;
         public EntityController EntityController;
         public LootController LootController;
         public StatisticController StatisticController;
@@ -40,6 +35,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
+            ClusterController = new ClusterController(this, mainWindowViewModel);
             EntityController = new EntityController(this, mainWindowViewModel);
             DungeonController = new DungeonController(this, mainWindowViewModel);
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
@@ -50,97 +46,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             CountUpTimer = new CountUpTimer(this, mainWindowViewModel);
         }
 
-        public ClusterInfo CurrentCluster { get; private set; }
-
-        #region Trigger events
-
-        public void RegisterEvents()
-        {
-            OnChangeCluster += UpdateClusterTracking;
-        }
-
-        public void UnregisterEvents()
-        {
-            OnChangeCluster -= UpdateClusterTracking;
-        }
-
-        public event Action<ClusterInfo> OnChangeCluster;
-
-        #endregion
-
-        public bool ExistIndispensableInfos => CurrentCluster != null && EntityController.ExistLocalEntity();
-
-        #region Cluster
-
-        public void SetNewCluster(MapType mapType, Guid? mapGuid, string clusterIndex, string mainClusterIndex)
-        {
-            CurrentCluster = WorldData.GetClusterInfoByIndex(clusterIndex, mainClusterIndex, mapType, mapGuid);
-            CurrentCluster.Entered = DateTime.UtcNow;
-
-            if (!TryChangeCluster(CurrentCluster.Index, CurrentCluster.UniqueName))
-            {
-                return;
-            }
-
-            if (_mainWindowViewModel.IsDamageMeterResetByMapChangeActive)
-            {
-                CombatController.ResetDamageMeter();
-            }
-
-            CombatController.LastPlayersHealth.Clear();
-
-            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
-                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'",
-                ConsoleManager.EventMapChangeColor);
-
-            if (IsTrackingAllowedByMainCharacter())
-            {
-                OnChangeCluster?.Invoke(CurrentCluster);
-            }
-
-            StatisticController.SetKillsDeathsValues();
-            VaultController.ResetDiscoveredItems();
-            VaultController.ResetVaultContainer();
-            VaultController.ResetCurrentVaultInfo();
-        }
-
-        private bool TryChangeCluster(string index, string mapName)
-        {
-            var newClusterHash = index + mapName;
-
-            if (_lastClusterHash == newClusterHash)
-            {
-                return false;
-            }
-
-            _lastClusterHash = newClusterHash;
-            return true;
-        }
-
-        private async void UpdateClusterTracking(ClusterInfo currentCluster)
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                _mainWindowViewModel.EnteredCluster.Insert(0, currentCluster);
-                RemovesClusterIfMoreThanLimit();
-            });
-        }
-
-        private void RemovesClusterIfMoreThanLimit()
-        {
-            foreach (var cluster in _mainWindowViewModel.EnteredCluster.OrderBy(x => x.Entered))
-            {
-                if (_mainWindowViewModel.EnteredCluster?.Count <= MaxEnteredCluster)
-                {
-                    break;
-                }
-
-                _ = _mainWindowViewModel.EnteredCluster.Remove(cluster);
-            }
-        }
-
-        #endregion
+        public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();
 
         #region Tracking Controller Helper
 
@@ -163,7 +69,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             item.SetType();
 
-            if (!IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Fame || !IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Silver 
+            if (!IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Fame || !IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Silver
                 || !IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Faction)
             {
                 return;
@@ -344,7 +250,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         #endregion
 
         #region Specific character name tracking
-        
+
         public bool IsTrackingAllowedByMainCharacter()
         {
             var localEntity = EntityController.GetLocalEntity();
@@ -366,7 +272,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             return true;
         }
-        
+
         #endregion
     }
 }

@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -238,6 +239,17 @@ namespace StatisticsAnalysisTool.Network.Manager
                     }
                 }
             });
+        }
+
+        public void ResetDamageMeterByClusterChange()
+        {
+            if (!_mainWindowViewModel.IsDamageMeterResetByMapChangeActive)
+            {
+                return;
+            }
+
+            _trackingController.CombatController.ResetDamageMeter();
+            _trackingController.CombatController.LastPlayersHealth.Clear();
         }
 
         public void ResetDamageMeter()

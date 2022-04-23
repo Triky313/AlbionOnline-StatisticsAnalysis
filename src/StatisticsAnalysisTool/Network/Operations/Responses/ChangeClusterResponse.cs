@@ -2,7 +2,9 @@
 using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses
 {
@@ -10,11 +12,12 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-        public string ClusterMap;
-
-        public string ClusterOwner;
-
         public string Index;
+        public Guid? Guid;
+        public MapType MapType;
+        public string WorldMapDataType;
+        public string IslandName;
+        public byte[] DungeonInformation;
 
         public ChangeClusterResponse(Dictionary<byte, object> parameters)
         {
@@ -24,17 +27,33 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
             {
                 if (parameters.ContainsKey(0))
                 {
-                    Index = string.IsNullOrEmpty(parameters[0].ToString()) ? string.Empty : parameters[0].ToString();
+                    var clusterString = string.IsNullOrEmpty(parameters[0].ToString()) ? string.Empty : parameters[0].ToString();
+                    var splitName = clusterString?.Split(new[] { "@" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (splitName?.Length > 1 && clusterString.ToLower().Contains('@'))
+                    {
+                        Guid = WorldData.GetDungeonGuid(clusterString);
+                        MapType = WorldData.GetMapType(clusterString);
+                    }
+                    else
+                    {
+                        Index = clusterString;
+                    }
                 }
 
-                if (parameters.ContainsKey(253))
+                if (parameters.ContainsKey(1))
                 {
-                    ClusterOwner = string.IsNullOrEmpty(parameters[253].ToString()) ? string.Empty : parameters[253].ToString();
+                    WorldMapDataType = string.IsNullOrEmpty(parameters[1].ToString()) ? string.Empty : parameters[1].ToString();
                 }
 
-                if (parameters.ContainsKey(255))
+                if (parameters.ContainsKey(2))
                 {
-                    ClusterMap = string.IsNullOrEmpty(parameters[255].ToString()) ? string.Empty : parameters[255].ToString();
+                    IslandName = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();
+                }
+
+                if (parameters.ContainsKey(3))
+                {
+                    DungeonInformation = ((byte[])parameters[3]).ToArray();
                 }
             }
             catch (Exception e)
