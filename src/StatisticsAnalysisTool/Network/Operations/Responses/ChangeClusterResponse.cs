@@ -32,7 +32,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
                     if (splitName?.Length > 1 && clusterString.ToLower().Contains('@'))
                     {
-                        Guid = WorldData.GetDungeonGuid(clusterString);
+                        Guid = WorldData.GetMapGuid(clusterString);
                         MapType = WorldData.GetMapType(clusterString);
                     }
                     else

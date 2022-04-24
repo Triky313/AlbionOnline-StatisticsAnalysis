@@ -1,10 +1,8 @@
 using log4net;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -13,13 +11,12 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.GameData
 {
     public static class WorldData
     {
-        public static ObservableCollection<ClusterInfo> MapData;
+        public static ObservableCollection<WorldJsonObject> MapData;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         public static string GetUniqueNameOrDefault(string index)
@@ -35,7 +32,7 @@ namespace StatisticsAnalysisTool.GameData
             return name;
         }
 
-        public static Guid? GetDungeonGuid(string index)
+        public static Guid? GetMapGuid(string index)
         {
             try
             {
@@ -58,7 +55,7 @@ namespace StatisticsAnalysisTool.GameData
 
             return null;
         }
-
+        
         public static string GetMapNameByMapType(MapType mapType)
         {
             return mapType switch
@@ -130,8 +127,14 @@ namespace StatisticsAnalysisTool.GameData
             return MapData?.Count > 0;
         }
 
-        public static string GetTypeByIndex(string index)
+        public static string GetWorldJsonTypeByIndex(string index)
         {
+            var splitName = index.Split(new[] { "@" }, StringSplitOptions.RemoveEmptyEntries);
+            if (index.ToLower().Contains('@') && splitName.Length > 0 && !string.IsNullOrEmpty(splitName[0]))
+            {
+                return splitName[0];
+            }
+
             return MapData?.FirstOrDefault(x => x.Index == index)?.Type;
         }
 
@@ -140,145 +143,7 @@ namespace StatisticsAnalysisTool.GameData
             return MapData?.FirstOrDefault(x => x.Index == index)?.File;
         }
 
-        public static Tier GetTier(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return Tier.Unknown;
-            }
-
-            if (value.Contains("_T1_"))
-            {
-                return Tier.T1;
-            }
-
-            if (value.Contains("_T2_"))
-            {
-                return Tier.T2;
-            }
-
-            if (value.Contains("_T3_"))
-            {
-                return Tier.T3;
-            }
-
-            if (value.Contains("_T4_"))
-            {
-                return Tier.T4;
-            }
-
-            if (value.Contains("_T5_"))
-            {
-                return Tier.T5;
-            }
-
-            if (value.Contains("_T6_"))
-            {
-                return Tier.T6;
-            }
-
-            if (value.Contains("_T7_"))
-            {
-                return Tier.T7;
-            }
-
-            if (value.Contains("_T8_"))
-            {
-                return Tier.T8;
-            }
-
-            return Tier.Unknown;
-        }
-
-        public static ClusterType GetClusterType(string type)
-        {
-            if (string.IsNullOrEmpty(type))
-            {
-                return ClusterType.Unknown;
-            }
-
-            if (IsAvalonClusterTunnel(type))
-            {
-                return ClusterType.AvalonTunnel;
-            }
-
-            if (type.ToUpper().Contains("SAFEAREA"))
-            {
-                return ClusterType.SafeArea;
-            }
-
-            if (type.ToUpper().Contains("ISLAND"))
-            {
-                return ClusterType.SafeArea;
-            }
-
-            if (type.ToUpper().Contains("YELLOW"))
-            {
-                return ClusterType.Yellow;
-            }
-
-            if (type.ToUpper().Contains("RED"))
-            {
-                return ClusterType.Red;
-            }
-
-            if (type.ToUpper().Contains("BLACK"))
-            {
-                return ClusterType.Black;
-            }
-
-            return ClusterType.Unknown;
-        }
-
-        public static AvalonTunnelType GetTunnelType(string type)
-        {
-            if (string.IsNullOrEmpty(type))
-            {
-                return AvalonTunnelType.Unknown;
-            }
-
-            if (type.ToUpper().Contains("TUNNEL_BLACK_LOW")) return AvalonTunnelType.TunnelBlackLow;
-
-            if (type.ToUpper().Contains("TUNNEL_BLACK_MEDIUM")) return AvalonTunnelType.TunnelBlackMedium;
-
-            if (type.ToUpper().Contains("TUNNEL_BLACK_HIGH")) return AvalonTunnelType.TunnelBlackHigh;
-
-            if (type.ToUpper().Contains("TUNNEL_LOW")) return AvalonTunnelType.TunnelLow;
-
-            if (type.ToUpper().Contains("TUNNEL_MEDIUM")) return AvalonTunnelType.TunnelMedium;
-
-            if (type.ToUpper().Contains("TUNNEL_HIGH")) return AvalonTunnelType.TunnelHigh;
-
-            if (type.ToUpper().Contains("TUNNEL_DEEP")) return AvalonTunnelType.TunnelDeep;
-
-            if (type.ToUpper().Contains("TUNNEL_ROYAL")) return AvalonTunnelType.TunnelRoyal;
-
-            if (type.ToUpper().Contains("TUNNEL_HIDEOUT")) return AvalonTunnelType.TunnelHideout;
-
-            return AvalonTunnelType.Unknown;
-        }
-
-        public static bool IsAvalonClusterTunnel(string type)
-        {
-            if(string.IsNullOrEmpty(type))
-            {
-                return false;
-            }
-
-            return type.ToUpper().Contains("TUNNEL_BLACK_LOW")
-                   || type.ToUpper().Contains("TUNNEL_BLACK_MEDIUM")
-                   || type.ToUpper().Contains("TUNNEL_BLACK_HIGH")
-                   || type.ToUpper().Contains("TUNNEL_LOW")
-                   || type.ToUpper().Contains("TUNNEL_MEDIUM")
-                   || type.ToUpper().Contains("TUNNEL_HIGH")
-                   || type.ToUpper().Contains("TUNNEL_DEEP")
-                   || type.ToUpper().Contains("TUNNEL_ROYAL")
-                   || type.ToUpper().Contains("TUNNEL_HIDEOUT");
-        }
-
-        #region Helper methods
-
-        private static ObservableCollection<ClusterInfo> GetWorldDataFromLocal()
+        private static ObservableCollection<WorldJsonObject> GetWorldDataFromLocal()
         {
             try
             {
@@ -288,34 +153,14 @@ namespace StatisticsAnalysisTool.GameData
                 };
 
                 var localItemString = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GameFilesDirectoryName, Settings.Default.WorldDataFileName), Encoding.UTF8);
-                return ConvertItemJsonObjectToMapData(JsonSerializer.Deserialize<ObservableCollection<WorldJsonObject>>(localItemString, options));
+                return JsonSerializer.Deserialize<ObservableCollection<WorldJsonObject>>(localItemString, options);
             }
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                return new ObservableCollection<ClusterInfo>();
+                return new ObservableCollection<WorldJsonObject>();
             }
-        }
-
-        private static ObservableCollection<ClusterInfo> ConvertItemJsonObjectToMapData(IEnumerable<WorldJsonObject> worldJsonObject)
-        {
-            var result = worldJsonObject.Select(item => new ClusterInfo
-            {
-                Index = item.Index,
-                UniqueName = item.UniqueName,
-                Type = item.Type,
-                File = item.File
-            }).ToList();
-
-            var resultReturn = new ObservableRangeCollection<ClusterInfo>();
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                resultReturn.AddRange(result);
-            });
-
-            return resultReturn;
         }
 
         private static async Task<bool> GetWorldListFromWebAsync(string url)
@@ -347,8 +192,6 @@ namespace StatisticsAnalysisTool.GameData
                 return false;
             }
         }
-
-        #endregion
     }
 
     public enum MapType

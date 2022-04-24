@@ -41,15 +41,6 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public event Action<ClusterInfo> OnChangeCluster;
 
-        public void SetAndResetValues(ClusterInfo currentCluster)
-        {
-            _trackingController.CombatController.ResetDamageMeterByClusterChange();
-            _trackingController.StatisticController.SetKillsDeathsValues();
-            _trackingController.VaultController.ResetDiscoveredItems();
-            _trackingController.VaultController.ResetVaultContainer();
-            _trackingController.VaultController.ResetCurrentVaultInfo();
-        }
-
         public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string islandName, string worldMapDataType, byte[] dungeonInformation)
         {
             CurrentCluster.ClusterInfoFullyAvailable = false;
@@ -62,14 +53,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             CurrentCluster.DungeonInformation = dungeonInformation;
 
             CurrentCluster.MainClusterIndex = null;
-            CurrentCluster.UniqueName = null;
-            CurrentCluster.Type = null;
+            CurrentCluster.WorldJsonType = null;
             CurrentCluster.File = null;
-
-            if (_trackingController.IsTrackingAllowedByMainCharacter())
-            {
-                OnChangeCluster?.Invoke(CurrentCluster);
-            }
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
             ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
@@ -80,11 +65,24 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void SetJoinClusterInformation(string index, string mainClusterIndex)
         {
             CurrentCluster.MainClusterIndex = mainClusterIndex;
-            CurrentCluster.UniqueName = WorldData.GetUniqueNameOrDefault(index);
-            CurrentCluster.Type = WorldData.GetTypeByIndex(index) ?? WorldData.GetTypeByIndex(mainClusterIndex) ?? string.Empty;
+            CurrentCluster.WorldJsonType = WorldData.GetWorldJsonTypeByIndex(index) ?? WorldData.GetWorldJsonTypeByIndex(mainClusterIndex) ?? string.Empty;
             CurrentCluster.File = WorldData.GetFileByIndex(index) ?? WorldData.GetFileByIndex(mainClusterIndex) ?? string.Empty;
 
             CurrentCluster.ClusterInfoFullyAvailable = true;
+
+            if (_trackingController.IsTrackingAllowedByMainCharacter())
+            {
+                OnChangeCluster?.Invoke(CurrentCluster);
+            }
+        }
+
+        public void SetAndResetValues(ClusterInfo currentCluster)
+        {
+            _trackingController.CombatController.ResetDamageMeterByClusterChange();
+            _trackingController.StatisticController.SetKillsDeathsValues();
+            _trackingController.VaultController.ResetDiscoveredItems();
+            _trackingController.VaultController.ResetVaultContainer();
+            _trackingController.VaultController.ResetCurrentVaultInfo();
         }
 
         #region Cluster history

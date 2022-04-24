@@ -61,7 +61,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 {
                     MapIndex = parameters[8].ToString();
                     MapType = WorldData.GetMapType(MapIndex);
-                    MapGuid = WorldData.GetDungeonGuid(MapIndex);
+                    MapGuid = WorldData.GetMapGuid(MapIndex);
                 }
 
                 if (parameters.ContainsKey(23)) CurrentFocusPoints = parameters[23].ObjectToDouble();
