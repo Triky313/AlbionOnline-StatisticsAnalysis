@@ -561,6 +561,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                         var index = orderedDungeon.IndexOf(dungeonObject);
                         var dunFragment = new DungeonNotificationFragment(index, dungeonObject.GuidList, dungeonObject.MainMapIndex, dungeonObject.EnterDungeonFirstTime);
                         dunFragment.SetValues(dungeonObject);
+
                         _mainWindowViewModel?.TrackingDungeons?.Insert(index, dunFragment);
                     });
                 }
@@ -642,7 +643,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 });
             }
 
-            await SetOrUpdateDungeonsDataUiAsync();
+            await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
         }
 
         public void UpdateDungeonDataUi(DungeonObject dungeon)
