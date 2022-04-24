@@ -50,6 +50,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string islandName, string worldMapDataType, byte[] dungeonInformation)
         {
+            CurrentCluster.ClusterInfoFullyAvailable = false;
             CurrentCluster.Entered = DateTime.UtcNow;
             CurrentCluster.MapType = mapType;
             CurrentCluster.Guid = mapGuid;
@@ -57,6 +58,11 @@ namespace StatisticsAnalysisTool.Network.Manager
             CurrentCluster.IslandName = islandName;
             CurrentCluster.WorldMapDataType = worldMapDataType;
             CurrentCluster.DungeonInformation = dungeonInformation;
+
+            CurrentCluster.MainClusterIndex = null;
+            CurrentCluster.UniqueName = null;
+            CurrentCluster.Type = null;
+            CurrentCluster.File = null;
 
             if (_trackingController.IsTrackingAllowedByMainCharacter())
             {
@@ -75,6 +81,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             CurrentCluster.UniqueName = WorldData.GetUniqueNameOrDefault(index);
             CurrentCluster.Type = WorldData.GetTypeByIndex(index) ?? WorldData.GetTypeByIndex(mainClusterIndex) ?? string.Empty;
             CurrentCluster.File = WorldData.GetFileByIndex(index) ?? WorldData.GetFileByIndex(mainClusterIndex) ?? string.Empty;
+
+            CurrentCluster.ClusterInfoFullyAvailable = true;
         }
 
         #region Cluster history

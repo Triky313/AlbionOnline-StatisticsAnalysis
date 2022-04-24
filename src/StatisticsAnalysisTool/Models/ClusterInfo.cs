@@ -6,6 +6,8 @@ namespace StatisticsAnalysisTool.Models
 {
     public class ClusterInfo
     {
+        public bool ClusterInfoFullyAvailable { get; set; }
+
         // Change cluster data
         public DateTime Entered { get; set; }
         public MapType MapType { get; set; } = MapType.Unknown;
