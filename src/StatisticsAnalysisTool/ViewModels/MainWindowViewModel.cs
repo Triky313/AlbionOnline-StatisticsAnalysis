@@ -129,6 +129,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private VaultBindings _vaultBindings = new ();
         private GridLength _gridSplitterPosition = GridLength.Auto;
         private UserTrackingBindings _userTrackingBindings = new();
+        private Visibility _debugModeVisibility = Visibility.Collapsed;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -333,6 +334,10 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async Task InitMainWindowDataAsync()
         {
+#if DEBUG
+            DebugModeVisibility = Visibility.Visible;
+#endif
+
             Translation = new MainWindowTranslation();
             ToolTaskController.SetToolTaskController(this);
             SetUiElements();
@@ -1640,6 +1645,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _numberOfValuesTranslation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility DebugModeVisibility
+        {
+            get => _debugModeVisibility;
+            set
+            {
+                _debugModeVisibility = value;
                 OnPropertyChanged();
             }
         }
