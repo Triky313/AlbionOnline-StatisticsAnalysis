@@ -9,6 +9,7 @@
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
+                    xmlns:gameData="clr-namespace:StatisticsAnalysisTool.GameData"
                     mc:Ignorable="d">
 
 
@@ -518,6 +519,16 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.Island}">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
+                                            <GradientStop Color="{StaticResource Cluster.Island}" Offset="0.0" />
+                                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.Yellow}">
                                 <Setter Property="Background">
                                     <Setter.Value>
@@ -585,6 +596,18 @@
                     </Label>
                     <Label Content="{Binding TierString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" MinWidth="30" MaxWidth="30" Margin="10,0, 0, 0" />
                     <Label Content="{Binding UniqueName}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0" />
+                    <Label Content="{Binding IslandName}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding MapType}" Value="{x:Static gameData:MapType.Island}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
                     <Label Content="{Binding  AvalonTunnelType}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0">
                         <Label.Style>
                             <Style TargetType="{x:Type Label}">

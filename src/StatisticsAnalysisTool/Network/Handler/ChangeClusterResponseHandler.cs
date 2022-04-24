@@ -15,8 +15,11 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(ChangeClusterResponse value)
         {
+            _trackingController.ClusterController.ChangeClusterInformation(value.MapType, value.Guid, value.Index, value.IslandName, value.WorldMapDataType, value.DungeonInformation);
+
             _trackingController.EntityController.RemoveAllEntities();
             _trackingController.LootController.ResetViewedLootLists();
+
             await Task.CompletedTask;
         }
     }

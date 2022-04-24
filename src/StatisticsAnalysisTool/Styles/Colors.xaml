@@ -116,6 +116,7 @@
     <Color x:Key="Tracking.Off">#FF616172</Color>
 
     <!-- Cluster type colors -->
+    <Color x:Key="Cluster.Island">#FF1F9E6E</Color>
     <Color x:Key="Cluster.SafeArea">#FF4B6EA0</Color>
     <Color x:Key="Cluster.Yellow">#FFF2A60D</Color>
     <Color x:Key="Cluster.Red">#FFD81320</Color>

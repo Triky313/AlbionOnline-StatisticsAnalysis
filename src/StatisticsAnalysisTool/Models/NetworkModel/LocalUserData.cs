@@ -38,9 +38,9 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public int DeathsToday => DeathsValues?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date) ?? 0;
         public int DeathsWeek => DeathsValues?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)) ?? 0;
         public int DeathsMonth => DeathsValues?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-30)) ?? 0;
-        public double AverageItemPowerWhenKilling => TopKillsMonthValues.Select(x => x?.Killer?.AverageItemPower).Sum() / TopKillsMonthValues.Count ?? 0;
-        public double AverageItemPowerOfTheKilledEnemies => TopKillsMonthValues.Select(x => x?.Victim?.AverageItemPower).Sum() / TopKillsMonthValues.Count ?? 0;
-        public double AverageItemPowerWhenDying => DeathsValues.Select(x => x?.Victim?.AverageItemPower).Sum() / DeathsValues.Count ?? 0;
+        public double AverageItemPowerWhenKilling => TopKillsMonthValues?.Select(x => x?.Killer?.AverageItemPower).Sum() / TopKillsMonthValues?.Count ?? 0;
+        public double AverageItemPowerOfTheKilledEnemies => TopKillsMonthValues?.Select(x => x?.Victim?.AverageItemPower).Sum() / TopKillsMonthValues?.Count ?? 0;
+        public double AverageItemPowerWhenDying => DeathsValues?.Select(x => x?.Victim?.AverageItemPower).Sum() / DeathsValues?.Count ?? 0;
 
         public async Task SetValuesAsync(LocalUserData localUserData)
         {

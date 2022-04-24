@@ -12,10 +12,10 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         public long? UserObjectId;
-        public Guid? Guid { get; }
+        public Guid? UserGuid { get; }
         public string Username { get; }
         public string MapIndex { get; }
-        public Guid? DungeonGuid { get; }
+        public Guid? MapGuid { get; }
         public MapType MapType { get; }
         public double CurrentFocusPoints { get; }
         public double MaxCurrentFocusPoints { get; }
@@ -47,9 +47,9 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
                 if (parameters.ContainsKey(1))
                 {
-                    Guid = parameters[1].ObjectToGuid();
-                    Debug.Print($"Local user Guid: {Guid}");
-                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local user Guid: {Guid}", ConsoleManager.EventMapChangeColor);
+                    UserGuid = parameters[1].ObjectToGuid();
+                    Debug.Print($"Local user Guid: {UserGuid}");
+                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local user Guid: {UserGuid}", ConsoleManager.EventMapChangeColor);
                 }
 
                 if (parameters.ContainsKey(2))
@@ -61,7 +61,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 {
                     MapIndex = parameters[8].ToString();
                     MapType = WorldData.GetMapType(MapIndex);
-                    DungeonGuid = WorldData.GetDungeonGuid(MapIndex);
+                    MapGuid = WorldData.GetMapGuid(MapIndex);
                 }
 
                 if (parameters.ContainsKey(23)) CurrentFocusPoints = parameters[23].ObjectToDouble();

@@ -71,8 +71,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                 _dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
                 
-                var newDungeon = new DungeonObject(_trackingController.CurrentCluster.MainClusterIndex, 
-                    mapGuid ?? new Guid(0,0,0,0,0,0,0,0,0,0,0), DungeonStatus.Active, _trackingController.CurrentCluster.Tier);
+                var newDungeon = new DungeonObject(_trackingController.ClusterController.CurrentCluster.MainClusterIndex, 
+                    mapGuid ?? new Guid(0,0,0,0,0,0,0,0,0,0,0), DungeonStatus.Active, _trackingController.ClusterController.CurrentCluster.Tier);
                 SetDungeonMapType(newDungeon, mapType);
 
                 _dungeons.Insert(0, newDungeon);
@@ -561,6 +561,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                         var index = orderedDungeon.IndexOf(dungeonObject);
                         var dunFragment = new DungeonNotificationFragment(index, dungeonObject.GuidList, dungeonObject.MainMapIndex, dungeonObject.EnterDungeonFirstTime);
                         dunFragment.SetValues(dungeonObject);
+
                         _mainWindowViewModel?.TrackingDungeons?.Insert(index, dunFragment);
                     });
                 }
@@ -642,7 +643,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 });
             }
 
-            await SetOrUpdateDungeonsDataUiAsync();
+            await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
         }
 
         public void UpdateDungeonDataUi(DungeonObject dungeon)
