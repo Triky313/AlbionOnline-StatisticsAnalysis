@@ -59,7 +59,7 @@ namespace StatisticsAnalysisTool.GameData
             return null;
         }
 
-        private static string GetMapNameByMapType(MapType mapType)
+        public static string GetMapNameByMapType(MapType mapType)
         {
             return mapType switch
             {

@@ -29,12 +29,14 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             OnChangeCluster += UpdateClusterTracking;
             OnChangeCluster += SetAndResetValues;
+            OnChangeCluster += UpdateUserInfoUi;
         }
 
         public void UnregisterEvents()
         {
             OnChangeCluster -= UpdateClusterTracking;
             OnChangeCluster -= SetAndResetValues;
+            OnChangeCluster -= UpdateUserInfoUi;
         }
 
         public event Action<ClusterInfo> OnChangeCluster;
@@ -107,6 +109,22 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                 _ = _mainWindowViewModel.EnteredCluster.Remove(cluster);
             }
+        }
+
+        #endregion
+
+        #region Ui
+
+        public void UpdateUserInfoUi(ClusterInfo currentCluster)
+        {
+            _mainWindowViewModel.UserTrackingBindings.CurrentMapName = WorldData.GetUniqueNameOrDefault(currentCluster.Index);
+
+            if (string.IsNullOrEmpty(_mainWindowViewModel.UserTrackingBindings.CurrentMapName))
+            {
+                _mainWindowViewModel.UserTrackingBindings.CurrentMapName = WorldData.GetMapNameByMapType(currentCluster.MapType);
+            }
+
+            _mainWindowViewModel.UserTrackingBindings.IslandName = currentCluster.IslandName;
         }
 
         #endregion

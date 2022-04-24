@@ -39,9 +39,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private static PlayerModeInformationModel _playerModeInformationLocal;
         private static PlayerModeInformationModel _playerModeInformation;
-        private Visibility _allianceInformationVisibility;
         private double _allianceInfoWidth;
-        private Visibility _currentMapInformationVisibility;
         private double _currentMapInfoWidth;
         private ObservableCollection<DamageMeterFragment> _damageMeter = new();
         private List<DamageMeterSortStruct> _damageMeterSort = new();
@@ -50,7 +48,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private DungeonStats _dungeonStatsTotal = new();
         private string _errorBarText;
         private Visibility _errorBarVisibility;
-        private Visibility _guildInformationVisibility;
         private double _guildInfoWidth;
         private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
         private bool _isDamageMeterResetByMapChangeActive;
@@ -76,16 +73,11 @@ namespace StatisticsAnalysisTool.ViewModels
         private ItemLevel _selectedItemLevel;
         private ShopCategory _selectedItemShopCategories;
         private ItemTier _selectedItemTier;
-        private string _trackingAllianceName;
         public TrackingController TrackingController;
-        private string _trackingCurrentMapName;
         private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
-        private string _trackingGuildName;
         private ObservableCollection<TrackingNotification> _trackingNotifications = new();
-        private string _trackingUsername;
         private MainWindowTranslation _translation;
         private string _updateTranslation;
-        private Visibility _usernameInformationVisibility;
         private double _usernameInfoWidth;
         public AlertController AlertManager;
         private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = 0, ValuePerHour = 0, CityFaction = CityFaction.Unknown } };
@@ -136,6 +128,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private DateTime _datePickerMailsTo = DateTime.UtcNow.AddDays(1);
         private VaultBindings _vaultBindings = new ();
         private GridLength _gridSplitterPosition = GridLength.Auto;
+        private UserTrackingBindings _userTrackingBindings = new();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -185,10 +178,10 @@ namespace StatisticsAnalysisTool.ViewModels
 
             #region Tracking
 
-            UsernameInformationVisibility = Visibility.Hidden;
-            GuildInformationVisibility = Visibility.Hidden;
-            AllianceInformationVisibility = Visibility.Hidden;
-            CurrentMapInformationVisibility = Visibility.Hidden;
+            UserTrackingBindings.UsernameInformationVisibility = Visibility.Hidden;
+            UserTrackingBindings.GuildInformationVisibility = Visibility.Hidden;
+            UserTrackingBindings.AllianceInformationVisibility = Visibility.Hidden;
+            UserTrackingBindings.CurrentMapInformationVisibility = Visibility.Hidden;
 
             IsTrackingResetByMapChangeActive = SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive;
 
@@ -1098,47 +1091,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public Visibility UsernameInformationVisibility
-        {
-            get => _usernameInformationVisibility;
-            set
-            {
-                _usernameInformationVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility GuildInformationVisibility
-        {
-            get => _guildInformationVisibility;
-            set
-            {
-                _guildInformationVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility AllianceInformationVisibility
-        {
-            get => _allianceInformationVisibility;
-            set
-            {
-                _allianceInformationVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility CurrentMapInformationVisibility
-        {
-            get => _currentMapInformationVisibility;
-            set
-            {
-                _currentMapInformationVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public DungeonStats DungeonStatsDay
         {
             get => _dungeonStatsDay;
@@ -1169,46 +1122,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public string TrackingUsername
+        public UserTrackingBindings UserTrackingBindings
         {
-            get => _trackingUsername;
+            get => _userTrackingBindings;
             set
             {
-                _trackingUsername = value;
-                UsernameInformationVisibility = !string.IsNullOrEmpty(_trackingUsername) ? Visibility.Visible : Visibility.Hidden;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TrackingGuildName
-        {
-            get => _trackingGuildName;
-            set
-            {
-                _trackingGuildName = value;
-                GuildInformationVisibility = !string.IsNullOrEmpty(_trackingGuildName) ? Visibility.Visible : Visibility.Hidden;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TrackingAllianceName
-        {
-            get => _trackingAllianceName;
-            set
-            {
-                _trackingAllianceName = value;
-                AllianceInformationVisibility = !string.IsNullOrEmpty(_trackingAllianceName) ? Visibility.Visible : Visibility.Hidden;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TrackingCurrentMapName
-        {
-            get => _trackingCurrentMapName;
-            set
-            {
-                _trackingCurrentMapName = value;
-                CurrentMapInformationVisibility = !string.IsNullOrEmpty(_trackingCurrentMapName) ? Visibility.Visible : Visibility.Hidden;
+                _userTrackingBindings = value;
                 OnPropertyChanged();
             }
         }

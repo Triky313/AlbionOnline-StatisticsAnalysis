@@ -1,5 +1,7 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Operations.Responses;
@@ -7,8 +9,6 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Handler
 {
@@ -29,10 +29,9 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             _trackingController.ClusterController.SetJoinClusterInformation(value.MapIndex, value.MainMapIndex);
 
-            _mainWindowViewModel.TrackingUsername = value.Username;
-            _mainWindowViewModel.TrackingGuildName = value.GuildName;
-            _mainWindowViewModel.TrackingAllianceName = value.AllianceName;
-            _mainWindowViewModel.TrackingCurrentMapName = WorldData.GetUniqueNameOrDefault(value.MapIndex);
+            _mainWindowViewModel.UserTrackingBindings.Username = value.Username;
+            _mainWindowViewModel.UserTrackingBindings.GuildName = value.GuildName;
+            _mainWindowViewModel.UserTrackingBindings.AllianceName = value.AllianceName;
 
             SetCharacterTrackedVisibility(value.Username);
 
@@ -75,7 +74,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 return;
             }
-            
+
             _trackingController.EntityController.AddEntity((long)userObjectId, (Guid)guid, interactGuid, name, GameObjectType.Player, GameObjectSubType.LocalPlayer);
             await _trackingController.EntityController.AddToPartyAsync((Guid)guid, name);
         }

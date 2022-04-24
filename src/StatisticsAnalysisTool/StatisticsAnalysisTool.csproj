@@ -485,6 +485,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\ApiModel\" />
-    <Folder Include="Models\BindingModel\" />
   </ItemGroup>
 </Project>
