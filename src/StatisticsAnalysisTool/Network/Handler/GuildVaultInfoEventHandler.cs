@@ -15,7 +15,6 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(GuildVaultInfoEvent value)
         {
-
             await Task.CompletedTask;
         }
     }
