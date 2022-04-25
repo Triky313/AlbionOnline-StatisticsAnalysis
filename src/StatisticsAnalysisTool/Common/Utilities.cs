@@ -30,8 +30,8 @@ namespace StatisticsAnalysisTool.Common
             var screenHeight = SystemParameters.PrimaryScreenHeight;
             var windowWidth = window.Width;
             var windowHeight = window.Height;
-            window.Left = screenWidth / 2 - windowWidth / 2;
-            window.Top = screenHeight / 2 - windowHeight / 2;
+            window.Left = (screenWidth / 2) - (windowWidth / 2);
+            window.Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
         public static bool IsWindowOpen<T>(string name = "") where T : Window

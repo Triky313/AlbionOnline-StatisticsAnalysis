@@ -257,7 +257,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel.DashboardObject.LastUpdate = _trackingController.EntityController.LocalUserData.LastUpdate;
         }
         
-
         #endregion
 
         #region Load / Save local file data

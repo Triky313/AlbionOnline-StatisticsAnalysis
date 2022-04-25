@@ -184,6 +184,5 @@ namespace StatisticsAnalysisTool.Models
 
             return AvalonTunnelType.Unknown;
         }
-
     }
 }
