@@ -109,12 +109,17 @@ public class VaultController
 
     public void RemoveVault(Vault vault)
     {
-        _vault.Remove(vault);
+        if (vault == null)
+        {
+            return;
+        }
 
         foreach (var removableContainer in vault.VaultContainer.Select(container => _vaultContainer?.FirstOrDefault(x => x?.ContainerGuid == container?.Guid)))
         {
             _vaultContainer?.Remove(removableContainer);
         }
+
+        _vault.Remove(vault);
 
         UpdateUi();
     }
