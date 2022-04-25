@@ -17,10 +17,10 @@
         public readonly long Ticks;
 
         public long Days => Ticks / TicksPerDay;
-        public long Hours => Ticks % TicksPerDay / TicksPerHour;
-        public long Minutes => Ticks % TicksPerHour / TicksPerMinute;
-        public long Seconds => Ticks % TicksPerMinute / TicksPerSecond;
-        public long Milliseconds => Ticks % TicksPerSecond / TicksPerMillisecond;
+        public long Hours => Ticks % (TicksPerDay / TicksPerHour);
+        public long Minutes => Ticks % (TicksPerHour / TicksPerMinute);
+        public long Seconds => Ticks % (TicksPerMinute / TicksPerSecond);
+        public long Milliseconds => Ticks % (TicksPerSecond / TicksPerMillisecond);
 
         public double TotalDays => Ticks / TicksPerDayDouble;
         public double TotalHours => Ticks / TicksPerHourDouble;
@@ -35,7 +35,7 @@
 
         public static GameTimeSpan FromSeconds(double fSeconds)
         {
-            return new GameTimeSpan((long) (fSeconds * TicksPerSecond + 0.5));
+            return new GameTimeSpan((long) ((fSeconds * TicksPerSecond) + 0.5));
         }
 
         public string ToStringVerbose()
