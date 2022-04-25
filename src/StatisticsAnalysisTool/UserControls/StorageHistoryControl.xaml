@@ -9,12 +9,16 @@
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30" Margin="0,0,300,0">
             <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.Vaults}" IsSynchronizedWithCurrentItem="True"
                       SelectedValue="{Binding VaultBindings.VaultSelected}" DisplayMemberPath="LocationDisplayString" />
 
             <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.VaultContainer}" IsSynchronizedWithCurrentItem="True"
                       SelectedValue="{Binding VaultBindings.VaultContainerSelected}" DisplayMemberPath="Name" />
+        </StackPanel>
+        <Button Content="{Binding Translation.DeleteCurrentStorage, FallbackValue=DELETE__CURRENT__STORAGE}" Height="26" MinWidth="200" 
+                Margin="0,3,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="ButtonDeleteCurrentStorage_OnClick" />
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30" Margin="0,32,0,0">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding VaultBindings.LastUpdateVisibility}">
                 <TextBlock Text="{Binding Translation.LastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" 
                            Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
@@ -22,8 +26,8 @@
                            FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
             </StackPanel>
         </StackPanel>
-        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,30,0,0" VerticalAlignment="Top"/>
-        <ScrollViewer  Margin="0,34,0,0" HorizontalScrollBarVisibility="Disabled">
+        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,60,0,0" VerticalAlignment="Top"/>
+        <ScrollViewer  Margin="0,64,0,0" HorizontalScrollBarVisibility="Disabled">
             <ItemsControl Width="410" ItemsSource="{Binding VaultBindings.VaultContainerContent, IsAsync=True, Mode=OneWay}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

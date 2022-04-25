@@ -97,5 +97,6 @@ namespace StatisticsAnalysisTool.Models
         public static string DeleteSelectedMails => LanguageController.Translation("DELETE_SELECTED_MAILS");
         public static string MailMonitoringDescription1 => LanguageController.Translation("MAIL_MONITORING_DESCRIPTION1");
         public static string To => LanguageController.Translation("TO");
+        public static string DeleteCurrentStorage => LanguageController.Translation("DELETE_SELECTED_STORAGE");
     }
 }

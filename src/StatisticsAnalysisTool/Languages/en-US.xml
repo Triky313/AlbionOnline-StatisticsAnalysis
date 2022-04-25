@@ -562,7 +562,6 @@
 	<translation name="TO">to</translation>
 	<translation name="STORAGE_HISTORY">Storage History</translation>
 	<translation name="BANK">Bank</translation>
-
 	<translation name="SOLD_THIS_WEEK">Sold this week</translation>
 	<translation name="SOLD_LAST_WEEK">Sold last week</translation>
 	<translation name="BOUGHT_THIS_WEEK">Bought this week</translation>
@@ -573,4 +572,6 @@
 	<translation name="NET_PROFIT_TOTAL">Net profit total</translation>
 	<translation name="NET_PROFIT_THIS_WEEK">Net profit this week</translation>
 	<translation name="NET_PROFIT_LAST_WEEK">Net profit last week</translation>
+	<translation name="DELETE_SELECTED_STORAGE">Delete selected storage</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_STORAGE">Are you sure you want to delete selected storage?</translation>
 </translations>

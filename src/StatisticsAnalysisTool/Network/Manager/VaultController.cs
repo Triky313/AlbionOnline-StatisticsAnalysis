@@ -107,6 +107,18 @@ public class VaultController
         _currentVaultInfo = null;
     }
 
+    public void RemoveVault(Vault vault)
+    {
+        _vault.Remove(vault);
+
+        foreach (var removableContainer in vault.VaultContainer.Select(container => _vaultContainer?.FirstOrDefault(x => x?.ContainerGuid == container?.Guid)))
+        {
+            _vaultContainer?.Remove(removableContainer);
+        }
+
+        UpdateUi();
+    }
+
     private void ParseVault()
     {
         if (_currentVaultInfo == null)

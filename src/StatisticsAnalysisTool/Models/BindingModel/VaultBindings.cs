@@ -35,7 +35,7 @@ public class VaultBindings : INotifyPropertyChanged
         set
         {
             _vaultSelected = value;
-            VaultContainer = _vaultSelected.VaultContainer.FindAll(x => x.LastUpdate.Ticks > 0).OrderBy(y => y.Name).ToList();
+            VaultContainer = _vaultSelected?.VaultContainer?.FindAll(x => x?.LastUpdate.Ticks > 0).OrderBy(y => y.Name).ToList();
             OnPropertyChanged();
         }
     }
