@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.GameData
     {
         public static ObservableCollection<WorldJsonObject> MapData;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
+        
         public static string GetUniqueNameOrDefault(string index)
         {
             var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;
@@ -34,10 +34,33 @@ namespace StatisticsAnalysisTool.GameData
 
         public static Guid? GetMapGuid(string index)
         {
+            // Cluster change event
+            // @ISLAND@c640e642-5135-4203-89b5-0007e4215605
+            // @RANDOMDUNGEON@fe968505-9771-4653-8ade-29a1bd6ddb56 
+            // @HIDEOUT@2306@29c344b3-2138-421d-a97c-06e29d4759ec
+
+            // Base vault info event
+            // 4a82e5ed-8b64-40e3-926b-e0b020c4550a@@ISLAND@c640e642-5135-4203-89b5-0007e4215605
+            // f56a368d-2f0b-4d01-a1ba-0079cf8b1fa9@4001
+
             try
             {
                 var splitName = index.Split(new[] { "@" }, StringSplitOptions.RemoveEmptyEntries);
 
+                var mapTypeIndex = Array.FindIndex(splitName, indexString => indexString is "ISLAND" or "HIDEOUT");
+
+                if (index.Contains("ISLAND") && mapTypeIndex > -1 && splitName.Length >= mapTypeIndex + 1)
+                {
+                    var mapGuid = new Guid(splitName[mapTypeIndex + 1]);
+                    return mapGuid;
+                }
+
+                if (index.Contains("HIDEOUT") && mapTypeIndex > -1 && splitName.Length >= mapTypeIndex + 2)
+                {
+                    var mapGuid = new Guid(splitName[mapTypeIndex + 2]);
+                    return mapGuid;
+                }
+                
                 if (splitName.Length > 1 && index.ToLower().Contains('@'))
                 {
                     var mapType = GetMapType(splitName[0]);
@@ -137,7 +160,7 @@ namespace StatisticsAnalysisTool.GameData
 
             return MapData?.FirstOrDefault(x => x.Index == index)?.Type;
         }
-
+        
         public static string GetFileByIndex(string index)
         {
             return MapData?.FirstOrDefault(x => x.Index == index)?.File;
@@ -196,13 +219,13 @@ namespace StatisticsAnalysisTool.GameData
 
     public enum MapType
     {
+        Unknown,
         RandomDungeon,
         HellGate,
         CorruptedDungeon,
         Island,
         Hideout,
         Expedition,
-        Arena,
-        Unknown
+        Arena
     }
 }

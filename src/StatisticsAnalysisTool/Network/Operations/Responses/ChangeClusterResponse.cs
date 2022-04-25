@@ -14,10 +14,11 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
         public string Index;
         public Guid? Guid;
-        public MapType MapType;
+        public MapType MapType = MapType.Unknown;
         public string WorldMapDataType;
         public string IslandName;
         public byte[] DungeonInformation;
+        public string MainClusterIndex;
 
         public ChangeClusterResponse(Dictionary<byte, object> parameters)
         {
@@ -34,6 +35,11 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                     {
                         Guid = WorldData.GetMapGuid(clusterString);
                         MapType = WorldData.GetMapType(clusterString);
+
+                        if (MapType is MapType.Hideout && splitName.Length >= 3)
+                        {
+                            MainClusterIndex = string.IsNullOrEmpty(splitName[1]) ? string.Empty : splitName[1];
+                        }
                     }
                     else
                     {

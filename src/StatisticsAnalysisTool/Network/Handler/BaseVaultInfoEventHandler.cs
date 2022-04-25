@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (_trackingController.IsTrackingAllowedByMainCharacter())
             {
-                _trackingController.VaultController.SetCurrentVault(new VaultInfo(value.ObjectId, value.Location, value.VaultGuidList, value.VaultNames, value.IconTags));
+                _trackingController.VaultController.SetCurrentVault(new VaultInfo(value.ObjectId, value.LocationGuidString, value.VaultGuidList, value.VaultNames, value.IconTags));
             }
 
             await Task.CompletedTask;

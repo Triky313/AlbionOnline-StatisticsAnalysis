@@ -1,6 +1,5 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
@@ -47,23 +46,22 @@ public class VaultController
 
     public void SetCurrentVault(VaultInfo vaultInfo)
     {
-        if (vaultInfo == null || vaultInfo.VaultLocation == VaultLocation.Unknown)
+        if (vaultInfo == null)
+        {
+            _currentVaultInfo = null;
+            return;
+        }
+
+        vaultInfo.UniqueClusterName = ClusterController.CurrentCluster.UniqueClusterName;
+        vaultInfo.MainLocationIndex = ClusterController.CurrentCluster.MainClusterIndex;
+
+        if (string.IsNullOrEmpty(vaultInfo.UniqueClusterName))
         {
             _currentVaultInfo = null;
             return;
         }
 
         _currentVaultInfo = vaultInfo;
-    }
-
-    public void Add(DiscoveredItem item)
-    {
-        if (_discoveredItems.Exists(x => x.ObjectId == item.ObjectId))
-        {
-            return;
-        }
-
-        _discoveredItems.Add(item);
     }
 
     public void AddContainer(ItemContainerObject newContainerObject)
@@ -84,6 +82,16 @@ public class VaultController
         ParseVault();
     }
 
+    public void Add(DiscoveredItem item)
+    {
+        if (_discoveredItems.Exists(x => x.ObjectId == item.ObjectId))
+        {
+            return;
+        }
+
+        _discoveredItems.Add(item);
+    }
+
     public void ResetVaultContainer()
     {
         _vaultContainer.Clear();
@@ -101,12 +109,12 @@ public class VaultController
 
     private void ParseVault()
     {
-        if (_currentVaultInfo == null || GetVaultLocation(_currentVaultInfo?.Location) == VaultLocation.Unknown)
+        if (_currentVaultInfo == null)
         {
             return;
         }
 
-        var removableVaultInfo = Vaults.FirstOrDefault(x => x.Location == _currentVaultInfo.Location);
+        var removableVaultInfo = Vaults.FirstOrDefault(x => x.Location == _currentVaultInfo.UniqueClusterName);
 
         if (removableVaultInfo != null)
         {
@@ -115,7 +123,9 @@ public class VaultController
 
         var vault = new Vault()
         {
-            Location = _currentVaultInfo.Location
+            Location = _currentVaultInfo.UniqueClusterName,
+            MainLocationIndex = _currentVaultInfo.MainLocationIndex,
+            MapType = _currentVaultInfo.MapType
         };
 
         try
@@ -173,18 +183,6 @@ public class VaultController
         }
     }
 
-    public static VaultLocation GetVaultLocation(string value)
-    {
-        var clusterInfoArray = value.Split("@");
-        return clusterInfoArray.ElementAtOrDefault(1) != null ? GetVaultLocationByIndex(clusterInfoArray[1]) : VaultLocation.Unknown;
-    }
-
-    public static string GetVaultLocationIndex(string value)
-    {
-        var clusterInfoArray = value.Split("@");
-        return clusterInfoArray.ElementAtOrDefault(1) != null ? clusterInfoArray[1] : "UNKNOWN";
-    }
-
     #region Ui
 
     private void UpdateUi()
@@ -238,15 +236,6 @@ public class VaultController
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
-    }
-
-    #endregion
-
-    #region Helper methods
-
-    private static VaultLocation GetVaultLocationByIndex(string index)
-    {
-        return Enum.TryParse(index, true, out VaultLocation location) ? location : VaultLocation.Unknown;
     }
 
     #endregion
