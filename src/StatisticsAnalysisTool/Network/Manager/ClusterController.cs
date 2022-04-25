@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
 
-        public ClusterInfo CurrentCluster { get; } = new();
+        public static ClusterInfo CurrentCluster { get; } = new();
 
         public ClusterController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
@@ -41,18 +41,18 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public event Action<ClusterInfo> OnChangeCluster;
 
-        public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string islandName, string worldMapDataType, byte[] dungeonInformation)
+        public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
         {
             CurrentCluster.ClusterInfoFullyAvailable = false;
             CurrentCluster.Entered = DateTime.UtcNow;
             CurrentCluster.MapType = mapType;
             CurrentCluster.Guid = mapGuid;
             CurrentCluster.Index = clusterIndex;
-            CurrentCluster.IslandName = islandName;
+            CurrentCluster.InstanceName = instanceName;
             CurrentCluster.WorldMapDataType = worldMapDataType;
             CurrentCluster.DungeonInformation = dungeonInformation;
 
-            CurrentCluster.MainClusterIndex = null;
+            CurrentCluster.MainClusterIndex = mainClusterIndex;
             CurrentCluster.WorldJsonType = null;
             CurrentCluster.File = null;
 
@@ -64,7 +64,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void SetJoinClusterInformation(string index, string mainClusterIndex)
         {
-            CurrentCluster.MainClusterIndex = mainClusterIndex;
+            CurrentCluster.MainClusterIndex ??= mainClusterIndex;
             CurrentCluster.WorldJsonType = WorldData.GetWorldJsonTypeByIndex(index) ?? WorldData.GetWorldJsonTypeByIndex(mainClusterIndex) ?? string.Empty;
             CurrentCluster.File = WorldData.GetFileByIndex(index) ?? WorldData.GetFileByIndex(mainClusterIndex) ?? string.Empty;
 
@@ -122,7 +122,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _mainWindowViewModel.UserTrackingBindings.CurrentMapName = WorldData.GetMapNameByMapType(currentCluster.MapType);
             }
 
-            _mainWindowViewModel.UserTrackingBindings.IslandName = currentCluster.IslandName;
+            _mainWindowViewModel.UserTrackingBindings.IslandName = currentCluster.InstanceName;
         }
 
         #endregion

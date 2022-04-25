@@ -10,10 +10,10 @@
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30">
-            <ComboBox Height="26" Width="200" Margin="5,0" ItemsSource="{Binding VaultBindings.Vaults}" IsSynchronizedWithCurrentItem="True"
-                      SelectedValue="{Binding VaultBindings.VaultSelected}" DisplayMemberPath="LocationName" />
+            <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.Vaults}" IsSynchronizedWithCurrentItem="True"
+                      SelectedValue="{Binding VaultBindings.VaultSelected}" DisplayMemberPath="LocationDisplayString" />
 
-            <ComboBox Height="26" Width="200" Margin="5,0" ItemsSource="{Binding VaultBindings.VaultContainer}" IsSynchronizedWithCurrentItem="True"
+            <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.VaultContainer}" IsSynchronizedWithCurrentItem="True"
                       SelectedValue="{Binding VaultBindings.VaultContainerSelected}" DisplayMemberPath="Name" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding VaultBindings.LastUpdateVisibility}">
                 <TextBlock Text="{Binding Translation.LastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" 

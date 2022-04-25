@@ -8,7 +8,7 @@ namespace StatisticsAnalysisTool.Network.Events
     public class BaseVaultInfoEvent
     {
         public long? ObjectId;
-        public string Location;
+        public string LocationGuidString;
         public List<Guid> VaultGuidList = new();
         public List<string> VaultNames = new();
         public List<string> IconTags = new();
@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (parameters.ContainsKey(1))
                 {
-                    Location = parameters[1].ToString();
+                    LocationGuidString = parameters[1].ToString();
                 }
 
                 if (parameters.ContainsKey(2) && parameters[2] != null)

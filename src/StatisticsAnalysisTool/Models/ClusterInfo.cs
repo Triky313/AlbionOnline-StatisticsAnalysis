@@ -13,7 +13,7 @@ namespace StatisticsAnalysisTool.Models
         public MapType MapType { get; set; } = MapType.Unknown;
         public Guid? Guid { get; set; }
         public string Index { get; set; }
-        public string IslandName { get; set; }
+        public string InstanceName { get; set; }
         public string WorldMapDataType { get; set; }
         public byte[] DungeonInformation { get; set; }
 
@@ -23,6 +23,7 @@ namespace StatisticsAnalysisTool.Models
         public string File { get; set; }
 
         public string UniqueName => WorldData.GetUniqueNameOrDefault(Index) ?? WorldData.GetMapNameByMapType(MapType);
+        public string UniqueClusterName => WorldData.GetUniqueNameOrDefault(Index) ?? InstanceName ?? string.Empty;
         public ClusterType ClusterType => GetClusterType(WorldJsonType);
         public bool IsAvalonClusterTunnel => IsAvalonClusterTunnelByType(WorldJsonType);
         public AvalonTunnelType AvalonTunnelType => GetTunnelType(WorldJsonType);
