@@ -569,4 +569,15 @@
 	<translation name="TO">от / до</translation>
 	<translation name="STORAGE_HISTORY">Хранилища</translation>
 	<translation name="BANK">Банк</translation>
+
+	<translation name="SOLD_THIS_WEEK">Продано за неделю</translation>
+	<translation name="SOLD_LAST_WEEK">Продано за прошлую неделю</translation>
+	<translation name="BOUGHT_THIS_WEEK">Куплено за неделю</translation>
+	<translation name="BOUGHT_LAST_WEEK">Куплено за прошлую неделю</translation>
+	<translation name="NET_PROFIT_TODAY">Прибыль сегодня</translation>
+	<translation name="NET_PROFIT_MONTH">Прибыль за месяц</translation>
+	<translation name="NET_PROFIT_YEAR">Прибыль за год</translation>
+	<translation name="NET_PROFIT_TOTAL">Общая прибыль</translation>
+	<translation name="NET_PROFIT_THIS_WEEK">Прибыль за неделю</translation>
+	<translation name="NET_PROFIT_LAST_WEEK">Прибыль за прошлую неделю</translation>
 </translations>
