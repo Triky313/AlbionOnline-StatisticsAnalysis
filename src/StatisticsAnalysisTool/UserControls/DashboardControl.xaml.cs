@@ -50,7 +50,7 @@ namespace StatisticsAnalysisTool.UserControls
         private void BtnTrackingReset_Click(object sender, RoutedEventArgs e)
         {
             var vm = (MainWindowViewModel)DataContext;
-            vm.ResetMainCounters();
+            vm?.TrackingController?.CountUpTimer?.Reset();
         }
 
         private void OpenDashboardWindow_MouseUp(object sender, MouseButtonEventArgs e)

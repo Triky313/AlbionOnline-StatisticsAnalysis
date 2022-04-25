@@ -740,11 +740,6 @@ namespace StatisticsAnalysisTool.ViewModels
             Console.WriteLine(@"### Stop Tracking");
         }
         
-        public void ResetMainCounters()
-        {
-            TrackingController?.CountUpTimer?.Reset();
-        }
-
         public void ResetDamageMeter()
         {
             var dialog = new DialogWindow(LanguageController.Translation("RESET_DAMAGE_METER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DAMAGE_METER"));

@@ -92,7 +92,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
             {
-                _mainWindowViewModel.ResetMainCounters();
+                _mainWindowViewModel?.TrackingController?.CountUpTimer?.Reset();
             }
         }
 
