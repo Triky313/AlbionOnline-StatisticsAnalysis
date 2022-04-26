@@ -20,7 +20,7 @@
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
                 </StackPanel>
                 <ScrollViewer Visibility="{Binding DonationsAllTimeVisibility, FallbackValue=Visible}" HorizontalScrollBarVisibility="Disabled" MinHeight="60">
-                    <ItemsControl ItemsSource="{Binding TopDonationsThisMonth, IsAsync=True, Mode=OneWay}" />
+                    <ItemsControl ItemsSource="{Binding TopDonationsAllTime, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
                 </ScrollViewer>
                 <TextBlock Visibility="{Binding NoTopDonationsVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
                            Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center"  />
