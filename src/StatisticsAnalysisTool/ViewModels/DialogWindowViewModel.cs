@@ -1,7 +1,7 @@
-﻿using StatisticsAnalysisTool.Models;
+﻿using StatisticsAnalysisTool.Models.TranslationModel;
+using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -21,25 +21,31 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Binding
 
-        public string Title {
+        public string Title
+        {
             get => _title;
-            set {
+            set
+            {
                 _title = value;
                 OnPropertyChanged();
             }
         }
 
-        public string Message {
+        public string Message
+        {
             get => _message;
-            set {
+            set
+            {
                 _message = value;
                 OnPropertyChanged();
             }
         }
 
-        public DialogWindowTranslation Translation {
+        public DialogWindowTranslation Translation
+        {
             get => _dialogWindowTranslation;
-            set {
+            set
+            {
                 _dialogWindowTranslation = value;
                 OnPropertyChanged();
             }

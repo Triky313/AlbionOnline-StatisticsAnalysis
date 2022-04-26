@@ -27,6 +27,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using StatisticsAnalysisTool.Models.BindingModel;
+using StatisticsAnalysisTool.Models.TranslationModel;
 
 // ReSharper disable UnusedMember.Global
 

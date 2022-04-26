@@ -321,5 +321,29 @@ namespace StatisticsAnalysisTool.Common
                 return new List<GoldResponseModel>();
             }
         }
+
+        public static async Task<List<Donation>> GetDonationsFromJsonAsync()
+        {
+            var values = new List<Donation>();
+            const string url = "https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master/donations.json";
+
+            using var clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            using var client = new HttpClient(clientHandler);
+            client.Timeout = TimeSpan.FromSeconds(600);
+            try
+            {
+                using var response = await client.GetAsync(url);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var content = response.Content;
+                return JsonSerializer.Deserialize<List<Donation>>(await content.ReadAsStringAsync()) ?? values;
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                return values;
+            }
+        }
     }
 }
