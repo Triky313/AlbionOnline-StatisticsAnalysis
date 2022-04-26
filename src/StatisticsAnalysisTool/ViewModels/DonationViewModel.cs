@@ -9,7 +9,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -33,7 +32,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void GetDonations()
         {
-            var apiResult = Task.Run(async() => await ApiController.GetDonationsFromJsonAsync()).ConfigureAwait(false);
+            var apiResult = Task.Run(async () => await ApiController.GetDonationsFromJsonAsync()).ConfigureAwait(false);
             _donations = apiResult.GetAwaiter().GetResult();
         }
 
@@ -43,15 +42,24 @@ namespace StatisticsAnalysisTool.ViewModels
 
             TopDonationsAllTime = _donations?
                 .GroupBy(x => x?.Contributor)
-                .Select(x => x?.First())
-                .OrderByDescending(x => x?.Amount)
+                .Select(arg => new Donation
+                {
+                    Contributor = arg?.Key,
+                    Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
+                })
+                .OrderByDescending(x => x.Amount)
                 .ToList();
 
             TopDonationsThisMonth = _donations?
                 .Where(x => x?.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month)
-                .GroupBy(x => x.Contributor)
-                .Select(x => x.First())
-                .OrderByDescending(x => x?.Amount)
+                // ReSharper disable once ConstantConditionalAccessQualifier
+                .GroupBy(x => x?.Contributor)
+                .Select(arg => new Donation
+                {
+                    Contributor = arg?.Key,
+                    Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
+                })
+                .OrderByDescending(x => x.Amount)
                 .ToList();
 
             if (TopDonationsAllTime?.Count > 0)

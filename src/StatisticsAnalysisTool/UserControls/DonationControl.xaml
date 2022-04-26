@@ -19,7 +19,7 @@
                     <TextBlock Text="{Binding Translation.TopDonationsAllTime, FallbackValue=TOP_DONATIONS_ALL_TIME}" FontSize="16" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
                 </StackPanel>
-                <ScrollViewer Visibility="{Binding DonationsAllTimeVisibility, FallbackValue=Visible}" HorizontalScrollBarVisibility="Disabled" MinHeight="60">
+                <ScrollViewer Visibility="{Binding DonationsAllTimeVisibility, FallbackValue=Visible}" HorizontalScrollBarVisibility="Disabled" MinHeight="200" MaxHeight="300">
                     <ItemsControl ItemsSource="{Binding TopDonationsAllTime, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
                 </ScrollViewer>
                 <TextBlock Visibility="{Binding NoTopDonationsVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
@@ -29,7 +29,7 @@
                     <TextBlock Text="{Binding Translation.TopDonationsThisMonth, FallbackValue=TOP_DONATIONS_THIS_MONTH}" FontSize="16" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
                 </StackPanel>
-                <ScrollViewer Visibility="{Binding DonationsThisMonthVisibility, FallbackValue=Visible}" HorizontalScrollBarVisibility="Disabled" MinHeight="60">
+                <ScrollViewer Visibility="{Binding DonationsThisMonthVisibility, FallbackValue=Visible}" HorizontalScrollBarVisibility="Disabled" MinHeight="200" MaxHeight="300">
                     <ItemsControl ItemsSource="{Binding TopDonationsThisMonth, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
                 </ScrollViewer>
                 <TextBlock Visibility="{Binding NoDonationsThisMonthVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
