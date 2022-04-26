@@ -575,4 +575,9 @@
 	<translation name="DELETE_SELECTED_STORAGE">Ausgewähltes Lager löschen</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_STORAGE">Ausgewähltes Lager wirklich löschen?</translation>
 	<translation name="DONATIONS">Spenden</translation>
+	<translation name="HOW_CAN_I_DONATE">Wie kann ich spenden?</translation>
+	<translation name="TOP_DONATIONS_ALL_TIME">Top Spender aller Zeiten</translation>
+	<translation name="TOP_DONATIONS_THIS_MONTH">Top Spender diesen Monat</translation>
+	<translation name="DONATION_DESCRIPTION">DONATION_DESCRIPTION</translation>
+	<translation name="NO_DONATION_YET">Keine Spende bislang! :(</translation>
 </translations>

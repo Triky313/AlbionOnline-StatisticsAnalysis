@@ -575,4 +575,9 @@
 	<translation name="DELETE_SELECTED_STORAGE">Delete selected storage</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_STORAGE">Are you sure you want to delete selected storage?</translation>
 	<translation name="DONATIONS">Donations</translation>
+	<translation name="HOW_CAN_I_DONATE">How can i donate?</translation>
+	<translation name="TOP_DONATIONS_ALL_TIME">Top donations all time</translation>
+	<translation name="TOP_DONATIONS_THIS_MONTH">Top donations this month</translation>
+	<translation name="DONATION_DESCRIPTION">DONATION_DESCRIPTION</translation>
+	<translation name="NO_DONATION_YET">No donation yet! :(</translation>
 </translations>
