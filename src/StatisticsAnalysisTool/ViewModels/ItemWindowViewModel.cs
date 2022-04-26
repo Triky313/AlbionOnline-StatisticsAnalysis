@@ -24,6 +24,7 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 using StatisticsAnalysisTool.Common.Converters;
+using StatisticsAnalysisTool.Models.TranslationModel;
 
 namespace StatisticsAnalysisTool.ViewModels
 {

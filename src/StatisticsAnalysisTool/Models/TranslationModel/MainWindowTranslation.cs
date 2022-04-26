@@ -1,6 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 
-namespace StatisticsAnalysisTool.Models
+namespace StatisticsAnalysisTool.Models.TranslationModel
 {
     public class MainWindowTranslation
     {
@@ -98,5 +98,6 @@ namespace StatisticsAnalysisTool.Models
         public static string MailMonitoringDescription1 => LanguageController.Translation("MAIL_MONITORING_DESCRIPTION1");
         public static string To => LanguageController.Translation("TO");
         public static string DeleteCurrentStorage => LanguageController.Translation("DELETE_SELECTED_STORAGE");
+        public static string Donations => LanguageController.Translation("DONATIONS");
     }
 }

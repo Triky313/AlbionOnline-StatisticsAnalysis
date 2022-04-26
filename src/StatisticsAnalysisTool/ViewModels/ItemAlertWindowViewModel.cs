@@ -4,6 +4,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.TranslationModel;
 
 namespace StatisticsAnalysisTool.ViewModels
 {

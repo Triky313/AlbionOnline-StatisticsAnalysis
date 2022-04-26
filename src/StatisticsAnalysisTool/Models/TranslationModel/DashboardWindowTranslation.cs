@@ -1,6 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 
-namespace StatisticsAnalysisTool.Models
+namespace StatisticsAnalysisTool.Models.TranslationModel
 {
     public class DashboardWindowTranslation
     {

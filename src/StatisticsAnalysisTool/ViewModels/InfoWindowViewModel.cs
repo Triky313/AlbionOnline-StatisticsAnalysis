@@ -1,5 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
