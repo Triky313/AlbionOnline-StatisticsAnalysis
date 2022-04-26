@@ -1,10 +1,10 @@
 [{
-	"timestamp": "2022-20-04T00:00:000000000Z",
+	"timestamp": "2020-01-31T00:00:00"
 	"amount": 500000,
 	"contributor": "Triky313"
     },
 	{
-	"Timestamp": "2022-26-04T00:00:000000000Z",
+	"Timestamp": "2022-26-04T00:00:00",
 	"Amount": 99999999,
 	"Contributor": "Dicky"
 }]
