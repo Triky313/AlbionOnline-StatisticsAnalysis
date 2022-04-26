@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -26,13 +27,14 @@ namespace StatisticsAnalysisTool.ViewModels
         public DonationViewModel()
         {
             Translation = new DonationTranslation();
-            Task.Run(() => GetDonationsAsync().ConfigureAwait(false)).Wait();
+            GetDonations();
             SetDonationsUi();
         }
 
-        public async Task GetDonationsAsync()
+        public void GetDonations()
         {
-            _donations = await ApiController.GetDonationsFromJsonAsync();
+            var apiResult = Task.Run(async() => await ApiController.GetDonationsFromJsonAsync()).ConfigureAwait(false);
+            _donations = apiResult.GetAwaiter().GetResult();
         }
 
         public void SetDonationsUi()
@@ -42,14 +44,14 @@ namespace StatisticsAnalysisTool.ViewModels
             TopDonationsAllTime = _donations?
                 .GroupBy(x => x?.Contributor)
                 .Select(x => x?.First())
-                .OrderBy(x => x?.Amount)
+                .OrderByDescending(x => x?.Amount)
                 .ToList();
 
             TopDonationsThisMonth = _donations?
                 .Where(x => x?.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month)
                 .GroupBy(x => x.Contributor)
                 .Select(x => x.First())
-                .OrderBy(x => x?.Amount)
+                .OrderByDescending(x => x?.Amount)
                 .ToList();
 
             if (TopDonationsAllTime?.Count > 0)
