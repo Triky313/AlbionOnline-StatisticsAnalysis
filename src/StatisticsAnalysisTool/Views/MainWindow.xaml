@@ -7,6 +7,7 @@
         xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         mc:Ignorable="d"
+        d:DesignHeight="650" d:DesignWidth="1000"
         WindowStartupLocation="CenterScreen"
         Title="AlbionOnline - StatisticsAnalysisTool"
         Closed="MainWindow_OnClosed"
@@ -143,13 +144,6 @@
                     <userControls:DamageMeterControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.MapHistory, FallbackValue=MAP__HISTORY}">
-                <Grid Style="{StaticResource TabItemGridStyle}">
-                    <ScrollViewer Margin="0,0,0,0">
-                        <ItemsControl ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"/>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
             <TabItem Header="{Binding Translation.MailMonitoring, FallbackValue=MAIL__MONITORING}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:MailMonitoringControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
@@ -158,6 +152,13 @@
             <TabItem Header="{Binding Translation.StorageHistory, FallbackValue=STORAGE_HISTORY}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:StorageHistoryControl DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="{Binding Translation.MapHistory, FallbackValue=MAP__HISTORY}">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+                    <ScrollViewer Margin="0,0,0,0">
+                        <ItemsControl ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"/>
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Translation.PlayerInformation, FallbackValue=PLAYER__INFORMATION}">
