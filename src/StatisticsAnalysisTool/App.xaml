@@ -24,6 +24,7 @@
                 <ResourceDictionary Source="Styles/DamageMeterStyles.xaml" />
                 <ResourceDictionary Source="Styles/MailMonitoringStyle.xaml" />
                 <ResourceDictionary Source="Styles/StorageHistoryStyle.xaml" />
+                <ResourceDictionary Source="Styles/DonationStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
