@@ -50,6 +50,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 .Select(arg => new Donation
                 {
                     Contributor = arg?.Key,
+                    IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
+                    Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
                     Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
                 })
                 .OrderByDescending(x => x.Amount)
@@ -62,6 +64,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 .Select(arg => new Donation
                 {
                     Contributor = arg?.Key,
+                    IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
+                    Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
                     Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
                 })
                 .OrderByDescending(x => x.Amount)
@@ -74,7 +78,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 .Select(arg => new Donation
                 {
                     Contributor = arg?.Key,
-                    Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
+                    IsDonationRealMoney = arg?.FirstOrDefault()?.IsDonationRealMoney ?? false,
+                    Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
+                    RealMoneyAmount = arg?.Sum(x => x?.RealMoneyAmount ?? 0d) is not null ? arg.Sum(x => x?.RealMoneyAmount ?? 0d) : 0d
                 })
                 .OrderByDescending(x => x.Amount)
                 .ToList();

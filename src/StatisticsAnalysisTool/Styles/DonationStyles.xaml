@@ -159,38 +159,32 @@
     <Style TargetType="fa5:ImageAwesome" x:Key="Donation.Image.RealMoney.Style">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Setter Property="Icon" Value="Solid_DollarSign" />
-        <Setter Property="Visibility" Value="Collapsed" />
         <Setter Property="Margin" Value="0,0,0,0" />
         <Setter Property="Width" Value="20" />
         <Setter Property="Height" Value="20" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsDonationRealMoney}" Value="true">
-                <Setter Property="Visibility" Value="Visible" />
-            </DataTrigger>
-        </Style.Triggers>
     </Style>
 
     <Style TargetType="TextBlock" x:Key="Donation.TextBlock.RealMoney.Style">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-        <Setter Property="Text" Value="{Binding Amount, StringFormat='{} {0:N0}'}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="FontWeight" Value="Light" />
         <Setter Property="MinWidth" Value="175" />
+        <Setter Property="Margin" Value="0,0,0,0" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsDonationRealMoney}" Value="true">
-                <Setter Property="Text" Value="{Binding RealMoneyAmount, StringFormat='{} {0:N2}'}" />
-            </DataTrigger>
-        </Style.Triggers>
     </Style>
 
     <DataTemplate x:Key="Donation" DataType="{x:Type models:Donation}">
         <StackPanel Orientation="Horizontal">
-            <Image Style="{StaticResource Donation.Image.Silver.Style}" ToolTip="{Binding TranslationSilver}" />
-            <fa5:ImageAwesome Style="{StaticResource Donation.Image.RealMoney.Style}" />
+            <StackPanel Orientation="Horizontal" Visibility="{Binding DonationSilverVisibility}">
+                <Image Style="{StaticResource Donation.Image.Silver.Style}" ToolTip="{Binding TranslationSilver}" />
+                <TextBlock Style="{StaticResource Donation.TextBlock.RealMoney.Style}" Text="{Binding Amount, StringFormat='{} {0:N0}'}" />
+            </StackPanel>
 
-            <TextBlock Style="{StaticResource Donation.TextBlock.RealMoney.Style}" />
+            <StackPanel Orientation="Horizontal" Visibility="{Binding DonationRealMoneyVisibility}">
+                <fa5:ImageAwesome Style="{StaticResource Donation.Image.RealMoney.Style}" />
+                <TextBlock Style="{StaticResource Donation.TextBlock.RealMoney.Style}" Text="{Binding RealMoneyAmount, StringFormat='{} {0:N2}'}" />
+            </StackPanel>
 
             <Image Style="{StaticResource Donation.Icon.Style}" />
             <TextBlock Text="{Binding Contributor}" MinWidth="200" FontSize="20" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />

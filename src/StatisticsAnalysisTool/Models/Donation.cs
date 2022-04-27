@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Enumerations;
 using System;
 using System.Text.Json.Serialization;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -12,7 +13,11 @@ public class Donation
     public double RealMoneyAmount { get; set; }
     public string Contributor { get; set; }
     public bool IsDonationRealMoney { get; set; } = false;
-    
+
+    [JsonIgnore] 
+    public Visibility DonationRealMoneyVisibility => (IsDonationRealMoney) ? Visibility.Visible : Visibility.Collapsed;
+    [JsonIgnore] 
+    public Visibility DonationSilverVisibility => (IsDonationRealMoney) ? Visibility.Collapsed : Visibility.Visible;
     [JsonIgnore]
     public DonationType DonationType
     {
