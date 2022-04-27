@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
-             xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="950" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:DonationViewModel}">
@@ -49,7 +48,7 @@
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
                 </StackPanel>
                 <Grid Visibility="{Binding TopRealMoneyDonationsVisibility, FallbackValue='Collapsed'}">
-                    <ScrollViewer Background="Brown" HorizontalScrollBarVisibility="Disabled" MinHeight="200" MaxHeight="300">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" MinHeight="200" MaxHeight="300">
                         <ItemsControl ItemsSource="{Binding TopRealMoneyDonations, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
                     </ScrollViewer>
                 </Grid>
