@@ -22,17 +22,17 @@
  },
  {
 	"Timestamp": "2022-04-26T00:00:00",
-	"Amount": 15,
+	"Amount": 150000,
 	"RealMoneyAmount": 0,
 	"Contributor": "Dicky",
-	"IsDonationRealMoney": true
+	"IsDonationRealMoney": false
  },
  {
 	"Timestamp": "2022-02-20T00:00:00",
-	"Amount": 10,
+	"Amount": 100000,
 	"RealMoneyAmount": 0,
 	"Contributor": "Dicky",
-	"IsDonationRealMoney": true
+	"IsDonationRealMoney": false
  },
  {
 	"Timestamp": "2022-04-26T00:00:00",
