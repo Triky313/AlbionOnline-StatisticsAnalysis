@@ -31,6 +31,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 }
 
                 var guid = parameters[0].ObjectToGuid();
+                // TODO: System.InvalidCastException: 'Unable to cast object of type 'System.Byte[]' to type 'System.Int64[]'.'
                 var mailIdArray = ((long[])parameters[3]).ToArray();
                 var subjectArray = ((string[])parameters[6]).ToArray();
                 var mailTypeTextArray = ((string[])parameters[10]).ToArray();

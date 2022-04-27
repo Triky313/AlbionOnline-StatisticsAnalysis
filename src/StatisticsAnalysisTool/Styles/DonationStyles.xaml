@@ -3,15 +3,197 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+                    xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
+                    xmlns:fa5="http://schemas.fontawesome.com/icons/"
                     mc:Ignorable="d">
+
+    <!--<Style TargetType="TextBlock" x:Key="Donation.Text">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Good}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.1}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Outstanding}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.2}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Excellent}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.3}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Masterpeace}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.3}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Legendary}">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.3}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>-->
+
+    <Style TargetType="Image" x:Key="Donation.Icon.Style">
+        <Setter Property="Source" Value="../Resources/DonationIcon/TOAD1.png" />
+        <Setter Property="Width" Value="70" />
+        <Setter Property="Height" Value="70" />
+        <Setter Property="Margin" Value="0,-15,-10,-15" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Toad}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/TOAD1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Marmot}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/MARMOT1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.HillMarmot}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/HILLMARMOT1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Rabbit}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/RABBIT.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.SnowRabbit}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/SNOWRABBIT1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Snake}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/SNAKE1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Fox}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/FOX.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Impala}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/IMPALA1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.MoaBird}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/MOABIRD1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Wolf}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/WOLF.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.CritterCougar}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/CRITTERCOUGAR1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.GiantToad}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/GIANTTOAD1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Boar}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/BOAR.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.GiantStag}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/GIANTSTAG1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.MonitorLizard}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/MONITORLIZARD1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.CritterMistCougar}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/CRITTERMISTCOUGAR1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Bear}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/BEAR.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.GiantSnake}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/GIANTSNAKE1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Marabou}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/MARABOU1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.CritterMistCougar2}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/CRITTERMISTCOUGAR2.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.DireWolf}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/DIREWOLF.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.GiantStagMoose}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/GIANTSTAGMOOSE1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Alligator}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/ALLIGATOR1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.DesertWolf}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/DESERTWOLF1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.CritterMistCougar3}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/CRITTERMISTCOUGAR3.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.DireBoar2}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/DIREBOAR2.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Rhino}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/RHINO1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Rhino2}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/RHINO2.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.DireBoar}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/DIREBOAR.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.CritterMistCougar4}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/CRITTERMISTCOUGAR4.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.DireBear2}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/DIREBEAR2.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.DireBear}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/DIREBEAR.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.CritterMistCougar5}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/CRITTERMISTCOUGAR5.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Mammoth}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/MAMMOTH1.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.AncientMammoth}">
+                <Setter Property="Source" Value="../Resources/DonationIcon/ANCIENTMAMMOTH1.png" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Image" x:Key="Donation.Image.Silver.Style">
+        <Setter Property="Source" Value="../Resources/silver.png" />
+        <Setter Property="Visibility" Value="Collapsed" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Margin" Value="0,0,0,0" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsDonationRealMoney}" Value="false">
+                <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="fa5:ImageAwesome" x:Key="Donation.Image.RealMoney.Style">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Icon" Value="Solid_DollarSign" />
+        <Setter Property="Visibility" Value="Collapsed" />
+        <Setter Property="Margin" Value="0,0,0,0" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsDonationRealMoney}" Value="true">
+                <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="Donation.TextBlock.RealMoney.Style">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Text" Value="{Binding Amount, StringFormat='{} {0:N0}'}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="MinWidth" Value="175" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsDonationRealMoney}" Value="true">
+                <Setter Property="Text" Value="{Binding RealMoneyAmount, StringFormat='{} {0:N2}'}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 
     <DataTemplate x:Key="Donation" DataType="{x:Type models:Donation}">
         <StackPanel Orientation="Horizontal">
-            <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
-            <TextBlock Text="{Binding Amount, StringFormat='{} {0:N0}'}" FontSize="20" FontWeight="Light" Width="150" 
-                       Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
-            <TextBlock Text="{Binding Contributor}" Width="100" FontSize="20" 
-                       Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+            <Image Style="{StaticResource Donation.Image.Silver.Style}" ToolTip="{Binding TranslationSilver}" />
+            <fa5:ImageAwesome Style="{StaticResource Donation.Image.RealMoney.Style}" />
+
+            <TextBlock Style="{StaticResource Donation.TextBlock.RealMoney.Style}" />
+
+            <Image Style="{StaticResource Donation.Icon.Style}" />
+            <TextBlock Text="{Binding Contributor}" MinWidth="200" FontSize="20" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
         </StackPanel>
     </DataTemplate>
 

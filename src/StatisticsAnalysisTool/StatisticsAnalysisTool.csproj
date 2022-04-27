@@ -142,6 +142,111 @@
     <Resource Include="Resources\alert_window_background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\DonationIcon\WOLF.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\ALLIGATOR1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\ANCIENTMAMMOTH1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\BEAR.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\BOAR.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\CRITTERCOUGAR1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\CRITTERMISTCOUGAR1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\CRITTERMISTCOUGAR2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\CRITTERMISTCOUGAR3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\CRITTERMISTCOUGAR4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\CRITTERMISTCOUGAR5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\DESERTWOLF1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\DIREBEAR.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\DIREBEAR2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\DIREBOAR.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\DIREBOAR2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\DIREWOLF.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\FOX.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\GIANTSNAKE1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\GIANTSTAG1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\GIANTSTAGMOOSE1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\GIANTTOAD1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\HILLMARMOT1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\IMPALA1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\MAMMOTH1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\MARABOU1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\MARMOT1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\MOABIRD1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\MONITORLIZARD1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\RABBIT.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\RHINO1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\RHINO2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\SNAKE1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\SNOWRABBIT1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DonationIcon\TOAD1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\fame.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -383,6 +488,41 @@
     <None Remove="Languages\ru-RU.xml" />
     <None Remove="Languages\tr-TR.xml" />
     <None Remove="Languages\zh-CN.xml" />
+    <None Remove="Resources\DonationIcon\ALLIGATOR1.png" />
+    <None Remove="Resources\DonationIcon\ANCIENTMAMMOTH1.png" />
+    <None Remove="Resources\DonationIcon\BEAR.png" />
+    <None Remove="Resources\DonationIcon\BOAR.png" />
+    <None Remove="Resources\DonationIcon\CRITTERCOUGAR1.png" />
+    <None Remove="Resources\DonationIcon\CRITTERMISTCOUGAR1.png" />
+    <None Remove="Resources\DonationIcon\CRITTERMISTCOUGAR2.png" />
+    <None Remove="Resources\DonationIcon\CRITTERMISTCOUGAR3.png" />
+    <None Remove="Resources\DonationIcon\CRITTERMISTCOUGAR4.png" />
+    <None Remove="Resources\DonationIcon\CRITTERMISTCOUGAR5.png" />
+    <None Remove="Resources\DonationIcon\DESERTWOLF1.png" />
+    <None Remove="Resources\DonationIcon\DIREBEAR.png" />
+    <None Remove="Resources\DonationIcon\DIREBEAR2.png" />
+    <None Remove="Resources\DonationIcon\DIREBOAR.png" />
+    <None Remove="Resources\DonationIcon\DIREBOAR2.png" />
+    <None Remove="Resources\DonationIcon\DIREWOLF.png" />
+    <None Remove="Resources\DonationIcon\FOX.png" />
+    <None Remove="Resources\DonationIcon\GIANTSNAKE1.png" />
+    <None Remove="Resources\DonationIcon\GIANTSTAG1.png" />
+    <None Remove="Resources\DonationIcon\GIANTSTAGMOOSE1.png" />
+    <None Remove="Resources\DonationIcon\GIANTTOAD1.png" />
+    <None Remove="Resources\DonationIcon\HILLMARMOT1.png" />
+    <None Remove="Resources\DonationIcon\IMPALA1.png" />
+    <None Remove="Resources\DonationIcon\MAMMOTH1.png" />
+    <None Remove="Resources\DonationIcon\MARABOU1.png" />
+    <None Remove="Resources\DonationIcon\MARMOT1.png" />
+    <None Remove="Resources\DonationIcon\MOABIRD1.png" />
+    <None Remove="Resources\DonationIcon\MONITORLIZARD1.png" />
+    <None Remove="Resources\DonationIcon\RABBIT.png" />
+    <None Remove="Resources\DonationIcon\RHINO1.png" />
+    <None Remove="Resources\DonationIcon\RHINO2.png" />
+    <None Remove="Resources\DonationIcon\SNAKE1.png" />
+    <None Remove="Resources\DonationIcon\SNOWRABBIT1.png" />
+    <None Remove="Resources\DonationIcon\TOAD1.png" />
+    <None Remove="Resources\DonationIcon\WOLF.png" />
     <None Remove="Resources\favor.png" />
     <None Remove="Resources\icon_daily_season_points.png" />
     <None Remove="Resources\might.png" />

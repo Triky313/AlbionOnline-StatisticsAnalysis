@@ -5,34 +5,54 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="950" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:DonationViewModel}">
     <Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical" Width="auto">
-                <TextBlock Text="{Binding Translation.HowCanIDonate, FallbackValue='HOW_CAN_I_DONATE?'}" FontSize="20" FontWeight="Light" 
+                <TextBlock Text="{Binding Translation.WhyDonate, FallbackValue='WHY_DONATE?'}" FontSize="20" FontWeight="Light" 
                            Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center"  />
-                <TextBlock Text="{Binding Translation.DonationDescription, FallbackValue=DONATION_DESCRIPTION}" FontSize="12" 
-                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center"  />
+                <TextBlock Text="{Binding Translation.WhyDonateDescription, FallbackValue=WHY_DONATE_DESCRIPTION}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" MaxWidth="700" FontSize="12" />
 
-                <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top">
+                <TextBlock Text="{Binding Translation.HowCanIDonate, FallbackValue='HOW_CAN_I_DONATE?'}" FontSize="20" FontWeight="Light" Margin="0,20,0,0"
+                           Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center"  />
+                <TextBlock Text="{Binding Translation.DonationDescription, FallbackValue=DONATION_DESCRIPTION}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" MaxWidth="700" FontSize="12" />
+
+                <!-- Silver total donation -->
+                <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,20,0,0">
                     <TextBlock Text="{Binding Translation.TopDonationsAllTime, FallbackValue=TOP_DONATIONS_ALL_TIME}" FontSize="16" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
                 </StackPanel>
-                <ScrollViewer Visibility="{Binding DonationsAllTimeVisibility, FallbackValue=Visible}" HorizontalScrollBarVisibility="Disabled" MinHeight="60">
+                <ScrollViewer Visibility="{Binding DonationsAllTimeVisibility, FallbackValue=Visible}" HorizontalScrollBarVisibility="Disabled" MinHeight="200" MaxHeight="300">
                     <ItemsControl ItemsSource="{Binding TopDonationsAllTime, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
                 </ScrollViewer>
                 <TextBlock Visibility="{Binding NoTopDonationsVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
                            Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center"  />
 
-                <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top">
+                <!-- Silver month donation -->
+                <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,20,0,0">
                     <TextBlock Text="{Binding Translation.TopDonationsThisMonth, FallbackValue=TOP_DONATIONS_THIS_MONTH}" FontSize="16" FontWeight="Light" 
                                Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
                 </StackPanel>
-                <ScrollViewer Visibility="{Binding DonationsThisMonthVisibility, FallbackValue=Visible}" HorizontalScrollBarVisibility="Disabled" MinHeight="60">
+                <ScrollViewer Visibility="{Binding DonationsThisMonthVisibility, FallbackValue=Visible}" HorizontalScrollBarVisibility="Disabled" MinHeight="200" MaxHeight="300">
                     <ItemsControl ItemsSource="{Binding TopDonationsThisMonth, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
                 </ScrollViewer>
                 <TextBlock Visibility="{Binding NoDonationsThisMonthVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center"  />
+
+                <!-- Real money donation -->
+                <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,20,0,0">
+                    <TextBlock Text="{Binding Translation.TopRealMoneyDonations, FallbackValue=TOP_REAL_MONEY_DONATIONS}" FontSize="16" FontWeight="Light" 
+                               Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
+                </StackPanel>
+                <Grid Visibility="{Binding TopRealMoneyDonationsVisibility, FallbackValue='Collapsed'}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" MinHeight="200" MaxHeight="300">
+                        <ItemsControl ItemsSource="{Binding TopRealMoneyDonations, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
+                    </ScrollViewer>
+                </Grid>
+                <TextBlock Visibility="{Binding NoTopRealMoneyDonationsVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
                            Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center"  />
             </StackPanel>
         </ScrollViewer>

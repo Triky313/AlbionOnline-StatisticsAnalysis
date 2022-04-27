@@ -9,7 +9,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -18,11 +17,14 @@ namespace StatisticsAnalysisTool.ViewModels
         private DonationTranslation _translation;
         private List<Donation> _topDonationsAllTime;
         private List<Donation> _topDonationsThisMonth;
-        private Visibility _donationsAllTimeVisibility;
-        private Visibility _noTopDonationsVisibility;
-        private Visibility _donationsThisMonthVisibility;
-        private Visibility _noDonationsThisMonthVisibility;
+        private Visibility _donationsAllTimeVisibility = Visibility.Collapsed;
+        private Visibility _noTopDonationsVisibility = Visibility.Visible;
+        private Visibility _donationsThisMonthVisibility = Visibility.Collapsed;
+        private Visibility _noDonationsThisMonthVisibility = Visibility.Visible;
         private List<Donation> _donations = new();
+        private List<Donation> _topRealMoneyDonations;
+        private Visibility _topRealMoneyDonationsVisibility = Visibility.Collapsed;
+        private Visibility _noTopRealMoneyDonationsVisibility = Visibility.Visible;
 
         public DonationViewModel()
         {
@@ -33,7 +35,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void GetDonations()
         {
-            var apiResult = Task.Run(async() => await ApiController.GetDonationsFromJsonAsync()).ConfigureAwait(false);
+            var apiResult = Task.Run(async () => await ApiController.GetDonationsFromJsonAsync()).ConfigureAwait(false);
             _donations = apiResult.GetAwaiter().GetResult();
         }
 
@@ -42,16 +44,39 @@ namespace StatisticsAnalysisTool.ViewModels
             var currentUtc = DateTime.UtcNow;
 
             TopDonationsAllTime = _donations?
+                .Where(x => x.IsDonationRealMoney == false)
+                // ReSharper disable once ConstantConditionalAccessQualifier
                 .GroupBy(x => x?.Contributor)
-                .Select(x => x?.First())
-                .OrderByDescending(x => x?.Amount)
+                .Select(arg => new Donation
+                {
+                    Contributor = arg?.Key,
+                    Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
+                })
+                .OrderByDescending(x => x.Amount)
                 .ToList();
 
             TopDonationsThisMonth = _donations?
-                .Where(x => x?.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month)
-                .GroupBy(x => x.Contributor)
-                .Select(x => x.First())
-                .OrderByDescending(x => x?.Amount)
+                .Where(x => x?.IsDonationRealMoney == false && x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month)
+                // ReSharper disable once ConstantConditionalAccessQualifier
+                .GroupBy(x => x?.Contributor)
+                .Select(arg => new Donation
+                {
+                    Contributor = arg?.Key,
+                    Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
+                })
+                .OrderByDescending(x => x.Amount)
+                .ToList();
+
+            TopRealMoneyDonations = _donations?
+                .Where(x => x.IsDonationRealMoney)
+                // ReSharper disable once ConstantConditionalAccessQualifier
+                .GroupBy(x => x?.Contributor)
+                .Select(arg => new Donation
+                {
+                    Contributor = arg?.Key,
+                    Amount = arg?.Sum(x => x?.Amount ?? 0L) is not null ? arg.Sum(x => x?.Amount ?? 0L) : 0L
+                })
+                .OrderByDescending(x => x.Amount)
                 .ToList();
 
             if (TopDonationsAllTime?.Count > 0)
@@ -64,6 +89,12 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 DonationsThisMonthVisibility = Visibility.Visible;
                 NoDonationsThisMonthVisibility = Visibility.Collapsed;
+            }
+
+            if (TopRealMoneyDonations?.Count > 0)
+            {
+                TopRealMoneyDonationsVisibility = Visibility.Visible;
+                NoTopRealMoneyDonationsVisibility = Visibility.Collapsed;
             }
         }
 
@@ -83,6 +114,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _topDonationsThisMonth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<Donation> TopRealMoneyDonations
+        {
+            get => _topRealMoneyDonations;
+            set
+            {
+                _topRealMoneyDonations = value;
                 OnPropertyChanged();
             }
         }
@@ -123,6 +164,26 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _noDonationsThisMonthVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility TopRealMoneyDonationsVisibility
+        {
+            get => _topRealMoneyDonationsVisibility;
+            set
+            {
+                _topRealMoneyDonationsVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility NoTopRealMoneyDonationsVisibility
+        {
+            get => _noTopRealMoneyDonationsVisibility;
+            set
+            {
+                _noTopRealMoneyDonationsVisibility = value;
                 OnPropertyChanged();
             }
         }
