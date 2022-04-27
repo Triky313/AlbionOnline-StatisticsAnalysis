@@ -9,11 +9,10 @@ public class Donation
 {
     public DateTime Timestamp { get; set; }
     public long Amount { get; set; }
+    public double RealMoneyAmount { get; set; }
     public string Contributor { get; set; }
     public bool IsDonationRealMoney { get; set; } = false;
-
-    [JsonIgnore] 
-    public double RealMoneyAmount => FixPoint.FromInternalValue(Amount).DoubleValue;
+    
     [JsonIgnore]
     public DonationType DonationType
     {
