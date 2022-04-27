@@ -16,60 +16,70 @@
  {
 	"Timestamp": "2022-04-26T00:00:00",
 	"Amount": 99999999,
+	"RealMoneyAmount": 0,
 	"Contributor": "Dicky",
 	"IsDonationRealMoney": false
  },
  {
 	"Timestamp": "2022-04-26T00:00:00",
 	"Amount": 15,
+	"RealMoneyAmount": 0,
 	"Contributor": "Dicky",
 	"IsDonationRealMoney": true
  },
  {
 	"Timestamp": "2022-02-20T00:00:00",
 	"Amount": 10,
+	"RealMoneyAmount": 0,
 	"Contributor": "Dicky",
 	"IsDonationRealMoney": true
  },
  {
 	"Timestamp": "2022-04-26T00:00:00",
 	"Amount": 2500000,
+	"RealMoneyAmount": 0,
 	"Contributor": "Rakaaria",
 	"IsDonationRealMoney": false
  },
  {
 	"Timestamp": "2022-04-26T00:00:00",
 	"Amount": 1350000,
+	"RealMoneyAmount": 0,
 	"Contributor": "Dicky",
 	"IsDonationRealMoney": false
  },
  {
 	"Timestamp": "2022-01-26T00:00:00",
 	"Amount": 99999999,
+	"RealMoneyAmount": 0,
 	"Contributor": "Dicky",
 	"IsDonationRealMoney": false
  },
  {
 	"Timestamp": "2022-02-26T00:00:00",
 	"Amount": 750000,
+	"RealMoneyAmount": 0,
 	"Contributor": "Rakaaria",
 	"IsDonationRealMoney": false
  },
  {
 	"Timestamp": "2022-03-26T00:00:00",
 	"Amount": 5000005,
+	"RealMoneyAmount": 0,
 	"Contributor": "Schmutzi",
 	"IsDonationRealMoney": false
  },
  {
 	"Timestamp": "2020-02-16T00:00:00",
 	"Amount": 5000,
+	"RealMoneyAmount": 0,
 	"Contributor": "Lolly",
 	"IsDonationRealMoney": false
  },
  {
 	"Timestamp": "2022-01-06T00:00:00",
 	"Amount": 5005555,
+	"RealMoneyAmount": 0,
 	"Contributor": "Thomas",
 	"IsDonationRealMoney": false
  }
