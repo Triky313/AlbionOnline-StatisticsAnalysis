@@ -30,9 +30,9 @@
 
     <Style TargetType="Image" x:Key="Donation.Icon.Style">
         <Setter Property="Source" Value="../Resources/DonationIcon/TOAD1.png" />
-        <Setter Property="Width" Value="75" />
-        <Setter Property="Height" Value="75" />
-        <Setter Property="Margin" Value="-10,-10,-10,-15" />
+        <Setter Property="Width" Value="70" />
+        <Setter Property="Height" Value="70" />
+        <Setter Property="Margin" Value="0,-15,-10,-15" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding DonationType}" Value="{x:Static enumerations:DonationType.Toad}">
                 <Setter Property="Source" Value="../Resources/DonationIcon/TOAD1.png" />
@@ -171,13 +171,26 @@
         </Style.Triggers>
     </Style>
 
+    <Style TargetType="TextBlock" x:Key="Donation.TextBlock.RealMoney.Style">
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+        <Setter Property="Text" Value="{Binding Amount, StringFormat='{} {0:N0}'}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="MinWidth" Value="175" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsDonationRealMoney}" Value="true">
+                <Setter Property="Text" Value="{Binding RealMoneyAmount, StringFormat='{} {0:N2}'}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <DataTemplate x:Key="Donation" DataType="{x:Type models:Donation}">
         <StackPanel Orientation="Horizontal">
             <Image Style="{StaticResource Donation.Image.Silver.Style}" ToolTip="{Binding TranslationSilver}" />
             <fa5:ImageAwesome Style="{StaticResource Donation.Image.RealMoney.Style}" />
 
-            <TextBlock Text="{Binding Amount, StringFormat='{} {0:N0}'}" FontSize="20" FontWeight="Light" MinWidth="175" VerticalAlignment="Center" 
-                       Foreground="{StaticResource SolidColorBrush.Text.1}" />
+            <TextBlock Style="{StaticResource Donation.TextBlock.RealMoney.Style}" />
 
             <Image Style="{StaticResource Donation.Icon.Style}" />
             <TextBlock Text="{Binding Contributor}" MinWidth="200" FontSize="20" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />

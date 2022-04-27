@@ -234,7 +234,7 @@
         PartyChangeLootSetting,
         PartyMarkObject,
         PartySetRole,
-        GetGuildMOTD,
+        GetGuildMotd,
         ExitEnterStart,
         ExitEnterCancel,
         QuestGiverRequest,
