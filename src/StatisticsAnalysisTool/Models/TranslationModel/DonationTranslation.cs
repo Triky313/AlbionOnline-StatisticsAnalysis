@@ -12,4 +12,5 @@ public class DonationTranslation
     public static string WhyDonate => LanguageController.Translation("WHY_DONATE");
     public static string WhyDonateDescription => LanguageController.Translation("WHY_DONATE_DESCRIPTION");
     public static string TopRealMoneyDonations => LanguageController.Translation("TOP_REAL_MONEY_DONATIONS");
+    public static string ItemsAreConvertedToSilver => LanguageController.Translation("ITEMS_ARE_CONVERTED_TO_SILVER");
 }

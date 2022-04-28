@@ -29,7 +29,9 @@
                     <ItemsControl ItemsSource="{Binding TopDonationsAllTime, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
                 </ScrollViewer>
                 <TextBlock Visibility="{Binding NoTopDonationsVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
-                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center"  />
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Translation.ItemsAreConvertedToSilver, FallbackValue=ITEMS_ARE_CONVERTED_TO_SILVER}" 
+                           FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.6}" VerticalAlignment="Center" />
 
                 <!-- Silver month donation -->
                 <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,20,0,0">
@@ -40,7 +42,9 @@
                     <ItemsControl ItemsSource="{Binding TopDonationsThisMonth, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource Donation}" />
                 </ScrollViewer>
                 <TextBlock Visibility="{Binding NoDonationsThisMonthVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
-                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center"  />
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Translation.ItemsAreConvertedToSilver, FallbackValue=ITEMS_ARE_CONVERTED_TO_SILVER}" 
+                           FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.6}" VerticalAlignment="Center" />
 
                 <!-- Real money donation -->
                 <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,20,0,0">
@@ -53,7 +57,7 @@
                     </ScrollViewer>
                 </Grid>
                 <TextBlock Visibility="{Binding NoTopRealMoneyDonationsVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
-                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center"  />
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
             </StackPanel>
         </ScrollViewer>
     </Grid>
