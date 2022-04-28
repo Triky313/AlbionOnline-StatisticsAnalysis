@@ -582,4 +582,13 @@
 	<translation name="NET_PROFIT_LAST_WEEK">Прибыль за прошлую неделю</translation>
 	<translation name="DELETE_SELECTED_STORAGE">Удалить выбранное хранилище</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_STORAGE">Вы уверены что хотите удалить это хранилище? (Удаляет все вкладки выбранного банка)</translation>
+	<translation name="DONATIONS">Пожертвование</translation>
+	<translation name="HOW_CAN_I_DONATE">Как я могу пожертвовать?</translation>
+	<translation name="TOP_DONATIONS_ALL_TIME">Топ пожертвований за все время</translation>
+	<translation name="TOP_DONATIONS_THIS_MONTH">Топ пожертвований за этот месяц</translation>
+	<translation name="DONATION_DESCRIPTION">Очень просто, напиши сообщение Triky313, что ты хочешь дать мне что-то и ты получишь сообщение когда я открою доступ к острову. Затем положи вещи в вкладку SAT Donation. Также вы можете уточнить сделать ли пожертвование анонимным.</translation>
+	<translation name="NO_DONATION_YET">Пока нет пожертвований! :(</translation>
+	<translation name="WHY_DONATE">Почему стоит пожертвовать?</translation>
+	<translation name="TOP_REAL_MONEY_DONATIONS">Топ пожертвований в реальной валюте</translation>
+	<translation name="WHY_DONATE_DESCRIPTION">Это приложение существует с июня 2019. Почти каждую неделю я тратил от 10 часов на разработку и улучшение программы и я люблю это дело. Вот почему у меня нет много времени на сам Albion Online. Так что если вы хотите поддержать это приложение просто пожертвуйте несколько вещей.</translation>
 </translations>
