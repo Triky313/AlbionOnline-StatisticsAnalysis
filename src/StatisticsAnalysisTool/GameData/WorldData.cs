@@ -19,6 +19,11 @@ namespace StatisticsAnalysisTool.GameData
         public static ObservableCollection<WorldJsonObject> MapData;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         
+        public static string GetUniqueNameOrNull(string index)
+        {
+            return MapData?.FirstOrDefault(x => x?.Index == index)?.UniqueName;
+        }
+
         public static string GetUniqueNameOrDefault(string index)
         {
             var name = MapData?.FirstOrDefault(x => x.Index == index)?.UniqueName ?? index;
@@ -152,6 +157,11 @@ namespace StatisticsAnalysisTool.GameData
 
         public static string GetWorldJsonTypeByIndex(string index)
         {
+            if (index == null)
+            {
+                return null;
+            }
+
             var splitName = index.Split(new[] { "@" }, StringSplitOptions.RemoveEmptyEntries);
             if (index.ToLower().Contains('@') && splitName.Length > 0 && !string.IsNullOrEmpty(splitName[0]))
             {

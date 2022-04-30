@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 
@@ -23,6 +22,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
+
+            CreateRandomClusterInfosForTracking(0);
         }
 
         public void RegisterEvents()
@@ -44,36 +45,23 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
         {
             CurrentCluster.ClusterInfoFullyAvailable = false;
-            CurrentCluster.Entered = DateTime.UtcNow;
-            CurrentCluster.MapType = mapType;
-            CurrentCluster.Guid = mapGuid;
-            CurrentCluster.Index = clusterIndex;
-            CurrentCluster.InstanceName = instanceName;
-            CurrentCluster.WorldMapDataType = worldMapDataType;
-            CurrentCluster.DungeonInformation = dungeonInformation;
-
-            CurrentCluster.MainClusterIndex = mainClusterIndex;
-            CurrentCluster.WorldJsonType = null;
-            CurrentCluster.File = null;
-
-            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
-                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'",
-                ConsoleManager.EventMapChangeColor);
+            CurrentCluster.SetClusterInfo(mapType, mapGuid, clusterIndex, instanceName, worldMapDataType, dungeonInformation, mainClusterIndex);
         }
 
         public void SetJoinClusterInformation(string index, string mainClusterIndex)
         {
-            CurrentCluster.MainClusterIndex ??= mainClusterIndex;
-            CurrentCluster.WorldJsonType = WorldData.GetWorldJsonTypeByIndex(index) ?? WorldData.GetWorldJsonTypeByIndex(mainClusterIndex) ?? string.Empty;
-            CurrentCluster.File = WorldData.GetFileByIndex(index) ?? WorldData.GetFileByIndex(mainClusterIndex) ?? string.Empty;
-
+            CurrentCluster.SetJoinClusterInfo(index, mainClusterIndex);
             CurrentCluster.ClusterInfoFullyAvailable = true;
 
             if (_trackingController.IsTrackingAllowedByMainCharacter())
             {
                 OnChangeCluster?.Invoke(CurrentCluster);
             }
+
+            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'");
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
+                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'",
+                ConsoleManager.EventMapChangeColor);
         }
 
         public void SetAndResetValues(ClusterInfo currentCluster)
@@ -91,21 +79,17 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindowViewModel.EnteredCluster.Insert(0, currentCluster);
+                var newCluster = new ClusterInfo(currentCluster);
+                _mainWindowViewModel.EnteredCluster.Insert(0, newCluster);
                 RemovesClusterIfMoreThanLimit();
             });
         }
 
         private void RemovesClusterIfMoreThanLimit()
         {
-            foreach (var cluster in _mainWindowViewModel.EnteredCluster.OrderBy(x => x.Entered))
+            if (_mainWindowViewModel.EnteredCluster?.Count > MaxEnteredCluster)
             {
-                if (_mainWindowViewModel.EnteredCluster?.Count <= MaxEnteredCluster)
-                {
-                    break;
-                }
-
-                _ = _mainWindowViewModel.EnteredCluster.Remove(cluster);
+                _mainWindowViewModel?.EnteredCluster?.RemoveAt(_mainWindowViewModel.EnteredCluster.Count - 1);
             }
         }
 
@@ -123,6 +107,31 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             _mainWindowViewModel.UserTrackingBindings.IslandName = currentCluster.InstanceName;
+        }
+
+        #endregion
+
+        #region Test methods
+
+        private static readonly Random Random = new ();
+
+        private static T RandomEnumValue<T>()
+        {
+            var v = Enum.GetValues(typeof(T));
+            return (T)v.GetValue(Random.Next(v.Length));
+        }
+
+        private void CreateRandomClusterInfosForTracking(int runs)
+        {
+            for (var i = 0; i < runs; i++)
+            {
+                var clusterInfo = new ClusterInfo();
+                var value = RandomEnumValue<MapType>();
+
+                clusterInfo.SetClusterInfo(value, Guid.NewGuid(), "3000", "Meine Super Insel", "@ISLAND", null, "4001");
+
+                UpdateClusterTracking(clusterInfo);
+            }
         }
 
         #endregion

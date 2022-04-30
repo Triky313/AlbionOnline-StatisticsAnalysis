@@ -1,6 +1,6 @@
 ﻿namespace StatisticsAnalysisTool.Enumerations
 {
-    public enum ClusterType
+    public enum ClusterMode
     {
         Unknown,
         SafeArea,

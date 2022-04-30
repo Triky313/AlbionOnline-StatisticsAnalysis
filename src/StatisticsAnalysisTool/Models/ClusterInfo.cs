@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using System;
 
@@ -19,17 +20,111 @@ namespace StatisticsAnalysisTool.Models
 
         // Join data
         public string MainClusterIndex { get; set; }
-        public string WorldJsonType { get; set; }
-        public string File { get; set; }
+        public string WorldJsonType { get; private set; }
+        public string File { get; private set; }
 
-        public string UniqueName => WorldData.GetUniqueNameOrDefault(Index) ?? WorldData.GetMapNameByMapType(MapType);
-        public string UniqueClusterName => WorldData.GetUniqueNameOrDefault(Index) ?? InstanceName ?? string.Empty;
-        public ClusterType ClusterType => GetClusterType(WorldJsonType);
-        public bool IsAvalonClusterTunnel => IsAvalonClusterTunnelByType(WorldJsonType);
-        public AvalonTunnelType AvalonTunnelType => GetTunnelType(WorldJsonType);
-        public Tier Tier => GetTier(File);
+        public string UniqueName { get; private set; }
+        public string UniqueClusterName { get; private set; }
+        public ClusterMode ClusterMode { get; private set; }
+        public AvalonTunnelType AvalonTunnelType { get; private set; }
+        public Tier Tier { get; private set; }
+        public string MapTypeString { get; private set; }
+        public string ClusterHistoryString1 { get; private set; }
+        public string ClusterHistoryString2 { get; private set; }
+        public string ClusterHistoryString3 { get; private set; }
 
-        public string TierString 
+        public ClusterInfo()
+        {
+        }
+
+        public ClusterInfo(ClusterInfo clusterInfo)
+        {
+            ClusterInfoFullyAvailable = clusterInfo.ClusterInfoFullyAvailable;
+            Entered = clusterInfo.Entered;
+            MapType = clusterInfo.MapType;
+            Guid = clusterInfo.Guid;
+            Index = clusterInfo.Index;
+            InstanceName = clusterInfo.InstanceName;
+            WorldMapDataType = clusterInfo.WorldMapDataType;
+            DungeonInformation = clusterInfo.DungeonInformation;
+            MainClusterIndex = clusterInfo.MainClusterIndex;
+            WorldJsonType = clusterInfo.WorldJsonType;
+            File = clusterInfo.File;
+            UniqueName = clusterInfo.UniqueName;
+            UniqueClusterName = clusterInfo.UniqueClusterName;
+            Tier = clusterInfo.Tier;
+            ClusterMode = clusterInfo.ClusterMode;
+            AvalonTunnelType = clusterInfo.AvalonTunnelType;
+            MapTypeString = clusterInfo.MapTypeString;
+            ClusterHistoryString();
+        }
+
+        public void SetClusterInfo(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
+        {
+            Entered = DateTime.UtcNow;
+            MapType = mapType;
+            Guid = mapGuid;
+            Index = clusterIndex;
+            InstanceName = instanceName;
+            WorldMapDataType = worldMapDataType;
+            DungeonInformation = dungeonInformation;
+
+            MainClusterIndex = mainClusterIndex;
+            WorldJsonType = null;
+            File = null;
+
+            UniqueName = WorldData.GetUniqueNameOrNull(Index);
+            UniqueClusterName = WorldData.GetUniqueNameOrDefault(Index) ?? InstanceName ?? string.Empty;
+            MapTypeString = GetMapTypeName(MapType);
+        }
+
+        public void SetJoinClusterInfo(string index, string mainClusterIndex)
+        {
+            MainClusterIndex ??= mainClusterIndex;
+            WorldJsonType = WorldData.GetWorldJsonTypeByIndex(index) ?? WorldData.GetWorldJsonTypeByIndex(mainClusterIndex) ?? string.Empty;
+            File = WorldData.GetFileByIndex(index) ?? WorldData.GetFileByIndex(mainClusterIndex) ?? string.Empty;
+
+            Tier = GetTier(File);
+            ClusterMode = GetClusterType(WorldJsonType);
+            AvalonTunnelType = GetTunnelType(WorldJsonType);
+            ClusterHistoryString();
+        }
+        
+        public void ClusterHistoryString()
+        {
+            if (ClusterMode is ClusterMode.Black or ClusterMode.Red or ClusterMode.Yellow or ClusterMode.SafeArea && MapType is MapType.Unknown)
+            {
+                ClusterHistoryString1 = ClusterModeString(ClusterMode);
+                ClusterHistoryString2 = UniqueName;
+                ClusterHistoryString3 = string.Empty;
+                return;
+            }
+
+            if (MapType is MapType.Arena or MapType.CorruptedDungeon or MapType.RandomDungeon or MapType.Expedition or MapType.HellGate)
+            {
+                ClusterHistoryString1 = MapTypeString;
+                ClusterHistoryString2 = string.Empty;
+                ClusterHistoryString3 = string.Empty;
+                return;
+            }
+
+            if (MapType is MapType.Island or MapType.Hideout)
+            {
+                ClusterHistoryString1 = ClusterModeString(ClusterMode);
+                ClusterHistoryString2 = InstanceName;
+                ClusterHistoryString3 = string.Empty;
+                return;
+            }
+
+            if (ClusterMode is ClusterMode.AvalonTunnel)
+            {
+                ClusterHistoryString1 = ClusterModeString(ClusterMode);
+                ClusterHistoryString2 = UniqueName;
+                ClusterHistoryString3 = AvalonTunnelType.ToString();
+            }
+        }
+
+        public string TierString
         {
             get
             {
@@ -49,6 +144,21 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
+        private static string ClusterModeString(ClusterMode clusterMode)
+        {
+            return clusterMode switch
+            {
+                ClusterMode.Island => LanguageController.Translation("ISLAND"),
+                ClusterMode.AvalonTunnel => LanguageController.Translation("AVALON_ROAD"),
+                ClusterMode.Black => LanguageController.Translation("BLACK_ZONE"),
+                ClusterMode.Red => LanguageController.Translation("RED_ZONE"),
+                ClusterMode.Yellow => LanguageController.Translation("YELLOW_ZONE"),
+                ClusterMode.SafeArea => LanguageController.Translation("SAFE_AREA"),
+                ClusterMode.Unknown => LanguageController.Translation("UNKNOWN_ZONE"),
+                _ => ""
+            };
+        }
+
         private static bool IsAvalonClusterTunnelByType(string type)
         {
             if (string.IsNullOrEmpty(type))
@@ -66,7 +176,7 @@ namespace StatisticsAnalysisTool.Models
                    || type.ToUpper().Contains("TUNNEL_ROYAL")
                    || type.ToUpper().Contains("TUNNEL_HIDEOUT");
         }
-        
+
         private static Tier GetTier(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -117,44 +227,44 @@ namespace StatisticsAnalysisTool.Models
             return Tier.Unknown;
         }
 
-        private static ClusterType GetClusterType(string type)
+        private static ClusterMode GetClusterType(string type)
         {
             if (string.IsNullOrEmpty(type))
             {
-                return ClusterType.Unknown;
+                return ClusterMode.Unknown;
             }
 
             if (IsAvalonClusterTunnelByType(type))
             {
-                return ClusterType.AvalonTunnel;
+                return ClusterMode.AvalonTunnel;
             }
 
-            if (type.ToUpper().Contains("SAFEAREA") || type.ToUpper().Equals("HIDEOUT"))
+            if (type.ToUpper().Contains("SAFEAREA") || type.ToUpper().Equals("HIDEOUT") || type.ToUpper().Contains("PLAYERCITY") )
             {
-                return ClusterType.SafeArea;
+                return ClusterMode.SafeArea;
             }
-            
+
             if (type.ToUpper().Contains("ISLAND"))
             {
-                return ClusterType.Island;
+                return ClusterMode.Island;
             }
-            
+
             if (type.ToUpper().Contains("YELLOW"))
             {
-                return ClusterType.Yellow;
+                return ClusterMode.Yellow;
             }
 
             if (type.ToUpper().Contains("RED"))
             {
-                return ClusterType.Red;
+                return ClusterMode.Red;
             }
 
             if (type.ToUpper().Contains("BLACK"))
             {
-                return ClusterType.Black;
+                return ClusterMode.Black;
             }
 
-            return ClusterType.Unknown;
+            return ClusterMode.Unknown;
         }
 
         private static AvalonTunnelType GetTunnelType(string type)
@@ -183,6 +293,21 @@ namespace StatisticsAnalysisTool.Models
             if (type.ToUpper().Contains("TUNNEL_HIDEOUT")) return AvalonTunnelType.TunnelHideout;
 
             return AvalonTunnelType.Unknown;
+        }
+
+        private static string GetMapTypeName(MapType mapType)
+        {
+            return mapType switch
+            {
+                MapType.RandomDungeon => LanguageController.Translation("DUNGEON"),
+                MapType.HellGate => LanguageController.Translation("HELL_GATE"),
+                MapType.CorruptedDungeon => LanguageController.Translation("CORRUPTED_DUNGEON"),
+                MapType.Island => LanguageController.Translation("ISLAND"),
+                MapType.Hideout => LanguageController.Translation("HIDEOUT"),
+                MapType.Expedition => LanguageController.Translation("EXPEDITION"),
+                MapType.Arena => LanguageController.Translation("ARENA"),
+                _ => ""
+            };
         }
     }
 }
