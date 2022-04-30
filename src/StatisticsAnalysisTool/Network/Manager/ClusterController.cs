@@ -44,36 +44,23 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void ChangeClusterInformation(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
         {
             CurrentCluster.ClusterInfoFullyAvailable = false;
-            CurrentCluster.Entered = DateTime.UtcNow;
-            CurrentCluster.MapType = mapType;
-            CurrentCluster.Guid = mapGuid;
-            CurrentCluster.Index = clusterIndex;
-            CurrentCluster.InstanceName = instanceName;
-            CurrentCluster.WorldMapDataType = worldMapDataType;
-            CurrentCluster.DungeonInformation = dungeonInformation;
-
-            CurrentCluster.MainClusterIndex = mainClusterIndex;
-            CurrentCluster.WorldJsonType = null;
-            CurrentCluster.File = null;
-
-            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
-                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'",
-                ConsoleManager.EventMapChangeColor);
+            CurrentCluster.SetClusterInfo(mapType, mapGuid, clusterIndex, instanceName, worldMapDataType, dungeonInformation, mainClusterIndex);
         }
 
         public void SetJoinClusterInformation(string index, string mainClusterIndex)
         {
-            CurrentCluster.MainClusterIndex ??= mainClusterIndex;
-            CurrentCluster.WorldJsonType = WorldData.GetWorldJsonTypeByIndex(index) ?? WorldData.GetWorldJsonTypeByIndex(mainClusterIndex) ?? string.Empty;
-            CurrentCluster.File = WorldData.GetFileByIndex(index) ?? WorldData.GetFileByIndex(mainClusterIndex) ?? string.Empty;
-
+            CurrentCluster.SetJoinClusterInfo(index, mainClusterIndex);
             CurrentCluster.ClusterInfoFullyAvailable = true;
 
             if (_trackingController.IsTrackingAllowedByMainCharacter())
             {
                 OnChangeCluster?.Invoke(CurrentCluster);
             }
+
+            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
+                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'",
+                ConsoleManager.EventMapChangeColor);
         }
 
         public void SetAndResetValues(ClusterInfo currentCluster)

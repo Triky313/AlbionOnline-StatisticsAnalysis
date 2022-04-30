@@ -19,15 +19,44 @@ namespace StatisticsAnalysisTool.Models
 
         // Join data
         public string MainClusterIndex { get; set; }
-        public string WorldJsonType { get; set; }
-        public string File { get; set; }
+        public string WorldJsonType { get; private set; }
+        public string File { get; private set; }
 
-        public string UniqueName => WorldData.GetUniqueNameOrDefault(Index) ?? WorldData.GetMapNameByMapType(MapType);
-        public string UniqueClusterName => WorldData.GetUniqueNameOrDefault(Index) ?? InstanceName ?? string.Empty;
-        public ClusterType ClusterType => GetClusterType(WorldJsonType);
-        public bool IsAvalonClusterTunnel => IsAvalonClusterTunnelByType(WorldJsonType);
-        public AvalonTunnelType AvalonTunnelType => GetTunnelType(WorldJsonType);
+        public string UniqueName { get; private set; }
+        public string UniqueClusterName { get; private set; }
+        public ClusterType ClusterType { get; private set; }
+        public bool IsAvalonClusterTunnel { get; private set; }
+        public AvalonTunnelType AvalonTunnelType { get; private set; }
         public Tier Tier => GetTier(File);
+
+        public void SetClusterInfo(MapType mapType, Guid? mapGuid, string clusterIndex, string instanceName, string worldMapDataType, byte[] dungeonInformation, string mainClusterIndex)
+        {
+            Entered = DateTime.UtcNow;
+            MapType = mapType;
+            Guid = mapGuid;
+            Index = clusterIndex;
+            InstanceName = instanceName;
+            WorldMapDataType = worldMapDataType;
+            DungeonInformation = dungeonInformation;
+
+            MainClusterIndex = mainClusterIndex;
+            WorldJsonType = null;
+            File = null;
+
+            UniqueName = WorldData.GetUniqueNameOrNull(clusterIndex);
+            UniqueClusterName = WorldData.GetUniqueNameOrDefault(Index) ?? InstanceName ?? string.Empty;
+        }
+
+        public void SetJoinClusterInfo(string index, string mainClusterIndex)
+        {
+            MainClusterIndex ??= mainClusterIndex;
+            WorldJsonType = WorldData.GetWorldJsonTypeByIndex(index) ?? WorldData.GetWorldJsonTypeByIndex(mainClusterIndex) ?? string.Empty;
+            File = WorldData.GetFileByIndex(index) ?? WorldData.GetFileByIndex(mainClusterIndex) ?? string.Empty;
+
+            ClusterType = GetClusterType(WorldJsonType);
+            IsAvalonClusterTunnel = IsAvalonClusterTunnelByType(WorldJsonType);
+            AvalonTunnelType = GetTunnelType(WorldJsonType);
+        }
 
         public string TierString 
         {
