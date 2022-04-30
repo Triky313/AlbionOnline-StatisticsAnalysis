@@ -157,6 +157,11 @@ namespace StatisticsAnalysisTool.GameData
 
         public static string GetWorldJsonTypeByIndex(string index)
         {
+            if (index == null)
+            {
+                return null;
+            }
+
             var splitName = index.Split(new[] { "@" }, StringSplitOptions.RemoveEmptyEntries);
             if (index.ToLower().Contains('@') && splitName.Length > 0 && !string.IsNullOrEmpty(splitName[0]))
             {

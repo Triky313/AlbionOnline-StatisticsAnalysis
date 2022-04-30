@@ -79,7 +79,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindowViewModel.EnteredCluster.Insert(0, currentCluster);
+                var newCluster = new ClusterInfo(currentCluster);
+                _mainWindowViewModel.EnteredCluster.Insert(0, newCluster);
                 RemovesClusterIfMoreThanLimit();
             });
         }
