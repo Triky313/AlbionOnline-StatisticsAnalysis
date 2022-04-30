@@ -85,6 +85,11 @@ namespace StatisticsAnalysisTool.ViewModels
                 .OrderByDescending(x => x.Amount)
                 .ToList();
 
+            SetDonationListVisibility();
+        }
+
+        private void SetDonationListVisibility()
+        {
             if (TopDonationsAllTime?.Count > 0)
             {
                 DonationsAllTimeVisibility = Visibility.Visible;

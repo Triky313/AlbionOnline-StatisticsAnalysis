@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 
@@ -85,14 +84,9 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void RemovesClusterIfMoreThanLimit()
         {
-            foreach (var cluster in _mainWindowViewModel.EnteredCluster.OrderBy(x => x.Entered))
+            if (_mainWindowViewModel.EnteredCluster?.Count > MaxEnteredCluster)
             {
-                if (_mainWindowViewModel.EnteredCluster?.Count <= MaxEnteredCluster)
-                {
-                    break;
-                }
-
-                _ = _mainWindowViewModel.EnteredCluster.Remove(cluster);
+                _mainWindowViewModel?.EnteredCluster?.RemoveAt(_mainWindowViewModel.EnteredCluster.Count - 1);
             }
         }
 
