@@ -95,7 +95,7 @@ namespace StatisticsAnalysisTool.Models
                    || type.ToUpper().Contains("TUNNEL_ROYAL")
                    || type.ToUpper().Contains("TUNNEL_HIDEOUT");
         }
-        
+
         private static Tier GetTier(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -162,12 +162,12 @@ namespace StatisticsAnalysisTool.Models
             {
                 return ClusterType.SafeArea;
             }
-            
+
             if (type.ToUpper().Contains("ISLAND"))
             {
                 return ClusterType.Island;
             }
-            
+
             if (type.ToUpper().Contains("YELLOW"))
             {
                 return ClusterType.Yellow;
