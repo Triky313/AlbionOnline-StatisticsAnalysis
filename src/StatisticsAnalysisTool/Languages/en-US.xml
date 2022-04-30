@@ -584,4 +584,10 @@
 	<translation name="TOP_REAL_MONEY_DONATIONS">Top real money donations</translation>
 	<translation name="WHY_DONATE_DESCRIPTION">This project has existed since June 2019. Almost every week I put +10 hours into this project and I love it. That's why I often don't have the time to play Albion Online. So if you want to make me happy and support this project, just donate a few items.</translation>
 	<translation name="ITEMS_ARE_CONVERTED_TO_SILVER">Items are converted to silver</translation>
+	<translation name="AVALON_ROAD">Avalon road</translation>
+	<translation name="BLACK_ZONE">Black region</translation>
+	<translation name="RED_ZONE">Red region</translation>
+	<translation name="YELLOW_ZONE">Yellow region</translation>
+	<translation name="SAFE_AREA">Safe region</translation>
+	<translation name="UNKNOWN_ZONE">Unknown region</translation>
 </translations>
