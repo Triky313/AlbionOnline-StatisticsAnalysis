@@ -509,7 +509,7 @@
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.SafeArea}">
+                            <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.SafeArea}">
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
@@ -519,7 +519,7 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.Island}">
+                            <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Island}">
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
@@ -529,7 +529,7 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.Yellow}">
+                            <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Yellow}">
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
@@ -539,7 +539,7 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.Red}">
+                            <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Red}">
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
@@ -549,7 +549,7 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.Black}">
+                            <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Black}">
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
@@ -559,7 +559,7 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.AvalonTunnel}">
+                            <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.AvalonTunnel}">
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
@@ -569,7 +569,7 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding ClusterType}" Value="{x:Static enumerations:ClusterType.Unknown}">
+                            <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Unknown}">
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
@@ -594,15 +594,93 @@
                             </TextBlock>
                         </Label.Content>
                     </Label>
-                    <Label Content="{Binding TierString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" MinWidth="30" MaxWidth="30" Margin="10,0, 0, 0" />
-                    <Label Content="{Binding ClusterType}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0" />
-                    <Label Content="{Binding UniqueName}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0" />
-                    <Label Content="{Binding InstanceName}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0">
+                    <Label Content="{Binding TierString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           MinWidth="30" MaxWidth="30" Margin="10,0, 0, 0" />
+                    <Label Content="{Binding ClusterMode}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.SafeArea}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Yellow}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Red}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Black}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.AvalonTunnel}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Label Content="{Binding UniqueName}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.SafeArea}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Yellow}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Red}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Black}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.AvalonTunnel}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Label Content="{Binding MapTypeString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding MapType}" Value="{x:Static gameData:MapType.RandomDungeon}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding MapType}" Value="{x:Static gameData:MapType.CorruptedDungeon}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding MapType}" Value="{x:Static gameData:MapType.HellGate}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding MapType}" Value="{x:Static gameData:MapType.Island}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding MapType}" Value="{x:Static gameData:MapType.Hideout}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Label Content="{Binding InstanceName}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                           MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0">
                         <Label.Style>
                             <Style TargetType="{x:Type Label}">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding MapType}" Value="{x:Static gameData:MapType.Island}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding MapType}" Value="{x:Static gameData:MapType.Hideout}">
                                         <Setter Property="Visibility" Value="Visible" />
                                     </DataTrigger>
                                 </Style.Triggers>

@@ -22,6 +22,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
+
+            CreateRandomClusterInfosForTracking(0);
         }
 
         public void RegisterEvents()
@@ -56,9 +58,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                 OnChangeCluster?.Invoke(CurrentCluster);
             }
 
-            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'");
+            Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'");
             ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
-                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterType}' MapType: '{CurrentCluster.MapType}'",
+                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'",
                 ConsoleManager.EventMapChangeColor);
         }
 
@@ -104,6 +106,31 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             _mainWindowViewModel.UserTrackingBindings.IslandName = currentCluster.InstanceName;
+        }
+
+        #endregion
+
+        #region Test methods
+
+        private static readonly Random Random = new ();
+
+        private static T RandomEnumValue<T>()
+        {
+            var v = Enum.GetValues(typeof(T));
+            return (T)v.GetValue(Random.Next(v.Length));
+        }
+
+        private void CreateRandomClusterInfosForTracking(int runs)
+        {
+            for (var i = 0; i < runs; i++)
+            {
+                var clusterInfo = new ClusterInfo();
+                var value = RandomEnumValue<MapType>();
+
+                clusterInfo.SetClusterInfo(value, Guid.NewGuid(), "3000", "Meine Super Insel", "@ISLAND", null, "4001");
+
+                UpdateClusterTracking(clusterInfo);
+            }
         }
 
         #endregion
