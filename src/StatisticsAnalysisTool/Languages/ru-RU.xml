@@ -591,4 +591,11 @@
 	<translation name="WHY_DONATE">Почему стоит пожертвовать?</translation>
 	<translation name="TOP_REAL_MONEY_DONATIONS">Топ пожертвований в реальной валюте</translation>
 	<translation name="WHY_DONATE_DESCRIPTION">Это приложение существует с июня 2019. Почти каждую неделю я тратил от 10 часов на разработку и улучшение программы и я люблю это дело. Вот почему у меня нет много времени на сам Albion Online. Так что если вы хотите поддержать это приложение просто пожертвуйте несколько вещей.</translation>
+	<translation name="ITEMS_ARE_CONVERTED_TO_SILVER">Указанное серебро конвертировано из стоимости предметов</translation>
+	<translation name="AVALON_ROAD">Авалонский путь</translation>
+	<translation name="BLACK_ZONE">Черная зона</translation>
+	<translation name="RED_ZONE">Красная зона</translation>
+	<translation name="YELLOW_ZONE">Желтая зона</translation>
+	<translation name="SAFE_AREA">Синяя зона</translation>
+	<translation name="UNKNOWN_ZONE">Неизвестно</translation>
 </translations>
