@@ -1,5 +1,6 @@
-﻿using System.Threading.Tasks;
-using StatisticsAnalysisTool.ViewModels;
+﻿using StatisticsAnalysisTool.ViewModels;
+using System.Diagnostics;
+using System.Windows.Navigation;
 
 namespace StatisticsAnalysisTool.UserControls
 {
@@ -12,6 +13,11 @@ namespace StatisticsAnalysisTool.UserControls
         {
             InitializeComponent();
             DataContext = new DonationViewModel();
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
         }
     }
 }
