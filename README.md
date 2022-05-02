@@ -77,5 +77,7 @@ Copy the en-US file and change everything, then all APP-CODES should be availabl
 ## This website
 [triky313.github.io/AlbionOnline-StatisticsAnalysis](https://triky313.github.io/AlbionOnline-StatisticsAnalysis/)
 
-## DONATION & BACKERS
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/N4N81FD7A)
+## DONATIONS
+This project has existed since June 2019. Almost every week I put +10 hours into this project and I love it. That's why I often don't have the time to play Albion Online. So if you want to make me happy and support this project, just donate a few items or donate on Patreon.
+
+<img src="https://user-images.githubusercontent.com/14247773/166248069-3211a206-b475-4e83-860b-e5c51b9554bf.png" data-canonical-src="https://www.patreon.com/triky313" width="40" height="40" /> [Patreon - Triky313](https://www.patreon.com/triky313)
