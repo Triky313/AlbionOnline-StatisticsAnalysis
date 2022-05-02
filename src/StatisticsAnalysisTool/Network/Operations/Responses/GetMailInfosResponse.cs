@@ -25,14 +25,21 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (!parameters.ContainsKey(0) || parameters[0] == null ||
                     !parameters.ContainsKey(3) || parameters[3] == null ||
                     !parameters.ContainsKey(6) || parameters[6] == null ||
-                    !parameters.ContainsKey(10) || parameters[10] == null)
+                    !parameters.ContainsKey(10) || parameters[10] == null ||
+                    !parameters[3].GetType().IsArray ||
+                    typeof(long[]).Name != parameters[3].GetType().Name)
                 {
                     return;
                 }
 
                 var guid = parameters[0].ObjectToGuid();
-                // TODO: System.InvalidCastException: 'Unable to cast object of type 'System.Byte[]' to type 'System.Int64[]'.'
                 var mailIdArray = ((long[])parameters[3]).ToArray();
+
+                if (mailIdArray is not {Length: > 0})
+                {
+                    return;
+                }
+
                 var subjectArray = ((string[])parameters[6]).ToArray();
                 var mailTypeTextArray = ((string[])parameters[10]).ToArray();
                 var timeStampArray = ((long[])parameters[11]).ToArray();
