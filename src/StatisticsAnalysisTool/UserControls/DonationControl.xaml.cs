@@ -1,7 +1,6 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using StatisticsAnalysisTool.ViewModels;
+using System.Diagnostics;
 using System.Windows.Navigation;
-using StatisticsAnalysisTool.ViewModels;
 
 namespace StatisticsAnalysisTool.UserControls
 {
