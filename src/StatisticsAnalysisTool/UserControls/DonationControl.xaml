@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="950" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:DonationViewModel}">
@@ -58,6 +59,30 @@
                 </Grid>
                 <TextBlock Visibility="{Binding NoTopRealMoneyDonationsVisibility, FallbackValue=Visible}" Text="{Binding Translation.NoDonationsYet, FallbackValue=NO_DONATIONS_YET}" FontSize="12" 
                            Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+
+                <!-- Patreon -->
+                <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,20,0,0">
+                    <TextBlock Text="Patreon" FontSize="16" FontWeight="Light" Width="200"
+                               Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
+                    <TextBlock Text="PayPal" FontSize="16" FontWeight="Light" Width="200"
+                               Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Grid Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" Height="72">
+                        <TextBlock>
+                            <Hyperlink NavigateUri="{Binding PatreonUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                                <fa5:ImageAwesome Icon="Brands_Patreon" Foreground="{StaticResource Solid.Color.Patreon}" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </Grid>
+                    <Grid Margin="0" HorizontalAlignment="Left" Width="200" Height="72" VerticalAlignment="Bottom">
+                        <TextBlock>
+                            <Hyperlink NavigateUri="{Binding DonateUrl}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}">
+                                <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>

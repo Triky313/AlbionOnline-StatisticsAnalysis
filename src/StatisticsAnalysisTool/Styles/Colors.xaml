@@ -140,6 +140,8 @@
     <Color x:Key="Color.Value.Might.Transparent">#3360AEE2</Color>
     <Color x:Key="Color.Value.Favor.Transparent">#331D70A2</Color>
 
+    <Color x:Key="Color.Patreon">#FFFF424D</Color>
+
     <SolidColorBrush x:Key="SolidColorBrush.Text.1" Color="{StaticResource Color.Text.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.2" Color="{StaticResource Color.Text.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.3" Color="{StaticResource Color.Text.3}"/>
@@ -264,4 +266,6 @@
     <SolidColorBrush x:Key="Solid.Color.Text.ToOldSecond" Color="{StaticResource Color.Text.ToOldSecond}"/>
     <SolidColorBrush x:Key="Solid.Color.Text.ToOldThird" Color="{StaticResource Color.Text.ToOldThird}"/>
     <SolidColorBrush x:Key="Solid.Color.Text.NoValue" Color="{StaticResource Color.Text.NoValue}"/>
+
+    <SolidColorBrush x:Key="Solid.Color.Patreon" Color="{StaticResource Color.Patreon}"/>
 </ResourceDictionary>

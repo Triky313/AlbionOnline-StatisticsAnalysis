@@ -28,6 +28,12 @@
         </Style.Triggers>
     </Style>-->
 
+    <Style TargetType="Image" x:Key="Donation.Icon.Patreon">
+        <Setter Property="Source" Value="../Assets/Digital-Patreon-Wordmark_Black.png" />
+        <Setter Property="Width" Value="350" />
+        <Setter Property="Height" Value="72" />
+    </Style>
+
     <Style TargetType="Image" x:Key="Donation.Icon.Style">
         <Setter Property="Source" Value="../Resources/DonationIcon/TOAD1.png" />
         <Setter Property="Width" Value="70" />

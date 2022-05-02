@@ -209,6 +209,9 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public static string PatreonUrl => Settings.Default.PatreonUrl;
+        public static string DonateUrl => Settings.Default.DonateUrl;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

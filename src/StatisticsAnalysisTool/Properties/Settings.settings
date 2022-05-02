@@ -101,5 +101,8 @@
     <Setting Name="VaultsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Vaults.json</Value>
     </Setting>
+    <Setting Name="PatreonUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://www.patreon.com/triky313</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
