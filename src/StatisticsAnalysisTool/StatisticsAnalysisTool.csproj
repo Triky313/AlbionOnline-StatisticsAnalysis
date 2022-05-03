@@ -455,7 +455,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.101" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.220" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.310801">
       <PrivateAssets>all</PrivateAssets>
@@ -466,7 +466,7 @@
     <PackageReference Include="log4net" Version="2.0.14" />
     <PackageReference Include="Pastel" Version="3.0.0" />
     <PackageReference Include="PhotonPackageParser" Version="4.1.0" />
-    <PackageReference Include="SharpPcap" Version="6.1.0" />
+    <PackageReference Include="SharpPcap" Version="6.2.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="7.0.0-preview.2.22152.2" />
   </ItemGroup>
