@@ -380,15 +380,12 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://www.patreon.com/triky313")]
         public string PatreonUrl {
             get {
                 return ((string)(this["PatreonUrl"]));
-            }
-            set {
-                this["PatreonUrl"] = value;
             }
         }
     }
