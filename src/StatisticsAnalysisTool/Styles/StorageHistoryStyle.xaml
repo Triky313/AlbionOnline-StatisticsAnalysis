@@ -5,7 +5,7 @@
     <DataTemplate DataType="{x:Type models:ContainerItem}">
         <Grid Height="80" Width="80" Margin="1">
             <Grid Background="{StaticResource SolidColorBrush.Background.3}">
-                <Image Source="{Binding Item.Icon}" Stretch="Fill" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+                <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Stretch="Fill" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
                 <Border VerticalAlignment="Bottom" HorizontalAlignment="Right">
                     <Border.Style>
                         <Style TargetType="{x:Type Border}">

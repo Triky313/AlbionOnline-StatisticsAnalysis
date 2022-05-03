@@ -70,15 +70,19 @@ namespace StatisticsAnalysisTool.Common
 
             try
             {
-                var userImage = new BitmapImage();
+                var userImage = new BitmapImage
+                {
+                    CacheOption = BitmapCacheOption.OnDemand
+                };
                 userImage.BeginInit();
-                userImage.CacheOption = BitmapCacheOption.OnDemand;
                 userImage.DecodePixelHeight = pixelHeight;
                 userImage.DecodePixelWidth = pixelWidth;
                 userImage.UriSource = new Uri(webPath);
                 userImage.EndInit();
                 if (freeze)
+                {
                     userImage.Freeze();
+                }
 
                 return userImage;
             }
