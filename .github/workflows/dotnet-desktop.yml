@@ -35,7 +35,7 @@ jobs:
     - name: Install .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: '6.0.101' # SDK Version to use; x will use the latest version of the 6.0 channel. Force 101 for global.json compatibility.
     - run: dotnet build src\StatisticsAnalysisTool
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
