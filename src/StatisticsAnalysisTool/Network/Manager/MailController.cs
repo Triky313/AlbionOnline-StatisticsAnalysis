@@ -193,6 +193,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 && mail.Timestamp.Date >= _mainWindowViewModel?.DatePickerMailsFrom.Date
                 && mail.Timestamp.Date <= _mainWindowViewModel?.DatePickerMailsTo.Date && (
                     (mail.LocationName != null && mail.LocationName.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty))
+                    || ($"T{mail.Item.Tier}.{mail.Item.Level}".ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty))
                     || mail.MailTypeDescription.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty) 
                     || (mail.Item != null && mail.Item.LocalizedName.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty))
                     || mail.MailContent.UnitPrice.ToString().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty) 
