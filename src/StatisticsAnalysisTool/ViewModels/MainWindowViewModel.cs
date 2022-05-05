@@ -848,38 +848,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 fragment.IsDamageMeterShowing = isDamageMeterShowing;
             }
         }
-
-        public void CopyDamageMeterToClipboard()
-        {
-            var output = string.Empty;
-            var counter = 1;
-
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Damage)
-            {
-                Clipboard.SetDataObject(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
-            }
-
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Dps)
-            {
-                Clipboard.SetDataObject(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n"));
-            }
-
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Heal)
-            {
-                Clipboard.SetDataObject(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Heal} Heal\n"));
-            }
-
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Hps)
-            {
-                Clipboard.SetDataObject(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n"));
-            }
-
-            if (DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
-            {
-                Clipboard.SetDataObject(DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
-            }
-        }
-
+        
         public void DamageMeterActivationToggle()
         {
             IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;

@@ -82,7 +82,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     Timestamp = arg?.FirstOrDefault()?.Timestamp ?? new DateTime(),
                     RealMoneyAmount = arg?.Sum(x => x?.RealMoneyAmount ?? 0d) is not null ? arg.Sum(x => x?.RealMoneyAmount ?? 0d) : 0d
                 })
-                .OrderByDescending(x => x.Amount)
+                .OrderByDescending(x => x.RealMoneyAmount)
                 .ToList();
 
             SetDonationListVisibility();
