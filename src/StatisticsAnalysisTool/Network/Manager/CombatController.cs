@@ -13,7 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {

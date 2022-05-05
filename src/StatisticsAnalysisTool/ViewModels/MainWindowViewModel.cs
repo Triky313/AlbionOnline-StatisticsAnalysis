@@ -1812,8 +1812,13 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _mailsSearchText = value;
-                MailCollectionView.Filter = TrackingController.MailController.Filter;
-                MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
+
+                if (_mailsSearchText.Length >= 2)
+                {
+                    MailCollectionView.Filter = TrackingController.MailController.Filter;
+                    MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
+                }
+                    
                 OnPropertyChanged();
             }
         }
