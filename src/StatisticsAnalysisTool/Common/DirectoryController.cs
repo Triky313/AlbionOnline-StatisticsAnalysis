@@ -7,10 +7,17 @@ namespace StatisticsAnalysisTool.Common
     {
         public static bool CreateDirectoryWhenNotExists(string directoryPath)
         {
+            if (string.IsNullOrEmpty(directoryPath))
+            {
+                return false;
+            }
+
             try
             {
                 if (!Directory.Exists(directoryPath))
+                {
                     Directory.CreateDirectory(directoryPath);
+                }
                 return true;
             }
             catch

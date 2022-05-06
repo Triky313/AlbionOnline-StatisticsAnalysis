@@ -1,8 +1,5 @@
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Notification;
-using System;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Manager

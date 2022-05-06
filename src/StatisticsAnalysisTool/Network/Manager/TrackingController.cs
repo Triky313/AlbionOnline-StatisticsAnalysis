@@ -36,7 +36,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel = mainWindowViewModel;
             _mainWindow = mainWindow;
             ClusterController = new ClusterController(this, mainWindowViewModel);
-            EntityController = new EntityController(this, mainWindowViewModel);
+            EntityController = new EntityController(mainWindowViewModel);
             DungeonController = new DungeonController(this, mainWindowViewModel);
             CombatController = new CombatController(this, _mainWindow, mainWindowViewModel);
             LootController = new LootController(this, mainWindowViewModel);
