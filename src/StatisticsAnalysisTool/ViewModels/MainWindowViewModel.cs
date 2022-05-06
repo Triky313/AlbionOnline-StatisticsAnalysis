@@ -84,7 +84,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = 0, ValuePerHour = 0, CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
         private bool _isShowOnlyFavoritesActive;
-        private DungeonCloseTimer _dungeonCloseTimer;
+        private DungeonCloseTimer _dungeonCloseTimer = new ();
         private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
         private double _dungeonStatsGridHeight = 82;
         private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);

@@ -121,7 +121,7 @@ namespace StatisticsAnalysisTool.Network
                 _startTime = DateTime.UtcNow;
             }
 
-            _dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            _dispatcherTimer.Interval = TimeSpan.FromSeconds(2);
             _dispatcherTimer.Tick += UpdateUi;
             _dispatcherTimer.Start();
         }
@@ -210,8 +210,6 @@ namespace StatisticsAnalysisTool.Network
 
             var duration = _startTime - DateTime.UtcNow;
             _mainWindowViewModel.MainTrackerTimer = duration.ToString("hh\\:mm\\:ss");
-
-            _mainWindowViewModel?.DungeonCloseTimer?.UpdateTimer(null, EventArgs.Empty);
         }
     }
 }

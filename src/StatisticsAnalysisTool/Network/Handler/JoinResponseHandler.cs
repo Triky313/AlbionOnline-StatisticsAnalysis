@@ -34,10 +34,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             SetCharacterTrackedVisibility(value.Username);
 
-            _mainWindowViewModel.DungeonCloseTimer = new DungeonCloseTimer
-            {
-                IsVisible = Visibility.Collapsed
-            };
+            _mainWindowViewModel.DungeonCloseTimer.Visibility = Visibility.Collapsed;
 
             await AddEntityAsync(value.UserObjectId, value.UserGuid, value.InteractGuid, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
 

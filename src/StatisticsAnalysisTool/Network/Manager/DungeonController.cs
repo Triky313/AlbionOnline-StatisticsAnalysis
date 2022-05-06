@@ -97,15 +97,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void UpdateDungeonSaveTimerUi(MapType mapType = MapType.Unknown)
         {
-            _mainWindowViewModel.DungeonCloseTimer = mapType == MapType.RandomDungeon
-                ? new DungeonCloseTimer
-                {
-                    IsVisible = Visibility.Visible
-                }
-                : new DungeonCloseTimer
-                {
-                    IsVisible = Visibility.Collapsed
-                };
+            _mainWindowViewModel.DungeonCloseTimer.Visibility = mapType == MapType.RandomDungeon ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void ResetDungeons()

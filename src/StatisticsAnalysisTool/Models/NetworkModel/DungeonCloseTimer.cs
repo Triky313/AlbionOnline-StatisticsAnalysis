@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
@@ -13,21 +14,13 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         private string _timerString;
         private bool _isDungeonClosed;
         private DateTime _endTime;
-        private Visibility _isVisible;
+        private Visibility _visibility = Visibility.Collapsed;
+        private readonly DispatcherTimer _dispatcherTimer = new();
 
         public DungeonCloseTimer()
         {
-            _endTime = DateTime.UtcNow.AddSeconds(90);
-        }
-
-        public string TimerString
-        {
-            get => _timerString;
-            set
-            {
-                _timerString = value;
-                OnPropertyChanged();
-            }
+            _dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            _dispatcherTimer.Tick += UpdateTimer;
         }
 
         public bool IsDungeonClosed
@@ -40,35 +33,58 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             }
         }
 
-        public Visibility IsVisible {
-            get => _isVisible;
+        public string TimerString
+        {
+            get => _timerString;
             set
             {
-                _isVisible = value;
+                _timerString = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public Visibility Visibility {
+            get => _visibility;
+            set
+            {
+                _visibility = value;
+
+                switch (_visibility)
+                {
+                    case Visibility.Visible when !_dispatcherTimer.IsEnabled:
+                        _endTime = DateTime.UtcNow.AddSeconds(90);
+                        _dispatcherTimer.Start();
+                        break;
+                    case Visibility.Collapsed or Visibility.Hidden when _dispatcherTimer.IsEnabled:
+                        _dispatcherTimer.Stop();
+                        break;
+                }
+
                 OnPropertyChanged();
             }
         }
 
         public void UpdateTimer(object sender, EventArgs e)
         {
-            if (IsDungeonClosed)
-            {
-                return;
-            }
-
             var duration = _endTime - DateTime.UtcNow;
             TimerString = duration.ToString("hh\\:mm\\:ss");
-
+            
             if (duration.TotalSeconds <= 0)
             {
                 IsDungeonClosed = true;
+                _dispatcherTimer.Stop();
             }
         }
 
         private void PerformRefreshDungeonTimer()
         {
             _endTime = DateTime.UtcNow.AddSeconds(90);
-            IsDungeonClosed = false;
+
+            if (!_dispatcherTimer.IsEnabled)
+            {
+                IsDungeonClosed = false;
+                _dispatcherTimer.Start();
+            }
         }
 
         private ICommand _refreshDungeonTimer;

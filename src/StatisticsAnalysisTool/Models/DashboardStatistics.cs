@@ -15,7 +15,7 @@ public class DashboardStatistics
 
     public void Add(DailyValues dailyValues)
     {
-        var dailyValue = DailyValues.FirstOrDefault(x => x.Date.Date == dailyValues.Date.Date && x.ValueType == dailyValues.ValueType);
+        var dailyValue = DailyValues.ToList().FirstOrDefault(x => x.Date.Date == dailyValues.Date.Date && x.ValueType == dailyValues.ValueType);
 
         if (dailyValue == null)
         {
