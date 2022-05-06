@@ -29,6 +29,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static ObservableCollection<Item> Items;
         public static ItemsJson ItemsJson;
+        // TODO: Remove ToggleOnColor and ToggleOffColor for better test scenarios
 
         public static readonly Brush ToggleOnColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Accent.Blue.2"]);
 
