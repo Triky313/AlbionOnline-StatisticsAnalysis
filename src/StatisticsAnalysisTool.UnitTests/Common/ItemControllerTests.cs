@@ -1,30 +1,24 @@
-﻿using NUnit.Framework;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using System.Collections.ObjectModel;
+using Xunit;
 
 namespace StatisticsAnalysisTool.UnitTests.Common
 {
-    [Parallelizable]
     public class ItemControllerTests
     {
-        private App _app;
-
-        [SetUp]
-        public void Setup()
+        public ItemControllerTests()
         {
-            if (_app != null)
-            {
-                return;
-            }
-
-            _app = new App();
-            _app.InitializeComponent();
+            //var app = new App();
+            //app.InitializeComponent();
         }
 
-        [Test]
+        [Fact]
         public void GetItemByIndex_WithValidValue_ReturnTrue()
         {
+            var app = new App();
+            app.InitializeComponent();
+
             var receivedItem1 = new Item() { Index = 114 };
             var receivedItem2 = new Item() { Index = 11 };
             var receivedItem3 = new Item() { Index = 512 };
@@ -43,9 +37,12 @@ namespace StatisticsAnalysisTool.UnitTests.Common
             Assert.Contains(expectedItem, itemList);
         }
 
-        [Test]
+        [Fact]
         public void GetItemByUniqueName_WithValidValue_ReturnTrue()
         {
+            //var app = new App();
+            //app.InitializeComponent();
+
             var receivedItem1 = new Item() { UniqueName = "T6_CAPEITEM_MORGANA" };
             var receivedItem2 = new Item() { UniqueName = "T7_HEAD_LEATHER_SET1" };
             var receivedItem3 = new Item() { UniqueName = "T8_BACKPACK_GATHERER_FIBER@2" };
@@ -66,9 +63,12 @@ namespace StatisticsAnalysisTool.UnitTests.Common
             Assert.Contains(expectedItem, itemList);
         }
 
-        [Test]
+        [Fact]
         public void IsTrash_WithExistingTrashItem_ReturnTrue()
         {
+            var app = new App();
+            app.InitializeComponent();
+
             var receivedItem1 = new Item() { Index = 114, UniqueName = "T1_SWORD" };
             var receivedItem2 = new Item() { Index = 11, UniqueName = "T3_STAFF" };
             var receivedItem3 = new Item() { Index = 512, UniqueName = "T5_TRASH" };
@@ -83,12 +83,15 @@ namespace StatisticsAnalysisTool.UnitTests.Common
             ItemController.Items = itemList;
 
             var result = ItemController.IsTrash(512);
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [Test]
+        [Fact]
         public void IsTrash_TryToGetNotExistItem_ReturnTrue()
         {
+            var app = new App();
+            app.InitializeComponent();
+
             var receivedItem1 = new Item() { Index = 114, UniqueName = "T1_SWORD" };
             var receivedItem2 = new Item() { Index = 11, UniqueName = "T3_STAFF" };
             var receivedItem3 = new Item() { Index = 512, UniqueName = "T5_TRASH" };
@@ -103,12 +106,15 @@ namespace StatisticsAnalysisTool.UnitTests.Common
             ItemController.Items = itemList;
 
             var result = ItemController.IsTrash(77);
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [Test]
+        [Fact]
         public void IsTrash_GetItemWithoutTrashInName_ReturnFalse()
         {
+            var app = new App();
+            app.InitializeComponent();
+
             var receivedItem1 = new Item() { Index = 114, UniqueName = "T1_SWORD" };
             var receivedItem2 = new Item() { Index = 11, UniqueName = "T3_STAFF" };
             var receivedItem3 = new Item() { Index = 512, UniqueName = "T5_JACKET" };
@@ -123,10 +129,10 @@ namespace StatisticsAnalysisTool.UnitTests.Common
             ItemController.Items = itemList;
 
             var result = ItemController.IsTrash(512);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void GetItemLevel_WithValidValue_ReturnEqualValue()
         {
             var result = ItemController.GetItemLevel("T3_SWORD@2");
@@ -135,11 +141,11 @@ namespace StatisticsAnalysisTool.UnitTests.Common
             var expected = 2;
             var expected2 = 3;
 
-            Assert.AreEqual(expected, result, 0);
-            Assert.AreEqual(expected2, result2, 0);
+            Assert.Equal(expected, result);
+            Assert.Equal(expected2, result2);
         }
 
-        [Test]
+        [Fact]
         public void GetItemLevel_WithInvalidValue_ReturnEqualValue()
         {
             var result = ItemController.GetItemLevel("T3_SWORD");
@@ -148,8 +154,8 @@ namespace StatisticsAnalysisTool.UnitTests.Common
             var expected = 0;
             var expected2 = 0;
 
-            Assert.AreEqual(expected, result, 0);
-            Assert.AreEqual(expected2, result2, 0);
+            Assert.Equal(expected, result);
+            Assert.Equal(expected2, result2);
         }
     }
 }
