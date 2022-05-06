@@ -182,9 +182,9 @@ namespace StatisticsAnalysisTool.Common
 
         #region Items
 
-        public static Item GetItemByIndex(int index)
+        public static Item GetItemByIndex(int? index)
         {
-            return Items?.FirstOrDefault(i => i.Index == index);
+            return index == null ? null : Items?.FirstOrDefault(i => i.Index == index);
         }
 
         public static Item GetItemByUniqueName(string uniqueName)

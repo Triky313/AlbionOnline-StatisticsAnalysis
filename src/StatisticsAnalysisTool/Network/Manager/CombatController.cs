@@ -49,6 +49,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
+            var gameObjectValue = gameObject?.Value;
+
 
             if (gameObject?.Value == null
                 || gameObject.Value.Value?.ObjectType != GameObjectType.Player
@@ -85,10 +87,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 gameObject.Value.Value.Heal += (int)Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
             }
 
-            if (gameObject.Value.Value?.CombatStart == null)
-            {
-                gameObject.Value.Value.CombatStart = DateTime.UtcNow;
-            }
+            gameObjectValue.CombatStart ??= DateTime.UtcNow;
 
             if (IsUiUpdateAllowed())
             {
@@ -136,9 +135,11 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private static void UpdateDamageMeterFragment(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject, List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
-            if (healthChangeObject.Value?.CharacterEquipment?.MainHand != null)
+            var healthChangeObjectValue = healthChangeObject.Value;
+
+            if (healthChangeObjectValue?.CharacterEquipment?.MainHand != null)
             {
-                var item = ItemController.GetItemByIndex((int)healthChangeObject.Value?.CharacterEquipment?.MainHand);
+                var item = ItemController.GetItemByIndex(healthChangeObjectValue.CharacterEquipment?.MainHand);
                 if (item != null)
                 {
                     fragment.CauserMainHand = item;
@@ -146,34 +147,34 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             // Damage
-            if (healthChangeObject.Value?.Damage > 0)
+            if (healthChangeObjectValue?.Damage > 0)
             {
-                fragment.DamageInPercent = (double)healthChangeObject.Value.Damage / highestDamage * 100;
-                fragment.Damage = (long)healthChangeObject.Value?.Damage;
+                fragment.DamageInPercent = (double)healthChangeObjectValue.Damage / highestDamage * 100;
+                fragment.Damage = healthChangeObjectValue.Damage;
             }
 
-            if (healthChangeObject.Value?.Dps != null)
+            if (healthChangeObjectValue?.Dps != null)
             {
-                fragment.Dps = healthChangeObject.Value.Dps;
+                fragment.Dps = healthChangeObjectValue.Dps;
             }
 
             // Heal
-            if (healthChangeObject.Value?.Heal > 0)
+            if (healthChangeObjectValue?.Heal > 0)
             {
-                fragment.HealInPercent = (double)healthChangeObject.Value.Heal / highestHeal * 100;
-                fragment.Heal = (long)healthChangeObject.Value?.Heal;
+                fragment.HealInPercent = (double)healthChangeObjectValue.Heal / highestHeal * 100;
+                fragment.Heal = healthChangeObjectValue.Heal;
             }
 
-            if (healthChangeObject.Value?.Hps != null)
+            if (healthChangeObjectValue?.Hps != null)
             {
-                fragment.Hps = healthChangeObject.Value.Hps;
+                fragment.Hps = healthChangeObjectValue.Hps;
             }
 
             // Generally
-            if (healthChangeObject.Value != null)
+            if (healthChangeObjectValue != null)
             {
-                fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObject.Value.Damage);
-                fragment.HealPercentage = entities.GetHealPercentage(healthChangeObject.Value.Heal);
+                fragment.DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage);
+                fragment.HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal);
             }
         }
 
@@ -187,22 +188,23 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
+            var healthChangeObjectValue = healthChangeObject.Value;
             var item = ItemController.GetItemByIndex(healthChangeObject.Value?.CharacterEquipment?.MainHand ?? 0);
 
             var damageMeterFragment = new DamageMeterFragment
             {
-                CauserGuid = healthChangeObject.Value.UserGuid,
-                Damage = healthChangeObject.Value.Damage,
-                Dps = healthChangeObject.Value.Dps,
-                DamageInPercent = (double)healthChangeObject.Value.Damage / highestDamage * 100,
-                DamagePercentage = entities.GetDamagePercentage(healthChangeObject.Value.Damage),
+                CauserGuid = healthChangeObjectValue.UserGuid,
+                Damage = healthChangeObjectValue.Damage,
+                Dps = healthChangeObjectValue.Dps,
+                DamageInPercent = (double)healthChangeObjectValue.Damage / highestDamage * 100,
+                DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage),
 
-                Heal = healthChangeObject.Value.Heal,
-                Hps = healthChangeObject.Value.Hps,
-                HealInPercent = (double)healthChangeObject.Value.Heal / highestHeal * 100,
-                HealPercentage = entities.GetHealPercentage(healthChangeObject.Value.Heal),
+                Heal = healthChangeObjectValue.Heal,
+                Hps = healthChangeObjectValue.Hps,
+                HealInPercent = (double)healthChangeObjectValue.Heal / highestHeal * 100,
+                HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal),
 
-                Name = healthChangeObject.Value.Name,
+                Name = healthChangeObjectValue.Name,
                 CauserMainHand = item
             };
 
