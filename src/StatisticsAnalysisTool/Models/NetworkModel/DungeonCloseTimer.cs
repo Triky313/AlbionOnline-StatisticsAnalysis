@@ -49,7 +49,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             }
         }
 
-        public void UpdateTimer()
+        public void UpdateTimer(object sender, EventArgs e)
         {
             if (IsDungeonClosed)
             {

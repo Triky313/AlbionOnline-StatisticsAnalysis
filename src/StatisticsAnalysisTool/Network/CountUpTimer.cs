@@ -1,23 +1,18 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using StatisticsAnalysisTool.Network.Manager;
+using System.Windows.Threading;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network
 {
     public class CountUpTimer
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
         private readonly MainWindowViewModel _mainWindowViewModel;
 
         private readonly List<ValuePerHour> _famePerHourList = new();
@@ -34,9 +29,7 @@ namespace StatisticsAnalysisTool.Network
         private double _favorPerHourValue;
         private double _factionPointsPerHourValue;
 
-        private bool _isCurrentTimerUpdateActive;
         private DateTime _startTime;
-        private int? _taskId;
         private double _totalGainedFameInSession;
         private double _totalGainedReSpecInSession;
         private double _totalGainedSilverInSession;
@@ -46,13 +39,14 @@ namespace StatisticsAnalysisTool.Network
         private CityFaction _currentCityFaction = CityFaction.Unknown;
         private double? _lastReSpecValue;
         private readonly TrackingController _trackingController;
+        private readonly DispatcherTimer _dispatcherTimer = new ();
 
         public CountUpTimer(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
             _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
         }
-        
+
         public void Add(ValueType valueType, double value, CityFaction cityFaction = CityFaction.Unknown)
         {
             if (!_trackingController.IsTrackingAllowedByMainCharacter())
@@ -117,23 +111,25 @@ namespace StatisticsAnalysisTool.Network
 
         public void Start()
         {
-            if (_isCurrentTimerUpdateActive)
+            if (_dispatcherTimer.IsEnabled)
             {
                 return;
             }
 
-            if (_startTime.Millisecond <= 0)
+            if (_startTime.Ticks <= 0)
             {
                 _startTime = DateTime.UtcNow;
             }
 
-            CurrentTimerUpdate();
+            _dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            _dispatcherTimer.Tick += UpdateUi;
+            _dispatcherTimer.Start();
         }
 
         public void Stop()
         {
-            _isCurrentTimerUpdateActive = false;
-            KillTimerTask(_taskId);
+            _dispatcherTimer.Stop();
+            _dispatcherTimer.Tick -= UpdateUi;
         }
 
         public void Reset()
@@ -168,7 +164,7 @@ namespace StatisticsAnalysisTool.Network
             _favorPerHourList.Clear();
             _factionPointsPerHourList.Clear();
 
-            CurrentTimerUpdate();
+            UpdateUi(null, EventArgs.Empty);
         }
 
         private static void RemoveValueFromValuePerHour(List<ValuePerHour> valueList, double perHourValue)
@@ -190,69 +186,32 @@ namespace StatisticsAnalysisTool.Network
             valueList.RemoveAll(x => x.DateTime < DateTime.UtcNow.AddHours(-1));
         }
 
-        private void CurrentTimerUpdate()
+        private void UpdateUi(object sender, EventArgs e)
         {
-            if (_isCurrentTimerUpdateActive)
+            _mainWindowViewModel.DashboardObject.TotalGainedFameInSession = _totalGainedFameInSession;
+            _mainWindowViewModel.DashboardObject.TotalGainedReSpecPointsInSession = _totalGainedReSpecInSession;
+            _mainWindowViewModel.DashboardObject.TotalGainedSilverInSession = _totalGainedSilverInSession;
+            _mainWindowViewModel.DashboardObject.TotalGainedMightInSession = _totalGainedMightInSession;
+            _mainWindowViewModel.DashboardObject.TotalGainedFavorInSession = _totalGainedFavorInSession;
+
+            var factionPointStat = _mainWindowViewModel.FactionPointStats.FirstOrDefault();
+            if (factionPointStat != null)
             {
-                return;
+                factionPointStat.CityFaction = _currentCityFaction;
+                factionPointStat.ValuePerHour = Utilities.GetValuePerHourToDouble(_factionPointsPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+                factionPointStat.Value = _totalGainedFactionPointsInSession;
             }
 
-            _isCurrentTimerUpdateActive = true;
+            _mainWindowViewModel.DashboardObject.FamePerHour = Utilities.GetValuePerHourToDouble(_famePerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+            _mainWindowViewModel.DashboardObject.ReSpecPointsPerHour = Utilities.GetValuePerHourToDouble(_reSpecPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+            _mainWindowViewModel.DashboardObject.SilverPerHour = Utilities.GetValuePerHourToDouble(_silverPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+            _mainWindowViewModel.DashboardObject.MightPerHour = Utilities.GetValuePerHourToDouble(_mightPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+            _mainWindowViewModel.DashboardObject.FavorPerHour = Utilities.GetValuePerHourToDouble(_favorPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
 
-            var task = Task.Run(async () =>
-            {
-                while (_isCurrentTimerUpdateActive)
-                {
-                    _mainWindowViewModel.DashboardObject.TotalGainedFameInSession = _totalGainedFameInSession;
-                    _mainWindowViewModel.DashboardObject.TotalGainedReSpecPointsInSession = _totalGainedReSpecInSession;
-                    _mainWindowViewModel.DashboardObject.TotalGainedSilverInSession = _totalGainedSilverInSession;
-                    _mainWindowViewModel.DashboardObject.TotalGainedMightInSession = _totalGainedMightInSession;
-                    _mainWindowViewModel.DashboardObject.TotalGainedFavorInSession = _totalGainedFavorInSession;
+            var duration = _startTime - DateTime.UtcNow;
+            _mainWindowViewModel.MainTrackerTimer = duration.ToString("hh\\:mm\\:ss");
 
-                    var factionPointStat = _mainWindowViewModel.FactionPointStats.FirstOrDefault();
-                    if (factionPointStat != null)
-                    {
-                        factionPointStat.CityFaction = _currentCityFaction;
-                        factionPointStat.ValuePerHour = Utilities.GetValuePerHourToDouble(_factionPointsPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-                        factionPointStat.Value = _totalGainedFactionPointsInSession;
-                    }
-
-                    _mainWindowViewModel.DashboardObject.FamePerHour = Utilities.GetValuePerHourToDouble(_famePerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-                    _mainWindowViewModel.DashboardObject.ReSpecPointsPerHour = Utilities.GetValuePerHourToDouble(_reSpecPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-                    _mainWindowViewModel.DashboardObject.SilverPerHour = Utilities.GetValuePerHourToDouble(_silverPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-                    _mainWindowViewModel.DashboardObject.MightPerHour = Utilities.GetValuePerHourToDouble(_mightPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-                    _mainWindowViewModel.DashboardObject.FavorPerHour = Utilities.GetValuePerHourToDouble(_favorPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-
-                    var duration = _startTime - DateTime.UtcNow;
-                    _mainWindowViewModel.MainTrackerTimer = duration.ToString("hh\\:mm\\:ss");
-
-                    _mainWindowViewModel?.DungeonCloseTimer?.UpdateTimer();
-
-                    await Task.Delay(1000);
-                }
-            });
-            _taskId = task.Id;
-        }
-
-        private void KillTimerTask(int? taskId)
-        {
-            if (taskId == null)
-            {
-                return;
-            }
-
-            try
-            {
-                if (Process.GetProcesses().Any(x => x.Id == (int) taskId))
-                {
-                    Process.GetProcessById((int) taskId).Kill();
-                }
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(GetType().Name, e);
-            }
+            _mainWindowViewModel?.DungeonCloseTimer?.UpdateTimer(null, EventArgs.Empty);
         }
     }
 }
