@@ -97,6 +97,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     _mainWindowViewModel?.Mails?.Remove(mail);
                 }
+                _mainWindowViewModel?.MailStatsObject?.SetMailStats(_mainWindowViewModel?.MailCollectionView?.Cast<Mail>().ToList());
             });
         }
         
@@ -169,7 +170,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
 
                 _mainWindowViewModel?.MailCollectionView?.Refresh();
-                _mainWindowViewModel?.MailStatsObject.SetMailStats(mails);
+                _mainWindowViewModel?.MailStatsObject?.SetMailStats(mails);
             });
         }
 
