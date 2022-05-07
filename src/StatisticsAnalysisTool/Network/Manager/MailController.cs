@@ -97,6 +97,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 {
                     _mainWindowViewModel?.Mails?.Remove(mail);
                 }
+                _mainWindowViewModel?.MailStatsObject?.SetMailStats(_mainWindowViewModel?.MailCollectionView?.Cast<Mail>().ToList());
             });
         }
         
@@ -138,15 +139,20 @@ namespace StatisticsAnalysisTool.Network.Manager
                     _ = int.TryParse(contentExpiredObject[1], out var expiredQuantity);
                     _ = long.TryParse(contentExpiredObject[2], out var totalExpiredPriceLong);
                     var uniqueItemExpiredName = contentExpiredObject[3];
-                    
+
                     var totalExpiredPrice = FixPoint.FromInternalValue(totalExpiredPriceLong);
+
+                    // Calculation of costs
+                    var totalNotPurchased = expiredQuantity - usedExpiredQuantity;
+                    var singlePrice = totalExpiredPrice.IntegerValue / totalNotPurchased;
+                    var totalPrice = singlePrice * usedExpiredQuantity;
 
                     return new MailContent()
                     {
                         UsedQuantity = usedExpiredQuantity,
                         Quantity = expiredQuantity,
-                        InternalTotalPrice = totalExpiredPriceLong,
-                        InternalUnitPrice = FixPoint.FromFloatingPointValue(totalExpiredPrice.DoubleValue / expiredQuantity).InternalValue,
+                        InternalTotalPrice = FixPoint.FromFloatingPointValue(totalPrice).InternalValue,
+                        InternalUnitPrice = FixPoint.FromFloatingPointValue(singlePrice).InternalValue,
                         UniqueItemName = uniqueItemExpiredName
                     };
                 default:
@@ -164,7 +170,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
 
                 _mainWindowViewModel?.MailCollectionView?.Refresh();
-                _mainWindowViewModel?.MailStatsObject.SetMailStats(mails);
+                _mainWindowViewModel?.MailStatsObject?.SetMailStats(mails);
             });
         }
 

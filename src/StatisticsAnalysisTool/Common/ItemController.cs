@@ -29,6 +29,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static ObservableCollection<Item> Items;
         public static ItemsJson ItemsJson;
+        // TODO: Remove ToggleOnColor and ToggleOffColor for better test scenarios
 
         public static readonly Brush ToggleOnColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Accent.Blue.2"]);
 
@@ -182,9 +183,9 @@ namespace StatisticsAnalysisTool.Common
 
         #region Items
 
-        public static Item GetItemByIndex(int index)
+        public static Item GetItemByIndex(int? index)
         {
-            return Items?.FirstOrDefault(i => i.Index == index);
+            return index == null ? null : Items?.FirstOrDefault(i => i.Index == index);
         }
 
         public static Item GetItemByUniqueName(string uniqueName)
