@@ -79,8 +79,8 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (_trackingController.ExistIndispensableInfos)
             {
-                _mainWindowViewModel.TrackingActiveText = MainWindowTranslation.TrackingIsActive;
-                _mainWindowViewModel.TrackingActivityColor = TrackingIconType.On;
+                _mainWindowViewModel.TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsActive;
+                _mainWindowViewModel.TrackingActivityBindings.TrackingActivityType = TrackingIconType.On;
             }
         }
 

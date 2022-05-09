@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Windows;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.UserControls
 {
