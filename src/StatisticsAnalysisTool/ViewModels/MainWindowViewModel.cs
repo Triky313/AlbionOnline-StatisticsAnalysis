@@ -90,7 +90,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
         private bool _isDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
-        private TrackingIconType _trackingActivityColor;
         private int _partyMemberNumber;
         private ObservableCollection<ClusterInfo> _enteredCluster = new();
         private bool _isItemSearchCheckboxesEnabled;
@@ -104,7 +103,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingPartyLootOnly;
         private bool _isTrackingSilver;
         private bool _isTrackingFame;
-        private string _trackingActiveText = MainWindowTranslation.TrackingIsNotActive;
         private Axis[] _xAxesDashboardHourValues;
         private ObservableCollection<ISeries> _seriesDashboardHourValues;
         private DashboardObject _dashboardObject = new();
@@ -119,7 +117,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _taskProgressbarMaximum = 100;
         private double _taskProgressbarValue;
         private bool _isTaskProgressbarIndeterminate;
-        private Visibility _characterIsNotTrackedInfoVisibility;
         private Visibility _isMailMonitoringPopupVisible = Visibility.Hidden;
         private ObservableCollectionEx<Mail> _mails = new();
         private MailStatsObject _mailStatsObject = new ();
@@ -131,6 +128,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private GridLength _gridSplitterPosition = GridLength.Auto;
         private UserTrackingBindings _userTrackingBindings = new();
         private Visibility _debugModeVisibility = Visibility.Collapsed;
+        private TrackingActivityBindings _trackingActivityBindings = new();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -1233,16 +1231,16 @@ namespace StatisticsAnalysisTool.ViewModels
                 switch (_isTrackingActive)
                 {
                     case true when TrackingController is { ExistIndispensableInfos: false }:
-                        TrackingActiveText = MainWindowTranslation.TrackingIsPartiallyActive;
-                        TrackingActivityColor = TrackingIconType.Partially;
+                        TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsPartiallyActive;
+                        TrackingActivityBindings.TrackingActivityType = TrackingIconType.Partially;
                         break;
                     case true when TrackingController is { ExistIndispensableInfos: true }:
-                        TrackingActiveText = MainWindowTranslation.TrackingIsActive;
-                        TrackingActivityColor = TrackingIconType.On;
+                        TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsActive;
+                        TrackingActivityBindings.TrackingActivityType = TrackingIconType.On;
                         break;
                     case false:
-                        TrackingActiveText = MainWindowTranslation.TrackingIsNotActive;
-                        TrackingActivityColor = TrackingIconType.Off;
+                        TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsNotActive;
+                        TrackingActivityBindings.TrackingActivityType = TrackingIconType.Off;
                         break;
                 }
 
@@ -1250,32 +1248,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public TrackingIconType TrackingActivityColor
+        public TrackingActivityBindings TrackingActivityBindings
         {
-            get => _trackingActivityColor;
+            get => _trackingActivityBindings;
             set
             {
-                _trackingActivityColor = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TrackingActiveText
-        {
-            get => _trackingActiveText;
-            set
-            {
-                _trackingActiveText = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility CharacterIsNotTrackedInfoVisibility
-        {
-            get => _characterIsNotTrackedInfoVisibility;
-            set
-            {
-                _characterIsNotTrackedInfoVisibility = value;
+                _trackingActivityBindings = value;
                 OnPropertyChanged();
             }
         }

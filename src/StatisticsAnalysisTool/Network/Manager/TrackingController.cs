@@ -69,8 +69,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             item.SetType();
 
-            if (!IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Fame || !IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Silver
-                || !IsTrackingAllowedByMainCharacter() && item.Type == NotificationType.Faction)
+            if (!IsTrackingAllowedByMainCharacter() && item.Type is NotificationType.Fame or NotificationType.Silver or NotificationType.Faction)
             {
                 return;
             }

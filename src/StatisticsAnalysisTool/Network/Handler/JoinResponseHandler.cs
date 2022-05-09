@@ -79,8 +79,8 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (_trackingController.ExistIndispensableInfos)
             {
-                _mainWindowViewModel.TrackingActiveText = MainWindowTranslation.TrackingIsActive;
-                _mainWindowViewModel.TrackingActivityColor = TrackingIconType.On;
+                _mainWindowViewModel.TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsActive;
+                _mainWindowViewModel.TrackingActivityBindings.TrackingActivityType = TrackingIconType.On;
             }
         }
 
@@ -96,11 +96,11 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainTrackingCharacterName) || name == SettingsController.CurrentSettings.MainTrackingCharacterName)
             {
-                _mainWindowViewModel.CharacterIsNotTrackedInfoVisibility = Visibility.Collapsed;
+                _mainWindowViewModel.TrackingActivityBindings.CharacterIsNotTrackedInfoVisibility = Visibility.Collapsed;
             }
             else
             {
-                _mainWindowViewModel.CharacterIsNotTrackedInfoVisibility = Visibility.Visible;
+                _mainWindowViewModel.TrackingActivityBindings.CharacterIsNotTrackedInfoVisibility = Visibility.Visible;
             }
         }
     }
