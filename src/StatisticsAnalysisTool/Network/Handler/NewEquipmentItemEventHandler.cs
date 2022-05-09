@@ -1,7 +1,6 @@
-﻿using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Network.Manager;
+﻿using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Network.Events;
+using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
