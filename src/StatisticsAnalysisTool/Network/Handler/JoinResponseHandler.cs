@@ -96,11 +96,11 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (string.IsNullOrEmpty(SettingsController.CurrentSettings.MainTrackingCharacterName) || name == SettingsController.CurrentSettings.MainTrackingCharacterName)
             {
-                _mainWindowViewModel.CharacterIsNotTrackedInfoVisibility = Visibility.Collapsed;
+                _mainWindowViewModel.TrackingActivityBindings.CharacterIsNotTrackedInfoVisibility = Visibility.Collapsed;
             }
             else
             {
-                _mainWindowViewModel.CharacterIsNotTrackedInfoVisibility = Visibility.Visible;
+                _mainWindowViewModel.TrackingActivityBindings.CharacterIsNotTrackedInfoVisibility = Visibility.Visible;
             }
         }
     }

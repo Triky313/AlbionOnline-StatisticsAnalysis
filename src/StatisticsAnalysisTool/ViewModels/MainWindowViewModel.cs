@@ -117,7 +117,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _taskProgressbarMaximum = 100;
         private double _taskProgressbarValue;
         private bool _isTaskProgressbarIndeterminate;
-        private Visibility _characterIsNotTrackedInfoVisibility;
         private Visibility _isMailMonitoringPopupVisible = Visibility.Hidden;
         private ObservableCollectionEx<Mail> _mails = new();
         private MailStatsObject _mailStatsObject = new ();
@@ -1255,16 +1254,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _trackingActivityBindings = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        public Visibility CharacterIsNotTrackedInfoVisibility
-        {
-            get => _characterIsNotTrackedInfoVisibility;
-            set
-            {
-                _characterIsNotTrackedInfoVisibility = value;
                 OnPropertyChanged();
             }
         }
