@@ -8,7 +8,9 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
@@ -26,8 +28,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.Models.BindingModel;
-using StatisticsAnalysisTool.Models.TranslationModel;
 
 // ReSharper disable UnusedMember.Global
 
@@ -84,7 +84,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = 0, ValuePerHour = 0, CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
         private bool _isShowOnlyFavoritesActive;
-        private DungeonCloseTimer _dungeonCloseTimer = new ();
+        private DungeonCloseTimer _dungeonCloseTimer = new();
         private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
         private double _dungeonStatsGridHeight = 82;
         private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
@@ -119,12 +119,12 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTaskProgressbarIndeterminate;
         private Visibility _isMailMonitoringPopupVisible = Visibility.Hidden;
         private ObservableCollectionEx<Mail> _mails = new();
-        private MailStatsObject _mailStatsObject = new ();
+        private MailStatsObject _mailStatsObject = new();
         private ListCollectionView _mailCollectionView;
         private string _mailsSearchText;
-        private DateTime _datePickerMailsFrom = new (2017, 1, 1);
+        private DateTime _datePickerMailsFrom = new(2017, 1, 1);
         private DateTime _datePickerMailsTo = DateTime.UtcNow.AddDays(1);
-        private VaultBindings _vaultBindings = new ();
+        private VaultBindings _vaultBindings = new();
         private GridLength _gridSplitterPosition = GridLength.Auto;
         private UserTrackingBindings _userTrackingBindings = new();
         private Visibility _debugModeVisibility = Visibility.Collapsed;
@@ -738,7 +738,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");
         }
-        
+
         public void ResetDamageMeter()
         {
             var dialog = new DialogWindow(LanguageController.Translation("RESET_DAMAGE_METER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DAMAGE_METER"));
@@ -846,12 +846,12 @@ namespace StatisticsAnalysisTool.ViewModels
                 fragment.IsDamageMeterShowing = isDamageMeterShowing;
             }
         }
-        
+
         public void DamageMeterActivationToggle()
         {
             IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
         }
-        
+
         #endregion
 
         #region Item View Filters
@@ -1059,7 +1059,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public DungeonStats DungeonStatsDay
         {
             get => _dungeonStatsDay;
@@ -1752,7 +1752,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public GridLength GridSplitterPosition
         {
             get => _gridSplitterPosition;
@@ -1763,7 +1763,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public MailStatsObject MailStatsObject
         {
             get => _mailStatsObject;
@@ -1783,7 +1783,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public string MailsSearchText
         {
             get => _mailsSearchText;
@@ -1796,7 +1796,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     MailCollectionView.Filter = TrackingController.MailController.Filter;
                     MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
                 }
-                    
+
                 OnPropertyChanged();
             }
         }
