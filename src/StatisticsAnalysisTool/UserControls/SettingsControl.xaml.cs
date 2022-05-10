@@ -50,7 +50,7 @@ namespace StatisticsAnalysisTool.UserControls
 
         private void OpenDebugConsole_Click(object sender, RoutedEventArgs e)
         {
-            ConsoleManager.Toggle();
+            _settingsWindowViewModel.OpenConsoleWindow();
         }
 
         private void ReloadSettings_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

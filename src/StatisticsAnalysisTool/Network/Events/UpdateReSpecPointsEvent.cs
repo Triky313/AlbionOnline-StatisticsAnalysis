@@ -3,6 +3,8 @@ using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
@@ -17,7 +19,7 @@ namespace StatisticsAnalysisTool.Network.Events
 
         public UpdateReSpecPointsEvent(Dictionary<byte, object> parameters)
         {
-            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+            ConsoleManager.WriteLine(new ConsoleFragment(GetType().Name, parameters, ConsoleColorType.EventColor));
 
             try
             {

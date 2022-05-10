@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models">
+    
+    <DataTemplate DataType="{x:Type models:ConsoleFragment}">
+        <Grid>
+            <TextBlock Text="{Binding Timestamp, StringFormat={}[{0}]}" Foreground="{StaticResource SolidColorBrush.Text.4}" 
+                       FontSize="13" Margin="0,0,5,0" HorizontalAlignment="Left" />
+            <TextBlock>
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="Margin" Value="140,0,0,0"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding  ConsoleColorType}" Value="ErrorColor">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Console.Error}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding  ConsoleColorType}" Value="WarnColor">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Console.Warning}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding  ConsoleColorType}" Value="EventColor">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Console.Event}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding  ConsoleColorType}" Value="EventMapChangeColor">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Console.MapChange}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} {1}">
+                        <Binding Path="EventName" Mode="OneWay" />
+                        <Binding Path="Text" Mode="OneWay" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -60,8 +61,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             Debug.Print($"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'");
             ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType,
-                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'",
-                ConsoleManager.EventMapChangeColor);
+                $"[StateHandler] Changed cluster to: Index: '{CurrentCluster.Index}' UniqueName: '{CurrentCluster.UniqueName}' ClusterType: '{CurrentCluster.ClusterMode}' MapType: '{CurrentCluster.MapType}'", 
+                ConsoleColorType.EventMapChangeColor);
         }
 
         public void SetAndResetValues(ClusterInfo currentCluster)

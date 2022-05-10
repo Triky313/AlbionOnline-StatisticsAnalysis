@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using System;
+using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
@@ -9,7 +10,9 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using StatisticsAnalysisTool.Models.TranslationModel;
+using StatisticsAnalysisTool.Views;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -200,6 +203,28 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             public string Name { get; set; }
             public int Value { get; set; }
+        }
+
+        public void OpenConsoleWindow()
+        {
+            try
+            {
+                if (Utilities.IsWindowOpen<ConsoleWindow>())
+                {
+                    var existWindow = Application.Current.Windows.OfType<ConsoleWindow>().FirstOrDefault();
+                    existWindow?.Activate();
+                }
+                else
+                {
+                    var window = new ConsoleWindow();
+                    window.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            }
         }
 
         #region Bindings
