@@ -9,7 +9,7 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class ConsoleManager
     {
-        private const int MaxEntries = 200;
+        private const int MaxEntries = 1000;
         public static ObservableCollectionEx<ConsoleFragment> Console = new();
 
         private static bool _isConsoleActive;
