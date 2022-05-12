@@ -25,22 +25,21 @@ jobs:
     env:
       Solution_Name: StatisticsAnalysisTool.sln
 
+    # Install the .NET workload
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0.100' # SDK Version to use; x will use the latest version of the 6.0 channel. Force 101 for global.json compatibility.
+    - name: Install test dependencies
+      run: dotnet add package xunit --version 2.4.1
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-
-    # Execute all unit tests in the solution
-    - name: Install test dependencies
-      run: dotnet add package xunit --version 2.4.1
-
-    # Install the .NET workload
-    - name: Install .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.0.100' # SDK Version to use; x will use the latest version of the 6.0 channel. Force 101 for global.json compatibility.
-    - run: dotnet build src\StatisticsAnalysisTool
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     # - name: Setup MSBuild.exe
@@ -49,6 +48,7 @@ jobs:
     # #    vs-version: '[17.0,17.0]'
     #     msbuild-architecture: x64
 
+    # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test src\StatisticsAnalysisTool.UnitTests
 
