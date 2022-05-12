@@ -46,9 +46,14 @@ jobs:
         msbuild-architecture: x64
 
     # Execute all unit tests in the solution
-    - name: Execute unit tests
+    # - name: Execute unit tests
      # run: dotnet test src\StatisticsAnalysisTool.UnitTests
-      run: dotnet test --no-restore --verbosity normal
+    tests:
+      name: Execute unit tests
+      runs-on: windows-latest
+      steps:
+        - uses: actions/checkout@v2
+        - run: dotnet test
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
