@@ -1,4 +1,5 @@
 using log4net;
+using StatisticsAnalysisTool.Common.Converters;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -16,8 +17,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
-using StatisticsAnalysisTool.Common.Converters;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Mount = StatisticsAnalysisTool.Models.ItemsJsonModel.Mount;
 
@@ -29,11 +28,6 @@ namespace StatisticsAnalysisTool.Common
 
         public static ObservableCollection<Item> Items;
         public static ItemsJson ItemsJson;
-        // TODO: Remove ToggleOnColor and ToggleOffColor for better test scenarios
-
-        public static readonly Brush ToggleOnColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Accent.Blue.2"]);
-
-        public static readonly Brush ToggleOffColor = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
 
         #region General
 
@@ -389,13 +383,13 @@ namespace StatisticsAnalysisTool.Common
                 return item;
             }
 
-            await foreach(var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            await foreach (var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 item.ItemType = ItemType.Consumable;
                 return item;
             }
 
-            await foreach(var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            await foreach (var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
             {
                 item.ItemType = ItemType.ConsumableFromInventory;
                 return item;
@@ -577,7 +571,7 @@ namespace StatisticsAnalysisTool.Common
 
             return ItemType.Unknown;
         }
-        
+
         public static async Task<bool> GetItemsJsonAsync()
         {
             var currentSettingsItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
@@ -602,13 +596,13 @@ namespace StatisticsAnalysisTool.Common
                         ItemsJson = await GetItemsJsonFromLocal();
                         await SetFullItemInfoToItems();
                     }
-                    
+
                     return ItemsJson?.Items != null;
                 }
 
                 ItemsJson = await GetItemsJsonFromLocal();
                 await SetFullItemInfoToItems();
-                
+
                 return ItemsJson?.Items != null;
             }
 
@@ -617,7 +611,7 @@ namespace StatisticsAnalysisTool.Common
                 ItemsJson = await GetItemsJsonFromLocal();
                 await SetFullItemInfoToItems();
             }
-            
+
             return ItemsJson?.Items != null;
         }
 
@@ -655,7 +649,7 @@ namespace StatisticsAnalysisTool.Common
                                      | JsonNumberHandling.WriteAsString,
                     Converters =
                     {
-                        new CraftingRequirementsToCraftingRequirementsList(), 
+                        new CraftingRequirementsToCraftingRequirementsList(),
                         new BoolConverter()
                     }
                 };
