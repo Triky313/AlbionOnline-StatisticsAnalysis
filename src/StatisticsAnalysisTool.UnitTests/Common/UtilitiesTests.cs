@@ -9,12 +9,29 @@ namespace StatisticsAnalysisTool.UnitTests.Common
         private static readonly DateTime SomeDateTime = new (2021, 9, 7, 14, 22, 50);
         
         [Fact]
-        public void GetValuePerHourToDouble_WithValidValues_ReturnTrue()
+        public void GetHighestLength_WithValidValues_ReturnHighestValue()
         {
-            var result = Utilities.GetValuePerHourToDouble(10000, 300);
-            var expected = 120000d;
+            var array1 = new[] { 25, 12, 480 };
+            var array2 = new[] { 210, 155, 85, 12 };
+            var array3 = new[] { 770, 910, 1600 };
+            var array4 = new[] { 770, 910 };
 
-            Assert.Equal(expected, result, 0);
+            var result = Utilities.GetHighestLength(array1, array2, array3, array4);
+            const long expected = 4;
+
+            Assert.StrictEqual(expected, result);
+        }
+        
+        [Fact]
+        public void GetValuePerHourToDouble_WithValidValues_ReturnCorrectValue()
+        {
+            const double value = 4500.25;
+            const double seconds = 1800;
+
+            var result = Utilities.GetValuePerHourToDouble(value, seconds);
+            const double expected = 9000.50;
+
+            Assert.Equal(expected, result);
         }
 
         [Fact]
