@@ -1,26 +1,20 @@
-﻿using NUnit.Framework;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
+using Xunit;
 
 namespace StatisticsAnalysisTool.UnitTests.Common
 {
-    [Parallelizable]
     public class MobControllerTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
-        [Test]
+        [Fact]
         public void IsMob_WithValidString_ReturnTrue()
         {
-            Assert.IsTrue(MobController.IsMob("@MOB_SOME_MOB"));
+            Assert.True(MobController.IsMob("@MOB_SOME_MOB"));
         }
 
-        [Test]
+        [Fact]
         public void IsMob_WithInvalidString_ReturnFalse()
         {
-            Assert.IsFalse(MobController.IsMob("@MOOB_SOME_MOB"));
+            Assert.False(MobController.IsMob("@MOOB_SOME_MOB"));
         }
     }
 }
