@@ -7,18 +7,9 @@ namespace StatisticsAnalysisTool.UnitTests.Common
 {
     public class ItemControllerTests
     {
-        public ItemControllerTests()
-        {
-            //var app = new App();
-            //app.InitializeComponent();
-        }
-
         [Fact]
         public void GetItemByIndex_WithValidValue_ReturnTrue()
         {
-            var app = new App();
-            app.InitializeComponent();
-
             var receivedItem1 = new Item() { Index = 114 };
             var receivedItem2 = new Item() { Index = 11 };
             var receivedItem3 = new Item() { Index = 512 };
@@ -40,9 +31,6 @@ namespace StatisticsAnalysisTool.UnitTests.Common
         [Fact]
         public void GetItemByUniqueName_WithValidValue_ReturnTrue()
         {
-            //var app = new App();
-            //app.InitializeComponent();
-
             var receivedItem1 = new Item() { UniqueName = "T6_CAPEITEM_MORGANA" };
             var receivedItem2 = new Item() { UniqueName = "T7_HEAD_LEATHER_SET1" };
             var receivedItem3 = new Item() { UniqueName = "T8_BACKPACK_GATHERER_FIBER@2" };
@@ -66,9 +54,6 @@ namespace StatisticsAnalysisTool.UnitTests.Common
         [Fact]
         public void IsTrash_WithExistingTrashItem_ReturnTrue()
         {
-            var app = new App();
-            app.InitializeComponent();
-
             var receivedItem1 = new Item() { Index = 114, UniqueName = "T1_SWORD" };
             var receivedItem2 = new Item() { Index = 11, UniqueName = "T3_STAFF" };
             var receivedItem3 = new Item() { Index = 512, UniqueName = "T5_TRASH" };
@@ -89,9 +74,6 @@ namespace StatisticsAnalysisTool.UnitTests.Common
         [Fact]
         public void IsTrash_TryToGetNotExistItem_ReturnTrue()
         {
-            var app = new App();
-            app.InitializeComponent();
-
             var receivedItem1 = new Item() { Index = 114, UniqueName = "T1_SWORD" };
             var receivedItem2 = new Item() { Index = 11, UniqueName = "T3_STAFF" };
             var receivedItem3 = new Item() { Index = 512, UniqueName = "T5_TRASH" };
@@ -112,9 +94,6 @@ namespace StatisticsAnalysisTool.UnitTests.Common
         [Fact]
         public void IsTrash_GetItemWithoutTrashInName_ReturnFalse()
         {
-            var app = new App();
-            app.InitializeComponent();
-
             var receivedItem1 = new Item() { Index = 114, UniqueName = "T1_SWORD" };
             var receivedItem2 = new Item() { Index = 11, UniqueName = "T3_STAFF" };
             var receivedItem3 = new Item() { Index = 512, UniqueName = "T5_JACKET" };
