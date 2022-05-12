@@ -22,7 +22,6 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
         private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new();
-        private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = new();
         private readonly ObservableCollection<SpellEffect> _spellEffects = new();
@@ -32,9 +31,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public LocalUserData LocalUserData { get; set; } = new ();
 
-        public EntityController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+        public EntityController(MainWindowViewModel mainWindowViewModel)
         {
-            _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
         }
 
@@ -307,24 +305,17 @@ namespace StatisticsAnalysisTool.Network.Manager
         private void SetCharacterMainHand(long objectId, int itemIndex)
         {
             var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+            var entityValue = entity?.Value;
 
-            if (entity?.Value == null)
+            if (entityValue == null)
             {
                 return;
             }
 
-            if (entity.Value.Value?.CharacterEquipment == null)
+            entityValue.CharacterEquipment ??= new CharacterEquipment
             {
-                entity.Value.Value.CharacterEquipment = new CharacterEquipment
-                {
-                    MainHand = itemIndex
-                };
-            }
-
-            //if (entity.Value.Value != null)
-            //{
-            //    entity.Value.Value.CharacterEquipment.MainHand = itemIndex;
-            //}
+                MainHand = itemIndex
+            };
         }
 
         private void RemoveSpellAndEquipmentObjects()

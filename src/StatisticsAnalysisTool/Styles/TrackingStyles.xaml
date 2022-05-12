@@ -11,8 +11,6 @@
                     xmlns:converters="clr-namespace:StatisticsAnalysisTool.Common.Converters"
                     mc:Ignorable="d">
 
-
-    <converters:TrackingActivityColorConverter x:Key="Tracker.ActivityColor" />
     <converters:ValuePerHourConverter x:Key="ValuePerHourConverter" />
 
     <Style x:Key="LineFragmentImageStyle" TargetType="{x:Type Image}">

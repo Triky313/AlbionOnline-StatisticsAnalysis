@@ -53,6 +53,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
                 {
                     case Visibility.Visible when !_dispatcherTimer.IsEnabled:
                         _endTime = DateTime.UtcNow.AddSeconds(90);
+                        IsDungeonClosed = false;
                         _dispatcherTimer.Start();
                         break;
                     case Visibility.Collapsed or Visibility.Hidden when _dispatcherTimer.IsEnabled:

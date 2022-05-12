@@ -58,8 +58,22 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Height="24" Width="24">
-                                    <fa5:ImageAwesome Visibility="Visible" Icon="{Binding (models:Item.AlertToggle)}" 
-                                                      Foreground="{Binding (models:Item.AlertToggleColor)}" MouseUp="AlertModeAlertActiveToggle_MouseUp" />
+                                    <fa5:ImageAwesome Visibility="Visible" MouseUp="AlertModeAlertActiveToggle_MouseUp">
+                                        <fa5:ImageAwesome.Style>
+                                            <Style TargetType="{x:Type fa5:ImageAwesome}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding (models:Item.IsAlertActive)}" Value="True">
+                                                        <Setter Property="Icon" Value="Solid_ToggleOn"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.2}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding (models:Item.IsAlertActive)}" Value="False">
+                                                        <Setter Property="Icon" Value="Solid_ToggleOff"/>
+                                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </fa5:ImageAwesome.Style>
+                                    </fa5:ImageAwesome>
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>

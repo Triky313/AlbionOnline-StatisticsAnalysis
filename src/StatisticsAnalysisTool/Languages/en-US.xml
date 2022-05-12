@@ -379,7 +379,7 @@
 	<translation name="NUMBER_OF_DUNGEON_FLOORS">Number of dungeon floors</translation>
 	<translation name="TOOL_DIRECTORY">Tool Directory</translation>
 	<translation name="OPEN_TOOL_DIRECTORY">Open tool Directory</translation>
-	<translation name="OPEN_OR_CLOSE_DEBUG_CONSOLE">Open or Close debug console</translation>
+	<translation name="OPEN_DEBUG_CONSOLE">Open debug console</translation>
 	<translation name="CREATE_DESKTOP_SHORTCUT">Create Desktop Shortcut</translation>
 	<translation name="FAVORITE">Favorite</translation>
 	<translation name="SILVER_SHRINE">Silver Shrine</translation>
@@ -590,4 +590,5 @@
 	<translation name="YELLOW_ZONE">Yellow region</translation>
 	<translation name="SAFE_AREA">Safe region</translation>
 	<translation name="UNKNOWN_ZONE">Unknown region</translation>
+	<translation name="DEBUG_CONSOLE">Debug console</translation>
 </translations>

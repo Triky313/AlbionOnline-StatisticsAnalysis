@@ -96,7 +96,7 @@ namespace StatisticsAnalysisTool.GameData
                 return Faction.Avalon;
             }
 
-            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"GetFaction Unknown: {value}", ConsoleManager.EventMapChangeColor);
+            ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"GetFaction Unknown: {value}", ConsoleColorType.EventMapChangeColor);
             return Faction.Unknown;
         }
 

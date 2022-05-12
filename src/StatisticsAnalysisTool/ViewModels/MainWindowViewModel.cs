@@ -8,7 +8,9 @@ using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
@@ -26,8 +28,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.Models.BindingModel;
-using StatisticsAnalysisTool.Models.TranslationModel;
 
 // ReSharper disable UnusedMember.Global
 
@@ -84,13 +84,12 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = 0, ValuePerHour = 0, CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
         private bool _isShowOnlyFavoritesActive;
-        private DungeonCloseTimer _dungeonCloseTimer = new ();
+        private DungeonCloseTimer _dungeonCloseTimer = new();
         private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
         private double _dungeonStatsGridHeight = 82;
         private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
         private bool _isDungeonStatsGridUnfold;
         private DungeonStatsFilter _dungeonStatsFilter;
-        private TrackingIconType _trackingActivityColor;
         private int _partyMemberNumber;
         private ObservableCollection<ClusterInfo> _enteredCluster = new();
         private bool _isItemSearchCheckboxesEnabled;
@@ -104,7 +103,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingPartyLootOnly;
         private bool _isTrackingSilver;
         private bool _isTrackingFame;
-        private string _trackingActiveText = MainWindowTranslation.TrackingIsNotActive;
         private Axis[] _xAxesDashboardHourValues;
         private ObservableCollection<ISeries> _seriesDashboardHourValues;
         private DashboardObject _dashboardObject = new();
@@ -119,18 +117,11 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _taskProgressbarMaximum = 100;
         private double _taskProgressbarValue;
         private bool _isTaskProgressbarIndeterminate;
-        private Visibility _characterIsNotTrackedInfoVisibility;
-        private Visibility _isMailMonitoringPopupVisible = Visibility.Hidden;
-        private ObservableCollectionEx<Mail> _mails = new();
-        private MailStatsObject _mailStatsObject = new ();
-        private ListCollectionView _mailCollectionView;
-        private string _mailsSearchText;
-        private DateTime _datePickerMailsFrom = new (2017, 1, 1);
-        private DateTime _datePickerMailsTo = DateTime.UtcNow.AddDays(1);
-        private VaultBindings _vaultBindings = new ();
-        private GridLength _gridSplitterPosition = GridLength.Auto;
+        private VaultBindings _vaultBindings = new();
         private UserTrackingBindings _userTrackingBindings = new();
         private Visibility _debugModeVisibility = Visibility.Collapsed;
+        private TrackingActivityBindings _trackingActivityBindings = new();
+        private MailMonitoringBindings _mailMonitoringBindings = new();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -223,7 +214,7 @@ namespace StatisticsAnalysisTool.ViewModels
             DamageMeterSortSelection = sortByDamageStruct;
 
             // Mail Monitoring
-            GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GridSplitterPosition);
+            MailMonitoringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GridSplitterPosition);
 
             #endregion
         }
@@ -499,17 +490,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterKill,
                 Name = MainWindowTranslation.ShowKills
             });
-
-            // Mails
-            MailCollectionView = CollectionViewSource.GetDefaultView(Mails) as ListCollectionView;
-            if (MailCollectionView != null)
-            {
-                MailCollectionView.IsLiveSorting = true;
-                MailCollectionView.IsLiveFiltering = true;
-                MailCollectionView.SortDescriptions.Add(new SortDescription("Tick", ListSortDirection.Descending));
-            }
-
-            MailCollectionView?.Refresh();
         }
 
         #endregion
@@ -740,7 +720,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");
         }
-        
+
         public void ResetDamageMeter()
         {
             var dialog = new DialogWindow(LanguageController.Translation("RESET_DAMAGE_METER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DAMAGE_METER"));
@@ -848,12 +828,12 @@ namespace StatisticsAnalysisTool.ViewModels
                 fragment.IsDamageMeterShowing = isDamageMeterShowing;
             }
         }
-        
+
         public void DamageMeterActivationToggle()
         {
             IsDamageMeterTrackingActive = !IsDamageMeterTrackingActive;
         }
-        
+
         #endregion
 
         #region Item View Filters
@@ -946,16 +926,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isDamageMeterPopupVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility IsMailMonitoringPopupVisible
-        {
-            get => _isMailMonitoringPopupVisible;
-            set
-            {
-                _isMailMonitoringPopupVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -1061,7 +1031,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public DungeonStats DungeonStatsDay
         {
             get => _dungeonStatsDay;
@@ -1233,16 +1203,16 @@ namespace StatisticsAnalysisTool.ViewModels
                 switch (_isTrackingActive)
                 {
                     case true when TrackingController is { ExistIndispensableInfos: false }:
-                        TrackingActiveText = MainWindowTranslation.TrackingIsPartiallyActive;
-                        TrackingActivityColor = TrackingIconType.Partially;
+                        TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsPartiallyActive;
+                        TrackingActivityBindings.TrackingActivityType = TrackingIconType.Partially;
                         break;
                     case true when TrackingController is { ExistIndispensableInfos: true }:
-                        TrackingActiveText = MainWindowTranslation.TrackingIsActive;
-                        TrackingActivityColor = TrackingIconType.On;
+                        TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsActive;
+                        TrackingActivityBindings.TrackingActivityType = TrackingIconType.On;
                         break;
                     case false:
-                        TrackingActiveText = MainWindowTranslation.TrackingIsNotActive;
-                        TrackingActivityColor = TrackingIconType.Off;
+                        TrackingActivityBindings.TrackingActiveText = MainWindowTranslation.TrackingIsNotActive;
+                        TrackingActivityBindings.TrackingActivityType = TrackingIconType.Off;
                         break;
                 }
 
@@ -1250,32 +1220,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public TrackingIconType TrackingActivityColor
+        public TrackingActivityBindings TrackingActivityBindings
         {
-            get => _trackingActivityColor;
+            get => _trackingActivityBindings;
             set
             {
-                _trackingActivityColor = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string TrackingActiveText
-        {
-            get => _trackingActiveText;
-            set
-            {
-                _trackingActiveText = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility CharacterIsNotTrackedInfoVisibility
-        {
-            get => _characterIsNotTrackedInfoVisibility;
-            set
-            {
-                _characterIsNotTrackedInfoVisibility = value;
+                _trackingActivityBindings = value;
                 OnPropertyChanged();
             }
         }
@@ -1755,43 +1705,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ListCollectionView MailCollectionView
+        public MailMonitoringBindings MailMonitoringBindings
         {
-            get => _mailCollectionView;
+            get => _mailMonitoringBindings;
             set
             {
-                _mailCollectionView = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollectionEx<Mail> Mails
-        {
-            get => _mails;
-            set
-            {
-                _mails = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        public GridLength GridSplitterPosition
-        {
-            get => _gridSplitterPosition;
-            set
-            {
-                _gridSplitterPosition = value;
-                SettingsController.CurrentSettings.GridSplitterPosition = _gridSplitterPosition.Value;
-                OnPropertyChanged();
-            }
-        }
-        
-        public MailStatsObject MailStatsObject
-        {
-            get => _mailStatsObject;
-            set
-            {
-                _mailStatsObject = value;
+                _mailMonitoringBindings = value;
                 OnPropertyChanged();
             }
         }
@@ -1802,47 +1721,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _vaultBindings = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        public string MailsSearchText
-        {
-            get => _mailsSearchText;
-            set
-            {
-                _mailsSearchText = value;
-
-                if (_mailsSearchText.Length >= 2)
-                {
-                    MailCollectionView.Filter = TrackingController.MailController.Filter;
-                    MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
-                }
-                    
-                OnPropertyChanged();
-            }
-        }
-
-        public DateTime DatePickerMailsFrom
-        {
-            get => _datePickerMailsFrom;
-            set
-            {
-                _datePickerMailsFrom = value;
-                MailCollectionView.Filter = TrackingController.MailController.Filter;
-                MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
-                OnPropertyChanged();
-            }
-        }
-
-        public DateTime DatePickerMailsTo
-        {
-            get => _datePickerMailsTo;
-            set
-            {
-                _datePickerMailsTo = value;
-                MailCollectionView.Filter = TrackingController.MailController.Filter;
-                MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
                 OnPropertyChanged();
             }
         }

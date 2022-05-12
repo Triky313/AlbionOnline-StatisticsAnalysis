@@ -62,7 +62,7 @@
                     </DockPanel>
                     <DockPanel Margin="0,5,5,0">
                         <Label MinWidth="300"/>
-                        <Button Content="{Binding Translation.OpenCloseDebugConsole, FallbackValue=OPEN__CLOSE__DEBUG__CONSOLE}" Height="24" 
+                        <Button Content="{Binding Translation.OpenDebugConsole, FallbackValue=OPEN__DEBUG__CONSOLE}" Height="24" 
                                 VerticalAlignment="Bottom" Click="OpenDebugConsole_Click" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">

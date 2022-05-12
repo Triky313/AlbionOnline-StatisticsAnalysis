@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses
 {
@@ -35,21 +36,21 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
             try
             {
                 Debug.Print("---------- UserInformation (Response) ----------");
-                ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "---------- UserInformation (Response) ----------", ConsoleManager.EventMapChangeColor);
+                ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, "---------- UserInformation (Response) ----------", ConsoleColorType.EventMapChangeColor);
 
                 UserObjectId = null;
                 if (parameters.ContainsKey(0))
                 {
                     UserObjectId = parameters[0].ObjectToLong();
                     Debug.Print($"Local user ObjectId: {UserObjectId}");
-                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local user ObjectId: {UserObjectId}", ConsoleManager.EventMapChangeColor);
+                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local user ObjectId: {UserObjectId}", ConsoleColorType.EventMapChangeColor);
                 }
 
                 if (parameters.ContainsKey(1))
                 {
                     UserGuid = parameters[1].ObjectToGuid();
                     Debug.Print($"Local user Guid: {UserGuid}");
-                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local user Guid: {UserGuid}", ConsoleManager.EventMapChangeColor);
+                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local user Guid: {UserGuid}", ConsoleColorType.EventMapChangeColor);
                 }
 
                 if (parameters.ContainsKey(2))
@@ -84,7 +85,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(47))
                 {
                     InteractGuid = parameters[47].ObjectToGuid();
-                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local interact object Guid: {InteractGuid}", ConsoleManager.EventMapChangeColor);
+                    ConsoleManager.WriteLineForMessage(MethodBase.GetCurrentMethod()?.DeclaringType, $"Local interact object Guid: {InteractGuid}", ConsoleColorType.EventMapChangeColor);
                 }
 
                 if (parameters.ContainsKey(51))
