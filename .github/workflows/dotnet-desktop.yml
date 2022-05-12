@@ -14,6 +14,7 @@ on:
 jobs:
 
   build:
+
     strategy:
       matrix:
         configuration: [Debug, Release]
@@ -45,14 +46,11 @@ jobs:
         msbuild-architecture: x64
 
     # Execute all unit tests in the solution
-    # - name: Execute unit tests
-     # run: dotnet test src\StatisticsAnalysisTool.UnitTests
-    tests:
-      name: Execute unit tests
-      runs-on: windows-latest
-      steps:
-        - uses: actions/checkout@v2
-        - run: dotnet test
+    - name: Install test dependencies
+      run: dotnet add package xunit --version 2.4.1
+
+    - name: Execute unit tests
+      run: dotnet test src\StatisticsAnalysisTool.UnitTests
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
