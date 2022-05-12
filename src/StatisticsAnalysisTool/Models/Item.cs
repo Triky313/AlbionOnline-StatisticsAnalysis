@@ -1,8 +1,6 @@
-﻿using FontAwesome5;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using ShopCategory = StatisticsAnalysisTool.Common.ShopCategory;
 
@@ -43,8 +41,6 @@ namespace StatisticsAnalysisTool.Models
         public int AlertModeMinSellPriceIsUndercutPrice { get; set; }
         public bool IsAlertActive { get; set; }
         public bool IsFavorite { get; set; }
-        public EFontAwesomeIcon AlertToggle => IsAlertActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
-        public Brush AlertToggleColor => IsAlertActive ? ItemController.ToggleOnColor : ItemController.ToggleOffColor;
         private string GetUniqueNameIfDebug()
         {
 #if DEBUG
