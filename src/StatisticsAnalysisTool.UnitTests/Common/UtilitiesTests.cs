@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.UnitTests.Common
             var array4 = new[] { 770, 910 };
 
             var result = Utilities.GetHighestLength(array1, array2, array3, array4);
-            const long expected = 4;
+            const long expected = 2;
 
             Assert.StrictEqual(expected, result);
         }
