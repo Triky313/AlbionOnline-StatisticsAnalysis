@@ -16,7 +16,7 @@ namespace StatisticsAnalysisTool.UserControls
         {
             InitializeComponent();
         }
-        
+
         public void DeleteSelectedMails()
         {
             var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_MAILS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL"));
@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.UserControls
 
             if (dialogResult is true)
             {
-                var selectedMails = vm?.Mails.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.MailId);
+                var selectedMails = vm?.MailMonitoringBindings?.Mails?.Where(x => x?.IsSelectedForDeletion ?? false).Select(x => x.MailId);
                 vm?.TrackingController.MailController.RemoveMailsByIdsAsync(selectedMails);
             }
         }
@@ -36,13 +36,13 @@ namespace StatisticsAnalysisTool.UserControls
         private void OpenMailMonitoringPopup_MouseEnter(object sender, MouseEventArgs e)
         {
             var vm = (MainWindowViewModel)DataContext;
-            vm.IsMailMonitoringPopupVisible = Visibility.Visible;
+            vm.MailMonitoringBindings.IsMailMonitoringPopupVisible = Visibility.Visible;
         }
 
         private void CloseMailMonitoringPopup_MouseLeave(object sender, MouseEventArgs e)
         {
             var vm = (MainWindowViewModel)DataContext;
-            vm.IsMailMonitoringPopupVisible = Visibility.Hidden;
+            vm.MailMonitoringBindings.IsMailMonitoringPopupVisible = Visibility.Collapsed;
         }
 
         private void BtnDeleteSelectedMails_Click(object sender, RoutedEventArgs e)

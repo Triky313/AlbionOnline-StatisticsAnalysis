@@ -117,18 +117,11 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _taskProgressbarMaximum = 100;
         private double _taskProgressbarValue;
         private bool _isTaskProgressbarIndeterminate;
-        private Visibility _isMailMonitoringPopupVisible = Visibility.Hidden;
-        private ObservableCollectionEx<Mail> _mails = new();
-        private MailStatsObject _mailStatsObject = new();
-        private ListCollectionView _mailCollectionView;
-        private string _mailsSearchText;
-        private DateTime _datePickerMailsFrom = new(2017, 1, 1);
-        private DateTime _datePickerMailsTo = DateTime.UtcNow.AddDays(1);
         private VaultBindings _vaultBindings = new();
-        private GridLength _gridSplitterPosition = GridLength.Auto;
         private UserTrackingBindings _userTrackingBindings = new();
         private Visibility _debugModeVisibility = Visibility.Collapsed;
         private TrackingActivityBindings _trackingActivityBindings = new();
+        private MailMonitoringBindings _mailMonitoringBindings = new();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -221,7 +214,7 @@ namespace StatisticsAnalysisTool.ViewModels
             DamageMeterSortSelection = sortByDamageStruct;
 
             // Mail Monitoring
-            GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GridSplitterPosition);
+            MailMonitoringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GridSplitterPosition);
 
             #endregion
         }
@@ -497,17 +490,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterKill,
                 Name = MainWindowTranslation.ShowKills
             });
-
-            // Mails
-            MailCollectionView = CollectionViewSource.GetDefaultView(Mails) as ListCollectionView;
-            if (MailCollectionView != null)
-            {
-                MailCollectionView.IsLiveSorting = true;
-                MailCollectionView.IsLiveFiltering = true;
-                MailCollectionView.SortDescriptions.Add(new SortDescription("Tick", ListSortDirection.Descending));
-            }
-
-            MailCollectionView?.Refresh();
         }
 
         #endregion
@@ -944,16 +926,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isDamageMeterPopupVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility IsMailMonitoringPopupVisible
-        {
-            get => _isMailMonitoringPopupVisible;
-            set
-            {
-                _isMailMonitoringPopupVisible = value;
                 OnPropertyChanged();
             }
         }
@@ -1733,43 +1705,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ListCollectionView MailCollectionView
+        public MailMonitoringBindings MailMonitoringBindings
         {
-            get => _mailCollectionView;
+            get => _mailMonitoringBindings;
             set
             {
-                _mailCollectionView = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollectionEx<Mail> Mails
-        {
-            get => _mails;
-            set
-            {
-                _mails = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public GridLength GridSplitterPosition
-        {
-            get => _gridSplitterPosition;
-            set
-            {
-                _gridSplitterPosition = value;
-                SettingsController.CurrentSettings.GridSplitterPosition = _gridSplitterPosition.Value;
-                OnPropertyChanged();
-            }
-        }
-
-        public MailStatsObject MailStatsObject
-        {
-            get => _mailStatsObject;
-            set
-            {
-                _mailStatsObject = value;
+                _mailMonitoringBindings = value;
                 OnPropertyChanged();
             }
         }
@@ -1780,47 +1721,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _vaultBindings = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string MailsSearchText
-        {
-            get => _mailsSearchText;
-            set
-            {
-                _mailsSearchText = value;
-
-                if (_mailsSearchText.Length >= 2)
-                {
-                    MailCollectionView.Filter = TrackingController.MailController.Filter;
-                    MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
-                }
-
-                OnPropertyChanged();
-            }
-        }
-
-        public DateTime DatePickerMailsFrom
-        {
-            get => _datePickerMailsFrom;
-            set
-            {
-                _datePickerMailsFrom = value;
-                MailCollectionView.Filter = TrackingController.MailController.Filter;
-                MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
-                OnPropertyChanged();
-            }
-        }
-
-        public DateTime DatePickerMailsTo
-        {
-            get => _datePickerMailsTo;
-            set
-            {
-                _datePickerMailsTo = value;
-                MailCollectionView.Filter = TrackingController.MailController.Filter;
-                MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
                 OnPropertyChanged();
             }
         }

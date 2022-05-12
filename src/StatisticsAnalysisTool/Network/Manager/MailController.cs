@@ -20,24 +20,24 @@ namespace StatisticsAnalysisTool.Network.Manager
     public class MailController
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        
+
         private readonly MainWindowViewModel _mainWindowViewModel;
-        
+
         public List<MailInfoObject> CurrentMailInfos = new();
 
         public MailController(MainWindowViewModel mainWindowViewModel)
         {
             _mainWindowViewModel = mainWindowViewModel;
 
-            if (_mainWindowViewModel?.Mails != null)
+            if (_mainWindowViewModel?.MailMonitoringBindings?.Mails != null)
             {
-                _mainWindowViewModel.Mails.CollectionChanged += OnCollectionChanged;
+                _mainWindowViewModel.MailMonitoringBindings.Mails.CollectionChanged += OnCollectionChanged;
             }
         }
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _mainWindowViewModel?.MailStatsObject.SetMailStats(_mainWindowViewModel.Mails);
+            _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject.SetMailStats(_mainWindowViewModel?.MailMonitoringBindings?.Mails);
         }
 
         public void SetMailInfos(List<MailInfoObject> currentMailInfos)
@@ -48,7 +48,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void AddMail(long mailId, string content)
         {
-            if (_mainWindowViewModel.Mails.ToArray().Any(x => x.MailId == mailId))
+            if (_mainWindowViewModel.MailMonitoringBindings.Mails.ToArray().Any(x => x.MailId == mailId))
             {
                 return;
             }
@@ -84,23 +84,23 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindowViewModel.Mails.Add(mail);
-                _mainWindowViewModel.MailCollectionView?.Refresh();
+                _mainWindowViewModel?.MailMonitoringBindings?.Mails.Add(mail);
+                _mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Refresh();
             });
         }
-        
+
         public void RemoveMailsByIdsAsync(IEnumerable<long> mailIds)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                foreach (var mail in _mainWindowViewModel?.Mails?.ToList().Where(x => mailIds.Contains(x.MailId)) ?? new List<Mail>())
+                foreach (var mail in _mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList().Where(x => mailIds.Contains(x.MailId)) ?? new List<Mail>())
                 {
-                    _mainWindowViewModel?.Mails?.Remove(mail);
+                    _mainWindowViewModel?.MailMonitoringBindings?.Mails?.Remove(mail);
                 }
-                _mainWindowViewModel?.MailStatsObject?.SetMailStats(_mainWindowViewModel?.MailCollectionView?.Cast<Mail>().ToList());
+                _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(_mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Cast<Mail>().ToList());
             });
         }
-        
+
         private static MailContent ContentToObject(MailType type, string content)
         {
             switch (type)
@@ -166,11 +166,11 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 foreach (var item in mails)
                 {
-                    _mainWindowViewModel?.Mails.Add(item);
+                    _mainWindowViewModel?.MailMonitoringBindings?.Mails.Add(item);
                 }
 
-                _mainWindowViewModel?.MailCollectionView?.Refresh();
-                _mainWindowViewModel?.MailStatsObject?.SetMailStats(mails);
+                _mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Refresh();
+                _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(mails);
             });
         }
 
@@ -190,23 +190,6 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _ => MailType.Unknown
             };
         }
-
-        #region Filter
-
-        public bool Filter(object obj)
-        {
-            return obj is Mail mail 
-                && mail.Timestamp.Date >= _mainWindowViewModel?.DatePickerMailsFrom.Date
-                && mail.Timestamp.Date <= _mainWindowViewModel?.DatePickerMailsTo.Date && (
-                    (mail.LocationName != null && mail.LocationName.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty))
-                    || ($"T{mail.Item.Tier}.{mail.Item.Level}".ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty))
-                    || mail.MailTypeDescription.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty) 
-                    || (mail.Item != null && mail.Item.LocalizedName.ToLower().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty))
-                    || mail.MailContent.UnitPrice.ToString().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty) 
-                    || mail.MailContent.TotalPrice.ToString().Contains(_mainWindowViewModel?.MailsSearchText?.ToLower() ?? string.Empty));
-        }
-
-        #endregion
 
         #region Load / Save local file data
 
@@ -241,7 +224,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             try
             {
-                var fileString = JsonSerializer.Serialize(_mainWindowViewModel.Mails.ToList());
+                var fileString = JsonSerializer.Serialize(_mainWindowViewModel?.MailMonitoringBindings?.Mails.ToList());
                 File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
             }
             catch (Exception e)
