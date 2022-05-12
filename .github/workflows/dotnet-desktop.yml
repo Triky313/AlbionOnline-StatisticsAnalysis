@@ -47,7 +47,8 @@ jobs:
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test src\StatisticsAnalysisTool.UnitTests
+     # run: dotnet test src\StatisticsAnalysisTool.UnitTests
+      run: dotnet test --no-restore --verbosity normal
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
