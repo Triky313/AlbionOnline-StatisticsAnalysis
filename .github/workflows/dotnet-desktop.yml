@@ -41,6 +41,6 @@ jobs:
       with:
         # vs-version: '[17.1]'
         msbuild-architecture: x64
-      
+
     - name: Execute unit tests
       run: dotnet test $env:Test_Project_Path
