@@ -2,7 +2,7 @@ name: .NET Desktop
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, update-dotnet-desktop.yml ]
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
@@ -17,13 +17,14 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
-
+        # configuration: [Debug, Release]
+        configuration: [Debug]
     runs-on: windows-2022    # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
       Solution_Name: StatisticsAnalysisTool.sln
+      Test_Project_Path: src\StatisticsAnalysisTool.UnitTests\StatisticsAnalysisTool.UnitTests.csproj
 
     steps:
     - name: Checkout
@@ -38,20 +39,22 @@ jobs:
         dotnet-version: '6.0.100' # SDK Version to use; x will use the latest version of the 6.0 channel. Force 101 for global.json compatibility.
     - run: dotnet build src\StatisticsAnalysisTool
 
+    # Install the .NET workload
+    - name: Install .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.100' # SDK Version to use; x will use the latest version of the 6.0 channel. Force 101 for global.json compatibility.
+    - run: dotnet build src\StatisticsAnalysisTool
+
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.1
       with:
-    #    vs-version: '[17.0,17.0]'
+        # vs-version: '[17.1]'
         msbuild-architecture: x64
 
-    # Execute all unit tests in the solution
+    # - name: Install test requirements 
+    #   run: dotnet add package xunit.runner.visualstudio
+      
     - name: Execute unit tests
-      run: dotnet test src\StatisticsAnalysisTool.UnitTests
-
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore the application
-      #run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      run: msbuild src\$env:Solution_Name /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      run: dotnet test $env:Test_Project_Path
