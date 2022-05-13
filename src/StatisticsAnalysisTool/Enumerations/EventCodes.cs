@@ -91,7 +91,7 @@ namespace StatisticsAnalysisTool.Enumerations
         RegenerationPlayerComboChanged,
         DurabilityChanged,
         NewLoot,
-        AttachItemContainer = 88, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
+        AttachItemContainer = 89, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
         DetachItemContainer, //  map[0:[-95 72 -77 -75 -70 34 127 73 -114 -96 28 8 75 -107 -106 125] 252:90]
         InvalidateItemContainer,
         LockItemContainer,
@@ -380,8 +380,8 @@ namespace StatisticsAnalysisTool.Enumerations
         UnlockVanityUnlock,
         AvatarUnlocked,
         CustomizationChanged,
-        GuildVaultInfo = 385,
-        BaseVaultInfo = 386,
+        GuildVaultInfo = 387,
+        BaseVaultInfo = 388,
         BankVaultInfo,
         RecoveryVaultPlayerInfo,
         RecoveryVaultGuildInfo,

@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,6 +50,7 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
+                // TODO: Better solution! System.InvalidCastException: 'Unable to cast object of type 'System.Int16' to type 'System.Collections.IEnumerable'.'
                 var valueEnumerable = (IEnumerable)value;
                 var myBytes = valueEnumerable.OfType<byte>().ToArray();
                 return new Guid(myBytes);
