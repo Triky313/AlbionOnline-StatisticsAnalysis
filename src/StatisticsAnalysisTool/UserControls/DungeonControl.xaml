@@ -18,20 +18,24 @@
                       Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
 
         <Grid Row="0" Margin="0,5,0,6" Grid.RowSpan="2">
-            <StackPanel Height="auto" VerticalAlignment="Top" HorizontalAlignment="Left">
-                <ContentPresenter ContentTemplate="{StaticResource DungeonStatsTemplate}" Content="{Binding DungeonBindings.DungeonStatsTotal}"/>
-                <ContentPresenter ContentTemplate="{StaticResource DungeonStatsTemplate}" Content="{Binding DungeonBindings.DungeonStatsDay}"/>
-                <ContentPresenter ContentTemplate="{StaticResource DungeonStatsFilterTemplate}" Content="{Binding DungeonBindings.DungeonStatsFilter}"/>
-            </StackPanel>
-            <StackPanel HorizontalAlignment="Right" Width="250" Height="auto" VerticalAlignment="Top">
-                <DockPanel Height="auto" VerticalAlignment="Top">
-                    <ContentControl ContentTemplate="{StaticResource DungeonCloseTimerTemplate}" Content="{Binding DungeonCloseTimer}" />
-                </DockPanel>
-                <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="80" 
-                        Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
-                <Button Content="{Binding Translation.DeleteSelectedDungeons, FallbackValue=DELETE__SELECTED__DUNGEONS}" Height="26" MaxWidth="500" MinWidth="80" 
-                        Margin="0,2,0,5" Click="BtnDeleteSelectedDungeons_Click" />
-            </StackPanel>
+            <ScrollViewer>
+                <Grid>
+                    <StackPanel Height="auto" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <ContentPresenter ContentTemplate="{StaticResource DungeonStatsTemplate}" Content="{Binding DungeonBindings.DungeonStatsTotal}"/>
+                        <ContentPresenter ContentTemplate="{StaticResource DungeonStatsTemplate}" Content="{Binding DungeonBindings.DungeonStatsDay}"/>
+                        <ContentPresenter ContentTemplate="{StaticResource DungeonStatsFilterTemplate}" Content="{Binding DungeonBindings.DungeonStatsFilter}"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Right" Width="250" Height="auto" VerticalAlignment="Top">
+                        <DockPanel Height="auto" VerticalAlignment="Top">
+                            <ContentControl ContentTemplate="{StaticResource DungeonCloseTimerTemplate}" Content="{Binding DungeonCloseTimer}" />
+                        </DockPanel>
+                        <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="80" 
+                                Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
+                        <Button Content="{Binding Translation.DeleteSelectedDungeons, FallbackValue=DELETE__SELECTED__DUNGEONS}" Height="26" MaxWidth="500" MinWidth="80" 
+                                Margin="0,2,0,5" Click="BtnDeleteSelectedDungeons_Click" />
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
         </Grid>
 
         <Grid Row="2">
