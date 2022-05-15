@@ -73,7 +73,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private ShopCategory _selectedItemShopCategories;
         private ItemTier _selectedItemTier;
         public TrackingController TrackingController;
-        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
         private ObservableCollection<TrackingNotification> _trackingNotifications = new();
         private MainWindowTranslation _translation;
         private string _updateTranslation;
@@ -83,10 +82,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _mainTrackerTimer;
         private bool _isShowOnlyFavoritesActive;
         private DungeonCloseTimer _dungeonCloseTimer = new();
-        private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
-        private double _dungeonStatsGridHeight = 82;
-        private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
-        private bool _isDungeonStatsGridUnfold;
         private int _partyMemberNumber;
         private bool _isItemSearchCheckboxesEnabled;
         private bool _isFilterResetEnabled;
@@ -94,7 +89,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private EFontAwesomeIcon _damageMeterActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private Brush _damageMeterActivationToggleColor;
         private bool _isDamageMeterTrackingActive;
-        private ListCollectionView _trackingDungeonsCollectionView;
         private ListCollectionView _trackingNotificationsCollectionView;
         private bool _isTrackingPartyLootOnly;
         private bool _isTrackingSilver;
@@ -415,11 +409,11 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
             IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
 
-            TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
-            if (TrackingDungeonsCollectionView != null)
+            DungeonBindings.TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(DungeonBindings.TrackingDungeons) as ListCollectionView;
+            if (DungeonBindings.TrackingDungeonsCollectionView != null)
             {
-                TrackingDungeonsCollectionView.IsLiveSorting = true;
-                TrackingDungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
+                DungeonBindings.TrackingDungeonsCollectionView.IsLiveSorting = true;
+                DungeonBindings.TrackingDungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
             }
 
             TrackingNotificationsCollectionView = CollectionViewSource.GetDefaultView(TrackingNotifications) as ListCollectionView;
@@ -579,28 +573,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 catchItemWindow.Show();
             }
         }
-
-        public void DungeonStatsGridToggle()
-        {
-            var unfoldGridHeight = 290;
-            var foldGridHeight = 82;
-
-            if (_isDungeonStatsGridUnfold)
-            {
-                DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
-                DungeonStatsGridHeight = foldGridHeight;
-                DungeonStatsScrollViewerMargin = new Thickness(0, foldGridHeight, 0, 0);
-                _isDungeonStatsGridUnfold = false;
-            }
-            else
-            {
-                DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleUp;
-                DungeonStatsGridHeight = unfoldGridHeight;
-                DungeonStatsScrollViewerMargin = new Thickness(0, unfoldGridHeight, 0, 0);
-                _isDungeonStatsGridUnfold = true;
-            }
-        }
-
+        
         public void ExportLootToFile()
         {
             var dialog = new SaveFileDialog
@@ -1095,27 +1068,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
-        {
-            get => _trackingDungeons;
-            set
-            {
-                _trackingDungeons = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ListCollectionView TrackingDungeonsCollectionView
-        {
-            get => _trackingDungeonsCollectionView;
-            set
-            {
-                _trackingDungeonsCollectionView = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public ListCollectionView TrackingNotificationsCollectionView
         {
             get => _trackingNotificationsCollectionView;
@@ -1466,37 +1419,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public double DungeonStatsGridHeight
-        {
-            get => _dungeonStatsGridHeight;
-            set
-            {
-                _dungeonStatsGridHeight = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Thickness DungeonStatsScrollViewerMargin
-        {
-            get => _dungeonStatsScrollViewerMargin;
-            set
-            {
-                _dungeonStatsScrollViewerMargin = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public EFontAwesomeIcon DungeonStatsGridButtonIcon
-        {
-            get => _dungeonStatsGridButtonIcon;
-            set
-            {
-                _dungeonStatsGridButtonIcon = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public string NumberOfValuesTranslation
         {
             get => _numberOfValuesTranslation;

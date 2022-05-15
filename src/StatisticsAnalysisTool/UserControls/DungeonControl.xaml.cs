@@ -1,5 +1,4 @@
-﻿using FontAwesome5;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Linq;
@@ -16,7 +15,7 @@ namespace StatisticsAnalysisTool.UserControls
         {
             InitializeComponent();
         }
-        
+
         public void ResetDungeonCounters()
         {
             var vm = (MainWindowViewModel)DataContext;
@@ -56,7 +55,7 @@ namespace StatisticsAnalysisTool.UserControls
 
             if (dialogResult is true)
             {
-                var selectedDungeons = vm?.TrackingDungeons.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.DungeonHash);
+                var selectedDungeons = vm?.DungeonBindings?.TrackingDungeons.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.DungeonHash);
                 vm?.TrackingController.DungeonController.RemoveDungeonByHashAsync(selectedDungeons);
             }
         }

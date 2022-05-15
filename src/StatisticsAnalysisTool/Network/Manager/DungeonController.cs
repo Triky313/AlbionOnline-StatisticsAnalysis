@@ -104,7 +104,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             _dungeons.Clear();
 
-            Application.Current.Dispatcher.Invoke(() => { _mainWindowViewModel?.TrackingDungeons?.Clear(); });
+            Application.Current.Dispatcher.Invoke(() => { _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Clear(); });
         }
 
         public void SetDungeonChestOpen(int id)
@@ -537,7 +537,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             var orderedDungeon = _dungeons.OrderBy(x => x.EnterDungeonFirstTime).ToList();
             foreach (var dungeonObject in orderedDungeon)
             {
-                var dungeonFragment = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.DungeonHash == dungeonObject.DungeonHash);
+                var dungeonFragment = _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.FirstOrDefault(x => x.DungeonHash == dungeonObject.DungeonHash);
                 if (dungeonFragment != null && IsDungeonDifferenceToAnother(dungeonObject, dungeonFragment))
                 {
                     Application.Current.Dispatcher.Invoke(() =>
@@ -554,7 +554,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                         var dunFragment = new DungeonNotificationFragment(index, dungeonObject.GuidList, dungeonObject.MainMapIndex, dungeonObject.EnterDungeonFirstTime);
                         dunFragment.SetValues(dungeonObject);
 
-                        _mainWindowViewModel?.TrackingDungeons?.Insert(index, dunFragment);
+                        _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Insert(index, dunFragment);
                     });
                 }
             }
@@ -562,8 +562,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             await RemoveLeftOverDungeonNotificationFragments().ConfigureAwait(false);
             await Application.Current.Dispatcher.InvokeAsync(async() =>
             {
-                await SetBestDungeonTimeAsync(_mainWindowViewModel?.TrackingDungeons?.ToAsyncEnumerable());
-                await CalculateBestDungeonValues(_mainWindowViewModel?.TrackingDungeons?.ToAsyncEnumerable());
+                await SetBestDungeonTimeAsync(_mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToAsyncEnumerable());
+                await CalculateBestDungeonValues(_mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToAsyncEnumerable());
             });
             
             await DungeonUiFilteringAsync();
@@ -591,14 +591,14 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private async Task DungeonUiFilteringAsync()
         {
-            await _mainWindowViewModel?.TrackingDungeons?.Where(x => !_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status != DungeonStatus.Active)
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x => !_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status != DungeonStatus.Active)
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
                 {
                     d.Visibility = Visibility.Collapsed;
                 });
 
-            await _mainWindowViewModel?.TrackingDungeons?.Where(x => _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x => _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
                 {
@@ -608,7 +608,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private async Task RemoveLeftOverDungeonNotificationFragments()
         {
-            await foreach (var dungeonFragment in _mainWindowViewModel?.TrackingDungeons?.ToAsyncEnumerable().ConfigureAwait(false) ?? new ConfiguredCancelableAsyncEnumerable<DungeonNotificationFragment>())
+            await foreach (var dungeonFragment in _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToAsyncEnumerable().ConfigureAwait(false) ?? new ConfiguredCancelableAsyncEnumerable<DungeonNotificationFragment>())
             {
                 var dungeonObjectFound = _dungeons.Select(x => x.DungeonHash).Contains(dungeonFragment.DungeonHash);
                 if (dungeonObjectFound)
@@ -618,7 +618,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
+                    _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Remove(dungeonFragment);
                 });
             }
         }
@@ -627,11 +627,11 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             _ = _dungeons.RemoveAll(x => dungeonHash.Contains(x.DungeonHash));
 
-            foreach (var dungeonFragment in _mainWindowViewModel?.TrackingDungeons?.ToList() ?? new List<DungeonNotificationFragment>())
+            foreach (var dungeonFragment in _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToList() ?? new List<DungeonNotificationFragment>())
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    _mainWindowViewModel?.TrackingDungeons?.Remove(dungeonFragment);
+                    _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Remove(dungeonFragment);
                 });
             }
 
@@ -645,7 +645,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            var uiDungeon = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x =>
+            var uiDungeon = _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.FirstOrDefault(x =>
                 x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
 
             uiDungeon?.SetValues(dungeon);
