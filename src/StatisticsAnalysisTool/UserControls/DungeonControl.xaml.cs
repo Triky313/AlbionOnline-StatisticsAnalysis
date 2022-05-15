@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.UserControls
 {
@@ -13,51 +12,26 @@ namespace StatisticsAnalysisTool.UserControls
     /// </summary>
     public partial class DungeonControl
     {
-        private bool IsDungeonStatsGridUnfold;
-
         public DungeonControl()
         {
             InitializeComponent();
         }
-
-        public void DungeonStatsGridToggle()
-        {
-            var unfoldGridHeight = 290;
-            var foldGridHeight = 82;
-
-            var vm = (MainWindowViewModel)DataContext;
-
-            if (IsDungeonStatsGridUnfold)
-            {
-                vm.DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
-                vm.DungeonStatsGridHeight = foldGridHeight;
-                vm.DungeonStatsScrollViewerMargin = new Thickness(0, foldGridHeight, 0, 0);
-                IsDungeonStatsGridUnfold = false;
-            }
-            else
-            {
-                vm.DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleUp;
-                vm.DungeonStatsGridHeight = unfoldGridHeight;
-                vm.DungeonStatsScrollViewerMargin = new Thickness(0, unfoldGridHeight, 0, 0);
-                IsDungeonStatsGridUnfold = true;
-            }
-        }
-
+        
         public void ResetDungeonCounters()
         {
             var vm = (MainWindowViewModel)DataContext;
 
-            vm.DungeonStatsTotal.EnteredDungeon = 0;
-            vm.DungeonStatsTotal.OpenedStandardChests = 0;
-            vm.DungeonStatsTotal.OpenedUncommonChests = 0;
-            vm.DungeonStatsTotal.OpenedRareChests = 0;
-            vm.DungeonStatsTotal.OpenedLegendaryChests = 0;
+            vm.DungeonBindings.DungeonStatsTotal.EnteredDungeon = 0;
+            vm.DungeonBindings.DungeonStatsTotal.OpenedStandardChests = 0;
+            vm.DungeonBindings.DungeonStatsTotal.OpenedUncommonChests = 0;
+            vm.DungeonBindings.DungeonStatsTotal.OpenedRareChests = 0;
+            vm.DungeonBindings.DungeonStatsTotal.OpenedLegendaryChests = 0;
 
-            vm.DungeonStatsDay.EnteredDungeon = 0;
-            vm.DungeonStatsDay.OpenedStandardChests = 0;
-            vm.DungeonStatsDay.OpenedUncommonChests = 0;
-            vm.DungeonStatsDay.OpenedRareChests = 0;
-            vm.DungeonStatsDay.OpenedLegendaryChests = 0;
+            vm.DungeonBindings.DungeonStatsDay.EnteredDungeon = 0;
+            vm.DungeonBindings.DungeonStatsDay.OpenedStandardChests = 0;
+            vm.DungeonBindings.DungeonStatsDay.OpenedUncommonChests = 0;
+            vm.DungeonBindings.DungeonStatsDay.OpenedRareChests = 0;
+            vm.DungeonBindings.DungeonStatsDay.OpenedLegendaryChests = 0;
         }
 
         public void ResetDungeons()
@@ -88,11 +62,6 @@ namespace StatisticsAnalysisTool.UserControls
         }
 
         #region Ui events
-
-        private void MouseUp_FoldUnfoldDungeonStats(object sender, MouseEventArgs e)
-        {
-            DungeonStatsGridToggle();
-        }
 
         private void BtnDungeonTrackingReset_Click(object sender, RoutedEventArgs e)
         {

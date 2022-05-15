@@ -45,8 +45,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<DamageMeterFragment> _damageMeter = new();
         private List<DamageMeterSortStruct> _damageMeterSort = new();
         private DamageMeterSortStruct _damageMeterSortSelection;
-        private DungeonStats _dungeonStatsDay = new();
-        private DungeonStats _dungeonStatsTotal = new();
         private string _errorBarText;
         private Visibility _errorBarVisibility;
         private double _guildInfoWidth;
@@ -89,9 +87,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _dungeonStatsGridHeight = 82;
         private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
         private bool _isDungeonStatsGridUnfold;
-        private DungeonStatsFilter _dungeonStatsFilter;
         private int _partyMemberNumber;
-        private ObservableCollection<ClusterInfo> _enteredCluster = new();
         private bool _isItemSearchCheckboxesEnabled;
         private bool _isFilterResetEnabled;
         private Visibility _gridTryToLoadTheItemListAgainVisibility;
@@ -122,6 +118,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _debugModeVisibility = Visibility.Collapsed;
         private TrackingActivityBindings _trackingActivityBindings = new();
         private MailMonitoringBindings _mailMonitoringBindings = new();
+        private DungeonBindings _dungeonBindings = new();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -213,8 +210,11 @@ namespace StatisticsAnalysisTool.ViewModels
             DamageMeterSort.Add(sortByHpsStruct);
             DamageMeterSortSelection = sortByDamageStruct;
 
+            // Dungeons
+            DungeonBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.DungeonsGridSplitterPosition);
+
             // Mail Monitoring
-            MailMonitoringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GridSplitterPosition);
+            MailMonitoringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.MailMonitoringGridSplitterPosition);
 
             #endregion
         }
@@ -700,7 +700,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             TrackingController?.CountUpTimer.Start();
 
-            DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
+            DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
 
             IsTrackingActive = NetworkManager.StartNetworkCapture(this, TrackingController);
             Console.WriteLine(@"### Start Tracking...");
@@ -766,34 +766,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 await TrackingController.EntityController.ResetPartyMemberAsync();
             }
         }
-
-        public void DeleteSelectedDungeons()
-        {
-            var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS"));
-            var dialogResult = dialog.ShowDialog();
-
-            if (dialogResult is true)
-            {
-                var selectedDungeons = TrackingDungeons.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.DungeonHash);
-                TrackingController.DungeonController.RemoveDungeonByHashAsync(selectedDungeons);
-            }
-        }
-
-        public void ResetDungeonCounters()
-        {
-            DungeonStatsTotal.EnteredDungeon = 0;
-            DungeonStatsTotal.OpenedStandardChests = 0;
-            DungeonStatsTotal.OpenedUncommonChests = 0;
-            DungeonStatsTotal.OpenedRareChests = 0;
-            DungeonStatsTotal.OpenedLegendaryChests = 0;
-
-            DungeonStatsDay.EnteredDungeon = 0;
-            DungeonStatsDay.OpenedStandardChests = 0;
-            DungeonStatsDay.OpenedUncommonChests = 0;
-            DungeonStatsDay.OpenedRareChests = 0;
-            DungeonStatsDay.OpenedLegendaryChests = 0;
-        }
-
+        
         public void SetDamageMeterSort()
         {
             switch (DamageMeterSortSelection.DamageMeterSortType)
@@ -1022,46 +995,16 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<ClusterInfo> EnteredCluster
+        public DungeonBindings DungeonBindings
         {
-            get => _enteredCluster;
+            get => _dungeonBindings;
             set
             {
-                _enteredCluster = value;
+                _dungeonBindings = value;
                 OnPropertyChanged();
             }
         }
-
-        public DungeonStats DungeonStatsDay
-        {
-            get => _dungeonStatsDay;
-            set
-            {
-                _dungeonStatsDay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public DungeonStats DungeonStatsTotal
-        {
-            get => _dungeonStatsTotal;
-            set
-            {
-                _dungeonStatsTotal = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public DungeonStatsFilter DungeonStatsFilter
-        {
-            get => _dungeonStatsFilter;
-            set
-            {
-                _dungeonStatsFilter = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public UserTrackingBindings UserTrackingBindings
         {
             get => _userTrackingBindings;

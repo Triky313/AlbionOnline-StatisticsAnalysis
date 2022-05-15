@@ -148,7 +148,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
         set
         {
             _gridSplitterPosition = value;
-            SettingsController.CurrentSettings.GridSplitterPosition = _gridSplitterPosition.Value;
+            SettingsController.CurrentSettings.MailMonitoringGridSplitterPosition = _gridSplitterPosition.Value;
             OnPropertyChanged();
         }
     }

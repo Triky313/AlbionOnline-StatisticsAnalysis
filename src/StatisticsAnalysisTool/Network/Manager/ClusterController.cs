@@ -81,16 +81,16 @@ namespace StatisticsAnalysisTool.Network.Manager
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 var newCluster = new ClusterInfo(currentCluster);
-                _mainWindowViewModel.EnteredCluster.Insert(0, newCluster);
+                _mainWindowViewModel.DungeonBindings.EnteredCluster.Insert(0, newCluster);
                 RemovesClusterIfMoreThanLimit();
             });
         }
 
         private void RemovesClusterIfMoreThanLimit()
         {
-            if (_mainWindowViewModel.EnteredCluster?.Count > MaxEnteredCluster)
+            if (_mainWindowViewModel?.DungeonBindings?.EnteredCluster?.Count > MaxEnteredCluster)
             {
-                _mainWindowViewModel?.EnteredCluster?.RemoveAt(_mainWindowViewModel.EnteredCluster.Count - 1);
+                _mainWindowViewModel?.DungeonBindings?.EnteredCluster?.RemoveAt(_mainWindowViewModel.DungeonBindings.EnteredCluster.Count - 1);
             }
         }
 
