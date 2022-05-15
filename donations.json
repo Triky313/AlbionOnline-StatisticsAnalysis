@@ -1,5 +1,12 @@
 [
  {
+	"Timestamp": "2022-05-13T00:00:00",
+	"Amount": 1520000,
+	"RealMoneyAmount": 0,
+	"Contributor": "HepatitisB",
+	"IsDonationRealMoney": false
+ },
+ {
 	"Timestamp": "2022-05-06T00:00:00",
 	"Amount": 0,
 	"RealMoneyAmount": 5.29,
