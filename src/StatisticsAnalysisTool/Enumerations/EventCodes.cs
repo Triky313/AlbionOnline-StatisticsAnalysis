@@ -74,15 +74,15 @@ namespace StatisticsAnalysisTool.Enumerations
         StopEmote,
         SystemMessage,
         UtilityTextMessage,
-        UpdateSilver = 71, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
-        UpdateFame = 72, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 7: ItemId, 9: SatchelFame, )
+        UpdateSilver = 72, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
+        UpdateFame = 73, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 7: ItemId, 9: SatchelFame, )
         UpdateLearningPoints,
-        UpdateReSpecPoints = 74,
-        UpdateCurrency = 75,
-        UpdateFactionStanding,
+        UpdateReSpecPoints = 75,
+        UpdateCurrency = 76,
+        UpdateFactionStanding = 77,
         Respawn,
         ServerDebugLog,
-        CharacterEquipmentChanged,
+        CharacterEquipmentChanged = 80,
         RegenerationHealthChanged,
         RegenerationEnergyChanged,
         RegenerationMountHealthChanged,
