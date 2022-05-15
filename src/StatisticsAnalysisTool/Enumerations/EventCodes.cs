@@ -430,6 +430,6 @@ namespace StatisticsAnalysisTool.Enumerations
         Unknown420,
         Unknown421,
         Unknown422,
-        MightFavorPoints = 471 // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
+        MightFavorPoints = 473 // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
     }
 }
