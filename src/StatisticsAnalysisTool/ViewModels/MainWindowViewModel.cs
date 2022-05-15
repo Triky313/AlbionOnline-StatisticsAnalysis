@@ -45,8 +45,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<DamageMeterFragment> _damageMeter = new();
         private List<DamageMeterSortStruct> _damageMeterSort = new();
         private DamageMeterSortStruct _damageMeterSortSelection;
-        private DungeonStats _dungeonStatsDay = new();
-        private DungeonStats _dungeonStatsTotal = new();
         private string _errorBarText;
         private Visibility _errorBarVisibility;
         private double _guildInfoWidth;
@@ -75,7 +73,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private ShopCategory _selectedItemShopCategories;
         private ItemTier _selectedItemTier;
         public TrackingController TrackingController;
-        private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
         private ObservableCollection<TrackingNotification> _trackingNotifications = new();
         private MainWindowTranslation _translation;
         private string _updateTranslation;
@@ -84,21 +81,13 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = 0, ValuePerHour = 0, CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
         private bool _isShowOnlyFavoritesActive;
-        private DungeonCloseTimer _dungeonCloseTimer = new();
-        private EFontAwesomeIcon _dungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
-        private double _dungeonStatsGridHeight = 82;
-        private Thickness _dungeonStatsScrollViewerMargin = new(0, 82, 0, 0);
-        private bool _isDungeonStatsGridUnfold;
-        private DungeonStatsFilter _dungeonStatsFilter;
         private int _partyMemberNumber;
-        private ObservableCollection<ClusterInfo> _enteredCluster = new();
         private bool _isItemSearchCheckboxesEnabled;
         private bool _isFilterResetEnabled;
         private Visibility _gridTryToLoadTheItemListAgainVisibility;
         private EFontAwesomeIcon _damageMeterActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private Brush _damageMeterActivationToggleColor;
         private bool _isDamageMeterTrackingActive;
-        private ListCollectionView _trackingDungeonsCollectionView;
         private ListCollectionView _trackingNotificationsCollectionView;
         private bool _isTrackingPartyLootOnly;
         private bool _isTrackingSilver;
@@ -122,6 +111,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _debugModeVisibility = Visibility.Collapsed;
         private TrackingActivityBindings _trackingActivityBindings = new();
         private MailMonitoringBindings _mailMonitoringBindings = new();
+        private DungeonBindings _dungeonBindings = new();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -213,8 +203,11 @@ namespace StatisticsAnalysisTool.ViewModels
             DamageMeterSort.Add(sortByHpsStruct);
             DamageMeterSortSelection = sortByDamageStruct;
 
+            // Dungeons
+            DungeonBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.DungeonsGridSplitterPosition);
+
             // Mail Monitoring
-            MailMonitoringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.GridSplitterPosition);
+            MailMonitoringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.MailMonitoringGridSplitterPosition);
 
             #endregion
         }
@@ -414,14 +407,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
             IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
             IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
-
-            TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
-            if (TrackingDungeonsCollectionView != null)
-            {
-                TrackingDungeonsCollectionView.IsLiveSorting = true;
-                TrackingDungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
-            }
-
+            
             TrackingNotificationsCollectionView = CollectionViewSource.GetDefaultView(TrackingNotifications) as ListCollectionView;
             if (TrackingNotificationsCollectionView != null)
             {
@@ -579,28 +565,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 catchItemWindow.Show();
             }
         }
-
-        public void DungeonStatsGridToggle()
-        {
-            var unfoldGridHeight = 290;
-            var foldGridHeight = 82;
-
-            if (_isDungeonStatsGridUnfold)
-            {
-                DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleDown;
-                DungeonStatsGridHeight = foldGridHeight;
-                DungeonStatsScrollViewerMargin = new Thickness(0, foldGridHeight, 0, 0);
-                _isDungeonStatsGridUnfold = false;
-            }
-            else
-            {
-                DungeonStatsGridButtonIcon = EFontAwesomeIcon.Solid_AngleDoubleUp;
-                DungeonStatsGridHeight = unfoldGridHeight;
-                DungeonStatsScrollViewerMargin = new Thickness(0, unfoldGridHeight, 0, 0);
-                _isDungeonStatsGridUnfold = true;
-            }
-        }
-
+        
         public void ExportLootToFile()
         {
             var dialog = new SaveFileDialog
@@ -680,7 +645,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion Player information (Player Mode)
 
-        #region Tracking Mode
+        #region Tracking
 
         public void StartTracking()
         {
@@ -700,7 +665,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             TrackingController?.CountUpTimer.Start();
 
-            DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
+            DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
 
             IsTrackingActive = NetworkManager.StartNetworkCapture(this, TrackingController);
             Console.WriteLine(@"### Start Tracking...");
@@ -766,34 +731,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 await TrackingController.EntityController.ResetPartyMemberAsync();
             }
         }
-
-        public void DeleteSelectedDungeons()
-        {
-            var dialog = new DialogWindow(LanguageController.Translation("DELETE_SELECTED_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_SELECTED_DUNGEONS"));
-            var dialogResult = dialog.ShowDialog();
-
-            if (dialogResult is true)
-            {
-                var selectedDungeons = TrackingDungeons.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.DungeonHash);
-                TrackingController.DungeonController.RemoveDungeonByHashAsync(selectedDungeons);
-            }
-        }
-
-        public void ResetDungeonCounters()
-        {
-            DungeonStatsTotal.EnteredDungeon = 0;
-            DungeonStatsTotal.OpenedStandardChests = 0;
-            DungeonStatsTotal.OpenedUncommonChests = 0;
-            DungeonStatsTotal.OpenedRareChests = 0;
-            DungeonStatsTotal.OpenedLegendaryChests = 0;
-
-            DungeonStatsDay.EnteredDungeon = 0;
-            DungeonStatsDay.OpenedStandardChests = 0;
-            DungeonStatsDay.OpenedUncommonChests = 0;
-            DungeonStatsDay.OpenedRareChests = 0;
-            DungeonStatsDay.OpenedLegendaryChests = 0;
-        }
-
+        
         public void SetDamageMeterSort()
         {
             switch (DamageMeterSortSelection.DamageMeterSortType)
@@ -1022,46 +960,16 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<ClusterInfo> EnteredCluster
+        public DungeonBindings DungeonBindings
         {
-            get => _enteredCluster;
+            get => _dungeonBindings;
             set
             {
-                _enteredCluster = value;
+                _dungeonBindings = value;
                 OnPropertyChanged();
             }
         }
-
-        public DungeonStats DungeonStatsDay
-        {
-            get => _dungeonStatsDay;
-            set
-            {
-                _dungeonStatsDay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public DungeonStats DungeonStatsTotal
-        {
-            get => _dungeonStatsTotal;
-            set
-            {
-                _dungeonStatsTotal = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public DungeonStatsFilter DungeonStatsFilter
-        {
-            get => _dungeonStatsFilter;
-            set
-            {
-                _dungeonStatsFilter = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public UserTrackingBindings UserTrackingBindings
         {
             get => _userTrackingBindings;
@@ -1122,16 +1030,6 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public DungeonCloseTimer DungeonCloseTimer
-        {
-            get => _dungeonCloseTimer;
-            set
-            {
-                _dungeonCloseTimer = value;
-                OnPropertyChanged();
-            }
-        }
-
         public bool IsTrackingResetByMapChangeActive
         {
             get => _isTrackingResetByMapChangeActive;
@@ -1152,27 +1050,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
-        {
-            get => _trackingDungeons;
-            set
-            {
-                _trackingDungeons = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ListCollectionView TrackingDungeonsCollectionView
-        {
-            get => _trackingDungeonsCollectionView;
-            set
-            {
-                _trackingDungeonsCollectionView = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public ListCollectionView TrackingNotificationsCollectionView
         {
             get => _trackingNotificationsCollectionView;
@@ -1523,37 +1401,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public double DungeonStatsGridHeight
-        {
-            get => _dungeonStatsGridHeight;
-            set
-            {
-                _dungeonStatsGridHeight = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Thickness DungeonStatsScrollViewerMargin
-        {
-            get => _dungeonStatsScrollViewerMargin;
-            set
-            {
-                _dungeonStatsScrollViewerMargin = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public EFontAwesomeIcon DungeonStatsGridButtonIcon
-        {
-            get => _dungeonStatsGridButtonIcon;
-            set
-            {
-                _dungeonStatsGridButtonIcon = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public string NumberOfValuesTranslation
         {
             get => _numberOfValuesTranslation;

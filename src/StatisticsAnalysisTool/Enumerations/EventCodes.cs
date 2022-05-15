@@ -54,7 +54,7 @@ namespace StatisticsAnalysisTool.Enumerations
         HarvestStart,
         HarvestCancel,
         HarvestFinished,
-        TakeSilver = 53,
+        TakeSilver = 54,
         ActionOnBuildingStart,
         ActionOnBuildingCancel,
         ActionOnBuildingFinished,
@@ -74,15 +74,15 @@ namespace StatisticsAnalysisTool.Enumerations
         StopEmote,
         SystemMessage,
         UtilityTextMessage,
-        UpdateSilver = 71, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
-        UpdateFame = 72, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 7: ItemId, 9: SatchelFame, )
+        UpdateSilver = 72, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
+        UpdateFame = 73, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 7: ItemId, 9: SatchelFame, )
         UpdateLearningPoints,
-        UpdateReSpecPoints = 74,
-        UpdateCurrency = 75,
-        UpdateFactionStanding,
+        UpdateReSpecPoints = 75,
+        UpdateCurrency = 76,
+        UpdateFactionStanding = 77,
         Respawn,
         ServerDebugLog,
-        CharacterEquipmentChanged,
+        CharacterEquipmentChanged = 80,
         RegenerationHealthChanged,
         RegenerationEnergyChanged,
         RegenerationMountHealthChanged,
@@ -257,8 +257,8 @@ namespace StatisticsAnalysisTool.Enumerations
         InvitedToArenaMatch,
         PlayerCounts,
         Unknown254,
-        Unknown255,
-        GrabbedLoot = 256, // LOOT: map[0:424 1:Triky313 2:Bruno313 4:1841 5:1 252:256] | SILVER: map[0:6436 2:Triky313 3:true 5:1550115 252:256] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity) 
+        OtherGrabbedLoot,
+        GrabbedLoot = 257, // LOOT: map[0:424 1:Triky313 2:Bruno313 4:1841 5:1 252:256] | SILVER: map[0:6436 2:Triky313 3:true 5:1550115 252:256] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity) 
         Unknown258,
         InCombatStateUpdate = 259, // <- 1 = true; player hits enemy | 2 = true; enemy hits player
         Unknown260,

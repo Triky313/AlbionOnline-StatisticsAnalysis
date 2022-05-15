@@ -436,7 +436,7 @@
         </Style.Triggers>
     </Style>
 
-    <DataTemplate DataType="{x:Type models:DungeonStats}">
+    <DataTemplate x:Key="DungeonStatsTemplate" DataType="{x:Type models:DungeonStats}">
         <Border Style="{StaticResource Tracking.Information.Border}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
                 <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationTitle, FallbackValue=TOTAL}" FontWeight="Bold"/>
@@ -516,7 +516,7 @@
         </Border>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type models:DungeonStatsFilter}">
+    <DataTemplate x:Key="DungeonStatsFilterTemplate" DataType="{x:Type models:DungeonStatsFilter}">
         <Border Style="{StaticResource Tracking.Information.Border}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
                 <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationFilter, FallbackValue=FILTER}" FontWeight="Bold"/>
@@ -878,7 +878,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type networkModel:DungeonCloseTimer}">
+    <DataTemplate x:Key="DungeonCloseTimerTemplate" DataType="{x:Type networkModel:DungeonCloseTimer}">
         <Border Visibility="{Binding Visibility}" Style="{StaticResource Tracking.Information.Border}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
                 <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationDungeonTimer, FallbackValue=DUNGEON__TIMER}" />
