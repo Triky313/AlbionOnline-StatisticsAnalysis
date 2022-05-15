@@ -540,7 +540,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 var dungeonFragment = _mainWindowViewModel?.TrackingDungeons?.FirstOrDefault(x => x.DungeonHash == dungeonObject.DungeonHash);
                 if (dungeonFragment != null && IsDungeonDifferenceToAnother(dungeonObject, dungeonFragment))
                 {
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
                         dungeonFragment.SetValues(dungeonObject);
                         dungeonFragment.DungeonNumber = orderedDungeon.IndexOf(dungeonObject);
@@ -548,7 +548,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
                 else if (dungeonFragment == null)
                 {
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
                         var index = orderedDungeon.IndexOf(dungeonObject);
                         var dunFragment = new DungeonNotificationFragment(index, dungeonObject.GuidList, dungeonObject.MainMapIndex, dungeonObject.EnterDungeonFirstTime);
