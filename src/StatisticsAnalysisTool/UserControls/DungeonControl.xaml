@@ -27,7 +27,7 @@
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" Width="250" Height="auto" VerticalAlignment="Top">
                         <DockPanel Height="auto" VerticalAlignment="Top">
-                            <ContentControl ContentTemplate="{StaticResource DungeonCloseTimerTemplate}" Content="{Binding DungeonCloseTimer}" />
+                            <ContentControl ContentTemplate="{StaticResource DungeonCloseTimerTemplate}" Content="{Binding DungeonBindings.DungeonCloseTimer}" />
                         </DockPanel>
                         <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="80" 
                                 Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />

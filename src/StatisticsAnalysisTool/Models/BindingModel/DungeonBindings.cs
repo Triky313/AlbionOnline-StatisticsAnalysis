@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
@@ -13,12 +15,22 @@ public class DungeonBindings : INotifyPropertyChanged
 {
     private ObservableCollection<DungeonNotificationFragment> _trackingDungeons = new();
     private ListCollectionView _trackingDungeonsCollectionView;
+    private DungeonCloseTimer _dungeonCloseTimer = new();
     private DungeonStatsFilter _dungeonStatsFilter;
     private ObservableCollection<ClusterInfo> _enteredCluster = new();
     private DungeonStats _dungeonStatsDay = new();
     private DungeonStats _dungeonStatsTotal = new();
     private GridLength _gridSplitterPosition;
 
+    public DungeonBindings()
+    {
+        TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(TrackingDungeons) as ListCollectionView;
+        if (TrackingDungeonsCollectionView != null)
+        {
+            TrackingDungeonsCollectionView.IsLiveSorting = true;
+            TrackingDungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
+        }
+    }
 
     public ObservableCollection<DungeonNotificationFragment> TrackingDungeons
     {
@@ -40,6 +52,15 @@ public class DungeonBindings : INotifyPropertyChanged
         }
     }
 
+    public DungeonCloseTimer DungeonCloseTimer
+    {
+        get => _dungeonCloseTimer;
+        set
+        {
+            _dungeonCloseTimer = value;
+            OnPropertyChanged();
+        }
+    }
 
     public ObservableCollection<ClusterInfo> EnteredCluster
     {

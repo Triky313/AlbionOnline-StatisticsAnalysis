@@ -81,7 +81,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<MainStatObject> _factionPointStats = new() { new MainStatObject() { Value = 0, ValuePerHour = 0, CityFaction = CityFaction.Unknown } };
         private string _mainTrackerTimer;
         private bool _isShowOnlyFavoritesActive;
-        private DungeonCloseTimer _dungeonCloseTimer = new();
         private int _partyMemberNumber;
         private bool _isItemSearchCheckboxesEnabled;
         private bool _isFilterResetEnabled;
@@ -408,14 +407,7 @@ namespace StatisticsAnalysisTool.ViewModels
             IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
             IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
             IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
-
-            DungeonBindings.TrackingDungeonsCollectionView = CollectionViewSource.GetDefaultView(DungeonBindings.TrackingDungeons) as ListCollectionView;
-            if (DungeonBindings.TrackingDungeonsCollectionView != null)
-            {
-                DungeonBindings.TrackingDungeonsCollectionView.IsLiveSorting = true;
-                DungeonBindings.TrackingDungeonsCollectionView.CustomSort = new DungeonTrackingNumberComparer();
-            }
-
+            
             TrackingNotificationsCollectionView = CollectionViewSource.GetDefaultView(TrackingNotifications) as ListCollectionView;
             if (TrackingNotificationsCollectionView != null)
             {
@@ -653,7 +645,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion Player information (Player Mode)
 
-        #region Tracking Mode
+        #region Tracking
 
         public void StartTracking()
         {
@@ -1034,16 +1026,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _mainTrackerTimer = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public DungeonCloseTimer DungeonCloseTimer
-        {
-            get => _dungeonCloseTimer;
-            set
-            {
-                _dungeonCloseTimer = value;
                 OnPropertyChanged();
             }
         }
