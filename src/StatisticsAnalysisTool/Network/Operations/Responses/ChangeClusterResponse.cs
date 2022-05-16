@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Network.Operations.Responses
@@ -22,7 +23,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
         public ChangeClusterResponse(Dictionary<byte, object> parameters)
         {
-            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+            ConsoleManager.WriteLineForMessage(GetType().Name, parameters, ConsoleColorType.EventMapChangeColor);
 
             try
             {
