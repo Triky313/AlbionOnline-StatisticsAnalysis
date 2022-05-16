@@ -106,6 +106,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private double _taskProgressbarMaximum = 100;
         private double _taskProgressbarValue;
         private bool _isTaskProgressbarIndeterminate;
+        private ObservableCollection<ClusterInfo> _enteredCluster = new();
         private VaultBindings _vaultBindings = new();
         private UserTrackingBindings _userTrackingBindings = new();
         private Visibility _debugModeVisibility = Visibility.Collapsed;
@@ -1572,6 +1573,17 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public ObservableCollection<ClusterInfo> EnteredCluster
+        {
+            get => _enteredCluster;
+            set
+            {
+                _enteredCluster = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public Visibility ErrorBarVisibility
         {

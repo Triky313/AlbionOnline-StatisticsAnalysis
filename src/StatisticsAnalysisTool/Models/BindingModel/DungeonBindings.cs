@@ -17,7 +17,6 @@ public class DungeonBindings : INotifyPropertyChanged
     private ListCollectionView _trackingDungeonsCollectionView;
     private DungeonCloseTimer _dungeonCloseTimer = new();
     private DungeonStatsFilter _dungeonStatsFilter;
-    private ObservableCollection<ClusterInfo> _enteredCluster = new();
     private DungeonStats _dungeonStatsDay = new();
     private DungeonStats _dungeonStatsTotal = new();
     private GridLength _gridSplitterPosition;
@@ -58,16 +57,6 @@ public class DungeonBindings : INotifyPropertyChanged
         set
         {
             _dungeonCloseTimer = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<ClusterInfo> EnteredCluster
-    {
-        get => _enteredCluster;
-        set
-        {
-            _enteredCluster = value;
             OnPropertyChanged();
         }
     }

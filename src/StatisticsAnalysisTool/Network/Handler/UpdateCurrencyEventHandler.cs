@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Network.Notification;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
@@ -26,7 +25,7 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 await _trackingController.AddNotificationAsync(SetFactionPointsNotification(value.CityFaction, value.GainedFactionCoins.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
             }
-            
+
             _countUpTimer.Add(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue, value.CityFaction);
             _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionCoins.DoubleValue, ValueType.FactionPoints, value.CityFaction);
             _trackingController.StatisticController?.AddValue(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue);
