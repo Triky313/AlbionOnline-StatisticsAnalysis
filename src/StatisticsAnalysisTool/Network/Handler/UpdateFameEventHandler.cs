@@ -22,11 +22,11 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(UpdateFameEvent value)
         {
-            await _trackingController.AddNotificationAsync(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame.DoubleValue,
-                value.ZoneFame.DoubleValue, value.PremiumFame.DoubleValue, value.SatchelFame.DoubleValue, value.IsBonusFactorActive, value.BonusFactorInPercent));
-            _countUpTimer.Add(ValueType.Fame, value.TotalGainedFame.DoubleValue);
-            _trackingController.DungeonController?.AddValueToDungeon(value.TotalGainedFame.DoubleValue, ValueType.Fame);
-            _trackingController.StatisticController?.AddValue(ValueType.Fame, value.TotalGainedFame.DoubleValue);
+            await _trackingController.AddNotificationAsync(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame,
+                value.ZoneFame.DoubleValue, value.PremiumFame, value.SatchelFame.DoubleValue, value.IsBonusFactorActive, value.BonusFactorInPercent));
+            _countUpTimer.Add(ValueType.Fame, value.TotalGainedFame);
+            _trackingController.DungeonController?.AddValueToDungeon(value.TotalGainedFame, ValueType.Fame);
+            _trackingController.StatisticController?.AddValue(ValueType.Fame, value.TotalGainedFame);
         }
 
         private TrackingNotification SetPveFameNotification(double totalPlayerFame, double totalGainedFame, double zoneFame, double premiumFame,
