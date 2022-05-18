@@ -30,6 +30,12 @@ public class MailStatsObject : INotifyPropertyChanged
     private long _soldLastWeek;
     private long _boughtLastWeek;
     private long _salesLastWeek;
+    private long _taxesToday;
+    private long _taxesThisWeek;
+    private long _taxesLastWeek;
+    private long _taxesMonth;
+    private long _taxesYear;
+    private long _taxesTotal;
 
     #region Stat calculations
 
@@ -47,21 +53,28 @@ public class MailStatsObject : INotifyPropertyChanged
         SoldMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
         SoldYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
 
-        BoughtToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        BoughtThisWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc) && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        BoughtLastWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7)) && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        BoughtMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        BoughtYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        BoughtToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+        BoughtThisWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc) && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+        BoughtLastWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7)) && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+        BoughtMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+        BoughtYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
 
-        SoldTotal = mails.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        BoughtTotal = mails.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        TaxesToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date).Sum(x => x.MailContent.TaxPrice.IntegerValue);
+        TaxesThisWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc)).Sum(x => x.MailContent.TaxPrice.IntegerValue);
+        TaxesLastWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7))).Sum(x => x.MailContent.TaxPrice.IntegerValue);
+        TaxesMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month).Sum(x => x.MailContent.TaxPrice.IntegerValue);
+        TaxesYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year).Sum(x => x.MailContent.TaxPrice.IntegerValue);
 
-        SalesToday = SoldToday - BoughtToday;
-        SalesThisWeek = SoldThisWeek - BoughtThisWeek;
-        SalesLastWeek = SoldLastWeek - BoughtLastWeek;
-        SalesMonth = SoldMonth - BoughtMonth;
-        SalesYear = SoldYear - BoughtYear;
-        SalesTotal = SoldTotal - BoughtTotal;
+        SoldTotal = mails.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+        BoughtTotal = mails.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+        TaxesTotal = mails.Sum(x => x.MailContent.TaxPrice.IntegerValue);
+
+        SalesToday = SoldToday - (BoughtToday + TaxesToday);
+        SalesThisWeek = SoldThisWeek - (BoughtThisWeek + TaxesThisWeek);
+        SalesLastWeek = SoldLastWeek - (BoughtLastWeek + TaxesLastWeek);
+        SalesMonth = SoldMonth - (BoughtMonth + TaxesMonth);
+        SalesYear = SoldYear - (BoughtYear + TaxesYear);
+        SalesTotal = SoldTotal - (BoughtTotal + TaxesTotal);
     }
 
     #endregion
@@ -246,6 +259,66 @@ public class MailStatsObject : INotifyPropertyChanged
         }
     }
 
+    public long TaxesToday
+    {
+        get => _taxesToday;
+        set
+        {
+            _taxesToday = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long TaxesThisWeek
+    {
+        get => _taxesThisWeek;
+        set
+        {
+            _taxesThisWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long TaxesLastWeek
+    {
+        get => _taxesLastWeek;
+        set
+        {
+            _taxesLastWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long TaxesMonth
+    {
+        get => _taxesMonth;
+        set
+        {
+            _taxesMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long TaxesYear
+    {
+        get => _taxesYear;
+        set
+        {
+            _taxesYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public long TaxesTotal
+    {
+        get => _taxesTotal;
+        set
+        {
+            _taxesTotal = value;
+            OnPropertyChanged();
+        }
+    }
+
     public static string TranslationSoldToday => LanguageController.Translation("SOLD_TODAY");
     public static string TranslationSoldThisWeek => LanguageController.Translation("SOLD_THIS_WEEK");
     public static string TranslationSoldLastWeek => LanguageController.Translation("SOLD_LAST_WEEK");
@@ -258,6 +331,12 @@ public class MailStatsObject : INotifyPropertyChanged
     public static string TranslationBoughtYear => LanguageController.Translation("BOUGHT_YEAR");
     public static string TranslationSoldTotal => LanguageController.Translation("SOLD_TOTAL");
     public static string TranslationBoughtTotal => LanguageController.Translation("BOUGHT_TOTAL");
+    public static string TranslationTaxesToday => LanguageController.Translation("TAXES_TODAY");
+    public static string TranslationTaxesThisWeek => LanguageController.Translation("TAXES_THIS_WEEK");
+    public static string TranslationTaxesLastWeek => LanguageController.Translation("TAXES_LAST_WEEK");
+    public static string TranslationTaxesMonth => LanguageController.Translation("TAXES_MONTH");
+    public static string TranslationTaxesYear => LanguageController.Translation("TAXES_YEAR");
+    public static string TranslationTaxesTotal => LanguageController.Translation("TAXES_TOTAL");
     public static string TranslationNetProfitToday => LanguageController.Translation("NET_PROFIT_TODAY");
     public static string TranslationNetProfitThisWeek => LanguageController.Translation("NET_PROFIT_THIS_WEEK");
     public static string TranslationNetProfitLastWeek => LanguageController.Translation("NET_PROFIT_LAST_WEEK");

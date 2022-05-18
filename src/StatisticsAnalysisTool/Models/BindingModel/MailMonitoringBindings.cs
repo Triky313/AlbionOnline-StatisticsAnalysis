@@ -184,7 +184,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
                    || ($"T{mail.Item.Tier}.{mail.Item.Level}".ToLower().Contains(MailsSearchText?.ToLower() ?? string.Empty))
                    || mail.MailTypeDescription.ToLower().Contains(MailsSearchText?.ToLower() ?? string.Empty)
                    || (mail.Item != null && mail.Item.LocalizedName.ToLower().Contains(MailsSearchText?.ToLower() ?? string.Empty))
-                   || mail.MailContent.UnitPrice.ToString().Contains(MailsSearchText?.ToLower() ?? string.Empty)
+                   || mail.MailContent.ActualUnitPrice.ToString().Contains(MailsSearchText?.ToLower() ?? string.Empty)
                    || mail.MailContent.TotalPrice.ToString().Contains(MailsSearchText?.ToLower() ?? string.Empty));
     }
 
