@@ -3,7 +3,6 @@
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common">
 
-
     <Style TargetType="Image" x:Key="Mail.Icon">
         <Setter Property="Height" Value="50"/>
         <Setter Property="Width" Value="50"/>
@@ -195,6 +194,50 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                 <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
                                 <TextBlock Text="{Binding BoughtTotal, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                       FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,0,5,0">
+                            <TextBlock Text="{Binding TranslationTaxesToday, FallbackValue=TAX_TODAY}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding TaxesToday, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationTaxesThisWeek, FallbackValue=TAX_THIS_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding TaxesThisWeek, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationTaxesLastWeek, FallbackValue=TAX_LAST_WEEK}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding TaxesLastWeek, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationTaxesMonth, FallbackValue=TAX_MONTH}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding TaxesMonth, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationTaxesYear, FallbackValue=TAX_YEAR}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding TaxesYear, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                   FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding TranslationTaxesTotal, FallbackValue=TAX_TOTAL}" MinWidth="100" FontSize="14" FontWeight="Light" 
+                                   Foreground="{StaticResource SolidColorBrush.Text.2}" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver}" />
+                                <TextBlock Text="{Binding TaxesTotal, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                        FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
                             </StackPanel>
                         </StackPanel>
