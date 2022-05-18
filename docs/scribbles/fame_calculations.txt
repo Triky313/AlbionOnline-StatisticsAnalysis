@@ -1,0 +1,46 @@
+
+ORIGINAL:       1055 (zone 278, prem 182, satchel 507 + 10%)
+IMPLEMENTATION: 
+- TotalFame:    FameWithZoneMultiplier + PremiumFame + SatchelFame
+- Zone:         (FameWithZoneMultiplier * (EventBonusFactor * 100)) - (FameWithZoneMultiplier * (EventBonusFactor * 100) / Multiplier) = 276,016125
+- PremiumFame:  FameWithZoneAndPremium - FameWithZoneMultiplier = 182,49
+- Satchel:      SatchelFame = 507,7236
+
+"1":8774418675252,  TotalPlayerFame
+"2":3649800,        FameWithZoneMultiplier
+"3":1,              GroupSize
+"4":32000,          Multiplier
+"5":true,           IsPremiumBonus
+"6":0.100000024,    BonusFactor
+"9":5077236         SatchelFame
+
+FameWithZoneAndPremium = (FameWithZoneMultiplier * 1,5) = 547,47
+
+---------------------------------------------------
+
+ORIGINAL:       161524 (zone 42567, prem 27934, satchel 77720 + 10%)
+
+- TotalFame:    FameWithZoneMultiplier + PremiumFame + SatchelFame = 161.524,49
+- Zone:         (TotalGainedFame / BonusFactor) - (PremiumFame + SatchelFame) = 42.532,7755045872
+- PremiumFame:  FameWithZoneAndPremium - FameWithZoneMultiplier = 27.934,83
+- Satchel:      SatchelFame = 77720
+
+"2":55869,6600,     FameWithZoneMultiplier
+"3":1,
+"4":32000,          Multiplier
+"5":true,           
+"6":0.100000024,    BonusFactor
+"9":777202840       SatchelFame
+
+FameWithZoneAndPremium = (FameWithZoneMultiplier * 1,5) = 83.804,49
+
+---------------------------------------------------
+
+ORIGINAL:       2751 (zone 2096)
+
+ZoneFame = FameWithZoneMultiplier - (FameWithZoneMultiplier / Multiplier)
+
+
+"2":27510000,       FameWithZoneMultiplier
+"3":1,
+"4":32000           Multiplier
