@@ -101,7 +101,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
-        private static MailContent ContentToObject(MailType type, string content)
+        private static MailContent ContentToObject(MailType type, string content, double taxRate = 3)
         {
             switch (type)
             {
@@ -119,8 +119,22 @@ namespace StatisticsAnalysisTool.Network.Manager
                     _ = long.TryParse(contentObject[2], out var totalPriceLong);
                     _ = long.TryParse(contentObject[3], out var unitPriceLong);
 
+                    if (type == MailType.MarketplaceSellOrderFinished)
+                    {
+                        return new MailContent()
+                        {
+                            UsedQuantity = quantity,
+                            Quantity = quantity,
+                            InternalTotalPrice = totalPriceLong,
+                            InternalUnitPrice = unitPriceLong,
+                            UniqueItemName = uniqueItemName,
+                            TaxRate = taxRate
+                        };
+                    }
+
                     return new MailContent()
                     {
+                        UsedQuantity = quantity,
                         Quantity = quantity,
                         InternalTotalPrice = totalPriceLong,
                         InternalUnitPrice = unitPriceLong,
@@ -147,6 +161,19 @@ namespace StatisticsAnalysisTool.Network.Manager
                     var singlePrice = totalExpiredPrice.IntegerValue / totalNotPurchased;
                     var totalPrice = singlePrice * usedExpiredQuantity;
 
+                    if (type == MailType.MarketplaceSellOrderExpired)
+                    {
+                        return new MailContent()
+                        {
+                            UsedQuantity = usedExpiredQuantity,
+                            Quantity = expiredQuantity,
+                            InternalTotalPrice = FixPoint.FromFloatingPointValue(totalPrice).InternalValue,
+                            InternalUnitPrice = FixPoint.FromFloatingPointValue(singlePrice).InternalValue,
+                            UniqueItemName = uniqueItemExpiredName,
+                            TaxRate = taxRate
+                        };
+                    }
+
                     return new MailContent()
                     {
                         UsedQuantity = usedExpiredQuantity,
@@ -166,6 +193,19 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 foreach (var item in mails)
                 {
+                    // The if block convert data from old versions to new version
+                    if (item.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceBuyOrderFinished && item.MailContent.UsedQuantity != item.MailContent.Quantity)
+                    {
+                        item.MailContent.UsedQuantity = item.MailContent.Quantity;
+                    }
+
+                    // The if block convert data from old versions to new version
+                    if (item.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired 
+                        && item.MailContent?.TaxRate != null && !item.MailContent.TaxRate.Equals(3) && item.Timestamp < new DateTime(2022, 12, 1))
+                    {
+                        item.MailContent.TaxRate = 3;
+                    }
+
                     _mainWindowViewModel?.MailMonitoringBindings?.Mails.Add(item);
                 }
 

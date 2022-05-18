@@ -591,4 +591,6 @@
 	<translation name="SAFE_AREA">Safe region</translation>
 	<translation name="UNKNOWN_ZONE">Unknown region</translation>
 	<translation name="DEBUG_CONSOLE">Debug console</translation>
+	<translation name="TOTAL_REVENUE">Total revenue</translation>
+	<translation name="TAX">Tax</translation>
 </translations>

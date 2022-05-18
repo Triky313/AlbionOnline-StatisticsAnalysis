@@ -59,11 +59,15 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
     #region Translations
 
     [JsonIgnore]
-    public string TranslationSilver => LanguageController.Translation("SILVER");
+    public static string TranslationSilver => LanguageController.Translation("SILVER");
     [JsonIgnore]
-    public string TranslationCostPerItem => LanguageController.Translation("COST_PER_ITEM");
+    public static string TranslationCostPerItem => LanguageController.Translation("COST_PER_ITEM");
     [JsonIgnore]
-    public string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
+    public static string TranslationTotalCost => LanguageController.Translation("TOTAL_COST");
+    [JsonIgnore]
+    public static string TranslationTotalRevenue => LanguageController.Translation("TOTAL_REVENUE");
+    [JsonIgnore]
+    public static string TranslationTax => LanguageController.Translation("TAX");
     [JsonIgnore] 
     public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
     [JsonIgnore] 
