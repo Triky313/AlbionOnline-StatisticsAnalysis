@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
+using StatisticsAnalysisTool.Common.Comparer;
 using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
@@ -35,7 +36,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
 
             MailCollectionView.IsLiveSorting = true;
             MailCollectionView.IsLiveFiltering = true;
-            MailCollectionView.SortDescriptions.Add(new SortDescription("Tick", ListSortDirection.Descending));
+            MailCollectionView.CustomSort = new MailComparer();
 
             MailCollectionView?.Refresh();
         }

@@ -60,7 +60,7 @@
             </Grid>
 
             <Grid Row="2">
-                <ScrollViewer Margin="0,0,0,0">
+                <ScrollViewer Margin="0,0,0,0" IsDeferredScrollingEnabled="True">
                     <ItemsControl ItemsSource="{Binding MailMonitoringBindings.MailCollectionView, IsAsync=True, Mode=OneWay}" />
                 </ScrollViewer>
             </Grid>
