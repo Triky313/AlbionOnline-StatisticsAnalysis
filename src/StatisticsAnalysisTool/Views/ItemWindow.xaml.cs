@@ -1,4 +1,8 @@
-﻿namespace StatisticsAnalysisTool.Views
+﻿using System.ComponentModel;
+using System.Windows.Controls;
+using StatisticsAnalysisTool.Common;
+
+namespace StatisticsAnalysisTool.Views
 {
     using Models;
     using System.Windows;
@@ -114,6 +118,21 @@
         private void MarketListBuyPriceMaxLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             _itemWindowViewModel.CopyTextToClipboard(sender);
+        }
+
+        private void LabelNotes_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is not TextBox textBox)
+            {
+                return;
+            }
+
+            CraftingTabController.Add(_itemWindowViewModel.Item.UniqueName, textBox.Text);
+        }
+
+        private void ItemWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            CraftingTabController.SaveInFile();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        private readonly ItemWindow _mainWindow;
+        private readonly ItemWindow _itemWindow;
         private List<MarketQualityObject> _allQualityPricesList;
         private string _averagePrices;
         private List<MarketResponse> _currentCityPrices;
@@ -78,6 +78,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _craftingTabVisibility = Visibility.Collapsed;
         private EssentialCraftingValuesTemplate _essentialCraftingValues;
         private ExtraItemInformation _extraItemInformation = new();
+        private string _craftingNotes;
 
         private CraftingCalculation _craftingCalculation = new()
         {
@@ -93,9 +94,9 @@ namespace StatisticsAnalysisTool.ViewModels
             GrandTotal = 0.0d
         };
 
-        public ItemWindowViewModel(ItemWindow mainWindow, Item item)
+        public ItemWindowViewModel(ItemWindow itemWindow, Item item)
         {
-            _mainWindow = mainWindow;
+            _itemWindow = itemWindow;
             InitializeItemWindow(item);
         }
 
@@ -132,13 +133,13 @@ namespace StatisticsAnalysisTool.ViewModels
             InitExtraItemInformation();
             await InitCraftingTabUiAsync();
 
-            await _mainWindow.Dispatcher.InvokeAsync(() =>
+            await _itemWindow.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindow.Icon = null;
-                _mainWindow.Title = "-";
+                _itemWindow.Icon = null;
+                _itemWindow.Title = "-";
             });
 
-            if (_mainWindow.Dispatcher == null)
+            if (_itemWindow.Dispatcher == null)
             {
                 SetErrorValues(Error.GeneralError);
                 return;
@@ -149,10 +150,10 @@ namespace StatisticsAnalysisTool.ViewModels
             Icon = item.Icon;
             ItemName = localizedName;
 
-            await _mainWindow.Dispatcher.InvokeAsync(() =>
+            await _itemWindow.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindow.Icon = item.Icon;
-                _mainWindow.Title = $"{localizedName} (T{item.Tier})";
+                _itemWindow.Icon = item.Icon;
+                _itemWindow.Title = $"{localizedName} (T{item.Tier})";
             });
 
             _ = StartAutoUpdaterAsync();
@@ -261,6 +262,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 SetEssentialCraftingValues();
                 GetJournalInfo();
                 await GetCraftInfoAsync();
+                CraftingNotes = CraftingTabController.GetNote(Item.UniqueName);
             }
         }
 
@@ -278,6 +280,33 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsCraftingWithFocus = false,
                 CurrentCityPrices = CurrentCityPrices,
                 UniqueName = Item.UniqueName
+            };
+        }
+
+        private void GetJournalInfo()
+        {
+            var craftingJournalType = Item?.FullItemInformation switch
+            {
+                Weapon weapon => CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType),
+                EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType),
+                _ => null
+            };
+
+            if (craftingJournalType == null)
+            {
+                return;
+            }
+
+            RequiredJournalVisibility = Visibility.Visible;
+
+            RequiredJournal = new RequiredJournal(this)
+            {
+                UniqueName = craftingJournalType.UniqueName,
+                CostsPerJournal = 0,
+                CraftingResourceName = craftingJournalType.LocalizedName,
+                Icon = craftingJournalType.Icon,
+                RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting),
+                SellPricePerJournal = 0
             };
         }
 
@@ -315,33 +344,6 @@ namespace StatisticsAnalysisTool.ViewModels
                     IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
                 });
             }
-        }
-
-        private void GetJournalInfo()
-        {
-            var craftingJournalType = Item?.FullItemInformation switch
-            {
-                Weapon weapon => CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType),
-                EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType),
-                _ => null
-            };
-
-            if (craftingJournalType == null)
-            {
-                return;
-            }
-
-            RequiredJournalVisibility = Visibility.Visible;
-
-            RequiredJournal = new RequiredJournal(this)
-            {
-                UniqueName = craftingJournalType.UniqueName,
-                CostsPerJournal = 0,
-                CraftingResourceName = craftingJournalType.LocalizedName,
-                Icon = craftingJournalType.Icon,
-                RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting),
-                SellPricePerJournal = 0
-            };
         }
 
         private Item GetSuitableResourceItem(string uniqueName)
@@ -485,7 +487,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 while (RunUpdate)
                 {
                     await Task.Delay(50);
-                    if (_mainWindow.Dispatcher != null && !IsAutoUpdateActive)
+                    if (_itemWindow.Dispatcher != null && !IsAutoUpdateActive)
                     {
                         continue;
                     }
@@ -1306,6 +1308,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _craftingTabVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string CraftingNotes
+        {
+            get => _craftingNotes;
+            set
+            {
+                _craftingNotes = value;
                 OnPropertyChanged();
             }
         }
