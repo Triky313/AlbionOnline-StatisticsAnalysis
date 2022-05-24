@@ -18,10 +18,33 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private double _totalSells;
         private double _grandTotal;
         private double _otherCosts;
+        private int _amountCrafted;
+        private bool _isAmountCraftedRelevant;
 
         private double GetTotalCosts()
         {
             return CraftingTax + SetupFee + AuctionsHouseTax + TotalJournalCosts + TotalResourceCosts + OtherCosts;
+        }
+
+        public int AmountCrafted
+        {
+            get => _amountCrafted;
+            set
+            {
+                _amountCrafted = value;
+                IsAmountCraftedRelevant = _amountCrafted > 1;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsAmountCraftedRelevant
+        {
+            get => _isAmountCraftedRelevant;
+            set
+            {
+                _isAmountCraftedRelevant = value;
+                OnPropertyChanged();
+            }
         }
 
         public double PossibleItemCrafting

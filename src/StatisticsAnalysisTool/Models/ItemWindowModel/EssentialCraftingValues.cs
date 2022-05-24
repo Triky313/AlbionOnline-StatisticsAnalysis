@@ -12,6 +12,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
     public class EssentialCraftingValuesTemplate : INotifyPropertyChanged
     {
         private readonly ItemWindowViewModel _itemWindowViewModel;
+        private int _amountCrafted = 1;
         private long _sellPricePerItem;
         private int _craftingItemQuantity;
         private double _setupFee;
@@ -20,6 +21,8 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private int _craftingBonus;
         private bool _isCraftingWithFocus;
         private int _otherCosts;
+        private bool _isAmountCraftedRelevant;
+
         public List<MarketResponse> CurrentCityPrices { get; set; }
 
         public string UniqueName;
@@ -84,6 +87,28 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         }
 
         #region Bindings
+
+        public int AmountCrafted
+        {
+            get => _amountCrafted;
+            set
+            {
+                _amountCrafted = value;
+                IsAmountCraftedRelevant = _amountCrafted > 1;
+                _itemWindowViewModel.UpdateCraftingValues();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsAmountCraftedRelevant
+        {
+            get => _isAmountCraftedRelevant;
+            set
+            {
+                _isAmountCraftedRelevant = value;
+                OnPropertyChanged();
+            }
+        }
 
         public int CraftingItemQuantity
         {

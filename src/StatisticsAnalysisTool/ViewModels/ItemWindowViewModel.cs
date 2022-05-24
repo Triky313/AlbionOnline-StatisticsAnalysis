@@ -251,6 +251,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
                 case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
                 case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+                case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
                     areResourcesAvailable = true;
                     break;
             }
@@ -270,6 +271,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             EssentialCraftingValues = new EssentialCraftingValuesTemplate(this)
             {
+                AmountCrafted = 1,
                 AuctionHouseTax = 3.0d,
                 CraftingBonus = 133,
                 CraftingItemQuantity = 1,
@@ -317,12 +319,18 @@ namespace StatisticsAnalysisTool.ViewModels
                 Weapon weapon => weapon.CraftingRequirements,
                 EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
                 Mount mount => mount.CraftingRequirements,
+                ConsumableItem consumableItem => consumableItem.CraftingRequirements,
                 _ => null
             };
 
             if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
             {
                 return;
+            }
+
+            if (int.TryParse(craftingRequirements.FirstOrDefault()?.AmountCrafted, out var amountCrafted))
+            {
+                EssentialCraftingValues.AmountCrafted = amountCrafted;
             }
 
             await foreach (var craftResource in craftingRequirements
@@ -400,7 +408,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (CraftingCalculation?.TotalItemSells != null && EssentialCraftingValues != null && CraftingCalculation != null)
             {
-                CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * CraftingCalculation.PossibleItemCrafting;
+                CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * (CraftingCalculation.PossibleItemCrafting * EssentialCraftingValues.AmountCrafted);
             }
 
             if (CraftingCalculation?.TotalJournalSells != null && RequiredJournal != null)
@@ -411,6 +419,11 @@ namespace StatisticsAnalysisTool.ViewModels
             if (CraftingCalculation?.OtherCosts != null && EssentialCraftingValues != null)
             {
                 CraftingCalculation.OtherCosts = EssentialCraftingValues.OtherCosts;
+            }
+
+            if (CraftingCalculation?.AmountCrafted != null && EssentialCraftingValues != null)
+            {
+                CraftingCalculation.AmountCrafted = EssentialCraftingValues.AmountCrafted;
             }
         }
 
@@ -1001,7 +1014,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public string AveragePrices
         {
             get => _averagePrices;

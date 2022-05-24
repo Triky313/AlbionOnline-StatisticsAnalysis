@@ -22,11 +22,7 @@ namespace StatisticsAnalysisTool.Common
             }
 
             return craftingRequirement.CraftResource
-                .Where(x => x.UniqueName.ToUpper().Contains("PLANKS") && !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_")
-                            || x.UniqueName.ToUpper().Contains("METALBAR") && !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_")
-                            || x.UniqueName.ToUpper().Contains("METALBAR") && !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_")
-                            || x.UniqueName.ToUpper().Contains("LEATHER") && !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_")
-                            || x.UniqueName.ToUpper().Contains("CLOTH") && !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_"))
+                .Where(x => !x.UniqueName.ToUpper().Contains("_ARTEFACT_") && !x.UniqueName.ToUpper().Contains("_FAVOR_"))
                 .Sum(craftResource => craftResource.Count);
         }
 
@@ -174,6 +170,11 @@ namespace StatisticsAnalysisTool.Common
                         {
                             var resources = GetTotalAmountResources(mount.CraftingRequirements);
                             return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, mount.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                        }
+                    case ConsumableItem consumableItem:
+                        {
+                            var resources = GetTotalAmountResources(consumableItem.CraftingRequirements);
+                            return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource);
                         }
                 }
 
