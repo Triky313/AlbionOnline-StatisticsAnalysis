@@ -42,13 +42,6 @@
 	"IsDonationRealMoney": true
  },
  {
-	"Timestamp": "2022-05-02T00:00:00",
-	"Amount": 408000,
-	"RealMoneyAmount": 0,
-	"Contributor": "Grrawl",
-	"IsDonationRealMoney": false
- },
- {
 	"Timestamp": "2022-05-01T00:00:00",
 	"Amount": 1700000,
 	"RealMoneyAmount": 0,
