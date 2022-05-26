@@ -36,6 +36,11 @@ namespace StatisticsAnalysisTool.Common
         /// <exception cref="TooManyRequestsException"></exception>
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
         {
+            if (string.IsNullOrEmpty(uniqueName))
+            {
+                return new List<MarketResponse>();
+            }
+
             var url = SettingsController.CurrentSettings.CityPricesApiUrl ?? Settings.Default.CityPricesApiUrlDefault;
             url += uniqueName;
 
