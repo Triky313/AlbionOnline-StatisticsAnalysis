@@ -113,6 +113,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private TrackingActivityBindings _trackingActivityBindings = new();
         private MailMonitoringBindings _mailMonitoringBindings = new();
         private DungeonBindings _dungeonBindings = new();
+        private Visibility _unsupportedOsVisibility = Visibility.Collapsed;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -306,10 +307,10 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private static void InitWindowSettings()
         {
+            #region Set MainWindow height and width and center window
+
             _mainWindow.Dispatcher?.Invoke(() =>
             {
-                #region Set MainWindow height and width and center window
-
                 _mainWindow.Height = SettingsController.CurrentSettings.MainWindowHeight;
                 _mainWindow.Width = SettingsController.CurrentSettings.MainWindowWidth;
                 if (SettingsController.CurrentSettings.MainWindowMaximized)
@@ -318,9 +319,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 Utilities.CenterWindowOnScreen(_mainWindow);
-
-                #endregion Set MainWindow height and width and center window
             });
+
+            #endregion Set MainWindow height and width and center window
         }
 
         private async Task InitMainWindowDataAsync()
@@ -328,10 +329,11 @@ namespace StatisticsAnalysisTool.ViewModels
 #if DEBUG
             DebugModeVisibility = Visibility.Visible;
 #endif
-
+            
             Translation = new MainWindowTranslation();
             ToolTaskController.SetToolTaskController(this);
             SetUiElements();
+            UnsupportedOsVisibility = Environment.OSVersion.Version.Major < 10 ? Visibility.Visible : Visibility.Collapsed;
 
             // TODO: Info window temporarily disabled
             //ShowInfoWindow();
@@ -838,7 +840,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-
+        
         #region Bindings
 
         public string SearchText
@@ -1546,6 +1548,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _toolTasksVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility UnsupportedOsVisibility
+        {
+            get => _unsupportedOsVisibility;
+            set
+            {
+                _unsupportedOsVisibility = value;
                 OnPropertyChanged();
             }
         }

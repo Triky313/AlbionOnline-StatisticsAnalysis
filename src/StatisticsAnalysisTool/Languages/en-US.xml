@@ -600,4 +600,5 @@
 	<translation name="TAXES_YEAR">Tax year</translation>
 	<translation name="TAXES_TOTAL">Taxes total</translation>
 	<translation name="NOTES">Notes</translation>
+	<translation name="UNSUPPORTED_OS">Unsupported OS: Errors may occur.</translation>
 </translations>

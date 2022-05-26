@@ -600,4 +600,5 @@
 	<translation name="TAXES_YEAR">Steuern Jahr</translation>
 	<translation name="TAXES_TOTAL">Steuern gesamt</translation>
 	<translation name="NOTES">Notizen</translation>
+	<translation name="UNSUPPORTED_OS">Nicht unterstütztes Betriebssystem: Es kann zu Fehlern kommen.</translation>
 </translations>

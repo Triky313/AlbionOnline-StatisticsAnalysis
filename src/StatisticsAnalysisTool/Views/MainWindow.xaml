@@ -27,6 +27,10 @@
                 <Grid>
                     <StackPanel Orientation="Horizontal"  Height="38" VerticalAlignment="Top" Margin="35,0,90,0">
                         <Label Content="AlbionOnline - STATISTICS ANALYSIS TOOL" Style="{StaticResource MainWindow.Title}" />
+                        <Grid Visibility="{Binding UnsupportedOsVisibility, FallbackValue=Collapsed}" 
+                              Height="20" Width="20" VerticalAlignment="Center" ToolTip="{Binding Translation.UnsupportedOs, FallbackValue='UNSUPPORTED_OS'}">
+                            <fa5:ImageAwesome Icon="Solid_ExclamationTriangle" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" />
+                        </Grid>
                         <Label Content="- DEBUG -" Style="{StaticResource MainWindow.Title}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" 
                                Visibility="{Binding DebugModeVisibility}" />
                         <Label Content="{Binding TrackingActivityBindings.TrackingActiveText, FallbackValue=TRACKING__IS__NOT__ACTIVE}" VerticalAlignment="Center">
