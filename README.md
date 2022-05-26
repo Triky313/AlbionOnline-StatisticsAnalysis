@@ -14,15 +14,21 @@ A tool for easy reading of auction house data, Loot logger, tracking of Dungeons
 
 ![Image of this Application](https://user-images.githubusercontent.com/14247773/147143464-c36d0cba-dddb-4b34-bd2e-11e3f65e3289.png)
 
-## DOWNLOAD AND START THE PROGRAM
-### Windows 10 Download
-# [StatisticsAnalysis-AlbionOnline-v5.4.1-x64.zip](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/5.4.1/StatisticsAnalysis-AlbionOnline-v5.4.1-x64.zip)
-Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click.
 
-## Installation
- - General -> Minimal .Net Framework 6.0, you can download it [here](https://dotnet.microsoft.com/download).
- - For Tracking -> NPcap: [https://nmap.org/npcap](https://nmap.org/npcap/)
- 
+## Getting Started
+
+### Prerequisites & Installation
+- You need **Windows 10** or higher
+- Install **.NET 6.0 Desktop Runtime** (v6.0.5 or higher) [here](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.5-windows-x64-installer) (To start the tool)
+- Installing **Npcap** Free Edition (v1.6 or higher) [here](https://npcap.com/#download) (For Game tracking)
+
+**Download the Statistics Analysis Tool**
+- [**DOWNLOAD**](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases/download/5.8.2/StatisticsAnalysis-AlbionOnline-v5.8.2-x64.zip)
+Unzip the `.zip` file and start `StatisticsAnalysisTool.exe` with a double click. You may not be able to see the `.exe`. Don't worry, usually it's the file with the icon.
+
+![tool_dir](https://user-images.githubusercontent.com/14247773/170473306-4dcc629e-384e-41b2-ada8-657cabe1b472.png)
+
+
 ## Is This Allowed
 https://forum.albiononline.com/index.php/Thread/124819-Regarding-3rd-Party-Software-and-Network-Traffic-aka-do-not-cheat-Update-16-45-U/
 
@@ -39,6 +45,33 @@ If the item list is outdated, you can change it yourself. Just change the "ITEM 
 Another good source is https://github.com/broderickhyman/ao-bin-dumps
 
 Or you extract the files yourself from the game. More information can be found here: https://github.com/broderickhyman/ao-id-extractor
+
+
+## FAQ
+### Which operating system is supported?
+✅ Windows 10 and later
+
+❌ Windows XP, Vista, 7 and 8 are not supported!
+
+❌ Linux is currently not supported!
+
+### Can I use the tool with ExitLag or VPN?
+Unfortunately, **ExitLag is not supported**, but there are other VPN services that the tool works well with. There is no support from the developers for this. Validating it would be too time-consuming.
+
+### How fast does my internet need to be?
+An internet connection with at least 1M/bit (256KB/s) download rate.
+
+### The tool cannot download the ItemList.json or Item.json, what to do?
+If a button like the one in the screenshot appears and the automatic download of the files repeatedly does not work, the following can be done:
+
+![try-download-again-button](https://user-images.githubusercontent.com/14247773/170475039-3739e5cd-5d02-41bf-a77d-f58290de75a3.png)
+
+Download the file https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json and rename it to ItemList.json.
+and
+Download this file https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json 
+Then put both files in the tools folder.
+
+Then restart the tool and everything should work.
 
 
 ## INFORMATION
