@@ -305,6 +305,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 try
                 {
+                    // TODO: FirstOrDefault einbauen und Fehler entfernen wenn ID nicht gefunden wurde.
                     var item = _dungeons.First(x => x.GuidList.Contains((Guid)_currentGuid) && x.EnterDungeonFirstTime > DateTime.UtcNow.AddDays(-1));
                     item.DiedName = dieObject.DiedName;
                     item.KilledBy = dieObject.KilledBy;
