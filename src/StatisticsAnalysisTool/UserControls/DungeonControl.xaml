@@ -40,7 +40,7 @@
 
         <Grid Row="2">
             <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding DungeonBindings.TrackingDungeonsCollectionView, IsAsync=True, Mode=OneWay}" />
+                <ItemsControl ItemsSource="{Binding DungeonBindings.TrackingDungeonsCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource DungeonNotificationFragment}" />
             </ScrollViewer>
         </Grid>
     </Grid>
