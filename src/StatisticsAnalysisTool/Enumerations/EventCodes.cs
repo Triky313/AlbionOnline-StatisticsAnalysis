@@ -12,7 +12,7 @@ namespace StatisticsAnalysisTool.Enumerations
         EnergyUpdate,
         DamageShieldUpdate,
         CraftingFocusUpdate,
-        ActiveSpellEffectsUpdate,
+        ActiveSpellEffectsUpdate = 10,
         ResetCooldowns,
         Attack,
         CastStart,
@@ -25,14 +25,14 @@ namespace StatisticsAnalysisTool.Enumerations
         CastHits,
         ChannelingEnded,
         AttackBuilding,
-        InventoryPutItem = 24, //  map[0:652 1:6 2:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 3:17 252:23] (0: ObjectId, 2: UserId)
-        InventoryDeleteItem = 25, // map[0:754 1:48 252:24] (0: ObjectId) 
-        NewCharacter = 26,
-        NewEquipmentItem = 27, //  map[0:657 1:2036 2:1 4:28169331 5:Apolo540 6:3 7:90000000 8:[] 9:[0] 252:27] (0: ObjectId, 1: ItemId, 2: Amount, 4: Avarage Market Price, 5: CrafterName)
-        NewSimpleItem = 28, //  map[0:505 1:7006 2:1 3:true 4:29033970 252:27] (0: ObjectId, 1: ItemId, 2: Amount)
-        NewFurnitureItem = 29,
-        NewJournalItem = 30,
-        NewLaborerItem = 31,
+        InventoryPutItem = 25, //  map[0:652 1:6 2:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 3:17 252:23] (0: ObjectId, 2: UserId)
+        InventoryDeleteItem = 26, // map[0:754 1:48 252:24] (0: ObjectId) 
+        NewCharacter = 27,
+        NewEquipmentItem = 28, //  map[0:657 1:2036 2:1 4:28169331 5:Apolo540 6:3 7:90000000 8:[] 9:[0] 252:27] (0: ObjectId, 1: ItemId, 2: Amount, 4: Avarage Market Price, 5: CrafterName)
+        NewSimpleItem = 29, //  map[0:505 1:7006 2:1 3:true 4:29033970 252:27] (0: ObjectId, 1: ItemId, 2: Amount)
+        NewFurnitureItem = 30,
+        NewJournalItem = 31,
+        NewLaborerItem = 32,
         NewSimpleHarvestableObject,
         NewSimpleHarvestableObjectList,
         NewHarvestableObject,
@@ -54,7 +54,7 @@ namespace StatisticsAnalysisTool.Enumerations
         HarvestStart,
         HarvestCancel,
         HarvestFinished,
-        TakeSilver = 54,
+        TakeSilver = 55, // map[0:-57 1:2178162 2:-57 3:10000000 8:10000 252:55]
         ActionOnBuildingStart,
         ActionOnBuildingCancel,
         ActionOnBuildingFinished,
@@ -74,15 +74,15 @@ namespace StatisticsAnalysisTool.Enumerations
         StopEmote,
         SystemMessage,
         UtilityTextMessage,
-        UpdateSilver = 72, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
-        UpdateFame = 73, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 7: ItemId, 9: SatchelFame, )
+        UpdateSilver = 73, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
+        UpdateFame = 74, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 7: ItemId, 9: SatchelFame, )
         UpdateLearningPoints,
-        UpdateReSpecPoints = 75,
-        UpdateCurrency = 76,
-        UpdateFactionStanding = 77,
+        UpdateReSpecPoints = 76,
+        UpdateCurrency = 77,
+        UpdateFactionStanding = 78,
         Respawn,
         ServerDebugLog,
-        CharacterEquipmentChanged = 80,
+        CharacterEquipmentChanged = 81,
         RegenerationHealthChanged,
         RegenerationEnergyChanged,
         RegenerationMountHealthChanged,
@@ -91,7 +91,7 @@ namespace StatisticsAnalysisTool.Enumerations
         RegenerationPlayerComboChanged,
         DurabilityChanged,
         NewLoot,
-        AttachItemContainer = 89, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
+        AttachItemContainer = 90, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
         DetachItemContainer, //  map[0:[-95 72 -77 -75 -70 34 127 73 -114 -96 28 8 75 -107 -106 125] 252:90]
         InvalidateItemContainer,
         LockItemContainer,
@@ -117,7 +117,7 @@ namespace StatisticsAnalysisTool.Enumerations
         EndArenaMatch,
         MatchUpdate,
         ActiveMatchUpdate,
-        NewMob = 111,
+        NewMob = 113,
         DebugAggroInfo,
         DebugVariablesInfo,
         DebugReputationInfo,
@@ -155,7 +155,7 @@ namespace StatisticsAnalysisTool.Enumerations
         ChangeMountSkin,
         GameEvent,
         KilledPlayer,
-        Died,
+        Died = 151,
         KnockedDown,
         MatchPlayerJoinedEvent,
         MatchPlayerStatsEvent,
@@ -217,6 +217,7 @@ namespace StatisticsAnalysisTool.Enumerations
         Cloak,
         PartyInvitation,
         PartyJoined,
+        // TODO: New Party System
         PartyChangedOrder = 212, // map[0:14368 2:1 3:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2]] 5:[Triky313 Bruno313] 6:[0 0] 7:[18 0] 8:[35 0] 9:[-1 -1] 10:[true true] 252:212]
         PartyPlayerLeft = 213, // map[1:14184 252:213]
         PartyPlayerJoined = 214, // map[0:11925 1:[-63 -19 39 16 26 35 -25 67 -111 60 -87 -58 -31 -100 -124 -44] 2:Mitch77 3:1 4:20 5:12 6:-1 7:true 252:214]
@@ -368,11 +369,11 @@ namespace StatisticsAnalysisTool.Enumerations
         TutorialUpdate,
         TriggerHintBox,
         RandomDungeonPositionInfo,
-        NewLootChest = 369, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367]
-        UpdateLootChest = 370, // map[0:23 1:4 2:637734315213820408 3:[] 4:[] 9:true 252:368]
-        LootChestOpened = 371, // map[0:23 252:369]
-        NewShrine = 373, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
-        UpdateShrine = 374, // map[0:19 1:2 2:637734313445294913 252:372]
+        NewLootChest = 370, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367]
+        UpdateLootChest = 371, // map[0:23 1:4 2:637734315213820408 3:[] 4:[] 9:true 252:368]
+        LootChestOpened = 372, // map[0:23 252:369]
+        NewShrine = 374, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
+        UpdateShrine = 375, // map[0:19 1:2 2:637734313445294913 252:372]
         MutePlayerUpdate,
         ShopTileUpdate,
         ShopUpdate,
@@ -380,10 +381,10 @@ namespace StatisticsAnalysisTool.Enumerations
         UnlockVanityUnlock,
         AvatarUnlocked,
         CustomizationChanged,
-        GuildVaultInfo = 387,
-        BaseVaultInfo = 388,
-        BankVaultInfo,
-        RecoveryVaultPlayerInfo,
+        GuildVaultInfo = 388,
+        BaseVaultInfo = 389,
+        BankVaultInfo, // map[0:6 1:6466931c-65a1-4c5d-870b-8724cf2611dc@3007 2:[] 3:[] 4:[] 5:[] 6:[] 7:[] 8:[] 252:390]
+        RecoveryVaultPlayerInfo = 391,
         RecoveryVaultGuildInfo,
         UpdateWardrobe,
         CastlePhaseChanged,
@@ -430,6 +431,6 @@ namespace StatisticsAnalysisTool.Enumerations
         Unknown420,
         Unknown421,
         Unknown422,
-        MightFavorPoints = 473 // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
+        MightFavorPoints = 474 // map[0:63063 2:21021 3:16617 5:5539 6:349680 8:0 252:470] (0: Might, 2: Premium of might, 3: Favor, 5: Premium of favor, 6: Total favor, 8: ???) 
     }
 }

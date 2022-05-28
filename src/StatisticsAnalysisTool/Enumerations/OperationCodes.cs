@@ -37,7 +37,7 @@
         InventorySplitStack,
         InventorySplitStackInto,
         GetClusterData,
-        ChangeCluster = 36,
+        ChangeCluster = 36, // Request: map[0:2 1: 2:[-1] 253:36 255:114] - Response: map[0:4000 253:36 255:114]
         ConsoleCommand,
         ChatMessage,
         ReportClientError,
