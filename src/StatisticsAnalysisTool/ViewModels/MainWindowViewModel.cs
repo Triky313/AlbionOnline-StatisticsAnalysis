@@ -738,6 +738,7 @@ namespace StatisticsAnalysisTool.ViewModels
             if (dialogResult is true)
             {
                 await TrackingController.EntityController.ResetPartyMemberAsync();
+                await TrackingController.EntityController.AddLocalEntityToPartyAsync();
             }
         }
         

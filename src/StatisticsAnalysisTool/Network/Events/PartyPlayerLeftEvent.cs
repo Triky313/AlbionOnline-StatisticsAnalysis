@@ -5,12 +5,11 @@ using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class PartyPlayerJoinedEvent
+    public class PartyPlayerLeftEvent
     {
         public Guid? UserGuid;
-        public string Username;
 
-        public PartyPlayerJoinedEvent(Dictionary<byte, object> parameters)
+        public PartyPlayerLeftEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
@@ -19,11 +18,6 @@ namespace StatisticsAnalysisTool.Network.Events
                 if (parameters.ContainsKey(1))
                 {
                     UserGuid = parameters[1].ObjectToGuid();
-                }
-
-                if (parameters.ContainsKey(2))
-                {
-                    Username = string.IsNullOrEmpty(parameters[2].ToString()) ? string.Empty : parameters[2].ToString();
                 }
             }
             catch (Exception e)
