@@ -50,15 +50,18 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                // TODO: Better solution! System.InvalidCastException: 'Unable to cast object of type 'System.Int16' to type 'System.Collections.IEnumerable'.'
-                var valueEnumerable = (IEnumerable)value;
-                var myBytes = valueEnumerable.OfType<byte>().ToArray();
-                return new Guid(myBytes);
+                if (value is IEnumerable valueEnumerable)
+                {
+                    var myBytes = valueEnumerable.OfType<byte>().ToArray();
+                    return new Guid(myBytes);
+                }
             }
             catch
             {
                 return null;
             }
+
+            return null;
         }
 
         public static long? ObjectToLong(this object value)
