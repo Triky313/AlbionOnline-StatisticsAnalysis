@@ -15,7 +15,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(PartyMakeLeaderResponse value)
         {
-            await _trackingController.EntityController.RemoveFromParty(value.Username);
+            await Task.CompletedTask;
         }
     }
 }

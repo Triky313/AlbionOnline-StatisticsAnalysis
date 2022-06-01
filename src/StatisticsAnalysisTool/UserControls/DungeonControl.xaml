@@ -3,39 +3,45 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
-
     <Grid>
-        <Grid Height="{Binding DungeonStatsGridHeight, FallbackValue=82}" ZIndex="1" MinHeight="60" VerticalAlignment="Top">
-            <Grid>
-                <StackPanel Height="auto" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <ContentPresenter Content="{Binding DungeonStatsTotal}"/>
-                    <ContentPresenter Content="{Binding DungeonStatsDay}"/>
-                    <ContentPresenter Content="{Binding DungeonStatsFilter}"/>
-                </StackPanel>
-                <StackPanel HorizontalAlignment="Right" Width="250" Height="123" VerticalAlignment="Top">
-                    <DockPanel Height="auto" VerticalAlignment="Top">
-                        <ContentControl Content="{Binding DungeonCloseTimer}" />
-                    </DockPanel>
-                    <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="80" 
-                            Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
-                    <Button Content="{Binding Translation.DeleteSelectedDungeons, FallbackValue=DELETE__SELECTED__DUNGEONS}" Height="26" MaxWidth="500" MinWidth="80" 
-                            Margin="0,2,0,5" Click="BtnDeleteSelectedDungeons_Click" />
-                </StackPanel>
-            </Grid>
-            <Grid Style="{StaticResource Grid.Unfold.Bar}" ZIndex="2">
-                <fa5:ImageAwesome Icon="{Binding DungeonStatsGridButtonIcon, FallbackValue=Solid_AngleDoubleDown}" 
-                                  Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                                  Margin="0,0,0,3" MouseUp="MouseUp_FoldUnfoldDungeonStats" />
-                <Separator Margin="0,19,0,0" Background="{StaticResource SolidColorBrush.Accent.Blue.3}" />
-            </Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="{Binding DungeonBindings.GridSplitterPosition ,Mode=TwoWay, FallbackValue=*}"/>
+        </Grid.RowDefinitions>
+
+        <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" 
+                      Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+
+        <Grid Row="0" Margin="0,5,0,6" Grid.RowSpan="2">
+            <ScrollViewer>
+                <Grid>
+                    <StackPanel Height="auto" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <ContentPresenter ContentTemplate="{StaticResource DungeonStatsTemplate}" Content="{Binding DungeonBindings.DungeonStatsTotal}"/>
+                        <ContentPresenter ContentTemplate="{StaticResource DungeonStatsTemplate}" Content="{Binding DungeonBindings.DungeonStatsDay}"/>
+                        <ContentPresenter ContentTemplate="{StaticResource DungeonStatsFilterTemplate}" Content="{Binding DungeonBindings.DungeonStatsFilter}"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Right" Width="250" Height="auto" VerticalAlignment="Top">
+                        <DockPanel Height="auto" VerticalAlignment="Top">
+                            <ContentControl ContentTemplate="{StaticResource DungeonCloseTimerTemplate}" Content="{Binding DungeonBindings.DungeonCloseTimer}" />
+                        </DockPanel>
+                        <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="80" 
+                                Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
+                        <Button Content="{Binding Translation.DeleteSelectedDungeons, FallbackValue=DELETE__SELECTED__DUNGEONS}" Height="26" MaxWidth="500" MinWidth="80" 
+                                Margin="0,2,0,5" Click="BtnDeleteSelectedDungeons_Click" />
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
         </Grid>
-        <ScrollViewer Margin="{Binding DungeonStatsScrollViewerMargin, FallbackValue='0,82,0,0'}">
-            <ItemsControl ItemsSource="{Binding TrackingDungeonsCollectionView, IsAsync=True, Mode=OneWay}" />
-        </ScrollViewer>
+
+        <Grid Row="2">
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding DungeonBindings.TrackingDungeonsCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource DungeonNotificationFragment}" />
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </UserControl>

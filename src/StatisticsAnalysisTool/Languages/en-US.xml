@@ -591,4 +591,14 @@
 	<translation name="SAFE_AREA">Safe region</translation>
 	<translation name="UNKNOWN_ZONE">Unknown region</translation>
 	<translation name="DEBUG_CONSOLE">Debug console</translation>
+	<translation name="TOTAL_REVENUE">Total revenue</translation>
+	<translation name="TAX">Tax</translation>
+	<translation name="TAXES_TODAY">Taxes today</translation>
+	<translation name="TAXES_THIS_WEEK">Taxes this week</translation>
+	<translation name="TAXES_LAST_WEEK">Taxes last week</translation>
+	<translation name="TAXES_MONTH">Taxes month</translation>
+	<translation name="TAXES_YEAR">Tax year</translation>
+	<translation name="TAXES_TOTAL">Taxes total</translation>
+	<translation name="NOTES">Notes</translation>
+	<translation name="UNSUPPORTED_OS">Unsupported OS: Errors may occur.</translation>
 </translations>

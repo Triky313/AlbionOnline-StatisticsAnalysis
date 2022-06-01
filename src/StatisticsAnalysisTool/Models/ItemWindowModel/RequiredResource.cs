@@ -26,18 +26,6 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private Location _itemPricesLocationSelected;
         private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
 
-        private static readonly KeyValuePair<Location, string>[] _itemPricesLocations = {
-            new (Location.Martlock, Locations.GetName(Location.Martlock)),
-            new (Location.Thetford, Locations.GetName(Location.Thetford)),
-            new (Location.FortSterling, Locations.GetName(Location.FortSterling)),
-            new (Location.Lymhurst, Locations.GetName(Location.Lymhurst)),
-            new (Location.Bridgewatch, Locations.GetName(Location.Bridgewatch)),
-            new (Location.Caerleon, Locations.GetName(Location.Caerleon)),
-            new (Location.MerlynsRest, Locations.GetName(Location.MerlynsRest)),
-            new (Location.MorganasRest, Locations.GetName(Location.MorganasRest)),
-            new (Location.ArthursRest, Locations.GetName(Location.ArthursRest))
-        };
-
         public RequiredResource(ItemWindowViewModel itemWindowViewModel)
         {
             _itemWindowViewModel = itemWindowViewModel;
@@ -58,7 +46,18 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
-        public KeyValuePair<Location, string>[] ItemPricesLocations => _itemPricesLocations;
+        public KeyValuePair<Location, string>[] ItemPricesLocations { get; } =
+        {
+            new (Location.Martlock, Locations.GetName(Location.Martlock)),
+            new (Location.Thetford, Locations.GetName(Location.Thetford)),
+            new (Location.FortSterling, Locations.GetName(Location.FortSterling)),
+            new (Location.Lymhurst, Locations.GetName(Location.Lymhurst)),
+            new (Location.Bridgewatch, Locations.GetName(Location.Bridgewatch)),
+            new (Location.Caerleon, Locations.GetName(Location.Caerleon)),
+            new (Location.MerlynsRest, Locations.GetName(Location.MerlynsRest)),
+            new (Location.MorganasRest, Locations.GetName(Location.MorganasRest)),
+            new (Location.ArthursRest, Locations.GetName(Location.ArthursRest))
+        };
 
         public Location ItemPricesLocationSelected
         {

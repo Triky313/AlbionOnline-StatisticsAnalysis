@@ -125,20 +125,33 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             await SetPartyMemberUiAsync();
         }
-
-        public async Task RemoveFromParty(string username)
+        
+        public async Task RemoveFromPartyAsync(Guid? guid)
         {
-            var partyMember = _knownPartyEntities.FirstOrDefault(x => x.Value == username);
+            if (guid is { } notNullGuid)
+            {
+                if (notNullGuid == GetLocalEntity()?.Key)
+                {
+                    await ResetPartyMemberAsync();
+                    await AddLocalEntityToPartyAsync();
+                }
+                else
+                {
+                    _ = _knownPartyEntities.TryRemove(notNullGuid, out _);
+                }
 
-            if (partyMember.Value != null) _knownPartyEntities.TryRemove(partyMember.Key, out _);
-
-            await SetPartyMemberUiAsync();
+                await SetPartyMemberUiAsync();
+            }
         }
 
         public async Task ResetPartyMemberAsync()
         {
             _knownPartyEntities.Clear();
+            await SetPartyMemberUiAsync();
+        }
 
+        public async Task AddLocalEntityToPartyAsync()
+        {
             foreach (var member in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer))
             {
                 _knownPartyEntities.TryAdd(member.Key, member.Value.Name);

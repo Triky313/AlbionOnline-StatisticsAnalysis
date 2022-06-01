@@ -591,4 +591,14 @@
 	<translation name="SAFE_AREA">Sichere Region</translation>
 	<translation name="UNKNOWN_ZONE">Unbekannte Region</translation>
 	<translation name="DEBUG_CONSOLE">Debug Konsole</translation>
+	<translation name="TOTAL_REVENUE">Gesamte Einnahmen</translation>
+	<translation name="TAX">Steuern</translation>
+	<translation name="TAXES_TODAY">Steuern heute</translation>
+	<translation name="TAXES_THIS_WEEK">Steuern diese Woche</translation>
+	<translation name="TAXES_LAST_WEEK">Steuern letzte Woche</translation>
+	<translation name="TAXES_MONTH">Steuern Monat</translation>
+	<translation name="TAXES_YEAR">Steuern Jahr</translation>
+	<translation name="TAXES_TOTAL">Steuern gesamt</translation>
+	<translation name="NOTES">Notizen</translation>
+	<translation name="UNSUPPORTED_OS">Nicht unterstütztes Betriebssystem: Es kann zu Fehlern kommen.</translation>
 </translations>

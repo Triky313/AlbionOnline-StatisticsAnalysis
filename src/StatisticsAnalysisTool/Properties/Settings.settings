@@ -104,5 +104,8 @@
     <Setting Name="PatreonUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://www.patreon.com/triky313</Value>
     </Setting>
+    <Setting Name="CraftingNotesFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CraftingNotes.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

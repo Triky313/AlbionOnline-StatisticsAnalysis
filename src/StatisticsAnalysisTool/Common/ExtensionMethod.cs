@@ -1,4 +1,4 @@
-﻿using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,14 +50,18 @@ namespace StatisticsAnalysisTool.Common
         {
             try
             {
-                var valueEnumerable = (IEnumerable)value;
-                var myBytes = valueEnumerable.OfType<byte>().ToArray();
-                return new Guid(myBytes);
+                if (value is IEnumerable valueEnumerable)
+                {
+                    var myBytes = valueEnumerable.OfType<byte>().ToArray();
+                    return new Guid(myBytes);
+                }
             }
             catch
             {
                 return null;
             }
+
+            return null;
         }
 
         public static long? ObjectToLong(this object value)

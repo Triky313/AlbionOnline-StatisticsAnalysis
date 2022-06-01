@@ -39,7 +39,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        private readonly ItemWindow _mainWindow;
+        private readonly ItemWindow _itemWindow;
         private List<MarketQualityObject> _allQualityPricesList;
         private string _averagePrices;
         private List<MarketResponse> _currentCityPrices;
@@ -78,6 +78,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _craftingTabVisibility = Visibility.Collapsed;
         private EssentialCraftingValuesTemplate _essentialCraftingValues;
         private ExtraItemInformation _extraItemInformation = new();
+        private string _craftingNotes;
 
         private CraftingCalculation _craftingCalculation = new()
         {
@@ -93,9 +94,9 @@ namespace StatisticsAnalysisTool.ViewModels
             GrandTotal = 0.0d
         };
 
-        public ItemWindowViewModel(ItemWindow mainWindow, Item item)
+        public ItemWindowViewModel(ItemWindow itemWindow, Item item)
         {
-            _mainWindow = mainWindow;
+            _itemWindow = itemWindow;
             InitializeItemWindow(item);
         }
 
@@ -132,13 +133,13 @@ namespace StatisticsAnalysisTool.ViewModels
             InitExtraItemInformation();
             await InitCraftingTabUiAsync();
 
-            await _mainWindow.Dispatcher.InvokeAsync(() =>
+            await _itemWindow.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindow.Icon = null;
-                _mainWindow.Title = "-";
+                _itemWindow.Icon = null;
+                _itemWindow.Title = "-";
             });
 
-            if (_mainWindow.Dispatcher == null)
+            if (_itemWindow.Dispatcher == null)
             {
                 SetErrorValues(Error.GeneralError);
                 return;
@@ -149,10 +150,10 @@ namespace StatisticsAnalysisTool.ViewModels
             Icon = item.Icon;
             ItemName = localizedName;
 
-            await _mainWindow.Dispatcher.InvokeAsync(() =>
+            await _itemWindow.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindow.Icon = item.Icon;
-                _mainWindow.Title = $"{localizedName} (T{item.Tier})";
+                _itemWindow.Icon = item.Icon;
+                _itemWindow.Title = $"{localizedName} (T{item.Tier})";
             });
 
             _ = StartAutoUpdaterAsync();
@@ -250,6 +251,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
                 case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
                 case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+                case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
                     areResourcesAvailable = true;
                     break;
             }
@@ -261,6 +263,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 SetEssentialCraftingValues();
                 GetJournalInfo();
                 await GetCraftInfoAsync();
+                CraftingNotes = CraftingTabController.GetNote(Item.UniqueName);
             }
         }
 
@@ -268,6 +271,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             EssentialCraftingValues = new EssentialCraftingValuesTemplate(this)
             {
+                AmountCrafted = 1,
                 AuctionHouseTax = 3.0d,
                 CraftingBonus = 133,
                 CraftingItemQuantity = 1,
@@ -279,42 +283,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 CurrentCityPrices = CurrentCityPrices,
                 UniqueName = Item.UniqueName
             };
-        }
-
-        private async Task GetCraftInfoAsync()
-        {
-            var craftingRequirements = Item?.FullItemInformation switch
-            {
-                Weapon weapon => weapon.CraftingRequirements,
-                EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
-                Mount mount => mount.CraftingRequirements,
-                _ => null
-            };
-
-            if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
-            {
-                return;
-            }
-
-            await foreach (var craftResource in craftingRequirements
-                               .SelectMany(x => x.CraftResource).ToList().GroupBy(x => x.UniqueName).Select(grp => grp.FirstOrDefault()).ToAsyncEnumerable().ConfigureAwait(false))
-            {
-                var item = GetSuitableResourceItem(craftResource.UniqueName);
-                var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
-                    ? CraftingCalculation.PossibleItemCrafting
-                    : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
-
-                RequiredResources.Add(new RequiredResource(this)
-                {
-                    CraftingResourceName = item?.LocalizedName,
-                    UniqueName = item?.UniqueName,
-                    OneProductionAmount = craftResource.Count,
-                    Icon = item?.Icon,
-                    ResourceCost = 0,
-                    CraftingQuantity = craftingQuantity,
-                    IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
-                });
-            }
         }
 
         private void GetJournalInfo()
@@ -342,6 +310,48 @@ namespace StatisticsAnalysisTool.ViewModels
                 RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting),
                 SellPricePerJournal = 0
             };
+        }
+
+        private async Task GetCraftInfoAsync()
+        {
+            var craftingRequirements = Item?.FullItemInformation switch
+            {
+                Weapon weapon => weapon.CraftingRequirements,
+                EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
+                Mount mount => mount.CraftingRequirements,
+                ConsumableItem consumableItem => consumableItem.CraftingRequirements,
+                _ => null
+            };
+
+            if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
+            {
+                return;
+            }
+
+            if (int.TryParse(craftingRequirements.FirstOrDefault()?.AmountCrafted, out var amountCrafted))
+            {
+                EssentialCraftingValues.AmountCrafted = amountCrafted;
+            }
+
+            await foreach (var craftResource in craftingRequirements
+                               .SelectMany(x => x.CraftResource).ToList().GroupBy(x => x.UniqueName).Select(grp => grp.FirstOrDefault()).ToAsyncEnumerable().ConfigureAwait(false))
+            {
+                var item = GetSuitableResourceItem(craftResource.UniqueName);
+                var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
+                    ? CraftingCalculation.PossibleItemCrafting
+                    : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
+
+                RequiredResources.Add(new RequiredResource(this)
+                {
+                    CraftingResourceName = item?.LocalizedName,
+                    UniqueName = item?.UniqueName,
+                    OneProductionAmount = craftResource.Count,
+                    Icon = item?.Icon,
+                    ResourceCost = 0,
+                    CraftingQuantity = craftingQuantity,
+                    IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
+                });
+            }
         }
 
         private Item GetSuitableResourceItem(string uniqueName)
@@ -398,7 +408,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (CraftingCalculation?.TotalItemSells != null && EssentialCraftingValues != null && CraftingCalculation != null)
             {
-                CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * CraftingCalculation.PossibleItemCrafting;
+                CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * (CraftingCalculation.PossibleItemCrafting * EssentialCraftingValues.AmountCrafted);
             }
 
             if (CraftingCalculation?.TotalJournalSells != null && RequiredJournal != null)
@@ -409,6 +419,11 @@ namespace StatisticsAnalysisTool.ViewModels
             if (CraftingCalculation?.OtherCosts != null && EssentialCraftingValues != null)
             {
                 CraftingCalculation.OtherCosts = EssentialCraftingValues.OtherCosts;
+            }
+
+            if (CraftingCalculation?.AmountCrafted != null && EssentialCraftingValues != null)
+            {
+                CraftingCalculation.AmountCrafted = EssentialCraftingValues.AmountCrafted;
             }
         }
 
@@ -485,7 +500,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 while (RunUpdate)
                 {
                     await Task.Delay(50);
-                    if (_mainWindow.Dispatcher != null && !IsAutoUpdateActive)
+                    if (_itemWindow.Dispatcher != null && !IsAutoUpdateActive)
                     {
                         continue;
                     }
@@ -999,7 +1014,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public string AveragePrices
         {
             get => _averagePrices;
@@ -1306,6 +1321,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _craftingTabVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string CraftingNotes
+        {
+            get => _craftingNotes;
+            set
+            {
+                _craftingNotes = value;
                 OnPropertyChanged();
             }
         }

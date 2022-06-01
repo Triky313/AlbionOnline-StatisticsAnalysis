@@ -31,7 +31,6 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isBestSilver;
         private bool _isBestSilverPerHour;
         private bool _isBestTime;
-
         private string _mainMapIndex;
         private string _mainMapName;
         private List<Guid> _guidList;

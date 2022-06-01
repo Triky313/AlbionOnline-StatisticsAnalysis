@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:enumerations="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
@@ -436,7 +436,7 @@
         </Style.Triggers>
     </Style>
 
-    <DataTemplate DataType="{x:Type models:DungeonStats}">
+    <DataTemplate x:Key="DungeonStatsTemplate" DataType="{x:Type models:DungeonStats}">
         <Border Style="{StaticResource Tracking.Information.Border}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
                 <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationTitle, FallbackValue=TOTAL}" FontWeight="Bold"/>
@@ -516,7 +516,7 @@
         </Border>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type models:DungeonStatsFilter}">
+    <DataTemplate x:Key="DungeonStatsFilterTemplate" DataType="{x:Type models:DungeonStatsFilter}">
         <Border Style="{StaticResource Tracking.Information.Border}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
                 <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationFilter, FallbackValue=FILTER}" FontWeight="Bold"/>
@@ -541,7 +541,7 @@
     </DataTemplate>
 
 
-    <DataTemplate DataType="{x:Type notification:DungeonNotificationFragment}">
+    <DataTemplate x:Key="DungeonNotificationFragment" DataType="{x:Type notification:DungeonNotificationFragment}">
         <Border BorderBrush="{StaticResource SolidColorBrush.Background.2}" BorderThickness="0,0,0,1">
             <Grid Height="72" Margin="0" Visibility="{Binding Visibility}">
                 <Grid.Style>
@@ -706,11 +706,6 @@
                                     </Grid>
                                     <Label Content="{Binding FactionCoinsPerHour, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionCoinsPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205" />
-
-                                    <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}">
-                                        <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                    </Grid>
-                                    <Label Content="{Binding NumberOfDungeonFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55"/>
                                 </StackPanel>
 
                                 <!-- Might - Favor -->
@@ -738,12 +733,13 @@
                                     </Grid>
                                     <Label Content="{Binding FavorPerHour, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFavorPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205" />
-
-                                    <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}">
-                                        <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                    </Grid>
-                                    <Label Content="{Binding NumberOfDungeonFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55" />
                                 </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="551,48,0,0">
+                                <Grid Margin="0,0,0,0" Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationNumberOfDungeonFloors, FallbackValue=NUMBER__OF__DUNGEON__FLOORS}">
+                                    <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </Grid>
+                                <Label Content="{Binding NumberOfDungeonFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55" />
                             </StackPanel>
                         </Grid>
                     </DockPanel>
@@ -878,7 +874,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type networkModel:DungeonCloseTimer}">
+    <DataTemplate x:Key="DungeonCloseTimerTemplate" DataType="{x:Type networkModel:DungeonCloseTimer}">
         <Border Visibility="{Binding Visibility}" Style="{StaticResource Tracking.Information.Border}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="5 0 5 0">
                 <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationDungeonTimer, FallbackValue=DUNGEON__TIMER}" />

@@ -88,7 +88,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void RemovesClusterIfMoreThanLimit()
         {
-            if (_mainWindowViewModel.EnteredCluster?.Count > MaxEnteredCluster)
+            if (_mainWindowViewModel?.EnteredCluster?.Count > MaxEnteredCluster)
             {
                 _mainWindowViewModel?.EnteredCluster?.RemoveAt(_mainWindowViewModel.EnteredCluster.Count - 1);
             }

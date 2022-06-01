@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
+using StatisticsAnalysisTool.Common.Comparer;
 using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
@@ -35,7 +36,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
 
             MailCollectionView.IsLiveSorting = true;
             MailCollectionView.IsLiveFiltering = true;
-            MailCollectionView.SortDescriptions.Add(new SortDescription("Tick", ListSortDirection.Descending));
+            MailCollectionView.CustomSort = new MailComparer();
 
             MailCollectionView?.Refresh();
         }
@@ -148,7 +149,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
         set
         {
             _gridSplitterPosition = value;
-            SettingsController.CurrentSettings.GridSplitterPosition = _gridSplitterPosition.Value;
+            SettingsController.CurrentSettings.MailMonitoringGridSplitterPosition = _gridSplitterPosition.Value;
             OnPropertyChanged();
         }
     }
@@ -184,7 +185,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
                    || ($"T{mail.Item.Tier}.{mail.Item.Level}".ToLower().Contains(MailsSearchText?.ToLower() ?? string.Empty))
                    || mail.MailTypeDescription.ToLower().Contains(MailsSearchText?.ToLower() ?? string.Empty)
                    || (mail.Item != null && mail.Item.LocalizedName.ToLower().Contains(MailsSearchText?.ToLower() ?? string.Empty))
-                   || mail.MailContent.UnitPrice.ToString().Contains(MailsSearchText?.ToLower() ?? string.Empty)
+                   || mail.MailContent.ActualUnitPrice.ToString().Contains(MailsSearchText?.ToLower() ?? string.Empty)
                    || mail.MailContent.TotalPrice.ToString().Contains(MailsSearchText?.ToLower() ?? string.Empty));
     }
 

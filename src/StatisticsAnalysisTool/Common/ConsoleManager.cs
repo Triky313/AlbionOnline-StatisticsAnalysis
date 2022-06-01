@@ -79,5 +79,10 @@ namespace StatisticsAnalysisTool.Common
         {
             WriteLine(new ConsoleFragment(declaringType.ToString(), message, consoleColorType));
         }
+
+        public static void WriteLineForMessage(string name, Dictionary<byte, object> parameters, ConsoleColorType consoleColorType = ConsoleColorType.Default)
+        {
+            WriteLine(new ConsoleFragment(name, parameters, consoleColorType));
+        }
     }
 }

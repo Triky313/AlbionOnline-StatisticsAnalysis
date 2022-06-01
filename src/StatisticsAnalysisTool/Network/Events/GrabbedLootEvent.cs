@@ -52,7 +52,7 @@ namespace StatisticsAnalysisTool.Network.Events
                 Loot = new Loot()
                 {
                     LootedBody = _lootedBody,
-                    IsTrash = ItemController.IsTrash(_itemIndex),
+                    IsTrash = ItemController.IsTrash(_itemIndex) && !_isSilver,
                     ItemIndex = _itemIndex,
                     LooterName = _looterName,
                     IsSilver = _isSilver,

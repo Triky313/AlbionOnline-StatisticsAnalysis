@@ -1,7 +1,9 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.ApiModel;
 using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
@@ -11,8 +13,6 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models.ApiModel;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -36,6 +36,11 @@ namespace StatisticsAnalysisTool.Common
         /// <exception cref="TooManyRequestsException"></exception>
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
         {
+            if (string.IsNullOrEmpty(uniqueName))
+            {
+                return new List<MarketResponse>();
+            }
+
             var url = SettingsController.CurrentSettings.CityPricesApiUrl ?? Settings.Default.CityPricesApiUrlDefault;
             url += uniqueName;
 
@@ -58,8 +63,8 @@ namespace StatisticsAnalysisTool.Common
             {
                 client.Timeout = TimeSpan.FromSeconds(30);
 
-                using var response = await client.GetAsync(url);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var response = await client.GetAsync(url);
                 if (response.StatusCode == (HttpStatusCode)429)
                 {
                     throw new TooManyRequestsException();
@@ -100,12 +105,15 @@ namespace StatisticsAnalysisTool.Common
             url += $"&qualities={qualitiesString}";
             url += $"&time-scale={timeScale}";
 
-            using var client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(60);
+            using var clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            using var client = new HttpClient(clientHandler);
+            client.Timeout = TimeSpan.FromSeconds(300);
+
             try
             {
-                using var response = await client.GetAsync(url);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 if (response.StatusCode == (HttpStatusCode)429)
                 {
@@ -136,10 +144,11 @@ namespace StatisticsAnalysisTool.Common
             clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
             using var client = new HttpClient(clientHandler);
             client.Timeout = TimeSpan.FromSeconds(600);
+            
             try
             {
-                using var response = await client.GetAsync(url);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 return JsonSerializer.Deserialize<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
             }
@@ -162,8 +171,8 @@ namespace StatisticsAnalysisTool.Common
             client.Timeout = TimeSpan.FromSeconds(120);
             try
             {
-                using var response = await client.GetAsync(url);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 return JsonSerializer.Deserialize<GameInfoPlayersResponse>(await content.ReadAsStringAsync()) ??
                        gameInfoPlayerResponse;
@@ -189,8 +198,8 @@ namespace StatisticsAnalysisTool.Common
             client.Timeout = TimeSpan.FromSeconds(600);
             try
             {
-                using var response = await client.GetAsync(url);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(await content.ReadAsStringAsync()) ?? values;
             }
@@ -223,8 +232,8 @@ namespace StatisticsAnalysisTool.Common
             client.Timeout = TimeSpan.FromSeconds(600);
             try
             {
-                using var response = await client.GetAsync(url);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(await content.ReadAsStringAsync()) ?? values;
             }
@@ -257,8 +266,8 @@ namespace StatisticsAnalysisTool.Common
             client.Timeout = TimeSpan.FromSeconds(600);
             try
             {
-                using var response = await client.GetAsync(url);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 return JsonSerializer.Deserialize<List<GameInfoPlayerKillsDeaths>>(await content.ReadAsStringAsync()) ?? values;
             }
@@ -296,7 +305,7 @@ namespace StatisticsAnalysisTool.Common
         //    }
         //}
 
-        public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count, int timeout = 30)
+        public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count, int timeout = 300)
         {
             var checkedDateTime = dateTime != null ? dateTime.ToString() : string.Empty;
 
@@ -308,8 +317,8 @@ namespace StatisticsAnalysisTool.Common
             client.Timeout = TimeSpan.FromSeconds(timeout);
             try
             {
-                using var response = await client.GetAsync(url);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 var contentString = await content.ReadAsStringAsync();
                 return string.IsNullOrEmpty(contentString) ? new List<GoldResponseModel>() : JsonSerializer.Deserialize<List<GoldResponseModel>>(contentString);
@@ -333,8 +342,8 @@ namespace StatisticsAnalysisTool.Common
             client.Timeout = TimeSpan.FromSeconds(600);
             try
             {
-                using var response = await client.GetAsync(url);
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 return JsonSerializer.Deserialize<List<Donation>>(await content.ReadAsStringAsync()) ?? values;
             }

@@ -388,5 +388,17 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((string)(this["PatreonUrl"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("CraftingNotes.json")]
+        public string CraftingNotesFileName {
+            get {
+                return ((string)(this["CraftingNotesFileName"]));
+            }
+            set {
+                this["CraftingNotesFileName"] = value;
+            }
+        }
     }
 }

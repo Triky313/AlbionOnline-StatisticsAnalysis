@@ -36,7 +36,9 @@ namespace StatisticsAnalysisTool.Network
         private readonly InCombatStateUpdateEventHandler _inCombatStateUpdateEventHandler;
         private readonly NewShrineEventHandler _newShrineEventHandler;
         private readonly HealthUpdateEventHandler _healthUpdateEventHandler;
-        private readonly PartyPlayerJoinedEventHandler _partyPlayerJoinedHandler;
+        private readonly PartyDisbandedEventHandler _partyDisbandedEventHandler;
+        private readonly PartyPlayerJoinedEventHandler _partyPlayerJoinedEventHandler;
+        private readonly PartyPlayerLeftEventHandler _partyPlayerLeftEventHandler;
         private readonly PartyChangedOrderEventHandler _partyChangedOrderEventHandler;
         private readonly NewCharacterEventHandler _newCharacterEventHandler;
         private readonly SiegeCampClaimStartEventHandler _siegeCampClaimStartEventHandler;
@@ -81,7 +83,9 @@ namespace StatisticsAnalysisTool.Network
             _inCombatStateUpdateEventHandler = new InCombatStateUpdateEventHandler(trackingController);
             _newShrineEventHandler = new NewShrineEventHandler(trackingController);
             _healthUpdateEventHandler = new HealthUpdateEventHandler(trackingController);
-            _partyPlayerJoinedHandler = new PartyPlayerJoinedEventHandler(trackingController);
+            _partyDisbandedEventHandler = new PartyDisbandedEventHandler(trackingController);
+            _partyPlayerJoinedEventHandler = new PartyPlayerJoinedEventHandler(trackingController);
+            _partyPlayerLeftEventHandler = new PartyPlayerLeftEventHandler(trackingController);
             _partyChangedOrderEventHandler = new PartyChangedOrderEventHandler(trackingController);
             _newCharacterEventHandler = new NewCharacterEventHandler(trackingController);
             _siegeCampClaimStartEventHandler = new SiegeCampClaimStartEventHandler(trackingController);
@@ -176,8 +180,14 @@ namespace StatisticsAnalysisTool.Network
                     case EventCodes.HealthUpdate:
                         await HealthUpdateEventHandlerAsync(parameters).ConfigureAwait(true);
                         return;
+                    case EventCodes.PartyDisbanded:
+                        await PartyDisbandedHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
                     case EventCodes.PartyPlayerJoined:
                         await PartyPlayerJoinedHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.PartyPlayerLeft:
+                        await PartyPlayerLeftHandlerAsync(parameters).ConfigureAwait(true);
                         return;
                     case EventCodes.PartyChangedOrder:
                         await PartyChangedOrderEventHandlerAsync(parameters).ConfigureAwait(true);
@@ -420,10 +430,22 @@ namespace StatisticsAnalysisTool.Network
             await _healthUpdateEventHandler.OnActionAsync(value);
         }
 
+        private async Task PartyDisbandedHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new PartyDisbandedEvent(parameters);
+            await _partyDisbandedEventHandler.OnActionAsync(value);
+        }
+
         private async Task PartyPlayerJoinedHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new PartyPlayerJoinedEvent(parameters);
-            await _partyPlayerJoinedHandler.OnActionAsync(value);
+            await _partyPlayerJoinedEventHandler.OnActionAsync(value);
+        }
+
+        private async Task PartyPlayerLeftHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new PartyPlayerLeftEvent(parameters);
+            await _partyPlayerLeftEventHandler.OnActionAsync(value);
         }
 
         private async Task PartyChangedOrderEventHandlerAsync(Dictionary<byte, object> parameters)
