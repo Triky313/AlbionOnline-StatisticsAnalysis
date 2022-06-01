@@ -1,8 +1,5 @@
 AlbionOnline - Statistics Analysis
 ===================
-
-A tool for easy reading of auction house data, Loot logger, tracking of Dungeons and a Damage Meter for the game Albion Online
-
 [![Github All Releases](https://img.shields.io/github/v/release/Triky313/AlbionOnline-StatisticsAnalysis)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/Triky313/AlbionOnline-StatisticsAnalysis/total.svg)](https://github.com/Triky313/AlbionOnline-StatisticsAnalysis/releases) 
 [![CodeFactor](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/badge/master)](https://www.codefactor.io/repository/github/triky313/albiononline-statisticsanalysis/overview/master)
@@ -12,8 +9,11 @@ A tool for easy reading of auction house data, Loot logger, tracking of Dungeons
 [![Discord](https://img.shields.io/badge/discord-join-blueviolet)](https://discord.gg/6dGTvuF5nJ) 
 [![Donate](https://img.shields.io/badge/paypal-donate-1e477a)](https://www.paypal.me/schultzaaron)
 
-![Image of this Application](https://user-images.githubusercontent.com/14247773/147143464-c36d0cba-dddb-4b34-bd2e-11e3f65e3289.png)
+A tool to easily read auction house data with a loot logger, damage meter, dungeon tracker, dungeon entry timer, crafting calculator, map history and player information
 
+<p align="center" align='right'>
+  <img src="https://user-images.githubusercontent.com/14247773/147143464-c36d0cba-dddb-4b34-bd2e-11e3f65e3289.png" data-canonical-src="https://user-images.githubusercontent.com/14247773/147143464-c36d0cba-dddb-4b34-bd2e-11e3f65e3289.png" width="400" height="400" />
+</p>
 
 ## Getting Started
 
