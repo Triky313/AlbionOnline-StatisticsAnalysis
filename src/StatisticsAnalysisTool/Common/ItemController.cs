@@ -490,9 +490,16 @@ namespace StatisticsAnalysisTool.Common
             };
         }
 
-        public static ItemType GetItemType(string uniqueName)
+        public struct ItemTypeStruct
         {
-            return GetItemType(Items?.FirstOrDefault(x => x.UniqueName == uniqueName)?.Index ?? -1);
+            public ItemTypeStruct(string uniqueName, ItemType itemType)
+            {
+                UniqueName = uniqueName;
+                ItemType  = itemType;
+            }
+
+            public string UniqueName { get; }
+            public ItemType ItemType { get; }
         }
 
         public static ItemType GetItemType(int index)
@@ -504,72 +511,21 @@ namespace StatisticsAnalysisTool.Common
                 return ItemType.Unknown;
             }
 
-            if (ItemsJson.Items.HideoutItem?.UniqueName == itemObject.UniqueName)
-            {
-                return ItemType.Hideout;
-            }
-
-            if (ItemsJson.Items.FarmableItem.Any(item => item.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.Farmable;
-            }
-
-            if (ItemsJson.Items.SimpleItem.Any(item => item.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.Simple;
-            }
-
-            if (ItemsJson.Items.ConsumableItem.Any(item => item.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.Consumable;
-            }
-
-            if (ItemsJson.Items.ConsumableFromInventoryItem.Any(item => item.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.ConsumableFromInventory;
-            }
-
-            if (ItemsJson.Items.EquipmentItem.Any(item => item.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.Equipment;
-            }
-
-            if (ItemsJson.Items.Weapon.Any(item => item.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.Weapon;
-            }
-
-            if (ItemsJson.Items.Mount.Any(item => item.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.Mount;
-            }
-
-            if (ItemsJson.Items.FurnitureItem.Any(item => item.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.Furniture;
-            }
-
-            if (ItemsJson.Items.JournalItem.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.Journal;
-            }
-
-            if (ItemsJson.Items.LabourerContract.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.LabourerContract;
-            }
-
-            if (ItemsJson.Items.MountSkin.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.MountSkin;
-            }
-
-            if (ItemsJson.Items.CrystalLeagueItem.Any(simpleItem => simpleItem.UniqueName == itemObject.UniqueName))
-            {
-                return ItemType.CrystalLeague;
-            }
-
-            return ItemType.Unknown;
+            var itemTypeStructs = new List<ItemTypeStruct> { new (ItemsJson.Items.HideoutItem.UniqueName, ItemType.Hideout) };
+            itemTypeStructs.AddRange(ItemsJson.Items.FarmableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            itemTypeStructs.AddRange(ItemsJson.Items.SimpleItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            itemTypeStructs.AddRange(ItemsJson.Items.ConsumableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            itemTypeStructs.AddRange(ItemsJson.Items.ConsumableFromInventoryItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            itemTypeStructs.AddRange(ItemsJson.Items.EquipmentItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            itemTypeStructs.AddRange(ItemsJson.Items.Weapon.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            itemTypeStructs.AddRange(ItemsJson.Items.Mount.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            itemTypeStructs.AddRange(ItemsJson.Items.FurnitureItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            itemTypeStructs.AddRange(ItemsJson.Items.JournalItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            itemTypeStructs.AddRange(ItemsJson.Items.LabourerContract.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            itemTypeStructs.AddRange(ItemsJson.Items.MountSkin.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            itemTypeStructs.AddRange(ItemsJson.Items.CrystalLeagueItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+            
+            return itemTypeStructs.FirstOrDefault(x => x.UniqueName == itemObject.UniqueName).ItemType;
         }
 
         public static async Task<bool> GetItemsJsonAsync()
