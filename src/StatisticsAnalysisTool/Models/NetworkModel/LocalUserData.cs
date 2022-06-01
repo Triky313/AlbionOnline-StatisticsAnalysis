@@ -68,6 +68,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
                 var info = await ApiController.GetGameInfoSearchFromJsonAsync(newUsername);
                 WebApiUserId = info.SearchPlayer.FirstOrDefault(x => x.Name == newUsername)?.Id;
                 
+                // TODO: Add save load file and save kills and death cuz currently only the last 10 or 20 death and kills are shown.
                 DeathsValues = await ApiController.GetGameInfoPlayerKillsDeathsFromJsonAsync(WebApiUserId, GameInfoPlayersType.Deaths);
                 TopKillsMonthValues = await ApiController.GetGameInfoPlayerTopKillsFromJsonAsync(WebApiUserId, UnitOfTime.Month);
                 SoloKillsMonthValues = await ApiController.GetGameInfoPlayerSoloKillsFromJsonAsync(WebApiUserId, UnitOfTime.Month);

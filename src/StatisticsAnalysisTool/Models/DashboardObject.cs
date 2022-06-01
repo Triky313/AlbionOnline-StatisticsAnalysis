@@ -314,7 +314,7 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _deathsToday = value;
-                DeathsTodayVisibility = value > 10 ? Visibility.Visible : Visibility.Collapsed;
+                DeathsTodayVisibility = value >= 10 ? Visibility.Visible : Visibility.Collapsed;
                 OnPropertyChanged();
             }
         }
@@ -325,7 +325,7 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _deathsThisWeek = value;
-                DeathsThisWeekVisibility = value > 10 ? Visibility.Visible : Visibility.Collapsed;
+                DeathsThisWeekVisibility = value >= 10 ? Visibility.Visible : Visibility.Collapsed;
                 OnPropertyChanged();
             }
         }
@@ -336,7 +336,7 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _deathsThisMonth = value;
-                DeathsThisMonthVisibility = value > 10 ? Visibility.Visible : Visibility.Collapsed;
+                DeathsThisMonthVisibility = value >= 10 ? Visibility.Visible : Visibility.Collapsed;
                 OnPropertyChanged();
             }
         }
