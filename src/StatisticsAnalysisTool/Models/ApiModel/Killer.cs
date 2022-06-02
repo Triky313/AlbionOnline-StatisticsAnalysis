@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace StatisticsAnalysisTool.Models.ApiModel;
+﻿namespace StatisticsAnalysisTool.Models.ApiModel;
 
 public class Killer
 {

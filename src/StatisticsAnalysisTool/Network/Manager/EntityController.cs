@@ -4,13 +4,17 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Time;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -29,7 +33,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private double _lastLocalEntityGuildTaxInPercent;
         private double _lastLocalEntityClusterTaxInPercent;
 
-        public LocalUserData LocalUserData { get; set; } = new ();
+        public LocalUserData LocalUserData { get; init; } = new();
 
         public EntityController(MainWindowViewModel mainWindowViewModel)
         {
@@ -125,7 +129,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             await SetPartyMemberUiAsync();
         }
-        
+
         public async Task RemoveFromPartyAsync(Guid? guid)
         {
             if (guid is { } notNullGuid)
