@@ -638,6 +638,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\Comparer\" />
-    <Folder Include="Models\ApiModel\" />
   </ItemGroup>
 </Project>
