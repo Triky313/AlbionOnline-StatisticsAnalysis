@@ -17,7 +17,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
     public class LocalUserData
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
+        
         public long? UserObjectId { get; set; }
         public Guid? Guid { get; set; }
         public Guid? InteractGuid { get; set; }
@@ -35,21 +35,39 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public DateTime? LastUpdate;
         public ObservableCollection<GameInfoPlayerKillsDeathsWithType> PlayerKillsDeaths { get; private set; }
 
-        public int SoloKillsToday => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date && x.ObjectType == GameInfoPlayerKillsDeathsType.SoloKill) ?? 0;
-        public int SoloKillsWeek => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7) && x.ObjectType == GameInfoPlayerKillsDeathsType.SoloKill) ?? 0;
-        public int SoloKillsMonth => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-30) && x.ObjectType == GameInfoPlayerKillsDeathsType.SoloKill) ?? 0;
-        public int KillsToday => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date && x.ObjectType == GameInfoPlayerKillsDeathsType.Kill) ?? 0;
-        public int KillsWeek => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7) && x.ObjectType == GameInfoPlayerKillsDeathsType.Kill) ?? 0;
-        public int KillsMonth => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-30) && x.ObjectType == GameInfoPlayerKillsDeathsType.Kill) ?? 0;
-        public int DeathsToday => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date && x.ObjectType == GameInfoPlayerKillsDeathsType.Death) ?? 0;
-        public int DeathsWeek => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7) && x.ObjectType == GameInfoPlayerKillsDeathsType.Death) ?? 0;
-        public int DeathsMonth => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-30) && x.ObjectType == GameInfoPlayerKillsDeathsType.Death) ?? 0;
+        public int SoloKillsToday => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date 
+                                                                             && x.Killer?.Name == Username 
+                                                                             && x.ObjectType == GameInfoPlayerKillsDeathsType.SoloKill) ?? 0;
+        public int SoloKillsWeek => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)
+                                                                            && x.Killer?.Name == Username
+                                                                            && x.ObjectType == GameInfoPlayerKillsDeathsType.SoloKill) ?? 0;
+        public int SoloKillsMonth => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-30)
+                                                                             && x.Killer?.Name == Username
+                                                                             && x.ObjectType == GameInfoPlayerKillsDeathsType.SoloKill) ?? 0;
+        public int KillsToday => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date
+                                                                         && x.Killer?.Name == Username
+                                                                         && x.ObjectType == GameInfoPlayerKillsDeathsType.Kill) ?? 0;
+        public int KillsWeek => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)
+                                                                        && x.Killer?.Name == Username
+                                                                        && x.ObjectType == GameInfoPlayerKillsDeathsType.Kill) ?? 0;
+        public int KillsMonth => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-30)
+                                                                         && x.Killer?.Name == Username
+                                                                         && x.ObjectType == GameInfoPlayerKillsDeathsType.Kill) ?? 0;
+        public int DeathsToday => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date == DateTime.UtcNow.Date
+                                                                          && x.Victim?.Name == Username
+                                                                          && x.ObjectType == GameInfoPlayerKillsDeathsType.Death) ?? 0;
+        public int DeathsWeek => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-7)
+                                                                         && x.Victim?.Name == Username
+                                                                         && x.ObjectType == GameInfoPlayerKillsDeathsType.Death) ?? 0;
+        public int DeathsMonth => PlayerKillsDeaths?.ToArray().Count(x => x.TimeStamp.Date > DateTime.UtcNow.Date.AddDays(-30)
+                                                                          && x.Victim?.Name == Username
+                                                                          && x.ObjectType == GameInfoPlayerKillsDeathsType.Death) ?? 0;
         public double AverageItemPowerWhenKilling =>
-            PlayerKillsDeaths?.Where(x => x.ObjectType != GameInfoPlayerKillsDeathsType.Death).Select(x => x.Killer?.AverageItemPower).Sum() / PlayerKillsDeaths?.Count(x => x.ObjectType != GameInfoPlayerKillsDeathsType.Death) ?? 0;
+            PlayerKillsDeaths?.Where(x => x.ObjectType != GameInfoPlayerKillsDeathsType.Death && x.Killer?.Name == Username).Select(x => x.Killer?.AverageItemPower).Sum() / PlayerKillsDeaths?.Count(x => x.ObjectType != GameInfoPlayerKillsDeathsType.Death) ?? 0;
         public double AverageItemPowerOfTheKilledEnemies =>
-            PlayerKillsDeaths?.Where(x => x.ObjectType != GameInfoPlayerKillsDeathsType.Death).Select(x => x.Victim?.AverageItemPower).Sum() / PlayerKillsDeaths?.Count(x => x.ObjectType != GameInfoPlayerKillsDeathsType.Death) ?? 0;
+            PlayerKillsDeaths?.Where(x => x.ObjectType != GameInfoPlayerKillsDeathsType.Death && x.Killer?.Name == Username).Select(x => x.Victim?.AverageItemPower).Sum() / PlayerKillsDeaths?.Count(x => x.ObjectType != GameInfoPlayerKillsDeathsType.Death) ?? 0;
         public double AverageItemPowerWhenDying =>
-            PlayerKillsDeaths?.Where(x => x.ObjectType == GameInfoPlayerKillsDeathsType.Death).Select(x => x.Victim?.AverageItemPower).Sum() / PlayerKillsDeaths?.ToArray().Count(x => x.ObjectType == GameInfoPlayerKillsDeathsType.Death) ?? 0;
+            PlayerKillsDeaths?.Where(x => x.ObjectType == GameInfoPlayerKillsDeathsType.Death && x.Victim?.Name == Username).Select(x => x.Victim?.AverageItemPower).Sum() / PlayerKillsDeaths?.ToArray().Count(x => x.ObjectType == GameInfoPlayerKillsDeathsType.Death) ?? 0;
 
         public async Task SetValuesAsync(LocalUserData localUserData)
         {
