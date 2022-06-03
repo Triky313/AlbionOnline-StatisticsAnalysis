@@ -116,7 +116,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
 
             foreach (var data in playerData)
             {
-                if (PlayerKillsDeaths.Any(x => x.Equals(data)))
+                if (PlayerKillsDeaths.Any(x => x.Compare(data)))
                 {
                     continue;
                 }

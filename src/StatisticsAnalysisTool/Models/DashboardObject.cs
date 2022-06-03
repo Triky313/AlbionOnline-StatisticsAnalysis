@@ -1,10 +1,9 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -34,9 +33,6 @@ namespace StatisticsAnalysisTool.Models
         private double _averageItemPowerWhenKilling;
         private double _averageItemPowerOfTheKilledEnemies;
         private double _averageItemPowerWhenDying;
-        private Visibility _deathsTodayVisibility = Visibility.Collapsed;
-        private Visibility _deathsThisWeekVisibility = Visibility.Collapsed;
-        private Visibility _deathsThisMonthVisibility = Visibility.Collapsed;
         private int _killsThisMonth;
         private int _deathsThisMonth;
         private int _soloKillsToday;
@@ -314,7 +310,6 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _deathsToday = value;
-                DeathsTodayVisibility = value >= 10 ? Visibility.Visible : Visibility.Collapsed;
                 OnPropertyChanged();
             }
         }
@@ -325,7 +320,6 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _deathsThisWeek = value;
-                DeathsThisWeekVisibility = value >= 10 ? Visibility.Visible : Visibility.Collapsed;
                 OnPropertyChanged();
             }
         }
@@ -336,37 +330,6 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _deathsThisMonth = value;
-                DeathsThisMonthVisibility = value >= 10 ? Visibility.Visible : Visibility.Collapsed;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility DeathsTodayVisibility
-        {
-            get => _deathsTodayVisibility;
-            set
-            {
-                _deathsTodayVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility DeathsThisWeekVisibility
-        {
-            get => _deathsThisWeekVisibility;
-            set
-            {
-                _deathsThisWeekVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Visibility DeathsThisMonthVisibility
-        {
-            get => _deathsThisMonthVisibility;
-            set
-            {
-                _deathsThisMonthVisibility = value;
                 OnPropertyChanged();
             }
         }
