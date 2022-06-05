@@ -598,4 +598,15 @@
 	<translation name="YELLOW_ZONE">Желтая зона</translation>
 	<translation name="SAFE_AREA">Синяя зона</translation>
 	<translation name="UNKNOWN_ZONE">Неизвестно</translation>
+	<translation name="DEBUG_CONSOLE">Консоль отладки</translation>
+	<translation name="TOTAL_REVENUE">Общая прибыль</translation>
+	<translation name="TAX">Налог</translation>
+	<translation name="TAXES_TODAY">Налог за сегодня</translation>
+	<translation name="TAXES_THIS_WEEK">Налог за неделю</translation>
+	<translation name="TAXES_LAST_WEEK">Налог за прошлую неделю</translation>
+	<translation name="TAXES_MONTH">Налог за месяц</translation>
+	<translation name="TAXES_YEAR">Налог за год</translation>
+	<translation name="TAXES_TOTAL">Общий налог</translation>
+	<translation name="NOTES">Заметки</translation>
+	<translation name="UNSUPPORTED_OS">Неподдерживаемая ОС: могут допускаться ошибки в работе программы.</translation>
 </translations>

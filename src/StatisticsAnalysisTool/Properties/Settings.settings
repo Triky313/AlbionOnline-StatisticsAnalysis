@@ -107,5 +107,8 @@
     <Setting Name="CraftingNotesFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">CraftingNotes.json</Value>
     </Setting>
+    <Setting Name="PlayerKillsDeathsFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PlayerKillsDeaths.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -189,6 +189,11 @@ namespace StatisticsAnalysisTool.Common
         {
             var values = new List<GameInfoPlayerKillsDeaths>();
 
+            if (string.IsNullOrEmpty(userid))
+            {
+                return values;
+            }
+
             var killsDeathsExtensionString = gameInfoPlayersType == GameInfoPlayersType.Kills ? "kills" : "deaths";
             var url = $"https://gameinfo.albiononline.com/api/gameinfo/players/{userid}/{killsDeathsExtensionString}";
 
@@ -214,6 +219,12 @@ namespace StatisticsAnalysisTool.Common
         public static async Task<List<GameInfoPlayerKillsDeaths>> GetGameInfoPlayerTopKillsFromJsonAsync(string userid, UnitOfTime unitOfTime)
         {
             var values = new List<GameInfoPlayerKillsDeaths>();
+
+            if (string.IsNullOrEmpty(userid))
+            {
+                return values;
+            }
+
             var unitOfTimeString = unitOfTime switch
             {
                 UnitOfTime.Day => "day",
@@ -248,6 +259,12 @@ namespace StatisticsAnalysisTool.Common
         public static async Task<List<GameInfoPlayerKillsDeaths>> GetGameInfoPlayerSoloKillsFromJsonAsync(string userid, UnitOfTime unitOfTime)
         {
             var values = new List<GameInfoPlayerKillsDeaths>();
+
+            if (string.IsNullOrEmpty(userid))
+            {
+                return values;
+            }
+
             var unitOfTimeString = unitOfTime switch
             {
                 UnitOfTime.Day => "day",

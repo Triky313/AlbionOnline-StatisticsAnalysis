@@ -6,21 +6,21 @@ namespace StatisticsAnalysisTool.Models.ApiModel;
 public class GameInfoPlayerKillsDeaths
 {
     [JsonPropertyName("groupMemberCount")]
-    public int GroupMemberCount { get; set; }
+    public int GroupMemberCount { get; init; }
     [JsonPropertyName("numberOfParticipants")]
-    public int NumberOfParticipants { get; set; }
-    public int EventId { get; set; }
-    public DateTime TimeStamp { get; set; }
-    public int Version { get; set; }
-    public Killer Killer { get; set; }
-    public Victim Victim { get; set; }
-    public int TotalVictimKillFame { get; set; }
-    public object Location { get; set; }
+    public int NumberOfParticipants { get; init; }
+    public int EventId { get; init; }
+    public DateTime TimeStamp { get; init; }
+    public int Version { get; init; }
+    public Killer Killer { get; init; }
+    public Victim Victim { get; init; }
+    public int TotalVictimKillFame { get; init; }
+    public object Location { get; init; }
     //public List<Participant> Participants { get; set; }
     //public List<GroupMember> GroupMembers { get; set; }
-    public object GvGMatch { get; set; }
-    public int BattleId { get; set; }
-    public string KillArea { get; set; }
-    public object Category { get; set; }
-    public string Type { get; set; }
+    public object GvGMatch { get; init; }
+    public int BattleId { get; init; }
+    public string KillArea { get; init; }
+    public object Category { get; init; }
+    public string Type { get; init; }
 }
