@@ -1,5 +1,12 @@
 [
  {
+	"Timestamp": "2022-06-12T00:00:00",
+	"Amount": 2000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Agentanti",
+	"IsDonationRealMoney": false
+ },
+ {
 	"Timestamp": "2022-05-13T00:00:00",
 	"Amount": 1520000,
 	"RealMoneyAmount": 0,
