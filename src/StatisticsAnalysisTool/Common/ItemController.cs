@@ -184,7 +184,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static Item GetItemByUniqueName(string uniqueName)
         {
-            return Items?.FirstOrDefault(i => i.UniqueName == uniqueName);
+            return Items?.FirstOrDefault(i => i.UniqueName == uniqueName) ?? Items?.FirstOrDefault(i => GetCleanUniqueName(i.UniqueName) == uniqueName);
         }
 
         public static bool IsTrash(int index)
@@ -349,8 +349,8 @@ namespace StatisticsAnalysisTool.Common
                 .Select(item => Task.Run(async () =>
                 {
                     item.FullItemInformation = await GetSpecificItemInfoAsync(item.UniqueName);
-                    item.ShopCategory = GetShopCategory(item.FullItemInformation?.UniqueName);
-                    item.ShopShopSubCategory1 = GetShopSubCategory(item.FullItemInformation?.UniqueName);
+                    item.ShopCategory = GetShopCategory(item.UniqueName);
+                    item.ShopShopSubCategory1 = GetShopSubCategory(item.UniqueName);
                 }))
                 .ToListAsync();
 
@@ -448,9 +448,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static ShopCategory GetShopCategory(string uniqueName)
         {
-            var item = GetItemByUniqueName(uniqueName)?.FullItemInformation;
-
-            return item switch
+            return GetItemByUniqueName(uniqueName)?.FullItemInformation switch
             {
                 HideoutItem hideoutItem => CategoryController.ShopCategoryStringToCategory(hideoutItem.ShopCategory),
                 FarmableItem farmableItem => CategoryController.ShopCategoryStringToCategory(farmableItem.ShopCategory),
@@ -495,7 +493,7 @@ namespace StatisticsAnalysisTool.Common
             public ItemTypeStruct(string uniqueName, ItemType itemType)
             {
                 UniqueName = uniqueName;
-                ItemType  = itemType;
+                ItemType = itemType;
             }
 
             public string UniqueName { get; }
@@ -511,7 +509,7 @@ namespace StatisticsAnalysisTool.Common
                 return ItemType.Unknown;
             }
 
-            var itemTypeStructs = new List<ItemTypeStruct> { new (ItemsJson.Items.HideoutItem.UniqueName, ItemType.Hideout) };
+            var itemTypeStructs = new List<ItemTypeStruct> { new(ItemsJson.Items.HideoutItem.UniqueName, ItemType.Hideout) };
             itemTypeStructs.AddRange(ItemsJson.Items.FarmableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
             itemTypeStructs.AddRange(ItemsJson.Items.SimpleItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
             itemTypeStructs.AddRange(ItemsJson.Items.ConsumableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
@@ -524,7 +522,7 @@ namespace StatisticsAnalysisTool.Common
             itemTypeStructs.AddRange(ItemsJson.Items.LabourerContract.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
             itemTypeStructs.AddRange(ItemsJson.Items.MountSkin.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
             itemTypeStructs.AddRange(ItemsJson.Items.CrystalLeagueItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-            
+
             return itemTypeStructs.FirstOrDefault(x => x.UniqueName == itemObject.UniqueName).ItemType;
         }
 
