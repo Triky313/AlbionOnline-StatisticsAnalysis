@@ -291,7 +291,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type models:Mail}">
+    <DataTemplate x:Key="MailTemplate" DataType="{x:Type models:Mail}">
         <Grid Height="50" Margin="0,0,0,0">
             <Grid Style="{StaticResource Mail.Type.Colors}" />
             <Border Style="{StaticResource Mail.Border.Type.Colors}">

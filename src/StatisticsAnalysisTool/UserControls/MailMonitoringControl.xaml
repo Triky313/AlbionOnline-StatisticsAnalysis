@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="StatisticsAnalysisTool.UserControls.MailMonitoringControl"
+<UserControl x:Class="StatisticsAnalysisTool.UserControls.MailMonitoringControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -61,7 +61,7 @@
 
             <Grid Row="2">
                 <ScrollViewer Margin="0,0,0,0" IsDeferredScrollingEnabled="True">
-                    <ItemsControl ItemsSource="{Binding MailMonitoringBindings.MailCollectionView, IsAsync=True, Mode=OneWay}" />
+                    <ItemsControl ItemsSource="{Binding MailMonitoringBindings.MailCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource MailTemplate}" />
                 </ScrollViewer>
             </Grid>
         </Grid>
