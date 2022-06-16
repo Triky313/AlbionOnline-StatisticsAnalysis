@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:gl="clr-namespace:System.Globalization;assembly=System.Runtime"
+             xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
@@ -27,14 +28,18 @@
             </StackPanel>
         </StackPanel>
         <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,60,0,0" VerticalAlignment="Top"/>
-        <ScrollViewer  Margin="0,64,0,0" HorizontalScrollBarVisibility="Disabled">
-            <ItemsControl Width="410" ItemsSource="{Binding VaultBindings.VaultContainerContent, IsAsync=True, Mode=OneWay}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </ScrollViewer>
+        <vwp:VirtualizingItemsControl Margin="0,64,0,0" Width="430" ItemsSource="{Binding VaultBindings.VaultContainerContent, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource ContainerItemTemplate}"              
+                                      VirtualizingPanel.CacheLengthUnit="Item"
+                                      VirtualizingPanel.CacheLength="10,10"
+                                      VirtualizingPanel.ScrollUnit="Pixel"
+                                      VirtualizingPanel.VirtualizationMode="Recycling"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </vwp:VirtualizingItemsControl>
     </Grid>
 </UserControl>

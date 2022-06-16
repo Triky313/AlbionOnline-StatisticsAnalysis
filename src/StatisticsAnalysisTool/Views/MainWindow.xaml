@@ -6,6 +6,7 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
         xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+        xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         mc:Ignorable="d"
         d:DesignHeight="650" d:DesignWidth="1000"
         WindowStartupLocation="CenterScreen"
@@ -167,9 +168,13 @@
             </TabItem>
             <TabItem Header="{Binding Translation.MapHistory, FallbackValue=MAP__HISTORY}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
-                    <ScrollViewer Margin="0,0,0,0">
-                        <ItemsControl ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}"/>
-                    </ScrollViewer>
+                    <vwp:VirtualizingItemsControl ItemsSource="{Binding EnteredCluster, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource ClusterInfoTemplate}"              
+                                                  VirtualizingPanel.CacheLengthUnit="Item"
+                                                  VirtualizingPanel.CacheLength="10,10"
+                                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                                  VirtualizingPanel.VirtualizationMode="Recycling"
+                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                  ScrollViewer.VerticalScrollBarVisibility="Visible" />
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Translation.PlayerInformation, FallbackValue=PLAYER__INFORMATION}">
