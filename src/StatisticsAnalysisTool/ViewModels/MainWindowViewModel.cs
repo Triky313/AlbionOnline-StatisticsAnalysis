@@ -281,12 +281,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 Log.Fatal(nameof(OnUnhandledException), ex);
             }
         }
-
-        private void InitItemWindowCraftingNotes()
-        {
-
-        }
-
+        
         private void InitAlerts()
         {
             SoundController.InitializeSoundFilesFromDirectory();
@@ -390,7 +385,6 @@ namespace StatisticsAnalysisTool.ViewModels
             await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
             ItemsView = new ListCollectionView(ItemController.Items);
-            InitItemWindowCraftingNotes();
             InitAlerts();
 
             LoadIconVisibility = Visibility.Hidden;
