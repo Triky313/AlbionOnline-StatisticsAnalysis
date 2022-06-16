@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
@@ -60,9 +61,13 @@
             </Grid>
 
             <Grid Row="2">
-                <ScrollViewer Margin="0,0,0,0" IsDeferredScrollingEnabled="True">
-                    <ItemsControl ItemsSource="{Binding MailMonitoringBindings.MailCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource MailTemplate}" />
-                </ScrollViewer>
+                <vwp:VirtualizingItemsControl ItemsSource="{Binding MailMonitoringBindings.MailCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource MailTemplate}"              
+                    VirtualizingPanel.CacheLengthUnit="Item"
+                    VirtualizingPanel.CacheLength="10,10"
+                    VirtualizingPanel.ScrollUnit="Pixel"
+                    VirtualizingPanel.VirtualizationMode="Recycling"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Visible" />
             </Grid>
         </Grid>
 

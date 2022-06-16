@@ -292,18 +292,18 @@
     </DataTemplate>
 
     <DataTemplate x:Key="MailTemplate" DataType="{x:Type models:Mail}">
-        <Grid Height="50" Margin="0,0,0,0">
+        <Grid Height="50">
             <Grid Style="{StaticResource Mail.Type.Colors}" />
             <Border Style="{StaticResource Mail.Border.Type.Colors}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="10,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Mail.Icon}" />
                     </Grid>
-                    <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Vertical">
+                    <StackPanel Orientation="Vertical">
                         <DockPanel>
-                            <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling" Orientation="Horizontal">
-                                <VirtualizingStackPanel.Style>
-                                    <Style TargetType="{x:Type VirtualizingStackPanel}">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderFinished">
@@ -314,15 +314,15 @@
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </VirtualizingStackPanel.Style>
+                                </StackPanel.Style>
                                 <TextBlock Text="{Binding MailTypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=MAIL}" Style="{StaticResource Mail.Text.Colors}" />
                                 <TextBlock Text="{Binding MailContent.Quantity, IsAsync=True, StringFormat='{}{0}x', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Mail.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </VirtualizingStackPanel>
-                            <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling" Orientation="Horizontal">
-                                <VirtualizingStackPanel.Style>
-                                    <Style TargetType="{x:Type VirtualizingStackPanel}">
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MailType, IsAsync=True}" Value="MarketplaceSellOrderExpired">
@@ -333,19 +333,19 @@
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </VirtualizingStackPanel.Style>
+                                </StackPanel.Style>
                                 <TextBlock Text="{Binding MailTypeDescription, IsAsync=True, StringFormat='{}{0}: ', FallbackValue=MAIL}" Style="{StaticResource Mail.Text.Colors}" />
                                 <TextBlock Text="{Binding MailContent.UsedQuantity, IsAsync=True, StringFormat='{}{0}', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Text="{Binding TranslationFrom, IsAsync=True, FallbackValue=FROM}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Text="{Binding MailContent.Quantity, IsAsync=True, StringFormat='{} {0}', FallbackValue=0}" FontWeight="Bold" Margin="0,0,3,0" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 <TextBlock Style="{StaticResource Mail.Text.Tier}" />
                                 <TextBlock Text="{Binding Item.LocalizedName, IsAsync=True}" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                            </VirtualizingStackPanel>
+                            </StackPanel>
                             <TextBlock Text="{Binding Timestamp, IsAsync=True, StringFormat='{}{0}'}" TextAlignment="Right" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
                         </DockPanel>
                         <DockPanel>
-                            <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling" Orientation="Horizontal">
-                                <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True, FallbackValue=COST_PER_ITEM}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
                                 <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
@@ -403,11 +403,11 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                            </VirtualizingStackPanel>
+                            </StackPanel>
                             <TextBlock Style="{StaticResource Mail.City.Text}" />
                         </DockPanel>
                         <DockPanel>
-                            <VirtualizingStackPanel IsVirtualizing="True" VirtualizationMode="Recycling" Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal">
                                 <Grid Width="200">
                                     <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.ActualUnitPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
@@ -436,12 +436,12 @@
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.TaxPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                                HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
                                 </Grid>
-                            </VirtualizingStackPanel>
+                            </StackPanel>
                             <Grid Margin="0 -2 0 0" Height="18" Width="18" HorizontalAlignment="Right">
                                 <CheckBox Width="auto" Height="auto" IsChecked="{Binding IsSelectedForDeletion, IsAsync=True, FallbackValue=false}" ToolTip="{Binding TranslationSelectToDelete, IsAsync=True}" />
                             </Grid>
                         </DockPanel>
-                    </VirtualizingStackPanel>
+                    </StackPanel>
                 </DockPanel>
             </Border>
         </Grid>
