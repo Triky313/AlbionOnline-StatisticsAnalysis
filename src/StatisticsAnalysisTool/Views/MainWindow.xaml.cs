@@ -1,7 +1,11 @@
 ﻿using StatisticsAnalysisTool.ViewModels;
 using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Navigation;
+using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 
@@ -12,6 +16,8 @@ namespace StatisticsAnalysisTool.Views
     /// </summary>
     public partial class MainWindow
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
         private readonly MainWindowViewModel _mainWindowViewModel;
         private static bool _isWindowMaximized;
 
@@ -114,7 +120,7 @@ namespace StatisticsAnalysisTool.Views
             };
         }
 
-        private void BtnTryToLoadTheItemListAgain_Click(object sender, RoutedEventArgs e)
+        private void BtnTryToLoadItemJsonAgain_Click(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel?.InitItemsAsync().ConfigureAwait(false);
         }
@@ -127,6 +133,25 @@ namespace StatisticsAnalysisTool.Views
         private void ToolTasksOpenClose_PreviewMouseDown(object sender, RoutedEventArgs e)
         {
             _mainWindowViewModel?.SwitchToolTasksState();
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true });
+        }
+
+        private void OpenToolDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _ = Process.Start(new ProcessStartInfo { FileName = MainWindowViewModel.ToolDirectory, UseShellExecute = true });
+            }
+            catch (Exception exception)
+            {
+                _ = MessageBox.Show(exception.Message, LanguageController.Translation("ERROR"));
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
+            }
         }
     }
 }
