@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models.NetworkModel">
 
-    <DataTemplate DataType="{x:Type models:ContainerItem}">
+    <DataTemplate x:Key="ContainerItemTemplate" DataType="{x:Type models:ContainerItem}">
         <Grid Height="80" Width="80" Margin="1">
             <Grid Background="{StaticResource SolidColorBrush.Background.3}">
                 <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Stretch="Fill" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
