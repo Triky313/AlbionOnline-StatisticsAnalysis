@@ -1639,7 +1639,10 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         public static string LootLoggerViewer => "https://matheus.sampaio.us/ao-loot-logger-viewer/";
+        public static string ItemListJsonHyperlink => "https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json";
+        public static string ItemsJsonHyperlink => "https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json";
 
+        public static string ToolDirectory => AppDomain.CurrentDomain.BaseDirectory;
         public static string Version => $"v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public event PropertyChangedEventHandler PropertyChanged;

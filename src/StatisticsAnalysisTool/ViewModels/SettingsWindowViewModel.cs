@@ -449,7 +449,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
         
-        public string ToolDirectory => System.AppDomain.CurrentDomain.BaseDirectory;
+        public string ToolDirectory => AppDomain.CurrentDomain.BaseDirectory;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
