@@ -175,7 +175,7 @@
         <Setter Property="Source" Value="../Resources/icon_daily_season_points.png"/>
     </Style>
 
-    <DataTemplate DataType="{x:Type notification:TrackingNotification}">
+    <DataTemplate x:Key="TrackingNotificationTemplate" DataType="{x:Type notification:TrackingNotification}">
         <Grid Visibility="{Binding Visibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -500,7 +500,7 @@
     </DataTemplate>
 
     <!-- ClusterInfo -->
-    <DataTemplate DataType="{x:Type models:ClusterInfo}">
+    <DataTemplate x:Key="ClusterInfoTemplate" DataType="{x:Type models:ClusterInfo}">
         <Grid>
             <Grid Margin="0,0,0,2">
                 <Grid.Style>

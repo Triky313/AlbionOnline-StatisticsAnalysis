@@ -468,6 +468,7 @@
     <PackageReference Include="SharpPcap" Version="6.2.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="7.0.0-preview.2.22152.2" />
+    <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\StatPricesTotal.cs" />
