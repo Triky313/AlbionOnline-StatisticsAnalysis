@@ -18,10 +18,15 @@ namespace StatisticsAnalysisTool.GameData
     {
         public static ObservableCollection<WorldJsonObject> MapData;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        
+
         public static string GetUniqueNameOrNull(string index)
         {
             return MapData?.FirstOrDefault(x => x?.Index == index)?.UniqueName;
+        }
+
+        public static string GetUniqueNameOrDefault(int index)
+        {
+            return GetUniqueNameOrDefault($"{index:0000}");
         }
 
         public static string GetUniqueNameOrDefault(string index)
@@ -65,7 +70,7 @@ namespace StatisticsAnalysisTool.GameData
                     var mapGuid = new Guid(splitName[mapTypeIndex + 2]);
                     return mapGuid;
                 }
-                
+
                 if (splitName.Length > 1 && index.ToLower().Contains('@'))
                 {
                     var mapType = GetMapType(splitName[0]);
@@ -83,7 +88,7 @@ namespace StatisticsAnalysisTool.GameData
 
             return null;
         }
-        
+
         public static string GetMapNameByMapType(MapType mapType)
         {
             return mapType switch
@@ -170,7 +175,7 @@ namespace StatisticsAnalysisTool.GameData
 
             return MapData?.FirstOrDefault(x => x.Index == index)?.Type;
         }
-        
+
         public static string GetFileByIndex(string index)
         {
             return MapData?.FirstOrDefault(x => x.Index == index)?.File;
