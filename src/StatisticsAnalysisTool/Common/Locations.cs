@@ -10,25 +10,6 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class Locations
     {
-        public static readonly Dictionary<Location, string> Names = new()
-        {
-            { Location.Thetford, "Thetford" },
-            { Location.SwampCross, "Swamp Cross" },
-            { Location.Lymhurst, "Lymhurst" },
-            { Location.ForestCross, "Forest Cross" },
-            { Location.Bridgewatch, "Bridgewatch" },
-            { Location.SteppeCross, "Steppe Cross" },
-            { Location.HighlandCross, "Highland Cross" },
-            { Location.BlackMarket, "Black Market" },
-            { Location.Martlock, "Martlock" },
-            { Location.Caerleon, "Caerleon" },
-            { Location.FortSterling, "Fort Sterling" },
-            { Location.MountainCross, "Mountain Cross" },
-            { Location.ArthursRest, "Arthur's Rest" },
-            { Location.MerlynsRest, "Merlyn's Rest" },
-            { Location.MorganasRest, "Morgana's Rest" }
-        };
-
         public static readonly Dictionary<Location, string> ParameterNames = new()
         {
             { Location.Thetford, "Thetford" },
@@ -47,12 +28,7 @@ namespace StatisticsAnalysisTool.Common
             { Location.MerlynsRest, "Merlyns Rest" },
             { Location.MorganasRest, "Morganas Rest" }
         };
-
-        public static string GetName(Location location)
-        {
-            return Names.TryGetValue(location, out var name) ? name : null;
-        }
-
+        
         public static string GetParameterName(Location location)
         {
             return ParameterNames.TryGetValue(location, out var name) ? name : null;
@@ -168,9 +144,9 @@ namespace StatisticsAnalysisTool.Common
 
     public enum Location
     {
-        Unknown = 0,
-        SwampCross = 4,
-        Thetford = 7,
+        Unknown = 0000,
+        SwampCross = 0004,
+        Thetford = 0007,
         ThetfordPortal = 0301,
         Lymhurst = 1002,
         LymhurstPortal = 1301,
@@ -187,8 +163,8 @@ namespace StatisticsAnalysisTool.Common
         FortSterlingPortal = 4301,
         MountainCross = 4006,
         ArthursRest = 4300,
-        MerlynsRest = -2,
-        MorganasRest = -3
+        MerlynsRest = 1012,
+        MorganasRest = 0008
     }
 
     public enum LocationArea

@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Models
 {
     public class MarketQualityObject
     {
         public string Location { get; set; }
-        public string LocationName => Locations.GetName(LocationType);
+        public string LocationName => WorldData.GetUniqueNameOrDefault((int)LocationType);
         private Location LocationType => Locations.GetName(Location);
         public ulong SellPriceMinNormal { private get; set; }
         public ulong SellPriceMinGood { private get; set; }

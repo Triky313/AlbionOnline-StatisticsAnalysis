@@ -24,6 +24,7 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 using StatisticsAnalysisTool.Common.Converters;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.TranslationModel;
 
 namespace StatisticsAnalysisTool.ViewModels
@@ -623,7 +624,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 var lineSeries = new LineSeries<ObservablePoint>
                 {
-                    Name = Locations.GetName(Locations.GetName(marketHistory?.Location)),
+                    Name = WorldData.GetUniqueNameOrDefault(marketHistory?.Location),
                     Values = amount,
                     Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
                     Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false),
@@ -824,7 +825,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     if (currentStatsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == newStats.City))
                     {
-                        var curStats = currentStatsPricesTotalList.Find(s => Locations.GetName(s.City) == newStats.City);
+                        var curStats = currentStatsPricesTotalList.Find(s => WorldData.GetUniqueNameOrDefault((int)s.City) == newStats.City);
 
                         if (newStats?.SellPriceMinDate < curStats?.SellPriceMinDate)
                         {
