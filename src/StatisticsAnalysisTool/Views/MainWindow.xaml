@@ -195,7 +195,7 @@
         </TabControl>
 
         <!-- ItemList.json Info -->
-        <Grid ZIndex="2" Margin="0,90,0,42" Visibility="{Binding GridTryToLoadTheItemListAgainVisibility, FallbackValue=Hidden}" Background="{StaticResource SolidColorBrush.Background.1}">
+        <Grid ZIndex="2" Margin="0,90,0,42" Visibility="{Binding GridTryToLoadTheItemListAgainVisibility, FallbackValue=Collapsed}" Background="{StaticResource SolidColorBrush.Background.1}">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Button Height="50" Width="auto" MinWidth="100" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                         Content="{Binding Translation.TryDownloadingTheItemListAgain, FallbackValue=CLICK__HERE__AND__TRY__DOWNLOADING__THE__ITEMS.JSON__AGAIN}" 
@@ -221,7 +221,7 @@
         </Grid>
 
         <!-- Items.json Info -->
-        <Grid ZIndex="2" Margin="0,90,0,42" Visibility="{Binding GridTryToLoadTheItemJsonAgainVisibility, FallbackValue=Visible}" Background="{StaticResource SolidColorBrush.Background.1}">
+        <Grid ZIndex="2" Margin="0,90,0,42" Visibility="{Binding GridTryToLoadTheItemJsonAgainVisibility, FallbackValue=Collapsed}" Background="{StaticResource SolidColorBrush.Background.1}">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Button Height="50" Width="auto" MinWidth="100" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                         Content="{Binding Translation.TryDownloadingTheItemJsonAgain, FallbackValue=CLICK__HERE__AND__TRY__DOWNLOADING__THE__ITEMS.JSON__AGAIN}" 
