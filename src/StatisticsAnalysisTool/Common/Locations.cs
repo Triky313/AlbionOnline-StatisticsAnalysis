@@ -49,52 +49,60 @@ namespace StatisticsAnalysisTool.Common
             return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
         }
 
-        public static List<string> GetLocationsListByArea(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket)
+        public static List<Location> GetLocationsListByArea(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket)
         {
             var locationAreas = new List<LocationArea>();
 
             if (villages)
+            {
                 locationAreas.Add(LocationArea.Villages);
+            }
 
             if (blackZoneOutposts)
+            {
                 locationAreas.Add(LocationArea.BlackZone);
+            }
 
             if (cities)
+            {
                 locationAreas.Add(LocationArea.Cities);
+            }
 
             if (blackMarket)
+            {
                 locationAreas.Add(LocationArea.BlackMarket);
+            }
 
-            var locations = new List<string>();
+            var locations = new List<Location>();
 
             foreach (var area in locationAreas)
                 switch (area)
                 {
                     case LocationArea.BlackMarket:
-                        locations.Add(GetParameterName(Location.BlackMarket));
+                        locations.Add(Location.BlackMarket);
                         break;
 
                     case LocationArea.BlackZone:
-                        locations.Add(GetParameterName(Location.ArthursRest));
-                        locations.Add(GetParameterName(Location.MerlynsRest));
-                        locations.Add(GetParameterName(Location.MorganasRest));
+                        locations.Add(Location.ArthursRest);
+                        locations.Add(Location.MerlynsRest);
+                        locations.Add(Location.MorganasRest);
                         break;
 
                     case LocationArea.Villages:
-                        locations.Add(GetParameterName(Location.SwampCross));
-                        locations.Add(GetParameterName(Location.ForestCross));
-                        locations.Add(GetParameterName(Location.SteppeCross));
-                        locations.Add(GetParameterName(Location.HighlandCross));
-                        locations.Add(GetParameterName(Location.MountainCross));
+                        locations.Add(Location.SwampCross);
+                        locations.Add(Location.ForestCross);
+                        locations.Add(Location.SteppeCross);
+                        locations.Add(Location.HighlandCross);
+                        locations.Add(Location.MountainCross);
                         break;
 
                     case LocationArea.Cities:
-                        locations.Add(GetParameterName(Location.Thetford));
-                        locations.Add(GetParameterName(Location.Lymhurst));
-                        locations.Add(GetParameterName(Location.Bridgewatch));
-                        locations.Add(GetParameterName(Location.Martlock));
-                        locations.Add(GetParameterName(Location.FortSterling));
-                        locations.Add(GetParameterName(Location.Caerleon));
+                        locations.Add(Location.Thetford);
+                        locations.Add(Location.Lymhurst);
+                        locations.Add(Location.Bridgewatch);
+                        locations.Add(Location.Martlock);
+                        locations.Add(Location.FortSterling);
+                        locations.Add(Location.Caerleon);
                         break;
                 }
 

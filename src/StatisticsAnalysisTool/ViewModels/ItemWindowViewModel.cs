@@ -140,7 +140,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 _itemWindow.Title = "-";
             });
 
-            if (_itemWindow.Dispatcher == null)
+            if (Application.Current.Dispatcher == null)
             {
                 SetErrorValues(Error.GeneralError);
                 return;
@@ -501,7 +501,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 while (RunUpdate)
                 {
                     await Task.Delay(50);
-                    if (_itemWindow.Dispatcher != null && !IsAutoUpdateActive)
+                    if (Application.Current.Dispatcher != null && !IsAutoUpdateActive)
                     {
                         continue;
                     }
@@ -787,11 +787,10 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket,
-            bool getAllQualities = false)
+        private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool getAllQualities = false)
         {
             return CurrentCityPrices?.Where(x =>
-                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket).Contains(x.City)
+                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket).Contains(Locations.GetName(x.City))
                 && (GetQualities().Contains(x.QualityLevel) || getAllQualities)).ToList();
         }
 
