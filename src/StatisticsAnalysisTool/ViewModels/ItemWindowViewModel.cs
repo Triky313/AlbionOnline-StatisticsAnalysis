@@ -584,8 +584,7 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 var locations = Locations.GetLocationsListByArea(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
-                historyItemPrices = await ApiController
-                    .GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
+                historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
                 if (historyItemPrices == null)
                 {
