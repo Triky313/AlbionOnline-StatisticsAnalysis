@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -27,7 +28,7 @@ public class MarketCurrentPricesItem
 
     public string ItemTypeId { get; set; }
     public Location Location { get; set; }
-    public string LocationName => Locations.GetName(Location);
+    public string LocationName => WorldData.GetUniqueNameOrDefault((int)Location);
     public byte QualityLevel { get; set; }
     public ulong SellPriceMin { get; set; }
     public string SellPriceMinString => Utilities.UlongMarketPriceToString(SellPriceMin);

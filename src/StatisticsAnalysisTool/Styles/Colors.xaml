@@ -56,7 +56,7 @@
     <Color x:Key="Button.Attention.Color.Pressed">#ffE0586E</Color>
 
     <!-- City colors -->
-    <Color x:Key="Color.City.Default">#FF24292D</Color>
+    <Color x:Key="Color.City.Default">#FF323B43</Color>
     <Color x:Key="Color.City.Caerleon">#FFDE2643</Color>
     <Color x:Key="Color.City.Thetford">#FF873FD4</Color>
     <Color x:Key="Color.City.Bridgewatch">#FFFFA64D</Color>
@@ -68,7 +68,7 @@
     <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
     <Color x:Key="Color.City.BlackMarket">#FF95233F</Color>
 
-    <Color x:Key="Color.City.Default.Transparent">#3324292D</Color>
+    <Color x:Key="Color.City.Default.Transparent">#33323B43</Color>
     <Color x:Key="Color.City.Caerleon.Transparent">#33DE2643</Color>
     <Color x:Key="Color.City.Thetford.Transparent">#33873FD4</Color>
     <Color x:Key="Color.City.Bridgewatch.Transparent">#33FFA64D</Color>

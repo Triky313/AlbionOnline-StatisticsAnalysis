@@ -24,6 +24,7 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 using StatisticsAnalysisTool.Common.Converters;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.TranslationModel;
 
 namespace StatisticsAnalysisTool.ViewModels
@@ -139,7 +140,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 _itemWindow.Title = "-";
             });
 
-            if (_itemWindow.Dispatcher == null)
+            if (Application.Current.Dispatcher == null)
             {
                 SetErrorValues(Error.GeneralError);
                 return;
@@ -500,7 +501,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 while (RunUpdate)
                 {
                     await Task.Delay(50);
-                    if (_itemWindow.Dispatcher != null && !IsAutoUpdateActive)
+                    if (Application.Current.Dispatcher != null && !IsAutoUpdateActive)
                     {
                         continue;
                     }
@@ -583,8 +584,7 @@ namespace StatisticsAnalysisTool.ViewModels
             try
             {
                 var locations = Locations.GetLocationsListByArea(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
-                historyItemPrices = await ApiController
-                    .GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
+                historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
                 if (historyItemPrices == null)
                 {
@@ -623,12 +623,12 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 var lineSeries = new LineSeries<ObservablePoint>
                 {
-                    Name = Locations.GetName(Locations.GetName(marketHistory?.Location)),
+                    Name = WorldData.GetUniqueNameOrDefault(marketHistory?.Location),
                     Values = amount,
-                    Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
-                    Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false),
-                    GeometryStroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false),
-                    GeometryFill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
+                    Fill = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), true),
+                    Stroke = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), false),
+                    GeometryStroke = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), false),
+                    GeometryFill = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), true),
                     GeometrySize = 5,
                     TooltipLabelFormatter = p => $"{p.Context.Series.Name}: {p.PrimaryValue:N0}"
                 };
@@ -786,18 +786,19 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket,
-            bool getAllQualities = false)
+        private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool getAllQualities = false)
         {
             return CurrentCityPrices?.Where(x =>
-                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket).Contains(x.City)
+                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket).Contains(x.CityEnum)
                 && (GetQualities().Contains(x.QualityLevel) || getAllQualities)).ToList();
         }
 
         public void GetMainPriceStats()
         {
             if (CurrentCityPrices == null)
+            {
                 return;
+            }
 
             var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
             var statsPricesTotalList = PriceUpdate(filteredCityPrices);
@@ -824,7 +825,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     if (currentStatsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == newStats.City))
                     {
-                        var curStats = currentStatsPricesTotalList.Find(s => Locations.GetName(s.City) == newStats.City);
+                        var curStats = currentStatsPricesTotalList.Find(s => WorldData.GetUniqueNameOrDefault((int)s.City) == newStats.City);
 
                         if (newStats?.SellPriceMinDate < curStats?.SellPriceMinDate)
                         {

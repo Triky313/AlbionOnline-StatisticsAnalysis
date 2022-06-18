@@ -19,16 +19,31 @@
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Thetford">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Thetford}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="ThetfordPortal">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Thetford}" />
+            </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Bridgewatch">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Bridgewatch}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="BridgewatchPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Bridgewatch}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Martlock">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Martlock}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="MartlockPortal">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Martlock}" />
+            </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Lymhurst">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Lymhurst}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="LymhurstPortal">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Lymhurst}" />
+            </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="FortSterling">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.FortSterling}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="FortSterlingPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.FortSterling}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="ArthursRest">

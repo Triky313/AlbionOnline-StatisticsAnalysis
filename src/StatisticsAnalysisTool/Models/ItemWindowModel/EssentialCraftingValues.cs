@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
@@ -63,16 +64,16 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
 
         public KeyValuePair<Location, string>[] ItemPricesLocations { get; } =
         {
-            new (Location.BlackMarket, Locations.GetName(Location.BlackMarket)),
-            new (Location.Martlock, Locations.GetName(Location.Martlock)),
-            new (Location.Thetford, Locations.GetName(Location.Thetford)),
-            new (Location.FortSterling, Locations.GetName(Location.FortSterling)),
-            new (Location.Lymhurst, Locations.GetName(Location.Lymhurst)),
-            new (Location.Bridgewatch, Locations.GetName(Location.Bridgewatch)),
-            new (Location.Caerleon, Locations.GetName(Location.Caerleon)),
-            new (Location.MerlynsRest, Locations.GetName(Location.MerlynsRest)),
-            new (Location.MorganasRest, Locations.GetName(Location.MorganasRest)),
-            new (Location.ArthursRest, Locations.GetName(Location.ArthursRest))
+            new (Location.BlackMarket, WorldData.GetUniqueNameOrDefault((int)Location.BlackMarket)),
+            new (Location.Martlock, WorldData.GetUniqueNameOrDefault((int)Location.Martlock)),
+            new (Location.Thetford, WorldData.GetUniqueNameOrDefault((int)Location.Thetford)),
+            new (Location.FortSterling, WorldData.GetUniqueNameOrDefault((int)Location.FortSterling)),
+            new (Location.Lymhurst, WorldData.GetUniqueNameOrDefault((int)Location.Lymhurst)),
+            new (Location.Bridgewatch, WorldData.GetUniqueNameOrDefault((int)Location.Bridgewatch)),
+            new (Location.Caerleon, WorldData.GetUniqueNameOrDefault((int)Location.Caerleon)),
+            new (Location.MerlynsRest, WorldData.GetUniqueNameOrDefault((int)Location.MerlynsRest)),
+            new (Location.MorganasRest, WorldData.GetUniqueNameOrDefault((int)Location.MorganasRest)),
+            new (Location.ArthursRest, WorldData.GetUniqueNameOrDefault((int)Location.ArthursRest))
         };
 
         public Location ItemPricesLocationSelected

@@ -8,7 +8,7 @@ public class MarketResponseTotal
     public MarketResponseTotal(MarketResponse item)
     {
         ItemTypeId = item.ItemTypeId;
-        City = Locations.GetName(item.City);
+        City = Locations.GetLocationByLocationNameOrId(item.City);
         QualityLevel = (byte) item.QualityLevel;
         SellPriceMin = item.SellPriceMin;
         SellPriceMax = item.SellPriceMax;

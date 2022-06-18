@@ -7,6 +7,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -23,7 +24,7 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
     [JsonIgnore]
     public Location Location => Locations.GetLocationByIndex(ClusterIndex);
     [JsonIgnore]
-    public string LocationName => Locations.GetName(Location) ?? LanguageController.Translation("UNKNOWN");
+    public string LocationName => WorldData.GetUniqueNameOrDefault((int)Location) ?? LanguageController.Translation("UNKNOWN");
     public string MailTypeText { get; set; }
     [JsonIgnore]
     public MailType MailType => MailController.ConvertToMailType(MailTypeText);

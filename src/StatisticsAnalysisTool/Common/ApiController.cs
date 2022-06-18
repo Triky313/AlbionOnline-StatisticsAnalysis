@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool.Common
         ///     Returns city item prices bye uniqueName, locations and qualities.
         /// </summary>
         /// <exception cref="TooManyRequestsException"></exception>
-        public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<string> locations, List<int> qualities)
+        public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<Location> locations, List<int> qualities)
         {
             if (string.IsNullOrEmpty(uniqueName))
             {
@@ -47,7 +47,7 @@ namespace StatisticsAnalysisTool.Common
             if (locations?.Count >= 1)
             {
                 url += "?locations=";
-                url = locations.Aggregate(url, (current, location) => current + $"{location},");
+                url = locations.Aggregate(url, (current, location) => current + $"{(int)location},");
             }
 
             if (qualities?.Count >= 1)
@@ -86,17 +86,21 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<string> locations,
+        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<Location> locations,
             DateTime? date, IList<int> qualities, int timeScale = 24)
         {
             var locationsString = "";
             var qualitiesString = "";
 
             if (locations?.Count > 0)
-                locationsString = string.Join(",", locations);
+            {
+                locationsString = string.Join(",", locations.Select(x => ((int)x).ToString()));
+            }
 
             if (qualities?.Count > 0)
+            {
                 qualitiesString = string.Join(",", qualities);
+            }
 
             var url = SettingsController.CurrentSettings.CityPricesHistoryApiUrl ?? Settings.Default.CityPricesHistoryApiUrlDefault;
             url += uniqueName;
@@ -144,7 +148,7 @@ namespace StatisticsAnalysisTool.Common
             clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
             using var client = new HttpClient(clientHandler);
             client.Timeout = TimeSpan.FromSeconds(600);
-            
+
             try
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;

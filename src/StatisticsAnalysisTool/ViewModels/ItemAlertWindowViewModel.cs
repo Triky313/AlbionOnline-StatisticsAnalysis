@@ -29,7 +29,7 @@ namespace StatisticsAnalysisTool.ViewModels
             ItemName = _alertInfos.Item.LocalizedName;
             CityName = _alertInfos.MarketResponse.City;
             Icon = _alertInfos.Item.Icon;
-            CityColor = Locations.GetLocationColor(Locations.GetName(_alertInfos.MarketResponse.City));
+            CityColor = Locations.GetLocationColor(Locations.GetLocationByLocationNameOrId(_alertInfos.MarketResponse.City));
         }
 
         #region Bindings

@@ -2,7 +2,6 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -10,25 +9,6 @@ namespace StatisticsAnalysisTool.Common
 {
     public static class Locations
     {
-        public static readonly Dictionary<Location, string> Names = new()
-        {
-            { Location.Thetford, "Thetford" },
-            { Location.SwampCross, "Swamp Cross" },
-            { Location.Lymhurst, "Lymhurst" },
-            { Location.ForestCross, "Forest Cross" },
-            { Location.Bridgewatch, "Bridgewatch" },
-            { Location.SteppeCross, "Steppe Cross" },
-            { Location.HighlandCross, "Highland Cross" },
-            { Location.BlackMarket, "Black Market" },
-            { Location.Martlock, "Martlock" },
-            { Location.Caerleon, "Caerleon" },
-            { Location.FortSterling, "Fort Sterling" },
-            { Location.MountainCross, "Mountain Cross" },
-            { Location.ArthursRest, "Arthur's Rest" },
-            { Location.MerlynsRest, "Merlyn's Rest" },
-            { Location.MorganasRest, "Morgana's Rest" }
-        };
-
         public static readonly Dictionary<Location, string> ParameterNames = new()
         {
             { Location.Thetford, "Thetford" },
@@ -48,19 +28,9 @@ namespace StatisticsAnalysisTool.Common
             { Location.MorganasRest, "Morganas Rest" }
         };
 
-        public static string GetName(Location location)
-        {
-            return Names.TryGetValue(location, out var name) ? name : null;
-        }
-
         public static string GetParameterName(Location location)
         {
             return ParameterNames.TryGetValue(location, out var name) ? name : null;
-        }
-
-        public static Location GetName(string location)
-        {
-            return ParameterNames.FirstOrDefault(x => x.Value == location).Key;
         }
 
         public static Location GetLocationByIndex(string index)
@@ -73,56 +43,87 @@ namespace StatisticsAnalysisTool.Common
             return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
         }
 
-        public static List<string> GetLocationsListByArea(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket)
+        public static List<Location> GetLocationsListByArea(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket)
         {
             var locationAreas = new List<LocationArea>();
 
             if (villages)
+            {
                 locationAreas.Add(LocationArea.Villages);
+            }
 
             if (blackZoneOutposts)
+            {
                 locationAreas.Add(LocationArea.BlackZone);
+            }
 
             if (cities)
+            {
                 locationAreas.Add(LocationArea.Cities);
+            }
 
             if (blackMarket)
+            {
                 locationAreas.Add(LocationArea.BlackMarket);
+            }
 
-            var locations = new List<string>();
+            var locations = new List<Location>();
 
             foreach (var area in locationAreas)
                 switch (area)
                 {
                     case LocationArea.BlackMarket:
-                        locations.Add(GetParameterName(Location.BlackMarket));
+                        locations.Add(Location.BlackMarket);
                         break;
 
                     case LocationArea.BlackZone:
-                        locations.Add(GetParameterName(Location.ArthursRest));
-                        locations.Add(GetParameterName(Location.MerlynsRest));
-                        locations.Add(GetParameterName(Location.MorganasRest));
+                        locations.Add(Location.ArthursRest);
+                        locations.Add(Location.MerlynsRest);
+                        locations.Add(Location.MorganasRest);
                         break;
 
                     case LocationArea.Villages:
-                        locations.Add(GetParameterName(Location.SwampCross));
-                        locations.Add(GetParameterName(Location.ForestCross));
-                        locations.Add(GetParameterName(Location.SteppeCross));
-                        locations.Add(GetParameterName(Location.HighlandCross));
-                        locations.Add(GetParameterName(Location.MountainCross));
+                        locations.Add(Location.SwampCross);
+                        locations.Add(Location.ForestCross);
+                        locations.Add(Location.SteppeCross);
+                        locations.Add(Location.HighlandCross);
+                        locations.Add(Location.MountainCross);
                         break;
 
                     case LocationArea.Cities:
-                        locations.Add(GetParameterName(Location.Thetford));
-                        locations.Add(GetParameterName(Location.Lymhurst));
-                        locations.Add(GetParameterName(Location.Bridgewatch));
-                        locations.Add(GetParameterName(Location.Martlock));
-                        locations.Add(GetParameterName(Location.FortSterling));
-                        locations.Add(GetParameterName(Location.Caerleon));
+                        locations.Add(Location.Thetford);
+                        locations.Add(Location.Lymhurst);
+                        locations.Add(Location.Bridgewatch);
+                        locations.Add(Location.Martlock);
+                        locations.Add(Location.FortSterling);
+                        locations.Add(Location.Caerleon);
                         break;
                 }
 
             return locations;
+        }
+
+        public static Location GetLocationByLocationNameOrId(string location)
+        {
+            return location switch
+            {
+                "Thetford" or "0301" => Location.Thetford,
+                "Lymhurst" or "1301" => Location.Lymhurst,
+                "Bridgewatch" or "2301" => Location.Bridgewatch,
+                "Martlock" or "3301" => Location.Martlock,
+                "Fort Sterling" or "4301" => Location.FortSterling,
+                "Caerleon" => Location.Caerleon,
+                "Swamp Cross" => Location.SwampCross,
+                "Forest Cross" => Location.ForestCross,
+                "Steppe Cross" => Location.SteppeCross,
+                "Highland Cross" => Location.HighlandCross,
+                "Mountain Cross" => Location.MountainCross,
+                "Arthurs Rest" => Location.ArthursRest,
+                "Merlyns Rest" => Location.MerlynsRest,
+                "Morganas Rest" => Location.MorganasRest,
+                "Black Market" => Location.BlackMarket,
+                _ => Location.Unknown,
+            };
         }
 
         public static SolidColorPaint GetLocationBrush(Location location, bool transparent)
@@ -168,22 +169,27 @@ namespace StatisticsAnalysisTool.Common
 
     public enum Location
     {
-        Unknown = 0,
-        SwampCross = 4,
-        Thetford = 7,
+        Unknown = 0000,
+        SwampCross = 0004,
+        Thetford = 0007,
+        ThetfordPortal = 0301,
         Lymhurst = 1002,
+        LymhurstPortal = 1301,
         ForestCross = 1006,
         SteppeCross = 2002,
         Bridgewatch = 2004,
+        BridgewatchPortal = 2301,
         HighlandCross = 3002,
         BlackMarket = 3003,
         Caerleon = 3005,
         Martlock = 3008,
+        MartlockPortal = 3301,
         FortSterling = 4002,
+        FortSterlingPortal = 4301,
         MountainCross = 4006,
         ArthursRest = 4300,
-        MerlynsRest = -2,
-        MorganasRest = -3
+        MerlynsRest = 1012,
+        MorganasRest = 0008
     }
 
     public enum LocationArea
