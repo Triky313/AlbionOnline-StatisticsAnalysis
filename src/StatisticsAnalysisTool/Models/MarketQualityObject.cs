@@ -10,7 +10,7 @@ namespace StatisticsAnalysisTool.Models
     {
         public string Location { get; set; }
         public string LocationName => WorldData.GetUniqueNameOrDefault((int)LocationType);
-        private Location LocationType => Locations.GetName(Location);
+        private Location LocationType => Locations.GetLocationByLocationNameOrId(Location);
         public ulong SellPriceMinNormal { private get; set; }
         public ulong SellPriceMinGood { private get; set; }
         public ulong SellPriceMinOutstanding { private get; set; }

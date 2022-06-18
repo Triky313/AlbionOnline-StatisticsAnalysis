@@ -626,10 +626,10 @@ namespace StatisticsAnalysisTool.ViewModels
                 {
                     Name = WorldData.GetUniqueNameOrDefault(marketHistory?.Location),
                     Values = amount,
-                    Fill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
-                    Stroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false),
-                    GeometryStroke = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), false),
-                    GeometryFill = Locations.GetLocationBrush(Locations.GetName(marketHistory?.Location), true),
+                    Fill = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), true),
+                    Stroke = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), false),
+                    GeometryStroke = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), false),
+                    GeometryFill = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), true),
                     GeometrySize = 5,
                     TooltipLabelFormatter = p => $"{p.Context.Series.Name}: {p.PrimaryValue:N0}"
                 };
@@ -790,14 +790,16 @@ namespace StatisticsAnalysisTool.ViewModels
         private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool getAllQualities = false)
         {
             return CurrentCityPrices?.Where(x =>
-                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket).Contains(Locations.GetName(x.City))
+                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket).Contains(x.CityEnum)
                 && (GetQualities().Contains(x.QualityLevel) || getAllQualities)).ToList();
         }
 
         public void GetMainPriceStats()
         {
             if (CurrentCityPrices == null)
+            {
                 return;
+            }
 
             var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
             var statsPricesTotalList = PriceUpdate(filteredCityPrices);

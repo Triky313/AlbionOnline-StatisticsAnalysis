@@ -148,7 +148,7 @@ namespace StatisticsAnalysisTool.Common
             clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
             using var client = new HttpClient(clientHandler);
             client.Timeout = TimeSpan.FromSeconds(600);
-            
+
             try
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;

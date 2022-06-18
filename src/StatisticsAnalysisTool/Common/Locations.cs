@@ -2,7 +2,6 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -28,15 +27,10 @@ namespace StatisticsAnalysisTool.Common
             { Location.MerlynsRest, "Merlyns Rest" },
             { Location.MorganasRest, "Morganas Rest" }
         };
-        
+
         public static string GetParameterName(Location location)
         {
             return ParameterNames.TryGetValue(location, out var name) ? name : null;
-        }
-
-        public static Location GetName(string location)
-        {
-            return ParameterNames.FirstOrDefault(x => x.Value == location).Key;
         }
 
         public static Location GetLocationByIndex(string index)
@@ -107,6 +101,29 @@ namespace StatisticsAnalysisTool.Common
                 }
 
             return locations;
+        }
+
+        public static Location GetLocationByLocationNameOrId(string location)
+        {
+            return location switch
+            {
+                "Thetford" or "0301" => Location.Thetford,
+                "Lymhurst" or "1301" => Location.Lymhurst,
+                "Bridgewatch" or "2301" => Location.Bridgewatch,
+                "Martlock" or "3301" => Location.Martlock,
+                "Fort Sterling" or "4301" => Location.FortSterling,
+                "Caerleon" => Location.Caerleon,
+                "Swamp Cross" => Location.SwampCross,
+                "Forest Cross" => Location.ForestCross,
+                "Steppe Cross" => Location.SteppeCross,
+                "Highland Cross" => Location.HighlandCross,
+                "Mountain Cross" => Location.MountainCross,
+                "Arthurs Rest" => Location.ArthursRest,
+                "Merlyns Rest" => Location.MerlynsRest,
+                "Morganas Rest" => Location.MorganasRest,
+                "Black Market" => Location.BlackMarket,
+                _ => Location.Unknown,
+            };
         }
 
         public static SolidColorPaint GetLocationBrush(Location location, bool transparent)
