@@ -607,4 +607,5 @@
 	<translation name="FILE_DOWNLOAD_FAILED_TEXT4">Put the file in the tools directory.</translation>
 	<translation name="THEN_RESTART_THE_TOOL">Then restart the tool.</translation>
 	<translation name="OR">OR</translation>
+	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Copy short damage meter to the clipboard</translation>
 </translations>

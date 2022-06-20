@@ -41,11 +41,12 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isSuggestPreReleaseUpdatesActive;
         private bool _isItemRealNameInLoggingExportActive;
         private string _mainTrackingCharacterName;
+        private bool _shortDamageMeterToClipboard;
 
         public SettingsWindowViewModel()
         {
-            Translation = new SettingsWindowTranslation();
             InitializeSettings();
+            Translation = new SettingsWindowTranslation();
         }
 
         private void InitializeSettings()
@@ -82,11 +83,11 @@ namespace StatisticsAnalysisTool.ViewModels
             #region Refrash rate
 
             RefreshRates.Clear();
-            RefreshRates.Add(new FileSettingInformation { Name = Translation.FiveSeconds, Value = 5000 });
-            RefreshRates.Add(new FileSettingInformation { Name = Translation.TenSeconds, Value = 10000 });
-            RefreshRates.Add(new FileSettingInformation { Name = Translation.ThirtySeconds, Value = 30000 });
-            RefreshRates.Add(new FileSettingInformation { Name = Translation.SixtySeconds, Value = 60000 });
-            RefreshRates.Add(new FileSettingInformation { Name = Translation.FiveMinutes, Value = 300000 });
+            RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.FiveSeconds, Value = 5000 });
+            RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.TenSeconds, Value = 10000 });
+            RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.ThirtySeconds, Value = 30000 });
+            RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.SixtySeconds, Value = 60000 });
+            RefreshRates.Add(new FileSettingInformation { Name = SettingsWindowTranslation.FiveMinutes, Value = 300000 });
             RefreshRatesSelection = RefreshRates.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.RefreshRate);
 
             #endregion
@@ -159,6 +160,12 @@ namespace StatisticsAnalysisTool.ViewModels
 
             #endregion
 
+            #region Damage Meter
+
+            ShortDamageMeterToClipboard = SettingsController.CurrentSettings.ShortDamageMeterToClipboard;
+
+            #endregion
+
             IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
             ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
         }
@@ -185,6 +192,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive = IsLootLoggerSaveReminderActive;
             SettingsController.CurrentSettings.IsItemRealNameInLoggingExportActive = IsItemRealNameInLoggingExportActive;
             SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
+            SettingsController.CurrentSettings.ShortDamageMeterToClipboard = ShortDamageMeterToClipboard;
 
             SetAppSettingsAndTranslations();
         }
@@ -435,6 +443,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isItemRealNameInLoggingExportActive = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ShortDamageMeterToClipboard
+        {
+            get => _shortDamageMeterToClipboard;
+            set
+            {
+                _shortDamageMeterToClipboard = value;
                 OnPropertyChanged();
             }
         }

@@ -607,4 +607,5 @@
 	<translation name="FILE_DOWNLOAD_FAILED_TEXT4">Lege die Datei in das Tool-Verzeichnis.</translation>
 	<translation name="THEN_RESTART_THE_TOOL">Starte das Tool neu.</translation>
 	<translation name="OR">OR</translation>
+	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Kurze Schadensanzeige in die Zwischenablage kopieren</translation>
 </translations>
