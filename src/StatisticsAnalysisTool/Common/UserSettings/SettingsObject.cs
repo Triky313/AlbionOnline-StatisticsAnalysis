@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace StatisticsAnalysisTool.Common.UserSettings
+﻿namespace StatisticsAnalysisTool.Common.UserSettings
 {
     public class SettingsObject
     {
@@ -42,5 +40,6 @@ namespace StatisticsAnalysisTool.Common.UserSettings
         public bool IsItemRealNameInLoggingExportActive { get; set; }
         public double MailMonitoringGridSplitterPosition { get; set; } = 125;
         public double DungeonsGridSplitterPosition { get; set; } = 125;
+        public bool ShortDamageMeterToClipboard { get; set; }
     }
 }

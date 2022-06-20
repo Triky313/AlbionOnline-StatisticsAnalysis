@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Views;
 
@@ -65,29 +66,35 @@ namespace StatisticsAnalysisTool.UserControls
 
             var vm = (MainWindowViewModel)DataContext;
 
-            if (vm?.DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Damage)
+            switch (vm?.DamageMeterSortSelection.DamageMeterSortType)
             {
-                Clipboard.SetDataObject(vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
-            }
+                case DamageMeterSortType.Damage:
+                    Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
+                        ? vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
+                        : vm.DamageMeter.Aggregate(output,
+                            (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
 
-            if (vm?.DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Dps)
-            {
-                Clipboard.SetDataObject(vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n"));
-            }
-
-            if (vm?.DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Heal)
-            {
-                Clipboard.SetDataObject(vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Heal} Heal\n"));
-            }
-
-            if (vm?.DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Hps)
-            {
-                Clipboard.SetDataObject(vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n"));
-            }
-
-            if (vm?.DamageMeterSortSelection.DamageMeterSortType == DamageMeterSortType.Name)
-            {
-                Clipboard.SetDataObject(vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
+                    break;
+                case DamageMeterSortType.Dps:
+                    Clipboard.SetDataObject(vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n"));
+                    break;
+                case DamageMeterSortType.Name:
+                    Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
+                        ? vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
+                        : vm.DamageMeter.Aggregate(output, 
+                            (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
+                    break;
+                case DamageMeterSortType.Heal:
+                    Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
+                        ? vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.HealPercentage:N2}%\n")
+                        : vm.DamageMeter.Aggregate(output,
+                            (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Heal}({entity.HealPercentage:N2}%)|{entity.Hps:N2} HPS\n"));
+                    break;
+                case DamageMeterSortType.Hps:
+                    Clipboard.SetDataObject(vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n"));
+                    break;
+                case null:
+                    break;
             }
         }
 
