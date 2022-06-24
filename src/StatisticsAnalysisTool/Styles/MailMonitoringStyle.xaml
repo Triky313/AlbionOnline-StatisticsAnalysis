@@ -61,11 +61,6 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="Border" x:Key="Mail.Border.Type.Colors">
-        <Setter Property="BorderThickness" Value="0,0,0,1" />
-        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
-    </Style>
-
     <Style TargetType="Grid" x:Key="Mail.Type.Colors">
         <Setter Property="Width" Value="3" />
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -309,7 +304,7 @@
     <DataTemplate x:Key="MailTemplate" DataType="{x:Type models:Mail}">
         <Grid Height="50">
             <Grid Style="{StaticResource Mail.Type.Colors}" />
-            <Border Style="{StaticResource Mail.Border.Type.Colors}">
+            <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="10,0,10,0">
                     <Grid Margin="0,0, 5, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image Source="{Binding Item.Icon, IsAsync=True, Mode=OneWay}" Style="{StaticResource Mail.Icon}" />

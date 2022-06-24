@@ -6,40 +6,67 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:gl="clr-namespace:System.Globalization;assembly=System.Runtime"
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30" Margin="0,0,300,0">
-            <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.Vaults}" IsSynchronizedWithCurrentItem="True"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="{Binding VaultBindings.GridSplitterPosition ,Mode=TwoWay, FallbackValue=*}"/>
+        </Grid.RowDefinitions>
+
+        <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
+
+        <Grid Row="0" Margin="0,0,0,6" Grid.RowSpan="2">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30" Margin="0,0,300,0">
+                <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.Vaults}" IsSynchronizedWithCurrentItem="True"
                       SelectedValue="{Binding VaultBindings.VaultSelected}" DisplayMemberPath="LocationDisplayString" />
 
-            <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.VaultContainer}" IsSynchronizedWithCurrentItem="True"
+                <ComboBox Height="26" Width="225" Margin="5,0" ItemsSource="{Binding VaultBindings.VaultContainer}" IsSynchronizedWithCurrentItem="True"
                       SelectedValue="{Binding VaultBindings.VaultContainerSelected}" DisplayMemberPath="Name" />
-        </StackPanel>
-        <Button Content="{Binding Translation.DeleteCurrentStorage, FallbackValue=DELETE__CURRENT__STORAGE}" Height="26" MinWidth="200" 
-                Margin="0,3,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="ButtonDeleteCurrentStorage_OnClick" />
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30" Margin="0,32,0,0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding VaultBindings.LastUpdateVisibility}">
-                <TextBlock Text="{Binding Translation.LastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" 
-                           Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding VaultBindings.LastUpdate, StringFormat='{}{0} UTC', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=00:00:00}" 
-                           FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
             </StackPanel>
-        </StackPanel>
-        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,60,0,0" VerticalAlignment="Top"/>
-        <vwp:VirtualizingItemsControl Margin="0,64,0,0" Width="430" ItemsSource="{Binding VaultBindings.VaultContainerContent, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource ContainerItemTemplate}"              
+            <Button Content="{Binding Translation.DeleteCurrentStorage, FallbackValue=DELETE__CURRENT__STORAGE}" Height="26" MinWidth="200" 
+                Margin="0,3,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Click="ButtonDeleteCurrentStorage_OnClick" />
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="30" Margin="0,32,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="{Binding VaultBindings.LastUpdateVisibility}">
+                    <TextBlock Text="{Binding Translation.LastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" 
+                           Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding VaultBindings.LastUpdate, StringFormat='{}{0} UTC', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=00:00:00}" 
+                           FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.4}" VerticalAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
+            <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,60,0,0" VerticalAlignment="Top"/>
+            <vwp:VirtualizingItemsControl Margin="0,64,0,0" Width="430" ItemsSource="{Binding VaultBindings.VaultContainerContent, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource ContainerItemTemplate}"              
                                       VirtualizingPanel.CacheLengthUnit="Item"
                                       VirtualizingPanel.CacheLength="10,10"
                                       VirtualizingPanel.ScrollUnit="Pixel"
                                       VirtualizingPanel.VirtualizationMode="Recycling"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       ScrollViewer.VerticalScrollBarVisibility="Visible">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </vwp:VirtualizingItemsControl>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </vwp:VirtualizingItemsControl>
+        </Grid>
+
+        <Grid Row="2">
+            <StackPanel Orientation="Horizontal" MaxWidth="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
+                <TextBox Text="{Binding VaultBindings.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="24" HorizontalAlignment="Left" />
+            </StackPanel>
+            <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,30,0,0" VerticalAlignment="Top"/>
+            <vwp:VirtualizingItemsControl Margin="0,35,0,0" ItemsSource="{Binding VaultBindings.VaultSearchCollectionView, IsAsync=True, Mode=OneWay}" 
+                                          ItemTemplate="{StaticResource VaultSearchItemTemplate}" 
+                                          VirtualizingPanel.CacheLengthUnit="Item"
+                                          VirtualizingPanel.CacheLength="10,10"
+                                          VirtualizingPanel.ScrollUnit="Pixel"
+                                          VirtualizingPanel.VirtualizationMode="Recycling"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                          ScrollViewer.VerticalScrollBarVisibility="Visible" />
+        </Grid>
     </Grid>
 </UserControl>

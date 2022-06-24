@@ -40,6 +40,7 @@
         public bool IsItemRealNameInLoggingExportActive { get; set; }
         public double MailMonitoringGridSplitterPosition { get; set; } = 125;
         public double DungeonsGridSplitterPosition { get; set; } = 125;
+        public double StorageHistoryGridSplitterPosition { get; set; } = 125;
         public bool ShortDamageMeterToClipboard { get; set; }
     }
 }

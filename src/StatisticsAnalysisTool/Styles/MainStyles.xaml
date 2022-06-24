@@ -742,6 +742,11 @@
         </Setter>
     </Style>
 
+    <Style TargetType="Border" x:Key="Container.Border">
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.4}" />
+    </Style>
+
     <!-- City Styles -->
     <Style TargetType="Label" x:Key="CaerleonStyle">
         <Setter Property="Height" Value="28" />
