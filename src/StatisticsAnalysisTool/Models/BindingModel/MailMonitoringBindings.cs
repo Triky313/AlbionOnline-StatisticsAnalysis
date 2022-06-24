@@ -75,6 +75,12 @@ public class MailMonitoringBindings : INotifyPropertyChanged
                 MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
             }
 
+            if (_mailsSearchText.Length <= 0)
+            {
+                MailCollectionView.Filter = null;
+                MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
+            }
+
             OnPropertyChanged();
         }
     }
