@@ -1,5 +1,6 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
@@ -18,7 +19,7 @@ namespace StatisticsAnalysisTool.Network.Manager;
 public class VaultController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-    
+
     private readonly MainWindowViewModel _mainWindowViewModel;
     private VaultInfo _currentVaultInfo;
     private readonly List<DiscoveredItem> _discoveredItems = new();
@@ -40,9 +41,12 @@ public class VaultController
         _mainWindowViewModel = mainWindowViewModel;
 
         OnVaultsChange += UpdateUi;
+        OnVaultsChange += UpdateSearchListUiAsync;
+        OnVaultsRemove += UpdateSearchListUiAsync;
     }
 
     public event Action OnVaultsChange;
+    public event Action OnVaultsRemove;
 
     public void SetCurrentVault(VaultInfo vaultInfo)
     {
@@ -120,6 +124,7 @@ public class VaultController
         }
 
         _vault.Remove(vault);
+        OnVaultsRemove?.Invoke();
 
         UpdateUi();
     }
@@ -207,6 +212,33 @@ public class VaultController
         Application.Current.Dispatcher.Invoke(() =>
         {
             _mainWindowViewModel.VaultBindings.Vaults = Vaults.ToList();
+        });
+    }
+
+    private async void UpdateSearchListUiAsync()
+    {
+        var vaultSearchItem = new List<VaultSearchItem>();
+
+        await foreach (var vault in Vaults.ToAsyncEnumerable())
+        {
+            vaultSearchItem.AddRange(from vaultContainer in vault.VaultContainer
+                                     from item in vaultContainer.Items
+                                     select new VaultSearchItem()
+                                     {
+                                         Item = item.Item,
+                                         Location = vault.Location,
+                                         MainLocationIndex = vault.MainLocationIndex,
+                                         MapType = vault.MapType,
+                                         Quantity = item.Quantity,
+                                         VaultContainerName = vaultContainer.Name
+                                     });
+        }
+
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            _mainWindowViewModel.VaultBindings.VaultSearchList.Clear();
+            _mainWindowViewModel.VaultBindings.VaultSearchList.AddRange(vaultSearchItem);
+            _mainWindowViewModel?.VaultBindings?.VaultSearchCollectionView?.Refresh();
         });
     }
 

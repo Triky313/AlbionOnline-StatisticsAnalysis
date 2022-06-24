@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using StatisticsAnalysisTool.UserControls;
 
 // ReSharper disable UnusedMember.Global
 
@@ -210,6 +211,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
             // Mail Monitoring
             MailMonitoringBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.MailMonitoringGridSplitterPosition);
+
+            // Vault
+            VaultBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.StorageHistoryGridSplitterPosition);
 
             #endregion
         }
