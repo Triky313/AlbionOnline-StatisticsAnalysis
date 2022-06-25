@@ -28,7 +28,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using StatisticsAnalysisTool.UserControls;
 
 // ReSharper disable UnusedMember.Global
 
@@ -74,7 +73,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private ShopCategory _selectedItemShopCategories;
         private ItemTier _selectedItemTier;
         public TrackingController TrackingController;
-        private ObservableCollection<TrackingNotification> _trackingNotifications = new();
         private MainWindowTranslation _translation;
         private string _updateTranslation;
         private double _usernameInfoWidth;
@@ -89,18 +87,12 @@ namespace StatisticsAnalysisTool.ViewModels
         private EFontAwesomeIcon _damageMeterActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
         private Brush _damageMeterActivationToggleColor;
         private bool _isDamageMeterTrackingActive;
-        private ListCollectionView _trackingNotificationsCollectionView;
         private bool _isTrackingPartyLootOnly;
-        private bool _isTrackingSilver;
-        private bool _isTrackingFame;
         private Axis[] _xAxesDashboardHourValues;
         private ObservableCollection<ISeries> _seriesDashboardHourValues;
         private DashboardObject _dashboardObject = new();
         private string _loggingSearchText;
-        private ObservableCollection<LoggingFilterObject> _loggingFilters = new();
-        private bool _isTrackingMobLoot;
         private Visibility _gridTryToLoadTheItemJsonAgainVisibility;
-        private ObservableCollection<TopLooterObject> _topLooters = new();
         private Visibility _toolTasksVisibility = Visibility.Collapsed;
         private ObservableCollection<TaskTextObject> _toolTaskObjects = new();
         private double _taskProgressbarMinimum;
@@ -115,6 +107,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private MailMonitoringBindings _mailMonitoringBindings = new();
         private DungeonBindings _dungeonBindings = new();
         private Visibility _unsupportedOsVisibility = Visibility.Collapsed;
+        private LoggingBindings _loggingBindings = new();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -411,74 +404,74 @@ namespace StatisticsAnalysisTool.ViewModels
 
             IsDamageMeterTrackingActive = SettingsController.CurrentSettings.IsDamageMeterTrackingActive;
             IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
-            IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
-            IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
-            IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
-            
-            TrackingNotificationsCollectionView = CollectionViewSource.GetDefaultView(TrackingNotifications) as ListCollectionView;
-            if (TrackingNotificationsCollectionView != null)
+            LoggingBindings.IsTrackingSilver = SettingsController.CurrentSettings.IsTrackingSilver;
+            LoggingBindings.IsTrackingFame = SettingsController.CurrentSettings.IsTrackingFame;
+            LoggingBindings.IsTrackingMobLoot = SettingsController.CurrentSettings.IsTrackingMobLoot;
+
+            LoggingBindings.NotificationsCollectionView = CollectionViewSource.GetDefaultView(LoggingBindings.TrackingNotifications) as ListCollectionView;
+            if (LoggingBindings?.NotificationsCollectionView != null)
             {
-                TrackingNotificationsCollectionView.IsLiveSorting = true;
-                TrackingNotificationsCollectionView.IsLiveFiltering = true;
-                TrackingNotificationsCollectionView.SortDescriptions.Add(new SortDescription(nameof(DateTime), ListSortDirection.Descending));
+                LoggingBindings.NotificationsCollectionView.IsLiveSorting = true;
+                LoggingBindings.NotificationsCollectionView.IsLiveFiltering = true;
+                LoggingBindings.NotificationsCollectionView.SortDescriptions.Add(new SortDescription(nameof(DateTime), ListSortDirection.Descending));
             }
 
             // Logging
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Fame)
+            LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Fame)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFame,
                 Name = MainWindowTranslation.Fame
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Silver)
+            LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Silver)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSilver,
                 Name = MainWindowTranslation.Silver
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Faction)
+            LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Faction)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFaction,
                 Name = MainWindowTranslation.Faction
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.SeasonPoints)
+            LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.SeasonPoints)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints,
                 Name = MainWindowTranslation.SeasonPoints
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.ConsumableLoot)
+            LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.ConsumableLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot,
                 Name = MainWindowTranslation.ConsumableLoot
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.EquipmentLoot)
+            LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.EquipmentLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterEquipmentLoot,
                 Name = MainWindowTranslation.EquipmentLoot
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.SimpleLoot)
+            LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.SimpleLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSimpleLoot,
                 Name = MainWindowTranslation.SimpleLoot
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.UnknownLoot)
+            LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.UnknownLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterUnknownLoot,
                 Name = MainWindowTranslation.UnknownLoot
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.ShowLootFromMob)
+            LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.ShowLootFromMob)
             {
                 IsSelected = SettingsController.CurrentSettings.IsLootFromMobShown,
                 Name = MainWindowTranslation.ShowLootFromMobs
             });
 
-            LoggingFilters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Kill)
+            LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.Kill)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterKill,
                 Name = MainWindowTranslation.ShowKills
@@ -723,7 +716,7 @@ namespace StatisticsAnalysisTool.ViewModels
             if (dialogResult is true)
             {
                 await TrackingController.ClearNotificationsAsync().ConfigureAwait(false);
-                Application.Current.Dispatcher.Invoke(() => TopLooters.Clear());
+                Application.Current.Dispatcher.Invoke(() => LoggingBindings.TopLooters.Clear());
                 TrackingController.LootController.ClearLootLogger();
             }
         }
@@ -899,43 +892,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public bool IsTrackingSilver
-        {
-            get => _isTrackingSilver;
-            set
-            {
-                _isTrackingSilver = value;
-
-                SettingsController.CurrentSettings.IsTrackingSilver = _isTrackingSilver;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsTrackingFame
-        {
-            get => _isTrackingFame;
-            set
-            {
-                _isTrackingFame = value;
-
-                SettingsController.CurrentSettings.IsTrackingFame = _isTrackingFame;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsTrackingMobLoot
-        {
-            get => _isTrackingMobLoot;
-            set
-            {
-                _isTrackingMobLoot = value;
-
-                SettingsController.CurrentSettings.IsTrackingMobLoot = _isTrackingMobLoot;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public DamageMeterSortStruct DamageMeterSortSelection
         {
             get => _damageMeterSortSelection;
@@ -1049,32 +1006,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<TrackingNotification> TrackingNotifications
+        public LoggingBindings LoggingBindings
         {
-            get => _trackingNotifications;
+            get => _loggingBindings;
             set
             {
-                _trackingNotifications = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        public ListCollectionView TrackingNotificationsCollectionView
-        {
-            get => _trackingNotificationsCollectionView;
-            set
-            {
-                _trackingNotificationsCollectionView = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<TopLooterObject> TopLooters
-        {
-            get => _topLooters;
-            set
-            {
-                _topLooters = value;
+                _loggingBindings = value;
                 OnPropertyChanged();
             }
         }
@@ -1487,16 +1424,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _gridTryToLoadTheItemJsonAgainVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<LoggingFilterObject> LoggingFilters
-        {
-            get => _loggingFilters;
-            set
-            {
-                _loggingFilters = value;
                 OnPropertyChanged();
             }
         }

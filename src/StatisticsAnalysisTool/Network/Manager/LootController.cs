@@ -197,10 +197,16 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private List<TopLooterObject> GetTopLooters()
         {
-            List<TopLooterObject> topLooters;
-            lock (_mainWindowViewModel.TopLooters)
+            var topLooters = new List<TopLooterObject>();
+
+            if (_mainWindowViewModel == null)
             {
-                topLooters = _mainWindowViewModel.TopLooters.ToList();
+                return topLooters;
+            }
+            
+            lock (_mainWindowViewModel.LoggingBindings.TopLooters)
+            {
+                topLooters = _mainWindowViewModel?.LoggingBindings?.TopLooters.ToList();
             }
 
             return topLooters;
@@ -215,9 +221,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                 var removableLooter = topLooters.FirstOrDefault(x => x.PlayerName == topLooter.PlayerName);
                 if (removableLooter == null)
                 {
-                    lock (_mainWindowViewModel.TopLooters)
+                    lock (_mainWindowViewModel.LoggingBindings.TopLooters)
                     {
-                        Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.TopLooters.Remove(topLooter));
+                        Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel?.LoggingBindings?.TopLooters.Remove(topLooter));
                     }
                 }
             }
@@ -226,9 +232,9 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 foreach (var looter in topLooters.Where(looter => GetTopLooters().All(x => x.PlayerName != looter.PlayerName)))
                 {
-                    lock (_mainWindowViewModel.TopLooters)
+                    lock (_mainWindowViewModel.LoggingBindings.TopLooters)
                     {
-                        Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.TopLooters.Add(new TopLooterObject(looter.PlayerName, looter.Quantity, 1, looter.LootActions)));
+                        Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel?.LoggingBindings?.TopLooters.Add(new TopLooterObject(looter.PlayerName, looter.Quantity, 1, looter.LootActions)));
                     }
                 }
             }
@@ -255,9 +261,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                 looter.Placement = ++placement;
             }
 
-            lock (_mainWindowViewModel.TopLooters)
+            lock (_mainWindowViewModel.LoggingBindings.TopLooters)
             {
-                _mainWindowViewModel.TopLooters.OrderByReference(_mainWindowViewModel.TopLooters.OrderBy(x => x.Placement).ToList());
+                _mainWindowViewModel?.LoggingBindings?.TopLooters.OrderByReference(_mainWindowViewModel?.LoggingBindings?.TopLooters.OrderBy(x => x.Placement).ToList());
             }
         }
 

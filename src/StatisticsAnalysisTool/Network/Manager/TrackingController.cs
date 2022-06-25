@@ -74,22 +74,22 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            if (_mainWindowViewModel?.TrackingNotifications == null)
+            if (_mainWindowViewModel?.LoggingBindings?.TrackingNotifications == null)
             {
                 return;
             }
 
-            if (!_mainWindowViewModel.IsTrackingFame && item.Type == NotificationType.Fame)
+            if (!_mainWindowViewModel.LoggingBindings.IsTrackingFame && item.Type == NotificationType.Fame)
             {
                 return;
             }
 
-            if (!_mainWindowViewModel.IsTrackingSilver && item.Type == NotificationType.Silver)
+            if (!_mainWindowViewModel.LoggingBindings.IsTrackingSilver && item.Type == NotificationType.Silver)
             {
                 return;
             }
 
-            if (!_mainWindowViewModel.IsTrackingMobLoot && item.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: true })
+            if (!_mainWindowViewModel.LoggingBindings.IsTrackingMobLoot && item.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: true })
             {
                 return;
             }
@@ -98,7 +98,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             await Application.Current.Dispatcher.InvokeAsync(delegate
             {
-                _mainWindowViewModel.TrackingNotifications.Insert(0, item);
+                _mainWindowViewModel?.LoggingBindings?.TrackingNotifications.Insert(0, item);
             });
 
             await RemovesUnnecessaryNotificationsAsync();
@@ -114,15 +114,19 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             _isRemovesUnnecessaryNotificationsActive = true;
 
-            var numberToBeRemoved = _mainWindowViewModel.TrackingNotifications.Count - MaxNotifications;
-            if (numberToBeRemoved > 0)
+            var numberToBeRemoved = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.Count - MaxNotifications;
+            if (numberToBeRemoved is > 0)
             {
-                await foreach (var notification in _mainWindowViewModel.TrackingNotifications.OrderBy(x => x.DateTime).ToList().Take(numberToBeRemoved).ToAsyncEnumerable())
+                var notifications = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToList().OrderBy(x => x?.DateTime).Take((int) numberToBeRemoved).ToAsyncEnumerable();
+                if (notifications != null)
                 {
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    await foreach (var notification in notifications)
                     {
-                        _ = _mainWindowViewModel.TrackingNotifications.Remove(notification);
-                    });
+                        await Application.Current.Dispatcher.InvokeAsync(() =>
+                        {
+                            _ = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications.Remove(notification);
+                        });
+                    }
                 }
             }
 
@@ -133,7 +137,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                _mainWindowViewModel.TrackingNotifications.Clear();
+                _mainWindowViewModel?.LoggingBindings?.TrackingNotifications.Clear();
             });
         }
 
@@ -143,12 +147,12 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 if (!string.IsNullOrEmpty(text))
                 {
-                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable().ForEachAsync(d =>
+                    await _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToAsyncEnumerable().ForEachAsync(d =>
                     {
                         d.Visibility = Visibility.Collapsed;
                     })!;
 
-                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable().Where(x =>
+                    await _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToAsyncEnumerable().Where(x =>
                         (_notificationTypesFilters?.Contains(x.Type) ?? true)
                         &&
                         (
@@ -171,12 +175,12 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
                 else
                 {
-                    await _mainWindowViewModel?.TrackingNotifications?.ToAsyncEnumerable().ForEachAsync(d =>
+                    await _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToAsyncEnumerable().ForEachAsync(d =>
                     {
                         d.Visibility = Visibility.Collapsed;
                     })!;
 
-                    await _mainWindowViewModel?.TrackingNotifications?.Where(x =>
+                    await _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.Where(x =>
                         (_notificationTypesFilters?.Contains(x.Type) ?? false)
                         && (IsLootFromMobShown || x.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment)
                     ).ToAsyncEnumerable().ForEachAsync(d =>
@@ -223,9 +227,13 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             await Application.Current.Dispatcher.InvokeAsync(async () =>
             {
-                await foreach (var notification in _mainWindowViewModel.TrackingNotifications.ToAsyncEnumerable())
+                var notifications = _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToAsyncEnumerable();
+                if (notifications != null)
                 {
-                    notification.SetType();
+                    await foreach (var notification in notifications)
+                    {
+                        notification.SetType();
+                    }
                 }
             });
         }
