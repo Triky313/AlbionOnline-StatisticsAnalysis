@@ -46,17 +46,25 @@
                     <CheckBox IsChecked="{Binding LoggingBindings.IsTrackingMobLoot, FallbackValue=true}" 
                               Content="{Binding Translation.TrackingMobLoot, FallbackValue=TRACKING__MOB__LOOT}" Margin="5,0,5,0" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <Grid Width="auto">
                     <fa5:ImageAwesome Icon="Solid_Trophy" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" 
-                                      ToolTip="{Binding Translation.TopLooters, FallbackValue=TOP__LOOTERS}"/>
-                    <ItemsControl Width="auto" ItemsSource="{Binding LoggingBindings.TopLooters, IsAsync=True, Mode=OneWay}">
-                        <ItemsControl.ItemsPanel>
+                                      HorizontalAlignment="Left" ToolTip="{Binding Translation.TopLooters, FallbackValue=TOP__LOOTERS}"/>
+                    <vwp:VirtualizingItemsControl Margin="25,0,0,0" HorizontalAlignment="Left" Height="20" Width="589" MaxWidth="400" Background="Transparent"
+                                                  ItemsSource="{Binding LoggingBindings.TopLootersCollectionView, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource TopLooterObjectTemplate}"              
+                                                  VirtualizingPanel.CacheLengthUnit="Item"
+                                                  VirtualizingPanel.CacheLength="5,5"
+                                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                                  VirtualizingPanel.VirtualizationMode="Recycling"
+                                                  ScrollViewer.CanContentScroll="false"
+                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                        <vwp:VirtualizingItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </StackPanel>
+                        </vwp:VirtualizingItemsControl.ItemsPanel>
+                    </vwp:VirtualizingItemsControl>
+                </Grid>
             </StackPanel>
         </Grid>
         <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,100,0,0" VerticalAlignment="Top"/>

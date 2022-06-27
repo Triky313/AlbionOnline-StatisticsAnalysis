@@ -2,8 +2,10 @@
 using StatisticsAnalysisTool.Properties;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
+using StatisticsAnalysisTool.Common.Comparer;
 using StatisticsAnalysisTool.Network.Notification;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
@@ -17,6 +19,17 @@ public class LoggingBindings : INotifyPropertyChanged
     private bool _isTrackingFame;
     private bool _isTrackingMobLoot;
     private ObservableCollection<LoggingFilterObject> _filters = new();
+    private ListCollectionView _topLootersCollectionView;
+
+    public LoggingBindings()
+    {
+        TopLootersCollectionView = CollectionViewSource.GetDefaultView(TopLooters) as ListCollectionView;
+        if (TopLootersCollectionView != null)
+        {
+            TopLootersCollectionView.IsLiveSorting = true;
+            TopLootersCollectionView.CustomSort = new TopLooterComparer();
+        }
+    }
 
     #region Bindings
 
@@ -36,6 +49,16 @@ public class LoggingBindings : INotifyPropertyChanged
         set
         {
             _trackingNotifications = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ListCollectionView TopLootersCollectionView
+    {
+        get => _topLootersCollectionView;
+        set
+        {
+            _topLootersCollectionView = value;
             OnPropertyChanged();
         }
     }

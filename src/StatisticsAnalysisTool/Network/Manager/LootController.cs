@@ -6,6 +6,7 @@ using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -23,7 +24,6 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly Dictionary<long, Guid> _putLoot = new();
         private readonly List<DiscoveredItem> _discoveredLoot = new();
         private readonly List<LootLoggerObject> _lootLoggerObjects = new();
-        private readonly List<TopLooter> _topLooters = new();
 
         private const int MaxLoot = 5000;
 
@@ -38,6 +38,18 @@ namespace StatisticsAnalysisTool.Network.Manager
             _ = AddTestLootNotificationsAsync(30);
 #endif
         }
+
+        public void RegisterEvents()
+        {
+            OnAddLoot += AddTopLooter;
+        }
+
+        public void UnregisterEvents()
+        {
+            OnAddLoot -= AddTopLooter;
+        }
+
+        public event Action<string, int> OnAddLoot;
 
         public async Task AddLootAsync(Loot loot)
         {
@@ -63,8 +75,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 UniqueName = item.UniqueName
             });
 
-            AddTopLooter(loot.LooterName, loot.Quantity);
-            await UpdateTopLootersUi();
+            OnAddLoot?.Invoke(loot.LooterName, loot.Quantity);
 
             await RemoveLootIfMoreThanLimitAsync(MaxLoot);
         }
@@ -95,7 +106,10 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void ClearLootLogger()
         {
             _lootLoggerObjects.Clear();
-            _topLooters.Clear();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                _mainWindowViewModel?.LoggingBindings?.TopLooters?.Clear();
+            });
         }
 
         public void AddDiscoveredLoot(DiscoveredItem item)
@@ -184,7 +198,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void AddTopLooter(string name, int quantity)
         {
-            var looter = _topLooters.ToList().FirstOrDefault(x => string.Equals(x.PlayerName, name, StringComparison.CurrentCultureIgnoreCase));
+            var looter = _mainWindowViewModel?.LoggingBindings?.TopLooters?.ToList().FirstOrDefault(x => string.Equals(x?.PlayerName, name, StringComparison.CurrentCultureIgnoreCase));
             if (looter != null)
             {
                 looter.Quantity += quantity;
@@ -192,93 +206,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            _topLooters.Add(new TopLooter(name, quantity, 1));
-        }
-
-        private List<TopLooterObject> GetTopLooters()
-        {
-            var topLooters = new List<TopLooterObject>();
-
-            if (_mainWindowViewModel == null)
-            {
-                return topLooters;
-            }
-            
-            lock (_mainWindowViewModel.LoggingBindings.TopLooters)
-            {
-                topLooters = _mainWindowViewModel?.LoggingBindings?.TopLooters.ToList();
-            }
-
-            return topLooters;
-        }
-
-        private async Task UpdateTopLootersUi()
-        {
-            var topLooters = GetTopLooters().OrderByDescending(x => x.LootActions).ThenByDescending(x => x.Quantity).Take(3).ToList();
-
-            foreach (var topLooter in GetTopLooters())
-            {
-                var removableLooter = topLooters.FirstOrDefault(x => x.PlayerName == topLooter.PlayerName);
-                if (removableLooter == null)
-                {
-                    lock (_mainWindowViewModel.LoggingBindings.TopLooters)
-                    {
-                        Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel?.LoggingBindings?.TopLooters.Remove(topLooter));
-                    }
-                }
-            }
-
-            if (topLooters.Count != GetTopLooters().Count)
-            {
-                foreach (var looter in topLooters.Where(looter => GetTopLooters().All(x => x.PlayerName != looter.PlayerName)))
-                {
-                    lock (_mainWindowViewModel.LoggingBindings.TopLooters)
-                    {
-                        Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel?.LoggingBindings?.TopLooters.Add(new TopLooterObject(looter.PlayerName, looter.Quantity, 1, looter.LootActions)));
-                    }
-                }
-            }
-
-            foreach (var looter in topLooters)
-            {
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    var topLooter = GetTopLooters().FirstOrDefault(x => x.PlayerName == looter.PlayerName);
-
-                    if (topLooter == null)
-                    {
-                        return;
-                    }
-
-                    topLooter.LootActions = looter.LootActions;
-                    topLooter.Quantity = looter.Quantity;
-                });
-            }
-
-            var placement = 0;
-            foreach (var looter in GetTopLooters().OrderByDescending(x => x.LootActions).ThenByDescending(x => x.Quantity))
-            {
-                looter.Placement = ++placement;
-            }
-
-            lock (_mainWindowViewModel.LoggingBindings.TopLooters)
-            {
-                _mainWindowViewModel?.LoggingBindings?.TopLooters.OrderByReference(_mainWindowViewModel?.LoggingBindings?.TopLooters.OrderBy(x => x.Placement).ToList());
-            }
-        }
-
-        public class TopLooter
-        {
-            public TopLooter(string name, int quantity, int lootActions)
-            {
-                PlayerName = name;
-                LootActions = lootActions;
-                Quantity = quantity;
-            }
-
-            public string PlayerName { get; init; }
-            public int LootActions { get; set; }
-            public int Quantity { get; set; }
+            _mainWindowViewModel?.LoggingBindings?.TopLooters?.Add(new TopLooterObject(name, quantity, 1));
+            _mainWindowViewModel?.LoggingBindings?.TopLootersCollectionView?.Refresh();
         }
 
         #endregion
@@ -300,10 +229,10 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                 await AddLootAsync(new Loot()
                 {
-                    LootedBody = TestMethods.GenerateName(6),
+                    LootedBody = TestMethods.GenerateName(4),
                     IsTrash = ItemController.IsTrash(randomItem.Index),
                     ItemIndex = randomItem.Index,
-                    LooterName = TestMethods.GenerateName(8),
+                    LooterName = TestMethods.GenerateName(3),
                     IsSilver = false,
                     Quantity = Random.Next(1, 250)
                 });

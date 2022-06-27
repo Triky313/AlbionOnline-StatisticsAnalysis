@@ -9,14 +9,12 @@ namespace StatisticsAnalysisTool.Models
         private string _playerName;
         private int _quantity;
         private int _lootActions;
-        private int _placement;
 
-        public TopLooterObject(string playerName, int quantity, int placement, int lootActions)
+        public TopLooterObject(string playerName, int quantity, int lootActions)
         {
             PlayerName = playerName;
             Quantity = quantity;
             LootActions = lootActions;
-            Placement = placement;
         }
 
         public string PlayerName
@@ -48,17 +46,7 @@ namespace StatisticsAnalysisTool.Models
                 OnPropertyChanged();
             }
         }
-
-        public int Placement
-        {
-            get => _placement;
-            set
-            {
-                _placement = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

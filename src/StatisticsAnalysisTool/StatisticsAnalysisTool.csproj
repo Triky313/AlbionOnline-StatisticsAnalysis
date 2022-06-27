@@ -637,7 +637,4 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\Comparer\" />
-  </ItemGroup>
 </Project>
