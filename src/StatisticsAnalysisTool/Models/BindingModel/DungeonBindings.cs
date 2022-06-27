@@ -1,13 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using StatisticsAnalysisTool.Common.Comparer;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Models.NetworkModel;
+using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Models.NetworkModel;
-using StatisticsAnalysisTool.Network.Notification;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 

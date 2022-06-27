@@ -655,6 +655,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             TrackingController?.ClusterController.RegisterEvents();
+            TrackingController?.LootController.RegisterEvents();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
             TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
@@ -677,6 +678,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.StatisticController?.SaveInFile();
             TrackingController?.MailController?.SaveInFile();
             TrackingController?.VaultController?.SaveInFile();
+            TrackingController?.LootController.UnregisterEvents();
             TrackingController?.ClusterController.UnregisterEvents();
             TrackingController?.CountUpTimer?.Stop();
 
@@ -1587,13 +1589,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion Bindings
 
         #region Structs
-
-        public struct ModeStruct
-        {
-            public string Name { get; set; }
-            public ViewMode ViewMode { get; set; }
-        }
-
+        
         public struct DamageMeterSortStruct
         {
             public string Name { get; set; }
@@ -1601,13 +1597,5 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-    }
-
-    public enum ViewMode
-    {
-        Normal,
-        Tracking,
-        Player,
-        Gold
     }
 }
