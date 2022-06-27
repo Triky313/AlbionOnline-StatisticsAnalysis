@@ -1589,13 +1589,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion Bindings
 
         #region Structs
-
-        public struct ModeStruct
-        {
-            public string Name { get; set; }
-            public ViewMode ViewMode { get; set; }
-        }
-
+        
         public struct DamageMeterSortStruct
         {
             public string Name { get; set; }
@@ -1603,13 +1597,5 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-    }
-
-    public enum ViewMode
-    {
-        Normal,
-        Tracking,
-        Player,
-        Gold
     }
 }
