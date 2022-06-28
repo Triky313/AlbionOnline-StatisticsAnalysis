@@ -86,16 +86,17 @@ namespace StatisticsAnalysisTool.Network.Manager
             _knownEntities.TryAdd(gameObject.UserGuid, gameObject);
             OnAddEntity?.Invoke(gameObject);
         }
-
-        public void RemoveAllEntities()
+        
+        public void RemoveEntitiesByLastUpdate(int withoutAnUpdateForMinutes)
         {
             foreach (var entity in _knownEntities.Where(x =>
-                x.Value.ObjectSubType != GameObjectSubType.LocalPlayer && !_knownPartyEntities.ContainsKey(x.Key)))
+                         x.Value.ObjectSubType != GameObjectSubType.LocalPlayer
+                         && x.Value.Damage <= 0
+                         && !IsEntityInParty(x.Key)
+                         && new DateTime(x.Value.LastUpdate).AddMinutes(withoutAnUpdateForMinutes).Ticks < DateTime.UtcNow.Ticks))
+            {
                 _knownEntities.TryRemove(entity.Key, out _);
-
-            foreach (var entity in _knownEntities.Where(x =>
-                x.Value.ObjectSubType == GameObjectSubType.LocalPlayer || _knownPartyEntities.ContainsKey(x.Key)))
-                entity.Value.ObjectId = null;
+            }
         }
 
         public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
@@ -111,6 +112,8 @@ namespace StatisticsAnalysisTool.Network.Manager
         public bool IsEntityInParty(long objectId) => GetAllEntities(true).Any(x => x.Value.ObjectId == objectId);
 
         public bool IsEntityInParty(string name) => GetAllEntities(true).Any(x => x.Value.Name == name);
+
+        public bool IsEntityInParty(Guid guid) => GetAllEntities(true).Any(x => x.Value.UserGuid == guid);
 
         #endregion
 
@@ -214,6 +217,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             var entity = _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
             if (entity?.Value != null)
             {
+                entity.Value.Value.CharacterEquipment = equipment;
                 entity.Value.Value.CharacterEquipment = equipment;
             }
             else

@@ -50,7 +50,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
             var gameObjectValue = gameObject?.Value;
-
+            
             if (gameObject?.Value == null
                 || gameObject.Value.Value?.ObjectType != GameObjectType.Player
                 || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name)
