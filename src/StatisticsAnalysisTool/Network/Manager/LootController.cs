@@ -205,8 +205,11 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            _mainWindowViewModel?.LoggingBindings?.TopLooters?.Add(new TopLooterObject(name, quantity, 1));
-            _mainWindowViewModel?.LoggingBindings?.TopLootersCollectionView?.Refresh();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                _mainWindowViewModel?.LoggingBindings?.TopLooters?.Add(new TopLooterObject(name, quantity, 1));
+                _mainWindowViewModel?.LoggingBindings?.TopLootersCollectionView?.Refresh();
+            });
         }
 
         #endregion
