@@ -7,17 +7,56 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
 {
     public class PlayerGameObject : GameObject
     {
+        private CharacterEquipment _characterEquipment;
+        private Guid _userGuid;
+        private Guid? _interactGuid;
+        private List<TimeCollectObject> _combatTimes = new();
+
         public PlayerGameObject(long objectId)
         {
             ObjectId = objectId;
+            LastUpdate = DateTime.UtcNow.Ticks;
         }
 
-        public Guid UserGuid { get; set; }
-        public Guid? InteractGuid { get; set; }
+        public long LastUpdate { get; private set; }
+        public Guid UserGuid
+        {
+            get => _userGuid;
+            set
+            {
+                _userGuid = value;
+                LastUpdate = DateTime.UtcNow.Ticks;
+            }
+        }
+        public Guid? InteractGuid
+        {
+            get => _interactGuid;
+            set
+            {
+                _interactGuid = value;
+                LastUpdate = DateTime.UtcNow.Ticks;
+            }
+        }
         public string Name { get; set; } = "Unknown";
-        public CharacterEquipment CharacterEquipment { get; set; } = null;
+        public CharacterEquipment CharacterEquipment
+        {
+            get => _characterEquipment;
+            set
+            {
+                _characterEquipment = value;
+                LastUpdate = DateTime.UtcNow.Ticks;
+            }
+        }
         public DateTime? CombatStart { get; set; }
-        public List<TimeCollectObject> CombatTimes { get; } = new ();
+        public List<TimeCollectObject> CombatTimes
+        {
+            get => _combatTimes;
+            set
+            {
+                _combatTimes = value;
+                LastUpdate = DateTime.UtcNow.Ticks;
+            }
+        }
         public TimeSpan CombatTime { get; set; } = new (1);
         public long Damage { get; set; }
         public long Heal { get; set; }
@@ -29,24 +68,12 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             return $"{ObjectType}[ObjectId: {ObjectId}, Name: '{Name}']";
         }
 
+        #region Combat
+
         public void AddCombatTime(TimeCollectObject timeCollectObject)
         {
             CombatTimes.Add(timeCollectObject);
             SetCombatTimeSpan();
-        }
-
-        public int CompareTo(object obj)
-        {
-            if (obj is not long dmg)
-            {
-                return -1;
-            }
-
-            if (Damage > dmg) return 1;
-
-            if (Damage == dmg) return 0;
-
-            return -1;
         }
 
         public void ResetCombatTimes()
@@ -62,6 +89,22 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
                 CombatTime += combatTime.TimeSpan;
                 CombatTimes.Remove(combatTime);
             }
+        }
+
+        #endregion
+
+        public int CompareTo(object obj)
+        {
+            if (obj is not long dmg)
+            {
+                return -1;
+            }
+
+            if (Damage > dmg) return 1;
+
+            if (Damage == dmg) return 0;
+
+            return -1;
         }
     }
 }

@@ -12,13 +12,13 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             _trackingController = trackingController;
         }
-
+        
         public async Task OnActionAsync(ChangeClusterResponse value)
         {
             _trackingController.ClusterController.ChangeClusterInformation(value.MapType, value.Guid, value.Index, value.IslandName, value.WorldMapDataType, value.DungeonInformation, value.MainClusterIndex);
 
-            _trackingController.EntityController.RemoveAllEntities();
             _trackingController.LootController.ResetViewedLootLists();
+            _trackingController.EntityController.RemoveEntitiesByLastUpdate(2);
 
             await Task.CompletedTask;
         }
