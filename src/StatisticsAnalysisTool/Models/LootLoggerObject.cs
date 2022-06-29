@@ -1,8 +1,8 @@
-﻿using StatisticsAnalysisTool.Common;
-using System;
+﻿using System;
 using System.Globalization;
+using StatisticsAnalysisTool.Common;
 
-namespace StatisticsAnalysisTool.Models.NetworkModel
+namespace StatisticsAnalysisTool.Models
 {
     public class LootLoggerObject
     {
@@ -16,7 +16,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public int Quantity { get; set; }
         public string BodyName { get; set; }
         public string LooterName { get; set; }
-        public string CsvOutput => $"{UtcPickupTime.ToString("MM/dd/yyyy H:mm:ss", CultureInfo.InvariantCulture)};{LooterName};{UniqueName};{Quantity};{BodyName}";
+        public string CsvOutput => $"{UtcPickupTime.ToString("O", CultureInfo.InvariantCulture)};{LooterName};{UniqueName};{Quantity};{BodyName}";
         public string CsvOutputWithRealItemName => GetCsvOutputStringWithRealItemName();
 
         private string GetCsvOutputStringWithRealItemName()
@@ -24,7 +24,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             var item = ItemController.GetItemByUniqueName(UniqueName);
             var itemName = (string.IsNullOrEmpty(item?.LocalizedName)) ? UniqueName : item.LocalizedName;
 
-            return $"{UtcPickupTime.ToString("MM/dd/yyyy H:mm:ss", CultureInfo.InvariantCulture)};{LooterName};{itemName.ToString(CultureInfo.InvariantCulture)};{Quantity};{BodyName}";
+            return $"{UtcPickupTime.ToString("O", CultureInfo.InvariantCulture)};{LooterName};{itemName.ToString(CultureInfo.InvariantCulture)};{Quantity};{BodyName}";
         }
     }
 }
