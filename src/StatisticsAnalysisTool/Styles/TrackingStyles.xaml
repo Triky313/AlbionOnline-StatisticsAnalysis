@@ -580,7 +580,7 @@
                     </Style>
                 </Grid.Style>
                 <StackPanel Orientation="Horizontal">
-                    <Label MinWidth="135" VerticalAlignment="Center" FontSize="12" Margin="0 0 5 0" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                    <Label MinWidth="125" VerticalAlignment="Center" FontSize="12" Margin="0 0 5 0" Foreground="{StaticResource SolidColorBrush.Text.1}">
                         <Label.Content>
                             <TextBlock>
                                 <TextBlock.Text>
@@ -592,13 +592,14 @@
                         </Label.Content>
                     </Label>
                     <Label Content="{Binding TierString}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                           MinWidth="30" MaxWidth="30" Margin="10,0, 0, 0" />
+                           MinWidth="30" MaxWidth="30" Margin="5,0, 0, 0" />
                     <Label Content="{Binding  ClusterHistoryString1}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                           MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0" />
+                           MinWidth="150" MaxWidth="200" Margin="5,0, 0, 0" />
                     <Label Content="{Binding  ClusterHistoryString2}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                           MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0" />
+                           MinWidth="150" MaxWidth="200" Margin="5,0, 0, 0" />
                     <Label Content="{Binding  ClusterHistoryString3}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                           MinWidth="150" MaxWidth="200" Margin="10,0, 0, 0" />
+                           MinWidth="150" MaxWidth="200" Margin="5,0, 0, 0" />
+                    <TextBox Text="Text here" MinWidth="150" MaxWidth="150" Background="{StaticResource SolidColorBrush.Value.Silver.Transparent}" BorderThickness="0" />
                 </StackPanel>
             </Grid>
         </Grid>
