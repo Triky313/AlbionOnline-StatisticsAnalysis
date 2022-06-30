@@ -16,13 +16,19 @@
                 <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
                 <TextBox Text="{Binding MailMonitoringBindings.MailsSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="24" HorizontalAlignment="Left" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
-                <Button Content="{Binding Translation.DeleteSelectedMails, FallbackValue=DELETE__SELECTED__MAILS}" Margin="5,0,0,0"
-                        Height="26" Width="200" MaxWidth="350" MinWidth="80" Click="BtnDeleteSelectedMails_Click" />
-                <Grid Height="20" Width="20" Margin="5,0,0,0" VerticalAlignment="Center"
-                      MouseEnter="OpenMailMonitoringPopup_MouseEnter" MouseLeave="CloseMailMonitoringPopup_MouseLeave">
-                    <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                </Grid>
+            <StackPanel Orientation="Vertical" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Button Content="{Binding Translation.DeleteSelectedMails, FallbackValue=DELETE__SELECTED__MAILS}" Margin="5,0,0,0"
+                            Height="24" Width="200" MaxWidth="300" MinWidth="200" Click="BtnDeleteSelectedMails_Click" />
+                    <Grid Height="20" Width="20" Margin="5,0,0,0" VerticalAlignment="Center"
+                          MouseEnter="OpenMailMonitoringPopup_MouseEnter" MouseLeave="CloseMailMonitoringPopup_MouseLeave">
+                        <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </Grid>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Button Content="{Binding Translation.SelectDeselectAll, FallbackValue=SELECT__DESELECT__ALL}" Margin="5,0,25,0"
+                            Height="24" Width="200" MaxWidth="300" MinWidth="200" Click="BtnSelectSwitchAllMails_Click" />
+                </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="30" Margin="25,30,0,0">
                 <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" SelectedDate="{Binding MailMonitoringBindings.DatePickerMailsFrom}" 

@@ -107,5 +107,6 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string FileDownloadFailedText4 => LanguageController.Translation("FILE_DOWNLOAD_FAILED_TEXT4");
         public static string ThenRestartTheTool => LanguageController.Translation("THEN_RESTART_THE_TOOL");
         public static string Or => LanguageController.Translation("OR");
+        public static string SelectDeselectAll => LanguageController.Translation("SELECT_DESELECT_ALL");
     }
 }

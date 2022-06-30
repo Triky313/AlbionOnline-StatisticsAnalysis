@@ -610,4 +610,5 @@
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Kurze Schadensanzeige in die Zwischenablage kopieren</translation>
 	<translation name="LOCATION">Ort</translation>
 	<translation name="STORAGE_NAME">Lager Name</translation>
+	<translation name="SELECT_DESELECT_ALL">Alle auswählen / abwählen</translation>
 </translations>

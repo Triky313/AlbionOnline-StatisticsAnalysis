@@ -610,4 +610,5 @@
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Copy short damage meter to the clipboard</translation>
 	<translation name="LOCATION">Location</translation>
 	<translation name="STORAGE_NAME">Storage name</translation>
+	<translation name="SELECT_DESELECT_ALL">Select / Deselect All</translation>
 </translations>

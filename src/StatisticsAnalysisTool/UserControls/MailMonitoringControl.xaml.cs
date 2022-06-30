@@ -50,6 +50,23 @@ namespace StatisticsAnalysisTool.UserControls
             DeleteSelectedMails();
         }
 
+        private bool _isSelectAllActive;
+
+        private void BtnSelectSwitchAllMails_Click(object sender, RoutedEventArgs e)
+        {
+            if ((MainWindowViewModel)DataContext is not { MailMonitoringBindings.Mails: { } } mainWindowViewModel)
+            {
+                return;
+            }
+
+            foreach (var mail in mainWindowViewModel.MailMonitoringBindings.Mails)
+            {
+                mail.IsSelectedForDeletion = !_isSelectAllActive;
+            }
+
+            _isSelectAllActive = !_isSelectAllActive;
+        }
+
         #endregion
     }
 }
