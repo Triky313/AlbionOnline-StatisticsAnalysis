@@ -18,7 +18,9 @@ public class MailContent
     [JsonIgnore]
     public FixPoint UnitPrice => FixPoint.FromInternalValue(InternalUnitPrice);
     [JsonIgnore]
-    public FixPoint ActualUnitPrice => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue / UsedQuantity);
+    public FixPoint ActualUnitPrice => (FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue <= 0 || UsedQuantity <= 0) 
+        ? FixPoint.FromFloatingPointValue(0)
+        : FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue / UsedQuantity);
     [JsonIgnore]
     public FixPoint TaxPrice => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue / 100 * TaxRate);
     [JsonIgnore]
