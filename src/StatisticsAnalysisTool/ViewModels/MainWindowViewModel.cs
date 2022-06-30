@@ -722,18 +722,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 TrackingController.LootController.ClearLootLogger();
             }
         }
-
-        public async Task ResetPartyAsync()
-        {
-            var dialog = new DialogWindow(LanguageController.Translation("RESET_PARTY"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_THE_PARTY"));
-            var dialogResult = dialog.ShowDialog();
-
-            if (dialogResult is true)
-            {
-                await TrackingController.EntityController.ResetPartyMemberAsync();
-                await TrackingController.EntityController.AddLocalEntityToPartyAsync();
-            }
-        }
         
         public void SetDamageMeterSort()
         {

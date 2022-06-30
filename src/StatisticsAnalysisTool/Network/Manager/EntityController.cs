@@ -208,6 +208,13 @@ namespace StatisticsAnalysisTool.Network.Manager
             return _knownPartyEntities.Any(x => x.Value == entity.Value.Name);
         }
 
+        public void CopyPartyToClipboard()
+        {
+            var output = string.Empty;
+            var partyString = _knownPartyEntities.Aggregate(output, (current, entity) => current + $"{entity.Value},");
+            Clipboard.SetDataObject(partyString[..(partyString.Length > 0 ? partyString.Length - 1 : 0)]);
+        }
+
         #endregion
 
         #region Equipment

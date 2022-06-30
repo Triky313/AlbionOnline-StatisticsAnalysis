@@ -97,7 +97,7 @@
             <Grid Height="26" VerticalAlignment="Top" Margin="10,62,0,0" HorizontalAlignment="Left" Width="500">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="{Binding PartyMemberNumber, FallbackValue=0}"/>
-                    <Grid Height="20" Width="20" Margin="0,0,5,0" VerticalAlignment="Center" PreviewMouseDown="ResetParty_PreviewMouseDown">
+                    <Grid Height="20" Width="20" Margin="0,0,5,0" VerticalAlignment="Center" PreviewMouseDown="CopyPartyToClipboard_PreviewMouseDown">
                         <fa5:ImageAwesome Icon="Solid_Users" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
                     </Grid>
                     <ItemsControl ItemsSource="{Binding PartyMemberCircles}" Style="{StaticResource PartyMember.ItemsControl}"/>

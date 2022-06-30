@@ -77,9 +77,9 @@ namespace StatisticsAnalysisTool.Views
             }
         }
 
-        private void ResetParty_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void CopyPartyToClipboard_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            _ = _mainWindowViewModel.ResetPartyAsync();
+            _mainWindowViewModel.TrackingController.EntityController.CopyPartyToClipboard();
         }
 
         private void MainWindow_OnClosed(object sender, EventArgs eventArgs)
