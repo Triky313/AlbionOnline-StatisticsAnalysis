@@ -5,6 +5,8 @@ using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.GameData;
@@ -153,6 +155,19 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 OnPropertyChanged();
             }
         }
+
+        #region Commands
+
+        public void CopyItemNameToClipboard()
+        {
+            Clipboard.SetDataObject(CraftingResourceName);
+        }
+
+        private ICommand _opyItemNameToClipboardCommand;
+
+        public ICommand CopyItemNameToClipboardCommand => _opyItemNameToClipboardCommand ??= new CommandHandler(CopyItemNameToClipboard, true);
+
+        #endregion
 
         public string TranslationRequiredJournals => LanguageController.Translation("REQUIRED_JOURNALS");
         public string TranslationCostsPerJournal => LanguageController.Translation("COSTS_PER_JOURNAL");

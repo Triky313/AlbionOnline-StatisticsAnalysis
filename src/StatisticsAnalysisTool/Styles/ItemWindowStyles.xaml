@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
-                    xmlns:itemWindowModel="clr-namespace:StatisticsAnalysisTool.Models.ItemWindowModel">
+                    xmlns:itemWindowModel="clr-namespace:StatisticsAnalysisTool.Models.ItemWindowModel"
+                    xmlns:fa5="http://schemas.fontawesome.com/icons/">
 
     <Style x:Key="ListView.Grid.Item.Price" TargetType="Grid">
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -76,7 +77,16 @@
         <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
             <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,0,0,0" VerticalAlignment="Top" />
             <StackPanel Orientation="Vertical">
-                <Label Content="{Binding CraftingResourceName, FallbackValue=CRAFTING__RESOURCE__FIRST__NAME}" Style="{StaticResource Label.Crafting.Title}" />
+               <StackPanel Orientation="Horizontal">
+                   <Label Content="{Binding CraftingResourceName, FallbackValue=CRAFTING__RESOURCE__FIRST__NAME}" Style="{StaticResource Label.Crafting.Title}" />
+                   <Grid Margin="2" Width="12" Height="12" VerticalAlignment="Top" HorizontalAlignment="Left">
+                       <fa5:ImageAwesome Icon="Solid_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                           <fa5:ImageAwesome.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" Command="{Binding CopyItemNameToClipboardCommand}" CommandParameter="{Binding CraftingResourceName}" />
+                           </fa5:ImageAwesome.InputBindings>
+                       </fa5:ImageAwesome>
+                   </Grid>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
                         <Label Content="{Binding TranslationCost, FallbackValue=COST__A}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
@@ -174,7 +184,16 @@
             <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
                 <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,0,0,5" VerticalAlignment="Top" />
                 <StackPanel Orientation="Vertical">
-                    <Label Content="{Binding CraftingResourceName, FallbackValue=CRAFTING__RESOURCE__NAME}" Style="{StaticResource Label.Crafting.Title}" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <Label Content="{Binding CraftingResourceName, FallbackValue=CRAFTING__RESOURCE__NAME}" Style="{StaticResource Label.Crafting.Title}" />
+                        <Grid Margin="2" Width="12" Height="12" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <fa5:ImageAwesome Icon="Solid_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                <fa5:ImageAwesome.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick" Command="{Binding CopyItemNameToClipboardCommand}" />
+                                </fa5:ImageAwesome.InputBindings>
+                            </fa5:ImageAwesome>
+                        </Grid>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical">
                             <Label Content="{Binding TranslationCostsPerJournal, FallbackValue=COSTS__PER__JOURNAL}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
