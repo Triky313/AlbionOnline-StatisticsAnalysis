@@ -33,6 +33,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel = mainWindowViewModel;
 
             OnChangeCombatMode += AddCombatTime;
+            OnDamageUpdate += UpdateDamageMeterUiAsync;
 
 #if DEBUG
             RunDamageMeterDebugAsync(0, 0);
@@ -41,11 +42,13 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Damage Meter methods
 
-        public async Task AddDamageAsync(long objectId, long causerId, double healthChange, double newHealthValue)
+        public event Action<ObservableCollection<DamageMeterFragment>, List<KeyValuePair<Guid, PlayerGameObject>>> OnDamageUpdate;
+
+        public Task AddDamage(long objectId, long causerId, double healthChange, double newHealthValue)
         {
             if (!IsDamageMeterActive || objectId == causerId)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
@@ -56,7 +59,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name)
                 )
             {
-                return;
+                return Task.CompletedTask;
             }
 
             if (GetHealthChangeType(healthChange) == HealthChangeType.Damage)
@@ -64,7 +67,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 var damageChangeValue = (int)Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
                 if (damageChangeValue <= 0)
                 {
-                    return;
+                    return Task.CompletedTask;
                 }
 
                 gameObject.Value.Value.Damage += damageChangeValue;
@@ -75,29 +78,32 @@ namespace StatisticsAnalysisTool.Network.Manager
                 var healChangeValue = healthChange;
                 if (healChangeValue <= 0)
                 {
-                    return;
+                    return Task.CompletedTask;
                 }
 
                 if (IsMaxHealthReached(objectId, newHealthValue))
                 {
-                    return;
+                    return Task.CompletedTask;
                 }
 
                 gameObject.Value.Value.Heal += (int)Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
             }
 
             gameObjectValue.CombatStart ??= DateTime.UtcNow;
-
-            if (IsUiUpdateAllowed())
-            {
-                await UpdateDamageMeterUiAsync(_mainWindowViewModel.DamageMeter, _trackingController.EntityController.GetAllEntities());
-            }
+            
+            OnDamageUpdate?.Invoke(_mainWindowViewModel.DamageMeter, _trackingController.EntityController.GetAllEntities(true));
+            return Task.CompletedTask;
         }
 
         private static bool _isUiUpdateActive;
 
-        public async Task UpdateDamageMeterUiAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
+        public async void UpdateDamageMeterUiAsync(ObservableCollection<DamageMeterFragment> damageMeter, List<KeyValuePair<Guid, PlayerGameObject>> entities)
         {
+            if (!IsUiUpdateAllowed())
+            {
+                return;
+            }
+
             _isUiUpdateActive = true;
 
             var highestDamage = entities.GetHighestDamage();
@@ -132,7 +138,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             _isUiUpdateActive = false;
         }
 
-        private static void UpdateDamageMeterFragment(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject, List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
+        private static void UpdateDamageMeterFragment(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject, 
+            List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
             var healthChangeObjectValue = healthChangeObject.Value;
 
@@ -177,7 +184,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private static async Task AddDamageMeterFragmentAsync(ObservableCollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
+        private static async Task AddDamageMeterFragmentAsync(ICollection<DamageMeterFragment> damageMeter, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
             List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
             if (healthChangeObject.Value == null
@@ -381,7 +388,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             for (var i = 0; i < runs; i++)
             {
                 var damage = Random.Next(-100, 100);
-                await AddDamageAsync(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000));
+                await AddDamage(9999, entity.ObjectId ?? -1, damage, Random.Next(2000, 3000));
                 //Debug.Print($"--- AddDamage - {entity.Name}: {damage}");
 
                 await Task.Delay(Random.Next(1, 1000));
