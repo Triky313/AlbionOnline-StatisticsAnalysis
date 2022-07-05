@@ -51,9 +51,9 @@ namespace StatisticsAnalysisTool.Enumerations
         LaborerObjectInfo,
         LaborerObjectJobInfo,
         MarketPlaceBuildingInfo,
-        HarvestStart,
+        HarvestStart, // map[0:5270 1:637926215956544319 2:637926215956544319 3:4250 4:16 5:1.6169999 6:5287 7:2195 252:52] - 0 = UserId, 7 = Abbau-Tool (T8_2H_TOOL_SICKLE), 
         HarvestCancel,
-        HarvestFinished,
+        HarvestFinished, // map[0:5270 1:637926215956544319 2:637926215972723131 3:4250 4:1 5:1 7:28 8:[] 9:[] 252:54] - 0 = UserId, 4 = Res Standard Quantity 5 = Sammelbonus Res, 6 = Premium Bonus Res, 7 = Inhalt in der Ressource
         TakeSilver = 55, // map[0:-57 1:2178162 2:-57 3:10000000 8:10000 252:55]
         ActionOnBuildingStart,
         ActionOnBuildingCancel,
