@@ -40,6 +40,11 @@ namespace StatisticsAnalysisTool.Common
                 return Location.BlackMarket;
             }
 
+            if (index.Equals("3013-Auction2"))
+            {
+                return Location.Caerleon;
+            }
+
             return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
         }
 

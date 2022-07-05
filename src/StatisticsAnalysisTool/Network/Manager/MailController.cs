@@ -200,7 +200,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     }
 
                     // The if block convert data from old versions to new version
-                    if (item.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired 
+                    if (item.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired
                         && item.MailContent?.TaxRate != null && !item.MailContent.TaxRate.Equals(3) && item.Timestamp < new DateTime(2022, 12, 1))
                     {
                         item.MailContent.TaxRate = 3;

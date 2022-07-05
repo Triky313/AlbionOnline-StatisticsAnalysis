@@ -56,7 +56,7 @@
     <Color x:Key="Button.Attention.Color.Pressed">#ffE0586E</Color>
 
     <!-- City colors -->
-    <Color x:Key="Color.City.Default">#FF323B43</Color>
+    <Color x:Key="Color.City.Default">#FF444F5A</Color>
     <Color x:Key="Color.City.Caerleon">#FFDE2643</Color>
     <Color x:Key="Color.City.Thetford">#FF873FD4</Color>
     <Color x:Key="Color.City.Bridgewatch">#FFFFA64D</Color>
