@@ -5,13 +5,13 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
-    public class NewLootChestEvent
+    public class UpdateLootChestEvent
     {
         public int ObjectId { get; set; }
-        public string UniqueName { get; set; }
-        public string UniqueNameWithLocation { get; set; }
+        public Guid PlayerGuid { get; set; }
+        public Guid PlayerGuid2 { get; set; }
 
-        public NewLootChestEvent(Dictionary<byte, object> parameters)
+        public UpdateLootChestEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
@@ -24,12 +24,12 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (parameters.ContainsKey(3))
                 {
-                    UniqueName = string.IsNullOrEmpty(parameters[3].ToString()) ? string.Empty : parameters[3].ToString();
+                    PlayerGuid = parameters[3].ObjectToGuid() ?? Guid.Empty;
                 }
 
                 if (parameters.ContainsKey(4))
                 {
-                    UniqueNameWithLocation = string.IsNullOrEmpty(parameters[4].ToString()) ? string.Empty : parameters[4].ToString();
+                    PlayerGuid2 = PlayerGuid = parameters[4].ObjectToGuid() ?? Guid.Empty;
                 }
             }
             catch (Exception e)

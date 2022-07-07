@@ -229,7 +229,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private int GetChests(DateTime? chestIsNewerAsDateTime, ChestRarity rarity)
+        private int GetChests(DateTime? chestIsNewerAsDateTime, TreasureRarity rarity)
         {
             var dungeons = _dungeons.Where(x => (x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null)
                                                 && ((_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters != null
@@ -275,10 +275,10 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             _mainWindowViewModel.DungeonBindings.DungeonStatsDay.TranslationTitle = LanguageController.Translation("DAY");
 
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Standard);
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Uncommon);
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Rare);
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-1), ChestRarity.Legendary);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Standard);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Uncommon);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Rare);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Legendary);
 
             _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Fame = GetFame(DateTime.UtcNow.AddDays(-1));
             _mainWindowViewModel.DungeonBindings.DungeonStatsDay.ReSpec = GetReSpec(DateTime.UtcNow.AddDays(-1));
@@ -289,10 +289,10 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.TranslationTitle = LanguageController.Translation("TOTAL");
 
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedStandardChests = GetChests(null, ChestRarity.Standard);
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedUncommonChests = GetChests(null, ChestRarity.Uncommon);
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedRareChests = GetChests(null, ChestRarity.Rare);
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedLegendaryChests = GetChests(null, ChestRarity.Legendary);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedStandardChests = GetChests(null, TreasureRarity.Standard);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedUncommonChests = GetChests(null, TreasureRarity.Uncommon);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedRareChests = GetChests(null, TreasureRarity.Rare);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedLegendaryChests = GetChests(null, TreasureRarity.Legendary);
 
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Fame = GetFame(null);
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.ReSpec = GetReSpec(null);

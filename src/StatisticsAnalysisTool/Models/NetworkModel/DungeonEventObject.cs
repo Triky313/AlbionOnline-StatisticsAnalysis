@@ -13,7 +13,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public DungeonEventObjectType ObjectType => DungeonObjectData.GetDungeonEventObjectType(UniqueName);
 
         public bool IsBossChest { get; set; }
-        public ChestRarity Rarity => DungeonObjectData.GetChestRarity(UniqueName);
+        public TreasureRarity Rarity => DungeonObjectData.GetChestRarity(UniqueName);
 
         public ShrineBuff ShrineBuff => DungeonObjectData.GetShrineBuff(UniqueName);
         public ShrineType ShrineType => DungeonObjectData.GetShrineType(UniqueName);

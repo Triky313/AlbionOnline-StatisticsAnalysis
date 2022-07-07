@@ -1,6 +1,6 @@
 ﻿namespace StatisticsAnalysisTool.Enumerations
 {
-    public enum ChestRarity
+    public enum TreasureRarity
     {
         Unknown,
         Standard,
