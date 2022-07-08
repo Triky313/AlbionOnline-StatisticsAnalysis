@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
@@ -24,12 +25,12 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (parameters.ContainsKey(3))
                 {
-                    PlayerGuid = parameters[3].ObjectToGuid() ?? Guid.Empty;
+                    PlayerGuid = ((object[])parameters[3]).FirstOrDefault().ObjectToGuid() ?? Guid.Empty;
                 }
 
                 if (parameters.ContainsKey(4))
                 {
-                    PlayerGuid2 = PlayerGuid = parameters[4].ObjectToGuid() ?? Guid.Empty;
+                    PlayerGuid2 = PlayerGuid = ((object[])parameters[4]).FirstOrDefault().ObjectToGuid() ?? Guid.Empty;
                 }
             }
             catch (Exception e)

@@ -35,6 +35,11 @@ public class TreasureController
 
     public void UpdateTreasure(int objectId, Guid openedBy)
     {
+        if (openedBy == Guid.Empty)
+        {
+            return;
+        }
+
         var temporaryTreasure = _temporaryTreasures?.FirstOrDefault(x => x?.ObjectId == objectId && x.AlreadyScanned == false);
         if (temporaryTreasure == null)
         {
