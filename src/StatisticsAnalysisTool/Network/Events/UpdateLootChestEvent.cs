@@ -1,7 +1,6 @@
 ﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace StatisticsAnalysisTool.Network.Events
@@ -9,8 +8,8 @@ namespace StatisticsAnalysisTool.Network.Events
     public class UpdateLootChestEvent
     {
         public int ObjectId { get; set; }
-        public Guid PlayerGuid { get; set; }
-        public Guid PlayerGuid2 { get; set; }
+        public List<Guid> PlayerGuid { get; set; } = new();
+        public List<Guid> PlayerGuid2 { get; set; } = new();
 
         public UpdateLootChestEvent(Dictionary<byte, object> parameters)
         {
@@ -25,12 +24,30 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 if (parameters.ContainsKey(3))
                 {
-                    PlayerGuid = ((object[])parameters[3]).FirstOrDefault().ObjectToGuid() ?? Guid.Empty;
+                    foreach (var guid in (object[])parameters[3])
+                    {
+                        var playerGuid = guid.ObjectToGuid() ?? Guid.Empty;
+                        if (playerGuid == Guid.Empty)
+                        {
+                            continue;
+                        }
+
+                        PlayerGuid.Add(playerGuid);
+                    }
                 }
 
                 if (parameters.ContainsKey(4))
                 {
-                    PlayerGuid2 = PlayerGuid = ((object[])parameters[4]).FirstOrDefault().ObjectToGuid() ?? Guid.Empty;
+                    foreach (var guid in (object[])parameters[4])
+                    {
+                        var playerGuid = guid.ObjectToGuid() ?? Guid.Empty;
+                        if (playerGuid == Guid.Empty)
+                        {
+                            continue;
+                        }
+
+                        PlayerGuid.Add(playerGuid);
+                    }
                 }
             }
             catch (Exception e)

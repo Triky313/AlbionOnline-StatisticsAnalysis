@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -34,9 +35,9 @@ public class TreasureController
         }
     }
 
-    public void UpdateTreasure(int objectId, Guid openedBy)
+    public void UpdateTreasure(int objectId, List<Guid> openedBy)
     {
-        if (openedBy == Guid.Empty)
+        if (openedBy is not {Count: > 0})
         {
             return;
         }
