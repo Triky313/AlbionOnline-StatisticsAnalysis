@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -46,13 +47,16 @@ public class TreasureController
             return;
         }
 
-        _treasures.Add(new Treasure()
+        var test = new Treasure()
         {
             OpenedBy = openedBy,
             TreasureRarity = GetRarity(temporaryTreasure.UniqueName),
             TreasureType = GetType(temporaryTreasure.UniqueName)
-        });
+        };
 
+        _treasures.Add(test);
+
+        Debug.Print(test.TreasureRarity + " - " + test.TreasureType);
         temporaryTreasure.AlreadyScanned = true;
     }
 
@@ -68,21 +72,21 @@ public class TreasureController
             return TreasureRarity.Unknown;
         }
 
-        if (Regex.IsMatch(value, "\\w*_STANDARD\\b"))
+        if (Regex.IsMatch(value, "\\w*_STANDARD\\b|\\w*_STANDARD_[T][4-8]|\\w*_STANDARD_STANDARD_[T][4-8]|STATIC_\\w*_POI"))
         {
             return TreasureRarity.Standard;
         }
-        if (Regex.IsMatch(value, "\\w*_UNCOMMON\\b"))
+        if (Regex.IsMatch(value, "\\w*_UNCOMMON\\b|\\w*_UNCOMMON_[T][4-8]|\\w*_STANDARD_UNCOMMON_[T][4-8]|STATIC_\\w*_CHAMPION"))
         {
             return TreasureRarity.Uncommon;
         }
 
-        if (Regex.IsMatch(value, "\\w*_RARE\\b"))
+        if (Regex.IsMatch(value, "\\w*_RARE\\b|\\w*_RARE_[T][4-8]|\\w*_STANDARD_RARE_[T][4-8]|STATIC_\\w*_MINIBOSS"))
         {
             return TreasureRarity.Rare;
         }
 
-        if (Regex.IsMatch(value, "\\w*_LEGENDARY\\b"))
+        if (Regex.IsMatch(value, "\\w*_LEGENDARY\\b|\\w*_LEGENDARY_[T][4-8]|\\w*_STANDARD_LEGENDARY_[T][4-8]|STATIC_\\w*_BOSS"))
         {
             return TreasureRarity.Legendary;
         }
@@ -112,115 +116,26 @@ public class TreasureController
             return TreasureType.Avalon;
         }
 
-        if (Regex.IsMatch(value, "\\bNORMAL|\\bCHEST|\\bBOOKCHEST"))
+        if (value.Contains("CORRUPTED"))
         {
-            return TreasureType.RandomDungeon;
+            return TreasureType.Corrupted;
+        }
+
+        if (value.Contains("HELL"))
+        {
+            return TreasureType.HellGate;
+        }
+
+        if (Regex.IsMatch(value, "_VETERAN_CHEST_|[^SOLO]_CHEST_BOSS_HALLOWEEN_"))
+        {
+            return TreasureType.RandomGroupDungeon;
+        }
+
+        if (Regex.IsMatch(value, "_SOLO_BOOKCHEST_|_SOLO_CHEST_"))
+        {
+            return TreasureType.RandomSoloDungeon;
         }
 
         return TreasureType.Unknown;
     }
 }
-
-
-//BOOKCHEST_STANDARD
-//CHEST_STANDARD
-//NORMAL_STANDARD
-//AVALON_STANDARD_STANDARD
-//AVALON_SMALL_STANDARD_STANDARD
-//AVALON_VETERAN_STANDARD
-//AVALON_SMALL_VETERAN_STANDARD
-//AVALON_ELITE_STANDARD
-//AVALON_SMALL_ELITE_STANDARD
-//STATIC_UNDEAD_MINIBOSS_STANDARD
-//STATIC_MORGANA_MINIBOSS_STANDARD
-//STATIC_KEEPER_MINIBOSS_STANDARD
-//STATIC_UNDEAD_BOSS_STANDARD
-//STATIC_MORGANA_BOSS_STANDARD
-//STATIC_KEEPER_BOSS_STANDARD
-//STATIC_UNDEAD_POI_STANDARD
-//STATIC_MORGANA_POI_STANDARD
-//STATIC_KEEPER_POI_STANDARD
-//STATIC_UNDEAD_CHAMPION_STANDARD
-//STATIC_MORGANA_CHAMPION_STANDARD
-//STATIC_KEEPER_CHAMPION_STANDARD
-//TREASURE_SOLO_STANDARD
-//TREASURE_VETERAN_STANDARD
-//TREASURE_ELITE_STANDARD
-
-//BOOKCHEST_UNCOMMON
-//CHEST_UNCOMMON
-//NORMAL_UNCOMMON
-//CHEST_BOSS_UNCOMMON
-//AVALON_STANDARD_UNCOMMON
-//AVALON_SMALL_STANDARD_UNCOMMON
-//AVALON_VETERAN_UNCOMMON
-//AVALON_SMALL_VETERAN_UNCOMMON
-//AVALON_ELITE_UNCOMMON
-//AVALON_SMALL_ELITE_UNCOMMON
-//STATIC_UNDEAD_MINIBOSS_UNCOMMON
-//STATIC_MORGANA_MINIBOSS_UNCOMMON
-//STATIC_KEEPER_MINIBOSS_UNCOMMON
-//STATIC_UNDEAD_BOSS_UNCOMMON
-//STATIC_MORGANA_BOSS_UNCOMMON
-//STATIC_KEEPER_BOSS_UNCOMMON
-//STATIC_UNDEAD_POI_UNCOMMON
-//STATIC_MORGANA_POI_UNCOMMON
-//STATIC_KEEPER_POI_UNCOMMON
-//STATIC_UNDEAD_CHAMPION_UNCOMMON
-//STATIC_MORGANA_CHAMPION_UNCOMMON
-//STATIC_KEEPER_CHAMPION_UNCOMMON
-//TREASURE_SOLO_UNCOMMON
-//TREASURE_VETERAN_UNCOMMON
-//TREASURE_ELITE_UNCOMMON
-
-//BOOKCHEST_RARE
-//CHEST_RARE
-//NORMAL_RARE
-//CHEST_BOSS_RARE
-//AVALON_STANDARD_RARE
-//AVALON_SMALL_STANDARD_RARE
-//AVALON_VETERAN_RARE
-//AVALON_SMALL_VETERAN_RARE
-//AVALON_ELITE_RARE
-//AVALON_SMALL_ELITE_RARE
-//STATIC_UNDEAD_MINIBOSS_RARE
-//STATIC_MORGANA_MINIBOSS_RARE
-//STATIC_KEEPER_MINIBOSS_RARE
-//STATIC_UNDEAD_BOSS_RARE
-//STATIC_MORGANA_BOSS_RARE
-//STATIC_KEEPER_BOSS_RARE
-//STATIC_UNDEAD_POI_RARE
-//STATIC_MORGANA_POI_RARE
-//STATIC_KEEPER_POI_RARE
-//STATIC_UNDEAD_CHAMPION_RARE
-//STATIC_MORGANA_CHAMPION_RARE
-//STATIC_KEEPER_CHAMPION_RARE
-//TREASURE_SOLO_RARE
-//TREASURE_VETERAN_RARE
-//TREASURE_ELITE_RARE
-
-//BOOKCHEST_LEGENDARY
-//CHEST_LEGENDARY
-//NORMAL_LEGENDARY
-//CHEST_BOSS_LEGENDARY
-//AVALON_STANDARD_LEGENDARY
-//AVALON_SMALL_STANDARD_LEGENDARY
-//AVALON_VETERAN_LEGENDARY
-//AVALON_SMALL_VETERAN_LEGENDARY
-//AVALON_ELITE_LEGENDARY
-//AVALON_SMALL_ELITE_LEGENDARY
-//STATIC_UNDEAD_MINIBOSS_LEGENDARY
-//STATIC_MORGANA_MINIBOSS_LEGENDARY
-//STATIC_KEEPER_MINIBOSS_LEGENDARY
-//STATIC_UNDEAD_BOSS_LEGENDARY
-//STATIC_MORGANA_BOSS_LEGENDARY
-//STATIC_KEEPER_BOSS_LEGENDARY
-//STATIC_UNDEAD_POI_LEGENDARY
-//STATIC_MORGANA_POI_LEGENDARY
-//STATIC_KEEPER_POI_LEGENDARY
-//STATIC_UNDEAD_CHAMPION_LEGENDARY
-//STATIC_MORGANA_CHAMPION_LEGENDARY
-//STATIC_KEEPER_CHAMPION_LEGENDARY
-//TREASURE_SOLO_LEGENDARY
-//TREASURE_VETERAN_LEGENDARY
-//TREASURE_ELITE_LEGENDARY

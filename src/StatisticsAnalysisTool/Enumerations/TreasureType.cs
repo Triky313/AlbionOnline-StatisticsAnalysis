@@ -4,7 +4,10 @@ public enum TreasureType
 {
     Unknown,
     OpenWorld,
-    RandomDungeon,
+    RandomGroupDungeon,
+    RandomSoloDungeon,
+    HellGate,
+    Corrupted,
     StaticDungeon,
     Avalon
 }
