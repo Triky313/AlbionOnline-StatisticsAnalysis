@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool.UserControls
                 else
                 {
                     var vm = (MainWindowViewModel)DataContext;
-                    var itemWindow = new DashboardWindow(vm?.DashboardObject, vm?.FactionPointStats);
+                    var itemWindow = new DashboardWindow(vm?.DashboardBindings, vm?.FactionPointStats);
                     itemWindow.Show();
                 }
             }

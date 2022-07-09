@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Models
 {
-    public class DashboardObject : INotifyPropertyChanged
+    public class DashboardBindings : INotifyPropertyChanged
     {
         private double _famePerHour;
         private double _reSpecPointsPerHour;
@@ -38,6 +38,9 @@ namespace StatisticsAnalysisTool.Models
         private int _soloKillsToday;
         private int _soloKillsThisWeek;
         private int _soloKillsThisMonth;
+        private LootedChests _lootedChests;
+
+        #region Fame / Respec / Silver / Might / Faction
 
         public double GetHighestValue()
         {
@@ -244,6 +247,10 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
+        #endregion
+
+        #region Kill / Death stats
+
         public int SoloKillsToday
         {
             get => _soloKillsToday;
@@ -373,6 +380,22 @@ namespace StatisticsAnalysisTool.Models
                 OnPropertyChanged();
             }
         }
+
+        #endregion
+
+        #region Chest stats
+
+        public LootedChests LootedChests
+        {
+            get => _lootedChests;
+            set
+            {
+                _lootedChests = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 

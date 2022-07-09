@@ -30,32 +30,32 @@
                     <DockPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/fame.png" Width="22" Height="22" ToolTip="{Binding Translation.Fame, FallbackValue=FAME}" />
-                            <TextBlock Text="{Binding DashboardObject.TotalGainedFameInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                            <TextBlock FontSize="16" Text="{Binding DashboardObject.FamePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedFameInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock FontSize="16" Text="{Binding DashboardBindings.FamePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/silver.png" Width="22" Height="22" ToolTip="{Binding Translation.Silver, FallbackValue=SILVER}" />
-                            <TextBlock Text="{Binding DashboardObject.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                            <TextBlock FontSize="16" Text="{Binding DashboardObject.SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock FontSize="16" Text="{Binding DashboardBindings.SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/respec.png" Width="22" Height="22" ToolTip="{Binding Translation.ReSpec, FallbackValue=RESPEC}" />
-                            <TextBlock Text="{Binding DashboardObject.TotalGainedReSpecPointsInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                            <TextBlock FontSize="16" Text="{Binding DashboardObject.ReSpecPointsPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedReSpecPointsInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock FontSize="16" Text="{Binding DashboardBindings.ReSpecPointsPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/might.png" Width="22" Height="22" ToolTip="{Binding Translation.Might, FallbackValue=MIGHT}" />
-                            <TextBlock Text="{Binding DashboardObject.TotalGainedMightInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                            <TextBlock FontSize="16" Text="{Binding DashboardObject.MightPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedMightInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock FontSize="16" Text="{Binding DashboardBindings.MightPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/favor.png" Width="22" Height="22" ToolTip="{Binding Translation.Favor, FallbackValue=FAVOR}" />
-                            <TextBlock Text="{Binding DashboardObject.TotalGainedFavorInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                            <TextBlock FontSize="16" Text="{Binding DashboardObject.FavorPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedFavorInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock FontSize="16" Text="{Binding DashboardBindings.FavorPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                         </StackPanel>
                         <ItemsControl ItemsSource="{Binding FactionPointStats}" />
@@ -72,15 +72,15 @@
                                         <TextBlock Text="*" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.5}" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Text="{Binding DashboardObject.SoloKillsToday, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                        <TextBlock Text="{Binding DashboardBindings.SoloKillsToday, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                         <TextBlock Text="{Binding Translation.Today, StringFormat='{}/{0:N0}', FallbackValue=/today}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Text="{Binding DashboardObject.SoloKillsThisWeek, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                        <TextBlock Text="{Binding DashboardBindings.SoloKillsThisWeek, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                         <TextBlock Text="{Binding Translation.Week, StringFormat='{}/{0:N0}', FallbackValue=/week}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Text="{Binding DashboardObject.SoloKillsThisMonth, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                        <TextBlock Text="{Binding DashboardBindings.SoloKillsThisMonth, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                         <TextBlock Text="{Binding Translation.Month, StringFormat='{}/{0:N0}', FallbackValue=/month}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </StackPanel>
@@ -90,15 +90,15 @@
                                         <TextBlock Text="*" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.5}" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Text="{Binding DashboardObject.KillsToday, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                        <TextBlock Text="{Binding DashboardBindings.KillsToday, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                         <TextBlock Text="{Binding Translation.Today, StringFormat='{}/{0:N0}', FallbackValue=/today}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Text="{Binding DashboardObject.KillsThisWeek, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                        <TextBlock Text="{Binding DashboardBindings.KillsThisWeek, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                         <TextBlock Text="{Binding Translation.Week, StringFormat='{}/{0:N0}', FallbackValue=/week}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Text="{Binding DashboardObject.KillsThisMonth, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+                                        <TextBlock Text="{Binding DashboardBindings.KillsThisMonth, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
                                         <TextBlock Text="{Binding Translation.Month, StringFormat='{}/{0:N0}', FallbackValue=/month}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                     </StackPanel>
                                 </StackPanel>
@@ -108,20 +108,20 @@
                                         <TextBlock Text="*" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.5}" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Visibility="{Binding DashboardObject.DeathsTodayVisibility, FallbackValue=Collapsed}" Text="+" FontSize="20" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
-                                        <TextBlock Text="{Binding DashboardObject.DeathsToday, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" 
+                                        <TextBlock Visibility="{Binding DashboardBindings.DeathsTodayVisibility, FallbackValue=Collapsed}" Text="+" FontSize="20" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding DashboardBindings.DeathsToday, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" 
                                            Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
                                         <TextBlock Text="{Binding Translation.Today, StringFormat='{}/{0:N0}', FallbackValue=/today}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Visibility="{Binding DashboardObject.DeathsThisWeekVisibility, FallbackValue=Collapsed}" Text="+" FontSize="20" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
-                                        <TextBlock Text="{Binding DashboardObject.DeathsThisWeek, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" 
+                                        <TextBlock Visibility="{Binding DashboardBindings.DeathsThisWeekVisibility, FallbackValue=Collapsed}" Text="+" FontSize="20" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding DashboardBindings.DeathsThisWeek, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" 
                                            Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
                                         <TextBlock Text="{Binding Translation.Week, StringFormat='{}/{0:N0}', FallbackValue=/week}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <TextBlock Visibility="{Binding DashboardObject.DeathsThisMonthVisibility, FallbackValue=Collapsed}" Text="+" FontSize="20" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
-                                        <TextBlock Text="{Binding DashboardObject.DeathsThisMonth, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" 
+                                        <TextBlock Visibility="{Binding DashboardBindings.DeathsThisMonthVisibility, FallbackValue=Collapsed}" Text="+" FontSize="20" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding DashboardBindings.DeathsThisMonth, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" 
                                            Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
                                         <TextBlock Text="{Binding Translation.Month, StringFormat='{}/{0:N0}', FallbackValue=/month}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                     </StackPanel>
@@ -133,19 +133,19 @@
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                     <TextBlock Text="{Binding Translation.AverageItemPowerWhenKilling, FallbackValue=AVERAGE__ITEM__POWER__WHEN__KILLING}" MinWidth="400" 
                                        FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    <TextBlock Text="{Binding DashboardObject.AverageItemPowerWhenKilling, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                    <TextBlock Text="{Binding DashboardBindings.AverageItemPowerWhenKilling, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                        MinWidth="100" FontSize="24" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                     <TextBlock Text="{Binding Translation.AverageItemPowerOfTheKilledEnemies, FallbackValue=AVERAGE__ITEM__POWER__OF__THE__KILLED__ENEMIES}" MinWidth="400" 
                                        FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    <TextBlock Text="{Binding DashboardObject.AverageItemPowerOfTheKilledEnemies, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                    <TextBlock Text="{Binding DashboardBindings.AverageItemPowerOfTheKilledEnemies, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                        MinWidth="100" FontSize="24" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                     <TextBlock Text="{Binding Translation.AverageItemPowerWhenDying, FallbackValue=AVERAGE__ITEM__POWER__WHEN__DYING}" MinWidth="400" 
                                        FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    <TextBlock Text="{Binding DashboardObject.AverageItemPowerWhenDying, StringFormat='{} {0:N0}', FallbackValue=0}" 
+                                    <TextBlock Text="{Binding DashboardBindings.AverageItemPowerWhenDying, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                        MinWidth="100" FontSize="24" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
                                 </StackPanel>
                             </StackPanel>

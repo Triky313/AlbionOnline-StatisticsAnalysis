@@ -90,7 +90,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingPartyLootOnly;
         private Axis[] _xAxesDashboardHourValues;
         private ObservableCollection<ISeries> _seriesDashboardHourValues;
-        private DashboardObject _dashboardObject = new();
+        private DashboardBindings _dashboardBindings = new();
         private string _loggingSearchText;
         private Visibility _gridTryToLoadTheItemJsonAgainVisibility;
         private Visibility _toolTasksVisibility = Visibility.Collapsed;
@@ -1307,12 +1307,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public DashboardObject DashboardObject
+        public DashboardBindings DashboardBindings
         {
-            get => _dashboardObject;
+            get => _dashboardBindings;
             set
             {
-                _dashboardObject = value;
+                _dashboardBindings = value;
                 OnPropertyChanged();
             }
         }

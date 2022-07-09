@@ -135,7 +135,7 @@ namespace StatisticsAnalysisTool.Network
         public void Reset()
         {
             _startTime = DateTime.UtcNow;
-            _mainWindowViewModel.DashboardObject.Reset();
+            _mainWindowViewModel.DashboardBindings.Reset();
 
             var factionValues = _mainWindowViewModel.FactionPointStats.FirstOrDefault();
             if (factionValues != null)
@@ -188,11 +188,11 @@ namespace StatisticsAnalysisTool.Network
 
         private void UpdateUi(object sender, EventArgs e)
         {
-            _mainWindowViewModel.DashboardObject.TotalGainedFameInSession = _totalGainedFameInSession;
-            _mainWindowViewModel.DashboardObject.TotalGainedReSpecPointsInSession = _totalGainedReSpecInSession;
-            _mainWindowViewModel.DashboardObject.TotalGainedSilverInSession = _totalGainedSilverInSession;
-            _mainWindowViewModel.DashboardObject.TotalGainedMightInSession = _totalGainedMightInSession;
-            _mainWindowViewModel.DashboardObject.TotalGainedFavorInSession = _totalGainedFavorInSession;
+            _mainWindowViewModel.DashboardBindings.TotalGainedFameInSession = _totalGainedFameInSession;
+            _mainWindowViewModel.DashboardBindings.TotalGainedReSpecPointsInSession = _totalGainedReSpecInSession;
+            _mainWindowViewModel.DashboardBindings.TotalGainedSilverInSession = _totalGainedSilverInSession;
+            _mainWindowViewModel.DashboardBindings.TotalGainedMightInSession = _totalGainedMightInSession;
+            _mainWindowViewModel.DashboardBindings.TotalGainedFavorInSession = _totalGainedFavorInSession;
 
             var factionPointStat = _mainWindowViewModel.FactionPointStats.FirstOrDefault();
             if (factionPointStat != null)
@@ -202,11 +202,11 @@ namespace StatisticsAnalysisTool.Network
                 factionPointStat.Value = _totalGainedFactionPointsInSession;
             }
 
-            _mainWindowViewModel.DashboardObject.FamePerHour = Utilities.GetValuePerHourToDouble(_famePerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-            _mainWindowViewModel.DashboardObject.ReSpecPointsPerHour = Utilities.GetValuePerHourToDouble(_reSpecPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-            _mainWindowViewModel.DashboardObject.SilverPerHour = Utilities.GetValuePerHourToDouble(_silverPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-            _mainWindowViewModel.DashboardObject.MightPerHour = Utilities.GetValuePerHourToDouble(_mightPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-            _mainWindowViewModel.DashboardObject.FavorPerHour = Utilities.GetValuePerHourToDouble(_favorPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+            _mainWindowViewModel.DashboardBindings.FamePerHour = Utilities.GetValuePerHourToDouble(_famePerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+            _mainWindowViewModel.DashboardBindings.ReSpecPointsPerHour = Utilities.GetValuePerHourToDouble(_reSpecPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+            _mainWindowViewModel.DashboardBindings.SilverPerHour = Utilities.GetValuePerHourToDouble(_silverPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+            _mainWindowViewModel.DashboardBindings.MightPerHour = Utilities.GetValuePerHourToDouble(_mightPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
+            _mainWindowViewModel.DashboardBindings.FavorPerHour = Utilities.GetValuePerHourToDouble(_favorPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
 
             var duration = _startTime - DateTime.UtcNow;
             _mainWindowViewModel.MainTrackerTimer = duration.ToString("hh\\:mm\\:ss");
