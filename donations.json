@@ -2,7 +2,7 @@
   {
 	"Timestamp": "2022-07-09T00:00:00",
 	"Amount": 0,
-	"RealMoneyAmount": 50,
+	"RealMoneyAmount": 50.00,
 	"Contributor": "Pixelest",
 	"IsDonationRealMoney": true
  },
