@@ -1,4 +1,11 @@
 [
+  {
+	"Timestamp": "2022-07-09T00:00:00",
+	"Amount": 50,
+	"RealMoneyAmount": 0,
+	"Contributor": "Pixelest",
+	"IsDonationRealMoney": true
+ },
  {
 	"Timestamp": "2022-06-12T00:00:00",
 	"Amount": 2000000,
