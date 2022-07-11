@@ -38,7 +38,7 @@ namespace StatisticsAnalysisTool.Models
         private int _soloKillsToday;
         private int _soloKillsThisWeek;
         private int _soloKillsThisMonth;
-        private LootedChests _lootedChests;
+        private LootedChests _lootedChests = new ();
 
         #region Fame / Respec / Silver / Might / Faction
 

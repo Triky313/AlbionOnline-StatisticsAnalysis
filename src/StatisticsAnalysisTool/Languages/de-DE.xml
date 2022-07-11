@@ -611,4 +611,9 @@
 	<translation name="LOCATION">Ort</translation>
 	<translation name="STORAGE_NAME">Lager Name</translation>
 	<translation name="SELECT_DESELECT_ALL">Alle auswählen / abwählen</translation>
+	<translation name="LOOTED_CHESTS">Geplünderte Truhen</translation>
+	<translation name="STATIC_DUNGEONS">Statische Dungeons</translation>
+	<translation name="AVALONIAN_ROADS">Avalonische Straßen</translation>
+	<translation name="HELLGATES">Höllentore</translation>
+	<translation name="OPEN_WORLD">Offene Welt</translation>
 </translations>

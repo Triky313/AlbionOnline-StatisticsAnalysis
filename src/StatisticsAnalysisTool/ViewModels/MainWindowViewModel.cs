@@ -656,6 +656,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             TrackingController?.ClusterController.RegisterEvents();
             TrackingController?.LootController.RegisterEvents();
+            TrackingController?.TreasureController.RegisterEvents();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
             TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
@@ -678,6 +679,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.StatisticController?.SaveInFile();
             TrackingController?.MailController?.SaveInFile();
             TrackingController?.VaultController?.SaveInFile();
+            TrackingController?.TreasureController.UnregisterEvents();
             TrackingController?.LootController.UnregisterEvents();
             TrackingController?.ClusterController.UnregisterEvents();
             TrackingController?.CountUpTimer?.Stop();

@@ -1,21 +1,17 @@
-using log4net;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
 public class TreasureController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly ObservableCollection<TemporaryTreasure> _temporaryTreasures = new();
@@ -25,6 +21,18 @@ public class TreasureController
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
+
+
+    }
+
+    public void RegisterEvents()
+    {
+        _treasures.CollectionChanged += UpdateLootedChestsDashboardUi;
+    }
+
+    public void UnregisterEvents()
+    {
+        _treasures.CollectionChanged -= UpdateLootedChestsDashboardUi;
     }
 
     public void AddTreasure(int objectId, string uniqueName, string uniqueNameWithLocation)
@@ -37,7 +45,7 @@ public class TreasureController
 
     public void UpdateTreasure(int objectId, List<Guid> openedBy)
     {
-        if (openedBy is not {Count: > 0})
+        if (openedBy is not { Count: > 0 })
         {
             return;
         }
@@ -56,14 +64,230 @@ public class TreasureController
         };
 
         _treasures.Add(test);
-
-        Debug.Print(test.TreasureRarity + " - " + test.TreasureType);
         temporaryTreasure.AlreadyScanned = true;
     }
 
     public void RemoveTemporaryTreasures()
     {
         _temporaryTreasures.Clear();
+    }
+
+    private void UpdateLootedChestsDashboardUi(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (_trackingController.EntityController.LocalUserData.Guid is not { } localPlayerGuid)
+        {
+            return;
+        }
+
+        #region Avalonian roads
+
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadCommonWeek = _treasures.Count(x => x != null 
+                                                                     && x.OpenedBy.Contains(localPlayerGuid)
+                                                                     && x.TreasureRarity == TreasureRarity.Standard
+                                                                     && x.TreasureType == TreasureType.Avalon
+                                                                     && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadCommonMonth = _treasures.Count(x => x != null
+                                                                      && x.OpenedBy.Contains(localPlayerGuid)
+                                                                      && x.TreasureRarity == TreasureRarity.Standard
+                                                                      && x.TreasureType == TreasureType.Avalon
+                                                                      && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadUncommonWeek = _treasures.Count(x => x != null
+                                                                       && x.OpenedBy.Contains(localPlayerGuid)
+                                                                       && x.TreasureRarity == TreasureRarity.Uncommon
+                                                                       && x.TreasureType == TreasureType.Avalon
+                                                                       && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadUncommonMonth = _treasures.Count(x => x != null
+                                                                        && x.OpenedBy.Contains(localPlayerGuid)
+                                                                        && x.TreasureRarity == TreasureRarity.Uncommon
+                                                                        && x.TreasureType == TreasureType.Avalon
+                                                                        && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadEpicWeek = _treasures.Count(x => x != null
+                                                                   && x.OpenedBy.Contains(localPlayerGuid)
+                                                                   && x.TreasureRarity == TreasureRarity.Rare
+                                                                   && x.TreasureType == TreasureType.Avalon
+                                                                   && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadEpicMonth = _treasures.Count(x => x != null
+                                                                    && x.OpenedBy.Contains(localPlayerGuid)
+                                                                    && x.TreasureRarity == TreasureRarity.Rare
+                                                                    && x.TreasureType == TreasureType.Avalon
+                                                                    && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadLegendaryWeek = _treasures.Count(x => x != null
+                                                                        && x.OpenedBy.Contains(localPlayerGuid)
+                                                                        && x.TreasureRarity == TreasureRarity.Legendary
+                                                                        && x.TreasureType == TreasureType.Avalon
+                                                                        && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadLegendaryMonth = _treasures.Count(x => x != null
+                                                                         && x.OpenedBy.Contains(localPlayerGuid)
+                                                                         && x.TreasureRarity == TreasureRarity.Legendary
+                                                                         && x.TreasureType == TreasureType.Avalon
+                                                                         && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+
+        #endregion
+
+        #region Open world
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldCommonWeek = _treasures.Count(x => x != null
+                                                                 && x.OpenedBy.Contains(localPlayerGuid)
+                                                                 && x.TreasureRarity == TreasureRarity.Standard
+                                                                 && x.TreasureType == TreasureType.OpenWorld
+                                                                 && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldCommonMonth = _treasures.Count(x => x != null
+                                                                  && x.OpenedBy.Contains(localPlayerGuid)
+                                                                  && x.TreasureRarity == TreasureRarity.Standard
+                                                                  && x.TreasureType == TreasureType.OpenWorld
+                                                                  && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldUncommonWeek = _treasures.Count(x => x != null
+                                                                   && x.OpenedBy.Contains(localPlayerGuid)
+                                                                   && x.TreasureRarity == TreasureRarity.Uncommon
+                                                                   && x.TreasureType == TreasureType.OpenWorld
+                                                                   && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldUncommonMonth = _treasures.Count(x => x != null
+                                                                    && x.OpenedBy.Contains(localPlayerGuid)
+                                                                    && x.TreasureRarity == TreasureRarity.Uncommon
+                                                                    && x.TreasureType == TreasureType.OpenWorld
+                                                                    && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldEpicWeek = _treasures.Count(x => x != null
+                                                               && x.OpenedBy.Contains(localPlayerGuid)
+                                                               && x.TreasureRarity == TreasureRarity.Rare
+                                                               && x.TreasureType == TreasureType.OpenWorld
+                                                               && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldEpicMonth = _treasures.Count(x => x != null
+                                                                && x.OpenedBy.Contains(localPlayerGuid)
+                                                                && x.TreasureRarity == TreasureRarity.Rare
+                                                                && x.TreasureType == TreasureType.OpenWorld
+                                                                && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldLegendaryWeek = _treasures.Count(x => x != null
+                                                                    && x.OpenedBy.Contains(localPlayerGuid)
+                                                                    && x.TreasureRarity == TreasureRarity.Legendary
+                                                                    && x.TreasureType == TreasureType.OpenWorld
+                                                                    && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldLegendaryMonth = _treasures.Count(x => x != null
+                                                                     && x.OpenedBy.Contains(localPlayerGuid)
+                                                                     && x.TreasureRarity == TreasureRarity.Legendary
+                                                                     && x.TreasureType == TreasureType.OpenWorld
+                                                                     && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        #endregion
+
+        #region Static dungeons
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticCommonWeek = _treasures.Count(x => x != null
+                                                              && x.OpenedBy.Contains(localPlayerGuid)
+                                                              && x.TreasureRarity == TreasureRarity.Standard
+                                                              && x.TreasureType == TreasureType.StaticDungeon
+                                                              && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticCommonMonth = _treasures.Count(x => x != null
+                                                               && x.OpenedBy.Contains(localPlayerGuid)
+                                                               && x.TreasureRarity == TreasureRarity.Standard
+                                                               && x.TreasureType == TreasureType.StaticDungeon
+                                                               && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticUncommonWeek = _treasures.Count(x => x != null
+                                                                && x.OpenedBy.Contains(localPlayerGuid)
+                                                                && x.TreasureRarity == TreasureRarity.Uncommon
+                                                                && x.TreasureType == TreasureType.StaticDungeon
+                                                                && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticUncommonMonth = _treasures.Count(x => x != null
+                                                                 && x.OpenedBy.Contains(localPlayerGuid)
+                                                                 && x.TreasureRarity == TreasureRarity.Uncommon
+                                                                 && x.TreasureType == TreasureType.StaticDungeon
+                                                                 && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticEpicWeek = _treasures.Count(x => x != null
+                                                            && x.OpenedBy.Contains(localPlayerGuid)
+                                                            && x.TreasureRarity == TreasureRarity.Rare
+                                                            && x.TreasureType == TreasureType.StaticDungeon
+                                                            && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticEpicMonth = _treasures.Count(x => x != null
+                                                             && x.OpenedBy.Contains(localPlayerGuid)
+                                                             && x.TreasureRarity == TreasureRarity.Rare
+                                                             && x.TreasureType == TreasureType.StaticDungeon
+                                                             && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticLegendaryWeek = _treasures.Count(x => x != null
+                                                                 && x.OpenedBy.Contains(localPlayerGuid)
+                                                                 && x.TreasureRarity == TreasureRarity.Legendary
+                                                                 && x.TreasureType == TreasureType.StaticDungeon
+                                                                 && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticLegendaryMonth = _treasures.Count(x => x != null
+                                                                  && x.OpenedBy.Contains(localPlayerGuid)
+                                                                  && x.TreasureRarity == TreasureRarity.Legendary
+                                                                  && x.TreasureType == TreasureType.StaticDungeon
+                                                                  && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        #endregion
+
+        #region HellGate
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateCommonWeek = _treasures.Count(x => x != null
+                                                                && x.OpenedBy.Contains(localPlayerGuid)
+                                                                && x.TreasureRarity == TreasureRarity.Standard
+                                                                && x.TreasureType == TreasureType.HellGate
+                                                                && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateCommonMonth = _treasures.Count(x => x != null
+                                                                 && x.OpenedBy.Contains(localPlayerGuid)
+                                                                 && x.TreasureRarity == TreasureRarity.Standard
+                                                                 && x.TreasureType == TreasureType.HellGate
+                                                                 && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateUncommonWeek = _treasures.Count(x => x != null
+                                                                  && x.OpenedBy.Contains(localPlayerGuid)
+                                                                  && x.TreasureRarity == TreasureRarity.Uncommon
+                                                                  && x.TreasureType == TreasureType.HellGate
+                                                                  && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateUncommonMonth = _treasures.Count(x => x != null
+                                                                   && x.OpenedBy.Contains(localPlayerGuid)
+                                                                   && x.TreasureRarity == TreasureRarity.Uncommon
+                                                                   && x.TreasureType == TreasureType.HellGate
+                                                                   && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateEpicWeek = _treasures.Count(x => x != null
+                                                              && x.OpenedBy.Contains(localPlayerGuid)
+                                                              && x.TreasureRarity == TreasureRarity.Rare
+                                                              && x.TreasureType == TreasureType.HellGate
+                                                              && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateEpicMonth = _treasures.Count(x => x != null
+                                                               && x.OpenedBy.Contains(localPlayerGuid)
+                                                               && x.TreasureRarity == TreasureRarity.Rare
+                                                               && x.TreasureType == TreasureType.HellGate
+                                                               && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateLegendaryWeek = _treasures.Count(x => x != null
+                                                                   && x.OpenedBy.Contains(localPlayerGuid)
+                                                                   && x.TreasureRarity == TreasureRarity.Legendary
+                                                                   && x.TreasureType == TreasureType.HellGate
+                                                                   && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-7));
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateLegendaryMonth = _treasures.Count(x => x != null
+                                                                    && x.OpenedBy.Contains(localPlayerGuid)
+                                                                    && x.TreasureRarity == TreasureRarity.Legendary
+                                                                    && x.TreasureType == TreasureType.HellGate
+                                                                    && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(-30));
+
+        #endregion
     }
 
     private static TreasureRarity GetRarity(string value)
