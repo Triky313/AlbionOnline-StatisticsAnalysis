@@ -654,16 +654,18 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            TrackingController?.ClusterController.RegisterEvents();
-            TrackingController?.LootController.RegisterEvents();
-            TrackingController?.TreasureController.RegisterEvents();
+            TrackingController?.StatisticController?.LoadFromFile();
+            TrackingController?.MailController?.LoadFromFile();
+            TrackingController?.TreasureController?.LoadFromFile();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
             TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
-            TrackingController?.StatisticController?.LoadFromFile();
-            TrackingController?.MailController?.LoadFromFile();
             TrackingController?.VaultController?.LoadFromFile();
+
+            TrackingController?.ClusterController.RegisterEvents();
+            TrackingController?.LootController.RegisterEvents();
+            TrackingController?.TreasureController?.RegisterEvents();
 
             TrackingController?.CountUpTimer.Start();
 
@@ -675,14 +677,17 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StopTracking()
         {
-            TrackingController?.DungeonController?.SaveDungeonsInFile();
-            TrackingController?.StatisticController?.SaveInFile();
-            TrackingController?.MailController?.SaveInFile();
-            TrackingController?.VaultController?.SaveInFile();
+            TrackingController?.CountUpTimer?.Stop();
+
             TrackingController?.TreasureController.UnregisterEvents();
             TrackingController?.LootController.UnregisterEvents();
             TrackingController?.ClusterController.UnregisterEvents();
-            TrackingController?.CountUpTimer?.Stop();
+
+            TrackingController?.DungeonController?.SaveDungeonsInFile();
+            TrackingController?.MailController?.SaveInFile();
+            TrackingController?.VaultController?.SaveInFile();
+            TrackingController?.TreasureController?.SaveInFile();
+            TrackingController?.StatisticController?.SaveInFile();
 
             NetworkManager.StopNetworkCapture();
 

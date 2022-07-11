@@ -41,7 +41,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel = mainWindowViewModel;
             InitStartHourValues();
         }
-
+        
         #region Dashboard
 
         private void InitStartHourValues()

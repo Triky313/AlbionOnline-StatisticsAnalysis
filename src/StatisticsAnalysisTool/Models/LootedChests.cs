@@ -40,6 +40,49 @@ public class LootedChests : INotifyPropertyChanged
     private int _hellGatesLegendaryWeek;
     private int _hellGatesLegendaryMonth;
 
+    public LootedChests(LootedChestsSaveObject lootedChestsSaveObject)
+    {
+        OpenWorldCommonWeek = lootedChestsSaveObject.OpenWorldCommonWeek;
+        OpenWorldCommonMonth = lootedChestsSaveObject.OpenWorldCommonMonth;
+        OpenWorldUncommonWeek = lootedChestsSaveObject.OpenWorldUncommonWeek;
+        OpenWorldUncommonMonth = lootedChestsSaveObject.OpenWorldUncommonMonth;
+        OpenWorldEpicWeek = lootedChestsSaveObject.OpenWorldEpicWeek;
+        OpenWorldEpicMonth = lootedChestsSaveObject.OpenWorldEpicMonth;
+        OpenWorldLegendaryWeek = lootedChestsSaveObject.OpenWorldLegendaryWeek;
+        OpenWorldLegendaryMonth = lootedChestsSaveObject.OpenWorldLegendaryMonth;
+
+        StaticCommonWeek = lootedChestsSaveObject.StaticCommonWeek;
+        StaticCommonMonth = lootedChestsSaveObject.StaticCommonMonth;
+        StaticUncommonWeek = lootedChestsSaveObject.StaticUncommonWeek;
+        StaticUncommonMonth = lootedChestsSaveObject.StaticUncommonMonth;
+        StaticEpicWeek = lootedChestsSaveObject.StaticEpicWeek;
+        StaticEpicMonth = lootedChestsSaveObject.StaticEpicMonth;
+        StaticLegendaryWeek = lootedChestsSaveObject.StaticLegendaryWeek;
+        StaticLegendaryMonth = lootedChestsSaveObject.StaticLegendaryMonth;
+
+        AvalonianRoadCommonWeek = lootedChestsSaveObject.AvalonianRoadCommonWeek;
+        AvalonianRoadCommonMonth = lootedChestsSaveObject.AvalonianRoadCommonMonth;
+        AvalonianRoadUncommonWeek = lootedChestsSaveObject.AvalonianRoadUncommonWeek;
+        AvalonianRoadUncommonMonth = lootedChestsSaveObject.AvalonianRoadUncommonMonth;
+        AvalonianRoadEpicWeek = lootedChestsSaveObject.AvalonianRoadEpicWeek;
+        AvalonianRoadEpicMonth = lootedChestsSaveObject.AvalonianRoadEpicMonth;
+        AvalonianRoadLegendaryWeek = lootedChestsSaveObject.AvalonianRoadLegendaryWeek;
+        AvalonianRoadLegendaryMonth = lootedChestsSaveObject.AvalonianRoadLegendaryMonth;
+
+        HellGateCommonWeek = lootedChestsSaveObject.HellGateCommonWeek;
+        HellGateCommonMonth = lootedChestsSaveObject.HellGateCommonMonth;
+        HellGateUncommonWeek = lootedChestsSaveObject.HellGateUncommonWeek;
+        HellGateUncommonMonth = lootedChestsSaveObject.HellGateUncommonMonth;
+        HellGateEpicWeek = lootedChestsSaveObject.HellGateEpicWeek;
+        HellGateEpicMonth = lootedChestsSaveObject.HellGateEpicMonth;
+        HellGateLegendaryWeek = lootedChestsSaveObject.HellGateLegendaryWeek;
+        HellGateLegendaryMonth = lootedChestsSaveObject.HellGateLegendaryMonth;
+    }
+
+    public LootedChests()
+    {
+    }
+
     #region OpenWorld bindings
 
     public int OpenWorldCommonWeek

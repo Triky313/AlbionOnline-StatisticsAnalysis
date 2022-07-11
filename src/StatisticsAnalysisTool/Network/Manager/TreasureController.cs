@@ -5,24 +5,31 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
+using log4net;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
 public class TreasureController
 {
+    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
     private readonly TrackingController _trackingController;
     private readonly MainWindowViewModel _mainWindowViewModel;
     private readonly ObservableCollection<TemporaryTreasure> _temporaryTreasures = new();
-    private readonly ObservableCollection<Treasure> _treasures = new();
+    private ObservableCollection<Treasure> _treasures;
 
     public TreasureController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
     {
         _trackingController = trackingController;
         _mainWindowViewModel = mainWindowViewModel;
-
-
     }
 
     public void RegisterEvents()
@@ -72,7 +79,7 @@ public class TreasureController
         _temporaryTreasures.Clear();
     }
 
-    private void UpdateLootedChestsDashboardUi(object sender, NotifyCollectionChangedEventArgs e)
+    private void UpdateLootedChestsDashboardUi(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
     {
         #region Avalonian roads
         
@@ -126,6 +133,8 @@ public class TreasureController
 
         #endregion
     }
+
+    #region Helper methods
 
     private int GetStats(TreasureRarity treasureRarity, TreasureType treasureType, int lastDays = -90)
     {
@@ -214,4 +223,51 @@ public class TreasureController
 
         return TreasureType.Unknown;
     }
+
+    #endregion
+
+    #region Load / Save local file data
+
+    public void LoadFromFile()
+    {
+        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.TreasureStatsFileName}";
+
+        if (File.Exists(localFilePath))
+        {
+            try
+            {
+                var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
+                var treasures = JsonSerializer.Deserialize<ObservableCollection<Treasure>>(localFileString) ?? new ObservableCollection<Treasure>();
+                _treasures = treasures;
+                return;
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                _treasures = new ObservableCollection<Treasure>();
+                return;
+            }
+        }
+
+        _treasures = new ObservableCollection<Treasure>();
+    }
+
+    public void SaveInFile()
+    {
+        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.TreasureStatsFileName}";
+
+        try
+        {
+            var fileString = JsonSerializer.Serialize(_treasures);
+            File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+        }
+    }
+
+    #endregion
 }

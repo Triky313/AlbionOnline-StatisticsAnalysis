@@ -110,5 +110,8 @@
     <Setting Name="PlayerKillsDeathsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">PlayerKillsDeaths.json</Value>
     </Setting>
+    <Setting Name="TreasureStatsFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TreasureStats.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
