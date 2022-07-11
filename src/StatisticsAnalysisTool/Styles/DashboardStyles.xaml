@@ -211,59 +211,59 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock Text="{Binding Translation.SoloKills, FallbackValue=SOLO_KILLS}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationSoloKills, FallbackValue=SOLO_KILLS}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" HorizontalAlignment="Center" />
                                     <TextBlock Text="*" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.5}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="{Binding SoloKillsToday, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                    <TextBlock Text="{Binding Translation.Today, StringFormat='{}/{0:N0}', FallbackValue=/today}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationToday, StringFormat='{}/{0:N0}', FallbackValue=/today}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="{Binding SoloKillsThisWeek, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                    <TextBlock Text="{Binding Translation.Week, StringFormat='{}/{0:N0}', FallbackValue=/week}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationWeek, StringFormat='{}/{0:N0}', FallbackValue=/week}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="{Binding SoloKillsThisMonth, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                    <TextBlock Text="{Binding Translation.Month, StringFormat='{}/{0:N0}', FallbackValue=/month}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationMonth, StringFormat='{}/{0:N0}', FallbackValue=/month}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock Text="{Binding Translation.Kills, FallbackValue=KILLS}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationKills, FallbackValue=KILLS}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" HorizontalAlignment="Center" />
                                     <TextBlock Text="*" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.5}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="{Binding KillsToday, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                    <TextBlock Text="{Binding Translation.Today, StringFormat='{}/{0:N0}', FallbackValue=/today}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationToday, StringFormat='{}/{0:N0}', FallbackValue=/today}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="{Binding KillsThisWeek, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                    <TextBlock Text="{Binding Translation.Week, StringFormat='{}/{0:N0}', FallbackValue=/week}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationWeek, StringFormat='{}/{0:N0}', FallbackValue=/week}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="{Binding KillsThisMonth, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
-                                    <TextBlock Text="{Binding Translation.Month, StringFormat='{}/{0:N0}', FallbackValue=/month}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationMonth, StringFormat='{}/{0:N0}', FallbackValue=/month}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock Text="{Binding Translation.Deaths, FallbackValue=DEATHS}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationDeaths, FallbackValue=DEATHS}" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" HorizontalAlignment="Center" />
                                     <TextBlock Text="*" FontSize="14" Foreground="{StaticResource SolidColorBrush.Text.5}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="{Binding DeathsToday, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" 
                                                Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
-                                    <TextBlock Text="{Binding Translation.Today, StringFormat='{}/{0:N0}', FallbackValue=/today}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationToday, StringFormat='{}/{0:N0}', FallbackValue=/today}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="{Binding DeathsThisWeek, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" 
                                                Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
-                                    <TextBlock Text="{Binding Translation.Week, StringFormat='{}/{0:N0}', FallbackValue=/week}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationWeek, StringFormat='{}/{0:N0}', FallbackValue=/week}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="{Binding DeathsThisMonth, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="32" FontWeight="Light" 
                                                Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" VerticalAlignment="Center" />
-                                    <TextBlock Text="{Binding Translation.Month, StringFormat='{}/{0:N0}', FallbackValue=/month}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding TranslationMonth, StringFormat='{}/{0:N0}', FallbackValue=/month}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.1}" VerticalAlignment="Center" />
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
@@ -271,19 +271,19 @@
                     <StackPanel HorizontalAlignment="Center">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <TextBlock Text="{Binding Translation.AverageItemPowerWhenKilling, FallbackValue=AVERAGE__ITEM__POWER__WHEN__KILLING}" MinWidth="400" 
+                                <TextBlock Text="{Binding TranslationAverageItemPowerWhenKilling, FallbackValue=AVERAGE__ITEM__POWER__WHEN__KILLING}" MinWidth="400" 
                                            FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding AverageItemPowerWhenKilling, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                            MinWidth="100" FontSize="24" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <TextBlock Text="{Binding Translation.AverageItemPowerOfTheKilledEnemies, FallbackValue=AVERAGE__ITEM__POWER__OF__THE__KILLED__ENEMIES}" MinWidth="400" 
+                                <TextBlock Text="{Binding TranslationAverageItemPowerOfTheKilledEnemies, FallbackValue=AVERAGE__ITEM__POWER__OF__THE__KILLED__ENEMIES}" MinWidth="400" 
                                            FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding AverageItemPowerOfTheKilledEnemies, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                            MinWidth="100" FontSize="24" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <TextBlock Text="{Binding Translation.AverageItemPowerWhenDying, FallbackValue=AVERAGE__ITEM__POWER__WHEN__DYING}" MinWidth="400" 
+                                <TextBlock Text="{Binding TranslationAverageItemPowerWhenDying, FallbackValue=AVERAGE__ITEM__POWER__WHEN__DYING}" MinWidth="400" 
                                            FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding AverageItemPowerWhenDying, StringFormat='{} {0:N0}', FallbackValue=0}" 
                                            MinWidth="100" FontSize="24" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" VerticalAlignment="Center" />
@@ -293,10 +293,10 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="10,0,0,10">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <TextBlock Text="{Binding Translation.DataFromAlbionOnlineServers, StringFormat='{}*{0:N0}', FallbackValue=DATA__FROM__ALBION__ONLINE__SERVER}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.5}" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding TranslationDataFromAlbionOnlineServers, StringFormat='{}*{0:N0}', FallbackValue=DATA__FROM__ALBION__ONLINE__SERVER}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.5}" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <TextBlock Text="{Binding Translation.LastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.5}" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding TranslationLastUpdate, StringFormat='{}{0:N0}: ', FallbackValue=LAST_UPDATE:}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.5}" VerticalAlignment="Center" />
                         <TextBlock Text="{Binding LastUpdate, StringFormat='{}{0:hh}:{0:mm}:{0:ss} UTC', ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, FallbackValue=00:00:00}" FontSize="12" Foreground="{StaticResource SolidColorBrush.Text.5}" VerticalAlignment="Center" />
                     </StackPanel>
                 </StackPanel>
