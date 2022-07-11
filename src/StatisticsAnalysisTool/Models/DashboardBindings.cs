@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Models.TranslationModel;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -39,6 +40,7 @@ namespace StatisticsAnalysisTool.Models
         private int _soloKillsThisWeek;
         private int _soloKillsThisMonth;
         private LootedChests _lootedChests = new ();
+        private DashboardWindowTranslation _translation;
 
         #region Fame / Respec / Silver / Might / Faction
 
@@ -396,6 +398,16 @@ namespace StatisticsAnalysisTool.Models
         }
 
         #endregion
+
+        public DashboardWindowTranslation Translation
+        {
+            get => _translation;
+            set
+            {
+                _translation = value;
+                OnPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
