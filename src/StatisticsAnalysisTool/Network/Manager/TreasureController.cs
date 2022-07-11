@@ -95,7 +95,7 @@ public class TreasureController
         _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadEpicWeek = GetStats(TreasureRarity.Rare, TreasureType.Avalon, -7);
         _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadEpicMonth = GetStats(TreasureRarity.Rare, TreasureType.Avalon, -30);
         _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadLegendaryWeek = GetStats(TreasureRarity.Legendary, TreasureType.Avalon, -7);
-        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadLegendaryMonth = GetStats(TreasureRarity.Legendary, TreasureType.OpenWorld, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadLegendaryMonth = GetStats(TreasureRarity.Legendary, TreasureType.Avalon, -30);
 
         #endregion
 
