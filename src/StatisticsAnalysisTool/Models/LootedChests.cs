@@ -39,50 +39,23 @@ public class LootedChests : INotifyPropertyChanged
     private int _hellGatesEpicMonth;
     private int _hellGatesLegendaryWeek;
     private int _hellGatesLegendaryMonth;
-
-    public LootedChests(LootedChestsSaveObject lootedChestsSaveObject)
-    {
-        OpenWorldCommonWeek = lootedChestsSaveObject.OpenWorldCommonWeek;
-        OpenWorldCommonMonth = lootedChestsSaveObject.OpenWorldCommonMonth;
-        OpenWorldUncommonWeek = lootedChestsSaveObject.OpenWorldUncommonWeek;
-        OpenWorldUncommonMonth = lootedChestsSaveObject.OpenWorldUncommonMonth;
-        OpenWorldEpicWeek = lootedChestsSaveObject.OpenWorldEpicWeek;
-        OpenWorldEpicMonth = lootedChestsSaveObject.OpenWorldEpicMonth;
-        OpenWorldLegendaryWeek = lootedChestsSaveObject.OpenWorldLegendaryWeek;
-        OpenWorldLegendaryMonth = lootedChestsSaveObject.OpenWorldLegendaryMonth;
-
-        StaticCommonWeek = lootedChestsSaveObject.StaticCommonWeek;
-        StaticCommonMonth = lootedChestsSaveObject.StaticCommonMonth;
-        StaticUncommonWeek = lootedChestsSaveObject.StaticUncommonWeek;
-        StaticUncommonMonth = lootedChestsSaveObject.StaticUncommonMonth;
-        StaticEpicWeek = lootedChestsSaveObject.StaticEpicWeek;
-        StaticEpicMonth = lootedChestsSaveObject.StaticEpicMonth;
-        StaticLegendaryWeek = lootedChestsSaveObject.StaticLegendaryWeek;
-        StaticLegendaryMonth = lootedChestsSaveObject.StaticLegendaryMonth;
-
-        AvalonianRoadCommonWeek = lootedChestsSaveObject.AvalonianRoadCommonWeek;
-        AvalonianRoadCommonMonth = lootedChestsSaveObject.AvalonianRoadCommonMonth;
-        AvalonianRoadUncommonWeek = lootedChestsSaveObject.AvalonianRoadUncommonWeek;
-        AvalonianRoadUncommonMonth = lootedChestsSaveObject.AvalonianRoadUncommonMonth;
-        AvalonianRoadEpicWeek = lootedChestsSaveObject.AvalonianRoadEpicWeek;
-        AvalonianRoadEpicMonth = lootedChestsSaveObject.AvalonianRoadEpicMonth;
-        AvalonianRoadLegendaryWeek = lootedChestsSaveObject.AvalonianRoadLegendaryWeek;
-        AvalonianRoadLegendaryMonth = lootedChestsSaveObject.AvalonianRoadLegendaryMonth;
-
-        HellGateCommonWeek = lootedChestsSaveObject.HellGateCommonWeek;
-        HellGateCommonMonth = lootedChestsSaveObject.HellGateCommonMonth;
-        HellGateUncommonWeek = lootedChestsSaveObject.HellGateUncommonWeek;
-        HellGateUncommonMonth = lootedChestsSaveObject.HellGateUncommonMonth;
-        HellGateEpicWeek = lootedChestsSaveObject.HellGateEpicWeek;
-        HellGateEpicMonth = lootedChestsSaveObject.HellGateEpicMonth;
-        HellGateLegendaryWeek = lootedChestsSaveObject.HellGateLegendaryWeek;
-        HellGateLegendaryMonth = lootedChestsSaveObject.HellGateLegendaryMonth;
-    }
-
-    public LootedChests()
-    {
-    }
-
+    private int _outlandsCommonYear;
+    private int _outlandsUncommonYear;
+    private int _outlandsEpicYear;
+    private int _outlandsLegendaryYear;
+    private int _staticCommonYear;
+    private int _staticUncommonYear;
+    private int _staticEpicYear;
+    private int _staticLegendaryYear;
+    private int _avalonianRoadCommonYear;
+    private int _avalonianRoadUncommonYear;
+    private int _avalonianRoadEpicYear;
+    private int _avalonianRoadLegendaryYear;
+    private int _hellGatesCommonYear;
+    private int _hellGatesUncommonYear;
+    private int _hellGatesEpicYear;
+    private int _hellGatesLegendaryYear;
+    
     #region OpenWorld bindings
 
     public int OpenWorldCommonWeek
@@ -101,6 +74,16 @@ public class LootedChests : INotifyPropertyChanged
         set
         {
             _outlandsCommonMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int OpenWorldCommonYear
+    {
+        get => _outlandsCommonYear;
+        set
+        {
+            _outlandsCommonYear = value;
             OnPropertyChanged();
         }
     }
@@ -125,6 +108,16 @@ public class LootedChests : INotifyPropertyChanged
         }
     }
 
+    public int OpenWorldUncommonYear
+    {
+        get => _outlandsUncommonYear;
+        set
+        {
+            _outlandsUncommonYear = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int OpenWorldEpicWeek
     {
         get => _outlandsEpicWeek;
@@ -144,6 +137,17 @@ public class LootedChests : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    public int OpenWorldEpicYear
+    {
+        get => _outlandsEpicYear;
+        set
+        {
+            _outlandsEpicYear = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int OpenWorldLegendaryWeek
     {
         get => _outlandsLegendaryWeek;
@@ -160,6 +164,16 @@ public class LootedChests : INotifyPropertyChanged
         set
         {
             _outlandsLegendaryMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int OpenWorldLegendaryYear
+    {
+        get => _outlandsLegendaryYear;
+        set
+        {
+            _outlandsLegendaryYear = value;
             OnPropertyChanged();
         }
     }
@@ -188,6 +202,16 @@ public class LootedChests : INotifyPropertyChanged
         }
     }
 
+    public int StaticCommonYear
+    {
+        get => _staticCommonYear;
+        set
+        {
+            _staticCommonYear = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int StaticUncommonWeek
     {
         get => _staticUncommonWeek;
@@ -204,6 +228,16 @@ public class LootedChests : INotifyPropertyChanged
         set
         {
             _staticUncommonMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int StaticUncommonYear
+    {
+        get => _staticUncommonYear;
+        set
+        {
+            _staticUncommonYear = value;
             OnPropertyChanged();
         }
     }
@@ -227,6 +261,17 @@ public class LootedChests : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    public int StaticEpicYear
+    {
+        get => _staticEpicYear;
+        set
+        {
+            _staticEpicYear = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int StaticLegendaryWeek
     {
         get => _staticLegendaryWeek;
@@ -243,6 +288,16 @@ public class LootedChests : INotifyPropertyChanged
         set
         {
             _staticLegendaryMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int StaticLegendaryYear
+    {
+        get => _staticLegendaryYear;
+        set
+        {
+            _staticLegendaryYear = value;
             OnPropertyChanged();
         }
     }
@@ -271,6 +326,16 @@ public class LootedChests : INotifyPropertyChanged
         }
     }
 
+    public int AvalonianRoadCommonYear
+    {
+        get => _avalonianRoadCommonYear;
+        set
+        {
+            _avalonianRoadCommonYear = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int AvalonianRoadUncommonWeek
     {
         get => _avalonianRoadUncommonWeek;
@@ -287,6 +352,16 @@ public class LootedChests : INotifyPropertyChanged
         set
         {
             _avalonianRoadUncommonMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int AvalonianRoadUncommonYear
+    {
+        get => _avalonianRoadUncommonYear;
+        set
+        {
+            _avalonianRoadUncommonYear = value;
             OnPropertyChanged();
         }
     }
@@ -310,6 +385,17 @@ public class LootedChests : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    public int AvalonianRoadEpicYear
+    {
+        get => _avalonianRoadEpicYear;
+        set
+        {
+            _avalonianRoadEpicYear = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int AvalonianRoadLegendaryWeek
     {
         get => _avalonianRoadLegendaryWeek;
@@ -326,6 +412,16 @@ public class LootedChests : INotifyPropertyChanged
         set
         {
             _avalonianRoadLegendaryMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int AvalonianRoadLegendaryYear
+    {
+        get => _avalonianRoadLegendaryYear;
+        set
+        {
+            _avalonianRoadLegendaryYear = value;
             OnPropertyChanged();
         }
     }
@@ -354,6 +450,16 @@ public class LootedChests : INotifyPropertyChanged
         }
     }
 
+    public int HellGateCommonYear
+    {
+        get => _hellGatesCommonYear;
+        set
+        {
+            _hellGatesCommonYear = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int HellGateUncommonWeek
     {
         get => _hellGatesUncommonWeek;
@@ -370,6 +476,16 @@ public class LootedChests : INotifyPropertyChanged
         set
         {
             _hellGatesUncommonMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int HellGateUncommonYear
+    {
+        get => _hellGatesUncommonYear;
+        set
+        {
+            _hellGatesUncommonYear = value;
             OnPropertyChanged();
         }
     }
@@ -393,6 +509,17 @@ public class LootedChests : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    public int HellGateEpicYear
+    {
+        get => _hellGatesEpicYear;
+        set
+        {
+            _hellGatesEpicYear = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int HellGateLegendaryWeek
     {
         get => _hellGatesLegendaryWeek;
@@ -413,6 +540,16 @@ public class LootedChests : INotifyPropertyChanged
         }
     }
 
+    public int HellGateLegendaryYear
+    {
+        get => _hellGatesLegendaryYear;
+        set
+        {
+            _hellGatesLegendaryYear = value;
+            OnPropertyChanged();
+        }
+    }
+
     #endregion
 
     public static string TranslationLootedChests => LanguageController.Translation("LOOTED_CHESTS");
@@ -420,6 +557,9 @@ public class LootedChests : INotifyPropertyChanged
     public static string TranslationStaticDungeons => LanguageController.Translation("STATIC_DUNGEONS");
     public static string TranslationAvalonianRoads => LanguageController.Translation("AVALONIAN_ROADS");
     public static string TranslationHellGates => LanguageController.Translation("HELLGATES");
+    public static string TranslationLast7Days => LanguageController.Translation("LAST_7_DAYS");
+    public static string TranslationLast30Days => LanguageController.Translation("LAST_30_DAYS");
+    public static string TranslationLast365Days => LanguageController.Translation("LAST_365_DAYS");
 
     public event PropertyChangedEventHandler PropertyChanged;
 
