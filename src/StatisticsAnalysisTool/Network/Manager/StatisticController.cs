@@ -93,7 +93,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             _dashboardStatistics.Add(new DailyValues(valueType, gainedValue, dateTimeNow));
 
-            UpdateDailyChart(_stats);
+            //UpdateDailyChart(_stats);
         }
         
         private void UpdateDailyChart(ObservableCollection<DashboardHourObject> stats)
