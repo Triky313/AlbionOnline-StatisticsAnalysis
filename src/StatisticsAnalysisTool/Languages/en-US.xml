@@ -616,4 +616,7 @@
 	<translation name="AVALONIAN_ROADS">Avalonian roads</translation>
 	<translation name="HELLGATES">Hellgates</translation>
 	<translation name="OPEN_WORLD">Open world</translation>
+	<translation name="LAST_7_DAYS">Last 7 days</translation>
+	<translation name="LAST_30_DAYS">Last 30 days</translation>
+	<translation name="LAST_365_DAYS">Last 365 days</translation>
 </translations>
