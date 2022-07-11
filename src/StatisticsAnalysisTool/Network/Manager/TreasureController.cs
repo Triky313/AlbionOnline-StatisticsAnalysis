@@ -79,6 +79,11 @@ public class TreasureController
         _temporaryTreasures.Clear();
     }
 
+    public void UpdateLootedChestsDashboardUi()
+    {
+        UpdateLootedChestsDashboardUi(null, null);
+    }
+
     private void UpdateLootedChestsDashboardUi(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
     {
         #region Avalonian roads
