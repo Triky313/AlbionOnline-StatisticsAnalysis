@@ -51,9 +51,9 @@ namespace StatisticsAnalysisTool.Enumerations
         LaborerObjectInfo,
         LaborerObjectJobInfo,
         MarketPlaceBuildingInfo,
-        HarvestStart,
+        HarvestStart, // map[0:5270 1:637926215956544319 2:637926215956544319 3:4250 4:16 5:1.6169999 6:5287 7:2195 252:52] - 0 = UserId, 3 = ObjectId, 7 = Abbau-Tool (T8_2H_TOOL_SICKLE), 
         HarvestCancel,
-        HarvestFinished,
+        HarvestFinished, // map[0:5270 1:637926215956544319 2:637926215972723131 3:4250 4:1 5:1 7:28 8:[] 9:[] 252:54] - 0 = UserId, 3 = ObjectId, 4 = Res Standard Quantity 5 = Sammelbonus Res, 6 = Premium Bonus Res, 7 = Inhalt in der Ressource
         TakeSilver = 55, // map[0:-57 1:2178162 2:-57 3:10000000 8:10000 252:55]
         ActionOnBuildingStart,
         ActionOnBuildingCancel,
@@ -369,8 +369,8 @@ namespace StatisticsAnalysisTool.Enumerations
         TutorialUpdate,
         TriggerHintBox,
         RandomDungeonPositionInfo,
-        NewLootChest = 370, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367]
-        UpdateLootChest = 371, // map[0:23 1:4 2:637734315213820408 3:[] 4:[] 9:true 252:368]
+        NewLootChest = 370, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367] // map[0:4399 1:[165 -263] 3:TREASURE_SOLO_UNCOMMON 4:SWAMP_DEAD_LOOTCHEST_TREASURE_SOLO_UNCOMMON 5:4 6:637926439332719127 7:[] 8:[] 13:true 14:SWAMP_DEAD_TREASURE_SOLO 16:31ff503a-ded6-53d6-974a-7e32e3126457 252:370]
+        UpdateLootChest = 371, // 0=ObjectId, 3=PlayerGuid, 4=PlayerGuid map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
         LootChestOpened = 372, // map[0:23 252:369]
         NewShrine = 374, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
         UpdateShrine = 375, // map[0:19 1:2 2:637734313445294913 252:372]

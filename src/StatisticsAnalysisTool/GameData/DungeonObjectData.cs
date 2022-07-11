@@ -167,29 +167,29 @@ namespace StatisticsAnalysisTool.GameData
 
         #region Chest
 
-        public static ChestRarity GetChestRarity(string value)
+        public static TreasureRarity GetChestRarity(string value)
         {
             if (value.Contains("BOOKCHEST_STANDARD") || value.Contains("CHEST_STANDARD") || value.Contains("NORMAL_STANDARD") || (value.Contains("AVALON") && value.Contains("STANDARD")))
             {
-                return ChestRarity.Standard;
+                return TreasureRarity.Standard;
             }
 
             if (value.Contains("BOOKCHEST_UNCOMMON") || value.Contains("CHEST_UNCOMMON") || value.Contains("NORMAL_UNCOMMON") || value.Contains("CHEST_BOSS_UNCOMMON") || (value.Contains("AVALON") && value.Contains("UNCOMMON")))
             {
-                return ChestRarity.Uncommon;
+                return TreasureRarity.Uncommon;
             }
 
             if (value.Contains("BOOKCHEST_RARE") || value.Contains("CHEST_RARE") || value.Contains("NORMAL_RARE") || value.Contains("CHEST_BOSS_RARE") || (value.Contains("AVALON") && value.Contains("RARE")))
             {
-                return ChestRarity.Rare;
+                return TreasureRarity.Rare;
             }
 
             if (value.Contains("BOOKCHEST_LEGENDARY") || value.Contains("CHEST_LEGENDARY") || value.Contains("NORMAL_LEGENDARY") || value.Contains("CHEST_BOSS_LEGENDARY") || (value.Contains("AVALON") && value.Contains("LEGENDARY")))
             {
-                return ChestRarity.Legendary;
+                return TreasureRarity.Legendary;
             }
 
-            return ChestRarity.Unknown;
+            return TreasureRarity.Unknown;
         }
 
         public static bool IsBossChest(string value)

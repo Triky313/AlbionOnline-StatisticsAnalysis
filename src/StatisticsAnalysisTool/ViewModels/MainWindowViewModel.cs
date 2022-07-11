@@ -90,7 +90,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isTrackingPartyLootOnly;
         private Axis[] _xAxesDashboardHourValues;
         private ObservableCollection<ISeries> _seriesDashboardHourValues;
-        private DashboardObject _dashboardObject = new();
+        private DashboardBindings _dashboardBindings = new();
         private string _loggingSearchText;
         private Visibility _gridTryToLoadTheItemJsonAgainVisibility;
         private Visibility _toolTasksVisibility = Visibility.Collapsed;
@@ -654,15 +654,18 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            TrackingController?.ClusterController.RegisterEvents();
-            TrackingController?.LootController.RegisterEvents();
+            TrackingController?.StatisticController?.LoadFromFile();
+            TrackingController?.MailController?.LoadFromFile();
+            TrackingController?.TreasureController?.LoadFromFile();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
             TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
-            TrackingController?.StatisticController?.LoadFromFile();
-            TrackingController?.MailController?.LoadFromFile();
             TrackingController?.VaultController?.LoadFromFile();
+
+            TrackingController?.ClusterController.RegisterEvents();
+            TrackingController?.LootController.RegisterEvents();
+            TrackingController?.TreasureController?.RegisterEvents();
 
             TrackingController?.CountUpTimer.Start();
 
@@ -674,13 +677,17 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StopTracking()
         {
-            TrackingController?.DungeonController?.SaveDungeonsInFile();
-            TrackingController?.StatisticController?.SaveInFile();
-            TrackingController?.MailController?.SaveInFile();
-            TrackingController?.VaultController?.SaveInFile();
+            TrackingController?.CountUpTimer?.Stop();
+
+            TrackingController?.TreasureController.UnregisterEvents();
             TrackingController?.LootController.UnregisterEvents();
             TrackingController?.ClusterController.UnregisterEvents();
-            TrackingController?.CountUpTimer?.Stop();
+
+            TrackingController?.DungeonController?.SaveDungeonsInFile();
+            TrackingController?.MailController?.SaveInFile();
+            TrackingController?.VaultController?.SaveInFile();
+            TrackingController?.TreasureController?.SaveInFile();
+            TrackingController?.StatisticController?.SaveInFile();
 
             NetworkManager.StopNetworkCapture();
 
@@ -1307,12 +1314,12 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public DashboardObject DashboardObject
+        public DashboardBindings DashboardBindings
         {
-            get => _dashboardObject;
+            get => _dashboardBindings;
             set
             {
-                _dashboardObject = value;
+                _dashboardBindings = value;
                 OnPropertyChanged();
             }
         }

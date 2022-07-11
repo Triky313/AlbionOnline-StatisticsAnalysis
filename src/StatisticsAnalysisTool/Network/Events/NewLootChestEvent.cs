@@ -7,15 +7,19 @@ namespace StatisticsAnalysisTool.Network.Events
 {
     public class NewLootChestEvent
     {
+        public int ObjectId { get; set; }
+        public string UniqueName { get; set; }
+        public string UniqueNameWithLocation { get; set; }
+
         public NewLootChestEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
             try
             {
-                if (parameters.ContainsKey(0) && int.TryParse(parameters[0].ToString(), out var id))
+                if (parameters.ContainsKey(0) && int.TryParse(parameters[0].ToString(), out var objectId))
                 {
-                    Id = id;
+                    ObjectId = objectId;
                 }
 
                 if (parameters.ContainsKey(3))
@@ -23,19 +27,15 @@ namespace StatisticsAnalysisTool.Network.Events
                     UniqueName = string.IsNullOrEmpty(parameters[3].ToString()) ? string.Empty : parameters[3].ToString();
                 }
 
-                //if (parameters.ContainsKey(4))
-                //{
-                //    UniqueNameArea? = string.IsNullOrEmpty(parameters[4].ToString()) ? string.Empty : parameters[4].ToString();
-                //}
+                if (parameters.ContainsKey(4))
+                {
+                    UniqueNameWithLocation = string.IsNullOrEmpty(parameters[4].ToString()) ? string.Empty : parameters[4].ToString();
+                }
             }
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
-
-        public int Id { get; set; }
-
-        public string UniqueName { get; set; }
     }
 }

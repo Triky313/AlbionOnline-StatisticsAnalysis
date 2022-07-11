@@ -412,5 +412,17 @@ namespace StatisticsAnalysisTool.Properties {
                 this["PlayerKillsDeathsFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("TreasureStats.json")]
+        public string TreasureStatsFileName {
+            get {
+                return ((string)(this["TreasureStatsFileName"]));
+            }
+            set {
+                this["TreasureStatsFileName"] = value;
+            }
+        }
     }
 }

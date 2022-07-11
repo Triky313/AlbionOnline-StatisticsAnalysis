@@ -14,7 +14,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isBossChest;
         private bool _isChestOpen;
         private DateTime _opened;
-        private ChestRarity _rarity;
+        private TreasureRarity _rarity;
         private ChestStatus _status;
         private DungeonEventObjectType _type;
         private string _uniqueName;
@@ -61,7 +61,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public ChestRarity Rarity
+        public TreasureRarity Rarity
         {
             get => _rarity;
             set
@@ -160,13 +160,13 @@ namespace StatisticsAnalysisTool.Network.Notification
             {
                 switch (Rarity)
                 {
-                    case ChestRarity.Standard:
+                    case TreasureRarity.Standard:
                         return ChestStatus.StandardChestOpen;
-                    case ChestRarity.Uncommon:
+                    case TreasureRarity.Uncommon:
                         return ChestStatus.UncommonChestOpen;
-                    case ChestRarity.Rare:
+                    case TreasureRarity.Rare:
                         return ChestStatus.RareChestOpen;
-                    case ChestRarity.Legendary:
+                    case TreasureRarity.Legendary:
                         return ChestStatus.LegendaryChestOpen;
                 }
             }
@@ -174,13 +174,13 @@ namespace StatisticsAnalysisTool.Network.Notification
             {
                 switch (Rarity)
                 {
-                    case ChestRarity.Standard:
+                    case TreasureRarity.Standard:
                         return ChestStatus.StandardChestClose;
-                    case ChestRarity.Uncommon:
+                    case TreasureRarity.Uncommon:
                         return ChestStatus.UncommonChestClose;
-                    case ChestRarity.Rare:
+                    case TreasureRarity.Rare:
                         return ChestStatus.RareChestClose;
-                    case ChestRarity.Legendary:
+                    case TreasureRarity.Legendary:
                         return ChestStatus.LegendaryChestClose;
                 }
             }

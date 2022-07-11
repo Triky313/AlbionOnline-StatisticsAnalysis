@@ -31,7 +31,8 @@ namespace StatisticsAnalysisTool.Network
         private readonly UpdateReSpecPointsEventHandler _updateReSpecPointsEventHandler;
         private readonly UpdateCurrencyEventHandler _updateCurrencyEventHandler;
         private readonly DiedEventHandler _diedEventHandler;
-        private readonly NewLootChestEventHandler _newLootChestEventHandler;
+        private readonly NewLootChestEventHandler _newLootChestEvent;
+        private readonly UpdateLootChestEventHandler _updateLootChestEvent;
         private readonly LootChestOpenedEventHandler _lootChestOpenedEventHandler;
         private readonly InCombatStateUpdateEventHandler _inCombatStateUpdateEventHandler;
         private readonly NewShrineEventHandler _newShrineEventHandler;
@@ -78,7 +79,8 @@ namespace StatisticsAnalysisTool.Network
             _updateReSpecPointsEventHandler = new UpdateReSpecPointsEventHandler(trackingController);
             _updateCurrencyEventHandler = new UpdateCurrencyEventHandler(trackingController);
             _diedEventHandler = new DiedEventHandler(trackingController);
-            _newLootChestEventHandler = new NewLootChestEventHandler(trackingController);
+            _newLootChestEvent = new NewLootChestEventHandler(trackingController);
+            _updateLootChestEvent = new UpdateLootChestEventHandler(trackingController);
             _lootChestOpenedEventHandler = new LootChestOpenedEventHandler(trackingController);
             _inCombatStateUpdateEventHandler = new InCombatStateUpdateEventHandler(trackingController);
             _newShrineEventHandler = new NewShrineEventHandler(trackingController);
@@ -167,6 +169,9 @@ namespace StatisticsAnalysisTool.Network
                         return;
                     case EventCodes.NewLootChest:
                         await NewLootChestEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.UpdateLootChest:
+                        await UpdateLootChestEventHandlerAsync(parameters).ConfigureAwait(true);
                         return;
                     case EventCodes.LootChestOpened:
                         await LootChestOpenedEventHandlerAsync(parameters).ConfigureAwait(true);
@@ -403,7 +408,13 @@ namespace StatisticsAnalysisTool.Network
         private async Task NewLootChestEventHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new NewLootChestEvent(parameters);
-            await _newLootChestEventHandler.OnActionAsync(value);
+            await _newLootChestEvent.OnActionAsync(value);
+        }
+
+        private async Task UpdateLootChestEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new UpdateLootChestEvent(parameters);
+            await _updateLootChestEvent.OnActionAsync(value);
         }
 
         private async Task LootChestOpenedEventHandlerAsync(Dictionary<byte, object> parameters)

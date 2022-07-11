@@ -9,12 +9,12 @@ namespace StatisticsAnalysisTool.ViewModels
     public class DashboardWindowViewModel : INotifyPropertyChanged
     {
         private DashboardWindowTranslation _translation;
-        private DashboardObject _dashboardObject;
+        private DashboardBindings _dashboardBindings;
         private ObservableCollection<MainStatObject> _factionPointStats;
 
-        public DashboardWindowViewModel(DashboardObject dashboardObject, ObservableCollection<MainStatObject> factionPointStats)
+        public DashboardWindowViewModel(DashboardBindings dashboardBindings, ObservableCollection<MainStatObject> factionPointStats)
         {
-            DashboardObject = dashboardObject;
+            DashboardBindings = dashboardBindings;
             FactionPointStats = factionPointStats;
             Init();
         }
@@ -24,12 +24,12 @@ namespace StatisticsAnalysisTool.ViewModels
             Translation = new DashboardWindowTranslation();
         }
 
-        public DashboardObject DashboardObject
+        public DashboardBindings DashboardBindings
         {
-            get => _dashboardObject;
+            get => _dashboardBindings;
             set
             {
-                _dashboardObject = value;
+                _dashboardBindings = value;
                 OnPropertyChanged();
             }
         }

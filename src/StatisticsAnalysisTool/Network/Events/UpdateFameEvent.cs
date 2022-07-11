@@ -26,7 +26,6 @@ public class UpdateFameEvent
     public UpdateFameEvent(Dictionary<byte, object> parameters)
     {
         ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
-        Debug.Print(JsonSerializer.Serialize(parameters));
 
         // Array[10] exist only by Crafting...
         try

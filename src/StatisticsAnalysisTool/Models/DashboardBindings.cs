@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Models.TranslationModel;
 
 namespace StatisticsAnalysisTool.Models
 {
-    public class DashboardObject : INotifyPropertyChanged
+    public class DashboardBindings : INotifyPropertyChanged
     {
         private double _famePerHour;
         private double _reSpecPointsPerHour;
@@ -38,6 +39,10 @@ namespace StatisticsAnalysisTool.Models
         private int _soloKillsToday;
         private int _soloKillsThisWeek;
         private int _soloKillsThisMonth;
+        private LootedChests _lootedChests = new ();
+        private DashboardWindowTranslation _translation;
+
+        #region Fame / Respec / Silver / Might / Faction
 
         public double GetHighestValue()
         {
@@ -244,6 +249,10 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
+        #endregion
+
+        #region Kill / Death stats
+
         public int SoloKillsToday
         {
             get => _soloKillsToday;
@@ -370,6 +379,32 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _lastUpdate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Chest stats
+
+        public LootedChests LootedChests
+        {
+            get => _lootedChests;
+            set
+            {
+                _lootedChests = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        public DashboardWindowTranslation Translation
+        {
+            get => _translation;
+            set
+            {
+                _translation = value;
                 OnPropertyChanged();
             }
         }

@@ -1,0 +1,278 @@
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using log4net;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Properties;
+
+namespace StatisticsAnalysisTool.Network.Manager;
+
+public class TreasureController
+{
+    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
+    private readonly TrackingController _trackingController;
+    private readonly MainWindowViewModel _mainWindowViewModel;
+    private readonly ObservableCollection<TemporaryTreasure> _temporaryTreasures = new();
+    private ObservableCollection<Treasure> _treasures;
+
+    public TreasureController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
+    {
+        _trackingController = trackingController;
+        _mainWindowViewModel = mainWindowViewModel;
+    }
+
+    public void RegisterEvents()
+    {
+        _treasures.CollectionChanged += UpdateLootedChestsDashboardUi;
+    }
+
+    public void UnregisterEvents()
+    {
+        _treasures.CollectionChanged -= UpdateLootedChestsDashboardUi;
+    }
+
+    public void AddTreasure(int objectId, string uniqueName, string uniqueNameWithLocation)
+    {
+        if (_temporaryTreasures.All(x => x.ObjectId != objectId))
+        {
+            _temporaryTreasures.Add(new TemporaryTreasure() { ObjectId = objectId, UniqueName = uniqueName, UniqueNameWithLocation = uniqueNameWithLocation });
+        }
+    }
+
+    public void UpdateTreasure(int objectId, List<Guid> openedBy)
+    {
+        if (openedBy is not { Count: > 0 })
+        {
+            return;
+        }
+
+        var temporaryTreasure = _temporaryTreasures?.FirstOrDefault(x => x?.ObjectId == objectId && x.AlreadyScanned == false);
+        if (temporaryTreasure == null)
+        {
+            return;
+        }
+
+        var test = new Treasure()
+        {
+            OpenedBy = openedBy,
+            TreasureRarity = GetRarity(temporaryTreasure.UniqueName),
+            TreasureType = GetType(temporaryTreasure.UniqueName)
+        };
+
+        _treasures.Add(test);
+        temporaryTreasure.AlreadyScanned = true;
+    }
+
+    public void RemoveTemporaryTreasures()
+    {
+        _temporaryTreasures.Clear();
+    }
+
+    public void UpdateLootedChestsDashboardUi()
+    {
+        UpdateLootedChestsDashboardUi(null, null);
+    }
+
+    private void UpdateLootedChestsDashboardUi(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+    {
+        #region Avalonian roads
+        
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadCommonWeek = GetStats(TreasureRarity.Standard, TreasureType.Avalon, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadCommonMonth = GetStats(TreasureRarity.Standard, TreasureType.Avalon, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.Avalon, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.Avalon, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadEpicWeek = GetStats(TreasureRarity.Rare, TreasureType.Avalon, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadEpicMonth = GetStats(TreasureRarity.Rare, TreasureType.Avalon, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadLegendaryWeek = GetStats(TreasureRarity.Legendary, TreasureType.Avalon, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.AvalonianRoadLegendaryMonth = GetStats(TreasureRarity.Legendary, TreasureType.OpenWorld, -30);
+
+        #endregion
+
+        #region Open world
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldCommonWeek = GetStats(TreasureRarity.Standard, TreasureType.OpenWorld, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldCommonMonth = GetStats(TreasureRarity.Standard, TreasureType.OpenWorld, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.OpenWorld, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.OpenWorld, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldEpicWeek = GetStats(TreasureRarity.Rare, TreasureType.OpenWorld, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldEpicMonth = GetStats(TreasureRarity.Rare, TreasureType.OpenWorld, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldLegendaryWeek = GetStats(TreasureRarity.Legendary, TreasureType.OpenWorld, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.OpenWorldLegendaryMonth = GetStats(TreasureRarity.Legendary, TreasureType.OpenWorld, -30);
+
+        #endregion
+
+        #region Static dungeons
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticCommonWeek = GetStats(TreasureRarity.Standard, TreasureType.StaticDungeon, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticCommonMonth = GetStats(TreasureRarity.Standard, TreasureType.StaticDungeon, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.StaticDungeon, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.StaticDungeon, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticEpicWeek = GetStats(TreasureRarity.Rare, TreasureType.StaticDungeon, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticEpicMonth = GetStats(TreasureRarity.Rare, TreasureType.StaticDungeon, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticLegendaryWeek = GetStats(TreasureRarity.Legendary, TreasureType.StaticDungeon, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.StaticLegendaryMonth = GetStats(TreasureRarity.Legendary, TreasureType.StaticDungeon, -30);
+
+        #endregion
+
+        #region HellGate
+
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateCommonWeek = GetStats(TreasureRarity.Standard, TreasureType.HellGate, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateCommonMonth = GetStats(TreasureRarity.Standard, TreasureType.HellGate, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateUncommonWeek = GetStats(TreasureRarity.Uncommon, TreasureType.HellGate, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateUncommonMonth = GetStats(TreasureRarity.Uncommon, TreasureType.HellGate, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateEpicWeek = GetStats(TreasureRarity.Rare, TreasureType.HellGate, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateEpicMonth = GetStats(TreasureRarity.Rare, TreasureType.HellGate, -30);
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateLegendaryWeek = GetStats(TreasureRarity.Legendary, TreasureType.HellGate, -7);
+        _mainWindowViewModel.DashboardBindings.LootedChests.HellGateLegendaryMonth = GetStats(TreasureRarity.Legendary, TreasureType.HellGate, -30);
+
+        #endregion
+    }
+
+    #region Helper methods
+
+    private int GetStats(TreasureRarity treasureRarity, TreasureType treasureType, int lastDays = -90)
+    {
+        if (_trackingController.EntityController.LocalUserData.Guid is not { } localPlayerGuid)
+        {
+            return 0;
+        }
+
+        return _treasures?.Count(x => x != null
+                                           && x.OpenedBy.Contains(localPlayerGuid)
+                                           && x.TreasureRarity == treasureRarity
+                                           && x.TreasureType == treasureType
+                                           && x.OpenedAt.Date > DateTime.UtcNow.Date.AddDays(lastDays)) ?? 0;
+    }
+
+    private static TreasureRarity GetRarity(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            return TreasureRarity.Unknown;
+        }
+
+        if (Regex.IsMatch(value, "\\w*_STANDARD\\b|\\w*_STANDARD_[T][4-8]|\\w*_STANDARD_STANDARD_[T][4-8]|STATIC_\\w*_POI"))
+        {
+            return TreasureRarity.Standard;
+        }
+        if (Regex.IsMatch(value, "\\w*_UNCOMMON\\b|\\w*_UNCOMMON_[T][4-8]|\\w*_STANDARD_UNCOMMON_[T][4-8]|STATIC_\\w*_CHAMPION"))
+        {
+            return TreasureRarity.Uncommon;
+        }
+
+        if (Regex.IsMatch(value, "\\w*_RARE\\b|\\w*_RARE_[T][4-8]|\\w*_STANDARD_RARE_[T][4-8]|STATIC_\\w*_MINIBOSS"))
+        {
+            return TreasureRarity.Rare;
+        }
+
+        if (Regex.IsMatch(value, "\\w*_LEGENDARY\\b|\\w*_LEGENDARY_[T][4-8]|\\w*_STANDARD_LEGENDARY_[T][4-8]|STATIC_\\w*_BOSS"))
+        {
+            return TreasureRarity.Legendary;
+        }
+
+        return TreasureRarity.Unknown;
+    }
+
+    private static TreasureType GetType(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            return TreasureType.Unknown;
+        }
+
+        if (value.Contains("TREASURE"))
+        {
+            return TreasureType.OpenWorld;
+        }
+
+        if (value.Contains("STATIC"))
+        {
+            return TreasureType.StaticDungeon;
+        }
+
+        if (value.Contains("AVALON"))
+        {
+            return TreasureType.Avalon;
+        }
+
+        if (value.Contains("CORRUPTED"))
+        {
+            return TreasureType.Corrupted;
+        }
+
+        if (value.Contains("HELL"))
+        {
+            return TreasureType.HellGate;
+        }
+
+        if (Regex.IsMatch(value, "_VETERAN_CHEST_|[^SOLO]_CHEST_BOSS_HALLOWEEN_"))
+        {
+            return TreasureType.RandomGroupDungeon;
+        }
+
+        if (Regex.IsMatch(value, "_SOLO_BOOKCHEST_|_SOLO_CHEST_"))
+        {
+            return TreasureType.RandomSoloDungeon;
+        }
+
+        return TreasureType.Unknown;
+    }
+
+    #endregion
+
+    #region Load / Save local file data
+
+    public void LoadFromFile()
+    {
+        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.TreasureStatsFileName}";
+
+        if (File.Exists(localFilePath))
+        {
+            try
+            {
+                var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
+                var treasures = JsonSerializer.Deserialize<ObservableCollection<Treasure>>(localFileString) ?? new ObservableCollection<Treasure>();
+                _treasures = treasures;
+                return;
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                _treasures = new ObservableCollection<Treasure>();
+                return;
+            }
+        }
+
+        _treasures = new ObservableCollection<Treasure>();
+    }
+
+    public void SaveInFile()
+    {
+        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.TreasureStatsFileName}";
+
+        try
+        {
+            var fileString = JsonSerializer.Serialize(_treasures);
+            File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+        }
+    }
+
+    #endregion
+}

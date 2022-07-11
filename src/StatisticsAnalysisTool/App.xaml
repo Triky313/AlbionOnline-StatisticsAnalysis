@@ -21,6 +21,7 @@
 
                 <ResourceDictionary Source="Styles/ConsoleStyles.xaml" />
                 <ResourceDictionary Source="Styles/TrackingStyles.xaml" />
+                <ResourceDictionary Source="Styles/DashboardStyles.xaml" />
                 <ResourceDictionary Source="Styles/DungeonStyles.xaml" />
                 <ResourceDictionary Source="Styles/DamageMeterStyles.xaml" />
                 <ResourceDictionary Source="Styles/MailMonitoringStyle.xaml" />
