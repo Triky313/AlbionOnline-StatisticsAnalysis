@@ -63,6 +63,7 @@ namespace StatisticsAnalysisTool.GameData
                 "roads_of_avalon_solo_pve" => MapMarkerType.RoadsOfAvalonSoloPve,
                 "roads_of_avalon_group_pve" => MapMarkerType.RoadsOfAvalonGroupPve,
                 "roads_of_avalon_raid_pve" => MapMarkerType.RoadsOfAvalonRaidPve,
+                "dungeon_elite" => MapMarkerType.DungeonElite,
                 "dungeon_group" => MapMarkerType.DungeonGroup,
                 "dungeon_solo" => MapMarkerType.DungeonSolo,
                 _ => MapMarkerType.Unknown

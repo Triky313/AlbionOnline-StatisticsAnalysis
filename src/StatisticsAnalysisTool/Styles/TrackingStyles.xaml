@@ -500,40 +500,48 @@
     </DataTemplate>
 
     <DataTemplate x:Key="MapMarkerIconTemplate" DataType="{x:Type enumerations:MapMarkerType}">
-        <Image Height="24" Width="24">
+        <Image Height="36" Width="36">
             <Image.Style>
                 <Style TargetType="{x:Type Image}">
-                    <Setter Property="Source" Value="../Resources/chest_close_standard.png" />
+                    <Setter Property="Source" Value="../Assets/empty_icon.png" />
+                    <Setter Property="Margin" Value="0,-10,0,0" />
                     <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAsync=True}" Value="{x:Static enumerations:MapMarkerType.DungeonElite}">
+                            <Setter Property="Margin" Value="0,0,0,0" />
+                            <Setter Property="Source" Value="../Assets/MiniMapMarker/raid_dungeon.png" />
+                        </DataTrigger>
                         <DataTrigger Binding="{Binding IsAsync=True}" Value="{x:Static enumerations:MapMarkerType.DungeonGroup}">
-                            <Setter Property="Source" Value="../Resources/chest_close_standard.png" />
+                            <Setter Property="Source" Value="../Assets/MiniMapMarker/group_dungeon.png" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAsync=True}" Value="{x:Static enumerations:MapMarkerType.DungeonSolo}">
-                            <Setter Property="Source" Value="../Resources/chest_open_standard.png" />
+                            <Setter Property="Source" Value="../Assets/MiniMapMarker/solo_dungeon.png" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAsync=True}" Value="{x:Static enumerations:MapMarkerType.RoadsOfAvalonRaidPve}">
-                            <Setter Property="Source" Value="../Resources/chest_close_uncommon.png" />
+                            <Setter Property="Source" Value="../Assets/MiniMapMarker/road_chest_raid.png" />
+                            <Setter Property="Margin" Value="0,-18,0,0" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAsync=True}" Value="{x:Static enumerations:MapMarkerType.RoadsOfAvalonGroupPve}">
-                            <Setter Property="Source" Value="../Resources/chest_open_uncommon.png" />
+                            <Setter Property="Source" Value="../Assets/MiniMapMarker/road_chest_group.png" />
+                            <Setter Property="Margin" Value="0,-18,0,0" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAsync=True}" Value="{x:Static enumerations:MapMarkerType.RoadsOfAvalonSoloPve}">
-                            <Setter Property="Source" Value="../Resources/chest_close_rare.png" />
+                            <Setter Property="Source" Value="../Assets/MiniMapMarker/road_chest_solo.png" />
+                            <Setter Property="Margin" Value="0,-18,0,0" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAsync=True}" Value="{x:Static enumerations:MapMarkerType.Stone}">
-                            <Setter Property="Source" Value="../Resources/chest_open_rare.png" />
+                            <Setter Property="Source" Value="../Assets/MiniMapMarker/minimapmarker_stone.png" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAsync=True}" Value="{x:Static enumerations:MapMarkerType.Fiber}">
-                            <Setter Property="Source" Value="../Resources/chest_close_legendary.png" />
+                            <Setter Property="Source" Value="../Assets/MiniMapMarker/minimapmarker_fiber.png" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAsync=True}" Value="{x:Static enumerations:MapMarkerType.Wood}">
-                            <Setter Property="Source" Value="../Resources/chest_open_legendary.png" />
+                            <Setter Property="Source" Value="../Assets/MiniMapMarker/minimapmarker_wood.png" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAsync=True}" Value="{x:Static enumerations:MapMarkerType.Hide}">
-                            <Setter Property="Source" Value="../Resources/chest_open_legendary.png" />
+                            <Setter Property="Source" Value="../Assets/MiniMapMarker/minimapmarker_hide.png" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAsync=True}" Value="{x:Static enumerations:MapMarkerType.Ore}">
-                            <Setter Property="Source" Value="../Resources/chest_open_legendary.png" />
+                            <Setter Property="Source" Value="../Assets/MiniMapMarker/minimapmarker_ore.png" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

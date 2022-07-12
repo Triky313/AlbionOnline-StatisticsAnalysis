@@ -142,10 +142,46 @@
     <Resource Include="Assets\blue_glow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\empty_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\gold_glow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\green_glow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\MiniMapMarker\group_dungeon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\MiniMapMarker\minimapmarker_fiber.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\MiniMapMarker\minimapmarker_hide.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\MiniMapMarker\minimapmarker_ore.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\MiniMapMarker\minimapmarker_stone.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\MiniMapMarker\minimapmarker_wood.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\MiniMapMarker\raid_dungeon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\MiniMapMarker\road_chest_group.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\MiniMapMarker\road_chest_raid.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\MiniMapMarker\road_chest_solo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\MiniMapMarker\solo_dungeon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\openworld_chests.png">
@@ -503,8 +539,20 @@
     <None Remove="Assets\ava_chest.png" />
     <None Remove="Assets\bg01.png" />
     <None Remove="Assets\blue_glow.png" />
+    <None Remove="Assets\empty_icon.png" />
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />
+    <None Remove="Assets\MiniMapMarker\group_dungeon.png" />
+    <None Remove="Assets\MiniMapMarker\minimapmarker_fiber.png" />
+    <None Remove="Assets\MiniMapMarker\minimapmarker_hide.png" />
+    <None Remove="Assets\MiniMapMarker\minimapmarker_ore.png" />
+    <None Remove="Assets\MiniMapMarker\minimapmarker_stone.png" />
+    <None Remove="Assets\MiniMapMarker\minimapmarker_wood.png" />
+    <None Remove="Assets\MiniMapMarker\raid_dungeon.png" />
+    <None Remove="Assets\MiniMapMarker\road_chest_group.png" />
+    <None Remove="Assets\MiniMapMarker\road_chest_raid.png" />
+    <None Remove="Assets\MiniMapMarker\road_chest_solo.png" />
+    <None Remove="Assets\MiniMapMarker\solo_dungeon.png" />
     <None Remove="Assets\openworld_chests.png" />
     <None Remove="Assets\outpost_chest.png" />
     <None Remove="Assets\purple_glow.png" />

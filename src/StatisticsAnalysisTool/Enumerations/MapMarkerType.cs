@@ -11,7 +11,7 @@ public enum MapMarkerType
     RoadsOfAvalonSoloPve,
     RoadsOfAvalonGroupPve,
     RoadsOfAvalonRaidPve,
+    DungeonElite,
     DungeonGroup,
-    DungeonSolo,
-
+    DungeonSolo
 }
