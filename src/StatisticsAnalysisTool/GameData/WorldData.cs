@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.GameData
 {
@@ -40,6 +42,31 @@ namespace StatisticsAnalysisTool.GameData
             }
 
             return name;
+        }
+        
+        public static List<MapMarkerType> GetMapMarkers(string index)
+        {
+            var miniMapMarkers = MapData?.FirstOrDefault(x => x.Index == index)?.MiniMapMarkers?.Marker ?? new List<Marker>();
+            var mapMarkers = miniMapMarkers.Select(miniMapMarker => GetMapMarkerType(miniMapMarker.Type)).Where(marker => marker != MapMarkerType.Unknown).ToList();
+            return mapMarkers;
+        }
+
+        private static MapMarkerType GetMapMarkerType(string value)
+        {
+            return value switch
+            {
+                "Stone" => MapMarkerType.Stone,
+                "Ore" => MapMarkerType.Ore,
+                "Hide" => MapMarkerType.Hide,
+                "Wood" => MapMarkerType.Wood,
+                "Fiber" => MapMarkerType.Fiber,
+                "roads_of_avalon_solo_pve" => MapMarkerType.RoadsOfAvalonSoloPve,
+                "roads_of_avalon_group_pve" => MapMarkerType.RoadsOfAvalonGroupPve,
+                "roads_of_avalon_raid_pve" => MapMarkerType.RoadsOfAvalonRaidPve,
+                "dungeon_group" => MapMarkerType.DungeonGroup,
+                "dungeon_solo" => MapMarkerType.DungeonSolo,
+                _ => MapMarkerType.Unknown
+            };
         }
 
         public static Guid? GetMapGuid(string index)
