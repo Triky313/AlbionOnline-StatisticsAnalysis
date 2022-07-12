@@ -369,7 +369,7 @@
 	<translation name="MAIN_TRACKER_DESCRIPTION_1">При правильной работе трекера значок Wi-Fi должен быть зеленым. Для достижения этого статуса необходимо изменить свою локацию.</translation>
 	<translation name="MAIN_TRACKER_DESCRIPTION_2">Присоединяйтесь к группе или пригласите кого-нибудь в свою группу, чтобы обновить кол-во людей в счётчике. Неважно, приглашаете ли вы игроков в группу сами или кто-то другой.</translation>
 	<translation name="MAIN_TRACKER_DESCRIPTION_3">Слава, которую отслеживает трекер - настоящая всеобщая слава. То есть с Премиумом и Кошелем Интуиции. Слава в профиле игрока - это обычный опыт, без усилений к опыту.</translation>
-	<translation name="DAMAGE_METER_DESCRIPTION_1">Чтобы можно было распознать урон от других игроков в группе, сначала необходимо активировать инструмент, а затем игрок должен покинуть группу или присоединиться к ней.</translation>
+	<translation name="DAMAGE_METER_DESCRIPTION_1">Чтобы можно было распознать урон от других игроков в группе, сначала необходимо активировать инструмент, а затем игрок должен покинуть группу или присоединиться к ней. Если вы хотите отправить в чат топ урона, вы можете включить в настройках приложения: Копировать урон в коротком формате (можно отравлять в чат игры)</translation>
 
 	<translation name="SORT_BY_DAMAGE">Сортировать по урону</translation>
 	<translation name="SORT_BY_DPS">Сортировать по DPS</translation>
@@ -381,7 +381,7 @@
 	<translation name="NUMBER_OF_DUNGEON_FLOORS">Количество этажей подземелья</translation>
 	<translation name="TOOL_DIRECTORY">Каталог инструментов</translation>
 	<translation name="OPEN_TOOL_DIRECTORY">Открыть каталог инструментов</translation>
-	<translation name="OPEN_OR_CLOSE_DEBUG_CONSOLE">Открыть или закрыть консоль отладки</translation>
+	<translation name="OPEN_DEBUG_CONSOLE">Открыть или закрыть консоль отладки</translation>
 	<translation name="CREATE_DESKTOP_SHORTCUT">Создать ярлык на рабочем столе</translation>
 	<translation name="FAVORITE">Избранное</translation>
 	<translation name="SILVER_SHRINE">Серебряная чаша</translation>
@@ -609,4 +609,22 @@
 	<translation name="TAXES_TOTAL">Общий налог</translation>
 	<translation name="NOTES">Заметки</translation>
 	<translation name="UNSUPPORTED_OS">Неподдерживаемая ОС: могут допускаться ошибки в работе программы.</translation>
+	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Если скорость вашего интернета слишком низная или вы имеете иные ошибки, вы можете установить файл самостоятельно.</translation>
+	<translation name="FILE_DOWNLOAD_FAILED_TEXT2">Загрузите файл, перейдя по ссылке</translation>
+	<translation name="FILE_DOWNLOAD_FAILED_TEXT3">Переименуйте файл в ItemList.json и перенесите в папку приложения.</translation>
+	<translation name="FILE_DOWNLOAD_FAILED_TEXT4">Перенесите файл в папку приложения.</translation>
+	<translation name="THEN_RESTART_THE_TOOL">Затем перезапустите приложение.</translation>
+	<translation name="OR">ИЛИ</translation>
+	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Копировать урон в коротком формате (можно отравлять в чат игры)</translation>
+	<translation name="LOCATION">Локация</translation>
+	<translation name="STORAGE_NAME">Имя хранилища</translation>
+	<translation name="SELECT_DESELECT_ALL">Выделить / Снять выделение для всего</translation>
+	<translation name="LOOTED_CHESTS">Обысканные сундуки</translation>
+	<translation name="STATIC_DUNGEONS">Статики</translation>
+	<translation name="AVALONIAN_ROADS">Авалонские пути</translation>
+	<translation name="HELLGATES">Хеллгейтов</translation>
+	<translation name="OPEN_WORLD">Открытый мир</translation>
+	<translation name="LAST_7_DAYS">Последние 7 дней</translation>
+	<translation name="LAST_30_DAYS">Последние 30 дней</translation>
+	<translation name="LAST_365_DAYS">Последние 365 дней</translation>
 </translations>
