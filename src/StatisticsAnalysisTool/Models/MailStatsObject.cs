@@ -36,6 +36,8 @@ public class MailStatsObject : INotifyPropertyChanged
     private long _taxesMonth;
     private long _taxesYear;
     private long _taxesTotal;
+    private Mail _mostExpensiveSaleItem;
+    private Mail _mostExpensivePurchasedItem;
 
     #region Stat calculations
 
@@ -75,6 +77,9 @@ public class MailStatsObject : INotifyPropertyChanged
         SalesMonth = SoldMonth - (BoughtMonth + TaxesMonth);
         SalesYear = SoldYear - (BoughtYear + TaxesYear);
         SalesTotal = SoldTotal - (BoughtTotal + TaxesTotal);
+
+        MostExpensiveSaleItem = mails.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).MaxBy(x => x.MailContent.TotalPrice.IntegerValue);
+        MostExpensivePurchasedItem = mails.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).MaxBy(x => x.MailContent.TotalPrice.IntegerValue);
     }
 
     #endregion
@@ -318,6 +323,26 @@ public class MailStatsObject : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+    
+    public Mail MostExpensiveSaleItem
+    {
+        get => _mostExpensiveSaleItem;
+        set
+        {
+            _mostExpensiveSaleItem = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Mail MostExpensivePurchasedItem
+    {
+        get => _mostExpensivePurchasedItem;
+        set
+        {
+            _mostExpensivePurchasedItem = value;
+            OnPropertyChanged();
+        }
+    }
 
     public static string TranslationSoldToday => LanguageController.Translation("SOLD_TODAY");
     public static string TranslationSoldThisWeek => LanguageController.Translation("SOLD_THIS_WEEK");
@@ -343,6 +368,8 @@ public class MailStatsObject : INotifyPropertyChanged
     public static string TranslationNetProfitMonth => LanguageController.Translation("NET_PROFIT_MONTH");
     public static string TranslationNetProfitYear => LanguageController.Translation("NET_PROFIT_YEAR");
     public static string TranslationNetProfitTotal => LanguageController.Translation("NET_PROFIT_TOTAL");
+    public static string TranslationMostExpensiveSale => LanguageController.Translation("MOST_EXPENSIVE_SALE");
+    public static string TranslationMostExpensivePurchase => LanguageController.Translation("MOST_EXPENSIVE_PURCHASE");
 
     public static string TranslationSilver => LanguageController.Translation("SILVER");
 
