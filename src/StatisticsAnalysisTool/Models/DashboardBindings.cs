@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.TranslationModel;
 
 namespace StatisticsAnalysisTool.Models
@@ -40,7 +41,6 @@ namespace StatisticsAnalysisTool.Models
         private int _soloKillsThisWeek;
         private int _soloKillsThisMonth;
         private LootedChests _lootedChests = new ();
-        private DashboardWindowTranslation _translation;
 
         #region Fame / Respec / Silver / Might / Faction
 
@@ -398,16 +398,26 @@ namespace StatisticsAnalysisTool.Models
         }
 
         #endregion
-
-        public DashboardWindowTranslation Translation
-        {
-            get => _translation;
-            set
-            {
-                _translation = value;
-                OnPropertyChanged();
-            }
-        }
+        
+        public static string TranslationTitle => $"{LanguageController.Translation("DASHBOARD")}";
+        public static string TranslationFame => LanguageController.Translation("FAME");
+        public static string TranslationSilver => LanguageController.Translation("SILVER");
+        public static string TranslationReSpec => LanguageController.Translation("RESPEC");
+        public static string TranslationFaction => LanguageController.Translation("FACTION");
+        public static string TranslationMight => LanguageController.Translation("MIGHT");
+        public static string TranslationFavor => LanguageController.Translation("FAVOR");
+        public static string TranslationResetTrackingCounter => LanguageController.Translation("RESET_TRACKING_COUNTER");
+        public static string TranslationToday => LanguageController.Translation("TODAY").ToLower();
+        public static string TranslationWeek => LanguageController.Translation("WEEK").ToLower();
+        public static string TranslationMonth => LanguageController.Translation("MONTH").ToLower();
+        public static string TranslationKills => LanguageController.Translation("KILLS");
+        public static string TranslationSoloKills => LanguageController.Translation("SOLO_KILLS");
+        public static string TranslationDeaths => LanguageController.Translation("DEATHS");
+        public static string TranslationLastUpdate => LanguageController.Translation("LAST_UPDATE");
+        public static string TranslationDataFromAlbionOnlineServers => LanguageController.Translation("DATA_FROM_ALBION_ONLINE_SERVERS");
+        public static string TranslationAverageItemPowerWhenKilling => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_KILLING");
+        public static string TranslationAverageItemPowerOfTheKilledEnemies => LanguageController.Translation("AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES");
+        public static string TranslationAverageItemPowerWhenDying => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_DYING");
 
         public event PropertyChangedEventHandler PropertyChanged;
 
