@@ -235,28 +235,6 @@ namespace StatisticsAnalysisTool.GameData
             }
         }
 
-        private static async Task<bool> GetLootChestListFromWebAsync(string url)
-        {
-            using var client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(300);
-            try
-            {
-                using var response = await client.GetAsync(url);
-                using var content = response.Content;
-                var fileString = await content.ReadAsStringAsync().ConfigureAwait(false);
-                await File.WriteAllTextAsync(
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.LootChestDataFileName), fileString,
-                    Encoding.UTF8);
-                return true;
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                return false;
-            }
-        }
-
         #endregion
     }
 }
