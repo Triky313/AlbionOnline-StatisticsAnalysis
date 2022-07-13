@@ -540,6 +540,128 @@
         </Border>
     </DataTemplate>
 
+    <Style x:Key="DungeonEventObjectFragment.Image.Chest" TargetType="Image">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.StandardChestClose}">
+                <Setter Property="Source" Value="../Resources/chest_close_standard.png" />
+                <Setter Property="ToolTip" Value="{Binding TranslationStandard}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.StandardChestOpen}">
+                <Setter Property="Source" Value="../Resources/chest_open_standard.png" />
+                <Setter Property="ToolTip" Value="{Binding TranslationStandard}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.UncommonChestClose}">
+                <Setter Property="Source" Value="../Resources/chest_close_uncommon.png" />
+                <Setter Property="ToolTip" Value="{Binding TranslationUncommon}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.UncommonChestOpen}">
+                <Setter Property="Source" Value="../Resources/chest_open_uncommon.png" />
+                <Setter Property="ToolTip" Value="{Binding TranslationUncommon}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.RareChestClose}">
+                <Setter Property="Source" Value="../Resources/chest_close_rare.png" />
+                <Setter Property="ToolTip" Value="{Binding TranslationRare}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.RareChestOpen}">
+                <Setter Property="Source" Value="../Resources/chest_open_rare.png" />
+                <Setter Property="ToolTip" Value="{Binding TranslationRare}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.LegendaryChestClose}">
+                <Setter Property="Source" Value="../Resources/chest_close_legendary.png" />
+                <Setter Property="ToolTip" Value="{Binding TranslationLegendary}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.LegendaryChestOpen}">
+                <Setter Property="Source" Value="../Resources/chest_open_legendary.png" />
+                <Setter Property="ToolTip" Value="{Binding TranslationLegendary}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <DataTemplate x:Key="DungeonEventObjectFragmentTemplate" DataType="{x:Type notification:DungeonEventObjectFragment}">
+        <Grid Width="18" Margin="0 0 0 0">
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Hidden" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.CombatShrine}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.SilverShrine}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.FameShrine}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <Image>
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.CombatShrine}">
+                                    <Setter Property="Source" Value="../Resources/shrine_combat_buff.png" />
+                                    <Setter Property="ToolTip" Value="{Binding TranslationCombatBuff}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.SilverShrine}">
+                                    <Setter Property="Source" Value="../Resources/shrine_silver.png" />
+                                    <Setter Property="ToolTip" Value="{Binding TranslationSilverShrine}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.FameShrine}">
+                                    <Setter Property="Source" Value="../Resources/shrine_fame.png" />
+                                    <Setter Property="ToolTip" Value="{Binding TranslationFameShrine}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Grid>
+
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Hidden" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.BookChest}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.Chest}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <Image Style="{StaticResource DungeonEventObjectFragment.Image.Chest}"/>
+                <Image Margin="0 -12 0 0" Opacity="0.85">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsBossChest, IsAsync=True}" Value="true">
+                                    <Setter Property="Source" Value="../Resources/boss.png"/>
+                                    <Setter Property="ToolTip" Value="{Binding TranslationBossChest}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <Image Margin="0 -12 0 0" Opacity="0.85">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.BookChest}">
+                                    <Setter Property="Source" Value="../Resources/book.png"/>
+                                    <Setter Property="ToolTip" Value="{Binding TranslationBookChest}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Grid>
+        </Grid>
+    </DataTemplate>
 
     <DataTemplate x:Key="DungeonNotificationFragment" DataType="{x:Type notification:DungeonNotificationFragment}">
         <Border BorderBrush="{StaticResource SolidColorBrush.Background.2}" BorderThickness="0,0,0,1">
@@ -594,7 +716,7 @@
                                        Style="{StaticResource DungeonNotificationFragment.MainMapName}" MinWidth="138" />
                                     <Grid Margin="5 0 20 0">
                                         <StackPanel Orientation="Horizontal" MinWidth="210">
-                                            <ItemsControl ItemsSource="{Binding DungeonChests, IsAsync=True}">
+                                            <ItemsControl ItemsSource="{Binding DungeonChests, IsAsync=True}" ItemTemplate="{StaticResource DungeonEventObjectFragmentTemplate}">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <UniformGrid Rows="1"/>
@@ -749,129 +871,6 @@
                 </Grid>
             </Grid>
         </Border>
-    </DataTemplate>
-
-    <Style x:Key="DungeonEventObjectFragment.Image.Chest" TargetType="Image">
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.StandardChestClose}">
-                <Setter Property="Source" Value="../Resources/chest_close_standard.png" />
-                <Setter Property="ToolTip" Value="{Binding TranslationStandard}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.StandardChestOpen}">
-                <Setter Property="Source" Value="../Resources/chest_open_standard.png" />
-                <Setter Property="ToolTip" Value="{Binding TranslationStandard}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.UncommonChestClose}">
-                <Setter Property="Source" Value="../Resources/chest_close_uncommon.png" />
-                <Setter Property="ToolTip" Value="{Binding TranslationUncommon}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.UncommonChestOpen}">
-                <Setter Property="Source" Value="../Resources/chest_open_uncommon.png" />
-                <Setter Property="ToolTip" Value="{Binding TranslationUncommon}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.RareChestClose}">
-                <Setter Property="Source" Value="../Resources/chest_close_rare.png" />
-                <Setter Property="ToolTip" Value="{Binding TranslationRare}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.RareChestOpen}">
-                <Setter Property="Source" Value="../Resources/chest_open_rare.png" />
-                <Setter Property="ToolTip" Value="{Binding TranslationRare}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.LegendaryChestClose}">
-                <Setter Property="Source" Value="../Resources/chest_close_legendary.png" />
-                <Setter Property="ToolTip" Value="{Binding TranslationLegendary}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status, IsAsync=True}" Value="{x:Static enumerations:ChestStatus.LegendaryChestOpen}">
-                <Setter Property="Source" Value="../Resources/chest_open_legendary.png" />
-                <Setter Property="ToolTip" Value="{Binding TranslationLegendary}" />
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
-
-    <DataTemplate DataType="{x:Type notification:DungeonEventObjectFragment}">
-        <Grid Width="18" Margin="0 0 0 0">
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="{x:Type Grid}">
-                        <Setter Property="Visibility" Value="Hidden" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.CombatShrine}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.SilverShrine}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.FameShrine}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-
-                <Image>
-                    <Image.Style>
-                        <Style TargetType="Image">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.CombatShrine}">
-                                    <Setter Property="Source" Value="../Resources/shrine_combat_buff.png" />
-                                    <Setter Property="ToolTip" Value="{Binding TranslationCombatBuff}" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.SilverShrine}">
-                                    <Setter Property="Source" Value="../Resources/shrine_silver.png" />
-                                    <Setter Property="ToolTip" Value="{Binding TranslationSilverShrine}" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.FameShrine}">
-                                    <Setter Property="Source" Value="../Resources/shrine_fame.png" />
-                                    <Setter Property="ToolTip" Value="{Binding TranslationFameShrine}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Style>
-                </Image>
-            </Grid>
-
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="{x:Type Grid}">
-                        <Setter Property="Visibility" Value="Hidden" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.BookChest}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.Chest}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-
-                <Image Style="{StaticResource DungeonEventObjectFragment.Image.Chest}"/>
-                <Image Margin="0 -12 0 0" Opacity="0.85">
-                    <Image.Style>
-                        <Style TargetType="Image">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsBossChest, IsAsync=True}" Value="true">
-                                    <Setter Property="Source" Value="../Resources/boss.png"/>
-                                    <Setter Property="ToolTip" Value="{Binding TranslationBossChest}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Style>
-                </Image>
-                <Image Margin="0 -12 0 0" Opacity="0.85">
-                    <Image.Style>
-                        <Style TargetType="Image">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="{x:Static enumerations:DungeonEventObjectType.BookChest}">
-                                    <Setter Property="Source" Value="../Resources/book.png"/>
-                                    <Setter Property="ToolTip" Value="{Binding TranslationBookChest}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Style>
-                </Image>
-            </Grid>
-        </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="DungeonCloseTimerTemplate" DataType="{x:Type networkModel:DungeonCloseTimer}">

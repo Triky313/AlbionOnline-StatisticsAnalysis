@@ -15,5 +15,8 @@ namespace StatisticsAnalysisTool.Models
 
         [JsonPropertyName("File")] 
         public string File { get; set; }
+
+        [JsonPropertyName("MiniMapMarkers")]
+        public MiniMapMarkers MiniMapMarkers { get; set; }
     }
 }

@@ -100,39 +100,18 @@ namespace StatisticsAnalysisTool.GameData
             return Faction.Unknown;
         }
 
-        public static async Task<bool> GetDataListFromJsonAsync()
+        public static bool GetDataListFromJson()
         {
-            var url = Settings.Default.LootChestDataSourceUrl;
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.LootChestDataFileName}";
+            var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.LootChestDataFileName);
 
-            if (string.IsNullOrEmpty(url))
+            if (!File.Exists(localFilePath))
             {
-                Log.Warn($"{nameof(GetDataListFromJsonAsync)}: No LootChestDataSourceUrl found.");
                 return false;
             }
 
-            if (File.Exists(localFilePath))
-            {
-                var fileDateTime = File.GetLastWriteTime(localFilePath);
-
-                if (fileDateTime.AddDays(Settings.Default.UpdateWorldDataByDays) < DateTime.Now)
-                {
-                    if (await GetLootChestListFromWebAsync(url).ConfigureAwait(false))
-                    {
-                        LootChests = GetLootChestDataFromLocal();
-                    }
-                    return LootChests?.Count() > 0;
-                }
-
-                LootChests = GetLootChestDataFromLocal();
-                return LootChests?.Count() > 0;
-            }
-
-            if (await GetLootChestListFromWebAsync(url).ConfigureAwait(false))
-            {
-                LootChests = GetLootChestDataFromLocal();
-            }
+            LootChests = GetLootChestDataFromLocal();
             return LootChests?.Count() > 0;
+
         }
 
         public static DungeonEventObjectType GetDungeonEventObjectType(string value)
@@ -253,28 +232,6 @@ namespace StatisticsAnalysisTool.GameData
             {
                 ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return new List<LootChest>();
-            }
-        }
-
-        private static async Task<bool> GetLootChestListFromWebAsync(string url)
-        {
-            using var client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(300);
-            try
-            {
-                using var response = await client.GetAsync(url);
-                using var content = response.Content;
-                var fileString = await content.ReadAsStringAsync().ConfigureAwait(false);
-                await File.WriteAllTextAsync(
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.LootChestDataFileName), fileString,
-                    Encoding.UTF8);
-                return true;
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                return false;
             }
         }
 

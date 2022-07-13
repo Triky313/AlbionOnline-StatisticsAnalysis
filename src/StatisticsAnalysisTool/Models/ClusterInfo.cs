@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.GameData;
 using System;
+using System.Collections.Generic;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -32,6 +33,7 @@ namespace StatisticsAnalysisTool.Models
         public string ClusterHistoryString1 { get; private set; }
         public string ClusterHistoryString2 { get; private set; }
         public string ClusterHistoryString3 { get; private set; }
+        public List<MapMarkerType> MapMarkers => WorldData.GetMapMarkers(Index);
 
         public ClusterInfo()
         {

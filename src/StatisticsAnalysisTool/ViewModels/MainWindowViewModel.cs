@@ -125,7 +125,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             _ = InitMainWindowDataAsync().ConfigureAwait(false);
-            _ = InitTrackingAsync().ConfigureAwait(false);
+            InitTracking();
         }
 
         public void SetUiElements()
@@ -393,10 +393,10 @@ namespace StatisticsAnalysisTool.ViewModels
             //_mainWindow.Dispatcher?.Invoke(() => { _ = _mainWindow.TxtSearch.Focus(); });
         }
 
-        private async Task InitTrackingAsync()
+        private void InitTracking()
         {
-            await WorldData.GetDataListFromJsonAsync().ConfigureAwait(true);
-            await DungeonObjectData.GetDataListFromJsonAsync().ConfigureAwait(true);
+            WorldData.GetDataListFromJson();
+            DungeonObjectData.GetDataListFromJson();
 
             TrackingController ??= new TrackingController(this, _mainWindow);
 

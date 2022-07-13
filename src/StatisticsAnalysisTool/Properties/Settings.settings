@@ -41,20 +41,11 @@
     <Setting Name="WorldDataFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">world.json</Value>
     </Setting>
-    <Setting Name="WorldDataSourceUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master/src/StatisticsAnalysisTool/GameFiles/world.json</Value>
-    </Setting>
-    <Setting Name="UpdateWorldDataByDays" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7</Value>
-    </Setting>
     <Setting Name="DungeonRunsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">DungeonRuns.json</Value>
     </Setting>
     <Setting Name="LootChestDataFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">lootchests.json</Value>
-    </Setting>
-    <Setting Name="LootChestDataSourceUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master/src/StatisticsAnalysisTool/GameFiles/lootchests.json</Value>
     </Setting>
     <Setting Name="DiscordUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://discord.com/invite/sahSrSPmaJ</Value>
