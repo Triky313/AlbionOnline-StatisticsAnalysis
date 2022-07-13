@@ -160,31 +160,6 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master" +
-            "/src/StatisticsAnalysisTool/GameFiles/world.json")]
-        public string WorldDataSourceUrl {
-            get {
-                return ((string)(this["WorldDataSourceUrl"]));
-            }
-            set {
-                this["WorldDataSourceUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7")]
-        public int UpdateWorldDataByDays {
-            get {
-                return ((int)(this["UpdateWorldDataByDays"]));
-            }
-            set {
-                this["UpdateWorldDataByDays"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("DungeonRuns.json")]
         public string DungeonRunsFileName {
             get {
@@ -204,19 +179,6 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["LootChestDataFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master" +
-            "/src/StatisticsAnalysisTool/GameFiles/lootchests.json")]
-        public string LootChestDataSourceUrl {
-            get {
-                return ((string)(this["LootChestDataSourceUrl"]));
-            }
-            set {
-                this["LootChestDataSourceUrl"] = value;
             }
         }
         

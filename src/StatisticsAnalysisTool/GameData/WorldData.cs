@@ -7,11 +7,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.GameData
@@ -151,40 +149,16 @@ namespace StatisticsAnalysisTool.GameData
             return MapType.Unknown;
         }
 
-        public static async Task<bool> GetDataListFromJsonAsync()
+        public static bool GetDataListFromJson()
         {
-            var url = Settings.Default.WorldDataSourceUrl;
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.WorldDataFileName}";
+            var localFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName);
 
-            if (string.IsNullOrEmpty(url))
+            if (!File.Exists(localFilePath))
             {
-                Log.Warn($"{nameof(GetDataListFromJsonAsync)}: No WorldDataSourceUrl found.");
                 return false;
             }
 
-            if (File.Exists(localFilePath))
-            {
-                var fileDateTime = File.GetLastWriteTime(localFilePath);
-
-                if (fileDateTime.AddDays(Settings.Default.UpdateWorldDataByDays) < DateTime.Now)
-                {
-                    if (await GetWorldListFromWebAsync(url).ConfigureAwait(false))
-                    {
-                        MapData = GetWorldDataFromLocal();
-                    }
-
-                    return MapData?.Count > 0;
-                }
-
-                MapData = GetWorldDataFromLocal();
-                return MapData?.Count > 0;
-            }
-
-            if (await GetWorldListFromWebAsync(url).ConfigureAwait(false))
-            {
-                MapData = GetWorldDataFromLocal();
-            }
-
+            MapData = GetWorldDataFromLocal();
             return MapData?.Count > 0;
         }
 
@@ -226,36 +200,6 @@ namespace StatisticsAnalysisTool.GameData
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return new ObservableCollection<WorldJsonObject>();
-            }
-        }
-
-        private static async Task<bool> GetWorldListFromWebAsync(string url)
-        {
-            using var client = new HttpClient
-            {
-                Timeout = TimeSpan.FromSeconds(300)
-            };
-
-            try
-            {
-                using var response = await client.GetAsync(url);
-                using var content = response.Content;
-
-                var fileString = await content.ReadAsStringAsync();
-                await File.WriteAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "GameFiles", Settings.Default.WorldDataFileName), fileString, Encoding.UTF8);
-                return true;
-            }
-            catch (HttpRequestException e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e.InnerException);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e.InnerException);
-                return false;
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                return false;
             }
         }
     }
