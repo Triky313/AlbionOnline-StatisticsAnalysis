@@ -125,6 +125,11 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task AddToPartyAsync(Guid guid, string username)
         {
+            if (_knownEntities.Any(x => x.Value.UserGuid != guid))
+            {
+                AddEntity(0, guid, null, username, GameObjectType.Player, GameObjectSubType.Player);
+            }
+
             var entity = _knownEntities.FirstOrDefault(x => x.Value.UserGuid == guid);
             if (entity.Value == null)
             {
