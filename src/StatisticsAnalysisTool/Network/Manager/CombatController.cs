@@ -56,7 +56,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             
             if (gameObject?.Value == null
                 || gameObject.Value.Value?.ObjectType != GameObjectType.Player
-                || !_trackingController.EntityController.IsUserInParty(gameObject.Value.Value.Name)
+                || !_trackingController.EntityController.IsEntityInParty(gameObject.Value.Value.Name)
                 )
             {
                 return Task.CompletedTask;
@@ -91,7 +91,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             gameObjectValue.CombatStart ??= DateTime.UtcNow;
             
-            OnDamageUpdate?.Invoke(_mainWindowViewModel.DamageMeter, _trackingController.EntityController.GetAllEntities(true));
+            OnDamageUpdate?.Invoke(_mainWindowViewModel.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHeal());
             return Task.CompletedTask;
         }
 
@@ -108,6 +108,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             var highestDamage = entities.GetHighestDamage();
             var highestHeal = entities.GetHighestHeal();
+            
             _trackingController.EntityController.DetectUsedWeapon();
 
             foreach (var healthChangeObject in entities)
@@ -219,7 +220,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 damageMeter.Add(damageMeterFragment);
             });
         }
-
+        
         private static bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
         {
             return damageMeter.ToList().GroupBy(x => x.Name).Any(g => g.Count() > 1);
@@ -335,7 +336,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private void AddCombatTime(long objectId, bool inActiveCombat, bool inPassiveCombat)
         {
-            if (!_trackingController.EntityController.IsUserInParty(objectId))
+            if (!_trackingController.EntityController.IsEntityInParty(objectId))
             {
                 return;
             }

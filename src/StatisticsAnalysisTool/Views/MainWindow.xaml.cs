@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -30,9 +31,18 @@ namespace StatisticsAnalysisTool.Views
 
         private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
+            if (e.ChangedButton != MouseButton.Left || e.ButtonState != MouseButtonState.Pressed)
+            {
+                return;
+            }
+
+            try
             {
                 DragMove();
+            }
+            catch (Exception exception)
+            {
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, exception);
             }
         }
 
@@ -46,8 +56,9 @@ namespace StatisticsAnalysisTool.Views
             WindowState = WindowState.Minimized;
         }
 
-        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            await Task.Delay(200);
             switch (e.ClickCount)
             {
                 case 2 when WindowState == WindowState.Normal:

@@ -21,7 +21,6 @@ namespace StatisticsAnalysisTool.Network.Manager
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private readonly ConcurrentDictionary<Guid, PlayerGameObject> _knownEntities = new();
-        private readonly ConcurrentDictionary<Guid, string> _knownPartyEntities = new();
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly ObservableCollection<EquipmentItemInternal> _newEquipmentItems = new();
         private readonly ObservableCollection<SpellEffect> _spellEffects = new();
@@ -106,14 +105,19 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
         {
-            return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsUserInParty(x.Value.Name)) : _knownEntities.ToArray());
+            return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsEntityInParty(x.Value.Name)) : _knownEntities.ToArray());
         }
 
-        public bool IsEntityInParty(long objectId) => GetAllEntities(true).Any(x => x.Value.ObjectId == objectId);
+        public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHeal()
+        {
+            return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities.ToArray().Where(x => x.Value.Damage > 0 || x.Value.Heal > 0));
+        }
+        
+        public bool IsEntityInParty(long objectId) => _knownEntities.ToArray().Any(x => x.Value.ObjectId == objectId && x.Value.IsInCurrentParty);
 
-        public bool IsEntityInParty(string name) => GetAllEntities(true).Any(x => x.Value.Name == name);
+        public bool IsEntityInParty(string name) => _knownEntities.ToArray().Any(x => x.Value.Name == name && x.Value.IsInCurrentParty);
 
-        public bool IsEntityInParty(Guid guid) => GetAllEntities(true).Any(x => x.Value.UserGuid == guid);
+        public bool IsEntityInParty(Guid guid) => _knownEntities.ToArray().Any(x => x.Value.UserGuid == guid && x.Value.IsInCurrentParty);
 
         #endregion
 
@@ -121,43 +125,48 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task AddToPartyAsync(Guid guid, string username)
         {
-            if (_knownPartyEntities.All(x => x.Key != guid))
+            if (_knownEntities.Any(x => x.Value.UserGuid != guid))
             {
-                _knownPartyEntities.TryAdd(guid, username);
+                AddEntity(0, guid, null, username, GameObjectType.Player, GameObjectSubType.Player);
             }
 
+            var entity = _knownEntities.FirstOrDefault(x => x.Value.UserGuid == guid);
+            if (entity.Value == null)
+            {
+                return;
+            }
+
+            entity.Value.IsInCurrentParty = true;
             await SetPartyMemberUiAsync();
         }
 
         public async Task RemoveFromPartyAsync(Guid? guid)
         {
-            if (guid is { } notNullGuid)
+            var entity = _knownEntities.FirstOrDefault(x => x.Value.UserGuid == guid);
+            if (entity.Value == null)
             {
-                if (notNullGuid == GetLocalEntity()?.Key)
-                {
-                    await ResetPartyMemberAsync();
-                    await AddLocalEntityToPartyAsync();
-                }
-                else
-                {
-                    _ = _knownPartyEntities.TryRemove(notNullGuid, out _);
-                }
-
-                await SetPartyMemberUiAsync();
+                return;
             }
+
+            entity.Value.IsInCurrentParty = false;
+            await SetPartyMemberUiAsync();
         }
 
         public async Task ResetPartyMemberAsync()
         {
-            _knownPartyEntities.Clear();
+            foreach (var entity in _knownEntities)
+            {
+                entity.Value.IsInCurrentParty = false;
+            }
+
             await SetPartyMemberUiAsync();
         }
 
         public async Task AddLocalEntityToPartyAsync()
         {
-            foreach (var member in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer))
+            foreach (var localEntity in _knownEntities.Where(x => x.Value.ObjectSubType == GameObjectSubType.LocalPlayer))
             {
-                _knownPartyEntities.TryAdd(member.Key, member.Value.Name);
+                localEntity.Value.IsInCurrentParty = true;
             }
 
             await SetPartyMemberUiAsync();
@@ -168,6 +177,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             if (resetPartyBefore)
             {
                 await ResetPartyMemberAsync();
+                await AddLocalEntityToPartyAsync();
             }
 
             foreach (var member in party)
@@ -183,35 +193,22 @@ namespace StatisticsAnalysisTool.Network.Manager
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 _mainWindowViewModel.PartyMemberCircles.Clear();
-                foreach (var member in _knownPartyEntities) _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle
+                foreach (var entity in GetAllEntities(true))
                 {
-                    Name = member.Value,
-                    UserGuid = member.Key
-                });
-                _mainWindowViewModel.PartyMemberNumber = _knownPartyEntities.Count;
+                    _mainWindowViewModel.PartyMemberCircles.Add(new PartyMemberCircle
+                    {
+                        Name = entity.Value.Name,
+                        UserGuid = entity.Key
+                    });
+                    _mainWindowViewModel.PartyMemberNumber = GetAllEntities(true).Count;
+                }
             });
         }
-
-        public bool IsUserInParty(string name)
-        {
-            return _knownPartyEntities.Any(x => x.Value == name);
-        }
-
-        public bool IsUserInParty(long objectId)
-        {
-            var entity = _knownEntities.FirstOrDefault(x => x.Value.ObjectId == objectId);
-            if (entity.Value == null)
-            {
-                return false;
-            }
-
-            return _knownPartyEntities.Any(x => x.Value == entity.Value.Name);
-        }
-
+        
         public void CopyPartyToClipboard()
         {
             var output = string.Empty;
-            var partyString = _knownPartyEntities.Aggregate(output, (current, entity) => current + $"{entity.Value},");
+            var partyString = GetAllEntities(true).Aggregate(output, (current, entity) => current + $"{entity.Value},");
             Clipboard.SetDataObject(partyString[..(partyString.Length > 0 ? partyString.Length - 1 : 0)]);
         }
 
@@ -268,7 +265,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void AddSpellEffect(SpellEffect spell)
         {
-            if (!IsUserInParty(spell.CauserId))
+            if (!IsEntityInParty(spell.CauserId))
             {
                 return;
             }
