@@ -116,8 +116,7 @@ namespace StatisticsAnalysisTool.Common
 
             return locations;
         }
-
-        // TODO: Ändern, dass er keine Prtal Zone sondern nur normale aussgiebt usw...
+        
         public static Location GetLocationByLocationNameOrId(string location)
         {
             return location switch
