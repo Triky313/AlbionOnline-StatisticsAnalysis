@@ -48,7 +48,7 @@ namespace StatisticsAnalysisTool.Common
             return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
         }
 
-        public static List<Location> GetLocationsListByArea(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket)
+        public static List<Location> GetLocationsListByArea(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool withPortalCities)
         {
             var locationAreas = new List<LocationArea>();
 
@@ -102,21 +102,36 @@ namespace StatisticsAnalysisTool.Common
                         locations.Add(Location.Martlock);
                         locations.Add(Location.FortSterling);
                         locations.Add(Location.Caerleon);
+                        if (withPortalCities)
+                        {
+                            locations.Add(Location.ThetfordPortal);
+                            locations.Add(Location.LymhurstPortal);
+                            locations.Add(Location.BridgewatchPortal);
+                            locations.Add(Location.MartlockPortal);
+                            locations.Add(Location.FortSterlingPortal);
+                        }
+
                         break;
                 }
 
             return locations;
         }
 
+        // TODO: Ändern, dass er keine Prtal Zone sondern nur normale aussgiebt usw...
         public static Location GetLocationByLocationNameOrId(string location)
         {
             return location switch
             {
-                "Thetford" or "0301" => Location.Thetford,
-                "Lymhurst" or "1301" => Location.Lymhurst,
-                "Bridgewatch" or "2301" => Location.Bridgewatch,
-                "Martlock" or "3301" => Location.Martlock,
-                "Fort Sterling" or "4301" => Location.FortSterling,
+                "Thetford" => Location.Thetford,
+                "Lymhurst" => Location.Lymhurst,
+                "Bridgewatch" => Location.Bridgewatch,
+                "Martlock" => Location.Martlock,
+                "Fort Sterling" => Location.FortSterling,
+                "0301" or "Thetford Portal" => Location.ThetfordPortal,
+                "1301" or "Lymhurst Portal" => Location.LymhurstPortal,
+                "2301" or "Bridgewatch Portal" => Location.BridgewatchPortal,
+                "3301" or "Martlock Portal" => Location.MartlockPortal,
+                "4301" or "Fort Sterling Portal" => Location.FortSterlingPortal,
                 "Caerleon" => Location.Caerleon,
                 "Swamp Cross" => Location.SwampCross,
                 "Forest Cross" => Location.ForestCross,
@@ -133,6 +148,14 @@ namespace StatisticsAnalysisTool.Common
 
         public static SolidColorPaint GetLocationBrush(Location location, bool transparent)
         {
+            if (location == Location.Unknown)
+            {
+                return new SolidColorPaint
+                {
+                    Color = new SKColor(0, 0, 0, 0)
+                };
+            }
+
             try
             {
                 if (transparent)
