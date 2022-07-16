@@ -67,8 +67,8 @@
 
     <Style x:Key="Label.Crafting.Title" TargetType="{x:Type Label}">
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Blue.3}" />
-        <Setter Property="Height" Value="16" />
-        <Setter Property="Margin" Value="0,0,0,0" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Margin" Value="0,0,5,0" />
         <Setter Property="Padding" Value="2,0,2,0" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
@@ -226,38 +226,12 @@
             <StackPanel Orientation="Vertical" Margin="5,5,5,0">
                 <Label Content="{Binding TranslationCalculation, FallbackValue=CALCULATION}" Style="{StaticResource Label.Crafting}" />
             </StackPanel>
-
-            <Label Content="{Binding TranslationPossibleCrafting, FallbackValue=POSSIBLE__CRAFTING}" Style="{StaticResource Label.Crafting.Title}" Margin="5,0" />
-            <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
-                <Label Content="{Binding TranslationPossibleItemCrafting, FallbackValue=POSSIBLE__ITEM__CRAFTING}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
-                <Label Content="{Binding PossibleItemCrafting}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" />
-                <Label Content="{Binding AmountCrafted, FallbackValue=0}">
-                    <Label.Style>
-                        <Style TargetType="{x:Type Label}">
-                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-                            <Setter Property="ContentStringFormat" Value="{}(x{0})" />
-                            <Setter Property="Height" Value="20" />
-                            <Setter Property="Margin" Value="0,0,5,0" />
-                            <Setter Property="Padding" Value="2,0,2,0" />
-                            <Setter Property="HorizontalAlignment" Value="Left" />
-
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsAmountCraftedRelevant, IsAsync=True}" Value="true">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsAmountCraftedRelevant, IsAsync=True}" Value="false">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Label.Style>
-                </Label>
-            </StackPanel>
-
-            <Label Content="{Binding TranslationStatementOfCost, FallbackValue=STATEMENT__OF__COST}" Style="{StaticResource Label.Crafting.Title}" Margin="5,0" />
             <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
                 <StackPanel Orientation="Vertical">
+                    <Label Content="{Binding TranslationPossibleCrafting, FallbackValue=POSSIBLE__CRAFTING}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                    <Label Content="{Binding TranslationPossibleItemCrafting, FallbackValue=POSSIBLE__ITEM__CRAFTING}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+
+                    <Label Content="{Binding TranslationStatementOfCost, FallbackValue=STATEMENT__OF__COST}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding TranslationCraftingTax, FallbackValue=CRAFTING__TAX}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Label Content="{Binding TranslationSetupFee, FallbackValue=SETUP__FEE}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Label Content="{Binding TranslationAuctionsHouseTax, FallbackValue=AUCTIONS__HOUSE__TAX}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
@@ -275,6 +249,32 @@
                     <Label Content="{Binding TranslationGrandTotal, FallbackValue=GRAND__TOTAL}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
+                    <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                    <Label Content="{Binding PossibleItemCrafting}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" 
+                           HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+                    <Label Content="{Binding AmountCrafted, FallbackValue=0}" HorizontalAlignment="Right">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                                <Setter Property="ContentStringFormat" Value="{}(x{0})" />
+                                <Setter Property="Height" Value="20" />
+                                <Setter Property="Margin" Value="0,0,5,0" />
+                                <Setter Property="Padding" Value="2,0,2,0" />
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsAmountCraftedRelevant, IsAsync=True}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsAmountCraftedRelevant, IsAsync=True}" Value="false">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding CraftingTax}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                     <Label Content="{Binding SetupFee}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                     <Label Content="{Binding AuctionsHouseTax}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />

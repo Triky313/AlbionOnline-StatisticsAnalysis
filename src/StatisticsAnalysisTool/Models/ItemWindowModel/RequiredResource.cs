@@ -145,7 +145,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _totalCost = value;
-                _itemWindowViewModel.UpdateCraftingCalculationTotalResourceCosts();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }

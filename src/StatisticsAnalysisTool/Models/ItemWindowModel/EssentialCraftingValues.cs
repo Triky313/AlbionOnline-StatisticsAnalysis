@@ -15,11 +15,11 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private readonly ItemWindowViewModel _itemWindowViewModel;
         private int _amountCrafted = 1;
         private long _sellPricePerItem;
-        private int _craftingItemQuantity;
-        private double _setupFee;
-        private double _auctionHouseTax;
+        private int _craftingItemQuantity = 1;
+        private double _setupFee = 1.5d;
+        private double _auctionHouseTax = 3.0d;
         private int _usageFeePerHundredFood;
-        private int _craftingBonus;
+        private int _craftingBonus = 133;
         private bool _isCraftingWithFocus;
         private int _otherCosts;
         private bool _isAmountCraftedRelevant;
@@ -31,9 +31,11 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private Location _itemPricesLocationSelected;
         private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
 
-        public EssentialCraftingValuesTemplate(ItemWindowViewModel itemWindowViewModel)
+        public EssentialCraftingValuesTemplate(ItemWindowViewModel itemWindowViewModel, List<MarketResponse> currentCityPrices, string uniqueName)
         {
             _itemWindowViewModel = itemWindowViewModel;
+            CurrentCityPrices = currentCityPrices;
+            UniqueName = uniqueName;
         }
 
         private async void LoadSellPriceAsync(Location location)
@@ -96,7 +98,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             {
                 _amountCrafted = value;
                 IsAmountCraftedRelevant = _amountCrafted > 1;
-                _itemWindowViewModel.UpdateCraftingValues();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -117,7 +119,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingItemQuantity = value;
-                _itemWindowViewModel.UpdateCraftingValues();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -128,7 +130,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _sellPricePerItem = value;
-                _itemWindowViewModel.UpdateCraftingValues();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -139,7 +141,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _setupFee = value;
-                _itemWindowViewModel.UpdateCraftingValues();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -150,7 +152,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _auctionHouseTax = value;
-                _itemWindowViewModel.UpdateCraftingValues();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -161,7 +163,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _usageFeePerHundredFood = value;
-                _itemWindowViewModel.UpdateCraftingValues();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -172,7 +174,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _craftingBonus = value;
-                _itemWindowViewModel.UpdateCraftingValues();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -183,7 +185,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _otherCosts = value;
-                _itemWindowViewModel.UpdateCraftingValues();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -194,11 +196,11 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _isCraftingWithFocus = value;
-                _itemWindowViewModel.UpdateCraftingValues();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
-
+        
         public string TranslationSellPricePerItem => LanguageController.Translation("SELL_PRICE_PER_ITEM");
         public string TranslationItemQuantity => LanguageController.Translation("ITEM_QUANTITY");
         public string TranslationSetupFeePercent => LanguageController.Translation("SETUP_FEE_PERCENT");
