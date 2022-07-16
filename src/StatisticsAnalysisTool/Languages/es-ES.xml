@@ -353,7 +353,7 @@
 	<translation name="KILLED_BY">matado por</translation>
 	<translation name="DUNGEON_FAME">Fama de mazmorra</translation>
 	<translation name="DUNGEON_RUN_TIME">Tiempo en la mazmorra</translation>
-	<translation name="DAMAGE_METER">Medidor de Daño</translation>
+	<translation name="DAMAGE_METER">Medidor de daño</translation>
 	<translation name="RESET_DAMAGE_METER">Reiniciar medidor de daño</translation>
 
 	<translation name="STANDARD">Estándar</translation>
@@ -491,7 +491,7 @@
 	<translation name="TRACKING_IS_PARTIALLY_ACTIVE">El rastreo está parcialmente activo</translation>
 	<translation name="TRACKING_IS_NOT_ACTIVE">El rastreo no está activo</translation>
 	<translation name="PROGRAM_RESTART_REQUIRED">Se necesita reiniciar el programa</translation>
-	<translation name="DASHBOARD">Panel General</translation>
+	<translation name="DASHBOARD">Panel general</translation>
 	<translation name="MIGHT">Poderío</translation>
 	<translation name="FAVOR">Favor</translation>
 	<translation name="USAGE_FEE_PER_HUNDRED_FOOD">Tasa de uso por 100 nutrición</translation>
@@ -612,4 +612,15 @@
 	<translation name="LOCATION">Ubicación</translation>
 	<translation name="STORAGE_NAME">Nombre de almacenamiento</translation>
 	<translation name="SELECT_DESELECT_ALL">Seleccionar / Deseleccionar todo</translation>
+
+	<translation name="LOOTED_CHESTS">Cofres saqueados</translation>
+	<translation name="STATIC_DUNGEONS">Mazmorras estáticas</translation>
+	<translation name="AVALONIAN_ROADS">Caminos avalonianos</translation>
+	<translation name="HELLGATES">Hellgates</translation>
+	<translation name="OPEN_WORLD">Mundo abierto</translation>
+	<translation name="LAST_7_DAYS">Últimos 7 días</translation>
+	<translation name="LAST_30_DAYS">Últimos 30 díss</translation>
+	<translation name="LAST_365_DAYS">Últimos 365 días</translation>
+	<translation name="MOST_EXPENSIVE_SALE">Venta más cara</translation>
+	<translation name="MOST_EXPENSIVE_PURCHASE">Compra más cara</translation>
 </translations>
