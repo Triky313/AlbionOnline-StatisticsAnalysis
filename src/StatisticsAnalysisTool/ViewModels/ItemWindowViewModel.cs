@@ -345,7 +345,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void UpdateCraftingCalculationTab()
         {
-            if (EssentialCraftingValues == null || CraftingCalculation == null || RequiredJournal == null || RequiredResources == null)
+            if (EssentialCraftingValues == null || CraftingCalculation == null)
             {
                 return;
             }
@@ -365,11 +365,8 @@ namespace StatisticsAnalysisTool.ViewModels
             CraftingCalculation.AuctionsHouseTax = 
                 EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
 
-            // Total journal costs
-            CraftingCalculation.TotalJournalCosts = RequiredJournal.CostsPerJournal * RequiredJournal.RequiredJournalAmount;
-
             // Total resource costs
-            CraftingCalculation.TotalResourceCosts = RequiredResources.Sum(x => x.TotalCost);
+            CraftingCalculation.TotalResourceCosts = RequiredResources?.Sum(x => x.TotalCost) ?? 0;
 
             // Other costs
             CraftingCalculation.OtherCosts = EssentialCraftingValues.OtherCosts;
@@ -377,11 +374,17 @@ namespace StatisticsAnalysisTool.ViewModels
             // Total item sells
             CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * (CraftingCalculation.PossibleItemCrafting * EssentialCraftingValues.AmountCrafted);
 
-            // Total journal sells
-            CraftingCalculation.TotalJournalSells = RequiredJournal.RequiredJournalAmount * RequiredJournal.SellPricePerJournal;
+            if (RequiredJournal != null)
+            {
+                // Total journal costs
+                CraftingCalculation.TotalJournalCosts = RequiredJournal.CostsPerJournal * RequiredJournal.RequiredJournalAmount;
 
-            // Required journal amount
-            RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity));
+                // Total journal sells
+                CraftingCalculation.TotalJournalSells = RequiredJournal.RequiredJournalAmount * RequiredJournal.SellPricePerJournal;
+
+                // Required journal amount
+                RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity));
+            }
         }
         
         #endregion Crafting tab
