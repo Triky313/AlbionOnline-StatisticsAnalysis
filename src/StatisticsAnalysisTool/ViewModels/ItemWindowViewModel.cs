@@ -385,6 +385,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 // Required journal amount
                 RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity));
             }
+
+            // Amount crafted
+            CraftingCalculation.AmountCrafted = EssentialCraftingValues.AmountCrafted;
         }
         
         #endregion Crafting tab

@@ -250,30 +250,32 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
-                    <Label Content="{Binding PossibleItemCrafting}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" 
-                           HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
-                    <Label Content="{Binding AmountCrafted, FallbackValue=0}" HorizontalAlignment="Right">
-                        <Label.Style>
-                            <Style TargetType="{x:Type Label}">
-                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
-                                <Setter Property="ContentStringFormat" Value="{}(x{0})" />
-                                <Setter Property="Height" Value="20" />
-                                <Setter Property="Margin" Value="0,0,5,0" />
-                                <Setter Property="Padding" Value="2,0,2,0" />
-                                <Setter Property="HorizontalAlignment" Value="Left" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding PossibleItemCrafting}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" 
+                               HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" />
+                        <Label Content="{Binding AmountCrafted, FallbackValue=0}" HorizontalAlignment="Right">
+                            <Label.Style>
+                                <Style TargetType="{x:Type Label}">
+                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
+                                    <Setter Property="ContentStringFormat" Value="{}(x{0})" />
+                                    <Setter Property="Height" Value="20" />
+                                    <Setter Property="Margin" Value="0,0,5,0" />
+                                    <Setter Property="Padding" Value="2,0,2,0" />
+                                    <Setter Property="HorizontalAlignment" Value="Left" />
 
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsAmountCraftedRelevant, IsAsync=True}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsAmountCraftedRelevant, IsAsync=True}" Value="false">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Label.Style>
-                    </Label>
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsAmountCraftedRelevant, IsAsync=True}" Value="true">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsAmountCraftedRelevant, IsAsync=True}" Value="false">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>
+                    </StackPanel>
                     <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding CraftingTax}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                     <Label Content="{Binding SetupFee}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
