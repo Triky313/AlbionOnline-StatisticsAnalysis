@@ -101,19 +101,13 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)
         {
-            return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsUserInParty(x.Value.Name)) : _knownEntities.ToArray());
+            return new List<KeyValuePair<Guid, PlayerGameObject>>(onlyInParty ? _knownEntities.ToArray().Where(x => IsEntityInParty(x.Value.Name)) : _knownEntities.ToArray());
         }
 
         public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntitiesWithDamageOrHeal()
         {
             return new List<KeyValuePair<Guid, PlayerGameObject>>(_knownEntities.ToArray().Where(x => x.Value.Damage > 0 || x.Value.Heal > 0));
         }
-
-        public bool IsEntityInParty(long objectId) => GetAllEntities(true).Any(x => x.Value.ObjectId == objectId);
-
-        public bool IsEntityInParty(string name) => GetAllEntities(true).Any(x => x.Value.Name == name);
-
-        public bool IsEntityInParty(Guid guid) => GetAllEntities(true).Any(x => x.Value.UserGuid == guid);
 
         #endregion
 
@@ -192,20 +186,20 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
-        public bool IsUserInParty(string name)
+        public bool IsEntityInParty(string name)
         {
             return _knownPartyEntities.Any(x => x.Value == name);
         }
 
-        public bool IsUserInParty(long objectId)
+        public bool IsEntityInParty(long objectId)
         {
             var entity = _knownEntities.FirstOrDefault(x => x.Value.ObjectId == objectId);
-            if (entity.Value == null)
-            {
-                return false;
-            }
+            return entity.Value != null && _knownPartyEntities.Any(x => x.Value == entity.Value.Name);
+        }
 
-            return _knownPartyEntities.Any(x => x.Value == entity.Value.Name);
+        public bool IsEntityInParty(Guid guid)
+        {
+            return _knownPartyEntities.Any(x => x.Key == guid);
         }
 
         public void CopyPartyToClipboard()
@@ -268,7 +262,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void AddSpellEffect(SpellEffect spell)
         {
-            if (!IsUserInParty(spell.CauserId))
+            if (!IsEntityInParty(spell.CauserId))
             {
                 return;
             }
