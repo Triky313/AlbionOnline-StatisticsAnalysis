@@ -129,8 +129,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _costsPerJournal = value;
-                _itemWindowViewModel.CraftingCalculation.TotalJournalCosts = CostsPerJournal * RequiredJournalAmount;
-                _itemWindowViewModel.UpdateCraftingValues();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -151,7 +150,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _sellPricePerJournal = value;
-                _itemWindowViewModel.UpdateCraftingValues();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }

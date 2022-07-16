@@ -132,7 +132,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             ItemTierLevel = Item?.Tier != -1 && Item?.Level != -1 ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
             InitExtraItemInformation();
-            await InitCraftingTabUiAsync();
+            await InitCraftingTabAsync();
 
             await _itemWindow.Dispatcher.InvokeAsync(() =>
             {
@@ -243,7 +243,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Crafting tab
 
-        private async Task InitCraftingTabUiAsync()
+        private async Task InitCraftingTabAsync()
         {
             var areResourcesAvailable = false;
 
@@ -261,32 +261,14 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 CraftingTabVisibility = Visibility.Visible;
 
-                SetEssentialCraftingValues();
-                GetJournalInfo();
-                await GetCraftInfoAsync();
+                EssentialCraftingValues = new EssentialCraftingValuesTemplate(this, CurrentCityPrices, Item.UniqueName);
+                SetJournalInfo();
+                await SetRequiredResourcesAsync();
                 CraftingNotes = CraftingTabController.GetNote(Item.UniqueName);
             }
         }
-
-        private void SetEssentialCraftingValues()
-        {
-            EssentialCraftingValues = new EssentialCraftingValuesTemplate(this)
-            {
-                AmountCrafted = 1,
-                AuctionHouseTax = 3.0d,
-                CraftingBonus = 133,
-                CraftingItemQuantity = 1,
-                UsageFeePerHundredFood = 0,
-                SellPricePerItem = 0,
-                SetupFee = 1.5d,
-                OtherCosts = 0,
-                IsCraftingWithFocus = false,
-                CurrentCityPrices = CurrentCityPrices,
-                UniqueName = Item.UniqueName
-            };
-        }
-
-        private void GetJournalInfo()
+        
+        private void SetJournalInfo()
         {
             var craftingJournalType = Item?.FullItemInformation switch
             {
@@ -313,7 +295,7 @@ namespace StatisticsAnalysisTool.ViewModels
             };
         }
 
-        private async Task GetCraftInfoAsync()
+        private async Task SetRequiredResourcesAsync()
         {
             var craftingRequirements = Item?.FullItemInformation switch
             {
@@ -361,81 +343,53 @@ namespace StatisticsAnalysisTool.ViewModels
             return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
         }
 
-        public void UpdateCraftingValues()
+        public void UpdateCraftingCalculationTab()
         {
-            if (CraftingCalculation?.SetupFee != null && EssentialCraftingValues != null)
+            if (EssentialCraftingValues == null || CraftingCalculation == null)
             {
-                CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity,
-                    EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
+                return;
             }
 
-            if (CraftingCalculation?.CraftingTax != null && EssentialCraftingValues != null)
-            {
-                CraftingCalculation.CraftingTax = CraftingController.GetCraftingTax(EssentialCraftingValues.UsageFeePerHundredFood,
-                    Item, EssentialCraftingValues.CraftingItemQuantity);
-            }
+            // PossibleItem crafting
+            var possibleItemCrafting = (double)EssentialCraftingValues.CraftingItemQuantity / 100 * EssentialCraftingValues.CraftingBonus * ((EssentialCraftingValues.IsCraftingWithFocus) 
+                                           ? ((23.1d / 100) + 1) : 1);
+            CraftingCalculation.PossibleItemCrafting = Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
 
-            if (CraftingCalculation?.PossibleItemCrafting != null && EssentialCraftingValues != null)
-            {
-                if (EssentialCraftingValues.IsCraftingWithFocus)
-                {
-                    var possibleItemCrafting = (double)EssentialCraftingValues.CraftingItemQuantity / 100 * EssentialCraftingValues.CraftingBonus * ((23.1d / 100) + 1);
-                    CraftingCalculation.PossibleItemCrafting = Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
-                }
-                else
-                {
-                    var possibleItemCrafting = (double)EssentialCraftingValues.CraftingItemQuantity / 100 * EssentialCraftingValues.CraftingBonus;
-                    CraftingCalculation.PossibleItemCrafting = Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
-                }
+            // Crafting (Usage) tax
+            CraftingCalculation.CraftingTax = CraftingController.GetCraftingTax(EssentialCraftingValues.UsageFeePerHundredFood, Item, CraftingCalculation.PossibleItemCrafting);
 
-                foreach (var requiredResource in RequiredResources.ToList())
-                {
-                    requiredResource.CraftingQuantity = requiredResource.IsArtifactResource
-                        ? (long)Math.Round(CraftingCalculation.PossibleItemCrafting, MidpointRounding.ToPositiveInfinity)
-                        : EssentialCraftingValues.CraftingItemQuantity;
-                }
-            }
+            // Setup fee
+            CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
 
-            if (RequiredJournal?.RequiredJournalAmount != null && CraftingCalculation != null)
-            {
-                RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting);
-            }
+            // Auctions house tax
+            CraftingCalculation.AuctionsHouseTax = 
+                EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
 
-            if (CraftingCalculation?.AuctionsHouseTax != null && EssentialCraftingValues != null)
-            {
-                CraftingCalculation.AuctionsHouseTax =
-                    EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
-            }
+            // Total resource costs
+            CraftingCalculation.TotalResourceCosts = RequiredResources?.Sum(x => x.TotalCost) ?? 0;
 
-            if (CraftingCalculation?.TotalItemSells != null && EssentialCraftingValues != null && CraftingCalculation != null)
-            {
-                CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * (CraftingCalculation.PossibleItemCrafting * EssentialCraftingValues.AmountCrafted);
-            }
+            // Other costs
+            CraftingCalculation.OtherCosts = EssentialCraftingValues.OtherCosts;
 
-            if (CraftingCalculation?.TotalJournalSells != null && RequiredJournal != null)
+            // Total item sells
+            CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * (CraftingCalculation.PossibleItemCrafting * EssentialCraftingValues.AmountCrafted);
+
+            if (RequiredJournal != null)
             {
+                // Total journal costs
+                CraftingCalculation.TotalJournalCosts = RequiredJournal.CostsPerJournal * RequiredJournal.RequiredJournalAmount;
+
+                // Total journal sells
                 CraftingCalculation.TotalJournalSells = RequiredJournal.RequiredJournalAmount * RequiredJournal.SellPricePerJournal;
+
+                // Required journal amount
+                RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity));
             }
 
-            if (CraftingCalculation?.OtherCosts != null && EssentialCraftingValues != null)
-            {
-                CraftingCalculation.OtherCosts = EssentialCraftingValues.OtherCosts;
-            }
-
-            if (CraftingCalculation?.AmountCrafted != null && EssentialCraftingValues != null)
-            {
-                CraftingCalculation.AmountCrafted = EssentialCraftingValues.AmountCrafted;
-            }
+            // Amount crafted
+            CraftingCalculation.AmountCrafted = EssentialCraftingValues.AmountCrafted;
         }
-
-        public void UpdateCraftingCalculationTotalResourceCosts()
-        {
-            if (CraftingCalculation?.TotalResourceCosts != null)
-            {
-                CraftingCalculation.TotalResourceCosts = RequiredResources.Sum(x => x.TotalCost);
-            }
-        }
-
+        
         #endregion Crafting tab
 
         private void SetErrorValues(Error error)

@@ -150,7 +150,7 @@ namespace StatisticsAnalysisTool.Common
             };
         }
 
-        public static double GetCraftingTax(int foodValue, Item item, int itemQuantity)
+        public static double GetCraftingTax(int foodValue, Item item, double itemQuantity)
         {
             try
             {
@@ -192,36 +192,36 @@ namespace StatisticsAnalysisTool.Common
         {
             var tierFactor = (tier, level) switch
             {
-                (ItemTier.T2, ItemLevel.Level0) => 1,
-                (ItemTier.T3, ItemLevel.Level0) => 1,
-                (ItemTier.T4, ItemLevel.Level0) => 1.8,
-                (ItemTier.T4, ItemLevel.Level1) => 3.6,
-                (ItemTier.T4, ItemLevel.Level2) => 7.2,
-                (ItemTier.T4, ItemLevel.Level3) => 14.4,
-                (ItemTier.T5, ItemLevel.Level0) => 3.6,
-                (ItemTier.T5, ItemLevel.Level1) => 7.2,
-                (ItemTier.T5, ItemLevel.Level2) => 14.4,
-                (ItemTier.T5, ItemLevel.Level3) => 28.8,
-                (ItemTier.T6, ItemLevel.Level0) => 7.2,
-                (ItemTier.T6, ItemLevel.Level1) => 14.4,
-                (ItemTier.T6, ItemLevel.Level2) => 28.8,
-                (ItemTier.T6, ItemLevel.Level3) => 57.6,
-                (ItemTier.T7, ItemLevel.Level0) => 14.4,
-                (ItemTier.T7, ItemLevel.Level1) => 28.8,
-                (ItemTier.T7, ItemLevel.Level2) => 57.6,
-                (ItemTier.T7, ItemLevel.Level3) => 115.2,
-                (ItemTier.T8, ItemLevel.Level0) => 28.8,
-                (ItemTier.T8, ItemLevel.Level1) => 57.6,
-                (ItemTier.T8, ItemLevel.Level2) => 115.2,
-                (ItemTier.T8, ItemLevel.Level3) => 230.4,
+                (ItemTier.T2, ItemLevel.Level0) => 1f,
+                (ItemTier.T3, ItemLevel.Level0) => 1f,
+                (ItemTier.T4, ItemLevel.Level0) => 1.8f,
+                (ItemTier.T4, ItemLevel.Level1) => 3.6f,
+                (ItemTier.T4, ItemLevel.Level2) => 7.2f,
+                (ItemTier.T4, ItemLevel.Level3) => 14.4f,
+                (ItemTier.T5, ItemLevel.Level0) => 3.6f,
+                (ItemTier.T5, ItemLevel.Level1) => 7.2f,
+                (ItemTier.T5, ItemLevel.Level2) => 14.4f,
+                (ItemTier.T5, ItemLevel.Level3) => 28.8f,
+                (ItemTier.T6, ItemLevel.Level0) => 7.2f,
+                (ItemTier.T6, ItemLevel.Level1) => 14.4f,
+                (ItemTier.T6, ItemLevel.Level2) => 28.8f,
+                (ItemTier.T6, ItemLevel.Level3) => 57.6f,
+                (ItemTier.T7, ItemLevel.Level0) => 14.4f,
+                (ItemTier.T7, ItemLevel.Level1) => 28.8f,
+                (ItemTier.T7, ItemLevel.Level2) => 57.6f,
+                (ItemTier.T7, ItemLevel.Level3) => 115.2f,
+                (ItemTier.T8, ItemLevel.Level0) => 28.8f,
+                (ItemTier.T8, ItemLevel.Level1) => 57.6f,
+                (ItemTier.T8, ItemLevel.Level2) => 115.2f,
+                (ItemTier.T8, ItemLevel.Level3) => 230.4f,
                 _ => 1
             };
 
-            var safeFoodValue = (foodValue <= 0) ? 1 : foodValue;
-            return safeFoodValue / 100 * numberOfMaterials * (tierFactor + GetArtifactFactor(craftResource));
+            var safeFoodValue = (foodValue <= 0) ? 1d : foodValue;
+            return safeFoodValue / 100d * numberOfMaterials * (tierFactor + GetArtifactFactor(craftResource));
         }
 
-        private static double GetArtifactFactor(IEnumerable<CraftResource> requiredResources, double craftingTaxDefault = 0.0)
+        private static double GetArtifactFactor(IEnumerable<CraftResource> requiredResources, double craftingTaxDefault = 0.0d)
         {
             var artifactResource = requiredResources.FirstOrDefault(x => x.UniqueName.Contains("ARTEFACT_TOKEN_FAVOR"));
 
