@@ -583,7 +583,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             try
             {
-                var locations = Locations.GetLocationsListByArea(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
+                var locations = Locations.GetLocationsListByArea(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
                 historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
 
                 if (historyItemPrices == null)
@@ -789,7 +789,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool getAllQualities = false)
         {
             return CurrentCityPrices?.Where(x =>
-                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket).Contains(x.CityEnum)
+                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket, true).Contains(x.CityEnum)
                 && (GetQualities().Contains(x.QualityLevel) || getAllQualities)).ToList();
         }
 

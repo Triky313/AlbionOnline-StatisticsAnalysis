@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Common
         /// <exception cref="TooManyRequestsException"></exception>
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName)
         {
-            var locations = Locations.GetLocationsListByArea(true, true, true, true);
+            var locations = Locations.GetLocationsListByArea(true, true, true, true, true);
             return await GetCityItemPricesFromJsonAsync(uniqueName, locations, new List<int> { 1, 2, 3, 4, 5 });
         }
 
@@ -71,7 +71,8 @@ namespace StatisticsAnalysisTool.Common
                 }
 
                 using var content = response.Content;
-                return JsonSerializer.Deserialize<List<MarketResponse>>(await content.ReadAsStringAsync());
+                var result = JsonSerializer.Deserialize<List<MarketResponse>>(await content.ReadAsStringAsync());
+                return MergeCityAndPortalCity(result);
             }
             catch (TooManyRequestsException)
             {
@@ -124,7 +125,8 @@ namespace StatisticsAnalysisTool.Common
                     throw new TooManyRequestsException();
                 }
 
-                return JsonSerializer.Deserialize<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
+                var result = JsonSerializer.Deserialize<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
+                return MergeCityAndPortalCity(result);
             }
             catch (TooManyRequestsException)
             {
@@ -375,5 +377,69 @@ namespace StatisticsAnalysisTool.Common
                 return values;
             }
         }
+
+        #region Helper methods
+
+        private static List<MarketHistoriesResponse> MergeCityAndPortalCity(List<MarketHistoriesResponse> values)
+        {
+            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.Location) is Location.FortSterling or Location.FortSterlingPortal))
+            {
+                marketHistoriesResponse.Location = "FortSterling";
+            }
+
+            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.Location) is Location.Martlock or Location.MartlockPortal))
+            {
+                marketHistoriesResponse.Location = "Martlock";
+            }
+
+            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.Location) is Location.Lymhurst or Location.LymhurstPortal))
+            {
+                marketHistoriesResponse.Location = "Lymhurst";
+            }
+
+            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.Location) is Location.Thetford or Location.ThetfordPortal))
+            {
+                marketHistoriesResponse.Location = "Thetford";
+            }
+
+            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.Location) is Location.Bridgewatch or Location.BridgewatchPortal))
+            {
+                marketHistoriesResponse.Location = "Bridgewatch";
+            }
+
+            return values;
+        }
+
+        private static List<MarketResponse> MergeCityAndPortalCity(List<MarketResponse> values)
+        {
+            foreach (var marketResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.City) is Location.FortSterling or Location.FortSterlingPortal))
+            {
+                marketResponse.City = "Fort Sterling";
+            }
+
+            foreach (var marketResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.City) is Location.Martlock or Location.MartlockPortal))
+            {
+                marketResponse.City = "Martlock";
+            }
+
+            foreach (var marketResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.City) is Location.Lymhurst or Location.LymhurstPortal))
+            {
+                marketResponse.City = "Lymhurst";
+            }
+
+            foreach (var marketResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.City) is Location.Thetford or Location.ThetfordPortal))
+            {
+                marketResponse.City = "Thetford";
+            }
+
+            foreach (var marketResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.City) is Location.Bridgewatch or Location.BridgewatchPortal))
+            {
+                marketResponse.City = "Bridgewatch";
+            }
+            
+            return values;
+        }
+
+        #endregion
     }
 }
