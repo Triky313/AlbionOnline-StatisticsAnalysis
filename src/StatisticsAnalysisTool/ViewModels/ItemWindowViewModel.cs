@@ -381,7 +381,7 @@ namespace StatisticsAnalysisTool.ViewModels
             CraftingCalculation.TotalJournalSells = RequiredJournal.RequiredJournalAmount * RequiredJournal.SellPricePerJournal;
 
             // Required journal amount
-            RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, possibleItemCrafting);
+            RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity));
         }
         
         #endregion Crafting tab
