@@ -4,11 +4,14 @@ using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using log4net;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.Converters;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.ItemWindowModel;
+using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
@@ -23,9 +26,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Common.Converters;
-using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.Models.TranslationModel;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
@@ -267,7 +267,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 CraftingNotes = CraftingTabController.GetNote(Item.UniqueName);
             }
         }
-        
+
         private void SetJournalInfo()
         {
             var craftingJournalType = Item?.FullItemInformation switch
@@ -350,9 +350,20 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
+            // Crafting quantity
+            if (RequiredResources?.Count > 0)
+            {
+                foreach (var requiredResource in RequiredResources.ToList())
+                {
+                    requiredResource.CraftingQuantity = requiredResource.IsArtifactResource
+                        ? (long)Math.Round(CraftingCalculation.PossibleItemCrafting, MidpointRounding.ToPositiveInfinity)
+                        : EssentialCraftingValues.CraftingItemQuantity;
+                }
+            }
+
             // PossibleItem crafting
-            var possibleItemCrafting = (double)EssentialCraftingValues.CraftingItemQuantity / 100 * EssentialCraftingValues.CraftingBonus * ((EssentialCraftingValues.IsCraftingWithFocus) 
-                                           ? ((23.1d / 100) + 1) : 1);
+            var possibleItemCrafting = EssentialCraftingValues.CraftingItemQuantity / 100d * EssentialCraftingValues.CraftingBonus * ((EssentialCraftingValues.IsCraftingWithFocus)
+                                           ? ((23.1d / 100d) + 1d) : 1d);
             CraftingCalculation.PossibleItemCrafting = Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
 
             // Crafting (Usage) tax
@@ -362,7 +373,7 @@ namespace StatisticsAnalysisTool.ViewModels
             CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
 
             // Auctions house tax
-            CraftingCalculation.AuctionsHouseTax = 
+            CraftingCalculation.AuctionsHouseTax =
                 EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
 
             // Total resource costs
@@ -389,7 +400,7 @@ namespace StatisticsAnalysisTool.ViewModels
             // Amount crafted
             CraftingCalculation.AmountCrafted = EssentialCraftingValues.AmountCrafted;
         }
-        
+
         #endregion Crafting tab
 
         private void SetErrorValues(Error error)
@@ -969,7 +980,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public string AveragePrices
         {
             get => _averagePrices;

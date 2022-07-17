@@ -109,9 +109,9 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _resourceCost = value;
-
-                TotalQuantity = OneProductionAmount * CraftingQuantity;
+                
                 TotalCost = ResourceCost * TotalQuantity;
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -122,9 +122,6 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _oneProductionAmount = value;
-
-                TotalQuantity = OneProductionAmount * CraftingQuantity;
-                TotalCost = ResourceCost * TotalQuantity;
                 OnPropertyChanged();
             }
         }
@@ -135,6 +132,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _totalQuantity = value;
+                TotalCost = ResourceCost * TotalQuantity;
                 OnPropertyChanged();
             }
         }
@@ -145,7 +143,6 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _totalCost = value;
-                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -157,7 +154,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             {
                 _craftingQuantity = value;
 
-                TotalQuantity = OneProductionAmount * CraftingQuantity;
+                TotalQuantity = OneProductionAmount * _craftingQuantity;
                 TotalCost = ResourceCost * TotalQuantity;
                 OnPropertyChanged();
             }

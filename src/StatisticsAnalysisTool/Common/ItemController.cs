@@ -131,8 +131,8 @@ namespace StatisticsAnalysisTool.Common
                 return -1;
             }
 
-            var itemNameTierText = item.UniqueName.Split('_')[0];
-            if (itemNameTierText[..1] == "T" && int.TryParse(itemNameTierText.AsSpan(1, 1), out var result))
+            var itemNameTierText = item.UniqueName?.Split('_')[0];
+            if (itemNameTierText != null && itemNameTierText[..1] == "T" && int.TryParse(itemNameTierText.AsSpan(1, 1), out var result))
             {
                 return result;
             }
