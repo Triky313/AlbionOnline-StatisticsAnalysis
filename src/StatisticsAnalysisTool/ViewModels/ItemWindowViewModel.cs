@@ -350,20 +350,21 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
+            // PossibleItem crafting
+            var possibleItemCrafting = EssentialCraftingValues.CraftingItemQuantity / 100d * EssentialCraftingValues.CraftingBonus * ((EssentialCraftingValues.IsCraftingWithFocus)
+                ? ((23.1d / 100d) + 1d) : 1d);
+
             // Crafting quantity
             if (RequiredResources?.Count > 0)
             {
                 foreach (var requiredResource in RequiredResources.ToList())
                 {
                     requiredResource.CraftingQuantity = requiredResource.IsArtifactResource
-                        ? (long)Math.Round(CraftingCalculation.PossibleItemCrafting, MidpointRounding.ToPositiveInfinity)
+                        ? (long)Math.Round(possibleItemCrafting, MidpointRounding.ToPositiveInfinity)
                         : EssentialCraftingValues.CraftingItemQuantity;
                 }
             }
 
-            // PossibleItem crafting
-            var possibleItemCrafting = EssentialCraftingValues.CraftingItemQuantity / 100d * EssentialCraftingValues.CraftingBonus * ((EssentialCraftingValues.IsCraftingWithFocus)
-                                           ? ((23.1d / 100d) + 1d) : 1d);
             CraftingCalculation.PossibleItemCrafting = Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
 
             // Crafting (Usage) tax
