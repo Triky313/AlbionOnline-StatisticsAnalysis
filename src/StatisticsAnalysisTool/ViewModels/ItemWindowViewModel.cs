@@ -387,14 +387,14 @@ namespace StatisticsAnalysisTool.ViewModels
 
             if (RequiredJournal != null)
             {
+                // Required journal amount
+                RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity));
+
                 // Total journal costs
                 CraftingCalculation.TotalJournalCosts = RequiredJournal.CostsPerJournal * RequiredJournal.RequiredJournalAmount;
 
                 // Total journal sells
                 CraftingCalculation.TotalJournalSells = RequiredJournal.RequiredJournalAmount * RequiredJournal.SellPricePerJournal;
-
-                // Required journal amount
-                RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity));
             }
 
             // Amount crafted
