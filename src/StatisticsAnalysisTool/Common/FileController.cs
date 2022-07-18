@@ -20,8 +20,12 @@ public static class FileController
 
         try
         {
+            var options = new JsonSerializerOptions
+            {
+                NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowNamedFloatingPointLiterals
+            };
             var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
-            return JsonSerializer.Deserialize<T>(localFileString) ?? new T();
+            return JsonSerializer.Deserialize<T>(localFileString, options) ?? new T();
         }
         catch (Exception e)
         {
@@ -35,7 +39,11 @@ public static class FileController
     {
         try
         {
-            var fileString = JsonSerializer.Serialize(value);
+            var options = new JsonSerializerOptions
+            {
+                NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowNamedFloatingPointLiterals
+            };
+            var fileString = JsonSerializer.Serialize(value, options);
             File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
         }
         catch (Exception e)
