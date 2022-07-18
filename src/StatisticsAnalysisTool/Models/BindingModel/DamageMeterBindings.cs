@@ -1,5 +1,4 @@
-﻿using System;
-using FontAwesome5;
+﻿using FontAwesome5;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Notification;
@@ -242,23 +241,38 @@ public class DamageMeterBindings : INotifyPropertyChanged
         {
             case DamageMeterSortType.Damage:
                 SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, true);
-                DamageMeterSnapshotSelection?.DamageMeter?.Sort((x, y) => x.DamageInPercent.CompareTo(y.DamageInPercent));
+                if (DamageMeterSnapshotSelection != null)
+                {
+                    DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderByDescending(x => x.DamageInPercent).ToList();
+                }
                 return;
             case DamageMeterSortType.Dps:
                 SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, true);
-                DamageMeterSnapshotSelection?.DamageMeter?.Sort((x, y) => x.Dps.CompareTo(y.Dps));
+                if (DamageMeterSnapshotSelection != null)
+                {
+                    DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderByDescending(x => x.Dps).ToList();
+                }
                 return;
             case DamageMeterSortType.Name:
                 SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, true);
-                DamageMeterSnapshotSelection?.DamageMeter?.Sort((x, y) => string.Compare(x.Name, y.Name, StringComparison.Ordinal));
+                if (DamageMeterSnapshotSelection != null)
+                {
+                    DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderBy(x => x.Name).ToList();
+                }
                 return;
             case DamageMeterSortType.Heal:
                 SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, false);
-                DamageMeterSnapshotSelection?.DamageMeter?.Sort((x, y) => x.HealInPercent.CompareTo(y.HealInPercent));
+                if (DamageMeterSnapshotSelection != null)
+                {
+                    DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderByDescending(x => x.HealInPercent).ToList();
+                }
                 return;
             case DamageMeterSortType.Hps:
                 SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, false);
-                DamageMeterSnapshotSelection?.DamageMeter?.Sort((x, y) => x.Hps.CompareTo(y.Hps));
+                if (DamageMeterSnapshotSelection != null)
+                {
+                    DamageMeterSnapshotSelection.DamageMeter = DamageMeterSnapshotSelection?.DamageMeter?.OrderByDescending(x => x.Hps).ToList();
+                }
                 break;
         }
     }
