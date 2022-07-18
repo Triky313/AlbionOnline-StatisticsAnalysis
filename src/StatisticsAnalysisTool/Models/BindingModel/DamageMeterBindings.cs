@@ -1,4 +1,5 @@
-﻿using FontAwesome5;
+﻿using System;
+using FontAwesome5;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Notification;
@@ -22,6 +23,8 @@ public class DamageMeterBindings : INotifyPropertyChanged
     private ObservableCollection<DamageMeterFragment> _damageMeter = new();
     private List<DamageMeterSnapshot> _damageMeterSnapshots = new();
     private DamageMeterSnapshot _damageMeterSnapshotSelection;
+    private DamageMeterSortStruct _damageMeterSnapshotSortSelection;
+    private List<DamageMeterSortStruct> _damageMeterSnapshotSort = new();
 
     public DamageMeterBindings()
     {
@@ -58,6 +61,14 @@ public class DamageMeterBindings : INotifyPropertyChanged
         DamageMeterSort.Add(sortByHealStruct);
         DamageMeterSort.Add(sortByHpsStruct);
         DamageMeterSortSelection = sortByDamageStruct;
+
+        DamageMeterSnapshotSort.Clear();
+        DamageMeterSnapshotSort.Add(sortByDamageStruct);
+        DamageMeterSnapshotSort.Add(sortByDpsStruct);
+        DamageMeterSnapshotSort.Add(sortByNameStruct);
+        DamageMeterSnapshotSort.Add(sortByHealStruct);
+        DamageMeterSnapshotSort.Add(sortByHpsStruct);
+        DamageMeterSnapshotSortSelection = sortByDamageStruct;
     }
 
     #region Damage meter
@@ -68,18 +79,6 @@ public class DamageMeterBindings : INotifyPropertyChanged
         set
         {
             _damageMeter = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public DamageMeterSortStruct DamageMeterSortSelection
-    {
-        get => _damageMeterSortSelection;
-        set
-        {
-            _damageMeterSortSelection = value;
-            SetDamageMeterSort();
-
             OnPropertyChanged();
         }
     }
@@ -100,6 +99,18 @@ public class DamageMeterBindings : INotifyPropertyChanged
         set
         {
             _damageMeterActivationToggleColor = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DamageMeterSortStruct DamageMeterSortSelection
+    {
+        get => _damageMeterSortSelection;
+        set
+        {
+            _damageMeterSortSelection = value;
+            SetDamageMeterSort();
+
             OnPropertyChanged();
         }
     }
@@ -149,15 +160,6 @@ public class DamageMeterBindings : INotifyPropertyChanged
         }
     }
 
-    public static string TranslationSortByDamage => LanguageController.Translation("SORT_BY_DAMAGE");
-    public static string TranslationSortByDps => LanguageController.Translation("SORT_BY_DPS");
-    public static string TranslationSortByName => LanguageController.Translation("SORT_BY_NAME");
-    public static string TranslationSortByHeal => LanguageController.Translation("SORT_BY_HEAL");
-    public static string TranslationSortByHps => LanguageController.Translation("SORT_BY_HPS");
-    public static string TranslationSnapshots => LanguageController.Translation("SNAPSHOTS");
-    public static string TranslationDeleteSelectedSnapshot => LanguageController.Translation("DELETE_SELECTED_SNAPSHOT");
-    public static string TranslationTakeASnapshotOfDamageMeterDescription => LanguageController.Translation("TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION");
-
     #endregion
 
     #region Damage Meter Snapshot
@@ -178,6 +180,28 @@ public class DamageMeterBindings : INotifyPropertyChanged
         set
         {
             _damageMeterSnapshotSelection = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DamageMeterSortStruct DamageMeterSnapshotSortSelection
+    {
+        get => _damageMeterSnapshotSortSelection;
+        set
+        {
+            _damageMeterSnapshotSortSelection = value;
+            SetDamageMeterSnapshotSort();
+
+            OnPropertyChanged();
+        }
+    }
+
+    public List<DamageMeterSortStruct> DamageMeterSnapshotSort
+    {
+        get => _damageMeterSnapshotSort;
+        set
+        {
+            _damageMeterSnapshotSort = value;
             OnPropertyChanged();
         }
     }
@@ -210,6 +234,55 @@ public class DamageMeterBindings : INotifyPropertyChanged
 
         DamageMeterSnapshots = DamageMeterSnapshots?.ToList();
     }
+
+
+    public void SetDamageMeterSnapshotSort()
+    {
+        switch (DamageMeterSnapshotSortSelection.DamageMeterSortType)
+        {
+            case DamageMeterSortType.Damage:
+                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, true);
+                DamageMeterSnapshotSelection?.DamageMeter?.Sort((x, y) => x.DamageInPercent.CompareTo(y.DamageInPercent));
+                return;
+            case DamageMeterSortType.Dps:
+                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, true);
+                DamageMeterSnapshotSelection?.DamageMeter?.Sort((x, y) => x.Dps.CompareTo(y.Dps));
+                return;
+            case DamageMeterSortType.Name:
+                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, true);
+                DamageMeterSnapshotSelection?.DamageMeter?.Sort((x, y) => string.Compare(x.Name, y.Name, StringComparison.Ordinal));
+                return;
+            case DamageMeterSortType.Heal:
+                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, false);
+                DamageMeterSnapshotSelection?.DamageMeter?.Sort((x, y) => x.HealInPercent.CompareTo(y.HealInPercent));
+                return;
+            case DamageMeterSortType.Hps:
+                SetIsDamageMeterSnapshotShowing(DamageMeterSnapshotSelection?.DamageMeter, false);
+                DamageMeterSnapshotSelection?.DamageMeter?.Sort((x, y) => x.Hps.CompareTo(y.Hps));
+                break;
+        }
+    }
+
+    private static void SetIsDamageMeterSnapshotShowing(IEnumerable<DamageMeterSnapshotFragment> damageMeter, bool isDamageMeterShowing)
+    {
+        foreach (var fragment in damageMeter ?? new List<DamageMeterSnapshotFragment>())
+        {
+            fragment.IsDamageMeterShowing = isDamageMeterShowing;
+        }
+    }
+
+    #endregion
+
+    #region Translations
+
+    public static string TranslationSortByDamage => LanguageController.Translation("SORT_BY_DAMAGE");
+    public static string TranslationSortByDps => LanguageController.Translation("SORT_BY_DPS");
+    public static string TranslationSortByName => LanguageController.Translation("SORT_BY_NAME");
+    public static string TranslationSortByHeal => LanguageController.Translation("SORT_BY_HEAL");
+    public static string TranslationSortByHps => LanguageController.Translation("SORT_BY_HPS");
+    public static string TranslationSnapshots => LanguageController.Translation("SNAPSHOTS");
+    public static string TranslationDeleteSelectedSnapshot => LanguageController.Translation("DELETE_SELECTED_SNAPSHOT");
+    public static string TranslationTakeASnapshotOfDamageMeterDescription => LanguageController.Translation("TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION");
 
     #endregion
 

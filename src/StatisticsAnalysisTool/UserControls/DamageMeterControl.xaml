@@ -23,7 +23,8 @@
                                                       Foreground="{Binding DamageMeterBindings.DamageMeterActivationToggleColor, FallbackValue={StaticResource SolidColorBrush.Text.1}}" 
                                                       MouseUp="DamageMeterModeActiveToggle_MouseUp" />
                                 </Grid>
-                                <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterBindings.DamageMeterSort}" SelectedItem="{Binding DamageMeterBindings.DamageMeterSortSelection}" 
+                                <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterBindings.DamageMeterSort}" 
+                                          SelectedItem="{Binding DamageMeterBindings.DamageMeterSortSelection}" 
                                           IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
                             </StackPanel>
                         </StackPanel>
@@ -107,6 +108,9 @@
                                   ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshots}" 
                                   SelectedItem="{Binding DamageMeterBindings.DamageMeterSnapshotSelection}" 
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="TimestampString" SelectedValuePath="DamageMeter" />
+                        <ComboBox Width="200" Height="26" ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSort}" 
+                                  SelectedItem="{Binding DamageMeterBindings.DamageMeterSnapshotSortSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
                         <Button Content="{Binding DamageMeterBindings.TranslationDeleteSelectedSnapshot, FallbackValue=DELETE__SELECTED__SNAPSHOT}" Height="26" MaxWidth="500" MinWidth="200" 
                                 Margin="5,0,5,0" Click="BtnDeleteSelectedSnapshot_Click" />
                     </StackPanel>
