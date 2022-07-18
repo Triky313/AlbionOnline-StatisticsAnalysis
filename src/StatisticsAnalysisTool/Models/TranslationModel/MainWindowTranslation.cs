@@ -36,11 +36,6 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string DamageMeter => LanguageController.Translation("DAMAGE_METER");
         public static string DamageMeterDescription1 => LanguageController.Translation("DAMAGE_METER_DESCRIPTION_1");
         public static string ResetDamageMeter => LanguageController.Translation("RESET_DAMAGE_METER");
-        public static string SortByDamage => LanguageController.Translation("SORT_BY_DAMAGE");
-        public static string SortByDps => LanguageController.Translation("SORT_BY_DPS");
-        public static string SortByName => LanguageController.Translation("SORT_BY_NAME");
-        public static string SortByHeal => LanguageController.Translation("SORT_BY_HEAL");
-        public static string SortByHps => LanguageController.Translation("SORT_BY_HPS");
         public static string Settings => LanguageController.Translation("SETTINGS");
         public static string Favorite => LanguageController.Translation("FAVORITE");
         public static string Loot => LanguageController.Translation("LOOT");
@@ -108,8 +103,5 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string ThenRestartTheTool => LanguageController.Translation("THEN_RESTART_THE_TOOL");
         public static string Or => LanguageController.Translation("OR");
         public static string SelectDeselectAll => LanguageController.Translation("SELECT_DESELECT_ALL");
-        public static string Snapshots => LanguageController.Translation("SNAPSHOTS");
-        public static string DeleteSelectedSnapshot => LanguageController.Translation("DELETE_SELECTED_SNAPSHOT");
-        public static string TakeASnapshotOfDamageMeterDescription => LanguageController.Translation("TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION");
     }
 }

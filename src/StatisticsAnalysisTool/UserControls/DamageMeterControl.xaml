@@ -19,11 +19,11 @@
                                 <Grid Height="20" Width="30" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center">
                                     <fa5:ImageAwesome Visibility="Visible" 
                                                       ToolTip="{Binding Translation.DamageMeterOnOff, FallbackValue=DAMAGE__METER__ON__OFF}"
-                                                      Icon="{Binding DamageMeterActivationToggleIcon, FallbackValue=Solid_ToggleOff}" 
-                                                      Foreground="{Binding DamageMeterActivationToggleColor, FallbackValue={StaticResource SolidColorBrush.Text.1}}" 
+                                                      Icon="{Binding DamageMeterBindings.DamageMeterActivationToggleIcon, FallbackValue=Solid_ToggleOff}" 
+                                                      Foreground="{Binding DamageMeterBindings.DamageMeterActivationToggleColor, FallbackValue={StaticResource SolidColorBrush.Text.1}}" 
                                                       MouseUp="DamageMeterModeActiveToggle_MouseUp" />
                                 </Grid>
-                                <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterSort}" SelectedItem="{Binding DamageMeterSortSelection}" 
+                                <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterBindings.DamageMeterSort}" SelectedItem="{Binding DamageMeterBindings.DamageMeterSortSelection}" 
                                           IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
                             </StackPanel>
                         </StackPanel>
@@ -46,7 +46,8 @@
                                     <fa5:ImageAwesome Icon="Regular_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 </Grid>
                                 <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                      ToolTip="{Binding Translation.TakeASnapshotOfDamageMeterDescription, FallbackValue=TAKE_A_SNAPSHOT_OF_DAMAGE_METER}" MouseUp="TakeASnapShot_MouseUp">
+                                      ToolTip="{Binding DamageMeterBindings.TranslationTakeASnapshotOfDamageMeterDescription, FallbackValue=TAKE_A_SNAPSHOT_OF_DAMAGE_METER}" 
+                                      MouseUp="TakeASnapShot_MouseUp">
                                     <fa5:ImageAwesome Icon="Solid_Camera" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 </Grid>
                                 <Grid Height="20" Width="20" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
@@ -99,14 +100,14 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.Snapshots, FallbackValue=SNAPSHOTS}">
+            <TabItem Header="{Binding DamageMeterBindings.TranslationSnapshots, FallbackValue=SNAPSHOTS}">
                 <Grid>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
                         <ComboBox Width="200" Height="26" Margin="2,0,5,0" 
                                   ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshots}" 
                                   SelectedItem="{Binding DamageMeterBindings.DamageMeterSnapshotSelection}" 
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="TimestampString" SelectedValuePath="DamageMeter" />
-                        <Button Content="{Binding Translation.DeleteSelectedSnapshot, FallbackValue=DELETE__SELECTED__SNAPSHOT}" Height="26" MaxWidth="500" MinWidth="200" 
+                        <Button Content="{Binding DamageMeterBindings.TranslationDeleteSelectedSnapshot, FallbackValue=DELETE__SELECTED__SNAPSHOT}" Height="26" MaxWidth="500" MinWidth="200" 
                                 Margin="5,0,5,0" Click="BtnDeleteSelectedSnapshot_Click" />
                     </StackPanel>
                     <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,31,0,0" VerticalAlignment="Top"/>

@@ -66,7 +66,7 @@ namespace StatisticsAnalysisTool.UserControls
 
             var vm = (MainWindowViewModel)DataContext;
 
-            switch (vm?.DamageMeterSortSelection.DamageMeterSortType)
+            switch (vm?.DamageMeterBindings?.DamageMeterSortSelection.DamageMeterSortType)
             {
                 case DamageMeterSortType.Damage:
                     Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard

@@ -128,7 +128,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, highestDamage, highestHeal).ConfigureAwait(true);
                 }
 
-                Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.SetDamageMeterSort());
+                Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
             }
 
             if (HasDamageMeterDupes(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter))
