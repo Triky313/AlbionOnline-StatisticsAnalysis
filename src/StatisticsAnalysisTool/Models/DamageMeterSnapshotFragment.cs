@@ -26,6 +26,10 @@ public class DamageMeterSnapshotFragment
         CauserMainHand = damageMeterFragment.CauserMainHand;
     }
 
+    public DamageMeterSnapshotFragment()
+    {
+    }
+
     public string Name { get; set; }
 
     public Guid CauserGuid { get; set; }
@@ -107,9 +111,4 @@ public class DamageMeterSnapshotFragment
     }
 
     public string ShopSubCategory { get; set; }
-    
-    protected bool Equals(DamageMeterSnapshotFragment other)
-    {
-        return _damage == other._damage && _heal == other._heal && Name == other.Name && CauserGuid.Equals(other.CauserGuid);
-    }
 }

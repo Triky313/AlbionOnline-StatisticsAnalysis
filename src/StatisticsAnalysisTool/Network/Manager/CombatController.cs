@@ -36,7 +36,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             OnDamageUpdate += UpdateDamageMeterUiAsync;
 
 #if DEBUG
-            RunDamageMeterDebugAsync(0, 0);
+            RunDamageMeterDebugAsync(5, 10);
 #endif
         }
 

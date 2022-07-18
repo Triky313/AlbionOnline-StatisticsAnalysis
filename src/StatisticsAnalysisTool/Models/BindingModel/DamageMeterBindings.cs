@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -68,6 +69,8 @@ public class DamageMeterBindings : INotifyPropertyChanged
         DamageMeterSnapshotSort.Add(sortByHealStruct);
         DamageMeterSnapshotSort.Add(sortByHpsStruct);
         DamageMeterSnapshotSortSelection = sortByDamageStruct;
+
+        DamageMeterSnapshots = FileController.Load<List<DamageMeterSnapshot>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
     }
 
     #region Damage meter
@@ -179,6 +182,7 @@ public class DamageMeterBindings : INotifyPropertyChanged
         set
         {
             _damageMeterSnapshotSelection = value;
+            SetDamageMeterSnapshotSort();
             OnPropertyChanged();
         }
     }
@@ -233,7 +237,6 @@ public class DamageMeterBindings : INotifyPropertyChanged
 
         DamageMeterSnapshots = DamageMeterSnapshots?.ToList();
     }
-
 
     public void SetDamageMeterSnapshotSort()
     {

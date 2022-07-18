@@ -637,6 +637,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StopTracking()
         {
+            NetworkManager.StopNetworkCapture();
+
             TrackingController?.CountUpTimer?.Stop();
 
             TrackingController?.TreasureController.UnregisterEvents();
@@ -649,7 +651,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.TreasureController?.SaveInFile();
             TrackingController?.StatisticController?.SaveInFile();
 
-            NetworkManager.StopNetworkCapture();
+            FileController.Save(DamageMeterBindings.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
 
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");

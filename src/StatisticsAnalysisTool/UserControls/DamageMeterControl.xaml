@@ -10,7 +10,7 @@
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
 
     <Grid>
-        <TabControl Background="Transparent" Margin="0,0,0,0">
+        <TabControl Background="Transparent" BorderThickness="0">
             <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE_METER}">
                 <Grid>
                     <Grid Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
@@ -120,6 +120,5 @@
                 </Grid>
             </TabItem>
         </TabControl>
-
     </Grid>
 </UserControl>
