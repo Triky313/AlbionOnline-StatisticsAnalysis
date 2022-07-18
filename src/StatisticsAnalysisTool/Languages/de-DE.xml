@@ -621,4 +621,7 @@
 	<translation name="LAST_365_DAYS">Letzten 365 Tage</translation>
 	<translation name="MOST_EXPENSIVE_SALE">Teuerster Verkauf</translation>
 	<translation name="MOST_EXPENSIVE_PURCHASE">Teuerster Einkauf</translation>
+	<translation name="SNAPSHOTS">Schnappschuss</translation>
+	<translation name="DELETE_SELECTED_SNAPSHOT">Ausgewählten Schnappschuss löschen</translation>
+	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">Machen einen Schnappschuss der Schadensanzeige und sehen ihn dir im Schnappschuss-Tab an</translation>
 </translations>

@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
-                    xmlns:common="clr-namespace:StatisticsAnalysisTool.Common">
+                    xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
+                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models">
 
     <!-- Damage meter icon -->
     <Style TargetType="Image" x:Key="DamageMeter.Icon">
@@ -64,7 +65,75 @@
     </Style>
 
     <!-- Damage meter -->
-    <DataTemplate DataType="{x:Type notification:DamageMeterFragment}">
+    <DataTemplate x:Key="DamageMeterFragmentTemplate" DataType="{x:Type notification:DamageMeterFragment}">
+        <Grid>
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="False">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding DamageInPercent}" Minimum="0" Maximum="100" 
+                             Height="40" Margin="3,1,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" 
+                             Style="{StaticResource DamageMeter.ProgressBar.Colors}" />
+                <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding HealInPercent}"
+                             Minimum="0" Maximum="100" Height="2" Margin="3,1,2,1" VerticalAlignment="Bottom" Background="#00FFFFFF" BorderThickness="0">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Weapon.HealBar}" />
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
+                <StackPanel Orientation="Horizontal">
+                    <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
+                    </Grid>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamagePercentage}" 
+                           ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"/>
+                    <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"/>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamageShortString}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
+                </StackPanel>
+            </Grid>
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsDamageMeterShowing}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <ProgressBar common:ProgressBarSmoother.SmoothValue="{Binding HealInPercent}" Minimum="0" Maximum="100" 
+                             Height="40" Margin="3,1,2,1" VerticalAlignment="Top" Background="#00FFFFFF" BorderThickness="0" 
+                             Style="{StaticResource DamageMeter.ProgressBar.Colors}" />
+                <StackPanel Orientation="Horizontal">
+                    <Grid Margin="10,0, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="{Binding CauserMainHand.Icon}" Style="{StaticResource DamageMeter.Icon}" />
+                    </Grid>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HealPercentage}" 
+                           ContentStringFormat="{}{0:N2}%" MinWidth="55" Margin="10,3" HorizontalContentAlignment="Right"></Label>
+                    <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HealShortString}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
+                    <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HpsString}" ContentStringFormat="{}{0:N0}/hps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </DataTemplate> 
+    
+    <!-- Damage meter snapshot fragment -->
+    <DataTemplate x:Key="DamageMeterSnapshotFragmentTemplate" DataType="{x:Type models:DamageMeterSnapshotFragment}">
         <Grid>
             <Grid>
                 <Grid.Style>

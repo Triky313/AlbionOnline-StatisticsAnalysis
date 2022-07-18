@@ -48,7 +48,7 @@ namespace StatisticsAnalysisTool.UserControls
                 else
                 {
                     var vm = (MainWindowViewModel)DataContext;
-                    var itemWindow = new DamageMeterWindow(vm?.DamageMeter);
+                    var itemWindow = new DamageMeterWindow(vm?.DamageMeterBindings?.DamageMeter);
                     itemWindow.Show();
                 }
             }
@@ -70,28 +70,28 @@ namespace StatisticsAnalysisTool.UserControls
             {
                 case DamageMeterSortType.Damage:
                     Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
-                        ? vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
-                        : vm.DamageMeter.Aggregate(output,
+                        ? vm.DamageMeterBindings.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
+                        : vm.DamageMeterBindings.DamageMeter.Aggregate(output,
                             (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
 
                     break;
                 case DamageMeterSortType.Dps:
-                    Clipboard.SetDataObject(vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n"));
+                    Clipboard.SetDataObject(vm.DamageMeterBindings.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n"));
                     break;
                 case DamageMeterSortType.Name:
                     Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
-                        ? vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
-                        : vm.DamageMeter.Aggregate(output, 
+                        ? vm.DamageMeterBindings.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
+                        : vm.DamageMeterBindings.DamageMeter.Aggregate(output, 
                             (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
                     break;
                 case DamageMeterSortType.Heal:
                     Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
-                        ? vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.HealPercentage:N2}%\n")
-                        : vm.DamageMeter.Aggregate(output,
+                        ? vm.DamageMeterBindings.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.HealPercentage:N2}%\n")
+                        : vm.DamageMeterBindings.DamageMeter.Aggregate(output,
                             (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Heal}({entity.HealPercentage:N2}%)|{entity.Hps:N2} HPS\n"));
                     break;
                 case DamageMeterSortType.Hps:
-                    Clipboard.SetDataObject(vm.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n"));
+                    Clipboard.SetDataObject(vm.DamageMeterBindings.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n"));
                     break;
                 case null:
                     break;
@@ -107,6 +107,11 @@ namespace StatisticsAnalysisTool.UserControls
         }
 
         #region Ui events
+
+        private void DamageMeterModeActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            DamageMeterActivationToggle();
+        }
 
         private void BtnDamageMeterReset_Click(object sender, RoutedEventArgs e)
         {
@@ -135,9 +140,16 @@ namespace StatisticsAnalysisTool.UserControls
             CopyDamageMeterToClipboard();
         }
 
-        private void DamageMeterModeActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
+        private void TakeASnapShot_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            DamageMeterActivationToggle();
+            var vm = (MainWindowViewModel)DataContext;
+            vm?.DamageMeterBindings?.GetSnapshot();
+        }
+
+        private void BtnDeleteSelectedSnapshot_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = (MainWindowViewModel)DataContext;
+            vm?.DamageMeterBindings?.DeleteSnapshot();
         }
 
         #endregion

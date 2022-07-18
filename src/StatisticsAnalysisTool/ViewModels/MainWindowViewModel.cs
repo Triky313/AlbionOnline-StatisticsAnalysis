@@ -42,7 +42,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private static PlayerModeInformationModel _playerModeInformation;
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
-        private ObservableCollection<DamageMeterFragment> _damageMeter = new();
         private List<DamageMeterSortStruct> _damageMeterSort = new();
         private DamageMeterSortStruct _damageMeterSortSelection;
         private string _errorBarText;
@@ -106,6 +105,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private TrackingActivityBindings _trackingActivityBindings = new();
         private MailMonitoringBindings _mailMonitoringBindings = new();
         private DungeonBindings _dungeonBindings = new();
+        private DamageMeterBindings _damageMeterBindings = new();
         private Visibility _unsupportedOsVisibility = Visibility.Collapsed;
         private LoggingBindings _loggingBindings = new();
 
@@ -735,24 +735,24 @@ namespace StatisticsAnalysisTool.ViewModels
             switch (DamageMeterSortSelection.DamageMeterSortType)
             {
                 case DamageMeterSortType.Damage:
-                    SetIsDamageMeterShowing(DamageMeter, true);
-                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
+                    SetIsDamageMeterShowing(DamageMeterBindings?.DamageMeter, true);
+                    DamageMeterBindings?.DamageMeter.OrderByReference(DamageMeterBindings?.DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
                     return;
                 case DamageMeterSortType.Dps:
-                    SetIsDamageMeterShowing(DamageMeter, true);
-                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
+                    SetIsDamageMeterShowing(DamageMeterBindings?.DamageMeter, true);
+                    DamageMeterBindings?.DamageMeter.OrderByReference(DamageMeterBindings?.DamageMeter.OrderByDescending(x => x.Dps).ToList());
                     return;
                 case DamageMeterSortType.Name:
-                    SetIsDamageMeterShowing(DamageMeter, true);
-                    DamageMeter.OrderByReference(DamageMeter.OrderBy(x => x.Name).ToList());
+                    SetIsDamageMeterShowing(DamageMeterBindings?.DamageMeter, true);
+                    DamageMeterBindings?.DamageMeter.OrderByReference(DamageMeterBindings?.DamageMeter.OrderBy(x => x.Name).ToList());
                     return;
                 case DamageMeterSortType.Heal:
-                    SetIsDamageMeterShowing(DamageMeter, false);
-                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.HealInPercent).ToList());
+                    SetIsDamageMeterShowing(DamageMeterBindings?.DamageMeter, false);
+                    DamageMeterBindings?.DamageMeter.OrderByReference(DamageMeterBindings?.DamageMeter.OrderByDescending(x => x.HealInPercent).ToList());
                     return;
                 case DamageMeterSortType.Hps:
-                    SetIsDamageMeterShowing(DamageMeter, false);
-                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Hps).ToList());
+                    SetIsDamageMeterShowing(DamageMeterBindings?.DamageMeter, false);
+                    DamageMeterBindings?.DamageMeter.OrderByReference(DamageMeterBindings?.DamageMeter.OrderByDescending(x => x.Hps).ToList());
                     break;
             }
         }
@@ -912,16 +912,16 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
-        public ObservableCollection<DamageMeterFragment> DamageMeter
+        public DamageMeterBindings DamageMeterBindings
         {
-            get => _damageMeter;
+            get => _damageMeterBindings;
             set
             {
-                _damageMeter = value;
+                _damageMeterBindings = value;
                 OnPropertyChanged();
             }
         }
-
+        
         public DungeonBindings DungeonBindings
         {
             get => _dungeonBindings;

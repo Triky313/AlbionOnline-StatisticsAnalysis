@@ -108,5 +108,8 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string ThenRestartTheTool => LanguageController.Translation("THEN_RESTART_THE_TOOL");
         public static string Or => LanguageController.Translation("OR");
         public static string SelectDeselectAll => LanguageController.Translation("SELECT_DESELECT_ALL");
+        public static string Snapshots => LanguageController.Translation("SNAPSHOTS");
+        public static string DeleteSelectedSnapshot => LanguageController.Translation("DELETE_SELECTED_SNAPSHOT");
+        public static string TakeASnapshotOfDamageMeterDescription => LanguageController.Translation("TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION");
     }
 }

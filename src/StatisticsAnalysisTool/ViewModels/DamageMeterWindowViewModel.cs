@@ -1,8 +1,8 @@
 ﻿using StatisticsAnalysisTool.Models.TranslationModel;
-using StatisticsAnalysisTool.Network.Notification;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StatisticsAnalysisTool.Network.Notification;
 
 namespace StatisticsAnalysisTool.ViewModels
 {

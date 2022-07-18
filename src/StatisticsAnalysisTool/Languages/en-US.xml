@@ -621,4 +621,7 @@
 	<translation name="LAST_365_DAYS">Last 365 days</translation>
 	<translation name="MOST_EXPENSIVE_SALE">Most expensive sale</translation>
 	<translation name="MOST_EXPENSIVE_PURCHASE">Most expensive purchase</translation>
+	<translation name="SNAPSHOTS">Snapshot</translation>
+	<translation name="DELETE_SELECTED_SNAPSHOT">Delete selected snapshot</translation>
+	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">Take a snapshot of damage meter and view it in the snapshot tab</translation>
 </translations>
