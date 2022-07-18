@@ -1,9 +1,9 @@
-﻿using StatisticsAnalysisTool.Network.Notification;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Views
 {

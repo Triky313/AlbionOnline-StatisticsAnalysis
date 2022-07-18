@@ -13,7 +13,6 @@ using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
 using StatisticsAnalysisTool.Network;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Views;
 using System;
@@ -42,9 +41,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private static PlayerModeInformationModel _playerModeInformation;
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
-        private ObservableCollection<DamageMeterFragment> _damageMeter = new();
-        private List<DamageMeterSortStruct> _damageMeterSort = new();
-        private DamageMeterSortStruct _damageMeterSortSelection;
         private string _errorBarText;
         private Visibility _errorBarVisibility;
         private double _guildInfoWidth;
@@ -84,8 +80,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isItemSearchCheckboxesEnabled;
         private bool _isFilterResetEnabled;
         private Visibility _gridTryToLoadTheItemListAgainVisibility;
-        private EFontAwesomeIcon _damageMeterActivationToggleIcon = EFontAwesomeIcon.Solid_ToggleOff;
-        private Brush _damageMeterActivationToggleColor;
         private bool _isDamageMeterTrackingActive;
         private bool _isTrackingPartyLootOnly;
         private Axis[] _xAxesDashboardHourValues;
@@ -106,6 +100,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private TrackingActivityBindings _trackingActivityBindings = new();
         private MailMonitoringBindings _mailMonitoringBindings = new();
         private DungeonBindings _dungeonBindings = new();
+        private DamageMeterBindings _damageMeterBindings = new();
         private Visibility _unsupportedOsVisibility = Visibility.Collapsed;
         private LoggingBindings _loggingBindings = new();
 
@@ -163,41 +158,6 @@ namespace StatisticsAnalysisTool.ViewModels
             UserTrackingBindings.CurrentMapInformationVisibility = Visibility.Hidden;
 
             IsTrackingResetByMapChangeActive = SettingsController.CurrentSettings.IsTrackingResetByMapChangeActive;
-
-            // Damage meter
-            var sortByDamageStruct = new DamageMeterSortStruct
-            {
-                Name = MainWindowTranslation.SortByDamage,
-                DamageMeterSortType = DamageMeterSortType.Damage
-            };
-            var sortByDpsStruct = new DamageMeterSortStruct
-            {
-                Name = MainWindowTranslation.SortByDps,
-                DamageMeterSortType = DamageMeterSortType.Dps
-            };
-            var sortByNameStruct = new DamageMeterSortStruct
-            {
-                Name = MainWindowTranslation.SortByName,
-                DamageMeterSortType = DamageMeterSortType.Name
-            };
-            var sortByHealStruct = new DamageMeterSortStruct
-            {
-                Name = MainWindowTranslation.SortByHeal,
-                DamageMeterSortType = DamageMeterSortType.Heal
-            };
-            var sortByHpsStruct = new DamageMeterSortStruct
-            {
-                Name = MainWindowTranslation.SortByHps,
-                DamageMeterSortType = DamageMeterSortType.Hps
-            };
-
-            DamageMeterSort.Clear();
-            DamageMeterSort.Add(sortByDamageStruct);
-            DamageMeterSort.Add(sortByDpsStruct);
-            DamageMeterSort.Add(sortByNameStruct);
-            DamageMeterSort.Add(sortByHealStruct);
-            DamageMeterSort.Add(sortByHpsStruct);
-            DamageMeterSortSelection = sortByDamageStruct;
 
             // Dungeons
             DungeonBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.DungeonsGridSplitterPosition);
@@ -677,6 +637,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void StopTracking()
         {
+            NetworkManager.StopNetworkCapture();
+
             TrackingController?.CountUpTimer?.Stop();
 
             TrackingController?.TreasureController.UnregisterEvents();
@@ -689,7 +651,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.TreasureController?.SaveInFile();
             TrackingController?.StatisticController?.SaveInFile();
 
-            NetworkManager.StopNetworkCapture();
+            FileController.Save(DamageMeterBindings.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
 
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");
@@ -727,41 +689,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 await TrackingController.ClearNotificationsAsync().ConfigureAwait(false);
                 Application.Current.Dispatcher.Invoke(() => LoggingBindings.TopLooters.Clear());
                 TrackingController.LootController.ClearLootLogger();
-            }
-        }
-        
-        public void SetDamageMeterSort()
-        {
-            switch (DamageMeterSortSelection.DamageMeterSortType)
-            {
-                case DamageMeterSortType.Damage:
-                    SetIsDamageMeterShowing(DamageMeter, true);
-                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.DamageInPercent).ToList());
-                    return;
-                case DamageMeterSortType.Dps:
-                    SetIsDamageMeterShowing(DamageMeter, true);
-                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Dps).ToList());
-                    return;
-                case DamageMeterSortType.Name:
-                    SetIsDamageMeterShowing(DamageMeter, true);
-                    DamageMeter.OrderByReference(DamageMeter.OrderBy(x => x.Name).ToList());
-                    return;
-                case DamageMeterSortType.Heal:
-                    SetIsDamageMeterShowing(DamageMeter, false);
-                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.HealInPercent).ToList());
-                    return;
-                case DamageMeterSortType.Hps:
-                    SetIsDamageMeterShowing(DamageMeter, false);
-                    DamageMeter.OrderByReference(DamageMeter.OrderByDescending(x => x.Hps).ToList());
-                    break;
-            }
-        }
-
-        private static void SetIsDamageMeterShowing(IEnumerable<DamageMeterFragment> damageMeter, bool isDamageMeterShowing)
-        {
-            foreach (var fragment in damageMeter)
-            {
-                fragment.IsDamageMeterShowing = isDamageMeterShowing;
             }
         }
 
@@ -889,39 +816,17 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public DamageMeterBindings DamageMeterBindings
+        {
+            get => _damageMeterBindings;
+            set
+            {
+                _damageMeterBindings = value;
+                OnPropertyChanged();
+            }
+        }
         
-        public DamageMeterSortStruct DamageMeterSortSelection
-        {
-            get => _damageMeterSortSelection;
-            set
-            {
-                _damageMeterSortSelection = value;
-                SetDamageMeterSort();
-
-                OnPropertyChanged();
-            }
-        }
-
-        public List<DamageMeterSortStruct> DamageMeterSort
-        {
-            get => _damageMeterSort;
-            set
-            {
-                _damageMeterSort = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<DamageMeterFragment> DamageMeter
-        {
-            get => _damageMeter;
-            set
-            {
-                _damageMeter = value;
-                OnPropertyChanged();
-            }
-        }
-
         public DungeonBindings DungeonBindings
         {
             get => _dungeonBindings;
@@ -1064,37 +969,17 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 TrackingController.CombatController.IsDamageMeterActive = _isDamageMeterTrackingActive;
 
-                DamageMeterActivationToggleIcon = _isDamageMeterTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
+                DamageMeterBindings.DamageMeterActivationToggleIcon = _isDamageMeterTrackingActive ? EFontAwesomeIcon.Solid_ToggleOn : EFontAwesomeIcon.Solid_ToggleOff;
 
                 var colorOn = new SolidColorBrush((Color)Application.Current.Resources["Color.Accent.Blue.2"]);
                 var colorOff = new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
-                DamageMeterActivationToggleColor = _isDamageMeterTrackingActive ? colorOn : colorOff;
+                DamageMeterBindings.DamageMeterActivationToggleColor = _isDamageMeterTrackingActive ? colorOn : colorOff;
 
                 SettingsController.CurrentSettings.IsDamageMeterTrackingActive = _isDamageMeterTrackingActive;
                 OnPropertyChanged();
             }
         }
-
-        public EFontAwesomeIcon DamageMeterActivationToggleIcon
-        {
-            get => _damageMeterActivationToggleIcon;
-            set
-            {
-                _damageMeterActivationToggleIcon = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Brush DamageMeterActivationToggleColor
-        {
-            get => _damageMeterActivationToggleColor ?? new SolidColorBrush((Color)Application.Current.Resources["Color.Text.1"]);
-            set
-            {
-                _damageMeterActivationToggleColor = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public bool IsShowOnlyItemsWithAlertOnActive
         {
             get => _isShowOnlyItemsWithAlertOnActive;
@@ -1582,15 +1467,5 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion Bindings
-
-        #region Structs
-        
-        public struct DamageMeterSortStruct
-        {
-            public string Name { get; set; }
-            public DamageMeterSortType DamageMeterSortType { get; set; }
-        }
-
-        #endregion
     }
 }

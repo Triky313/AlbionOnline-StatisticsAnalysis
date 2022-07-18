@@ -111,7 +111,6 @@ namespace StatisticsAnalysisTool.GameData
 
             LootChests = GetLootChestDataFromLocal();
             return LootChests?.Count() > 0;
-
         }
 
         public static DungeonEventObjectType GetDungeonEventObjectType(string value)

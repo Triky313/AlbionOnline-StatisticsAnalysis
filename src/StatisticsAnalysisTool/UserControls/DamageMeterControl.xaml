@@ -10,79 +10,115 @@
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
 
     <Grid>
-        <Grid Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Grid Height="20" Width="30" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <fa5:ImageAwesome Visibility="Visible" 
+        <TabControl Background="Transparent" BorderThickness="0">
+            <TabItem Header="{Binding Translation.DamageMeter, FallbackValue=DAMAGE_METER}">
+                <Grid>
+                    <Grid Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Grid Height="20" Width="30" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <fa5:ImageAwesome Visibility="Visible" 
                                                       ToolTip="{Binding Translation.DamageMeterOnOff, FallbackValue=DAMAGE__METER__ON__OFF}"
-                                                      Icon="{Binding DamageMeterActivationToggleIcon, FallbackValue=Solid_ToggleOff}" 
-                                                      Foreground="{Binding DamageMeterActivationToggleColor, FallbackValue={StaticResource SolidColorBrush.Text.1}}" 
+                                                      Icon="{Binding DamageMeterBindings.DamageMeterActivationToggleIcon, FallbackValue=Solid_ToggleOff}" 
+                                                      Foreground="{Binding DamageMeterBindings.DamageMeterActivationToggleColor, FallbackValue={StaticResource SolidColorBrush.Text.1}}" 
                                                       MouseUp="DamageMeterModeActiveToggle_MouseUp" />
-                </Grid>
-                <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterSort}" SelectedItem="{Binding DamageMeterSortSelection}" 
-                          IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
-            </StackPanel>
-        </Grid>
-        <Grid Margin="0,0,0,0" HorizontalAlignment="Right" Width="500" Height="30" VerticalAlignment="Top">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
-                <CheckBox IsChecked="{Binding IsDamageMeterResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
-                                          HorizontalContentAlignment="Left" Margin="5,3,10,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="auto" MaxWidth="250"/>
-                <Button Content="{Binding Translation.ResetDamageMeter, FallbackValue=RESET__DAMAGE__METER}" Height="26" MaxWidth="500" MinWidth="200" Margin="0,0,0,0" 
-                        Width="auto" VerticalAlignment="Top" Click="BtnDamageMeterReset_Click" />
-                <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                      ToolTip="{Binding Translation.OpenExtendedDamageMeterWindow, FallbackValue=OPEN__EXTENDED__DAMAGE__METER__WINDOW}" MouseUp="OpenDamageMeterWindow_MouseUp">
-                    <fa5:ImageAwesome Icon="Solid_Expand" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                </Grid>
-                <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                      ToolTip="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}" MouseUp="CopyDamageMeterToClipboard_MouseUp">
-                    <fa5:ImageAwesome Icon="Regular_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                </Grid>
-                <Grid Height="20" Width="20" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                      MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
-                    <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                </Grid>
-            </StackPanel>
-        </Grid>
-
-        <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,35,0,0">
-            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
-                <Image Source="../Resources/fame.png" Width="22" Height="22" ToolTip="{Binding Translation.Fame, FallbackValue=FAME}" Margin="0,0,5,0" />
-                <TextBlock Text="{Binding DashboardBindings.TotalGainedFameInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                <TextBlock Text=" | " Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,2,0,0" />
-                <TextBlock FontSize="16" Text="{Binding DashboardBindings.FamePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
-                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
-                <Image Source="../Resources/silver.png" Width="22" Height="22" ToolTip="{Binding Translation.Silver, FallbackValue=SILVER}" Margin="0,0,5,0" />
-                <TextBlock Text="{Binding DashboardBindings.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                <TextBlock Text=" | " Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,2,0,0" />
-                <TextBlock FontSize="16" Text="{Binding DashboardBindings.SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
-                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
-                <Image Source="../Resources/respec.png" Width="22" Height="22" ToolTip="{Binding Translation.ReSpec, FallbackValue=RESPEC}" Margin="0,0,5,0" />
-                <TextBlock Text="{Binding DashboardBindings.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
-                <TextBlock Text=" | " Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,2,0,0" />
-                <TextBlock FontSize="16" Text="{Binding DashboardBindings.ReSpecPointsPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
-                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center"/>
-            </StackPanel>
-        </DockPanel>
-
-        <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,61,0,0" VerticalAlignment="Top"/>
-        <ScrollViewer Margin="0,65,0,0">
-            <ItemsControl ItemsSource="{Binding DamageMeter, IsAsync=True, Mode=OneWay}"/>
-        </ScrollViewer>
-
-        <Grid Visibility="{Binding IsDamageMeterPopupVisible, FallbackValue=Hidden}" Margin="0,35,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
-            <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
-                <DockPanel Margin="0,0,0,16">
-                    <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
-                        <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                                </Grid>
+                                <ComboBox Width="200" Height="26" Margin="0,0,0,0" ItemsSource="{Binding DamageMeterBindings.DamageMeterSort}" 
+                                          SelectedItem="{Binding DamageMeterBindings.DamageMeterSortSelection}" 
+                                          IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
+                            </StackPanel>
+                        </StackPanel>
                     </Grid>
-                    <TextBlock Text="{Binding Translation.DamageMeterDescription1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
-                               FontSize="16" TextWrapping="Wrap" Width="auto"></TextBlock>
-                </DockPanel>
-            </StackPanel>
-        </Grid>
+                    <Grid Margin="0,0,0,0" HorizontalAlignment="Right" Width="500" Height="60" VerticalAlignment="Top">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsDamageMeterResetByMapChangeActive}" Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
+                                          HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="auto" MaxWidth="250"/>
+                                <Button Content="{Binding Translation.ResetDamageMeter, FallbackValue=RESET__DAMAGE__METER}" Height="26" MaxWidth="500" MinWidth="200" 
+                                        Margin="0" Width="auto" VerticalAlignment="Top" Click="BtnDamageMeterReset_Click" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
+                                <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                      ToolTip="{Binding Translation.OpenExtendedDamageMeterWindow, FallbackValue=OPEN__EXTENDED__DAMAGE__METER__WINDOW}" MouseUp="OpenDamageMeterWindow_MouseUp">
+                                    <fa5:ImageAwesome Icon="Solid_Expand" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </Grid>
+                                <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                      ToolTip="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}" MouseUp="CopyDamageMeterToClipboard_MouseUp">
+                                    <fa5:ImageAwesome Icon="Regular_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </Grid>
+                                <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                      ToolTip="{Binding DamageMeterBindings.TranslationTakeASnapshotOfDamageMeterDescription, FallbackValue=TAKE_A_SNAPSHOT_OF_DAMAGE_METER}" 
+                                      MouseUp="TakeASnapShot_MouseUp">
+                                    <fa5:ImageAwesome Icon="Solid_Camera" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </Grid>
+                                <Grid Height="20" Width="20" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                      MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
+                                    <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,33,0,0">
+                        <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                            <Image Source="../Resources/fame.png" Width="22" Height="22" ToolTip="{Binding Translation.Fame, FallbackValue=FAME}" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedFameInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock Text=" | " Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,2,0,0" />
+                            <TextBlock FontSize="16" Text="{Binding DashboardBindings.FamePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                            <Image Source="../Resources/silver.png" Width="20" Height="20" ToolTip="{Binding Translation.Silver, FallbackValue=SILVER}" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock Text=" | " Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,2,0,0" />
+                            <TextBlock FontSize="16" Text="{Binding DashboardBindings.SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                            <Image Source="../Resources/respec.png" Width="22" Height="22" ToolTip="{Binding Translation.ReSpec, FallbackValue=RESPEC}" Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock Text=" | " Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,2,0,0" />
+                            <TextBlock FontSize="16" Text="{Binding DashboardBindings.ReSpecPointsPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
+                           Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,63,0,0" VerticalAlignment="Top"/>
+                    <ScrollViewer Margin="0,67,0,0">
+                        <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeter, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource DamageMeterFragmentTemplate}" />
+                    </ScrollViewer>
+
+                    <Grid Visibility="{Binding IsDamageMeterPopupVisible, FallbackValue=Hidden}" Margin="0,65,0,0" Background="{StaticResource SolidColorBrush.Background.2}">
+                        <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
+                            <DockPanel Margin="0,0,0,16">
+                                <Grid Height="16" Width="16" Margin="0,3,10,0" VerticalAlignment="Top">
+                                    <fa5:ImageAwesome Icon="Regular_DotCircle" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}" />
+                                </Grid>
+                                <TextBlock Text="{Binding Translation.DamageMeterDescription1}" Foreground="{StaticResource SolidColorBrush.Text.1}" 
+                               FontSize="16" TextWrapping="Wrap" Width="auto" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{Binding DamageMeterBindings.TranslationSnapshots, FallbackValue=SNAPSHOTS}">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <ComboBox Width="200" Height="26" Margin="2,0,5,0" 
+                                  ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshots}" 
+                                  SelectedItem="{Binding DamageMeterBindings.DamageMeterSnapshotSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="TimestampString" SelectedValuePath="DamageMeter" />
+                        <ComboBox Width="200" Height="26" ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSort}" 
+                                  SelectedItem="{Binding DamageMeterBindings.DamageMeterSnapshotSortSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
+                        <Button Content="{Binding DamageMeterBindings.TranslationDeleteSelectedSnapshot, FallbackValue=DELETE__SELECTED__SNAPSHOT}" Height="26" MaxWidth="500" MinWidth="200" 
+                                Margin="5,0,5,0" Click="BtnDeleteSelectedSnapshot_Click" />
+                    </StackPanel>
+                    <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,31,0,0" VerticalAlignment="Top"/>
+                    <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter, IsAsync=True, Mode=OneWay}" 
+                                  ItemTemplate="{StaticResource DamageMeterSnapshotFragmentTemplate}" Margin="0,35,0,0"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

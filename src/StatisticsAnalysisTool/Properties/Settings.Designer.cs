@@ -386,5 +386,17 @@ namespace StatisticsAnalysisTool.Properties {
                 this["TreasureStatsFileName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DamageMeterSnapshots.json")]
+        public string DamageMeterSnapshotsFileName {
+            get {
+                return ((string)(this["DamageMeterSnapshotsFileName"]));
+            }
+            set {
+                this["DamageMeterSnapshotsFileName"] = value;
+            }
+        }
     }
 }

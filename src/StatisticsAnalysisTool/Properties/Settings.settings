@@ -104,5 +104,8 @@
     <Setting Name="TreasureStatsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">TreasureStats.json</Value>
     </Setting>
+    <Setting Name="DamageMeterSnapshotsFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DamageMeterSnapshots.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

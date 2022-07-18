@@ -36,7 +36,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             OnDamageUpdate += UpdateDamageMeterUiAsync;
 
 #if DEBUG
-            RunDamageMeterDebugAsync(0, 0);
+            RunDamageMeterDebugAsync(5, 10);
 #endif
         }
 
@@ -53,7 +53,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             var gameObject = _trackingController?.EntityController?.GetEntity(causerId);
             var gameObjectValue = gameObject?.Value;
-            
+
             if (gameObject?.Value == null
                 || gameObject.Value.Value?.ObjectType != GameObjectType.Player
                 || !_trackingController.EntityController.IsEntityInParty(gameObject.Value.Value.Name)
@@ -90,8 +90,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             gameObjectValue.CombatStart ??= DateTime.UtcNow;
-            
-            OnDamageUpdate?.Invoke(_mainWindowViewModel.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHeal());
+
+            OnDamageUpdate?.Invoke(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter, _trackingController.EntityController.GetAllEntitiesWithDamageOrHeal());
             return Task.CompletedTask;
         }
 
@@ -108,7 +108,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             var highestDamage = entities.GetHighestDamage();
             var highestHeal = entities.GetHighestHeal();
-            
+
             _trackingController.EntityController.DetectUsedWeapon();
 
             foreach (var healthChangeObject in entities)
@@ -128,18 +128,18 @@ namespace StatisticsAnalysisTool.Network.Manager
                     await AddDamageMeterFragmentAsync(damageMeter, healthChangeObject, entities, highestDamage, highestHeal).ConfigureAwait(true);
                 }
 
-                Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.SetDamageMeterSort());
+                Application.Current.Dispatcher.Invoke(() => _mainWindowViewModel.DamageMeterBindings?.SetDamageMeterSort());
             }
 
-            if (HasDamageMeterDupes(_mainWindowViewModel.DamageMeter))
+            if (HasDamageMeterDupes(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter))
             {
-                await RemoveDuplicatesAsync(_mainWindowViewModel.DamageMeter);
+                await RemoveDuplicatesAsync(_mainWindowViewModel?.DamageMeterBindings?.DamageMeter);
             }
 
             _isUiUpdateActive = false;
         }
 
-        private static void UpdateDamageMeterFragment(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject, 
+        private static void UpdateDamageMeterFragment(DamageMeterFragment fragment, KeyValuePair<Guid, PlayerGameObject> healthChangeObject,
             List<KeyValuePair<Guid, PlayerGameObject>> entities, long highestDamage, long highestHeal)
         {
             var healthChangeObjectValue = healthChangeObject.Value;
@@ -220,7 +220,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 damageMeter.Add(damageMeterFragment);
             });
         }
-        
+
         private static bool HasDamageMeterDupes(IEnumerable<DamageMeterFragment> damageMeter)
         {
             return damageMeter.ToList().GroupBy(x => x.Name).Any(g => g.Count() > 1);
@@ -269,7 +269,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             Application.Current?.Dispatcher?.InvokeAsync(() =>
             {
-                _mainWindowViewModel?.DamageMeter?.Clear();
+                _mainWindowViewModel?.DamageMeterBindings?.DamageMeter?.Clear();
             });
         }
 
