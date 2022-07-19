@@ -86,13 +86,13 @@ namespace StatisticsAnalysisTool.Common
                 {
                     return CraftingJournalType.JournalMage;
                 }
+            }
 
-                if (uniqueName.Contains("_CAPE")
-                    || uniqueName.Contains("_BAG")
-                    || uniqueName.Contains("_BAG_INSIGHT"))
-                {
-                    return CraftingJournalType.JournalToolMaker;
-                }
+            if (uniqueName.Contains("_CAPE")
+                || uniqueName.Contains("_BAG")
+                || uniqueName.Contains("_BAG_INSIGHT"))
+            {
+                return CraftingJournalType.JournalToolMaker;
             }
 
             return craftingCategory switch
