@@ -15,14 +15,14 @@ public class LootedChests : INotifyPropertyChanged
     private int _outlandsEpicMonth;
     private int _outlandsLegendaryWeek;
     private int _outlandsLegendaryMonth;
-    private int _staticCommonWeek;
-    private int _staticCommonMonth;
-    private int _staticUncommonWeek;
-    private int _staticUncommonMonth;
-    private int _staticEpicWeek;
-    private int _staticEpicMonth;
-    private int _staticLegendaryWeek;
-    private int _staticLegendaryMonth;
+    private int _randomGroupDungeonCommonWeek;
+    private int _randomGroupDungeonCommonMonth;
+    private int _randomGroupDungeonUncommonWeek;
+    private int _randomGroupDungeonUncommonMonth;
+    private int _randomGroupDungeonEpicWeek;
+    private int _randomGroupDungeonEpicMonth;
+    private int _randomGroupDungeonLegendaryWeek;
+    private int _randomGroupDungeonLegendaryMonth;
     private int _avalonianRoadCommonWeek;
     private int _avalonianRoadCommonMonth;
     private int _avalonianRoadUncommonWeek;
@@ -43,10 +43,10 @@ public class LootedChests : INotifyPropertyChanged
     private int _outlandsUncommonYear;
     private int _outlandsEpicYear;
     private int _outlandsLegendaryYear;
-    private int _staticCommonYear;
-    private int _staticUncommonYear;
-    private int _staticEpicYear;
-    private int _staticLegendaryYear;
+    private int _randomGroupDungeonCommonYear;
+    private int _randomGroupDungeonUncommonYear;
+    private int _randomGroupDungeonEpicYear;
+    private int _randomGroupDungeonLegendaryYear;
     private int _avalonianRoadCommonYear;
     private int _avalonianRoadUncommonYear;
     private int _avalonianRoadEpicYear;
@@ -55,7 +55,19 @@ public class LootedChests : INotifyPropertyChanged
     private int _hellGatesUncommonYear;
     private int _hellGatesEpicYear;
     private int _hellGatesLegendaryYear;
-    
+    private int _randomSoloDungeonCommonWeek;
+    private int _randomSoloDungeonCommonMonth;
+    private int _randomSoloDungeonCommonYear;
+    private int _randomSoloDungeonUncommonWeek;
+    private int _randomSoloDungeonUncommonMonth;
+    private int _randomSoloDungeonUncommonYear;
+    private int _randomSoloDungeonEpicWeek;
+    private int _randomSoloDungeonEpicMonth;
+    private int _randomSoloDungeonEpicYear;
+    private int _randomSoloDungeonLegendaryWeek;
+    private int _randomSoloDungeonLegendaryMonth;
+    private int _randomSoloDungeonLegendaryYear;
+
     #region OpenWorld bindings
 
     public int OpenWorldCommonWeek
@@ -180,128 +192,252 @@ public class LootedChests : INotifyPropertyChanged
 
     #endregion
 
-    #region Static bindings
+    #region Random group dungeon bindings
 
-    public int StaticCommonWeek
+    public int RandomGroupDungeonCommonWeek
     {
-        get => _staticCommonWeek;
+        get => _randomGroupDungeonCommonWeek;
         set
         {
-            _staticCommonWeek = value;
+            _randomGroupDungeonCommonWeek = value;
             OnPropertyChanged();
         }
     }
 
-    public int StaticCommonMonth
+    public int RandomGroupDungeonCommonMonth
     {
-        get => _staticCommonMonth;
+        get => _randomGroupDungeonCommonMonth;
         set
         {
-            _staticCommonMonth = value;
+            _randomGroupDungeonCommonMonth = value;
             OnPropertyChanged();
         }
     }
 
-    public int StaticCommonYear
+    public int RandomGroupDungeonCommonYear
     {
-        get => _staticCommonYear;
+        get => _randomGroupDungeonCommonYear;
         set
         {
-            _staticCommonYear = value;
+            _randomGroupDungeonCommonYear = value;
             OnPropertyChanged();
         }
     }
 
-    public int StaticUncommonWeek
+    public int RandomGroupDungeonUncommonWeek
     {
-        get => _staticUncommonWeek;
+        get => _randomGroupDungeonUncommonWeek;
         set
         {
-            _staticUncommonWeek = value;
+            _randomGroupDungeonUncommonWeek = value;
             OnPropertyChanged();
         }
     }
 
-    public int StaticUncommonMonth
+    public int RandomGroupDungeonUncommonMonth
     {
-        get => _staticUncommonMonth;
+        get => _randomGroupDungeonUncommonMonth;
         set
         {
-            _staticUncommonMonth = value;
+            _randomGroupDungeonUncommonMonth = value;
             OnPropertyChanged();
         }
     }
 
-    public int StaticUncommonYear
+    public int RandomGroupDungeonUncommonYear
     {
-        get => _staticUncommonYear;
+        get => _randomGroupDungeonUncommonYear;
         set
         {
-            _staticUncommonYear = value;
+            _randomGroupDungeonUncommonYear = value;
             OnPropertyChanged();
         }
     }
 
-    public int StaticEpicWeek
+    public int RandomGroupDungeonEpicWeek
     {
-        get => _staticEpicWeek;
+        get => _randomGroupDungeonEpicWeek;
         set
         {
-            _staticEpicWeek = value;
+            _randomGroupDungeonEpicWeek = value;
             OnPropertyChanged();
         }
     }
 
-    public int StaticEpicMonth
+    public int RandomGroupDungeonEpicMonth
     {
-        get => _staticEpicMonth;
+        get => _randomGroupDungeonEpicMonth;
         set
         {
-            _staticEpicMonth = value;
+            _randomGroupDungeonEpicMonth = value;
             OnPropertyChanged();
         }
     }
 
-    public int StaticEpicYear
+    public int RandomGroupDungeonEpicYear
     {
-        get => _staticEpicYear;
+        get => _randomGroupDungeonEpicYear;
         set
         {
-            _staticEpicYear = value;
+            _randomGroupDungeonEpicYear = value;
             OnPropertyChanged();
         }
     }
 
-    public int StaticLegendaryWeek
+    public int RandomGroupDungeonLegendaryWeek
     {
-        get => _staticLegendaryWeek;
+        get => _randomGroupDungeonLegendaryWeek;
         set
         {
-            _staticLegendaryWeek = value;
+            _randomGroupDungeonLegendaryWeek = value;
             OnPropertyChanged();
         }
     }
 
-    public int StaticLegendaryMonth
+    public int RandomGroupDungeonLegendaryMonth
     {
-        get => _staticLegendaryMonth;
+        get => _randomGroupDungeonLegendaryMonth;
         set
         {
-            _staticLegendaryMonth = value;
+            _randomGroupDungeonLegendaryMonth = value;
             OnPropertyChanged();
         }
     }
 
-    public int StaticLegendaryYear
+    public int RandomGroupDungeonLegendaryYear
     {
-        get => _staticLegendaryYear;
+        get => _randomGroupDungeonLegendaryYear;
         set
         {
-            _staticLegendaryYear = value;
+            _randomGroupDungeonLegendaryYear = value;
             OnPropertyChanged();
         }
     }
 
+    #endregion
+
+    #region Random solo dungeon bindings
+
+    public int RandomSoloDungeonCommonWeek
+    {
+        get => _randomSoloDungeonCommonWeek;
+        set
+        {
+            _randomSoloDungeonCommonWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int RandomSoloDungeonCommonMonth
+    {
+        get => _randomSoloDungeonCommonMonth;
+        set
+        {
+            _randomSoloDungeonCommonMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int RandomSoloDungeonCommonYear
+    {
+        get => _randomSoloDungeonCommonYear;
+        set
+        {
+            _randomSoloDungeonCommonYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int RandomSoloDungeonUncommonWeek
+    {
+        get => _randomSoloDungeonUncommonWeek;
+        set
+        {
+            _randomSoloDungeonUncommonWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int RandomSoloDungeonUncommonMonth
+    {
+        get => _randomSoloDungeonUncommonMonth;
+        set
+        {
+            _randomSoloDungeonUncommonMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int RandomSoloDungeonUncommonYear
+    {
+        get => _randomSoloDungeonUncommonYear;
+        set
+        {
+            _randomSoloDungeonUncommonYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int RandomSoloDungeonEpicWeek
+    {
+        get => _randomSoloDungeonEpicWeek;
+        set
+        {
+            _randomSoloDungeonEpicWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int RandomSoloDungeonEpicMonth
+    {
+        get => _randomSoloDungeonEpicMonth;
+        set
+        {
+            _randomSoloDungeonEpicMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int RandomSoloDungeonEpicYear
+    {
+        get => _randomSoloDungeonEpicYear;
+        set
+        {
+            _randomSoloDungeonEpicYear = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int RandomSoloDungeonLegendaryWeek
+    {
+        get => _randomSoloDungeonLegendaryWeek;
+        set
+        {
+            _randomSoloDungeonLegendaryWeek = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int RandomSoloDungeonLegendaryMonth
+    {
+        get => _randomSoloDungeonLegendaryMonth;
+        set
+        {
+            _randomSoloDungeonLegendaryMonth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int RandomSoloDungeonLegendaryYear
+    {
+        get => _randomSoloDungeonLegendaryYear;
+        set
+        {
+            _randomSoloDungeonLegendaryYear = value;
+            OnPropertyChanged();
+        }
+    }
+    
     #endregion
 
     #region Avalonian Road bindings
@@ -556,6 +692,8 @@ public class LootedChests : INotifyPropertyChanged
     public static string TranslationOpenWorld => LanguageController.Translation("OPEN_WORLD");
     public static string TranslationStaticDungeons => LanguageController.Translation("STATIC_DUNGEONS");
     public static string TranslationAvalonianRoads => LanguageController.Translation("AVALONIAN_ROADS");
+    public static string TranslationRandomSoloDungeons => LanguageController.Translation("RANDOM_SOLO_DUNGEONS");
+    public static string TranslationRandomGroupDungeons => LanguageController.Translation("RANDOM_GROUP_DUNGEONS");
     public static string TranslationHellGates => LanguageController.Translation("HELLGATES");
     public static string TranslationLast7Days => LanguageController.Translation("LAST_7_DAYS");
     public static string TranslationLast30Days => LanguageController.Translation("LAST_30_DAYS");

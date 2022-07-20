@@ -624,4 +624,6 @@
 	<translation name="SNAPSHOTS">Snapshot</translation>
 	<translation name="DELETE_SELECTED_SNAPSHOT">Delete selected snapshot</translation>
 	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">Take a snapshot of damage meter and view it in the snapshot tab</translation>
+	<translation name="RANDOM_SOLO_DUNGEONS">Random solo dungeons</translation>
+	<translation name="RANDOM_GROUP_DUNGEONS">Random group dungeons</translation>
 </translations>

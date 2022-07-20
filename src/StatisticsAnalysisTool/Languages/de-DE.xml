@@ -624,4 +624,6 @@
 	<translation name="SNAPSHOTS">Schnappschuss</translation>
 	<translation name="DELETE_SELECTED_SNAPSHOT">Ausgewählten Schnappschuss löschen</translation>
 	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">Machen einen Schnappschuss der Schadensanzeige und sehen ihn dir im Schnappschuss-Tab an</translation>
+	<translation name="RANDOM_SOLO_DUNGEONS">Zufällige Solo Dungeons</translation>
+	<translation name="RANDOM_GROUP_DUNGEONS">Zufällige Gruppen Dungeons</translation>
 </translations>

@@ -1,11 +1,10 @@
-﻿using StatisticsAnalysisTool.Properties;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Models.TranslationModel;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -40,7 +39,7 @@ namespace StatisticsAnalysisTool.Models
         private int _soloKillsToday;
         private int _soloKillsThisWeek;
         private int _soloKillsThisMonth;
-        private LootedChests _lootedChests = new ();
+        private LootedChests _lootedChests = new();
 
         #region Fame / Respec / Silver / Might / Faction
 
@@ -398,7 +397,7 @@ namespace StatisticsAnalysisTool.Models
         }
 
         #endregion
-        
+
         public static string TranslationTitle => $"{LanguageController.Translation("DASHBOARD")}";
         public static string TranslationFame => LanguageController.Translation("FAME");
         public static string TranslationSilver => LanguageController.Translation("SILVER");
