@@ -629,4 +629,9 @@
 	<translation name="LAST_365_DAYS">Последние 365 дней</translation>
 	<translation name="MOST_EXPENSIVE_SALE">Самая дорогая продажа</translation>
 	<translation name="MOST_EXPENSIVE_PURCHASE">Самая дорогая покупка</translation>
+	<translation name="SNAPSHOTS">Скриншоты</translation>
+	<translation name="DELETE_SELECTED_SNAPSHOT">Удалить выбранный скриншот</translation>
+	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">Сохранить данные урона в вкладке скриншоты</translation>
+	<translation name="RANDOM_SOLO_DUNGEONS">Рандомные сольники</translation>
+	<translation name="RANDOM_GROUP_DUNGEONS">Рандомные групповые данжи</translation>
 </translations>

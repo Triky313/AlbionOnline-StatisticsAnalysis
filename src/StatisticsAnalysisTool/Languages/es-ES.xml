@@ -584,4 +584,9 @@
 	<translation name="LAST_365_DAYS">Últimos 365 días</translation>
 	<translation name="MOST_EXPENSIVE_SALE">Venta más cara</translation>
 	<translation name="MOST_EXPENSIVE_PURCHASE">Compra más cara</translation>
+	<translation name="SNAPSHOTS">Capturas</translation>
+	<translation name="DELETE_SELECTED_SNAPSHOT">Eliminar capturas seleccionadas</translation>
+	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">Tomar una captura de medidor de daño y visualizarla en la pestaña de capturas</translation>
+	<translation name="RANDOM_SOLO_DUNGEONS">Mazmorras solitarias aleatorias</translation>
+	<translation name="RANDOM_GROUP_DUNGEONS">Mazmorras grupales aleatorias</translation>
 </translations>
