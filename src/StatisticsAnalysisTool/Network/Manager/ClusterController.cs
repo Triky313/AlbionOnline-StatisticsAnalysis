@@ -67,6 +67,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void SetAndResetValues(ClusterInfo currentCluster)
         {
+            _mainWindowViewModel.DamageMeterBindings.GetSnapshot(_mainWindowViewModel.DamageMeterBindings.IsSnapshotAfterMapChangeActive);
             _trackingController.CombatController.ResetDamageMeterByClusterChange();
             _trackingController.StatisticController.SetKillsDeathsValues();
             _trackingController.VaultController.ResetDiscoveredItems();

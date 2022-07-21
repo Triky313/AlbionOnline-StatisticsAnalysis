@@ -251,7 +251,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void ResetDamageMeterByClusterChange()
         {
-            if (!_mainWindowViewModel.IsDamageMeterResetByMapChangeActive)
+            if (!_mainWindowViewModel.DamageMeterBindings?.IsDamageMeterResetByMapChangeActive ?? false)
             {
                 return;
             }
