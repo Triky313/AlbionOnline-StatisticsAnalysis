@@ -45,7 +45,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _errorBarVisibility;
         private double _guildInfoWidth;
         private Visibility _isDamageMeterPopupVisible = Visibility.Hidden;
-        private bool _isDamageMeterResetByMapChangeActive;
         private bool _isShowOnlyItemsWithAlertOnActive;
         private bool _isTrackingActive;
         private bool _isTrackingResetByMapChangeActive;
@@ -167,6 +166,9 @@ namespace StatisticsAnalysisTool.ViewModels
 
             // Vault
             VaultBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.StorageHistoryGridSplitterPosition);
+
+            // Damage Meter
+            DamageMeterBindings.GridSplitterPosition = new GridLength(SettingsController.CurrentSettings.DamageMeterGridSplitterPosition);
 
             #endregion
         }
@@ -1185,16 +1187,6 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isFilterResetEnabled = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsDamageMeterResetByMapChangeActive
-        {
-            get => _isDamageMeterResetByMapChangeActive;
-            set
-            {
-                _isDamageMeterResetByMapChangeActive = value;
                 OnPropertyChanged();
             }
         }

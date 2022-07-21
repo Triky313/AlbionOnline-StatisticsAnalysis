@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
+using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
@@ -25,6 +26,9 @@ public class DamageMeterBindings : INotifyPropertyChanged
     private DamageMeterSnapshot _damageMeterSnapshotSelection;
     private DamageMeterSortStruct _damageMeterSnapshotSortSelection;
     private List<DamageMeterSortStruct> _damageMeterSnapshotSort = new();
+    private bool _isDamageMeterResetByMapChangeActive;
+    private bool _isSnapshotAfterMapChangeActive;
+    private GridLength _gridSplitterPosition;
 
     public DamageMeterBindings()
     {
@@ -72,6 +76,20 @@ public class DamageMeterBindings : INotifyPropertyChanged
 
         DamageMeterSnapshots = FileController.Load<List<DamageMeterSnapshot>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
     }
+
+    #region Generally
+
+    public GridLength GridSplitterPosition
+    {
+        get => _gridSplitterPosition;
+        set
+        {
+            _gridSplitterPosition = value;
+            SettingsController.CurrentSettings.DamageMeterGridSplitterPosition = _gridSplitterPosition.Value;
+            OnPropertyChanged();
+        }
+    }
+    #endregion
 
     #region Damage meter
 
@@ -162,6 +180,16 @@ public class DamageMeterBindings : INotifyPropertyChanged
         }
     }
 
+    public bool IsDamageMeterResetByMapChangeActive
+    {
+        get => _isDamageMeterResetByMapChangeActive;
+        set
+        {
+            _isDamageMeterResetByMapChangeActive = value;
+            OnPropertyChanged();
+        }
+    }
+
     #endregion
 
     #region Damage Meter Snapshot
@@ -209,8 +237,18 @@ public class DamageMeterBindings : INotifyPropertyChanged
         }
     }
 
-    public void GetSnapshot()
+    public void GetSnapshot(bool takeSnapshot = true)
     {
+        if (!takeSnapshot)
+        {
+            return;
+        }
+
+        if (!DamageMeter.Any(x => x.Damage > 0 || x.Heal > 0))
+        {
+            return;
+        }
+
         var snapshots = DamageMeterSnapshots;
 
         var damageMeterSnapshot = new DamageMeterSnapshot();
@@ -225,6 +263,16 @@ public class DamageMeterBindings : INotifyPropertyChanged
         {
             DamageMeterSnapshots = snapshots.OrderByDescending(x => x.Timestamp).ToList();
         });
+    }
+
+    public bool IsSnapshotAfterMapChangeActive
+    {
+        get => _isSnapshotAfterMapChangeActive;
+        set
+        {
+            _isSnapshotAfterMapChangeActive = value;
+            OnPropertyChanged();
+        }
     }
 
     public void DeleteSnapshot()
