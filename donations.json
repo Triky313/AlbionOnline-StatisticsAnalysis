@@ -1,5 +1,12 @@
 [
   {
+	"Timestamp": "2022-07-27T00:00:00",
+	"Amount": 305000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Dicky",
+	"IsDonationRealMoney": false
+  },
+  {
 	"Timestamp": "2022-07-19T00:00:00",
 	"Amount": 2120000,
 	"RealMoneyAmount": 0,
