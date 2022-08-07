@@ -360,7 +360,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 foreach (var requiredResource in RequiredResources.ToList())
                 {
                     requiredResource.CraftingQuantity = requiredResource.IsArtifactResource
-                        ? (long)Math.Round(possibleItemCrafting, MidpointRounding.ToPositiveInfinity)
+                        ? (long)Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity)
                         : EssentialCraftingValues.CraftingItemQuantity;
                 }
             }
