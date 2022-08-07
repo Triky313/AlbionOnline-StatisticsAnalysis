@@ -24,7 +24,7 @@
 
         <Grid Margin="0,33,-1,0">
             <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding DamageMeter, IsAsync=True, Mode=OneWay}"/>
+                <ItemsControl ItemsSource="{Binding DamageMeter, IsAsync=True, Mode=OneWay}" ItemTemplate="{StaticResource DamageMeterFragmentTemplate}" />
             </ScrollViewer>
         </Grid>
     </Grid>
