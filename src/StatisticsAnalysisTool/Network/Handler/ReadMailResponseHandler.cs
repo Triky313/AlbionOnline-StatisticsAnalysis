@@ -15,8 +15,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(ReadMailResponse value)
         {
-            _trackingController.MailController.AddMail(value.MailId, value.Content);
-            await Task.CompletedTask;
+            await _trackingController.MailController.AddMailAsync(value.MailId, value.Content);
         }
     }
 }

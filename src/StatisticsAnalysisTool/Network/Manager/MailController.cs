@@ -13,6 +13,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager
@@ -22,6 +24,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         private readonly MainWindowViewModel _mainWindowViewModel;
+        private int _addMailCounter;
 
         public List<MailInfoObject> CurrentMailInfos = new();
 
@@ -46,7 +49,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             CurrentMailInfos.AddRange(currentMailInfos);
         }
 
-        public void AddMail(long mailId, string content)
+        public async Task AddMailAsync(long mailId, string content)
         {
             if (_mainWindowViewModel.MailMonitoringBindings.Mails.ToArray().Any(x => x.MailId == mailId))
             {
@@ -78,6 +81,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             AddMailToListAndSort(mail);
+            await SaveInFileAfterExceedingLimit(10);
         }
 
         public async void AddMailToListAndSort(Mail mail)
@@ -233,7 +237,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Load / Save local file data
 
-        public void LoadFromFile()
+        public async Task LoadFromFileAsync()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}";
 
@@ -241,8 +245,13 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 try
                 {
-                    var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                    var stats = JsonSerializer.Deserialize<List<Mail>>(localFileString) ?? new List<Mail>();
+                    using var streamReader = new StreamReader(localFilePath);
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    var stats = await JsonSerializer.DeserializeAsync<List<Mail>>(streamReader.BaseStream, options);
+
                     SetMails(stats);
                     return;
                 }
@@ -258,20 +267,32 @@ namespace StatisticsAnalysisTool.Network.Manager
             SetMails(new List<Mail>());
         }
 
-        public void SaveInFile()
+        public async Task SaveInFile()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}";
 
             try
             {
-                var fileString = JsonSerializer.Serialize(_mainWindowViewModel?.MailMonitoringBindings?.Mails.ToList());
-                File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
+                var mails = _mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList();
+                var fileString = await mails.SerializeJsonStringAsync();
+                await File.WriteAllTextAsync(localFilePath, fileString, Encoding.UTF8, CancellationToken.None);
             }
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
+        }
+
+        private async Task SaveInFileAfterExceedingLimit(int limit)
+        {
+            if (++_addMailCounter < limit)
+            {
+                return;
+            }
+
+            await SaveInFile();
+            _addMailCounter = 0;
         }
 
         #endregion

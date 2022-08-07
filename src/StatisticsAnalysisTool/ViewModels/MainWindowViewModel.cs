@@ -119,7 +119,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             _ = InitMainWindowDataAsync().ConfigureAwait(false);
-            InitTracking();
+            _ = InitTrackingAsync().ConfigureAwait(false);
         }
 
         public void SetUiElements()
@@ -355,14 +355,14 @@ namespace StatisticsAnalysisTool.ViewModels
             //_mainWindow.Dispatcher?.Invoke(() => { _ = _mainWindow.TxtSearch.Focus(); });
         }
 
-        private void InitTracking()
+        private async Task InitTrackingAsync()
         {
             WorldData.GetDataListFromJson();
             DungeonObjectData.GetDataListFromJson();
 
             TrackingController ??= new TrackingController(this, _mainWindow);
 
-            StartTracking();
+            await StartTrackingAsync();
 
             IsDamageMeterTrackingActive = SettingsController.CurrentSettings.IsDamageMeterTrackingActive;
             IsTrackingPartyLootOnly = SettingsController.CurrentSettings.IsTrackingPartyLootOnly;
@@ -609,7 +609,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Tracking
 
-        public void StartTracking()
+        public async Task StartTrackingAsync()
         {
             if (NetworkManager.IsNetworkCaptureRunning)
             {
@@ -617,7 +617,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
 
             TrackingController?.StatisticController?.LoadFromFile();
-            TrackingController?.MailController?.LoadFromFile();
+            await TrackingController?.MailController?.LoadFromFileAsync()!;
             TrackingController?.TreasureController?.LoadFromFile();
             TrackingController?.DungeonController?.LoadDungeonFromFile();
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();

@@ -4,7 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -229,6 +232,19 @@ namespace StatisticsAnalysisTool.Common
         public static bool IsDateInWeekOfYear(this DateTime date1, DateTime date2)
         {
             return ISOWeek.GetWeekOfYear(date1) == ISOWeek.GetWeekOfYear(date2);
+        }
+
+        #endregion
+
+        #region Json
+
+        public static async Task<string> SerializeJsonStringAsync(this object obj)
+        {
+            using var stream = new MemoryStream();
+            await JsonSerializer.SerializeAsync(stream, obj, obj.GetType());
+            stream.Position = 0;
+            using var reader = new StreamReader(stream);
+            return await reader.ReadToEndAsync();
         }
 
         #endregion
