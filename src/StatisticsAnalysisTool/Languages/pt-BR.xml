@@ -291,13 +291,13 @@
 	<translation name="USERNAME">Nome de Usuário</translation>
 	<translation name="GUILD">Guilda</translation>
 	<translation name="ALLIANCE">Aliança</translation>
-	<translation name="RESET_TRACKING_COUNTER">Reset do Contador de Rastreio</translation>
+	<translation name="RESET_TRACKING_COUNTER">Resetar Contador de Rastreio</translation>
 	<translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Tenha certeza de que tem o NPCAP instalado. https://nmap.org/npcap</translation>
 	<translation name="PACKET_HANDLER_ERROR_MESSAGE">Ocorreu um erro de rastreio. O NPCAP está instalado? https://nmap.org/npcap</translation>
 	<translation name="YOU_HAVE">Você tem</translation>
 	<translation name="FAME">Fama</translation>
 	<translation name="GAINED">Ganhou</translation>
-	<translation name="MAP_CHANGE_RESET">Reset da Mudança de Mapa </translation>
+	<translation name="MAP_CHANGE_RESET">Resetar medidor na mudança de mapa </translation>
 	<translation name="TOTAL_FAME">Fama Total</translation>
 	<translation name="TOTAL_SILVER">Prata Total</translation>
 	<translation name="TOTAL_RESPEC">Fama Amarela Total</translation>
@@ -313,13 +313,13 @@
 	<translation name="ISLAND">Ilha</translation>
 	<translation name="HIDEOUT">Esconderijo</translation>
 	<translation name="DAY">Dia</translation>
-	<translation name="RESET_DUNGEON_TRACKING">Reset do Rastreio da Masmorra</translation>
+	<translation name="RESET_DUNGEON_TRACKING">Resetar Rastreio da Masmorra</translation>
 	<translation name="SOLO">Sozinho</translation>
 	<translation name="KILLED_BY">Morto por</translation>
 	<translation name="DUNGEON_FAME">Fama de Masmorra</translation>
-	<translation name="DUNGEON_RUN_TIME">Tempo de corrida da Masmorra</translation>
+	<translation name="DUNGEON_RUN_TIME">Tempo de execução da Masmorra</translation>
 	<translation name="DAMAGE_METER">Medidor de Dano</translation>
-	<translation name="RESET_DAMAGE_METER">Reset do Medidor de Dano</translation>
+	<translation name="RESET_DAMAGE_METER">Resetar Medidor de Dano</translation>
 	<translation name="STANDARD">Comum</translation>
 	<translation name="UNCOMMON">Incomum</translation>
 	<translation name="RARE">Raro</translation>
@@ -355,7 +355,7 @@
 	<translation name="SAFE">Seguro</translation>
 	<translation name="DUNGEON_TIMER">Temporizador da Masmorra</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Você tem certeza que deseja dar reset no medidor de dano?</translation>
-	<translation name="RESET_DUNGEON_TRACKER">Reset do Rastreador de Masmorra</translation>
+	<translation name="RESET_DUNGEON_TRACKER">Resetar Rastreador de Masmorra</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER">Você tem certeza que quer dar reset no Rastreador de Masmorra?</translation>
 	<translation name="REMOVE_DUNGEON">Remover Masmorra</translation>
 	<translation name="SURE_YOU_WANT_TO_REMOVE_DUNGEON">Você tem certeza de que quer remover a Masmorra?</translation>
@@ -374,7 +374,7 @@
 	<translation name="FROM">A partir</translation>
 	<translation name="LOOT">Loot</translation>
 	<translation name="MOB">Mob</translation>
-	<translation name="RESET_TRACKING_NOTIFICATIONS">Reset do Rastreador de Notificações</translation>
+	<translation name="RESET_TRACKING_NOTIFICATIONS">Resetar Rastreador de Notificações</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS">Você tem certeza que deseja dar reset no Rastreador de Notificações?</translation>
 	<translation name="EQUIPMENT_LOOT">Pilha de Equipamentos</translation>
 	<translation name="CONSUMABLE_LOOT">Pilha de Consumíveis</translation>
@@ -406,8 +406,8 @@
 	<translation name="DESC_UPDATE_MARKET_PRICES_1">Para poder atualizar os preços de um item você mesmo, você precisa instalar o Albion Online Data Project: </translation>
 	<translation name="SEASON_POINTS">Pontos de Temporada</translation>
 	<translation name="EXPORT_LOOT_TO_FILE">Exportar pilhagem para arquivo</translation>
-	<translation name="TRACK_PARTY_LOOT_ONLY">Rastrear somente pilhas do grupo</translation>
-	<translation name="RESET_DUNGEON_TIMER">Reset do temporizador de Masmorra</translation>
+	<translation name="TRACK_PARTY_LOOT_ONLY">Rastrear somente saques do grupo</translation>
+	<translation name="RESET_DUNGEON_TIMER">Resetar temporizador de Masmorra</translation>
 	<translation name="REQUIRED_RESOURCES">Recursos necessários</translation>
 	<translation name="SELL_PRICE_PER_ITEM">Preço de Venda por Item</translation>
 	<translation name="SELL_PRICE_PER_JOURNAL">Preço de Venda por Diária</translation>
@@ -451,7 +451,7 @@
 	<translation name="TRACKING_IS_ACTIVE">Rastreio está ativo</translation>
 	<translation name="TRACKING_IS_PARTIALLY_ACTIVE">Rastreio está parcialmente ativo (Por favor, mude de zona!)</translation>
 	<translation name="TRACKING_IS_NOT_ACTIVE">Rastreio não está ativo</translation>
-	<translation name="PROGRAM_RESTART_REQUIRED">Reinicio do programa necessário</translation>
+	<translation name="PROGRAM_RESTART_REQUIRED">Necessário reinicializar o programa!</translation>
 	<translation name="DASHBOARD">Painel</translation>
 	<translation name="MIGHT">Influência</translation>
 	<translation name="FAVOR">Honra</translation>
@@ -583,4 +583,10 @@
 	<translation name="LAST_365_DAYS">Últimos 365 dias</translation>
 	<translation name="MOST_EXPENSIVE_SALE">Venda mais cara</translation>
 	<translation name="MOST_EXPENSIVE_PURCHASE">Compra mais cara</translation>
+	<translation name="SNAPSHOTS">Captura de tela</translation>
+	<translation name="DELETE_SELECTED_SNAPSHOT">Excluir captura de tela selecionado</translation>
+	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">Faz uma captura de tela do medidor de danos e visualize-o na guia captura de tela</translation>
+	<translation name="RANDOM_SOLO_DUNGEONS">Masmorras individuais aleatórias</translation>
+	<translation name="RANDOM_GROUP_DUNGEONS">Masmorras de grupo aleatório</translation>
+	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Captura de tela após mudança de mapa</translation>
 </translations>

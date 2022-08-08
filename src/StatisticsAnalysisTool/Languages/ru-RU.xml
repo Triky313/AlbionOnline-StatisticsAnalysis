@@ -634,4 +634,5 @@
 	<translation name="TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION">Сохранить данные урона в вкладке скриншоты</translation>
 	<translation name="RANDOM_SOLO_DUNGEONS">Рандомные сольники</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Рандомные групповые данжи</translation>
+	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Скриншот после смены локации</translation>
 </translations>
