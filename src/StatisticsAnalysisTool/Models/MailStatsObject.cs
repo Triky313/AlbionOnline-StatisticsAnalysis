@@ -67,8 +67,8 @@ public class MailStatsObject : INotifyPropertyChanged
         TaxesMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month).Sum(x => x.MailContent.TaxPrice.IntegerValue);
         TaxesYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year).Sum(x => x.MailContent.TaxPrice.IntegerValue);
 
-        SoldTotal = mails.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
-        BoughtTotal = mails.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
+        SoldTotal = mails.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
+        BoughtTotal = mails.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
         TaxesTotal = mails.Sum(x => x.MailContent.TaxPrice.IntegerValue);
 
         SalesToday = SoldToday - (BoughtToday + TaxesToday);
