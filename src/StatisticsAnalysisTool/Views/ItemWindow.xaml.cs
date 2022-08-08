@@ -91,8 +91,8 @@ namespace StatisticsAnalysisTool.Views
         {
             _itemWindowViewModel.GetMainPriceStats();
             _itemWindowViewModel.SetQualityPriceStatsOnListView();
-            _itemWindowViewModel.SetHistoryChartPricesAsync();
-            _itemWindowViewModel.GetItemPricesInRealMoneyAsync();
+            _ = _itemWindowViewModel.SetHistoryChartPricesAsync();
+            _ = _itemWindowViewModel.GetItemPricesInRealMoneyAsync();
         }
 
         private void MarketListCityLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)

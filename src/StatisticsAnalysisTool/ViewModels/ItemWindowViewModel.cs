@@ -17,11 +17,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -49,7 +51,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private Visibility _errorBarVisibility;
         private bool _excellentQualityChecked;
         private bool _goodQualityChecked;
-        private bool _hasItemPrices;
         private BitmapImage _icon;
         private Visibility _informationLoadingImageVisibility;
         private bool _isAutoUpdateActive;
@@ -80,6 +81,8 @@ namespace StatisticsAnalysisTool.ViewModels
         private EssentialCraftingValuesTemplate _essentialCraftingValues;
         private ExtraItemInformation _extraItemInformation = new();
         private string _craftingNotes;
+        private readonly Timer _timer = new();
+        private double _refreshRateInMilliseconds = 10;
 
         private CraftingCalculation _craftingCalculation = new()
         {
@@ -101,15 +104,15 @@ namespace StatisticsAnalysisTool.ViewModels
             InitializeItemWindow(item);
         }
 
+        #region Init
+
         public void InitializeItemWindow(Item item)
         {
             ErrorBarVisibility = Visibility.Hidden;
             SetDefaultQualityIfNoOneChecked();
 
             Item = item;
-
-            IsAutoUpdateActive = true;
-
+            
             Translation = new ItemWindowTranslation();
             InitializeItemData(item);
 
@@ -157,8 +160,9 @@ namespace StatisticsAnalysisTool.ViewModels
                 _itemWindow.Title = $"{localizedName} (T{item.Tier})";
             });
 
-            _ = StartAutoUpdaterAsync();
-            RefreshSpin = IsAutoUpdateActive;
+            InitTimer();
+            IsAutoUpdateActive = true;
+            UpdateValues(null, null);
 
             InformationLoadingImageVisibility = Visibility.Hidden;
         }
@@ -240,6 +244,43 @@ namespace StatisticsAnalysisTool.ViewModels
                     break;
             }
         }
+
+        #endregion
+
+        #region Timer
+
+        private void InitTimer()
+        {
+            _timer.Interval = SettingsController.CurrentSettings.RefreshRate;
+            _timer.Elapsed += UpdateInterval;
+            _timer.Elapsed += UpdateValues;
+        }
+
+        private void UpdateInterval(object sender, EventArgs e)
+        {
+            if (Math.Abs(_refreshRateInMilliseconds - SettingsController.CurrentSettings.RefreshRate) <= 0)
+            {
+                return;
+            }
+
+            _refreshRateInMilliseconds = SettingsController.CurrentSettings.RefreshRate;
+            _timer.Interval = _refreshRateInMilliseconds;
+        }
+
+        private async void UpdateValues(object sender, EventArgs e)
+        {
+            Debug.Print(DateTime.UtcNow + ": Update values");
+            if (Item.UniqueName != null)
+            {
+                await GetCityItemPricesAsync();
+                await GetItemPricesInRealMoneyAsync();
+            }
+
+            GetMainPriceStats();
+            SetQualityPriceStatsOnListView();
+        }
+
+        #endregion
 
         #region Crafting tab
 
@@ -404,6 +445,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #endregion Crafting tab
 
+        #region Error methods
+
         private void SetErrorValues(Error error)
         {
             switch (error)
@@ -418,13 +461,11 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 case Error.NoPrices:
                     SetLoadingImageToError();
-                    HasItemPrices = false;
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED"));
                     return;
 
                 case Error.GeneralError:
                     SetLoadingImageToError();
-                    HasItemPrices = false;
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                     return;
 
@@ -435,7 +476,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 default:
                     SetLoadingImageToError();
-                    HasItemPrices = false;
                     SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
                     return;
             }
@@ -444,7 +484,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private void ErrorBarReset()
         {
             LoadingImageSpin = true;
-            HasItemPrices = true;
             SetErrorBar(Visibility.Hidden, string.Empty);
         }
 
@@ -460,90 +499,11 @@ namespace StatisticsAnalysisTool.ViewModels
             ErrorBarVisibility = visibility;
         }
 
-        private async Task StartAutoUpdaterAsync()
-        {
-            await Task.Run(async () =>
-            {
-                while (RunUpdate)
-                {
-                    await Task.Delay(50);
-                    if (Application.Current.Dispatcher != null && !IsAutoUpdateActive)
-                    {
-                        continue;
-                    }
-
-                    if (Item.UniqueName != null)
-                    {
-                        await GetCityItemPricesAsync().ConfigureAwait(false);
-                        GetItemPricesInRealMoneyAsync();
-                    }
-
-                    GetMainPriceStats();
-                    SetQualityPriceStatsOnListView();
-                    await Task.Delay(SettingsController.CurrentSettings.RefreshRate - 500);
-                }
-            });
-        }
-
-        public async Task GetCityItemPricesAsync()
-        {
-            try
-            {
-                CurrentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item.UniqueName).ConfigureAwait(false);
-                ErrorBarReset();
-            }
-            catch (TooManyRequestsException e)
-            {
-                CurrentCityPrices = null;
-                HasItemPrices = false;
-                SetErrorValues(Error.ToManyRequests);
-                Log.Warn(nameof(GetCityItemPricesAsync), e);
-            }
-        }
-
-        private List<int> GetQualities()
-        {
-            var qualities = new List<int>();
-
-            if (NormalQualityChecked)
-            {
-                qualities.Add(1);
-            }
-
-            if (GoodQualityChecked)
-            {
-                qualities.Add(2);
-            }
-
-            if (OutstandingQualityChecked)
-            {
-                qualities.Add(3);
-            }
-
-            if (ExcellentQualityChecked)
-            {
-                qualities.Add(4);
-            }
-
-            if (MasterpieceQualityChecked)
-            {
-                qualities.Add(5);
-            }
-
-            return qualities;
-        }
-
-        private void SetDefaultQualityIfNoOneChecked()
-        {
-            if (!NormalQualityChecked && !GoodQualityChecked && !OutstandingQualityChecked && !ExcellentQualityChecked && !MasterpieceQualityChecked)
-            {
-                NormalQualityChecked = true;
-            }
-        }
+        #endregion
 
         #region History
 
-        public async void SetHistoryChartPricesAsync()
+        public async Task SetHistoryChartPricesAsync()
         {
             List<MarketHistoriesResponse> historyItemPrices;
 
@@ -618,7 +578,22 @@ namespace StatisticsAnalysisTool.ViewModels
 
         #region Prices
 
-        public async void GetItemPricesInRealMoneyAsync()
+        public async Task GetCityItemPricesAsync()
+        {
+            try
+            {
+                CurrentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item?.UniqueName).ConfigureAwait(false);
+                ErrorBarReset();
+            }
+            catch (TooManyRequestsException e)
+            {
+                CurrentCityPrices = null;
+                SetErrorValues(Error.ToManyRequests);
+                Log.Warn(nameof(GetCityItemPricesAsync), e);
+            }
+        }
+
+        public async Task GetItemPricesInRealMoneyAsync()
         {
             if (CurrentCityPrices == null)
             {
@@ -761,7 +736,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
         public void GetMainPriceStats()
         {
-            if (CurrentCityPrices == null)
+            if (CurrentCityPrices is not { Count: > 0 })
             {
                 return;
             }
@@ -773,20 +748,22 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var marketCurrentPricesItemList = statsPricesTotalList.Select(item => new MarketCurrentPricesItem(item)).ToList();
 
-            if (LoadingImageVisibility != Visibility.Hidden) LoadingImageVisibility = Visibility.Hidden;
+            if (LoadingImageVisibility != Visibility.Hidden)
+            {
+                LoadingImageVisibility = Visibility.Hidden;
+            }
 
             MarketCurrentPricesItemList = marketCurrentPricesItemList;
             SetAveragePricesString();
-
-            HasItemPrices = true;
+            
             RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {Formatting.CurrentDateTimeFormat(DateTime.Now)}";
         }
 
-        private List<MarketResponseTotal> PriceUpdate(List<MarketResponse> newStatsPricesList)
+        private static List<MarketResponseTotal> PriceUpdate(List<MarketResponse> newStatsPricesList)
         {
             var currentStatsPricesTotalList = new List<MarketResponseTotal>();
 
-            foreach (var newStats in newStatsPricesList)
+            foreach (var newStats in newStatsPricesList ?? new List<MarketResponse>())
                 try
                 {
                     if (currentStatsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == newStats.City))
@@ -901,7 +878,7 @@ namespace StatisticsAnalysisTool.ViewModels
             var buyPriceMin = new List<ulong>();
             var buyPriceMax = new List<ulong>();
 
-            foreach (var price in cityPrices)
+            foreach (var price in cityPrices ?? new List<MarketResponse>())
             {
                 if (price.SellPriceMin != 0) sellPriceMin.Add(price.SellPriceMin);
 
@@ -1088,6 +1065,9 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _normalQualityChecked = !_normalQualityChecked && value;
+                SetQualityPriceStatsOnListView();
+                _ = GetCityItemPricesAsync();
+                _ = GetItemPricesInRealMoneyAsync();
                 OnPropertyChanged();
             }
         }
@@ -1098,6 +1078,9 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _goodQualityChecked = !_goodQualityChecked && value;
+                SetQualityPriceStatsOnListView();
+                _ = GetCityItemPricesAsync();
+                _ = GetItemPricesInRealMoneyAsync();
                 OnPropertyChanged();
             }
         }
@@ -1108,6 +1091,9 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _outstandingQualityChecked = !_outstandingQualityChecked && value;
+                SetQualityPriceStatsOnListView();
+                _ = GetCityItemPricesAsync();
+                _ = GetItemPricesInRealMoneyAsync();
                 OnPropertyChanged();
             }
         }
@@ -1118,6 +1104,9 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _excellentQualityChecked = !_excellentQualityChecked && value;
+                SetQualityPriceStatsOnListView();
+                _ = GetCityItemPricesAsync();
+                _ = GetItemPricesInRealMoneyAsync();
                 OnPropertyChanged();
             }
         }
@@ -1128,6 +1117,9 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _masterpieceQualityChecked = !_masterpieceQualityChecked && value;
+                SetQualityPriceStatsOnListView();
+                _ = GetCityItemPricesAsync();
+                _ = GetItemPricesInRealMoneyAsync();
                 OnPropertyChanged();
             }
         }
@@ -1158,20 +1150,13 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _isAutoUpdateActive = value;
+
+                _timer.Enabled = _isAutoUpdateActive;
+                RefreshSpin = IsAutoUpdateActive;
                 OnPropertyChanged();
             }
         }
-
-        public bool HasItemPrices
-        {
-            get => _hasItemPrices;
-            set
-            {
-                _hasItemPrices = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public ObservableCollection<ISeries> SeriesHistory
         {
             get => _seriesHistory;
@@ -1361,6 +1346,46 @@ namespace StatisticsAnalysisTool.ViewModels
             var sum = Sum(values);
             var result = sum / (ulong)values.Length;
             return result;
+        }
+
+        private List<int> GetQualities()
+        {
+            var qualities = new List<int>();
+
+            if (NormalQualityChecked)
+            {
+                qualities.Add(1);
+            }
+
+            if (GoodQualityChecked)
+            {
+                qualities.Add(2);
+            }
+
+            if (OutstandingQualityChecked)
+            {
+                qualities.Add(3);
+            }
+
+            if (ExcellentQualityChecked)
+            {
+                qualities.Add(4);
+            }
+
+            if (MasterpieceQualityChecked)
+            {
+                qualities.Add(5);
+            }
+
+            return qualities;
+        }
+
+        private void SetDefaultQualityIfNoOneChecked()
+        {
+            if (!NormalQualityChecked && !GoodQualityChecked && !OutstandingQualityChecked && !ExcellentQualityChecked && !MasterpieceQualityChecked)
+            {
+                NormalQualityChecked = true;
+            }
         }
 
         #endregion
