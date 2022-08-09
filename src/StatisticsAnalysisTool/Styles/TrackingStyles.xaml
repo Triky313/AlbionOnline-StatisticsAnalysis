@@ -351,7 +351,23 @@
 
     <DataTemplate DataType="{x:Type notification:OtherGrabbedLootNotificationFragment}">
         <VirtualizingStackPanel VirtualizationMode="Recycling" Orientation="Horizontal">
-            <TextBlock Text="{Binding Looter, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
+            <TextBlock Text="{Binding LootedByName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"/>
+            <TextBlock Text="{Binding LootedByGuild, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.3}"
+                       ToolTip="{Binding TranslationGuild}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLootedByGuildEmpty}" Value="false">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsLootedByGuildEmpty}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Setter Property="Width" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
             <TextBlock Text="{Binding LootedTranslation, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
 
             <TextBlock Text="{Binding Quantity, IsAsync=True, StringFormat='{}{0}x '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
@@ -359,7 +375,23 @@
             <TextBlock Text="{Binding LocalizedName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
 
             <TextBlock Text="{Binding FromTranslation, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Text.1}"/>
-            <TextBlock Text="{Binding LootedPlayer, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
+            <TextBlock Text="{Binding LootedFromName, IsAsync=True, StringFormat='{}{0} '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"/>
+            <TextBlock Text="{Binding LootedFromGuild, IsAsync=True, StringFormat='{}({0}) '}" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}"
+                       ToolTip="{Binding TranslationGuild}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsLootedFromGuildEmpty}" Value="false">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsLootedFromGuildEmpty}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Setter Property="Width" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
         </VirtualizingStackPanel>
     </DataTemplate>
 

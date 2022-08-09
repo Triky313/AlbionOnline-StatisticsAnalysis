@@ -12,8 +12,8 @@ namespace StatisticsAnalysisTool.Network.Events
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         public Loot Loot;
 
-        private readonly string _lootedBody;
-        private readonly string _looterName;
+        private readonly string _lootedFromName;
+        private readonly string _looterByName;
         private readonly bool _isSilver;
         private readonly int _itemIndex;
         private readonly int _quantity;
@@ -26,12 +26,12 @@ namespace StatisticsAnalysisTool.Network.Events
             {
                 if (parameters.ContainsKey(1))
                 {
-                    _lootedBody = MobController.IsMob(parameters[1].ToString()) ? LanguageController.Translation("MOB") : parameters[1].ToString();
+                    _lootedFromName = MobController.IsMob(parameters[1].ToString()) ? LanguageController.Translation("MOB") : parameters[1].ToString();
                 }
 
                 if (parameters.ContainsKey(2))
                 {
-                    _looterName = parameters[2].ToString();
+                    _looterByName = parameters[2].ToString();
                 }
 
                 if (parameters.ContainsKey(3))
@@ -51,10 +51,10 @@ namespace StatisticsAnalysisTool.Network.Events
 
                 Loot = new Loot()
                 {
-                    LootedBody = _lootedBody,
+                    LootedFromName = _lootedFromName,
                     IsTrash = ItemController.IsTrash(_itemIndex) && !_isSilver,
                     ItemIndex = _itemIndex,
-                    LooterName = _looterName,
+                    LootedByName = _looterByName,
                     IsSilver = _isSilver,
                     Quantity = _quantity
                 };

@@ -403,8 +403,10 @@ namespace StatisticsAnalysisTool.Network.Manager
                 var guid = new Guid($"{Random.Next(1000, 9999)}0000-0000-0000-0000-000000000000");
                 var interactGuid = Guid.NewGuid();
                 var name = TestMethods.GenerateName(Random.Next(3, 10));
+                var guildName = TestMethods.GenerateName(Random.Next(4, 10));
+                var allianceName = TestMethods.GenerateName(Random.Next(5, 10));
 
-                _trackingController?.EntityController?.AddEntity(i, guid, interactGuid, name, GameObjectType.Player, GameObjectSubType.Mob);
+                _trackingController?.EntityController?.AddEntity(i, guid, interactGuid, name, guildName, allianceName, GameObjectType.Player, GameObjectSubType.Mob);
 
                 // Only if SetCharacterMainHand is public
                 //_trackingController?.EntityController?.SetCharacterMainHand(i, TestMethods.GetRandomWeaponIndex());

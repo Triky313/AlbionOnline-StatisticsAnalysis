@@ -627,4 +627,6 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Random solo dungeons</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Random group dungeons</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Snapshot after map change</translation>
+	<translation name="GUILD">Guild</translation>
+	<translation name="ALLIANCE">Alliance</translation>
 </translations>

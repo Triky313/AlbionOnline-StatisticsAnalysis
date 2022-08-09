@@ -12,8 +12,8 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public int ItemIndex { get; set; }
         public DateTime UtcPickupTime { get; }
         public int Quantity { get; set; }
-        public string LootedBody { get; set; }
-        public string LooterName { get; set; }
+        public string LootedFromName { get; set; }
+        public string LootedByName { get; set; }
         public bool IsSilver { get; set; }
         public bool IsTrash { get; set; }
     }
