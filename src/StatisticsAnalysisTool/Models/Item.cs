@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -33,6 +34,7 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
+        [JsonIgnore]
         public BitmapImage Icon => Application.Current.Dispatcher.Invoke(() => _icon ??= ImageController.GetItemImage(UniqueName));
 
         public ItemJsonObject FullItemInformation { get; set; }

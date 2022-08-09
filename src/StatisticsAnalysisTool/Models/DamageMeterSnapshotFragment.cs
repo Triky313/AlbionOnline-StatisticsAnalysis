@@ -1,11 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Network.Notification;
 using System;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models;
 public class DamageMeterSnapshotFragment
 {
-    private Item _causerMainHand;
+    private string _causerMainHandItemUniqueName;
     private long _damage;
     private double _dps;
     private long _heal;
@@ -23,7 +24,7 @@ public class DamageMeterSnapshotFragment
         Hps = damageMeterFragment.Hps;
         HealInPercent = damageMeterFragment.HealInPercent;
         HealPercentage = damageMeterFragment.HealPercentage;
-        CauserMainHand = damageMeterFragment.CauserMainHand;
+        CauserMainHandItemUniqueName = damageMeterFragment.CauserMainHand.UniqueName;
     }
 
     public DamageMeterSnapshotFragment()
@@ -31,9 +32,7 @@ public class DamageMeterSnapshotFragment
     }
 
     public string Name { get; set; }
-
     public Guid CauserGuid { get; set; }
-
     public bool IsDamageMeterShowing { get; set; } = true;
 
     #region Damage
@@ -100,15 +99,18 @@ public class DamageMeterSnapshotFragment
 
     #endregion
 
-    public Item CauserMainHand
+    public string CauserMainHandItemUniqueName
     {
-        get => _causerMainHand;
+        get => _causerMainHandItemUniqueName;
         set
         {
-            _causerMainHand = value;
-            ShopSubCategory = CategoryController.ShopSubCategoryToShopSubCategoryString(_causerMainHand?.ShopShopSubCategory1 ?? Common.ShopSubCategory.Unknown);
+            _causerMainHandItemUniqueName = value;
+            var item = ItemController.GetItemByUniqueName(_causerMainHandItemUniqueName);
+            ShopSubCategory = CategoryController.ShopSubCategoryToShopSubCategoryString(item?.ShopShopSubCategory1 ?? Common.ShopSubCategory.Unknown);
         }
     }
 
+    [JsonIgnore]
+    public Item CauserMainHand => ItemController.GetItemByUniqueName(CauserMainHandItemUniqueName);
     public string ShopSubCategory { get; set; }
 }

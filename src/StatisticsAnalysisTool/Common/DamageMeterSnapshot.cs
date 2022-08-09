@@ -1,23 +1,23 @@
 ﻿using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common;
 
 public class DamageMeterSnapshot : INotifyPropertyChanged
 {
     private DateTime _timestamp;
-    private List<DamageMeterSnapshotFragment> _damageMeter = new ();
+    private List<DamageMeterSnapshotFragment> _damageMeter = new();
 
     public DamageMeterSnapshot()
     {
         Timestamp = DateTime.UtcNow;
     }
-    
+
     public DateTime Timestamp
     {
         get => _timestamp;
@@ -30,7 +30,7 @@ public class DamageMeterSnapshot : INotifyPropertyChanged
 
     [JsonIgnore]
     public string TimestampString => Timestamp.ToString(LanguageController.CurrentCultureInfo);
-    
+
     public List<DamageMeterSnapshotFragment> DamageMeter
     {
         get => _damageMeter;
@@ -40,7 +40,7 @@ public class DamageMeterSnapshot : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     [NotifyPropertyChangedInvocator]
