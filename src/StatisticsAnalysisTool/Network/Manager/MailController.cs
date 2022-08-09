@@ -16,6 +16,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -93,9 +94,9 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
-        public void RemoveMailsByIdsAsync(IEnumerable<long> mailIds)
+        public async Task RemoveMailsByIdsAsync(IEnumerable<long> mailIds)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 foreach (var mail in _mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList().Where(x => mailIds.Contains(x.MailId)) ?? new List<Mail>())
                 {
@@ -191,9 +192,9 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private void SetMails(List<Mail> mails)
+        private async Task SetMailsAsync(List<Mail> mails)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
             {
                 foreach (var item in mails)
                 {
@@ -215,7 +216,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                 _mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Refresh();
                 _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(mails);
-            });
+            }, DispatcherPriority.DataBind, CancellationToken.None);
         }
 
         /// <summary>
@@ -251,20 +252,19 @@ namespace StatisticsAnalysisTool.Network.Manager
                         PropertyNameCaseInsensitive = true
                     };
                     var stats = await JsonSerializer.DeserializeAsync<List<Mail>>(streamReader.BaseStream, options);
-
-                    SetMails(stats);
+                    await SetMailsAsync(stats);
                     return;
                 }
                 catch (Exception e)
                 {
                     ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                     Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                    SetMails(new List<Mail>());
+                    await SetMailsAsync(new List<Mail>());
                     return;
                 }
             }
 
-            SetMails(new List<Mail>());
+            await SetMailsAsync(new List<Mail>());
         }
 
         public async Task SaveInFile()
