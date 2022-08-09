@@ -159,9 +159,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                         &&
                         (
                             x.Fragment is OtherGrabbedLootNotificationFragment fragment &&
-                            (fragment.Looter.ToLower().Contains(text.ToLower())
+                            (fragment.LootedByName.ToLower().Contains(text.ToLower())
                              || fragment.LocalizedName.ToLower().Contains(text.ToLower())
-                             || fragment.LootedPlayer.ToLower().Contains(text.ToLower())
+                             || fragment.LootedFromName.ToLower().Contains(text.ToLower())
                             )
                             ||
                             x.Fragment is KillNotificationFragment killFragment &&
