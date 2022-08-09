@@ -22,6 +22,8 @@ namespace StatisticsAnalysisTool.Network.Events
                 if (parameters.ContainsKey(8)) GuildName = parameters[8].ToString();
 
                 if (parameters.ContainsKey(12)) Position = (float[]) parameters[12];
+
+                // 33: Current character item id's
             }
             catch (Exception e)
             {

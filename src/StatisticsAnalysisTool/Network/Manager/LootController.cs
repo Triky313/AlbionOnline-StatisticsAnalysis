@@ -63,15 +63,20 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             var item = ItemController.GetItemByIndex(loot.ItemIndex);
+            var lootedByUser = _trackingController.EntityController.GetEntity(loot.LooterName);
+            var lootedFromUser = _trackingController.EntityController.GetEntity(loot.LootedBody);
 
             await _trackingController.AddNotificationAsync(SetNotificationAsync(loot.LooterName, loot.LootedBody, item, loot.Quantity));
 
             _lootLoggerObjects.Add(new LootLoggerObject()
             {
-                BodyName = loot.LootedBody,
-                LooterName = loot.LooterName,
+                LootedFromName = loot.LootedBody,
+                LootedFromGuild = lootedFromUser?.Value?.Guild,
+                LootedByName = loot.LooterName,
+                LootedByGuild = lootedByUser?.Value?.Guild,
                 Quantity = loot.Quantity,
-                UniqueName = item.UniqueName
+                ItemId = item.Index,
+                UniqueItemName = item.UniqueName,
             });
 
             OnAddLoot?.Invoke(loot.LooterName, loot.Quantity);
@@ -111,6 +116,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
+        [Obsolete]
         public void AddDiscoveredLoot(DiscoveredItem item)
         {
             if (_discoveredLoot.Exists(x => x.ObjectId == item.ObjectId))
@@ -121,6 +127,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _discoveredLoot.Add(item);
         }
 
+        [Obsolete]
         public async Task AddPutLootAsync(long? objectId, Guid? interactGuid)
         {
             if (_trackingController.EntityController.GetLocalEntity()?.Value?.InteractGuid != interactGuid)
@@ -142,6 +149,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _discoveredLoot.Clear();
         }
 
+        [Obsolete]
         private async Task LootMergeAsync()
         {
             foreach (var lootedObject in _putLoot)
@@ -175,7 +183,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 if (isItemRealNameInLoggingExportActive)
                 {
-                    return string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutputWithRealItemName).ToArray()).ToString(CultureInfo.CurrentCulture);
+                    const string csvHeader = "timestamp_utc;looted_by__alliance;looted_by__guild;looted_by__name;item_id;item_name;quantity;looted_from__alliance;looted_from__guild;looted_from__name\n";
+                    return csvHeader + string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutputWithRealItemName).ToArray()).ToString(LanguageController.CurrentCultureInfo);
                 }
 
                 return string.Join(Environment.NewLine, _lootLoggerObjects.Select(loot => loot.CsvOutput).ToArray());
@@ -213,13 +222,14 @@ namespace StatisticsAnalysisTool.Network.Manager
         }
 
         #endregion
-
+        
         #region Debug methods
 
         private static readonly Random Random = new(DateTime.Now.Millisecond);
 
-        private async Task AddTestLootNotificationsAsync(int notificationCounter)
+        private async Task AddTestLootNotificationsAsync(int notificationCounter, int delay = 10000)
         {
+            await Task.Delay(delay);
             for (var i = 0; i < notificationCounter; i++)
             {
                 var randomItem = ItemController.GetItemByIndex(Random.Next(1, 7000));

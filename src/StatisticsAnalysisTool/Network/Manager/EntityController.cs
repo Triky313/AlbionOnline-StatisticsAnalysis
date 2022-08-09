@@ -40,7 +40,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public event Action<GameObject> OnAddEntity;
 
-        public void AddEntity(long objectId, Guid userGuid, Guid? interactGuid, string name, GameObjectType objectType, GameObjectSubType objectSubType)
+        public void AddEntity(long objectId, Guid userGuid, Guid? interactGuid, string name, string guild, string alliance, GameObjectType objectType, GameObjectSubType objectSubType)
         {
             PlayerGameObject gameObject;
 
@@ -51,6 +51,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                     Name = name,
                     ObjectType = objectType,
                     UserGuid = userGuid,
+                    Guild = guild,
+                    Alliance = alliance,
                     InteractGuid = interactGuid,
                     ObjectSubType = objectSubType,
                     CharacterEquipment = oldEntity.CharacterEquipment,
@@ -97,6 +99,11 @@ namespace StatisticsAnalysisTool.Network.Manager
         public KeyValuePair<Guid, PlayerGameObject>? GetEntity(long objectId)
         {
             return _knownEntities?.FirstOrDefault(x => x.Value.ObjectId == objectId);
+        }
+
+        public KeyValuePair<Guid, PlayerGameObject>? GetEntity(string uniqueName)
+        {
+            return _knownEntities?.FirstOrDefault(x => x.Value.Name == uniqueName);
         }
 
         public List<KeyValuePair<Guid, PlayerGameObject>> GetAllEntities(bool onlyInParty = false)

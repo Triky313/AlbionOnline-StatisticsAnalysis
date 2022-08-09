@@ -36,7 +36,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             _mainWindowViewModel.DungeonBindings.DungeonCloseTimer.Visibility = Visibility.Collapsed;
 
-            await AddEntityAsync(value.UserObjectId, value.UserGuid, value.InteractGuid, value.Username, GameObjectType.Player, GameObjectSubType.LocalPlayer);
+            await AddEntityAsync(value.UserObjectId, value.UserGuid, value.InteractGuid, 
+                value.Username, value.GuildName, value.AllianceName, GameObjectType.Player, GameObjectSubType.LocalPlayer);
 
             _trackingController.DungeonController?.AddDungeonAsync(value.MapType, value.MapGuid).ConfigureAwait(false);
 
@@ -64,14 +65,14 @@ namespace StatisticsAnalysisTool.Network.Handler
             });
         }
 
-        private async Task AddEntityAsync(long? userObjectId, Guid? guid, Guid? interactGuid, string name, GameObjectType gameObjectType, GameObjectSubType gameObjectSubType)
+        private async Task AddEntityAsync(long? userObjectId, Guid? guid, Guid? interactGuid, string name, string guild, string alliance, GameObjectType gameObjectType, GameObjectSubType gameObjectSubType)
         {
             if (guid == null || interactGuid == null || userObjectId == null)
             {
                 return;
             }
 
-            _trackingController.EntityController.AddEntity((long)userObjectId, (Guid)guid, interactGuid, name, GameObjectType.Player, GameObjectSubType.LocalPlayer);
+            _trackingController.EntityController.AddEntity((long)userObjectId, (Guid)guid, interactGuid, name, guild, alliance, GameObjectType.Player, GameObjectSubType.LocalPlayer);
             await _trackingController.EntityController.AddToPartyAsync((Guid)guid, name);
         }
 

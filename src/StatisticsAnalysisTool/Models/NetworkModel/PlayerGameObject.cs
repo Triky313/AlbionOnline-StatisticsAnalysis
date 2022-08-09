@@ -38,6 +38,8 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             }
         }
         public string Name { get; set; } = "Unknown";
+        public string Guild { get; set; } = "Unknown";
+        public string Alliance { get; set; } = "Unknown";
         public CharacterEquipment CharacterEquipment
         {
             get => _characterEquipment;
@@ -60,7 +62,6 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public TimeSpan CombatTime { get; set; } = new (1);
         public long Damage { get; set; }
         public long Heal { get; set; }
-        public bool IsInCurrentParty { get; set; }
         public double Dps => Utilities.GetValuePerSecondToDouble(Damage, CombatStart, CombatTime, 9999);
         public double Hps => Utilities.GetValuePerSecondToDouble(Heal, CombatStart, CombatTime, 9999);
 
