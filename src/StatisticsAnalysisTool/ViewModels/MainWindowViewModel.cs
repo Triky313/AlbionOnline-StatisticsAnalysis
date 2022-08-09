@@ -32,7 +32,7 @@ using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     {
         private static MainWindow _mainWindow;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
@@ -117,10 +117,12 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _mainWindow.Close();
             }
-
-            _ = InitMainWindowDataAsync().ConfigureAwait(false);
-            _ = InitTrackingAsync().ConfigureAwait(false);
+            
+            Initialization = InitMainWindowDataAsync();
+            Initialization = InitTrackingAsync();
         }
+
+        public Task Initialization { get; init; }
 
         public void SetUiElements()
         {
