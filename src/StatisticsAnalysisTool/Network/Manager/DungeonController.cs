@@ -9,12 +9,9 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
@@ -70,9 +67,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
 
                 _dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
-                
-                var newDungeon = new DungeonObject(ClusterController.CurrentCluster.MainClusterIndex, 
-                    mapGuid ?? new Guid(0,0,0,0,0,0,0,0,0,0,0), DungeonStatus.Active, ClusterController.CurrentCluster.Tier);
+
+                var newDungeon = new DungeonObject(ClusterController.CurrentCluster.MainClusterIndex,
+                    mapGuid ?? new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), DungeonStatus.Active, ClusterController.CurrentCluster.Tier);
                 SetDungeonMapType(newDungeon, mapType);
 
                 _dungeons.Insert(0, newDungeon);
@@ -566,12 +563,12 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             await RemoveLeftOverDungeonNotificationFragments().ConfigureAwait(false);
-            await Application.Current.Dispatcher.InvokeAsync(async() =>
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 await SetBestDungeonTimeAsync(_mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToAsyncEnumerable());
                 await CalculateBestDungeonValues(_mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToAsyncEnumerable());
             });
-            
+
             await DungeonUiFilteringAsync();
 
             SetDungeonStatsDayUi();
@@ -715,46 +712,15 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        public void LoadDungeonFromFile()
+        public async Task LoadDungeonFromFileAsync()
         {
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}";
-
-            if (File.Exists(localFilePath))
-            {
-                try
-                {
-                    var localItemString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                    var dungeons = JsonSerializer.Deserialize<List<DungeonObject>>(localItemString) ?? new List<DungeonObject>();
-                    _dungeons = dungeons;
-                    return;
-                }
-                catch (Exception e)
-                {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                    _dungeons = new List<DungeonObject>();
-                    return;
-                }
-            }
-
-            _dungeons = new List<DungeonObject>();
+            _dungeons = await FileController.LoadAsync<List<DungeonObject>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}");
         }
 
-        public void SaveDungeonsInFile()
+        public async Task SaveInFileAsync()
         {
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}";
-
-            try
-            {
-                var toSaveDungeons = _dungeons.Where(x => x is { Status: DungeonStatus.Done });
-                var fileString = JsonSerializer.Serialize(toSaveDungeons);
-                File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
+            var toSaveDungeons = _dungeons.Where(x => x is { Status: DungeonStatus.Done });
+            await FileController.SaveAsync(toSaveDungeons, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}");
         }
     }
 }

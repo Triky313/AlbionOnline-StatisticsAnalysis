@@ -1,5 +1,4 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -8,11 +7,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,8 +17,6 @@ namespace StatisticsAnalysisTool.Network.Manager
 {
     public class MailController
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
         private readonly MainWindowViewModel _mainWindowViewModel;
         private int _addMailCounter;
 
@@ -192,7 +185,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private async Task SetMailsAsync(List<Mail> mails)
+        public async Task SetMailsAsync(List<Mail> mails)
         {
             await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
             {
@@ -240,48 +233,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task LoadFromFileAsync()
         {
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}";
-
-            if (File.Exists(localFilePath))
-            {
-                try
-                {
-                    using var streamReader = new StreamReader(localFilePath);
-                    var options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    };
-                    var stats = await JsonSerializer.DeserializeAsync<List<Mail>>(streamReader.BaseStream, options);
-                    await SetMailsAsync(stats);
-                    return;
-                }
-                catch (Exception e)
-                {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                    await SetMailsAsync(new List<Mail>());
-                    return;
-                }
-            }
-
-            await SetMailsAsync(new List<Mail>());
-        }
-
-        public async Task SaveInFile()
-        {
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}";
-
-            try
-            {
-                var mails = _mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList();
-                var fileString = await mails.SerializeJsonStringAsync();
-                await File.WriteAllTextAsync(localFilePath, fileString, Encoding.UTF8, CancellationToken.None);
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
+            await SetMailsAsync(await FileController.LoadAsync<List<Mail>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}"));
         }
 
         private async Task SaveInFileAfterExceedingLimit(int limit)
@@ -291,7 +243,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            await SaveInFile();
+            await FileController.SaveAsync(_mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList(), $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}");
             _addMailCounter = 0;
         }
 

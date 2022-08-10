@@ -618,14 +618,15 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            TrackingController?.StatisticController?.LoadFromFile();
+            await TrackingController?.StatisticController?.LoadFromFileAsync()!;
             await TrackingController?.MailController?.LoadFromFileAsync()!;
-            TrackingController?.TreasureController?.LoadFromFile();
-            TrackingController?.DungeonController?.LoadDungeonFromFile();
+            await TrackingController?.TreasureController?.LoadFromFileAsync()!;
+            await TrackingController?.DungeonController?.LoadDungeonFromFileAsync()!;
+            await TrackingController?.VaultController?.LoadFromFileAsync()!;
+
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
             TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
-            TrackingController?.VaultController?.LoadFromFile();
 
             TrackingController?.ClusterController.RegisterEvents();
             TrackingController?.LootController.RegisterEvents();
@@ -639,7 +640,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Console.WriteLine(@"### Start Tracking...");
         }
 
-        public void StopTracking()
+        public async Task StopTrackingAsync()
         {
             NetworkManager.StopNetworkCapture();
 
@@ -649,13 +650,13 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.LootController.UnregisterEvents();
             TrackingController?.ClusterController.UnregisterEvents();
 
-            TrackingController?.DungeonController?.SaveDungeonsInFile();
-            TrackingController?.MailController?.SaveInFile();
-            TrackingController?.VaultController?.SaveInFile();
-            TrackingController?.TreasureController?.SaveInFile();
-            TrackingController?.StatisticController?.SaveInFile();
+            await TrackingController?.DungeonController?.SaveInFileAsync()!;
+            await TrackingController?.VaultController?.SaveInFileAsync()!;
+            await TrackingController?.TreasureController?.SaveInFileAsync()!;
+            await TrackingController?.StatisticController?.SaveInFileAsync()!;
 
-            FileController.Save(DamageMeterBindings.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
+            await FileController.SaveAsync(MailMonitoringBindings?.Mails?.ToList(), $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}");
+            await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
 
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");

@@ -3,14 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -241,10 +238,10 @@ namespace StatisticsAnalysisTool.Common
 
         #region Json
 
-        public static async Task<string> SerializeJsonStringAsync(this object obj)
+        public static async Task<string> SerializeJsonStringAsync(this object obj, JsonSerializerOptions option = null)
         {
             using var stream = new MemoryStream();
-            await JsonSerializer.SerializeAsync(stream, obj, obj.GetType());
+            await JsonSerializer.SerializeAsync(stream, obj, obj.GetType(), option);
             stream.Position = 0;
             using var reader = new StreamReader(stream);
             return await reader.ReadToEndAsync();

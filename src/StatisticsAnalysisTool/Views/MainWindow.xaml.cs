@@ -100,7 +100,7 @@ namespace StatisticsAnalysisTool.Views
 
             if (_mainWindowViewModel.IsTrackingActive)
             {
-                _mainWindowViewModel.StopTracking();
+                _ = _mainWindowViewModel.StopTrackingAsync();
             }
         }
 
