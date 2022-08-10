@@ -194,7 +194,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private async Task SetMailsAsync(List<Mail> mails)
         {
-            await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
             {
                 foreach (var item in mails)
                 {
@@ -210,13 +210,13 @@ namespace StatisticsAnalysisTool.Network.Manager
                     {
                         item.MailContent.TaxRate = 3;
                     }
-
-                    _mainWindowViewModel?.MailMonitoringBindings?.Mails.Add(item);
                 }
+
+                await _mainWindowViewModel?.MailMonitoringBindings?.Mails?.AddRangeAsync(mails)!;
 
                 _mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Refresh();
                 _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(mails);
-            }, DispatcherPriority.DataBind, CancellationToken.None);
+            }, DispatcherPriority.Background, CancellationToken.None);
         }
 
         /// <summary>

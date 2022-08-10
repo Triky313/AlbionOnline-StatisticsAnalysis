@@ -3,11 +3,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.ItemsJsonModel;
 
 namespace StatisticsAnalysisTool.Common
 {
@@ -245,6 +248,18 @@ namespace StatisticsAnalysisTool.Common
             stream.Position = 0;
             using var reader = new StreamReader(stream);
             return await reader.ReadToEndAsync();
+        }
+
+        #endregion
+
+        #region Collections
+
+        public static async Task AddRangeAsync<T>(this ObservableCollection<T> collection, IEnumerable<T> list)
+        {
+            await foreach (var item in list?.ToAsyncEnumerable() ?? new List<T>().ToAsyncEnumerable())
+            {
+                collection.Add(item);
+            }
         }
 
         #endregion

@@ -117,7 +117,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 _mainWindow.Close();
             }
-            
+
             Initialization = InitMainWindowDataAsync();
             Initialization = InitTrackingAsync();
         }
@@ -242,7 +242,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 Log.Fatal(nameof(OnUnhandledException), ex);
             }
         }
-        
+
         private void InitAlerts()
         {
             SoundController.InitializeSoundFilesFromDirectory();
@@ -285,7 +285,7 @@ namespace StatisticsAnalysisTool.ViewModels
 #if DEBUG
             DebugModeVisibility = Visibility.Visible;
 #endif
-            
+
             Translation = new MainWindowTranslation();
             ToolTaskController.SetToolTaskController(this);
             SetUiElements();
@@ -529,7 +529,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 catchItemWindow.Show();
             }
         }
-        
+
         public void ExportLootToFile()
         {
             var dialog = new SaveFileDialog
@@ -760,7 +760,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-        
+
         #region Bindings
 
         public string SearchText
@@ -830,7 +830,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public DungeonBindings DungeonBindings
         {
             get => _dungeonBindings;
@@ -840,7 +840,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public UserTrackingBindings UserTrackingBindings
         {
             get => _userTrackingBindings;
@@ -983,7 +983,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public bool IsShowOnlyItemsWithAlertOnActive
         {
             get => _isShowOnlyItemsWithAlertOnActive;
@@ -1222,7 +1222,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public string NumberOfValuesTranslation
         {
             get => _numberOfValuesTranslation;
