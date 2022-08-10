@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common;
@@ -45,7 +46,8 @@ public static class FileController
                 NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowNamedFloatingPointLiterals
             };
             var fileString = await value.SerializeJsonStringAsync(option);
-            await File.WriteAllTextAsync(localFilePath, fileString, Encoding.UTF8);
+            var task = File.WriteAllTextAsync(localFilePath, fileString, Encoding.UTF8);
+            task.Wait();
         }
         catch (Exception e)
         {

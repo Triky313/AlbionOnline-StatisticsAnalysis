@@ -719,7 +719,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task SaveInFileAsync()
         {
-            var toSaveDungeons = _dungeons.Where(x => x is { Status: DungeonStatus.Done });
+            var toSaveDungeons = _dungeons.Where(x => x is { Status: DungeonStatus.Done }).ToList();
             await FileController.SaveAsync(toSaveDungeons, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}");
         }
     }
