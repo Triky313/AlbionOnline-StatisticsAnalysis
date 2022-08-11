@@ -83,10 +83,6 @@
                         <CheckBox IsChecked="{Binding IsLootLoggerSaveReminderActive}" Height="21" VerticalContentAlignment="Center" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.ExportLootLoggingFileWithRealItemName, FallbackValue=EXPORT__LOOT__LOGGING__FILE__WITH__REAL__ITEM__NAME}" MinWidth="300" VerticalAlignment="Top" />
-                        <CheckBox IsChecked="{Binding IsItemRealNameInLoggingExportActive}" Height="21" VerticalContentAlignment="Center" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.CopyShortDamageMeterToTheClipboard, FallbackValue=COPY__SHORT__DAMAGE__METER__TO__THE__CLIPBOARD}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding ShortDamageMeterToClipboard}" Height="21" VerticalContentAlignment="Center" />
                     </DockPanel>

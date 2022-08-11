@@ -544,7 +544,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 try
                 {
-                    File.WriteAllText(dialog.FileName, TrackingController.LootController.GetLootLoggerObjectsAsCsv(SettingsController.CurrentSettings.IsItemRealNameInLoggingExportActive));
+                    File.WriteAllText(dialog.FileName, TrackingController.LootController.GetLootLoggerObjectsAsCsv());
                 }
                 catch (Exception e)
                 {

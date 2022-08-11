@@ -39,7 +39,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private ObservableCollection<FileSettingInformation> _updateItemsJsonByDays = new();
         private FileSettingInformation _updateItemsJsonByDaysSelection;
         private bool _isSuggestPreReleaseUpdatesActive;
-        private bool _isItemRealNameInLoggingExportActive;
         private string _mainTrackingCharacterName;
         private bool _shortDamageMeterToClipboard;
 
@@ -150,7 +149,6 @@ namespace StatisticsAnalysisTool.ViewModels
             #region Loot logger
 
             IsLootLoggerSaveReminderActive = SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive;
-            IsItemRealNameInLoggingExportActive = SettingsController.CurrentSettings.IsItemRealNameInLoggingExportActive;
 
             #endregion
 
@@ -190,7 +188,6 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.CurrentSettings.GoldStatsApiUrl = string.IsNullOrEmpty(GoldStatsApiUrl) ? Settings.Default.GoldStatsApiUrlDefault : GoldStatsApiUrl;
 
             SettingsController.CurrentSettings.IsLootLoggerSaveReminderActive = IsLootLoggerSaveReminderActive;
-            SettingsController.CurrentSettings.IsItemRealNameInLoggingExportActive = IsItemRealNameInLoggingExportActive;
             SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive = IsSuggestPreReleaseUpdatesActive;
             SettingsController.CurrentSettings.ShortDamageMeterToClipboard = ShortDamageMeterToClipboard;
 
@@ -436,17 +433,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public bool IsItemRealNameInLoggingExportActive
-        {
-            get => _isItemRealNameInLoggingExportActive;
-            set
-            {
-                _isItemRealNameInLoggingExportActive = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public bool ShortDamageMeterToClipboard
         {
             get => _shortDamageMeterToClipboard;

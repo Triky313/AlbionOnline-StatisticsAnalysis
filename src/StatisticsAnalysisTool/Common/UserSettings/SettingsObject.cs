@@ -37,7 +37,6 @@
         public bool IsLootLoggerSaveReminderActive { get; set; }
         public bool IsSuggestPreReleaseUpdatesActive { get; set; }
         public bool IsLootFromMobShown { get; set; }
-        public bool IsItemRealNameInLoggingExportActive { get; set; }
         public double MailMonitoringGridSplitterPosition { get; set; } = 125;
         public double DungeonsGridSplitterPosition { get; set; } = 125;
         public double StorageHistoryGridSplitterPosition { get; set; } = 125;
