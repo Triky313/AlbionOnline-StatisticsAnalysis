@@ -9,13 +9,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class DamageMeterBindings : INotifyPropertyChanged
+public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
 {
     private List<DamageMeterSortStruct> _damageMeterSort = new();
     private DamageMeterSortStruct _damageMeterSortSelection;
@@ -29,6 +30,7 @@ public class DamageMeterBindings : INotifyPropertyChanged
     private bool _isDamageMeterResetByMapChangeActive;
     private bool _isSnapshotAfterMapChangeActive;
     private GridLength _gridSplitterPosition;
+    public Task Initialization { get; init; }
 
     public DamageMeterBindings()
     {
@@ -74,7 +76,7 @@ public class DamageMeterBindings : INotifyPropertyChanged
         DamageMeterSnapshotSort.Add(sortByHpsStruct);
         DamageMeterSnapshotSortSelection = sortByDamageStruct;
 
-        DamageMeterSnapshots = FileController.Load<List<DamageMeterSnapshot>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
+        Initialization = LoadLocalFileAsync();
     }
 
     #region Generally
@@ -348,6 +350,15 @@ public class DamageMeterBindings : INotifyPropertyChanged
     public static string TranslationSnapshots => LanguageController.Translation("SNAPSHOTS");
     public static string TranslationDeleteSelectedSnapshot => LanguageController.Translation("DELETE_SELECTED_SNAPSHOT");
     public static string TranslationTakeASnapshotOfDamageMeterDescription => LanguageController.Translation("TAKE_A_SNAPSHOT_OF_DAMAGE_METER_DESCRIPTION");
+
+    #endregion
+
+    #region Load file
+
+    private async Task LoadLocalFileAsync()
+    {
+        DamageMeterSnapshots = await FileController.LoadAsync<List<DamageMeterSnapshot>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
+    }
 
     #endregion
 

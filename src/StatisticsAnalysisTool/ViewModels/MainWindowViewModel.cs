@@ -32,7 +32,7 @@ using System.Windows.Media;
 
 namespace StatisticsAnalysisTool.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged, IAsyncInitialization
     {
         private static MainWindow _mainWindow;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
@@ -118,9 +118,11 @@ namespace StatisticsAnalysisTool.ViewModels
                 _mainWindow.Close();
             }
 
-            _ = InitMainWindowDataAsync().ConfigureAwait(false);
-            _ = InitTrackingAsync().ConfigureAwait(false);
+            Initialization = InitMainWindowDataAsync();
+            Initialization = InitTrackingAsync();
         }
+
+        public Task Initialization { get; init; }
 
         public void SetUiElements()
         {
@@ -240,7 +242,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 Log.Fatal(nameof(OnUnhandledException), ex);
             }
         }
-        
+
         private void InitAlerts()
         {
             SoundController.InitializeSoundFilesFromDirectory();
@@ -283,7 +285,7 @@ namespace StatisticsAnalysisTool.ViewModels
 #if DEBUG
             DebugModeVisibility = Visibility.Visible;
 #endif
-            
+
             Translation = new MainWindowTranslation();
             ToolTaskController.SetToolTaskController(this);
             SetUiElements();
@@ -527,7 +529,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 catchItemWindow.Show();
             }
         }
-        
+
         public void ExportLootToFile()
         {
             var dialog = new SaveFileDialog
@@ -616,14 +618,15 @@ namespace StatisticsAnalysisTool.ViewModels
                 return;
             }
 
-            TrackingController?.StatisticController?.LoadFromFile();
+            await TrackingController?.StatisticController?.LoadFromFileAsync()!;
             await TrackingController?.MailController?.LoadFromFileAsync()!;
-            TrackingController?.TreasureController?.LoadFromFile();
-            TrackingController?.DungeonController?.LoadDungeonFromFile();
+            await TrackingController?.TreasureController?.LoadFromFileAsync()!;
+            await TrackingController?.DungeonController?.LoadDungeonFromFileAsync()!;
+            await TrackingController?.VaultController?.LoadFromFileAsync()!;
+
             TrackingController?.DungeonController?.SetDungeonStatsDayUi();
             TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
-            TrackingController?.VaultController?.LoadFromFile();
 
             TrackingController?.ClusterController.RegisterEvents();
             TrackingController?.LootController.RegisterEvents();
@@ -637,7 +640,7 @@ namespace StatisticsAnalysisTool.ViewModels
             Console.WriteLine(@"### Start Tracking...");
         }
 
-        public void StopTracking()
+        public async Task StopTrackingAsync()
         {
             NetworkManager.StopNetworkCapture();
 
@@ -647,13 +650,13 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.LootController.UnregisterEvents();
             TrackingController?.ClusterController.UnregisterEvents();
 
-            TrackingController?.DungeonController?.SaveDungeonsInFile();
-            TrackingController?.MailController?.SaveInFile();
-            TrackingController?.VaultController?.SaveInFile();
-            TrackingController?.TreasureController?.SaveInFile();
-            TrackingController?.StatisticController?.SaveInFile();
+            await TrackingController?.DungeonController?.SaveInFileAsync()!;
+            await TrackingController?.VaultController?.SaveInFileAsync()!;
+            await TrackingController?.TreasureController?.SaveInFileAsync()!;
+            await TrackingController?.StatisticController?.SaveInFileAsync()!;
 
-            FileController.Save(DamageMeterBindings.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
+            await FileController.SaveAsync(MailMonitoringBindings?.Mails?.ToList(), $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}");
+            await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");
 
             IsTrackingActive = false;
             Console.WriteLine(@"### Stop Tracking");
@@ -758,7 +761,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-        
+
         #region Bindings
 
         public string SearchText
@@ -828,7 +831,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public DungeonBindings DungeonBindings
         {
             get => _dungeonBindings;
@@ -838,7 +841,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public UserTrackingBindings UserTrackingBindings
         {
             get => _userTrackingBindings;
@@ -981,7 +984,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public bool IsShowOnlyItemsWithAlertOnActive
         {
             get => _isShowOnlyItemsWithAlertOnActive;
@@ -1220,7 +1223,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public string NumberOfValuesTranslation
         {
             get => _numberOfValuesTranslation;

@@ -4,6 +4,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -11,7 +13,7 @@ public static class FileController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public static T Load<T>(string localFilePath) where T : new()
+    public static async Task<T> LoadAsync<T>(string localFilePath) where T : new()
     {
         if (!File.Exists(localFilePath))
         {
@@ -24,7 +26,7 @@ public static class FileController
             {
                 NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowNamedFloatingPointLiterals
             };
-            var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
+            var localFileString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
             return JsonSerializer.Deserialize<T>(localFileString, options) ?? new T();
         }
         catch (Exception e)
@@ -35,16 +37,17 @@ public static class FileController
         }
     }
 
-    public static void Save<T>(T value, string localFilePath)
+    public static async Task SaveAsync<T>(T value, string localFilePath)
     {
         try
         {
-            var options = new JsonSerializerOptions
+            var option = new JsonSerializerOptions
             {
                 NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowNamedFloatingPointLiterals
             };
-            var fileString = JsonSerializer.Serialize(value, options);
-            File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
+            var fileString = await value.SerializeJsonStringAsync(option);
+            var task = File.WriteAllTextAsync(localFilePath, fileString, Encoding.UTF8);
+            task.Wait();
         }
         catch (Exception e)
         {

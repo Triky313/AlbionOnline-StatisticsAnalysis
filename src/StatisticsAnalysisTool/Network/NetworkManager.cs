@@ -37,7 +37,7 @@ namespace StatisticsAnalysisTool.Network
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
-                _mainWindowViewModel.StopTracking();
+                _ = _mainWindowViewModel.StopTrackingAsync();
                 return false;
             }
         }
@@ -61,7 +61,7 @@ namespace StatisticsAnalysisTool.Network
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 _mainWindowViewModel.SetErrorBar(Visibility.Visible, LanguageController.Translation("PACKET_HANDLER_ERROR_MESSAGE"));
-                _mainWindowViewModel.StopTracking();
+                _ = _mainWindowViewModel.StopTrackingAsync();
                 return false;
             }
 

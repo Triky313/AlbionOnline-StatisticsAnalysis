@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
@@ -41,7 +42,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel = mainWindowViewModel;
             InitStartHourValues();
         }
-        
+
         #region Dashboard
 
         private void InitStartHourValues()
@@ -95,7 +96,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             //UpdateDailyChart(_stats);
         }
-        
+
         private void UpdateDailyChart(ObservableCollection<DashboardHourObject> stats)
         {
             if (!IsUpdateChartAllowed())
@@ -257,12 +258,12 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             _mainWindowViewModel.DashboardBindings.LastUpdate = _trackingController.EntityController.LocalUserData.LastUpdate;
         }
-        
+
         #endregion
 
         #region Load / Save local file data
 
-        public void LoadFromFile()
+        public async Task LoadFromFileAsync()
         {
             var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.StatsFileName}";
 
@@ -270,7 +271,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 try
                 {
-                    var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
+                    var localFileString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
                     var stats = JsonSerializer.Deserialize<DashboardStatistics>(localFileString) ?? new DashboardStatistics();
                     _dashboardStatistics = stats;
                     return;
@@ -287,20 +288,9 @@ namespace StatisticsAnalysisTool.Network.Manager
             _dashboardStatistics = new DashboardStatistics();
         }
 
-        public void SaveInFile()
+        public async Task SaveInFileAsync()
         {
-            var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.StatsFileName}";
-
-            try
-            {
-                var fileString = JsonSerializer.Serialize(_dashboardStatistics);
-                File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
+            await FileController.SaveAsync(_dashboardStatistics, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.StatsFileName}");
         }
 
         #endregion

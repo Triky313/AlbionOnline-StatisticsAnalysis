@@ -238,13 +238,25 @@ namespace StatisticsAnalysisTool.Common
 
         #region Json
 
-        public static async Task<string> SerializeJsonStringAsync(this object obj)
+        public static async Task<string> SerializeJsonStringAsync(this object obj, JsonSerializerOptions option = null)
         {
             using var stream = new MemoryStream();
-            await JsonSerializer.SerializeAsync(stream, obj, obj.GetType());
+            await JsonSerializer.SerializeAsync(stream, obj, obj.GetType(), option);
             stream.Position = 0;
             using var reader = new StreamReader(stream);
             return await reader.ReadToEndAsync();
+        }
+
+        #endregion
+
+        #region Collections
+
+        public static async Task AddRangeAsync<T>(this ObservableCollection<T> collection, IEnumerable<T> list)
+        {
+            await foreach (var item in list?.ToAsyncEnumerable() ?? new List<T>().ToAsyncEnumerable())
+            {
+                collection.Add(item);
+            }
         }
 
         #endregion

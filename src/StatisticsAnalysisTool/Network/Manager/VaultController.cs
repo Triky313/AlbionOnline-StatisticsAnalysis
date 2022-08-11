@@ -1,5 +1,4 @@
-﻿using log4net;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Properties;
@@ -7,19 +6,15 @@ using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
 public class VaultController
 {
-    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
     private readonly MainWindowViewModel _mainWindowViewModel;
     private VaultInfo _currentVaultInfo;
     private readonly List<DiscoveredItem> _discoveredItems = new();
@@ -246,45 +241,14 @@ public class VaultController
 
     #region Load / Save local file data
 
-    public void LoadFromFile()
+    public async Task LoadFromFileAsync()
     {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.VaultsFileName}";
-
-        if (File.Exists(localFilePath))
-        {
-            try
-            {
-                var localFileString = File.ReadAllText(localFilePath, Encoding.UTF8);
-                var vaults = JsonSerializer.Deserialize<List<Vault>>(localFileString) ?? new List<Vault>();
-                Vaults = new ObservableCollection<Vault>(vaults);
-                return;
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Vaults = new ObservableCollection<Vault>();
-                return;
-            }
-        }
-
-        Vaults = new ObservableCollection<Vault>();
+        Vaults = await FileController.LoadAsync<ObservableCollection<Vault>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.VaultsFileName}");
     }
 
-    public void SaveInFile()
+    public async Task SaveInFileAsync()
     {
-        var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.VaultsFileName}";
-
-        try
-        {
-            var fileString = JsonSerializer.Serialize(Vaults);
-            File.WriteAllText(localFilePath, fileString, Encoding.UTF8);
-        }
-        catch (Exception e)
-        {
-            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-        }
+        await FileController.SaveAsync(Vaults, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.VaultsFileName}");
     }
 
     #endregion
