@@ -22,6 +22,7 @@ namespace StatisticsAnalysisTool.Network.Manager
     public class DungeonController
     {
         private const int MaxDungeons = 9999;
+        private const int NumberOfDungeonsUntilSaved = 2;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
@@ -29,6 +30,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private Guid? _currentGuid;
         private Guid? _lastMapGuid;
         private List<DungeonObject> _dungeons = new();
+        private int _addDungeonCounter;
 
         public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
@@ -56,7 +58,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
             }
             // Add new dungeon
-            else if ((IsDungeonCluster(mapType, mapGuid) && !ExistDungeon(_lastMapGuid)) || (IsDungeonCluster(mapType, mapGuid) && mapType is MapType.CorruptedDungeon or MapType.HellGate))
+            else if ((IsDungeonCluster(mapType, mapGuid) && !ExistDungeon(_lastMapGuid) && !ExistDungeon(_currentGuid)) || (IsDungeonCluster(mapType, mapGuid) && mapType is MapType.CorruptedDungeon or MapType.HellGate))
             {
                 UpdateDungeonSaveTimerUi(mapType);
 
@@ -74,12 +76,23 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                 _dungeons.Insert(0, newDungeon);
             }
+            // Activate exist dungeon again
+            else if ((IsDungeonCluster(mapType, mapGuid) && !ExistDungeon(_lastMapGuid) && ExistDungeon(_currentGuid)) || (IsDungeonCluster(mapType, mapGuid) && mapType is MapType.CorruptedDungeon or MapType.HellGate))
+            {
+                UpdateDungeonSaveTimerUi(mapType);
+
+                var currentDungeon = GetDungeon(_currentGuid);
+                currentDungeon.Status = DungeonStatus.Active;
+                currentDungeon.AddTimer(DateTime.UtcNow);
+            }
             // Make last dungeon done
             else if (mapGuid == null && ExistDungeon(_lastMapGuid))
             {
                 var lastDungeon = GetDungeon(_lastMapGuid);
                 lastDungeon.EndTimer();
+                lastDungeon.EndTimer();
                 lastDungeon.Status = DungeonStatus.Done;
+                await SaveInFileAfterExceedingLimit(NumberOfDungeonsUntilSaved);
             }
 
             RemoveDungeonsAfterCertainNumber(_dungeons, MaxDungeons);
@@ -712,6 +725,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
+        #region Load / Save file data
+
         public async Task LoadDungeonFromFileAsync()
         {
             _dungeons = await FileController.LoadAsync<List<DungeonObject>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}");
@@ -722,5 +737,18 @@ namespace StatisticsAnalysisTool.Network.Manager
             var toSaveDungeons = _dungeons.Where(x => x is { Status: DungeonStatus.Done }).ToList();
             await FileController.SaveAsync(toSaveDungeons, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DungeonRunsFileName}");
         }
+
+        private async Task SaveInFileAfterExceedingLimit(int limit)
+        {
+            if (++_addDungeonCounter < limit)
+            {
+                return;
+            }
+
+            await SaveInFileAsync();
+            _addDungeonCounter = 0;
+        }
+
+        #endregion
     }
 }
