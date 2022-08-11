@@ -1,14 +1,13 @@
-﻿using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.Models.NetworkModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
-namespace StatisticsAnalysisTool.Network.Notification
+namespace StatisticsAnalysisTool.Models.NetworkModel
 {
     public class DungeonObject
     {
@@ -112,7 +111,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 
             SetTotalRunTimeInSeconds();
         }
-
+        
         public void EndTimer()
         {
             var dateTime = DateTime.UtcNow;
