@@ -2,11 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Network.Events
 {
     public class NewCharacterEvent
     {
+        public long? ObjectId { get; }
+        public Guid? Guid { get; }
+        public string Name { get; }
+        public string GuildName { get; }
+        public float[] Position { get; }
+        public CharacterEquipment CharacterEquipment { get; } = new();
+
         public NewCharacterEvent(Dictionary<byte, object> parameters)
         {
             ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
@@ -22,8 +30,32 @@ namespace StatisticsAnalysisTool.Network.Events
                 if (parameters.ContainsKey(8)) GuildName = parameters[8].ToString();
 
                 if (parameters.ContainsKey(12)) Position = (float[]) parameters[12];
-
-                // 33: Current character item id's
+                
+                if (parameters.ContainsKey(33))
+                {
+                    var valueType = parameters[33].GetType();
+                    switch (valueType.IsArray)
+                    {
+                        case true when typeof(byte[]).Name == valueType.Name:
+                        {
+                            var values = ((byte[])parameters[33]).ToDictionary();
+                            CharacterEquipment = GetEquipment(values);
+                            break;
+                        }
+                        case true when typeof(short[]).Name == valueType.Name:
+                        {
+                            var values = ((short[])parameters[33]).ToDictionary();
+                            CharacterEquipment = GetEquipment(values);
+                            break;
+                        }
+                        case true when typeof(int[]).Name == valueType.Name:
+                        {
+                            var values = ((int[])parameters[33]).ToDictionary();
+                            CharacterEquipment = GetEquipment(values);
+                            break;
+                        }
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -31,10 +63,19 @@ namespace StatisticsAnalysisTool.Network.Events
             }
         }
 
-        public long? ObjectId { get; }
-        public Guid? Guid { get; }
-        public string Name { get; }
-        public string GuildName { get; }
-        public float[] Position { get; }
+        private CharacterEquipment GetEquipment<T>(IReadOnlyDictionary<int, T> values)
+        {
+            return new CharacterEquipment
+            {
+                MainHand = values[0].ObjectToInt(),
+                OffHand = values[1].ObjectToInt(),
+                Head = values[2].ObjectToInt(),
+                Chest = values[3].ObjectToInt(),
+                Shoes = values[4].ObjectToInt(),
+                Bag = values[5].ObjectToInt(),
+                Cape = values[6].ObjectToInt(),
+                Mount = values[7].ObjectToInt()
+            };
+        }
     }
 }

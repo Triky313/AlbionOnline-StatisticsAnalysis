@@ -72,7 +72,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                 return;
             }
 
-            _trackingController.EntityController.AddEntity((long)userObjectId, (Guid)guid, interactGuid, name, guild, alliance, GameObjectType.Player, GameObjectSubType.LocalPlayer);
+            _trackingController.EntityController.AddEntity((long)userObjectId, (Guid)guid, interactGuid, name, guild, alliance, null, GameObjectType.Player, GameObjectSubType.LocalPlayer);
             await _trackingController.EntityController.AddToPartyAsync((Guid)guid, name);
         }
 

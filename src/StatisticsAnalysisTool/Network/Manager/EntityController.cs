@@ -40,7 +40,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public event Action<GameObject> OnAddEntity;
 
-        public void AddEntity(long objectId, Guid userGuid, Guid? interactGuid, string name, string guild, string alliance, GameObjectType objectType, GameObjectSubType objectSubType)
+        public void AddEntity(long objectId, Guid userGuid, Guid? interactGuid, string name, string guild, string alliance, 
+            CharacterEquipment characterEquipment, GameObjectType objectType, GameObjectSubType objectSubType)
         {
             PlayerGameObject gameObject;
 
@@ -55,7 +56,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     Alliance = alliance,
                     InteractGuid = interactGuid,
                     ObjectSubType = objectSubType,
-                    CharacterEquipment = oldEntity.CharacterEquipment,
+                    CharacterEquipment = characterEquipment ?? oldEntity.CharacterEquipment,
                     CombatStart = oldEntity.CombatStart,
                     CombatTime = oldEntity.CombatTime,
                     Damage = oldEntity.Damage,
@@ -69,7 +70,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                     Name = name,
                     ObjectType = objectType,
                     UserGuid = userGuid,
-                    ObjectSubType = objectSubType
+                    ObjectSubType = objectSubType,
+                    CharacterEquipment = characterEquipment
                 };
             }
 

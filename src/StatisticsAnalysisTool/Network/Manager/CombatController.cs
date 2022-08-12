@@ -147,10 +147,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             if (healthChangeObjectValue?.CharacterEquipment?.MainHand != null)
             {
                 var item = ItemController.GetItemByIndex(healthChangeObjectValue.CharacterEquipment?.MainHand);
-                if (item != null)
-                {
-                    fragment.CauserMainHand = item;
-                }
+                fragment.CauserMainHand = item?.FullItemInformation?.ItemType == ItemType.Weapon ? item : null;
             }
 
             // Damage
@@ -405,11 +402,18 @@ namespace StatisticsAnalysisTool.Network.Manager
                 var name = TestMethods.GenerateName(Random.Next(3, 10));
                 var guildName = TestMethods.GenerateName(Random.Next(4, 10));
                 var allianceName = TestMethods.GenerateName(Random.Next(5, 10));
+                var charItem = new CharacterEquipment()
+                {
+                    MainHand = TestMethods.GetRandomWeaponIndex(),
+                    OffHand = 0,
+                    Head = Random.Next(7729, 7735),
+                    Chest = Random.Next(2887, 2900),
+                    Shoes = Random.Next(2905, 2914),
+                    Bag = Random.Next(2109, 2114),
+                    Cape = Random.Next(1867, 1874)
+                };
 
-                _trackingController?.EntityController?.AddEntity(i, guid, interactGuid, name, guildName, allianceName, GameObjectType.Player, GameObjectSubType.Mob);
-
-                // Only if SetCharacterMainHand is public
-                //_trackingController?.EntityController?.SetCharacterMainHand(i, TestMethods.GetRandomWeaponIndex());
+                _trackingController?.EntityController?.AddEntity(i, guid, interactGuid, name, guildName, allianceName, charItem, GameObjectType.Player, GameObjectSubType.Mob);
                 _trackingController?.EntityController?.AddToPartyAsync(guid, name);
             }
 

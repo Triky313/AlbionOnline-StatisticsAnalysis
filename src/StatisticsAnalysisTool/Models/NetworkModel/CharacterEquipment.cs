@@ -2,7 +2,6 @@
 {
     public class CharacterEquipment
     {
-        public long? ObjectId { get; set; }
         public int MainHand { get; set; }
         public int OffHand { get; set; }
         public int Head { get; set; }
