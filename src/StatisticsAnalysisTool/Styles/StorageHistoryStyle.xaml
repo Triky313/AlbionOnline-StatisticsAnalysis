@@ -27,7 +27,6 @@
 
     <Style TargetType="TextBlock" x:Key="VaultSearchItem.Location.Text.Colors">
         <Setter Property="HorizontalAlignment" Value="Right" />
-        <Setter Property="Text" Value="{Binding Location, IsAsync=True}" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.3}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Caerleon">
@@ -126,7 +125,7 @@
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding VaultContainerName, IsAsync=True}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                                <TextBlock Style="{StaticResource VaultSearchItem.Location.Text.Colors}" Width="200" />
+                                <TextBlock Text="{Binding OutputString, IsAsync=True}" Style="{StaticResource VaultSearchItem.Location.Text.Colors}" Width="200" />
                             </StackPanel>
                         </DockPanel>
                     </StackPanel>

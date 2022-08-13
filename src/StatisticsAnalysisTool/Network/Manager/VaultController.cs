@@ -217,7 +217,7 @@ public class VaultController
         await foreach (var vault in Vaults.ToAsyncEnumerable())
         {
             vaultSearchItem.AddRange(from vaultContainer in vault.VaultContainer
-                                     from item in vaultContainer.Items
+                                     from item in vaultContainer.Items where item?.Quantity > 0
                                      select new VaultSearchItem()
                                      {
                                          Item = item.Item,
