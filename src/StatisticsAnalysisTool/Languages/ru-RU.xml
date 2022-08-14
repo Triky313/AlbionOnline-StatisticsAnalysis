@@ -635,4 +635,6 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Рандомные сольники</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Рандомные групповые данжи</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Скриншот после смены локации</translation>
+	<translation name="GUILD">Гильдия</translation>
+	<translation name="ALLIANCE">Альянс</translation>
 </translations>
