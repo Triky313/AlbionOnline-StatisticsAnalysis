@@ -284,16 +284,13 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/s" +
             "rc/StatisticsAnalysisTool/ao-pre-release-update-check.xml")]
         public string AutoUpdatePreReleaseConfigUrl {
             get {
                 return ((string)(this["AutoUpdatePreReleaseConfigUrl"]));
-            }
-            set {
-                this["AutoUpdatePreReleaseConfigUrl"] = value;
             }
         }
         
