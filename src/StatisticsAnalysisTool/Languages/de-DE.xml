@@ -627,8 +627,6 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Zufällige Solo Dungeons</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Zufällige Gruppen Dungeons</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Schnappschuss nach Map wechsel</translation>
-	<translation name="GUILD">Gilde</translation>
-	<translation name="ALLIANCE">Allianz</translation>
 	<translation name="MAIL_MONITORING_ACTIVE">Nachrichten Überwachung aktiv</translation>
 	<translation name="DELETE_MAILS_NEVER">Lösche Nachricht nie</translation>
 	<translation name="DELETE_MAILS_AFTER_7_DAYS">Lösche Nachricht nach 7 Tagen</translation>
