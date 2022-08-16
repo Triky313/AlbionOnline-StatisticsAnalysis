@@ -20,6 +20,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
     private DateTime _datePickerMailsFrom = new(2017, 1, 1);
     private DateTime _datePickerMailsTo = DateTime.UtcNow.AddDays(1);
     private MailStatsObject _mailStatsObject = new();
+    private MailOptionsObject _mailOptionsObject = new();
     private Visibility _isMailMonitoringPopupVisible = Visibility.Collapsed;
     private GridLength _gridSplitterPosition = GridLength.Auto;
     private int _totalMails;
@@ -119,6 +120,16 @@ public class MailMonitoringBindings : INotifyPropertyChanged
         }
     }
 
+    public MailOptionsObject MailOptionsObject
+    {
+        get => _mailOptionsObject;
+        set
+        {
+            _mailOptionsObject = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int TotalMails
     {
         get => _totalMails;
@@ -162,7 +173,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
 
     #region Update ui
 
-    private void UpdateTotalMailsUi(object sender, NotifyCollectionChangedEventArgs e)
+    public void UpdateTotalMailsUi(object sender, NotifyCollectionChangedEventArgs e)
     {
         Application.Current.Dispatcher.InvokeAsync(() =>
         {
@@ -170,7 +181,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
         });
     }
 
-    private void UpdateCurrentMailsUi(object sender, EventArgs e)
+    public void UpdateCurrentMailsUi(object sender, EventArgs e)
     {
         Application.Current.Dispatcher.InvokeAsync(() =>
         {

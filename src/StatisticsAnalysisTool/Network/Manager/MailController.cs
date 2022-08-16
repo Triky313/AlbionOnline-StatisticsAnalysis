@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -45,6 +46,11 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task AddMailAsync(long mailId, string content)
         {
+            if (!SettingsController.CurrentSettings.IsMailMonitoringActive)
+            {
+                return;
+            }
+
             if (_mainWindowViewModel.MailMonitoringBindings.Mails.ToArray().Any(x => x.MailId == mailId))
             {
                 return;
@@ -58,6 +64,11 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             var mailContent = ContentToObject(mailInfo.MailType, content);
+
+            if (SettingsController.CurrentSettings.IgnoreMailsWithZeroValues && mailContent.IsMailWithoutValues)
+            {
+                return;
+            }
 
             var mail = new Mail()
             {
@@ -96,6 +107,31 @@ namespace StatisticsAnalysisTool.Network.Manager
                     _mainWindowViewModel?.MailMonitoringBindings?.Mails?.Remove(mail);
                 }
                 _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(_mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Cast<Mail>().ToList());
+
+                _mainWindowViewModel?.MailMonitoringBindings?.UpdateTotalMailsUi(null, null);
+                _mainWindowViewModel?.MailMonitoringBindings?.UpdateCurrentMailsUi(null, null);
+            });
+        }
+
+        public async Task RemoveMailsByDaysInSettingsAsync()
+        {
+            var deleteAfterDays = SettingsController.CurrentSettings?.DeleteMailsOlderThanSpecifiedDays ?? 0;
+            if (deleteAfterDays <= 0)
+            {
+                return;
+            }
+
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                foreach (var mail in _mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList()
+                             .Where(x => x?.Timestamp.AddDays(deleteAfterDays) < DateTime.UtcNow)!)
+                {
+                    _mainWindowViewModel?.MailMonitoringBindings?.Mails?.Remove(mail);
+                }
+                _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(_mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Cast<Mail>().ToList());
+
+                _mainWindowViewModel?.MailMonitoringBindings?.UpdateTotalMailsUi(null, null);
+                _mainWindowViewModel?.MailMonitoringBindings?.UpdateCurrentMailsUi(null, null);
             });
         }
 

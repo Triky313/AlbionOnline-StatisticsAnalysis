@@ -50,7 +50,12 @@
             <GridSplitter Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch" Margin="0,0,1,1" Background="{StaticResource SolidColorBrush.Accent.Blue.4}" />
 
             <Grid Row="0" Margin="0,5,0,6" Grid.RowSpan="2">
-                <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailStatsObjectTemplate}" Content="{Binding MailMonitoringBindings.MailStatsObject}" />
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical">
+                        <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailStatsObjectTemplate}" Content="{Binding MailMonitoringBindings.MailStatsObject}" />
+                        <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource MailOptionsObjectTemplate}" Content="{Binding MailMonitoringBindings.MailOptionsObject}" />
+                    </StackPanel>
+                </ScrollViewer>
                 <StackPanel Orientation="Horizontal" Height="28" VerticalAlignment="Bottom">
                     <Grid Height="16" Width="16" Margin="0,0,0,0" VerticalAlignment="Center">
                         <fa5:ImageAwesome Icon="Solid_ListAlt" Foreground="{StaticResource SolidColorBrush.Text.3}" />

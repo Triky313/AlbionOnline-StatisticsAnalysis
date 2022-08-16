@@ -629,4 +629,13 @@
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Snapshot after map change</translation>
 	<translation name="GUILD">Guild</translation>
 	<translation name="ALLIANCE">Alliance</translation>
+	<translation name="MAIL_MONITORING_ACTIVE">Mail monitoring active</translation>
+	<translation name="DELETE_MAILS_NEVER">Delete mails never</translation>
+	<translation name="DELETE_MAILS_AFTER_7_DAYS">Delete mails after 7 days</translation>
+	<translation name="DELETE_MAILS_AFTER_30_DAYS">Delete mails after 30 days</translation>
+	<translation name="DELETE_MAILS_AFTER_60_DAYS">Delete mails after 60 days</translation>
+	<translation name="DELETE_MAILS_AFTER_90_DAYS">Delete mails after 90 days</translation>
+	<translation name="DELETE_MAILS_AFTER_180_DAYS">Delete mails after 180 days</translation>
+	<translation name="DELETE_MAILS_AFTER_365_DAYS">Delete mails after 365 days</translation>
+	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Ignore mails with 0 values</translation>
 </translations>

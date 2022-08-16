@@ -75,6 +75,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _trackingController.VaultController.ResetCurrentVaultInfo();
             _trackingController.TreasureController.RemoveTemporaryTreasures();
             _trackingController.TreasureController.UpdateLootedChestsDashboardUi();
+            _ = _trackingController.MailController.RemoveMailsByDaysInSettingsAsync();
         }
 
         #region Cluster history

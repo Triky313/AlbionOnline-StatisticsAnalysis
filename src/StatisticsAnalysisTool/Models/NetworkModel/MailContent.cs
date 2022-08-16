@@ -27,4 +27,6 @@ public class MailContent
     public FixPoint TotalPriceWithDeductedTaxes => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue * ((100 - TaxRate) / 100));
     [JsonIgnore]
     public FixPoint UnitPriceWithDeductedTaxes => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalUnitPrice).DoubleValue * ((100 - TaxRate) / 100));
+    [JsonIgnore]
+    public bool IsMailWithoutValues => InternalTotalPrice == 0 && UsedQuantity == 0;
 }

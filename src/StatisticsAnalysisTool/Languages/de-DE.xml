@@ -629,4 +629,13 @@
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Schnappschuss nach Map wechsel</translation>
 	<translation name="GUILD">Gilde</translation>
 	<translation name="ALLIANCE">Allianz</translation>
+	<translation name="MAIL_MONITORING_ACTIVE">Nachrichten Überwachung aktiv</translation>
+	<translation name="DELETE_MAILS_NEVER">Lösche Nachricht nie</translation>
+	<translation name="DELETE_MAILS_AFTER_7_DAYS">Lösche Nachricht nach 7 Tagen</translation>
+	<translation name="DELETE_MAILS_AFTER_30_DAYS">Lösche Nachricht nach 30 Tagen</translation>
+	<translation name="DELETE_MAILS_AFTER_60_DAYS">Lösche Nachricht nach 60 Tagen</translation>
+	<translation name="DELETE_MAILS_AFTER_90_DAYS">Lösche Nachricht nach 90 Tagen</translation>
+	<translation name="DELETE_MAILS_AFTER_180_DAYS">Lösche Nachricht nach 180 Tagen</translation>
+	<translation name="DELETE_MAILS_AFTER_365_DAYS">Lösche Nachricht nach 365 Tagen</translation>
+	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Mails mit 0 Werten nicht berücksichtigen</translation>
 </translations>

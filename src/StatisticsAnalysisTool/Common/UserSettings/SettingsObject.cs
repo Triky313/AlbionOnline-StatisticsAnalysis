@@ -42,5 +42,8 @@
         public double StorageHistoryGridSplitterPosition { get; set; } = 125;
         public double DamageMeterGridSplitterPosition { get; set; } = 125;
         public bool ShortDamageMeterToClipboard { get; set; }
+        public bool IsMailMonitoringActive { get; set; } = true;
+        public bool IgnoreMailsWithZeroValues { get; set; } = false;
+        public int DeleteMailsOlderThanSpecifiedDays { get; set; } = 0;
     }
 }
