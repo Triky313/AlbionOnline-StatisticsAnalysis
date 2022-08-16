@@ -107,5 +107,8 @@
     <Setting Name="DamageMeterSnapshotsFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">DamageMeterSnapshots.json</Value>
     </Setting>
+    <Setting Name="DonationsUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/donations.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
