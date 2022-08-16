@@ -20,6 +20,8 @@
 	<translation name="AUTO_UPDATE_DATA">Atualizar dados automaticamente</translation>
 	<translation name="DIFFERENT_CALCULATION">Cálculo de diferença</translation>
 	<translation name="ERROR_PRICES_CAN_NOT_BE_LOADED">ERRO: Não foi possível carregar o preço</translation>
+	<translation name="ERROR_NO_ITEM_INFO">ERRO: Nenhuma informação do item</translation>
+	<translation name="ERROR_GENERAL_ERROR">ERRO: Erro geral.</translation>
 	<translation name="BOUGHT_FOR">Comprar por</translation>
 	<translation name="SELL_FOR">Vender por</translation>
 	<translation name="UNKNOWN_ITEM_NAME">Nome de item desconhecido</translation>
@@ -331,6 +333,7 @@
 	<translation name="OPENED_UNCOMMON_CHESTS">Baús incomuns abertos</translation>
 	<translation name="OPENED_RARE_CHESTS">Baús raros abertos</translation>
 	<translation name="OPENED_LEGENDARY_CHESTS">Baús lendários abertos</translation>
+	
 	<translation name="DAMAGE_METER_DESCRIPTION_1">Para aparecer o dano de outros jogadores ser reconhecido, o StatisticsAnalysisTool primeiro precisa ser ativada e então você deve sair e entrar do grupo.</translation>
 	<translation name="SORT_BY_DAMAGE">Filtrar por dano</translation>
 	<translation name="SORT_BY_DPS">Filtrar por Dano por Segundo</translation>
@@ -342,7 +345,6 @@
 	<translation name="NUMBER_OF_DUNGEON_FLOORS">Número de Pisos na Masmorra</translation>
 	<translation name="TOOL_DIRECTORY">Diretório do StatisticsAnalysisTool</translation>
 	<translation name="OPEN_TOOL_DIRECTORY">Abrir Diretório do StatisticsAnalysisTool</translation>
-	<translation name="OPEN_OR_CLOSE_DEBUG_CONSOLE">Abra ou feche o console de Debug</translation>
 	<translation name="OPEN_DEBUG_CONSOLE">Abrir o Console de Depuração</translation>
 	<translation name="CREATE_DESKTOP_SHORTCUT">Criar Atalho</translation>
 	<translation name="FAVORITE">Favorito</translation>
@@ -460,7 +462,7 @@
 	<translation name="TRACKING_MOB_LOOT">Rastreando saque de monstros</translation>
 	<translation name="ITEMS_JSON_SOURCE_URL">Items.json url fonte</translation>
 	<translation name="UPDATE_ITEMS_JSON_BY_DAYS">Atualizar items.json em dias: </translation>
-	<translation name="SHOP_CATEGORY">Shop category</translation>
+	<translation name="SHOP_CATEGORY">Categoria da loja</translation>
 	<translation name="SHOP_SUB_CATEGORY">Subcategoria da loja</translation>
 	<translation name="CAN_BE_OVERCHARGED">Pode ser sobrecarregado</translation>
 	<translation name="WAR_GLOVES">Luvas de Guerra</translation>
@@ -589,4 +591,6 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Masmorras individuais aleatórias</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Masmorras de grupo aleatório</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Captura de tela após mudança de mapa</translation>
+	<translation name="GUILD">Guild</translation>
+	<translation name="ALLIANCE">Aliança</translation>
 </translations>
