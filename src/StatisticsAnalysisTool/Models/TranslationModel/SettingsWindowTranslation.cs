@@ -6,6 +6,7 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
     {
         public static string Settings => LanguageController.Translation("SETTINGS");
         public static string Language => $"{LanguageController.Translation("LANGUAGE")} ({LanguageController.Translation("PROGRAM_RESTART_REQUIRED")})";
+        public static string CheckForUpdate => LanguageController.Translation("CHECK_FOR_UPDATE");
         public static string RefreshRate => LanguageController.Translation("REFRESH_RATE");
         public static string UpdateItemListByDays => LanguageController.Translation("UPDATE_ITEM_LIST_BY_DAYS");
         public static string UpdateItemsJsonByDays => LanguageController.Translation("UPDATE_ITEMS_JSON_BY_DAYS");

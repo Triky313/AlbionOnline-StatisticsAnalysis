@@ -111,6 +111,8 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.LoadSettings();
             UpgradeSettings();
             InitWindowSettings();
+
+            AutoUpdateController.RemoveUpdateFiles();
             AutoUpdateController.AutoUpdate();
 
             if (!LanguageController.InitializeLanguage())
