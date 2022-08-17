@@ -636,4 +636,5 @@
 	<translation name="DELETE_MAILS_AFTER_180_DAYS">Lösche Nachricht nach 180 Tagen</translation>
 	<translation name="DELETE_MAILS_AFTER_365_DAYS">Lösche Nachricht nach 365 Tagen</translation>
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Mails mit 0 Werten nicht berücksichtigen</translation>
+	<translation name="CHECK_FOR_UPDATE">Suche nach Update</translation>
 </translations>

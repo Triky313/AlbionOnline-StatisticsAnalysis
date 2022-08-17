@@ -357,7 +357,7 @@ namespace StatisticsAnalysisTool.Common
         public static async Task<List<Donation>> GetDonationsFromJsonAsync()
         {
             var values = new List<Donation>();
-            const string url = "https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master/donations.json";
+            var url = Settings.Default.DonationsUrl;
 
             using var clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;

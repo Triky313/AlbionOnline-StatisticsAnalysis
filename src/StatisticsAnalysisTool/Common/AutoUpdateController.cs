@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows;
+using Application = System.Windows.Application;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -14,33 +14,26 @@ public static class AutoUpdateController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public static void AutoUpdate()
+    public static void AutoUpdate(bool reportErrors = false)
     {
-        RemoveUpdateFiles();
+#pragma warning disable CA1416 // Validate platform compatibility
 
-        if (SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive)
-        {
-#pragma warning disable CA1416 // Validate platform compatibility
-            AutoUpdater.Start(Settings.Default.AutoUpdatePreReleaseConfigUrl);
-            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
-            AutoUpdater.RunUpdateAsAdmin = false;
-            AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExitAsync;
+        AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExitAsync;
+
+        AutoUpdater.Start(SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive
+            ? Settings.Default.AutoUpdatePreReleaseConfigUrl
+            : Settings.Default.AutoUpdateConfigUrl);
+
+        AutoUpdater.DownloadPath = Environment.CurrentDirectory;
+        AutoUpdater.RunUpdateAsAdmin = false;
+        AutoUpdater.ReportErrors = reportErrors;
+        AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExitAsync;
 #pragma warning restore CA1416 // Validate platform compatibility
-        }
-        else
-        {
-#pragma warning disable CA1416 // Validate platform compatibility
-            AutoUpdater.Start(Settings.Default.AutoUpdateConfigUrl);
-            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
-            AutoUpdater.RunUpdateAsAdmin = false;
-            AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExitAsync;
-#pragma warning restore CA1416 // Validate platform compatibility
-        }
     }
 
     private static async void AutoUpdaterApplicationExitAsync()
     {
-        await Task.Delay(3000);
+        await Task.Delay(1000);
         Application.Current.Shutdown();
     }
 

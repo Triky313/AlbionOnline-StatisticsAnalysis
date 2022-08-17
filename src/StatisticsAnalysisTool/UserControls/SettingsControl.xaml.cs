@@ -57,5 +57,10 @@ namespace StatisticsAnalysisTool.UserControls
         {
             _settingsWindowViewModel.ReloadSettings();
         }
+        private void CheckForUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            AutoUpdateController.RemoveUpdateFiles();
+            AutoUpdateController.AutoUpdate(true);
+        }
     }
 }

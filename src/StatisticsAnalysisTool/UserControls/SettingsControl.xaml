@@ -15,6 +15,18 @@
                         <Label Content="{Binding Translation.Language, FallbackValue=LANGUAGE}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding LanguagesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="EnglishName" SelectedValuePath="FileName" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="200" />
                     </DockPanel>
+                    <DockPanel Margin="0,5,5,0">
+                        <Label MinWidth="300"/>
+                        <Button Content="{Binding Translation.CheckForUpdate, FallbackValue=CHECK__FOR__UPDATE}" Height="44" VerticalAlignment="Bottom" 
+                                FontSize="24" FontWeight="Bold" Click="CheckForUpdate_Click" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.SuggestPreReleaseUpdates, FallbackValue=SUGGEST__PRE__RELEASE__UPDATES}" MinWidth="300" VerticalAlignment="Top" />
+                        <CheckBox IsChecked="{Binding IsSuggestPreReleaseUpdatesActive}" Height="21" VerticalAlignment="Top" VerticalContentAlignment="Top">
+                            <Label Content="{Binding Translation.AttentionTheseVersionsAreStillBeingTested, FallbackValue=ATTENTION__THESE__VERSION__ARE__STILL__BEING__TESTED}" 
+                                   MinWidth="300" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" ContentStringFormat="{}({0})" />
+                        </CheckBox>
+                    </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.RefreshRate, FallbackValue=REFRESH__RATE}" MinWidth="300" VerticalAlignment="Top" />
                         <ComboBox ItemsSource="{Binding RefreshRates}" SelectedItem="{Binding RefreshRatesSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
@@ -85,13 +97,6 @@
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.CopyShortDamageMeterToTheClipboard, FallbackValue=COPY__SHORT__DAMAGE__METER__TO__THE__CLIPBOARD}" MinWidth="300" VerticalAlignment="Top" />
                         <CheckBox IsChecked="{Binding ShortDamageMeterToClipboard}" Height="21" VerticalContentAlignment="Center" />
-                    </DockPanel>
-                    <DockPanel Margin="0,5,0,0">
-                        <Label Content="{Binding Translation.SuggestPreReleaseUpdates, FallbackValue=SUGGEST__PRE__RELEASE__UPDATES}" MinWidth="300" VerticalAlignment="Top" />
-                        <CheckBox IsChecked="{Binding IsSuggestPreReleaseUpdatesActive}" Height="21" VerticalAlignment="Top" VerticalContentAlignment="Top">
-                            <Label Content="{Binding Translation.AttentionTheseVersionsAreStillBeingTested, FallbackValue=ATTENTION__THESE__VERSION__ARE__STILL__BEING__TESTED}" 
-                                   MinWidth="300" VerticalAlignment="Top" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" ContentStringFormat="{}({0})" />
-                        </CheckBox>
                     </DockPanel>
                 </StackPanel>
             </ScrollViewer>

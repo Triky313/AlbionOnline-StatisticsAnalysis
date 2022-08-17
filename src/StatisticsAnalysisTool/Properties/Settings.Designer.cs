@@ -72,8 +72,8 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master" +
-            "/src/StatisticsAnalysisTool/ao-update-check.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/s" +
+            "rc/StatisticsAnalysisTool/ao-update-check.xml")]
         public string AutoUpdateConfigUrl {
             get {
                 return ((string)(this["AutoUpdateConfigUrl"]));
@@ -284,16 +284,13 @@ namespace StatisticsAnalysisTool.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/master" +
-            "/src/StatisticsAnalysisTool/ao-pre-release-update-check.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/s" +
+            "rc/StatisticsAnalysisTool/ao-pre-release-update-check.xml")]
         public string AutoUpdatePreReleaseConfigUrl {
             get {
                 return ((string)(this["AutoUpdatePreReleaseConfigUrl"]));
-            }
-            set {
-                this["AutoUpdatePreReleaseConfigUrl"] = value;
             }
         }
         
@@ -396,6 +393,16 @@ namespace StatisticsAnalysisTool.Properties {
             }
             set {
                 this["DamageMeterSnapshotsFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Triky313/AlbionOnline-StatisticsAnalysis/main/d" +
+            "onations.json")]
+        public string DonationsUrl {
+            get {
+                return ((string)(this["DonationsUrl"]));
             }
         }
     }
