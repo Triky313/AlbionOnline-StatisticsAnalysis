@@ -543,15 +543,15 @@
 	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Средний IP при убийствах</translation>
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Средний IP убийц</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Средний IP при смертях</translation>
-	<translation name="MAIL_MONITORING">Почта</translation>
+	<translation name="MAIL_MONITORING">Финансы</translation>
 	<translation name="MAIL">Письмо</translation>
 	<translation name="BOUGHT">Куплено</translation>
 	<translation name="SOLD">Продано</translation>
 	<translation name="COST_PER_ITEM">Цена за предмет</translation>
 	<translation name="TOTAL_COST">Всего продано</translation>
-	<translation name="DELETE_SELECTED_MAILS">Удалить выбранные письма</translation>
-	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Вы уверены что хотите удалить выбранные письма?</translation>
-	<translation name="MAIL_MONITORING_DESCRIPTION1">Для получения новых писем, вы должны открыть почту и нажать на каждое письмо отдельно.</translation>
+	<translation name="DELETE_SELECTED_MAILS">Удалить выбранные записи</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Вы уверены что хотите удалить выбранные записи?</translation>
+	<translation name="MAIL_MONITORING_DESCRIPTION1">Для отображения финансов, вы должны открыть почту и нажать на каждое письмо отдельно.</translation>
 	<translation name="SOLD_TODAY">Продано за сегодня</translation>
 	<translation name="SOLD_MONTH">Продано за месяц</translation>
 	<translation name="SOLD_YEAR">Продано за год</translation>
@@ -635,6 +635,13 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Рандомные сольники</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Рандомные групповые данжи</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Скриншот после смены локации</translation>
-	<translation name="GUILD">Гильдия</translation>
-	<translation name="ALLIANCE">Альянс</translation>
+	<translation name="MAIL_MONITORING_ACTIVE">Мониторинг почты активен</translation>
+	<translation name="DELETE_MAILS_NEVER">Не удалять письма</translation>
+	<translation name="DELETE_MAILS_AFTER_7_DAYS">Удалять письма после 7 дней</translation>
+	<translation name="DELETE_MAILS_AFTER_30_DAYS">Удалять письма после 30 дней</translation>
+	<translation name="DELETE_MAILS_AFTER_60_DAYS">Удалять письма после 60 дней</translation>
+	<translation name="DELETE_MAILS_AFTER_90_DAYS">Удалять письма после 90 дней</translation>
+	<translation name="DELETE_MAILS_AFTER_180_DAYS">Удалять письма после 180 дней</translation>
+	<translation name="DELETE_MAILS_AFTER_365_DAYS">Удалять письма после 365 дней</translation>
+	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Игнорировать пустые письма</translation>
 </translations>
