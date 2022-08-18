@@ -36,6 +36,12 @@ public class UpdateFameEvent
                 TotalPlayerFame = FixPoint.FromInternalValue(totalPlayerFame);
             }
 
+            if (parameters.ContainsKey(2))
+            {
+                var fameWithZoneMultiplier = FixPoint.FromInternalValue(parameters[2].ObjectToLong() ?? 0);
+                FameWithZoneMultiplier = FixPoint.FromFloatingPointValue(fameWithZoneMultiplier.DoubleValue);
+            }
+
             if (parameters.ContainsKey(3))
             {
                 GroupSize = parameters[3] as byte? ?? 0;
@@ -58,13 +64,7 @@ public class UpdateFameEvent
                 BonusFactorInPercent = (BonusFactor - 1) * 100;
                 IsBonusFactorActive = (BonusFactorInPercent > 0);
             }
-
-            if (parameters.ContainsKey(2))
-            {
-                var fameWithZoneMultiplier = FixPoint.FromInternalValue(parameters[2].ObjectToLong() ?? 0);
-                FameWithZoneMultiplier = FixPoint.FromFloatingPointValue(fameWithZoneMultiplier.DoubleValue);
-            }
-
+            
             if (parameters.ContainsKey(9))
             {
                 SatchelFame = FixPoint.FromInternalValue(parameters[9].ObjectToLong() ?? 0);
