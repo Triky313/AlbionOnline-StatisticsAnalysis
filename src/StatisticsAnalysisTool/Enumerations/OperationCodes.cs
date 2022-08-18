@@ -303,6 +303,7 @@
         ClaimPaymentTransaction,
         ChangeUseFlag,
         ClientPerformanceStats,
+        ReSpecBoost = 297,
         ExtendedHardwareStats = 300, //  map[0:NVIDIA GeForce RTX 3090 1:AMD Ryzen 7 2700X Eight-Core Processor  2:Windows 10  (10.0.0) 64bit 3:3693 4:24348 5:16293 6:DE-DE 7:Custom 8:1746 10:-1 253:303]
         ClientLowMemoryWarning,
         TerritoryClaimStart,

@@ -54,6 +54,7 @@ namespace StatisticsAnalysisTool.Network
         private readonly AttachItemContainerEventHandler _attachItemContainerEventHandler;
 
         private readonly UseShrineRequestHandler _useShrineRequestHandler;
+        private readonly ReSpecBoostRequestHandler _reSpecBoostRequestHandler;
 
         private readonly ChangeClusterResponseHandler _changeClusterResponseHandler;
         private readonly PartyMakeLeaderResponseHandler _partyMakeLeaderResponseHandler;
@@ -102,6 +103,7 @@ namespace StatisticsAnalysisTool.Network
             _attachItemContainerEventHandler = new AttachItemContainerEventHandler(trackingController);
 
             _useShrineRequestHandler = new UseShrineRequestHandler(trackingController);
+            _reSpecBoostRequestHandler = new ReSpecBoostRequestHandler(trackingController);
 
             _changeClusterResponseHandler = new ChangeClusterResponseHandler(trackingController);
             _partyMakeLeaderResponseHandler = new PartyMakeLeaderResponseHandler(trackingController);
@@ -254,6 +256,9 @@ namespace StatisticsAnalysisTool.Network
                 {
                     case OperationCodes.UseShrine:
                         await UseShrineRequestHandlerAsync(parameters);
+                        return;
+                    case OperationCodes.ReSpecBoost:
+                        await ReSpecBoostHandlerAsync(parameters);
                         return;
                 }
             });
@@ -539,6 +544,12 @@ namespace StatisticsAnalysisTool.Network
         {
             var value = new UseShrineRequest(parameters);
             await _useShrineRequestHandler.OnActionAsync(value);
+        }
+
+        private async Task ReSpecBoostHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new ReSpecBoostRequest(parameters);
+            await _reSpecBoostRequestHandler.OnActionAsync(value);
         }
 
         #endregion

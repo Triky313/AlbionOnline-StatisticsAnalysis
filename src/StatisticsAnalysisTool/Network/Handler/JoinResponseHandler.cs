@@ -61,7 +61,8 @@ namespace StatisticsAnalysisTool.Network.Handler
                 GuildName = value.GuildName,
                 MainMapIndex = value.MainMapIndex,
                 PlayTimeInSeconds = value.PlayTimeInSeconds,
-                AllianceName = value.AllianceName
+                AllianceName = value.AllianceName,
+                IsReSpecActive = value.IsReSpecActive
             });
         }
 
@@ -89,7 +90,7 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (_mainWindowViewModel.IsTrackingResetByMapChangeActive)
             {
-                _mainWindowViewModel?.TrackingController?.CountUpTimer?.Reset();
+                _mainWindowViewModel?.TrackingController?.LiveStatsTracker?.Reset();
             }
         }
 

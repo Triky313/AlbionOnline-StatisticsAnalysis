@@ -634,7 +634,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.LootController.RegisterEvents();
             TrackingController?.TreasureController?.RegisterEvents();
 
-            TrackingController?.CountUpTimer.Start();
+            TrackingController?.LiveStatsTracker.Start();
 
             DungeonBindings.DungeonStatsFilter = new DungeonStatsFilter(TrackingController);
 
@@ -646,7 +646,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             NetworkManager.StopNetworkCapture();
 
-            TrackingController?.CountUpTimer?.Stop();
+            TrackingController?.LiveStatsTracker?.Stop();
 
             TrackingController?.TreasureController.UnregisterEvents();
             TrackingController?.LootController.UnregisterEvents();

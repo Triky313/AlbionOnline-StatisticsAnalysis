@@ -31,6 +31,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public string MainMapIndex { get; set; }
         public int? PlayTimeInSeconds { get; set; }
         public string AllianceName { get; set; }
+        public bool IsReSpecActive { get; set; }
         public string WebApiUserId { get; set; }
         public DateTime? LastUpdate;
         public ObservableCollection<GameInfoPlayerKillsDeathsWithType> PlayerKillsDeaths { get; private set; }
@@ -86,6 +87,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             MainMapIndex = localUserData.MainMapIndex;
             PlayTimeInSeconds = localUserData.PlayTimeInSeconds;
             AllianceName = localUserData.AllianceName;
+            IsReSpecActive = localUserData.IsReSpecActive;
         }
 
         private async Task GetApiData(string currentUsername, string newUsername)

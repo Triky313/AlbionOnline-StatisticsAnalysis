@@ -20,7 +20,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
-        public CountUpTimer CountUpTimer;
+        public LiveStatsTracker LiveStatsTracker;
         public CombatController CombatController;
         public DungeonController DungeonController;
         public ClusterController ClusterController;
@@ -45,7 +45,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             TreasureController = new TreasureController(this, mainWindowViewModel);
             MailController = new MailController(mainWindowViewModel);
             VaultController = new VaultController(mainWindowViewModel);
-            CountUpTimer = new CountUpTimer(this, mainWindowViewModel);
+            LiveStatsTracker = new LiveStatsTracker(this, mainWindowViewModel);
         }
 
         public bool ExistIndispensableInfos => ClusterController.CurrentCluster != null && EntityController.ExistLocalEntity();

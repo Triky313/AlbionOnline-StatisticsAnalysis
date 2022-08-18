@@ -11,12 +11,12 @@ namespace StatisticsAnalysisTool.Network.Handler
     public class UpdateCurrencyEventHandler
     {
         private readonly TrackingController _trackingController;
-        private readonly CountUpTimer _countUpTimer;
+        private readonly LiveStatsTracker _liveStatsTracker;
 
         public UpdateCurrencyEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
-            _countUpTimer = _trackingController?.CountUpTimer;
+            _liveStatsTracker = _trackingController?.LiveStatsTracker;
         }
 
         public async Task OnActionAsync(UpdateCurrencyEvent value)
@@ -26,7 +26,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                 await _trackingController.AddNotificationAsync(SetFactionPointsNotification(value.CityFaction, value.GainedFactionCoins.DoubleValue, value.BonusPremiumGainedFractionFlagPoints.DoubleValue));
             }
 
-            _countUpTimer.Add(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue, value.CityFaction);
+            _liveStatsTracker.Add(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue, value.CityFaction);
             _trackingController.DungeonController?.AddValueToDungeon(value.GainedFactionCoins.DoubleValue, ValueType.FactionPoints, value.CityFaction);
             _trackingController.StatisticController?.AddValue(ValueType.FactionPoints, value.GainedFactionCoins.DoubleValue);
         }

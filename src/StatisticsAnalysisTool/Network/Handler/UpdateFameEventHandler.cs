@@ -11,20 +11,20 @@ namespace StatisticsAnalysisTool.Network.Handler
 {
     public class UpdateFameEventHandler
     {
-        private readonly CountUpTimer _countUpTimer;
+        private readonly LiveStatsTracker _liveStatsTracker;
         private readonly TrackingController _trackingController;
 
         public UpdateFameEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
-            _countUpTimer = _trackingController?.CountUpTimer;
+            _liveStatsTracker = _trackingController?.LiveStatsTracker;
         }
 
         public async Task OnActionAsync(UpdateFameEvent value)
         {
             await _trackingController.AddNotificationAsync(SetPveFameNotification(value.TotalPlayerFame.DoubleValue, value.TotalGainedFame,
                 value.ZoneFame.DoubleValue, value.PremiumFame, value.SatchelFame.DoubleValue, value.IsBonusFactorActive, value.BonusFactorInPercent));
-            _countUpTimer.Add(ValueType.Fame, value.TotalGainedFame);
+            _liveStatsTracker.Add(ValueType.Fame, value.TotalGainedFame);
             _trackingController.DungeonController?.AddValueToDungeon(value.TotalGainedFame, ValueType.Fame);
             _trackingController.StatisticController?.AddValue(ValueType.Fame, value.TotalGainedFame);
         }

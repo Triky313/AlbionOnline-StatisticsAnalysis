@@ -8,19 +8,19 @@ namespace StatisticsAnalysisTool.Network.Handler
     public class UpdateReSpecPointsEventHandler
     {
         private readonly TrackingController _trackingController;
-        private readonly CountUpTimer _countUpTimer;
+        private readonly LiveStatsTracker _liveStatsTracker;
 
         public UpdateReSpecPointsEventHandler(TrackingController trackingController)
         {
             _trackingController = trackingController;
-            _countUpTimer = _trackingController?.CountUpTimer;
+            _liveStatsTracker = _trackingController?.LiveStatsTracker;
         }
 
         public async Task OnActionAsync(UpdateReSpecPointsEvent value)
         {
             if (value?.CurrentTotalReSpecPoints != null)
             {
-                _countUpTimer.Add(ValueType.ReSpec, value.CurrentTotalReSpecPoints.Value.DoubleValue);
+                _liveStatsTracker.Add(ValueType.ReSpec, value.CurrentTotalReSpecPoints.Value.DoubleValue);
                 _trackingController.DungeonController?.AddValueToDungeon(value.CurrentTotalReSpecPoints.Value.DoubleValue, ValueType.ReSpec);
                 _trackingController.StatisticController?.AddValue(ValueType.ReSpec, value.CurrentTotalReSpecPoints.Value.DoubleValue);
             }

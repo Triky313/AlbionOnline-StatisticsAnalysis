@@ -64,6 +64,10 @@
                 </Grid>
                 <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
                 <Grid>
+                    <ContentControl Margin="3" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource SilverCostForReSpecTemplate}" />
+                </Grid>
+                <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
+                <Grid>
                     <ContentControl Margin="3" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource KillDeathStatsTemplate}" />
                 </Grid>
                 <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />

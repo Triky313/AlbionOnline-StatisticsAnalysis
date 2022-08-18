@@ -637,4 +637,6 @@
 	<translation name="DELETE_MAILS_AFTER_365_DAYS">Delete mails after 365 days</translation>
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Ignore mails with 0 values</translation>
 	<translation name="CHECK_FOR_UPDATE">Check for update</translation>
+	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Paid Silver for ReSpec this session</translation>
+	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Paid Silver for ReSpec per hour</translation>
 </translations>
