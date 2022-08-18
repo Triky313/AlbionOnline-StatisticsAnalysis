@@ -70,6 +70,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                     Name = name,
                     ObjectType = objectType,
                     UserGuid = userGuid,
+                    Guild = guild,
+                    Alliance = alliance,
                     ObjectSubType = objectSubType,
                     CharacterEquipment = characterEquipment
                 };

@@ -38,8 +38,8 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             }
         }
         public string Name { get; set; } = "Unknown";
-        public string Guild { get; set; } = "Unknown";
-        public string Alliance { get; set; } = "Unknown";
+        public string Guild { get; set; }
+        public string Alliance { get; set; }
         public CharacterEquipment CharacterEquipment
         {
             get => _characterEquipment;
