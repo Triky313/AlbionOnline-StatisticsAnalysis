@@ -2,14 +2,14 @@ name: .NET Desktop
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
       - '**/*.gitattributes'
       - '**/donations.json'
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
 
