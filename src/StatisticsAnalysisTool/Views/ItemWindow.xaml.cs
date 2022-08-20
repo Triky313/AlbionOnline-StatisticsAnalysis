@@ -94,32 +94,7 @@ namespace StatisticsAnalysisTool.Views
             _ = _itemWindowViewModel.SetHistoryChartPricesAsync();
             _ = _itemWindowViewModel.GetItemPricesInRealMoneyAsync();
         }
-
-        private void MarketListCityLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            _itemWindowViewModel.CopyTextToClipboard(sender);
-        }
-
-        private void MarketListSellPriceMinLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            _itemWindowViewModel.CopyTextToClipboard(sender);
-        }
-
-        private void MarketListSellPriceMaxLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            _itemWindowViewModel.CopyTextToClipboard(sender);
-        }
-
-        private void MarketListBuyPriceMinLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            _itemWindowViewModel.CopyTextToClipboard(sender);
-        }
-
-        private void MarketListBuyPriceMaxLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            _itemWindowViewModel.CopyTextToClipboard(sender);
-        }
-
+        
         private void LabelNotes_OnLostFocus(object sender, RoutedEventArgs e)
         {
             if (sender is not TextBox textBox)

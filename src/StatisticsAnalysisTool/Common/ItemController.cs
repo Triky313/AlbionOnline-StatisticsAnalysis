@@ -41,60 +41,7 @@ namespace StatisticsAnalysisTool.Common
         {
             return FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Value == value).Key;
         }
-
-        public static Style LocationStyle(Location location)
-        {
-            return location switch
-            {
-                Location.Caerleon => Application.Current.FindResource("CaerleonStyle") as Style,
-                Location.Thetford => Application.Current.FindResource("ThetfordStyle") as Style,
-                Location.Bridgewatch => Application.Current.FindResource("BridgewatchStyle") as Style,
-                Location.Martlock => Application.Current.FindResource("MartlockStyle") as Style,
-                Location.Lymhurst => Application.Current.FindResource("LymhurstStyle") as Style,
-                Location.FortSterling => Application.Current.FindResource("FortSterlingStyle") as Style,
-                Location.ArthursRest => Application.Current.FindResource("ArthursRestStyle") as Style,
-                Location.MerlynsRest => Application.Current.FindResource("MerlynsRestStyle") as Style,
-                Location.MorganasRest => Application.Current.FindResource("MorganasRestStyle") as Style,
-                Location.BlackMarket => Application.Current.FindResource("BlackMarketStyle") as Style,
-                _ => Application.Current.FindResource("DefaultCityStyle") as Style
-            };
-        }
-
-        public static Style GetStyleByTimestamp(DateTime value)
-        {
-            if (value.Date == DateTime.MinValue.Date)
-            {
-                return Application.Current.FindResource("ListView.Grid.Label.Date.NoValue") as Style;
-            }
-
-            if (value.AddHours(8) < DateTime.Now.ToUniversalTime().AddHours(-1))
-            {
-                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldFirst") as Style;
-            }
-
-            if (value.AddHours(4) < DateTime.Now.ToUniversalTime().AddHours(-1))
-            {
-                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldSecond") as Style;
-            }
-
-            if (value.AddHours(2) < DateTime.Now.ToUniversalTime().AddHours(-1))
-            {
-                return Application.Current.FindResource("ListView.Grid.Label.Date.ToOldThird") as Style;
-            }
-
-            return Application.Current.FindResource("ListView.Grid.Label.Date.Normal") as Style;
-        }
-
-        public static Style PriceStyle(bool bestSellMinPrice)
-        {
-            if (bestSellMinPrice)
-            {
-                return Application.Current.FindResource("ListView.Grid.StackPanel.Label.BestPrice") as Style;
-            }
-
-            return Application.Current.FindResource("ListView.Grid.StackPanel.Label.Price") as Style;
-        }
-
+        
         public static ulong GetMinPrice(List<ulong> list)
         {
             var min = ulong.MaxValue;

@@ -162,7 +162,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
 
         #region Commands
 
-        public void CopyItemNameToClipboard()
+        private void CopyItemNameToClipboard(object value)
         {
             Clipboard.SetDataObject(CraftingResourceName);
         }

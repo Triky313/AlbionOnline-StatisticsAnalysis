@@ -5,10 +5,10 @@ namespace StatisticsAnalysisTool.Common
 {
     public class CommandHandler : ICommand
     {
-        private readonly Action _action;
+        private readonly Action<object> _action;
         private readonly bool _canExecute;
 
-        public CommandHandler(Action action, bool canExecute)
+        public CommandHandler(Action<object> action, bool canExecute)
         {
             _action = action;
             _canExecute = canExecute;
@@ -19,13 +19,15 @@ namespace StatisticsAnalysisTool.Common
             return _canExecute;
         }
 
-#pragma warning disable 67
-        public event EventHandler CanExecuteChanged;
-#pragma warning restore 67
+        public event EventHandler CanExecuteChanged
+        {
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
 
         public void Execute(object parameter)
         {
-            _action();
+            _action(parameter);
         }
     }
 }
