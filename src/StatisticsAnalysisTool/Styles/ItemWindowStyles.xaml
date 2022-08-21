@@ -535,14 +535,14 @@
                             <DataTrigger Binding="{Binding SellPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.NoValue}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding SellPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldFirst}">
-                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}"/>
+                            <DataTrigger Binding="{Binding SellPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldThird}">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding SellPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldSecond}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding SellPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldThird}">
-                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
+                            <DataTrigger Binding="{Binding SellPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldFirst}">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding SellPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.Normal}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
@@ -679,14 +679,14 @@
                             <DataTrigger Binding="{Binding BuyPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.NoValue}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding BuyPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldFirst}">
-                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}"/>
+                            <DataTrigger Binding="{Binding BuyPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldThird}">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding BuyPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldSecond}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding BuyPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldThird}">
-                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
+                            <DataTrigger Binding="{Binding BuyPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldFirst}">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding BuyPriceMinDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.Normal}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
@@ -751,14 +751,14 @@
                             <DataTrigger Binding="{Binding BuyPriceMaxDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.NoValue}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding BuyPriceMaxDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldFirst}">
-                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}"/>
+                            <DataTrigger Binding="{Binding BuyPriceMaxDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldThird}">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding BuyPriceMaxDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldSecond}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding BuyPriceMaxDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldThird}">
-                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
+                            <DataTrigger Binding="{Binding BuyPriceMaxDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldFirst}">
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding BuyPriceMaxDateStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.Normal}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>

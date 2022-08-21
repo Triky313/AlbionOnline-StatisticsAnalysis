@@ -72,19 +72,19 @@ public class MarketCurrentPricesItem
             return ValueTimeStatus.NoValue;
         }
 
-        if (dateTime.AddHours(1) < DateTime.UtcNow)
+        if (dateTime.AddHours(8) <= DateTime.UtcNow)
         {
-            return ValueTimeStatus.ToOldFirst;
+            return ValueTimeStatus.ToOldThird;
         }
 
-        if (dateTime.AddHours(3) < DateTime.UtcNow)
+        if (dateTime.AddHours(4) <= DateTime.UtcNow)
         {
             return ValueTimeStatus.ToOldSecond;
         }
 
-        if (dateTime.AddHours(9) < DateTime.UtcNow)
+        if (dateTime.AddHours(2) <= DateTime.UtcNow)
         {
-            return ValueTimeStatus.ToOldThird;
+            return ValueTimeStatus.ToOldFirst;
         }
 
         return ValueTimeStatus.Normal;

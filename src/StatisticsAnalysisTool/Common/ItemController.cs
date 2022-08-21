@@ -16,7 +16,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.Windows;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Mount = StatisticsAnalysisTool.Models.ItemsJsonModel.Mount;
 
@@ -41,7 +40,7 @@ namespace StatisticsAnalysisTool.Common
         {
             return FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Value == value).Key;
         }
-        
+
         public static ulong GetMinPrice(List<ulong> list)
         {
             var min = ulong.MaxValue;
