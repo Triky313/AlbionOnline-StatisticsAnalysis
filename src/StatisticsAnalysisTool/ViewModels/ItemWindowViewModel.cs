@@ -269,7 +269,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async void UpdateValues(object sender, EventArgs e)
         {
-            Debug.Print(DateTime.UtcNow + ": Update values");
             if (Item.UniqueName != null)
             {
                 await GetCityItemPricesAsync();
@@ -1317,23 +1316,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion Bindings
 
         #region Helper
-
-        public void CopyTextToClipboard(object sender)
-        {
-            if (sender == null) return;
-
-            try
-            {
-                var label = (Label)sender;
-                Clipboard.SetText(label.Content.ToString() ?? string.Empty);
-            }
-            catch (Exception ex)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
-            }
-        }
-
+        
         public ulong Sum(params ulong[] values)
         {
             return values.Aggregate(0UL, (current, t) => current + t);
