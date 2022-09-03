@@ -59,24 +59,45 @@ namespace StatisticsAnalysisTool.UserControls
             }
         }
 
-        public void CopyDamageMeterToClipboard()
+        public void CopyDamageMeterToClipboard(bool isSnapshot = false)
         {
             var output = string.Empty;
             var counter = 1;
 
             var vm = (MainWindowViewModel)DataContext;
 
-            switch (vm?.DamageMeterBindings?.DamageMeterSortSelection.DamageMeterSortType)
+            var damageMeterSortType = vm?.DamageMeterBindings?.DamageMeterSortSelection.DamageMeterSortType;
+            
+            if (isSnapshot)
             {
+                damageMeterSortType = vm?.DamageMeterBindings?.DamageMeterSnapshotSortSelection.DamageMeterSortType;
+            }
+
+            switch (damageMeterSortType)
+            {
+                case DamageMeterSortType.Damage when isSnapshot:
+                    Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
+                        ? vm.DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
+                        : vm.DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter.Aggregate(output,
+                            (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
+                    break;
                 case DamageMeterSortType.Damage:
                     Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
                         ? vm.DamageMeterBindings.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
                         : vm.DamageMeterBindings.DamageMeter.Aggregate(output,
                             (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
-
+                    break;
+                case DamageMeterSortType.Dps when isSnapshot:
+                    Clipboard.SetDataObject(vm.DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n"));
                     break;
                 case DamageMeterSortType.Dps:
                     Clipboard.SetDataObject(vm.DamageMeterBindings.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Dps:N2} DPS\n"));
+                    break;
+                case DamageMeterSortType.Name when isSnapshot:
+                    Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
+                        ? vm.DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.DamagePercentage:N2}%\n")
+                        : vm.DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter.Aggregate(output, 
+                            (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
                     break;
                 case DamageMeterSortType.Name:
                     Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
@@ -84,11 +105,20 @@ namespace StatisticsAnalysisTool.UserControls
                         : vm.DamageMeterBindings.DamageMeter.Aggregate(output, 
                             (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Damage}({entity.DamagePercentage:N2}%)|{entity.Dps:N2} DPS\n"));
                     break;
+                case DamageMeterSortType.Heal when isSnapshot:
+                    Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
+                        ? vm.DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.HealPercentage:N2}%\n")
+                        : vm.DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter.Aggregate(output,
+                            (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Heal}({entity.HealPercentage:N2}%)|{entity.Hps:N2} HPS\n"));
+                    break;
                 case DamageMeterSortType.Heal:
                     Clipboard.SetDataObject(SettingsController.CurrentSettings.ShortDamageMeterToClipboard
                         ? vm.DamageMeterBindings.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.HealPercentage:N2}%\n")
                         : vm.DamageMeterBindings.DamageMeter.Aggregate(output,
                             (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Heal}({entity.HealPercentage:N2}%)|{entity.Hps:N2} HPS\n"));
+                    break;
+                case DamageMeterSortType.Hps when isSnapshot:
+                    Clipboard.SetDataObject(vm.DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n"));
                     break;
                 case DamageMeterSortType.Hps:
                     Clipboard.SetDataObject(vm.DamageMeterBindings.DamageMeter.Aggregate(output, (current, entity) => current + $"{counter++}. {entity.Name}: {entity.Hps:N2} HPS\n"));
@@ -138,6 +168,11 @@ namespace StatisticsAnalysisTool.UserControls
         private void CopyDamageMeterToClipboard_MouseUp(object sender, MouseButtonEventArgs e)
         {
             CopyDamageMeterToClipboard();
+        }
+
+        private void CopyDamageMeterSnapshotToClipboard_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            CopyDamageMeterToClipboard(true);
         }
 
         private void TakeASnapShot_MouseUp(object sender, MouseButtonEventArgs e)

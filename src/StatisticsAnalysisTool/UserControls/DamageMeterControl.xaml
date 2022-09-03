@@ -87,20 +87,21 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
                                             <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                      ToolTip="{Binding Translation.OpenExtendedDamageMeterWindow, FallbackValue=OPEN__EXTENDED__DAMAGE__METER__WINDOW}" MouseUp="OpenDamageMeterWindow_MouseUp">
+                                                  ToolTip="{Binding Translation.OpenExtendedDamageMeterWindow, FallbackValue=OPEN__EXTENDED__DAMAGE__METER__WINDOW}" 
+                                                  MouseUp="OpenDamageMeterWindow_MouseUp">
                                                 <fa5:ImageAwesome Icon="Solid_Expand" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                             </Grid>
                                             <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                      ToolTip="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}" MouseUp="CopyDamageMeterToClipboard_MouseUp">
+                                                  ToolTip="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}" MouseUp="CopyDamageMeterToClipboard_MouseUp">
                                                 <fa5:ImageAwesome Icon="Regular_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                             </Grid>
                                             <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                      ToolTip="{Binding DamageMeterBindings.TranslationTakeASnapshotOfDamageMeterDescription, FallbackValue=TAKE_A_SNAPSHOT_OF_DAMAGE_METER}" 
-                                      MouseUp="TakeASnapShot_MouseUp">
+                                                  ToolTip="{Binding DamageMeterBindings.TranslationTakeASnapshotOfDamageMeterDescription, FallbackValue=TAKE_A_SNAPSHOT_OF_DAMAGE_METER}" 
+                                                  MouseUp="TakeASnapShot_MouseUp">
                                                 <fa5:ImageAwesome Icon="Solid_Camera" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                             </Grid>
                                             <Grid Height="20" Width="20" Margin="5,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                      MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
+                                                  MouseEnter="OpenDamageMeterInfoPopup_MouseEnter" MouseLeave="CloseDamageMeterInfoPopup_MouseLeave">
                                                 <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                             </Grid>
                                         </StackPanel>
@@ -141,6 +142,10 @@
                                   IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DamageMeterSortType" />
                         <Button Content="{Binding DamageMeterBindings.TranslationDeleteSelectedSnapshot, FallbackValue=DELETE__SELECTED__SNAPSHOT}" Height="26" MaxWidth="500" MinWidth="200" 
                                 Margin="5,0,5,0" Click="BtnDeleteSelectedSnapshot_Click" />
+                        <Grid Height="20" Width="20" Margin="5,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                              ToolTip="{Binding Translation.CopyToClipboard, FallbackValue=COPY__TO__CLIPBOARD}" MouseUp="CopyDamageMeterSnapshotToClipboard_MouseUp">
+                            <fa5:ImageAwesome Icon="Regular_Copy" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                        </Grid>
                     </StackPanel>
                     <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,31,0,0" VerticalAlignment="Top"/>
                     <ItemsControl ItemsSource="{Binding DamageMeterBindings.DamageMeterSnapshotSelection.DamageMeter, IsAsync=True, Mode=OneWay}" 
