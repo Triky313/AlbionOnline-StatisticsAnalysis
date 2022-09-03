@@ -45,5 +45,7 @@
         public bool IsMailMonitoringActive { get; set; } = true;
         public bool IgnoreMailsWithZeroValues { get; set; } = false;
         public int DeleteMailsOlderThanSpecifiedDays { get; set; } = 0;
+        public bool IsSnapshotAfterMapChangeActive { get; set; } = false;
+        public bool IsDamageMeterResetByMapChangeActive { get; set; } = false;
     }
 }

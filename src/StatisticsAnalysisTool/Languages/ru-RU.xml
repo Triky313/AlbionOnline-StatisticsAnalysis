@@ -118,7 +118,6 @@
 	<translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Обновлять список предметов через n-дней</translation>
 	<translation name="LOAD_FULL_ITEM_INFO">Загрузить все предметы</translation>
 	<translation name="UNKNOWN">Неизвестный</translation>
-
 	<translation name="CLOTH_ARMOR">Тканевые мантии</translation>
 	<translation name="CLOTH_HELMET">Тканевые колпаки</translation>
 	<translation name="CLOTH_SHOES">Тканевые сандалии</translation>
@@ -131,19 +130,16 @@
 	<translation name="UNIQUE_ARMOR">Уникальная броня</translation>
 	<translation name="UNIQUE_HELMET">Уникальная шлемы</translation>
 	<translation name="UNIQUE_SHOES">Уникальная сапоги</translation>
-
 	<translation name="ARMOR_ARTEFACT">Броня</translation>
 	<translation name="MAGIC_ARTEFACT">Магия</translation>
 	<translation name="MELEE_ARTEFACT">Ближний бой</translation>
 	<translation name="OFFHAND_ARTEFACT">Левая рука</translation>
 	<translation name="RANGED_ARTEFACT">Дальний бой</translation>
-
 	<translation name="BEASTHEART">Звериное сердце</translation>
 	<translation name="MOUNTAINHEART">Сердце горы</translation>
 	<translation name="ROCKHEART">Каменное сердце</translation>
 	<translation name="TREEHEART">Древесное сердце</translation>
 	<translation name="VINEHEART">Сердце лозы</translation>
-
 	<translation name="COOKED">Еда</translation>
 	<translation name="FISH">Рыба</translation>
 	<translation name="FISHING_BAIT">Наживка</translation>
@@ -152,10 +148,8 @@
 	<translation name="POTION">Зелья</translation>
 	<translation name="SKILL_BOOK">Книга интуиции</translation>
 	<translation name="VANITY">Роскошь</translation>
-
 	<translation name="ANIMALS">Животные</translation>
 	<translation name="SEED">Семена</translation>
-
 	<translation name="BANNER">Баннеры</translation>
 	<translation name="BED">Кровати</translation>
 	<translation name="CHEST">Сундуки</translation>
@@ -167,56 +161,46 @@
 	<translation name="TABLE">Столы</translation>
 	<translation name="REPAIR_KIT">Набор для ремонта</translation>
 	<translation name="UNIQUE">Уникальное</translation>
-
 	<translation name="FIBERGATHERER_ARMOR">Одежда жнеца</translation>
 	<translation name="FIBERGATHERER_HELMET">Рюкзак жнеца</translation>
 	<translation name="FIBERGATHERER_SHOES">Шапка жнеца</translation>
 	<translation name="FIBERGATHERER_BACKPACK">Сапоги жнеца</translation>
-
 	<translation name="FISHGATHERER_ARMOR">Одежда рыбака</translation>
 	<translation name="FISHGATHERER_HELMET">Рюкзак рыбака</translation>
 	<translation name="FISHGATHERER_SHOES">Шапка рыбака</translation>
 	<translation name="FISHGATHERER_BACKPACK">Сапоги рыбака</translation>
-
 	<translation name="HIDEGATHERER_ARMOR">Одежда свежевателя</translation>
 	<translation name="HIDEGATHERER_HELMET">Рюкзак свежевателя</translation>
 	<translation name="HIDEGATHERER_SHOES">Шапка свежевателя</translation>
 	<translation name="HIDEGATHERERR_BACKPACK">Сапоги свежевателя</translation>
-
 	<translation name="OREGATHERER_ARMOR">Одежда шахтера</translation>
 	<translation name="OREGATHERER_HELMET">Рюкзак шахтера</translation>
 	<translation name="OREGATHERER_SHOES">Шапка шахтера</translation>
 	<translation name="OREGATHERER_BACKPACK">Сапоги шахтера</translation>
-
 	<translation name="ROCKGATHERER_ARMOR">Одежда каменолома</translation>
 	<translation name="ROCKGATHERER_HELMET">Рюкзак каменолома</translation>
 	<translation name="ROCKGATHERER_SHOES">Шапка каменолома</translation>
 	<translation name="ROCKGATHERER_BACKPACK">Сапоги каменолома</translation>
-
 	<translation name="WOODGATHERER_ARMOR">Одежда дровосека</translation>
 	<translation name="WOODGATHERER_HELMET">Рюкзак дровосека</translation>
 	<translation name="WOODGATHERER_SHOES">Шапка дровосека</translation>
 	<translation name="WOODGATHERER_BACKPACK">Сапоги дровосека</translation>
-
 	<translation name="BRIDGEWATCH">Bridgewatch</translation>
 	<translation name="CAERLEON">Caerleon</translation>
 	<translation name="FORT_STERLING">Fort Sterling</translation>
 	<translation name="LYMHURST">Lymhurst</translation>
 	<translation name="MARTLOCK">Martlock</translation>
 	<translation name="THETFORD">Thetford</translation>
-
 	<translation name="ARCANE_STAFF">Мистический</translation>
 	<translation name="CURSE_STAFF">Проклятый</translation>
 	<translation name="FIRE_STAFF">Огненный</translation>
 	<translation name="FROST_STAFF">Морозный</translation>
 	<translation name="HOLY_STAFF">Священный</translation>
 	<translation name="NATURE_STAFF">Древесный</translation>
-
 	<translation name="ESSENCE">Эссенции</translation>
 	<translation name="RELIC">Реликты</translation>
 	<translation name="RUNE">Руны</translation>
 	<translation name="SOUL">Души</translation>
-
 	<translation name="AXE">Топоры</translation>
 	<translation name="DAGGER">Кинжалы</translation>
 	<translation name="HAMMER">Молоты</translation>
@@ -224,27 +208,21 @@
 	<translation name="QUARTER_STAFF">Шесты</translation>
 	<translation name="SPEAR">Копья</translation>
 	<translation name="SWORD">Мечи</translation>
-
 	<translation name="ARMORED_HORSE">Бронированные кони</translation>
 	<translation name="OX">Быки</translation>
 	<translation name="RARE_MOUNT">Редкий транспорт</translation>
 	<translation name="RIDING_HORSE">Ездовые лошади</translation>
-
 	<translation name="BOOK">Книги</translation>
 	<translation name="HORN">Рога</translation>
 	<translation name="ORB">Сферы</translation>
 	<translation name="SHIELD">Щиты</translation>
 	<translation name="TORCH">Факелы</translation>
 	<translation name="TOTEM">Тотемы</translation>
-
 	<translation name="TRASH">Мусор</translation>
-
 	<translation name="FARMING">Фермерство</translation>
 	<translation name="JOURNAL">Журналы</translation>
-
 	<translation name="BOW">Луки</translation>
 	<translation name="CROSSBOW">Арбалеты</translation>
-
 	<translation name="CLOTH">Ткань</translation>
 	<translation name="FIBER">Волокно</translation>
 	<translation name="HIDE">Шкуры</translation>
@@ -255,11 +233,9 @@
 	<translation name="PLANKS">Брусья</translation>
 	<translation name="ROCK">Камни</translation>
 	<translation name="STONEBLOCK">Блоки</translation>
-
 	<translation name="ARENA_SIGILS">Знак арены</translation>
 	<translation name="EVENT">Событие</translation>
 	<translation name="ROYAL_SIGILS">Королевский знак</translation>
-
 	<translation name="DEMOLITION_HAMMER">Осадные молоты</translation>
 	<translation name="FISHING">Удачка рыбака</translation>
 	<translation name="PICKAXE">Кирки шихтера</translation>
@@ -267,7 +243,6 @@
 	<translation name="SKINNING_KNIFE">Ножи свежевателя</translation>
 	<translation name="STONE_HAMMER">Кувалды коменолома</translation>
 	<translation name="WOOD_AXE">Топоры дровосека</translation>
-
 	<translation name="FIBER_TROPHY">Трофей жнеца</translation>
 	<translation name="FISH_TROPHY">Трофей рыбака</translation>
 	<translation name="GENERAL_TROPHY">Обычный трофей</translation>
@@ -276,37 +251,31 @@
 	<translation name="ORE_TROPHY">Трофей шахтера</translation>
 	<translation name="ROCK_TROPHY">Трофей камнетеса</translation>
 	<translation name="WOOD_TROPHY">Трофей лесоруба</translation>
-
 	<translation name="ACCESSORIES">Аксессуары</translation>
 	<translation name="ARMOR">Броня</translation>
 	<translation name="ARTEFACT">Артефакты</translation>
 	<translation name="CITY_RESOURCES">Ресурсы города</translation>
 	<translation name="CONSUMABLE">Расходники</translation>
-
 	<translation name="FARMABLE">Выращивание</translation>
 	<translation name="FURNITURE">Мебель</translation>
 	<translation name="GATHERING_GEAR">Собирательство</translation>
 	<translation name="LUXURY_GOODS">Роскошь</translation>
 	<translation name="MAGIC">Магия</translation>
-
 	<translation name="MATERIALS">Материалы</translation>
 	<translation name="MELEE">Ближний бой</translation>
 	<translation name="MOUNT">Транспорт</translation>
 	<translation name="OFFHAND">Левая рука</translation>
 	<translation name="PRODUCT">Продукты</translation>
-
 	<translation name="RANGED">Дальний бой</translation>
 	<translation name="RESOURCE">Ресурсы</translation>
 	<translation name="TOKEN">Жетон</translation>
 	<translation name="TOOL">Инструменты</translation>
 	<translation name="TROPHIES">Трофеи</translation>
-
 	<translation name="WEIGHT">Вес</translation>
 	<translation name="ITEM_POWER">Мощность предмета</translation>
 	<translation name="DURABILITY">Прочность</translation>
 	<translation name="REAL_MONEY_PRICE">Цена в реальных деньгах</translation>
 	<translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Слишком много запросов, закройте несколько окон или подождите несколько минут.</translation>
-
 	<translation name="ALARM_SOUND_USED">Звук оповещений</translation>
 	<translation name="ITEM_PRICE_UNDERCUT">Снижение цены товара</translation>
 	<translation name="THE_PRICE_OF">Цена</translation>
@@ -318,7 +287,6 @@
 	<translation name="UNDERCUTTING_PRICE">Подрезка</translation>
 	<translation name="AVERAGE_PRICES">Средние цены</translation>
 	<translation name="AVERAGE_PRICES_TOOLTIP">Цена продажи мин. | Цена продажи макс. | Цена покупки мин. | Цена покупки макс.</translation>
-
 	<translation name="TRACKING">Отслеживание</translation>
 	<translation name="IS_TRACKING_ACTIVE">Активно отслеживание (Зеленый - включено | Желтый - частично)</translation>
 	<translation name="USERNAME">Никнейм</translation>
@@ -335,7 +303,6 @@
 	<translation name="TOTAL_SILVER">Всего серебра</translation>
 	<translation name="TOTAL_RESPEC">Всего свободки</translation>
 	<translation name="SILVER">Серебро</translation>
-
 	<translation name="MINUTES">Минуты</translation>
 	<translation name="HOURS">Часы</translation>
 	<translation name="DAYS">Дни</translation>
@@ -353,7 +320,6 @@
 	<translation name="DUNGEON_RUN_TIME">Общее время</translation>
 	<translation name="DAMAGE_METER">Счётчик урона</translation>
 	<translation name="RESET_DAMAGE_METER">Сброс счётчика урона</translation>
-
 	<translation name="STANDARD">Стандарт</translation>
 	<translation name="UNCOMMON">Необычный</translation>
 	<translation name="RARE">Редкий</translation>
@@ -365,12 +331,10 @@
 	<translation name="OPENED_UNCOMMON_CHESTS">Открыто необычных сундуки</translation>
 	<translation name="OPENED_RARE_CHESTS">Открыто редких сундуки</translation>
 	<translation name="OPENED_LEGENDARY_CHESTS">Открыто легендарных сундуки</translation>
-
 	<translation name="MAIN_TRACKER_DESCRIPTION_1">При правильной работе трекера значок Wi-Fi должен быть зеленым. Для достижения этого статуса необходимо изменить свою локацию.</translation>
 	<translation name="MAIN_TRACKER_DESCRIPTION_2">Присоединяйтесь к группе или пригласите кого-нибудь в свою группу, чтобы обновить кол-во людей в счётчике. Неважно, приглашаете ли вы игроков в группу сами или кто-то другой.</translation>
 	<translation name="MAIN_TRACKER_DESCRIPTION_3">Слава, которую отслеживает трекер - настоящая всеобщая слава. То есть с Премиумом и Кошелем Интуиции. Слава в профиле игрока - это обычный опыт, без усилений к опыту.</translation>
 	<translation name="DAMAGE_METER_DESCRIPTION_1">Чтобы можно было распознать урон от других игроков в группе, сначала необходимо активировать инструмент, а затем игрок должен покинуть группу или присоединиться к ней. Если вы хотите отправить в чат топ урона, вы можете включить в настройках приложения: Копировать урон в коротком формате (можно отравлять в чат игры)</translation>
-
 	<translation name="SORT_BY_DAMAGE">Сортировать по урону</translation>
 	<translation name="SORT_BY_DPS">Сортировать по DPS</translation>
 	<translation name="SORT_BY_NAME">Сортировать по имени</translation>
@@ -507,16 +471,13 @@
 	<translation name="WAR_GLOVES">Боевые перчатки</translation>
 	<translation name="TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN">Попробуйте скачать item.json снова</translation>
 	<translation name="ITEM_JSON_CAN_NOT_BE_LOADED">Item.json не может установиться.</translation>
-
 	<translation name="SUGGEST_PRE_RELEASE_UPDATES">Предлагать тестовые версии</translation>
-	<translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">ВНИМАНИЕ! Эта версия ещё тестируется!</translation>
-
+	<translation name="ATTENTION_THESE_VERSION_ARE_STILL_BEING_TESTED">ВНИМАНИЕ! Может содержать баги!</translation>
 	<translation name="DUNGEON_RESPEC">Свободки за данж</translation>
 	<translation name="DUNGEON_SILVER">Серебра за данж</translation>
 	<translation name="DUNGEON_FAME_PER_HOUR">Опыт с данжа в час</translation>
 	<translation name="DUNGEON_RESPEC_PER_HOUR">Свободки с данжа в час</translation>
 	<translation name="DUNGEON_SILVER_PER_HOUR">Серебра с данжа в час</translation>
-
 	<translation name="GET_PRICE">Получить цены из</translation>
 	<translation name="FACTION_FLAGS">Фракционные очки</translation>
 	<translation name="FACTION_FLAGS_PER_HOUR">Фракционных очков в час</translation>
@@ -543,14 +504,14 @@
 	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Средний IP при убийствах</translation>
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Средний IP убийц</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_DYING">Средний IP при смертях</translation>
-	<translation name="MAIL_MONITORING">Финансы</translation>
+	<translation name="MAIL_MONITORING">Почта</translation>
 	<translation name="MAIL">Письмо</translation>
 	<translation name="BOUGHT">Куплено</translation>
 	<translation name="SOLD">Продано</translation>
 	<translation name="COST_PER_ITEM">Цена за предмет</translation>
 	<translation name="TOTAL_COST">Всего продано</translation>
-	<translation name="DELETE_SELECTED_MAILS">Удалить выбранные записи</translation>
-	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Вы уверены что хотите удалить выбранные записи?</translation>
+	<translation name="DELETE_SELECTED_MAILS">Удалить выбранные письма</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_SELECTED_MAIL">Вы уверены что хотите удалить выбранные письма?</translation>
 	<translation name="MAIL_MONITORING_DESCRIPTION1">Для отображения финансов, вы должны открыть почту и нажать на каждое письмо отдельно.</translation>
 	<translation name="SOLD_TODAY">Продано за сегодня</translation>
 	<translation name="SOLD_MONTH">Продано за месяц</translation>
@@ -569,7 +530,6 @@
 	<translation name="TO">от / до</translation>
 	<translation name="STORAGE_HISTORY">Хранилища</translation>
 	<translation name="BANK">Банк</translation>
-
 	<translation name="SOLD_THIS_WEEK">Продано за неделю</translation>
 	<translation name="SOLD_LAST_WEEK">Продано за прошлую неделю</translation>
 	<translation name="BOUGHT_THIS_WEEK">Куплено за неделю</translation>
@@ -635,7 +595,7 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Рандомные сольники</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Рандомные групповые данжи</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Скриншот после смены локации</translation>
-	<translation name="MAIL_MONITORING_ACTIVE">Мониторинг почты активен</translation>
+	<translation name="MAIL_MONITORING_ACTIVE">Включить мониторинг писем</translation>
 	<translation name="DELETE_MAILS_NEVER">Не удалять письма</translation>
 	<translation name="DELETE_MAILS_AFTER_7_DAYS">Удалять письма после 7 дней</translation>
 	<translation name="DELETE_MAILS_AFTER_30_DAYS">Удалять письма после 30 дней</translation>
@@ -644,4 +604,5 @@
 	<translation name="DELETE_MAILS_AFTER_180_DAYS">Удалять письма после 180 дней</translation>
 	<translation name="DELETE_MAILS_AFTER_365_DAYS">Удалять письма после 365 дней</translation>
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Игнорировать пустые письма</translation>
+	<translation name="CHECK_FOR_UPDATE">Проверить обновления</translation>
 </translations>

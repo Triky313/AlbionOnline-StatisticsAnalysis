@@ -77,7 +77,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             }
         }
 
-        private void PerformRefreshDungeonTimer()
+        private void PerformRefreshDungeonTimer(object value)
         {
             _endTime = DateTime.UtcNow.AddSeconds(90);
 

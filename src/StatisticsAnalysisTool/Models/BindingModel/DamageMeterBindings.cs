@@ -76,6 +76,9 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
         DamageMeterSnapshotSort.Add(sortByHpsStruct);
         DamageMeterSnapshotSortSelection = sortByDamageStruct;
 
+        IsSnapshotAfterMapChangeActive = SettingsController.CurrentSettings.IsSnapshotAfterMapChangeActive;
+        IsDamageMeterResetByMapChangeActive = SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive;
+
         Initialization = LoadLocalFileAsync();
     }
 
@@ -188,6 +191,7 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
         set
         {
             _isDamageMeterResetByMapChangeActive = value;
+            SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive = _isDamageMeterResetByMapChangeActive;
             OnPropertyChanged();
         }
     }
@@ -273,6 +277,7 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
         set
         {
             _isSnapshotAfterMapChangeActive = value;
+            SettingsController.CurrentSettings.IsSnapshotAfterMapChangeActive = _isSnapshotAfterMapChangeActive;
             OnPropertyChanged();
         }
     }

@@ -30,6 +30,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
         public string MainMapIndex { get; set; }
         public int PlayTimeInSeconds { get; set; }
         public string AllianceName { get; }
+        public bool IsReSpecActive { get; }
 
         public JoinResponse(Dictionary<byte, object> parameters)
         {
@@ -77,7 +78,7 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
 
                 if (parameters.ContainsKey(36)) Reputation = parameters[36].ObjectToDouble();
 
-                if (parameters.ContainsKey(38) && parameters[38] != null && parameters[38] is long[] { Length: > 1 } reSpecArray)
+                if (parameters.ContainsKey(38) && parameters[38] is long[] { Length: > 1 } reSpecArray)
                 {
                     ReSpecPoints = FixPoint.FromInternalValue(reSpecArray[1]);
                 }
@@ -106,6 +107,11 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                 if (parameters.ContainsKey(70))
                 {
                     AllianceName = string.IsNullOrEmpty(parameters[70].ToString()) ? string.Empty : parameters[70].ToString();
+                }
+
+                if (parameters.ContainsKey(87))
+                {
+                    IsReSpecActive = parameters[87].ObjectToBool();
                 }
             }
             catch (Exception e)

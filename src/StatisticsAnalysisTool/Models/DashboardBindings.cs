@@ -15,11 +15,13 @@ namespace StatisticsAnalysisTool.Models
         private double _silverPerHour;
         private double _mightPerHour;
         private double _favorPerHour;
+        private double _silverCostForReSpecHour;
         private double _totalGainedFameInSessionInSession;
         private double _totalGainedReSpecPointsInSessionInSession;
         private double _totalGainedSilverInSessionInSession;
         private double _totalGainedMightInSession;
         private double _totalGainedFavorInSession;
+        private double _totalSilverCostForReSpecInSession;
         private double _highestValue;
         private double _fameInPercent;
         private double _silverInPercent;
@@ -73,6 +75,8 @@ namespace StatisticsAnalysisTool.Models
             TotalGainedMightInSession = 0;
             TotalGainedFavorInSession = 0;
         }
+
+        #region Per hour values
 
         public double HighestValue
         {
@@ -134,6 +138,18 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
+        public double SilverCostForReSpecHour
+        {
+            get => _silverCostForReSpecHour;
+            set
+            {
+                _silverCostForReSpecHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         #region Percent values
 
         public double FameInPercent
@@ -187,6 +203,8 @@ namespace StatisticsAnalysisTool.Models
         }
 
         #endregion
+
+        #region Total values
 
         public double TotalGainedFameInSession
         {
@@ -247,6 +265,18 @@ namespace StatisticsAnalysisTool.Models
                 OnPropertyChanged();
             }
         }
+
+        public double TotalSilverCostForReSpecInSession
+        {
+            get => _totalSilverCostForReSpecInSession;
+            set
+            {
+                _totalSilverCostForReSpecInSession = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -417,6 +447,8 @@ namespace StatisticsAnalysisTool.Models
         public static string TranslationAverageItemPowerWhenKilling => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_KILLING");
         public static string TranslationAverageItemPowerOfTheKilledEnemies => LanguageController.Translation("AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES");
         public static string TranslationAverageItemPowerWhenDying => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_DYING");
+        public static string TranslationPaidSilverForReSpecThisSession => LanguageController.Translation("PAID_SILVER_FOR_RESPEC_THIS_SESSION");
+        public static string TranslationPaidSilverForReSpecPerHour => LanguageController.Translation("PAID_SILVER_FOR_RESPEC_PER_HOUR");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,9 +1,7 @@
 ﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
-using System.Text.Json;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -36,6 +34,12 @@ public class UpdateFameEvent
                 TotalPlayerFame = FixPoint.FromInternalValue(totalPlayerFame);
             }
 
+            if (parameters.ContainsKey(2))
+            {
+                var fameWithZoneMultiplier = FixPoint.FromInternalValue(parameters[2].ObjectToLong() ?? 0);
+                FameWithZoneMultiplier = FixPoint.FromFloatingPointValue(fameWithZoneMultiplier.DoubleValue);
+            }
+
             if (parameters.ContainsKey(3))
             {
                 GroupSize = parameters[3] as byte? ?? 0;
@@ -57,12 +61,6 @@ public class UpdateFameEvent
 
                 BonusFactorInPercent = (BonusFactor - 1) * 100;
                 IsBonusFactorActive = (BonusFactorInPercent > 0);
-            }
-
-            if (parameters.ContainsKey(2))
-            {
-                var fameWithZoneMultiplier = FixPoint.FromInternalValue(parameters[2].ObjectToLong() ?? 0);
-                FameWithZoneMultiplier = FixPoint.FromFloatingPointValue(fameWithZoneMultiplier.DoubleValue);
             }
 
             if (parameters.ContainsKey(9))
@@ -87,9 +85,9 @@ public class UpdateFameEvent
             {
                 PremiumFame = fameWithZoneAndPremium - FameWithZoneMultiplier.DoubleValue;
             }
-            
+
             TotalGainedFame = FameWithZoneMultiplier.DoubleValue + PremiumFame + SatchelFame.DoubleValue;
-            
+
             ZoneFame = FixPoint.FromFloatingPointValue((TotalGainedFame / BonusFactor) - (PremiumFame + SatchelFame.DoubleValue));
         }
         catch (Exception e)
