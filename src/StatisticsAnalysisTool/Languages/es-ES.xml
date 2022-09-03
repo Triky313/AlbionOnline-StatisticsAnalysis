@@ -627,4 +627,14 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Mazmorras solitarias aleatorias</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Mazmorras grupales aleatorias</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Tomar captura al cambiar de mapa</translation>
+	<translation name="MAIL_MONITORING_ACTIVE">Seguimiento de correo activo</translation>
+	<translation name="DELETE_MAILS_NEVER">Nunca eliminar correos</translation>
+	<translation name="DELETE_MAILS_AFTER_7_DAYS">Eliminar correos a los 7 días</translation>
+	<translation name="DELETE_MAILS_AFTER_30_DAYS">Eliminar correos a los 30 días</translation>
+	<translation name="DELETE_MAILS_AFTER_60_DAYS">Eliminar correos a los 60 días</translation>
+	<translation name="DELETE_MAILS_AFTER_90_DAYS">Eliminar correos a los 90 días</translation>
+	<translation name="DELETE_MAILS_AFTER_180_DAYS">Eliminar correos a los 180 días</translation>
+	<translation name="DELETE_MAILS_AFTER_365_DAYS">Eliminar correos a los 365 días</translation>
+	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Ignorar correos sin valores</translation>
+	<translation name="CHECK_FOR_UPDATE">Comprobar actualizaciones</translation>
 </translations>
