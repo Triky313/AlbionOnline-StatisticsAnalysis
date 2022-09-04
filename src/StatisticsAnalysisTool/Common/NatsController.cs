@@ -1,11 +1,13 @@
 ﻿using NATS.Client;
 using StatisticsAnalysisTool.Models.Nats;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using log4net;
+using StatisticsAnalysisTool.Models.NetworkModel;
 
 namespace StatisticsAnalysisTool.Common;
 
@@ -21,30 +23,36 @@ namespace StatisticsAnalysisTool.Common;
 public class NatsController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-    private const string AlbionDataUrl = "nats://public:thenewalbiondata@www.albion-online-data.com:4222";
 
     private static IConnection ConnectToNats()
     {
         var connectionFactory = new ConnectionFactory();
         var options = ConnectionFactory.GetDefaultOptions();
-        options.Url = AlbionDataUrl;
+        options.Url = "nats://www.albion-online-data.com:4222";
+        options.User = "public";
+        options.Password = "thenewalbiondata";
 
         return connectionFactory.CreateConnection(options);
     }
 
-    public static async Task PushMarketOrderAsync(NatsMarketOrder marketOrder)
+    public static async Task PushMarketOrderAsync(IEnumerable<AuctionGetOffer> auctionOffers, int clusterIndex)
     {
         try
         {
-            var connection = ConnectToNats();
-
-            var marketOrderString = JsonSerializer.Serialize(marketOrder);
-            var bytes = Encoding.UTF8.GetBytes(marketOrderString);
-
-            connection.Publish("marketorders.deduped", bytes);
-            if (connection.State != ConnState.CLOSED)
+            using (var connection = ConnectToNats())
             {
-                connection.Close();
+                foreach (var valueAuctionGetOffer in auctionOffers)
+                {
+                    var natsMarketOrder = new NatsMarketOrder(valueAuctionGetOffer, clusterIndex);
+                    var marketOrderString = JsonSerializer.Serialize(natsMarketOrder);
+                    var bytes = Encoding.UTF8.GetBytes(marketOrderString);
+                    connection.Publish("marketorders.deduped", bytes);
+                }
+
+                if (connection.State != ConnState.CLOSED)
+                {
+                    connection.Close();
+                }
             }
 
             await Task.CompletedTask;
@@ -63,7 +71,7 @@ public class NatsController
 
         // Creates a live connection to the default
         // NATS Server running locally
-        IConnection c = cf.CreateConnection(AlbionDataUrl);
+        IConnection c = cf.CreateConnection("nats://public:thenewalbiondata@www.albion-online-data.com:4222");
 
         // Setup an event handler to process incoming messages.
         // An anonymous delegate function is used for brevity.

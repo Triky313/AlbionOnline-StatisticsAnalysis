@@ -39,11 +39,8 @@ namespace StatisticsAnalysisTool.Network.Handler
             {
                 return;
             }
-            
-            foreach (var valueAuctionGetOffer in auctionOffers)
-            {
-                await NatsController.PushMarketOrderAsync(new NatsMarketOrder(valueAuctionGetOffer, intIndex));
-            }
+
+            await NatsController.PushMarketOrderAsync(auctionOffers, intIndex);
         }
     }
 }
