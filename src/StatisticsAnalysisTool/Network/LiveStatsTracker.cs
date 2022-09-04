@@ -66,7 +66,7 @@ namespace StatisticsAnalysisTool.Network
                     _famePerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
                     _totalGainedFameInSession += value;
 
-                    RemoveValueFromValuePerHour(_famePerHourList, _famePerHourValue);
+                    RemoveValueFromValuePerHour(_famePerHourList, ref _famePerHourValue);
                     break;
                 case ValueType.ReSpec:
                     var internalReSpecValue = Utilities.AddValue(value, _lastReSpecValue, out _lastReSpecValue);
@@ -79,7 +79,7 @@ namespace StatisticsAnalysisTool.Network
                     _reSpecPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
                     _totalGainedReSpecInSession += internalReSpecValue;
 
-                    RemoveValueFromValuePerHour(_reSpecPerHourList, _reSpecPerHourValue);
+                    RemoveValueFromValuePerHour(_reSpecPerHourList, ref _reSpecPerHourValue);
 
                     if (_trackingController.EntityController.LocalUserData.IsReSpecActive)
                     {
@@ -87,7 +87,7 @@ namespace StatisticsAnalysisTool.Network
                         _reSpecPerHourWithReSpecBoostList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
                         _totalGainedReSpecInSessionWithReSpecBoost += internalReSpecValue;
 
-                        RemoveValueFromValuePerHour(_reSpecPerHourWithReSpecBoostList, _reSpecPerHourValueWithReSpecBoost);
+                        RemoveValueFromValuePerHour(_reSpecPerHourWithReSpecBoostList, ref _reSpecPerHourValueWithReSpecBoost);
                     }
                     break;
                 case ValueType.Silver:
@@ -95,7 +95,7 @@ namespace StatisticsAnalysisTool.Network
                     _silverPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
                     _totalGainedSilverInSession += value;
 
-                    RemoveValueFromValuePerHour(_silverPerHourList, _silverPerHourValue);
+                    RemoveValueFromValuePerHour(_silverPerHourList, ref _silverPerHourValue);
                     break;
                 case ValueType.FactionPoints:
                     _factionPointsPerHourValue += value;
@@ -103,21 +103,21 @@ namespace StatisticsAnalysisTool.Network
                     _currentCityFaction = cityFaction;
                     _totalGainedFactionPointsInSession += value;
 
-                    RemoveValueFromValuePerHour(_factionPointsPerHourList, _factionPointsPerHourValue);
+                    RemoveValueFromValuePerHour(_factionPointsPerHourList, ref _factionPointsPerHourValue);
                     break;
                 case ValueType.Might:
                     _mightPerHourValue += value;
                     _mightPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
                     _totalGainedMightInSession += value;
 
-                    RemoveValueFromValuePerHour(_mightPerHourList, _mightPerHourValue);
+                    RemoveValueFromValuePerHour(_mightPerHourList, ref _mightPerHourValue);
                     break;
                 case ValueType.Favor:
                     _favorPerHourValue += value;
                     _favorPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
                     _totalGainedFavorInSession += value;
 
-                    RemoveValueFromValuePerHour(_favorPerHourList, _favorPerHourValue);
+                    RemoveValueFromValuePerHour(_favorPerHourList, ref _favorPerHourValue);
                     break;
             }
             Start();
@@ -184,23 +184,25 @@ namespace StatisticsAnalysisTool.Network
             UpdateUi(null, EventArgs.Empty);
         }
 
-        private static void RemoveValueFromValuePerHour(List<ValuePerHour> valueList, double perHourValue)
+        private static void RemoveValueFromValuePerHour(ICollection<ValuePerHour> valueList, ref double perHourValue)
         {
-            var removeList = valueList.Where(x => x.DateTime < DateTime.UtcNow.AddHours(-1));
+            var removeList = valueList?.Where(x => x?.DateTime.AddHours(1) < DateTime.UtcNow).ToList();
+
+            if (removeList == null)
+            {
+                return;
+            }
 
             foreach (var item in removeList.ToList())
             {
                 perHourValue -= item.Value;
-
-                if (perHourValue < 0)
-                {
-                    perHourValue = 0;
-                }
-
                 valueList.Remove(item);
             }
 
-            valueList.RemoveAll(x => x.DateTime < DateTime.UtcNow.AddHours(-1));
+            if (perHourValue < 0)
+            {
+                perHourValue = 0;
+            }
         }
 
         private void UpdateUi(object sender, EventArgs e)
