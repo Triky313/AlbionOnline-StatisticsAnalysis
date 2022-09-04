@@ -522,6 +522,7 @@
     <PackageReference Include="Autoupdater.NET.Official" Version="1.7.4" />
     <PackageReference Include="FontAwesome5" Version="2.1.6" />
     <PackageReference Include="log4net" Version="2.0.14" />
+    <PackageReference Include="NATS.Client" Version="0.14.8" />
     <PackageReference Include="PhotonPackageParser" Version="4.1.0" />
     <PackageReference Include="SharpPcap" Version="6.2.2" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />

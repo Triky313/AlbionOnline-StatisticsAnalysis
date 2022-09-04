@@ -6,8 +6,7 @@ namespace StatisticsAnalysisTool.Common.Converters;
 
 public class BoolConverter : JsonConverter<bool>
 {
-    public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options) =>
-        writer.WriteBooleanValue(value);
+    public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options) => writer.WriteBooleanValue(value);
 
     public override bool Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
         reader.TokenType switch

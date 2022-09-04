@@ -61,6 +61,7 @@ namespace StatisticsAnalysisTool.Network
         private readonly JoinResponseHandler _joinResponseHandler;
         private readonly GetMailInfosResponseHandler _getMailInfosResponseHandler;
         private readonly ReadMailResponseHandler _readMailResponseHandler;
+        private readonly AuctionGetOffersResponseHandler _auctionGetOffersResponseHandler;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
@@ -110,6 +111,7 @@ namespace StatisticsAnalysisTool.Network
             _joinResponseHandler = new JoinResponseHandler(trackingController, mainWindowViewModel);
             _getMailInfosResponseHandler = new GetMailInfosResponseHandler(trackingController);
             _readMailResponseHandler = new ReadMailResponseHandler(trackingController);
+            _auctionGetOffersResponseHandler = new AuctionGetOffersResponseHandler(trackingController);
         }
 
         #region Actions
@@ -291,6 +293,9 @@ namespace StatisticsAnalysisTool.Network
                         return;
                     case OperationCodes.ReadMail:
                         await ReadMailResponseHandlerAsync(parameters);
+                        return;
+                    case OperationCodes.AuctionGetOffers:
+                        await AuctionGetOffersResponseHandlerAsync(parameters);
                         return;
                 }
             });
@@ -584,6 +589,12 @@ namespace StatisticsAnalysisTool.Network
         {
             var value = new ReadMailResponse(parameters);
             await _readMailResponseHandler.OnActionAsync(value);
+        }
+
+        private async Task AuctionGetOffersResponseHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new AuctionGetOffersResponse(parameters);
+            await _auctionGetOffersResponseHandler.OnActionAsync(value);
         }
 
         #endregion
