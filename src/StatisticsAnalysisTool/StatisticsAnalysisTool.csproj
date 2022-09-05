@@ -142,6 +142,9 @@
     <Resource Include="Assets\blue_glow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\dungeon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\empty_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -537,6 +540,7 @@
     <None Remove="Assets\ava_chest.png" />
     <None Remove="Assets\bg01.png" />
     <None Remove="Assets\blue_glow.png" />
+    <None Remove="Assets\dungeon.png" />
     <None Remove="Assets\empty_icon.png" />
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />

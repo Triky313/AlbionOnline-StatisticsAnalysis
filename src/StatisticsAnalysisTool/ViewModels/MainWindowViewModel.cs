@@ -626,8 +626,9 @@ namespace StatisticsAnalysisTool.ViewModels
             await TrackingController?.DungeonController?.LoadDungeonFromFileAsync()!;
             await TrackingController?.VaultController?.LoadFromFileAsync()!;
 
-            TrackingController?.DungeonController?.SetDungeonStatsDayUi();
-            TrackingController?.DungeonController?.SetDungeonStatsTotalUi();
+            TrackingController?.DungeonController?.UpdateDungeonStatsUi();
+            TrackingController?.DungeonController?.SetDungeonStatsUi();
+            TrackingController?.DungeonController?.UpdateDungeonChestsUi();
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
 
             TrackingController?.ClusterController.RegisterEvents();
