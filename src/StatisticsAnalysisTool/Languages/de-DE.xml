@@ -641,4 +641,7 @@
 	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Bezahltes Silber für ReSpec pro Stunde</translation>
 	<translation name="RESET_TODAYS_DUNGEONS">Heutige Dugeons zurücksetzen</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEONS">Sicher, dass du Dungeons zurücksetzen möchtest?</translation>
+	<translation name="DELETE_AND_RESET">Löschen und zurücksetzen</translation>
+	<translation name="DUNGEON_STATS">Dungeon Statistiken</translation>
+	<translation name="CHEST_STATS">Truhen Statistiken</translation>
 </translations>

@@ -33,8 +33,8 @@ namespace StatisticsAnalysisTool.Models
         {
             _trackingController = trackingController;
 
-            _trackingController?.DungeonController?.SetDungeonStatsDayUi();
-            _trackingController?.DungeonController?.SetDungeonStatsTotalUi();
+            _trackingController?.DungeonController?.UpdateDungeonStatsUi();
+            _trackingController?.DungeonController?.UpdateDungeonChestsUi();
         }
 
         public bool? SoloCheckbox {

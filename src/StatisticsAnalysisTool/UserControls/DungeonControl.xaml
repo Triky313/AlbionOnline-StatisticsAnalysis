@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800"
+             d:DesignHeight="1600" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
     <Grid>
         <Grid.RowDefinitions>
@@ -21,21 +21,31 @@
         <Grid Row="0" Margin="0,5,0,6" Grid.RowSpan="2">
             <ScrollViewer>
                 <Grid>
-                    <StackPanel Height="auto" VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <ContentPresenter ContentTemplate="{StaticResource DungeonStatsTemplate}" Content="{Binding DungeonBindings.DungeonStatsTotal}"/>
-                        <ContentPresenter ContentTemplate="{StaticResource DungeonStatsTemplate}" Content="{Binding DungeonBindings.DungeonStatsDay}"/>
-                        <ContentPresenter ContentTemplate="{StaticResource DungeonStatsFilterTemplate}" Content="{Binding DungeonBindings.DungeonStatsFilter}"/>
+                    <StackPanel Orientation="Vertical">
+                        <ComboBox Width="200" Height="26" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  ItemsSource="{Binding DungeonBindings.DungeonStatTimeTypes}" 
+                                  SelectedItem="{Binding DungeonBindings.DungeonStatTimeSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="DungeonStatTimeType" />
+                        <ContentPresenter ContentTemplate="{StaticResource DungeonGeneralStatsTemplate}" Content="{Binding DungeonBindings}" Margin="0,10,0,0"/>
+
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+                            <ContentPresenter ContentTemplate="{StaticResource DungeonStatsFilterTemplate}" Content="{Binding DungeonBindings.DungeonStatsFilter}"/>
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" MinWidth="250" Margin="10,10,0,0">
+                                <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding DungeonBindings.Translation.DeleteAndReset, FallbackValue=DELETE__AND__RESET}" FontWeight="Bold"/>
+                                <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" 
+                                    Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
+                                <Button Content="{Binding Translation.ResetTodaysDungeons, FallbackValue=RESET__TODAYS__DUNGEONS}" Height="26" MaxWidth="500" 
+                                    Margin="0,2,0,5" Click="BtnResetTodaysDungeons_Click" />
+                                <Button Content="{Binding Translation.DeleteSelectedDungeons, FallbackValue=DELETE__SELECTED__DUNGEONS}" Height="26" MaxWidth="500" 
+                                    Margin="0,2,0,5" Click="BtnDeleteSelectedDungeons_Click" />
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
+
                     <StackPanel HorizontalAlignment="Right" Width="250" Height="auto" VerticalAlignment="Top">
                         <DockPanel Height="auto" VerticalAlignment="Top">
                             <ContentControl ContentTemplate="{StaticResource DungeonCloseTimerTemplate}" Content="{Binding DungeonBindings.DungeonCloseTimer}" />
                         </DockPanel>
-                        <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" MinWidth="80" 
-                                Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
-                        <Button Content="{Binding Translation.ResetTodaysDungeons, FallbackValue=RESET__TODAYS__DUNGEONS}" Height="26" MaxWidth="500" MinWidth="80" 
-                                Margin="0,2,0,5" Click="BtnResetTodaysDungeons_Click" />
-                        <Button Content="{Binding Translation.DeleteSelectedDungeons, FallbackValue=DELETE__SELECTED__DUNGEONS}" Height="26" MaxWidth="500" MinWidth="80" 
-                                Margin="0,2,0,5" Click="BtnDeleteSelectedDungeons_Click" />
                     </StackPanel>
                 </Grid>
             </ScrollViewer>

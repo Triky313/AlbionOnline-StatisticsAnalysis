@@ -15,10 +15,19 @@ namespace StatisticsAnalysisTool.Models
         private double _fame;
         private double _reSpec;
         private double _silver;
-        private string _translationTitle;
+        private double _might;
+        private double _favor;
         private double _fameAverage;
         private double _reSpecAverage;
         private double _silverAverage;
+        private double _mightAverage;
+        private double _favorAverage;
+        private double _famePerHour;
+        private double _reSpecPerHour;
+        private double _silverPerHour;
+        private double _mightPerHour;
+        private double _favorPerHour;
+        private int _dungeonRunTimeTotal;
 
         public int EnteredDungeon
         {
@@ -26,6 +35,22 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _enteredDungeon = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int DungeonRunTimeTotal
+        {
+            get => _dungeonRunTimeTotal;
+            set
+            {
+                _dungeonRunTimeTotal = value;
+
+                FamePerHour = Utilities.GetValuePerHourToDouble(Fame, _dungeonRunTimeTotal);
+                ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, _dungeonRunTimeTotal);
+                SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, _dungeonRunTimeTotal);
+                MightPerHour = Utilities.GetValuePerHourToDouble(Might, _dungeonRunTimeTotal);
+                FavorPerHour = Utilities.GetValuePerHourToDouble(Favor, _dungeonRunTimeTotal);
                 OnPropertyChanged();
             }
         }
@@ -70,38 +95,113 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public double Fame {
+        public double Fame 
+        {
             get => _fame;
             set
             {
                 _fame = value;
-
-                FameAverage = (value / EnteredDungeon).ToShortNumber(99999999.99);
+                FameAverage = (_fame / EnteredDungeon).ToShortNumber(99999999.99);
                 OnPropertyChanged();
             }
         }
 
-        public double ReSpec {
+        public double ReSpec 
+        {
             get => _reSpec;
             set
             {
                 _reSpec = value;
-                ReSpecAverage = (value / EnteredDungeon).ToShortNumber(99999999.99);
+                ReSpecAverage = (_reSpec / EnteredDungeon).ToShortNumber(99999999.99);
                 OnPropertyChanged();
             }
         }
 
-        public double Silver {
+        public double Silver 
+        {
             get => _silver;
             set
             {
                 _silver = value;
-                SilverAverage = (value / EnteredDungeon).ToShortNumber(99999999.99);
+                SilverAverage = (_silver / EnteredDungeon).ToShortNumber(99999999.99);
                 OnPropertyChanged();
             }
         }
 
-        public double FameAverage {
+        public double Might
+        {
+            get => _might;
+            set
+            {
+                _might = value;
+                MightAverage = (_might / EnteredDungeon).ToShortNumber(99999999.99);
+                OnPropertyChanged();
+            }
+        }
+
+        public double Favor 
+        {
+            get => _favor;
+            set
+            {
+                _favor = value;
+                FavorAverage = (_favor / EnteredDungeon).ToShortNumber(99999999.99);
+                OnPropertyChanged();
+            }
+        }
+
+        public double FamePerHour
+        {
+            get => _famePerHour;
+            set
+            {
+                _famePerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double ReSpecPerHour
+        {
+            get => _reSpecPerHour;
+            set
+            {
+                _reSpecPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double SilverPerHour
+        {
+            get => _silverPerHour;
+            set
+            {
+                _silverPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double MightPerHour
+        {
+            get => _mightPerHour;
+            set
+            {
+                _mightPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double FavorPerHour
+        {
+            get => _favorPerHour;
+            set
+            {
+                _favorPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double FameAverage 
+        {
             get => _fameAverage;
             set
             {
@@ -110,7 +210,8 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public double ReSpecAverage {
+        public double ReSpecAverage 
+        {
             get => _reSpecAverage;
             set
             {
@@ -119,7 +220,8 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public double SilverAverage {
+        public double SilverAverage 
+        {
             get => _silverAverage;
             set
             {
@@ -127,27 +229,32 @@ namespace StatisticsAnalysisTool.Models
                 OnPropertyChanged();
             }
         }
-
-        public string TranslationTitle {
-            get => _translationTitle;
+        
+        public double MightAverage 
+        {
+            get => _mightAverage;
             set
             {
-                _translationTitle = value;
+                _mightAverage = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public double FavorAverage 
+        {
+            get => _favorAverage;
+            set
+            {
+                _favorAverage = value;
                 OnPropertyChanged();
             }
         }
 
-        public static string TranslationEnteredDungeon => LanguageController.Translation("ENTERED_DUNGEON");
-        public static string TranslationOpenedStandardChests => LanguageController.Translation("OPENED_STANDARD_CHESTS");
-        public static string TranslationOpenedUncommonChests => LanguageController.Translation("OPENED_UNCOMMON_CHESTS");
-        public static string TranslationOpenedRareChests => LanguageController.Translation("OPENED_RARE_CHESTS");
-        public static string TranslationOpenedLegendaryChests => LanguageController.Translation("OPENED_LEGENDARY_CHESTS");
         public static string TranslationFame => LanguageController.Translation("FAME");
         public static string TranslationReSpec => LanguageController.Translation("RESPEC");
         public static string TranslationSilver => LanguageController.Translation("SILVER");
-        public static string TranslationAverageFame => LanguageController.Translation("AVERAGE_FAME");
-        public static string TranslationAverageReSpec => LanguageController.Translation("AVERAGE_RESPEC");
-        public static string TranslationAverageSilver => LanguageController.Translation("AVERAGE_SILVER");
+        public static string TranslationMight => LanguageController.Translation("MIGHT");
+        public static string TranslationFavor => LanguageController.Translation("FAVOR");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -641,4 +641,7 @@
 	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Paid Silver for ReSpec per hour</translation>
 	<translation name="RESET_TODAYS_DUNGEONS">Reset today's dungeons</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEONS">Are you sure you want to reset dungeons?</translation>
+	<translation name="DELETE_AND_RESET">Delete and reset</translation>
+	<translation name="DUNGEON_STATS">Dungeon Stats</translation>
+	<translation name="CHEST_STATS">Chest Stats</translation>
 </translations>

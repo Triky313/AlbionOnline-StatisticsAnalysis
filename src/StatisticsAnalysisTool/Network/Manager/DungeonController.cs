@@ -101,8 +101,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
 
-            SetDungeonStatsDayUi();
-            SetDungeonStatsTotalUi();
+            UpdateDungeonStatsUi();
+            UpdateDungeonChestsUi();
         }
 
         private void UpdateDungeonSaveTimerUi(MapType mapType = MapType.Unknown)
@@ -155,8 +155,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 }
             }
 
-            SetDungeonStatsDayUi();
-            SetDungeonStatsTotalUi();
+            UpdateDungeonChestsUi();
         }
 
         public async Task SetDungeonEventObjectInformationAsync(int id, string uniqueName)
@@ -265,62 +264,142 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private double GetFame(DateTime? dateTime)
         {
-            return _dungeons.Where(x => (x.EnterDungeonFirstTime > dateTime || dateTime == null)
-                                        && ((_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters != null
-                                             && _mainWindowViewModel.DungeonBindings.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
-                                            || _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters == null)).Select(x => x.Fame).Sum();
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
+                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                .Select(x => x.Fame).Sum();
         }
 
         private double GetReSpec(DateTime? dateTime)
         {
-            return _dungeons.Where(x => x.EnterDungeonFirstTime > dateTime || (dateTime == null
-                && ((_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters != null
-                     && _mainWindowViewModel.DungeonBindings.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
-                    || _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters == null))).Select(x => x.ReSpec).Sum();
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
+                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                .Select(x => x.ReSpec).Sum();
         }
 
         private double GetSilver(DateTime? dateTime)
         {
-            return _dungeons.Where(x => x.EnterDungeonFirstTime > dateTime || (dateTime == null
-                && ((_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters != null
-                     && _mainWindowViewModel.DungeonBindings.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
-                    || _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters == null))).Select(x => x.Silver).Sum();
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
+                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                .Select(x => x.Silver).Sum();
         }
 
-        public int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
+        private double GetMight(DateTime? dateTime)
         {
-            return _dungeons.Count(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime
-                                        && ((_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters != null
-                                             && _mainWindowViewModel.DungeonBindings.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
-                                            || _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters == null));
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
+                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                .Select(x => x.Might).Sum();
         }
 
-        public void SetDungeonStatsDayUi()
+        private double GetFavor(DateTime? dateTime)
         {
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.TranslationTitle = LanguageController.Translation("DAY");
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(
+                x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
+                   || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                .Select(x => x.Favor).Sum();
+        }
 
+        private int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
+        {
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Count(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)));
+        }
+        
+        private int GetDungeonsRunTime(DateTime dungeonIsNewerAsDateTime)
+        {
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)))
+                .Select(x => x.TotalRunTimeInSeconds)
+                .Sum();
+        }
+        
+        public void UpdateDungeonStatsUi()
+        {
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-7));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-30));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-365));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
+
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.DungeonRunTimeTotal = GetDungeonsRunTime(DateTime.UtcNow.AddDays(-1));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.DungeonRunTimeTotal = GetDungeonsRunTime(DateTime.UtcNow.AddDays(-7));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.DungeonRunTimeTotal = GetDungeonsRunTime(DateTime.UtcNow.AddDays(-30));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.DungeonRunTimeTotal = GetDungeonsRunTime(DateTime.UtcNow.AddDays(-365));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.DungeonRunTimeTotal = GetDungeonsRunTime(DateTime.UtcNow.AddYears(-10));
+            
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Fame = GetFame(DateTime.UtcNow.AddDays(-1));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.ReSpec = GetReSpec(DateTime.UtcNow.AddDays(-1));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Silver = GetSilver(DateTime.UtcNow.AddDays(-1));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Might = GetMight(DateTime.UtcNow.AddDays(-1));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Favor = GetFavor(DateTime.UtcNow.AddDays(-1));
+            
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Fame = GetFame(DateTime.UtcNow.AddDays(-7));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.ReSpec = GetReSpec(DateTime.UtcNow.AddDays(-7));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Silver = GetSilver(DateTime.UtcNow.AddDays(-7));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Might = GetMight(DateTime.UtcNow.AddDays(-7));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Favor = GetFavor(DateTime.UtcNow.AddDays(-7));
+            
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Fame = GetFame(DateTime.UtcNow.AddDays(-30));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.ReSpec = GetReSpec(DateTime.UtcNow.AddDays(-30));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Silver = GetSilver(DateTime.UtcNow.AddDays(-30));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Might = GetMight(DateTime.UtcNow.AddDays(-30));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Favor = GetFavor(DateTime.UtcNow.AddDays(-30));
+            
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Fame = GetFame(DateTime.UtcNow.AddDays(-365));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.ReSpec = GetReSpec(DateTime.UtcNow.AddDays(-365));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Silver = GetSilver(DateTime.UtcNow.AddDays(-365));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Might = GetMight(DateTime.UtcNow.AddDays(-365));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Favor = GetFavor(DateTime.UtcNow.AddDays(-365));
+            
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Fame = GetFame(null);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.ReSpec = GetReSpec(null);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Silver = GetSilver(null);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Might = GetMight(null);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Favor = GetFavor(null);
+        }
+
+        public void SetDungeonStatsUi()
+        {
+            if (_mainWindowViewModel.DungeonBindings.DungeonStatsSelection?.EnteredDungeon == null)
+            {
+                _mainWindowViewModel.DungeonBindings.DungeonStatsSelection = _mainWindowViewModel.DungeonBindings.DungeonStatsDay;
+            }
+        }
+
+        public void UpdateDungeonChestsUi()
+        {
             _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Standard);
             _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Uncommon);
             _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Rare);
             _mainWindowViewModel.DungeonBindings.DungeonStatsDay.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-1), TreasureRarity.Legendary);
-
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Fame = GetFame(DateTime.UtcNow.AddDays(-1));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.ReSpec = GetReSpec(DateTime.UtcNow.AddDays(-1));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Silver = GetSilver(DateTime.UtcNow.AddDays(-1));
-        }
-
-        public void SetDungeonStatsTotalUi()
-        {
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.TranslationTitle = LanguageController.Translation("TOTAL");
-
+            
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Standard);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Uncommon);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Rare);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-7), TreasureRarity.Legendary);
+            
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Standard);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Uncommon);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Rare);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-30), TreasureRarity.Legendary);
+            
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedStandardChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Standard);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedUncommonChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Uncommon);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedRareChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Rare);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.OpenedLegendaryChests = GetChests(DateTime.UtcNow.AddDays(-365), TreasureRarity.Legendary);
+            
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedStandardChests = GetChests(null, TreasureRarity.Standard);
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedUncommonChests = GetChests(null, TreasureRarity.Uncommon);
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedRareChests = GetChests(null, TreasureRarity.Rare);
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedLegendaryChests = GetChests(null, TreasureRarity.Legendary);
-
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Fame = GetFame(null);
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.ReSpec = GetReSpec(null);
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Silver = GetSilver(null);
         }
 
         public void SetDiedIfInDungeon(DiedObject dieObject)
@@ -561,9 +640,6 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task SetOrUpdateDungeonsDataUiAsync()
         {
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
-
             var orderedDungeon = _dungeons.OrderBy(x => x.EnterDungeonFirstTime).ToList();
             foreach (var dungeonObject in orderedDungeon)
             {
@@ -598,8 +674,8 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             await DungeonUiFilteringAsync();
 
-            SetDungeonStatsDayUi();
-            SetDungeonStatsTotalUi();
+            UpdateDungeonStatsUi();
+            UpdateDungeonChestsUi();
         }
 
         private static bool IsDungeonDifferenceToAnother(DungeonObject dungeonObject, DungeonNotificationFragment dungeonNotificationFragment)
@@ -621,14 +697,16 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private async Task DungeonUiFilteringAsync()
         {
-            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x => !_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status != DungeonStatus.Active)
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(
+                    x => !_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status != DungeonStatus.Active)
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
                 {
                     d.Visibility = Visibility.Collapsed;
                 });
 
-            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x => _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(
+                    x => _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
                 {
