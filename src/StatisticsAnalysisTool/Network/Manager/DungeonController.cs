@@ -113,8 +113,22 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void ResetDungeons()
         {
             _dungeons.Clear();
-
             Application.Current.Dispatcher.Invoke(() => { _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Clear(); });
+        }
+
+        public void ResetDungeonsByDateAscending(DateTime date)
+        {
+            var dungeonsToDelete = _dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
+            foreach (var dungeonObject in dungeonsToDelete ?? new List<DungeonObject>())
+            {
+                _dungeons?.Remove(dungeonObject);
+            }
+
+            var trackingDungeonsToDelete = _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
+            foreach (var dungeonObject in trackingDungeonsToDelete ?? new List<DungeonNotificationFragment>())
+            {
+                _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Remove(dungeonObject);
+            }
         }
 
         public void SetDungeonChestOpen(int id)
@@ -432,7 +446,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             await ResetAllBestValuesAsync(dungeons);
 
-            var highestFame = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Fame > 0).Select(x => x?.Fame).MaxAsync();
+            var highestFame = await dungeons.Where(x => x is {Status: DungeonStatus.Done, Fame: > 0}).Select(x => x?.Fame).MaxAsync();
             var bestDungeonFame = await dungeons.FirstOrDefaultAsync(x => x.Fame.CompareTo(highestFame) == 0);
 
             if (bestDungeonFame != null)
@@ -440,7 +454,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonFame.IsBestFame = true;
             }
 
-            var highestReSpec = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpec > 0).Select(x => x?.ReSpec).MaxAsync();
+            var highestReSpec = await dungeons.Where(x => x is {Status: DungeonStatus.Done, ReSpec: > 0}).Select(x => x?.ReSpec).MaxAsync();
             var bestDungeonReSpec = await dungeons.FirstOrDefaultAsync(x => x.ReSpec.CompareTo(highestReSpec) == 0);
 
             if (bestDungeonReSpec != null)
@@ -448,7 +462,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonReSpec.IsBestReSpec = true;
             }
 
-            var highestSilver = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Silver > 0).Select(x => x?.Silver).MaxAsync();
+            var highestSilver = await dungeons.Where(x => x is {Status: DungeonStatus.Done, Silver: > 0}).Select(x => x?.Silver).MaxAsync();
             var bestDungeonSilver = await dungeons.FirstOrDefaultAsync(x => x.Silver.CompareTo(highestSilver) == 0);
 
             if (bestDungeonSilver != null)
@@ -456,7 +470,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonSilver.IsBestSilver = true;
             }
 
-            var highestFactionFlags = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionFlags > 0).Select(x => x?.FactionFlags).MaxAsync();
+            var highestFactionFlags = await dungeons.Where(x => x is {Status: DungeonStatus.Done, FactionFlags: > 0}).Select(x => x?.FactionFlags).MaxAsync();
             var bestDungeonFlags = await dungeons.FirstOrDefaultAsync(x => x.FactionFlags.CompareTo(highestFactionFlags) == 0);
 
             if (bestDungeonFlags != null)
@@ -464,7 +478,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonFlags.IsBestFactionFlags = true;
             }
 
-            var highestFactionCoins = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionCoins > 0).Select(x => x?.FactionCoins).MaxAsync();
+            var highestFactionCoins = await dungeons.Where(x => x is {Status: DungeonStatus.Done, FactionCoins: > 0}).Select(x => x?.FactionCoins).MaxAsync();
             var bestDungeonCoins = await dungeons.FirstOrDefaultAsync(x => x.FactionCoins.CompareTo(highestFactionCoins) == 0);
 
             if (bestDungeonCoins != null)
@@ -472,7 +486,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonCoins.IsBestFactionCoins = true;
             }
 
-            var highestMight = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Might > 0).Select(x => x?.Might).MaxAsync();
+            var highestMight = await dungeons.Where(x => x is {Status: DungeonStatus.Done, Might: > 0}).Select(x => x?.Might).MaxAsync();
             var bestDungeonMight = await dungeons.FirstOrDefaultAsync(x => x.Might.CompareTo(highestMight) == 0);
 
             if (bestDungeonMight != null)
@@ -480,7 +494,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonMight.IsBestMight = true;
             }
 
-            var highestFavor = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.Favor > 0).Select(x => x?.Favor).MaxAsync();
+            var highestFavor = await dungeons.Where(x => x is {Status: DungeonStatus.Done, Favor: > 0}).Select(x => x?.Favor).MaxAsync();
             var bestDungeonFavor = await dungeons.FirstOrDefaultAsync(x => x.Favor.CompareTo(highestFavor) == 0);
 
             if (bestDungeonFavor != null)
@@ -488,7 +502,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonFavor.IsBestMightPerHour = true;
             }
 
-            var highestFamePerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FamePerHour > 0).Select(x => x?.FamePerHour).MaxAsync();
+            var highestFamePerHour = await dungeons.Where(x => x is {Status: DungeonStatus.Done, FamePerHour: > 0}).Select(x => x?.FamePerHour).MaxAsync();
             var bestDungeonFamePerHour = await dungeons.FirstOrDefaultAsync(x => x.FamePerHour.CompareTo(highestFamePerHour) == 0);
 
             if (bestDungeonFamePerHour != null)
@@ -496,7 +510,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonFamePerHour.IsBestFamePerHour = true;
             }
 
-            var highestReSpecPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.ReSpecPerHour > 0).Select(x => x?.ReSpecPerHour).MaxAsync();
+            var highestReSpecPerHour = await dungeons.Where(x => x is {Status: DungeonStatus.Done, ReSpecPerHour: > 0}).Select(x => x?.ReSpecPerHour).MaxAsync();
             var bestDungeonReSpecPerHour = await dungeons.FirstOrDefaultAsync(x => x.ReSpecPerHour.CompareTo(highestReSpecPerHour) == 0);
 
             if (bestDungeonReSpecPerHour != null)
@@ -504,7 +518,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonReSpecPerHour.IsBestReSpecPerHour = true;
             }
 
-            var highestSilverPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.SilverPerHour > 0).Select(x => x?.SilverPerHour).MaxAsync();
+            var highestSilverPerHour = await dungeons.Where(x => x is {Status: DungeonStatus.Done, SilverPerHour: > 0}).Select(x => x?.SilverPerHour).MaxAsync();
             var bestDungeonSilverPerHour = await dungeons.FirstOrDefaultAsync(x => x.SilverPerHour.CompareTo(highestSilverPerHour) == 0);
 
             if (bestDungeonSilverPerHour != null)
@@ -512,7 +526,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonSilverPerHour.IsBestSilverPerHour = true;
             }
 
-            var highestFactionFlagsPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionFlagsPerHour > 0).Select(x => x?.FactionFlagsPerHour).MaxAsync();
+            var highestFactionFlagsPerHour = await dungeons.Where(x => x is {Status: DungeonStatus.Done, FactionFlagsPerHour: > 0}).Select(x => x?.FactionFlagsPerHour).MaxAsync();
             var bestDungeonFactionFlagsPerHour = await dungeons.FirstOrDefaultAsync(x => x.FactionFlagsPerHour.CompareTo(highestFactionFlagsPerHour) == 0);
 
             if (bestDungeonFactionFlagsPerHour != null)
@@ -520,7 +534,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonFactionFlagsPerHour.IsBestFactionFlagsPerHour = true;
             }
 
-            var highestFactionCoinsPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FactionCoinsPerHour > 0).Select(x => x?.FactionCoinsPerHour).MaxAsync();
+            var highestFactionCoinsPerHour = await dungeons.Where(x => x is {Status: DungeonStatus.Done, FactionCoinsPerHour: > 0}).Select(x => x?.FactionCoinsPerHour).MaxAsync();
             var bestDungeonFactionCoinsPerHour = await dungeons.FirstOrDefaultAsync(x => x.FactionCoinsPerHour.CompareTo(highestFactionCoinsPerHour) == 0);
 
             if (bestDungeonFactionCoinsPerHour != null)
@@ -528,7 +542,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonFactionCoinsPerHour.IsBestFactionCoinsPerHour = true;
             }
 
-            var highestMightPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.MightPerHour > 0).Select(x => x?.MightPerHour).MaxAsync();
+            var highestMightPerHour = await dungeons.Where(x => x is {Status: DungeonStatus.Done, MightPerHour: > 0}).Select(x => x?.MightPerHour).MaxAsync();
             var bestDungeonMightPerHour = await dungeons.FirstOrDefaultAsync(x => x.MightPerHour.CompareTo(highestMightPerHour) == 0);
 
             if (bestDungeonMightPerHour != null)
@@ -536,7 +550,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 bestDungeonMightPerHour.IsBestMightPerHour = true;
             }
 
-            var highestFavorPerHour = await dungeons.Where(x => x?.Status == DungeonStatus.Done && x.FavorPerHour > 0).Select(x => x?.FavorPerHour).MaxAsync();
+            var highestFavorPerHour = await dungeons.Where(x => x is {Status: DungeonStatus.Done, FavorPerHour: > 0}).Select(x => x?.FavorPerHour).MaxAsync();
             var bestDungeonFavorPerHour = await dungeons.FirstOrDefaultAsync(x => x.FavorPerHour.CompareTo(highestFavorPerHour) == 0);
 
             if (bestDungeonFavorPerHour != null)
@@ -724,7 +738,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return null;
             }
         }
-
+        
         #region Load / Save file data
 
         public async Task LoadDungeonFromFileAsync()
