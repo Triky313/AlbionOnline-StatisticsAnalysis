@@ -697,14 +697,16 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private async Task DungeonUiFilteringAsync()
         {
-            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x => !_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status != DungeonStatus.Active)
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(
+                    x => !_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status != DungeonStatus.Active)
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
                 {
                     d.Visibility = Visibility.Collapsed;
                 });
 
-            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x => _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(
+                    x => _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
                 {
