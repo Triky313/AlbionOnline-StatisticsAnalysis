@@ -1,4 +1,11 @@
 [
+    {
+	"Timestamp": "2022-09-05T00:00:00",
+	"Amount": 13000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "Rushbro",
+	"IsDonationRealMoney": false
+   },
    {
 	"Timestamp": "2022-09-04T00:00:00",
 	"Amount": 1070000,
