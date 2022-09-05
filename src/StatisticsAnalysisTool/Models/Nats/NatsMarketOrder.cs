@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Models.NetworkModel;
 using System.Globalization;
 using System.Text.Json.Serialization;
+using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models.Nats;
 
@@ -14,10 +15,10 @@ public class NatsMarketOrder
         LocationId = locationId;
         QualityLevel = auctionGetOffer.QualityLevel;
         EnchantmentLevel = auctionGetOffer.EnchantmentLevel;
-        Price = (int)auctionGetOffer.UnitPriceSilver;
+        Price = (int) FixPoint.FromInternalValue(auctionGetOffer.UnitPriceSilver).IntegerValue;
         Amount = auctionGetOffer.Amount;
         AuctionType = auctionGetOffer.AuctionType;
-        Expires = auctionGetOffer.Expires.ToString(CultureInfo.CurrentCulture);
+        Expires = auctionGetOffer.Expires.ToString("O");
 
     }
 
