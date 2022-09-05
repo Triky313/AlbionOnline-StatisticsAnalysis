@@ -637,6 +637,8 @@
 	<translation name="DELETE_MAILS_AFTER_365_DAYS">Lösche Nachricht nach 365 Tagen</translation>
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Mails mit 0 Werten nicht berücksichtigen</translation>
 	<translation name="CHECK_FOR_UPDATE">Suche nach Update</translation>
-	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Bezahltes Silber für ReSpec diese Session</translation>
+	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Bezahltes Silber für ReSpec diese Sitzung</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Bezahltes Silber für ReSpec pro Stunde</translation>
+	<translation name="RESET_TODAYS_DUNGEONS">Heutige Dugeons zurücksetzen</translation>
+	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEONS">Sicher, dass du Dungeons zurücksetzen möchtest?</translation>
 </translations>

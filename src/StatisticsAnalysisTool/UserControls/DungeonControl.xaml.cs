@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using System;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Linq;
@@ -16,23 +17,6 @@ namespace StatisticsAnalysisTool.UserControls
             InitializeComponent();
         }
 
-        public void ResetDungeonCounters()
-        {
-            var vm = (MainWindowViewModel)DataContext;
-
-            vm.DungeonBindings.DungeonStatsTotal.EnteredDungeon = 0;
-            vm.DungeonBindings.DungeonStatsTotal.OpenedStandardChests = 0;
-            vm.DungeonBindings.DungeonStatsTotal.OpenedUncommonChests = 0;
-            vm.DungeonBindings.DungeonStatsTotal.OpenedRareChests = 0;
-            vm.DungeonBindings.DungeonStatsTotal.OpenedLegendaryChests = 0;
-
-            vm.DungeonBindings.DungeonStatsDay.EnteredDungeon = 0;
-            vm.DungeonBindings.DungeonStatsDay.OpenedStandardChests = 0;
-            vm.DungeonBindings.DungeonStatsDay.OpenedUncommonChests = 0;
-            vm.DungeonBindings.DungeonStatsDay.OpenedRareChests = 0;
-            vm.DungeonBindings.DungeonStatsDay.OpenedLegendaryChests = 0;
-        }
-
         public void ResetDungeons()
         {
             var dialog = new DialogWindow(LanguageController.Translation("RESET_DUNGEON_TRACKER"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER"));
@@ -43,6 +27,21 @@ namespace StatisticsAnalysisTool.UserControls
             if (dialogResult is true)
             {
                 vm?.TrackingController.DungeonController.ResetDungeons();
+                vm?.TrackingController.DungeonController.SetOrUpdateDungeonsDataUiAsync();
+            }
+        }
+
+        public void ResetTodaysDungeons()
+        {
+            var dialog = new DialogWindow(LanguageController.Translation("RESET_TODAYS_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_RESET_DUNGEONS"));
+            var dialogResult = dialog.ShowDialog();
+
+            var vm = (MainWindowViewModel)DataContext;
+
+            if (dialogResult is true)
+            {
+                vm?.TrackingController.DungeonController.ResetDungeonsByDateAscending(DateTime.UtcNow.Date);
+                vm?.TrackingController.DungeonController.SetOrUpdateDungeonsDataUiAsync();
             }
         }
 
@@ -64,8 +63,12 @@ namespace StatisticsAnalysisTool.UserControls
 
         private void BtnDungeonTrackingReset_Click(object sender, RoutedEventArgs e)
         {
-            ResetDungeonCounters();
             ResetDungeons();
+        }
+
+        private void BtnResetTodaysDungeons_Click(object sender, RoutedEventArgs e)
+        {
+            ResetTodaysDungeons();
         }
 
         private void BtnDeleteSelectedDungeons_Click(object sender, RoutedEventArgs e)

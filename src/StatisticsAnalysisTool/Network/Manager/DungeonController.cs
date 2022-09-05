@@ -113,8 +113,22 @@ namespace StatisticsAnalysisTool.Network.Manager
         public void ResetDungeons()
         {
             _dungeons.Clear();
-
             Application.Current.Dispatcher.Invoke(() => { _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Clear(); });
+        }
+
+        public void ResetDungeonsByDateAscending(DateTime date)
+        {
+            var dungeonsToDelete = _dungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
+            foreach (var dungeonObject in dungeonsToDelete ?? new List<DungeonObject>())
+            {
+                _dungeons?.Remove(dungeonObject);
+            }
+
+            var trackingDungeonsToDelete = _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x => x.EnterDungeonFirstTime >= date).ToList();
+            foreach (var dungeonObject in trackingDungeonsToDelete ?? new List<DungeonNotificationFragment>())
+            {
+                _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Remove(dungeonObject);
+            }
         }
 
         public void SetDungeonChestOpen(int id)
@@ -724,7 +738,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return null;
             }
         }
-
+        
         #region Load / Save file data
 
         public async Task LoadDungeonFromFileAsync()

@@ -639,4 +639,6 @@
 	<translation name="CHECK_FOR_UPDATE">Check for update</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Paid Silver for ReSpec this session</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Paid Silver for ReSpec per hour</translation>
+	<translation name="RESET_TODAYS_DUNGEONS">Reset today's dungeons</translation>
+	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEONS">Are you sure you want to reset dungeons?</translation>
 </translations>
