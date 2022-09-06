@@ -11,7 +11,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using log4net;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Network.Operations.Requests;
 
 namespace StatisticsAnalysisTool.Network
 {
@@ -241,7 +240,7 @@ namespace StatisticsAnalysisTool.Network
             }
         }
 
-        protected override void OnRequest(byte operationCode, Dictionary<byte, object> parameters)
+        protected override async void OnRequest(byte operationCode, Dictionary<byte, object> parameters)
         {
             var opCode = ParseOperationCode(parameters);
 
@@ -250,21 +249,18 @@ namespace StatisticsAnalysisTool.Network
                 return;
             }
 
-            Task.Run(async () =>
+            switch (opCode)
             {
-                switch (opCode)
-                {
-                    case OperationCodes.UseShrine:
-                        await UseShrineRequestHandlerAsync(parameters);
-                        return;
-                    case OperationCodes.ReSpecBoost:
-                        await ReSpecBoostHandlerAsync(parameters);
-                        return;
-                }
-            });
+                case OperationCodes.UseShrine:
+                    await UseShrineRequestHandlerAsync(parameters);
+                    return;
+                case OperationCodes.ReSpecBoost:
+                    await ReSpecBoostHandlerAsync(parameters);
+                    return;
+            }
         }
 
-        protected override void OnResponse(byte operationCode, short returnCode, string debugMessage, Dictionary<byte, object> parameters)
+        protected override async void OnResponse(byte operationCode, short returnCode, string debugMessage, Dictionary<byte, object> parameters)
         {
             var opCode = ParseOperationCode(parameters);
 
@@ -273,27 +269,24 @@ namespace StatisticsAnalysisTool.Network
                 return;
             }
 
-            Task.Run(async () =>
+            switch (opCode)
             {
-                switch (opCode)
-                {
-                    case OperationCodes.ChangeCluster:
-                        await ChangeClusterResponseHandlerAsync(parameters);
-                        return;
-                    case OperationCodes.PartyMakeLeader:
-                        await PartyMakeLeaderResponseHandlerAsync(parameters);
-                        return;
-                    case OperationCodes.Join:
-                        await JoinResponseHandlerAsync(parameters);
-                        return;
-                    case OperationCodes.GetMailInfos:
-                        await GetMailInfosResponseHandlerAsync(parameters);
-                        return;
-                    case OperationCodes.ReadMail:
-                        await ReadMailResponseHandlerAsync(parameters);
-                        return;
-                }
-            });
+                case OperationCodes.ChangeCluster:
+                    await ChangeClusterResponseHandlerAsync(parameters);
+                    return;
+                case OperationCodes.PartyMakeLeader:
+                    await PartyMakeLeaderResponseHandlerAsync(parameters);
+                    return;
+                case OperationCodes.Join:
+                    await JoinResponseHandlerAsync(parameters);
+                    return;
+                case OperationCodes.GetMailInfos:
+                    await GetMailInfosResponseHandlerAsync(parameters);
+                    return;
+                case OperationCodes.ReadMail:
+                    await ReadMailResponseHandlerAsync(parameters);
+                    return;
+            }
         }
 
         #endregion
