@@ -67,6 +67,11 @@ namespace StatisticsAnalysisTool.Common
             return null;
         }
 
+        public static ulong? ObjectToUlong(this object value)
+        {
+            return value as byte? ?? value as ushort? ?? value as uint? ?? value as ulong?;
+        }
+
         public static long? ObjectToLong(this object value)
         {
             return value as byte? ?? value as short? ?? value as int? ?? value as long?;

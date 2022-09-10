@@ -571,6 +571,22 @@ namespace StatisticsAnalysisTool.Common
 
         #endregion
 
+        #region Estimated market value
+
+        public static void SetEstimatedMarketValue(string uniqueName, long estimatedMarketValueInternal, DateTime timestamp)
+        {
+            var item = GetItemByUniqueName(uniqueName);
+            if (item == null)
+            {
+                return;
+            }
+
+            item.LastEstimatedMarketValueUpdate = timestamp;
+            item.EstimatedMarketValue = FixPoint.FromInternalValue(estimatedMarketValueInternal);
+        }
+
+        #endregion
+
         #region Util methods
 
         private static void DeleteLocalFile(string localFileString)

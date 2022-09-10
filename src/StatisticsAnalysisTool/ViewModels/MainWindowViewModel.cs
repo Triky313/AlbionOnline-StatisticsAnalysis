@@ -625,14 +625,15 @@ namespace StatisticsAnalysisTool.ViewModels
             await TrackingController?.TreasureController?.LoadFromFileAsync()!;
             await TrackingController?.DungeonController?.LoadDungeonFromFileAsync()!;
             await TrackingController?.VaultController?.LoadFromFileAsync()!;
+            await TrackingController?.LootController?.LoadFromFileAsync()!;
 
             TrackingController?.DungeonController?.UpdateDungeonStatsUi();
             TrackingController?.DungeonController?.SetDungeonStatsUi();
             TrackingController?.DungeonController?.UpdateDungeonChestsUi();
             TrackingController?.DungeonController?.SetOrUpdateDungeonsDataUiAsync();
 
-            TrackingController?.ClusterController.RegisterEvents();
-            TrackingController?.LootController.RegisterEvents();
+            TrackingController?.ClusterController?.RegisterEvents();
+            TrackingController?.LootController?.RegisterEvents();
             TrackingController?.TreasureController?.RegisterEvents();
 
             TrackingController?.LiveStatsTracker.Start();
@@ -657,6 +658,7 @@ namespace StatisticsAnalysisTool.ViewModels
             await TrackingController?.VaultController?.SaveInFileAsync()!;
             await TrackingController?.TreasureController?.SaveInFileAsync()!;
             await TrackingController?.StatisticController?.SaveInFileAsync()!;
+            await TrackingController?.LootController?.SaveInFileAsync()!;
 
             await FileController.SaveAsync(MailMonitoringBindings?.Mails?.ToList(), $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}");
             await FileController.SaveAsync(DamageMeterBindings?.DamageMeterSnapshots, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.DamageMeterSnapshotsFileName}");

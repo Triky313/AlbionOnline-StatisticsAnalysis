@@ -46,6 +46,11 @@ namespace StatisticsAnalysisTool.Common
             return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
         }
 
+        public static string LongMarketPriceToString(long value)
+        {
+            return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        }
+
         // TODO: Can be removed
         public static string MarketPriceDateToString(DateTime value)
         {

@@ -26,6 +26,8 @@ namespace StatisticsAnalysisTool.Network.Handler
                 ItemIndex = value.Item.ItemIndex,
                 SpellDictionary = value.Item.SpellDictionary
             });
+
+            _trackingController.LootController.AddEstimatedMarketValue(value.Item.ItemIndex, value.Item.EstimatedMarketValue.InternalValue);
             await Task.CompletedTask;
         }
     }

@@ -25,14 +25,14 @@ namespace StatisticsAnalysisTool.Enumerations
         CastHits,
         ChannelingEnded,
         AttackBuilding,
-        InventoryPutItem = 25, //  map[0:652 1:6 2:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 3:17 252:23] (0: ObjectId, 2: UserId)
+        InventoryPutItem = 25, //  map[0:652 1:6 2:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 3:17 252:23] (0: ObjectId, 1: Inventory slot (no value is slot 0), 2: InteractGuid)
         InventoryDeleteItem = 26, // map[0:754 1:48 252:24] (0: ObjectId) 
         NewCharacter = 27,
-        NewEquipmentItem = 28, //  map[0:657 1:2036 2:1 4:28169331 5:Apolo540 6:3 7:90000000 8:[] 9:[0] 252:27] (0: ObjectId, 1: ItemId, 2: Amount, 4: Avarage Market Price, 5: CrafterName)
-        NewSimpleItem = 29, //  map[0:505 1:7006 2:1 3:true 4:29033970 252:27] (0: ObjectId, 1: ItemId, 2: Amount)
+        NewEquipmentItem = 28, //  map[0:657 1:2036 2:1 4:28169331 5:Apolo540 6:3 7:90000000 8:[] 9:[0] 252:27] (0: ObjectId, 1: ItemId, 2: Amount, 4: Est. market value, 5: CrafterName)
+        NewSimpleItem = 29, //  map[0:505 1:7006 2:1 3:true 4:29033970 252:27] (0: ObjectId, 1: ItemId, 2: Amount, 4: Est. market value)
         NewFurnitureItem = 30,
         NewJournalItem = 31,
-        NewLaborerItem = 32,
+        NewLaborerItem = 32, // [0:513 1:7996 2:4 4:522947156 5: 6:10000 7:72000000 252:32]
         NewSimpleHarvestableObject,
         NewSimpleHarvestableObjectList,
         NewHarvestableObject,
@@ -370,7 +370,7 @@ namespace StatisticsAnalysisTool.Enumerations
         TriggerHintBox,
         RandomDungeonPositionInfo,
         NewLootChest = 370, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367] // map[0:4399 1:[165 -263] 3:TREASURE_SOLO_UNCOMMON 4:SWAMP_DEAD_LOOTCHEST_TREASURE_SOLO_UNCOMMON 5:4 6:637926439332719127 7:[] 8:[] 13:true 14:SWAMP_DEAD_TREASURE_SOLO 16:31ff503a-ded6-53d6-974a-7e32e3126457 252:370]
-        UpdateLootChest = 371, // 0=ObjectId, 3=PlayerGuid, 4=PlayerGuid map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
+        UpdateLootChest = 371, // 0=ObjectId, 3=PlayerGuid, 4=PlayerGuid, 7=Free4All map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
         LootChestOpened = 372, // map[0:23 252:369]
         NewShrine = 374, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
         UpdateShrine = 375, // map[0:19 1:2 2:637734313445294913 252:372]
