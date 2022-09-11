@@ -50,13 +50,7 @@ namespace StatisticsAnalysisTool.Common
         {
             return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
         }
-
-        // TODO: Can be removed
-        public static string MarketPriceDateToString(DateTime value)
-        {
-            return Formatting.CurrentDateTimeFormat(value);
-        }
-
+        
         public static double GetValuePerHourToDouble(double value, double seconds)
         {
             try

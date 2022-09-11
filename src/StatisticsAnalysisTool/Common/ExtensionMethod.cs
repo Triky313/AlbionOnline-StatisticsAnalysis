@@ -235,6 +235,12 @@ namespace StatisticsAnalysisTool.Common
 
         #region DateTime
 
+        public static string CurrentDateTimeFormat(this DateTime value)
+        {
+            return DateTime.SpecifyKind(value, DateTimeKind.Utc).ToLocalTime()
+                .ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        }
+
         public static string DateTimeToLastUpdateTime(this DateTime dateTime)
         {
             var endTime = DateTime.UtcNow;

@@ -40,25 +40,25 @@ public class MarketCurrentPricesItem
     public string SellPriceMinString => Utilities.UlongMarketPriceToString(SellPriceMin);
     public DateTime SellPriceMinDate { get; set; }
     public ValueTimeStatus SellPriceMinDateStatus => SellPriceMinDate.GetValueTimeStatus();
-    public string SellPriceMinDateString => Utilities.MarketPriceDateToString(SellPriceMinDate);
+    public string SellPriceMinDateString => SellPriceMinDate.CurrentDateTimeFormat();
     public string SellPriceMinDateLastUpdateTime => SellPriceMinDate.DateTimeToLastUpdateTime();
     public ulong SellPriceMax { get; set; }
     public string SellPriceMaxString => Utilities.UlongMarketPriceToString(SellPriceMax);
     public DateTime SellPriceMaxDate { get; set; }
     public ValueTimeStatus SellPriceMaxDateStatus => SellPriceMaxDate.GetValueTimeStatus();
-    public string SellPriceMaxDateString => Utilities.MarketPriceDateToString(SellPriceMaxDate);
+    public string SellPriceMaxDateString => SellPriceMaxDate.CurrentDateTimeFormat();
     public string SellPriceMaxDateLastUpdateTime => SellPriceMaxDate.DateTimeToLastUpdateTime();
     public ulong BuyPriceMin { get; set; }
     public string BuyPriceMinString => Utilities.UlongMarketPriceToString(BuyPriceMin);
     public DateTime BuyPriceMinDate { get; set; }
     public ValueTimeStatus BuyPriceMinDateStatus => BuyPriceMinDate.GetValueTimeStatus();
-    public string BuyPriceMinDateString => Utilities.MarketPriceDateToString(BuyPriceMinDate);
+    public string BuyPriceMinDateString => BuyPriceMinDate.CurrentDateTimeFormat();
     public string BuyPriceMinDateLastUpdateTime => BuyPriceMinDate.DateTimeToLastUpdateTime();
     public ulong BuyPriceMax { get; set; }
     public string BuyPriceMaxString => Utilities.UlongMarketPriceToString(BuyPriceMax);
     public DateTime BuyPriceMaxDate { get; set; }
     public ValueTimeStatus BuyPriceMaxDateStatus => BuyPriceMaxDate.GetValueTimeStatus();
-    public string BuyPriceMaxDateString => Utilities.MarketPriceDateToString(BuyPriceMaxDate);
+    public string BuyPriceMaxDateString => BuyPriceMaxDate.CurrentDateTimeFormat();
     public string BuyPriceMaxDateLastUpdateTime => BuyPriceMaxDate.DateTimeToLastUpdateTime();
     public bool BestSellMinPrice { get; set; }
     public bool BestSellMaxPrice { get; set; }

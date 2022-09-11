@@ -753,7 +753,7 @@ namespace StatisticsAnalysisTool.ViewModels
             MarketCurrentPricesItemList = marketCurrentPricesItemList;
             SetAveragePricesString();
 
-            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {Formatting.CurrentDateTimeFormat(DateTime.Now)}";
+            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.CurrentDateTimeFormat()}";
         }
 
         private static List<MarketResponseTotal> PriceUpdate(List<MarketResponse> newStatsPricesList)
