@@ -50,7 +50,7 @@ namespace StatisticsAnalysisTool.Models
         [JsonIgnore]
         public string LastEstimatedUpdateTimeString => LastEstimatedMarketValueUpdate.DateTimeToLastUpdateTime();
         [JsonIgnore]
-        public ValueTimeStatus EstimatedMarketValueStatus => LastEstimatedMarketValueUpdate.GetValueTimeStatus();
+        public PastTime EstimatedMarketValueStatus => LastEstimatedMarketValueUpdate.GetPastTimeEnumByDateTime();
         [JsonIgnore]
         public FixPoint EstimatedMarketValue { get; set; }
         [JsonIgnore]

@@ -140,6 +140,14 @@
     <Color x:Key="Color.Value.Might.Transparent">#3360AEE2</Color>
     <Color x:Key="Color.Value.Favor.Transparent">#331D70A2</Color>
 
+    <!-- Time value color -->
+    <Color x:Key="TimeValue.PastTime.1">#FF08997A</Color>
+    <Color x:Key="TimeValue.PastTime.2">#FF76A130</Color>
+    <Color x:Key="TimeValue.PastTime.3">#FFF2AA18</Color>
+    <Color x:Key="TimeValue.PastTime.4">#FFED8C24</Color>
+    <Color x:Key="TimeValue.PastTime.5">#FFE66322</Color>
+    <Color x:Key="TimeValue.PastTime.6">#FFD93641</Color>
+
     <!-- Donation -->
     <Color x:Key="Color.Patreon">#FFFF424D</Color>
 
@@ -280,4 +288,12 @@
     <SolidColorBrush x:Key="SolidColorBrush.Console.Warning" Color="{StaticResource Color.Console.Warning}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Console.Event" Color="{StaticResource Color.Console.Event}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Console.MapChange" Color="{StaticResource Color.Console.MapChange}"/>
+
+    <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.1" Color="{StaticResource TimeValue.PastTime.1}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.2" Color="{StaticResource TimeValue.PastTime.2}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.3" Color="{StaticResource TimeValue.PastTime.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.4" Color="{StaticResource TimeValue.PastTime.4}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.5" Color="{StaticResource TimeValue.PastTime.5}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.6" Color="{StaticResource TimeValue.PastTime.6}"/>
+
 </ResourceDictionary>

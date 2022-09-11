@@ -25,27 +25,28 @@
                 <TextBlock TextWrapping="Wrap" Text="{Binding LocalizedNameAndEnglish}" />
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../Resources/silver.png" Width="12" Height="12" ToolTip="{Binding TranslationEstMarketValue}" />
-                    <Label Content="{Binding EstimatedMarketValueString}" />
-                    <Label Content="-" />
-                    <Label Content="{Binding LastEstimatedUpdateTimeString}" ToolTip="{Binding TranslationLastEstValueUpdate}">
+                    <Label Content="{Binding EstimatedMarketValueString}" ToolTip="{Binding LastEstimatedUpdateTimeString}">
                         <Label.Style>
                             <Style TargetType="{x:Type Label}">
                                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.NoValue}">
-                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}"/>
+                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:PastTime.VeryOld}">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.TimeValue.PastTime.6}"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldThird}">
-                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
+                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:PastTime.Old}">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.TimeValue.PastTime.5}"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldSecond}">
-                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.5}"/>
+                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:PastTime.BitOld}">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.TimeValue.PastTime.4}"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.ToOldFirst}">
-                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.4}"/>
+                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:PastTime.LittleNew}">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.TimeValue.PastTime.3}"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:ValueTimeStatus.Normal}">
-                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
+                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:PastTime.AlmostNew}">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.TimeValue.PastTime.2}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:PastTime.New}">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.TimeValue.PastTime.1}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
