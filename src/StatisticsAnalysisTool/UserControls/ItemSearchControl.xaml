@@ -41,37 +41,12 @@
                   Margin="0,97,0,0" SelectionMode="Single" MouseDoubleClick="LvItems_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="{Binding Translation.Icon, FallbackValue=ICON}" Width="80">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Image Source="{Binding (viewModels:ItemWindowViewModel.Icon)}" Width="75" Height="75" Stretch="Fill" />
-                                </Grid>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <GridViewColumn Header="{Binding Translation.Name, FallbackValue=NAME}" Width="400">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <!--TODO: Besser anzeigen, Aufbau für die gesamte Liste vielleicht wie im ItemView?-->
-                                    <StackPanel Orientation="Vertical">
-                                        <Label Content="{Binding (models:Item.LocalizedNameAndEnglish)}" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="../Resources/silver.png" Width="18" Height="18" />
-                                            <Label Content="{Binding (models:Item.EstimatedMarketValueString)}" />
-                                            <Label Content="{Binding (models:Item.LastEstimatedMarketValueUpdate)}" />
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
+                    <GridViewColumn Header="{Binding Translation.Icon, FallbackValue=ICON}" Width="80" CellTemplate="{StaticResource ItemSearch.GridViewColumnIconTemplate}"/>
+                    <GridViewColumn Header="{Binding Translation.Name, FallbackValue=NAME}" Width="400" CellTemplate="{StaticResource ItemSearch.GridViewColumnNameTemplate}" />
                     <GridViewColumn Header="{Binding Translation.IsAlertActive, FallbackValue=IS_ALERT_ACTIVE}" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
+                                <!--TODO: Rework alert toggles and without style in this file!-->
                                 <Grid Height="24" Width="24">
                                     <fa5:ImageAwesome Visibility="Visible" MouseUp="AlertModeAlertActiveToggle_MouseUp">
                                         <fa5:ImageAwesome.Style>
@@ -93,27 +68,9 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-
-                    <GridViewColumn Header="{Binding Translation.UndercuttingPrice, FallbackValue=UNDERCUTTING_PRICE}" Width="80">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <TextBox Text="{Binding (models:Item.AlertModeMinSellPriceIsUndercutPrice)}" 
-                                                         MaxLength="12" Height="24" Width="65" PreviewTextInput="TxtBoxMinSellPriceIsUndercutPrice_OnPreviewTextInput"/>
-                                </Grid>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <GridViewColumn Header="{Binding Translation.Favorite, FallbackValue=FAVORITE}" Width="80">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <CheckBox IsChecked="{Binding (models:Item.IsFavorite)}" />
-                                </Grid>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                    <GridViewColumn Header="{Binding Translation.UndercuttingPrice, FallbackValue=UNDERCUTTING_PRICE}" Width="80" 
+                                    CellTemplate="{StaticResource ItemSearch.GridViewColumnAlertMinSellPriceTemplate}" />
+                    <GridViewColumn Header="{Binding Translation.Favorite, FallbackValue=FAVORITE}" Width="80" CellTemplate="{StaticResource ItemSearch.GridViewColumnFavoriteTemplate}" />
                 </GridView>
             </ListView.View>
         </ListView>

@@ -645,4 +645,5 @@
 	<translation name="DUNGEON_STATS">Dungeon Stats</translation>
 	<translation name="CHEST_STATS">Chest Stats</translation>
 	<translation name="EST_MARKET_VALUE">Est. market value</translation>
+	<translation name="LAST_ESTIMATED_VALUE_UPDATE">Last estimated value update</translation>
 </translations>

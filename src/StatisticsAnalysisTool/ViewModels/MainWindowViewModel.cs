@@ -197,7 +197,6 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
 
                 item.IsAlertActive = AlertManager.ToggleAlert(ref item);
-                ItemsView.Refresh();
             }
             catch (Exception e)
             {

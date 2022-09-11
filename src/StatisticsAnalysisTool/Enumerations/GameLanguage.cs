@@ -10,6 +10,8 @@
         France,
         Spain,
         Chinese,
-        Korean
+        Korean,
+        Italy,
+        Japan
     }
 }

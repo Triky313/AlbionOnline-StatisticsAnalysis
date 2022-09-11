@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using ShopCategory = StatisticsAnalysisTool.Common.ShopCategory;
 using System;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -19,7 +20,8 @@ namespace StatisticsAnalysisTool.Models
         [JsonIgnore]
         public string LocalizedNameAndEnglish => LanguageController.CurrentCultureInfo.TextInfo.CultureName.ToUpper() == "EN-US"
             ? $"{ItemController.LocalizedName(LocalizedNames, null, UniqueName)}{GetUniqueNameIfDebug()}"
-            : $"{ItemController.LocalizedName(LocalizedNames, null, UniqueName)}\n{ItemController.LocalizedName(LocalizedNames, "EN-US", string.Empty)}{GetUniqueNameIfDebug()}\n";
+            : $"{ItemController.LocalizedName(LocalizedNames, null, UniqueName)}" +
+              $"\n{ItemController.LocalizedName(LocalizedNames, "EN-US", string.Empty)}{GetUniqueNameIfDebug()}";
         public string LocalizedName => ItemController.LocalizedName(LocalizedNames, null, UniqueName);
 
         public int Level => ItemController.GetItemLevel(UniqueName);
@@ -46,9 +48,17 @@ namespace StatisticsAnalysisTool.Models
         [JsonIgnore]
         public DateTime LastEstimatedMarketValueUpdate { get; set; }
         [JsonIgnore]
+        public string LastEstimatedUpdateTimeString => LastEstimatedMarketValueUpdate.DateTimeToLastUpdateTime();
+        [JsonIgnore]
+        public ValueTimeStatus EstimatedMarketValueStatus => LastEstimatedMarketValueUpdate.GetValueTimeStatus();
+        [JsonIgnore]
         public FixPoint EstimatedMarketValue { get; set; }
         [JsonIgnore]
         public string EstimatedMarketValueString => Utilities.LongMarketPriceToString(EstimatedMarketValue.IntegerValue);
+        [JsonIgnore]
+        public string TranslationLastEstValueUpdate => LanguageController.Translation("LAST_ESTIMATED_VALUE_UPDATE");
+        [JsonIgnore]
+        public string TranslationEstMarketValue => LanguageController.Translation("EST_MARKET_VALUE");
         private string GetUniqueNameIfDebug()
         {
 #if DEBUG

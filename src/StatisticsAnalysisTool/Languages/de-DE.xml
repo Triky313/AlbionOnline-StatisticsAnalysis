@@ -645,4 +645,5 @@
 	<translation name="DUNGEON_STATS">Dungeon Statistiken</translation>
 	<translation name="CHEST_STATS">Truhen Statistiken</translation>
 	<translation name="EST_MARKET_VALUE">Gesch. Marktwert</translation>
+	<translation name="LAST_ESTIMATED_VALUE_UPDATE">Letztes geschätzter Martwert update</translation>
 </translations>

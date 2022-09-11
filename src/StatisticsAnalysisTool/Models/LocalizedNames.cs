@@ -4,6 +4,7 @@ namespace StatisticsAnalysisTool.Models;
 
 public class LocalizedNames
 {
+    // ISO 639-1 standard language codes
     [JsonPropertyName("EN-US")] public string EnUs { get; set; }
 
     [JsonPropertyName("DE-DE")] public string DeDe { get; set; }
@@ -21,4 +22,8 @@ public class LocalizedNames
     [JsonPropertyName("ES-ES")] public string EsEs { get; set; }
 
     [JsonPropertyName("ZH-CN")] public string ZhCn { get; set; }
+
+    [JsonPropertyName("IT-IT")] public string ItIt { get; set; }
+
+    [JsonPropertyName("JA-JP")] public string JaJp { get; set; }
 }

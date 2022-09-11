@@ -39,56 +39,31 @@ public class MarketCurrentPricesItem
     public ulong SellPriceMin { get; set; }
     public string SellPriceMinString => Utilities.UlongMarketPriceToString(SellPriceMin);
     public DateTime SellPriceMinDate { get; set; }
-    public ValueTimeStatus SellPriceMinDateStatus => GetValueTimeStatus(SellPriceMinDate);
+    public ValueTimeStatus SellPriceMinDateStatus => SellPriceMinDate.GetValueTimeStatus();
     public string SellPriceMinDateString => Utilities.MarketPriceDateToString(SellPriceMinDate);
-    public string SellPriceMinDateLastUpdateTime => Formatting.DateTimeToLastUpdateTime(SellPriceMinDate);
+    public string SellPriceMinDateLastUpdateTime => SellPriceMinDate.DateTimeToLastUpdateTime();
     public ulong SellPriceMax { get; set; }
     public string SellPriceMaxString => Utilities.UlongMarketPriceToString(SellPriceMax);
     public DateTime SellPriceMaxDate { get; set; }
-    public ValueTimeStatus SellPriceMaxDateStatus => GetValueTimeStatus(SellPriceMaxDate);
+    public ValueTimeStatus SellPriceMaxDateStatus => SellPriceMaxDate.GetValueTimeStatus();
     public string SellPriceMaxDateString => Utilities.MarketPriceDateToString(SellPriceMaxDate);
-    public string SellPriceMaxDateLastUpdateTime => Formatting.DateTimeToLastUpdateTime(SellPriceMaxDate);
+    public string SellPriceMaxDateLastUpdateTime => SellPriceMaxDate.DateTimeToLastUpdateTime();
     public ulong BuyPriceMin { get; set; }
     public string BuyPriceMinString => Utilities.UlongMarketPriceToString(BuyPriceMin);
     public DateTime BuyPriceMinDate { get; set; }
-    public ValueTimeStatus BuyPriceMinDateStatus => GetValueTimeStatus(BuyPriceMinDate);
+    public ValueTimeStatus BuyPriceMinDateStatus => BuyPriceMinDate.GetValueTimeStatus();
     public string BuyPriceMinDateString => Utilities.MarketPriceDateToString(BuyPriceMinDate);
-    public string BuyPriceMinDateLastUpdateTime => Formatting.DateTimeToLastUpdateTime(BuyPriceMinDate);
+    public string BuyPriceMinDateLastUpdateTime => BuyPriceMinDate.DateTimeToLastUpdateTime();
     public ulong BuyPriceMax { get; set; }
     public string BuyPriceMaxString => Utilities.UlongMarketPriceToString(BuyPriceMax);
     public DateTime BuyPriceMaxDate { get; set; }
-    public ValueTimeStatus BuyPriceMaxDateStatus => GetValueTimeStatus(BuyPriceMaxDate);
+    public ValueTimeStatus BuyPriceMaxDateStatus => BuyPriceMaxDate.GetValueTimeStatus();
     public string BuyPriceMaxDateString => Utilities.MarketPriceDateToString(BuyPriceMaxDate);
-    public string BuyPriceMaxDateLastUpdateTime => Formatting.DateTimeToLastUpdateTime(BuyPriceMaxDate);
+    public string BuyPriceMaxDateLastUpdateTime => BuyPriceMaxDate.DateTimeToLastUpdateTime();
     public bool BestSellMinPrice { get; set; }
     public bool BestSellMaxPrice { get; set; }
     public bool BestBuyMinPrice { get; set; }
     public bool BestBuyMaxPrice { get; set; }
-
-    private static ValueTimeStatus GetValueTimeStatus(DateTime dateTime)
-    {
-        if (dateTime.Date <= DateTime.MinValue.Date)
-        {
-            return ValueTimeStatus.NoValue;
-        }
-
-        if (dateTime.AddHours(8) <= DateTime.UtcNow)
-        {
-            return ValueTimeStatus.ToOldThird;
-        }
-
-        if (dateTime.AddHours(4) <= DateTime.UtcNow)
-        {
-            return ValueTimeStatus.ToOldSecond;
-        }
-
-        if (dateTime.AddHours(2) <= DateTime.UtcNow)
-        {
-            return ValueTimeStatus.ToOldFirst;
-        }
-
-        return ValueTimeStatus.Normal;
-    }
 
     private ICommand _copyTextToClipboard;
     public ICommand CopyTextToClipboard => _copyTextToClipboard ??= new CommandHandler(PerformCopyTextToClipboard, true);

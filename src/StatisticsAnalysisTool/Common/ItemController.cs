@@ -115,6 +115,8 @@ namespace StatisticsAnalysisTool.Common
                 GameLanguage.Spain => localizedNames.EsEs ?? alternativeName,
                 GameLanguage.Chinese => localizedNames.ZhCn ?? alternativeName,
                 GameLanguage.Korean => localizedNames.KoKr ?? alternativeName,
+                GameLanguage.Italy => localizedNames.ItIt ?? alternativeName,
+                GameLanguage.Japan => localizedNames.JaJp ?? alternativeName,
                 _ => alternativeName
             };
         }
