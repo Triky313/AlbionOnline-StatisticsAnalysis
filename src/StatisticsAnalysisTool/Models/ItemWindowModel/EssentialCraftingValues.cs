@@ -16,8 +16,8 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private int _amountCrafted = 1;
         private long _sellPricePerItem;
         private int _craftingItemQuantity = 1;
-        private double _setupFee = 1.5d;
-        private double _auctionHouseTax = 3.0d;
+        private double _setupFee = 2.5d;
+        private double _auctionHouseTax = 4.0d;
         private int _usageFeePerHundredFood;
         private int _craftingBonus = 133;
         private bool _isCraftingWithFocus;
