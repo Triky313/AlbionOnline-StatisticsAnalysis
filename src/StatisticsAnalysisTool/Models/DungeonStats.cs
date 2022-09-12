@@ -12,6 +12,10 @@ namespace StatisticsAnalysisTool.Models
         private int _openedRareChests;
         private int _openedStandardChests;
         private int _openedUncommonChests;
+        private int _openedLegendaryBookChests;
+        private int _openedRareBookChests;
+        private int _openedStandardBookChests;
+        private int _openedUncommonBookChests;
         private double _fame;
         private double _reSpec;
         private double _silver;
@@ -91,6 +95,46 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _openedLegendaryChests = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int OpenedStandardBookChests
+        {
+            get => _openedStandardBookChests;
+            set
+            {
+                _openedStandardBookChests = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int OpenedUncommonBookChests
+        {
+            get => _openedUncommonBookChests;
+            set
+            {
+                _openedUncommonBookChests = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int OpenedRareBookChests
+        {
+            get => _openedRareBookChests;
+            set
+            {
+                _openedRareBookChests = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int OpenedLegendaryBookChests
+        {
+            get => _openedLegendaryBookChests;
+            set
+            {
+                _openedLegendaryBookChests = value;
                 OnPropertyChanged();
             }
         }
