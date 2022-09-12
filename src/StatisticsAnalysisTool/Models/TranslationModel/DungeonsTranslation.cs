@@ -7,6 +7,7 @@ public class DungeonsTranslation
     public static string Total => LanguageController.Translation("TOTAL");
     public static string DungeonStats => LanguageController.Translation("DUNGEON_STATS");
     public static string ChestStats => LanguageController.Translation("CHEST_STATS");
+    public static string BookChestStats => LanguageController.Translation("BOOK_CHEST_STATS");
     public static string EnteredDungeon => LanguageController.Translation("ENTERED_DUNGEON");
     public static string OpenedStandardChests => LanguageController.Translation("OPENED_STANDARD_CHESTS");
     public static string OpenedUncommonChests => LanguageController.Translation("OPENED_UNCOMMON_CHESTS");
