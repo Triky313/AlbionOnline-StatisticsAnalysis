@@ -48,15 +48,13 @@ namespace StatisticsAnalysisTool.Models
         [JsonIgnore]
         public DateTime LastEstimatedMarketValueUpdate { get; set; }
         [JsonIgnore]
-        public string LastEstimatedUpdateTimeString => LastEstimatedMarketValueUpdate.DateTimeToLastUpdateTime();
+        public string LastEstimatedUpdateTimeString => $"{LanguageController.Translation("LAST_ESTIMATED_VALUE_UPDATE")}: {LastEstimatedMarketValueUpdate.DateTimeToLastUpdateTime()}";
         [JsonIgnore]
         public PastTime EstimatedMarketValueStatus => LastEstimatedMarketValueUpdate.GetPastTimeEnumByDateTime();
         [JsonIgnore]
         public FixPoint EstimatedMarketValue { get; set; }
         [JsonIgnore]
         public string EstimatedMarketValueString => Utilities.LongMarketPriceToString(EstimatedMarketValue.IntegerValue);
-        [JsonIgnore]
-        public string TranslationLastEstValueUpdate => LanguageController.Translation("LAST_ESTIMATED_VALUE_UPDATE");
         [JsonIgnore]
         public string TranslationEstMarketValue => LanguageController.Translation("EST_MARKET_VALUE");
         private string GetUniqueNameIfDebug()

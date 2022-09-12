@@ -3,32 +3,31 @@ using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class NewEquipmentItemEventHandler
 {
-    public class NewEquipmentItemEventHandler
+    private readonly TrackingController _trackingController;
+
+    public NewEquipmentItemEventHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public NewEquipmentItemEventHandler(TrackingController trackingController)
+    public async Task OnActionAsync(NewEquipmentItemEvent value)
+    {
+        if (_trackingController.IsTrackingAllowedByMainCharacter())
         {
-            _trackingController = trackingController;
+            _trackingController.VaultController.Add(value.Item);
         }
 
-        public async Task OnActionAsync(NewEquipmentItemEvent value)
+        _trackingController.EntityController.AddEquipmentItem(new EquipmentItemInternal
         {
-            if (_trackingController.IsTrackingAllowedByMainCharacter())
-            {
-                _trackingController.VaultController.Add(value.Item);
-            }
+            ItemIndex = value.Item.ItemIndex,
+            SpellDictionary = value.Item.SpellDictionary
+        });
 
-            _trackingController.EntityController.AddEquipmentItem(new EquipmentItemInternal
-            {
-                ItemIndex = value.Item.ItemIndex,
-                SpellDictionary = value.Item.SpellDictionary
-            });
-
-            _trackingController.LootController.AddEstimatedMarketValue(value.Item.ItemIndex, value.Item.EstimatedMarketValue.InternalValue);
-            await Task.CompletedTask;
-        }
+        _trackingController.LootController.AddEstimatedMarketValue(value.Item.ItemIndex, value.Item.EstimatedMarketValue.InternalValue);
+        await Task.CompletedTask;
     }
 }

@@ -288,38 +288,33 @@ namespace StatisticsAnalysisTool.Common
             {
                 return PastTime.Unknown;
             }
-
+            
             if (dateTime.AddDays(7) <= DateTime.UtcNow)
             {
                 return PastTime.VeryOld;
             }
 
-            if (dateTime.AddDays(3) <= DateTime.UtcNow)
+            if (dateTime.AddHours(24) <= DateTime.UtcNow)
             {
                 return PastTime.Old;
             }
 
-            if (dateTime.AddHours(24) <= DateTime.UtcNow)
+            if (dateTime.AddHours(8) <= DateTime.UtcNow)
             {
                 return PastTime.BitOld;
             }
 
-            if (dateTime.AddHours(8) <= DateTime.UtcNow)
+            if (dateTime.AddHours(4) <= DateTime.UtcNow)
             {
                 return PastTime.LittleNew;
             }
 
-            if (dateTime.AddHours(4) <= DateTime.UtcNow)
+            if (dateTime.AddHours(2) <= DateTime.UtcNow)
             {
                 return PastTime.AlmostNew;
             }
 
-            if (dateTime.AddHours(2) <= DateTime.UtcNow)
-            {
-                return PastTime.New;
-            }
-
-            return PastTime.Unknown;
+            return PastTime.New;
         }
 
         public static bool IsDateInWeekOfYear(this DateTime date1, DateTime date2)
