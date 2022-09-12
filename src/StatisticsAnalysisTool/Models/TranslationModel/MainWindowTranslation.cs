@@ -39,6 +39,7 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string ResetDamageMeter => LanguageController.Translation("RESET_DAMAGE_METER");
         public static string Settings => LanguageController.Translation("SETTINGS");
         public static string Favorite => LanguageController.Translation("FAVORITE");
+        public static string EstMarketValue => LanguageController.Translation("EST_MARKET_VALUE");
         public static string Loot => LanguageController.Translation("LOOT");
         public static string Fame => LanguageController.Translation("FAME");
         public static string Silver => LanguageController.Translation("SILVER");

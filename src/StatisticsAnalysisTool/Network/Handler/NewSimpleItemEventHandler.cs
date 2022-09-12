@@ -20,6 +20,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                 _trackingController.VaultController.Add(value.Item);
             }
 
+            _trackingController.LootController.AddEstimatedMarketValue(value.Item.ItemIndex, value.Item.EstimatedMarketValue.InternalValue);
             await Task.CompletedTask;
         }
     }

@@ -13,6 +13,7 @@ namespace StatisticsAnalysisTool.Network.Events
         private readonly long? _objectId;
         private readonly int _itemId;
         private readonly int _quantity;
+        private readonly long _estimatedMarketValue;
         private Dictionary<int, int> SpellDictionary { get; } = new ();
 
         public NewEquipmentItemEvent(Dictionary<byte, object> parameters)
@@ -34,6 +35,11 @@ namespace StatisticsAnalysisTool.Network.Events
                 if (parameters.ContainsKey(2))
                 {
                     _quantity = parameters[2].ObjectToInt();
+                }
+
+                if (parameters.ContainsKey(4))
+                {
+                    _estimatedMarketValue = parameters[4].ObjectToLong() ?? 0;
                 }
 
                 if (parameters.ContainsKey(8))
@@ -72,7 +78,8 @@ namespace StatisticsAnalysisTool.Network.Events
                         ObjectId = (long)_objectId,
                         ItemIndex = _itemId,
                         Quantity = _quantity,
-                        SpellDictionary = SpellDictionary
+                        SpellDictionary = SpellDictionary,
+                        EstimatedMarketValue = FixPoint.FromInternalValue(_estimatedMarketValue)
                     };
                 }
                 else

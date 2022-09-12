@@ -64,7 +64,7 @@
                         <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Grid>
                     <ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" 
-                              BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                              BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" d:ItemsSource="{d:SampleData ItemCount=7}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" CellTemplate="{StaticResource GridViewColumnCityTemplate}"/>
@@ -87,7 +87,7 @@
                         <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                     </Grid>
                     <ListView ItemsSource="{Binding AllQualityPricesList}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" 
-                              Foreground="{StaticResource SolidColorBrush.Text.1}">
+                              Foreground="{StaticResource SolidColorBrush.Text.1}" d:ItemsSource="{d:SampleData ItemCount=5}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" CellTemplate="{StaticResource GridViewColumnCityForMarketQualityObjectTemplate}"/>

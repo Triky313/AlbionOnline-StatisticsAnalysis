@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -25,7 +24,6 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
@@ -112,7 +110,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SetDefaultQualityIfNoOneChecked();
 
             Item = item;
-            
+
             Translation = new ItemWindowTranslation();
             InitializeItemData(item);
 
@@ -754,8 +752,8 @@ namespace StatisticsAnalysisTool.ViewModels
 
             MarketCurrentPricesItemList = marketCurrentPricesItemList;
             SetAveragePricesString();
-            
-            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {Formatting.CurrentDateTimeFormat(DateTime.Now)}";
+
+            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.CurrentDateTimeFormat()}";
         }
 
         private static List<MarketResponseTotal> PriceUpdate(List<MarketResponse> newStatsPricesList)
@@ -1155,7 +1153,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public ObservableCollection<ISeries> SeriesHistory
         {
             get => _seriesHistory;
@@ -1316,7 +1314,7 @@ namespace StatisticsAnalysisTool.ViewModels
         #endregion Bindings
 
         #region Helper
-        
+
         public ulong Sum(params ulong[] values)
         {
             return values.Aggregate(0UL, (current, t) => current + t);

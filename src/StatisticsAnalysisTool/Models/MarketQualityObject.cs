@@ -41,11 +41,11 @@ public class MarketQualityObject
     public DateTime SellPriceMinExcellentDate { private get; set; }
     public DateTime SellPriceMinMasterpieceDate { private get; set; }
 
-    public string SellPriceMinNormalDateString => Utilities.MarketPriceDateToString(SellPriceMinNormalDate);
-    public string SellPriceMinGoodDateString => Utilities.MarketPriceDateToString(SellPriceMinGoodDate);
-    public string SellPriceMinOutstandingDateString => Utilities.MarketPriceDateToString(SellPriceMinOutstandingDate);
-    public string SellPriceMinExcellentDateString => Utilities.MarketPriceDateToString(SellPriceMinExcellentDate);
-    public string SellPriceMinMasterpieceDateString => Utilities.MarketPriceDateToString(SellPriceMinMasterpieceDate);
+    public string SellPriceMinNormalDateString => SellPriceMinNormalDate.CurrentDateTimeFormat();
+    public string SellPriceMinGoodDateString => SellPriceMinGoodDate.CurrentDateTimeFormat();
+    public string SellPriceMinOutstandingDateString => SellPriceMinOutstandingDate.CurrentDateTimeFormat();
+    public string SellPriceMinExcellentDateString => SellPriceMinExcellentDate.CurrentDateTimeFormat();
+    public string SellPriceMinMasterpieceDateString => SellPriceMinMasterpieceDate.CurrentDateTimeFormat();
     
     public bool IsSellPriceMinNormalBestPrice => BestMinPrice() == BestPriceQuality.Normal;
     public bool IsSellPriceMinGoodBestPrice => BestMinPrice() == BestPriceQuality.Good;

@@ -3,9 +3,11 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
+using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -22,6 +24,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly Dictionary<long, Guid> _putLoot = new();
         private readonly List<DiscoveredItem> _discoveredLoot = new();
         private readonly List<LootLoggerObject> _lootLoggerObjects = new();
+        private ObservableCollection<EstimatedMarketValueObject> _estimatedMarketValues = new();
 
         private const int MaxLoot = 5000;
 
@@ -198,6 +201,50 @@ namespace StatisticsAnalysisTool.Network.Manager
                 new OtherGrabbedLootNotificationFragment(lootedByName, lootedFromName, lootedByGuild, lootedFromGuild, item, quantity), item.Index);
         }
 
+        #region Estimated market value
+
+        public void AddEstimatedMarketValue(int itemId, long estimatedMarketValueInternal)
+        {
+            if (itemId <= 0 || estimatedMarketValueInternal <= 0)
+            {
+                return;
+            }
+
+            var item = ItemController.GetItemByIndex(itemId);
+
+            if (item == null)
+            {
+                return;
+            }
+
+            var estMarketValueObject = _estimatedMarketValues?.FirstOrDefault(x => x.UniqueItemName == item.UniqueName);
+
+            if (estMarketValueObject != null)
+            {
+                _estimatedMarketValues.Remove(estMarketValueObject);
+            }
+
+            var timestamp = DateTime.UtcNow;
+            _estimatedMarketValues?.Add(new EstimatedMarketValueObject()
+            {
+                UniqueItemName = item.UniqueName,
+                EstimatedMarketValueInternal = estimatedMarketValueInternal,
+                Timestamp = timestamp
+            });
+
+            ItemController.SetEstimatedMarketValue(item.UniqueName, estimatedMarketValueInternal, timestamp);
+        }
+
+        private async Task SetAllEstimatedMarketValuesToItemsAsync()
+        {
+            await foreach (var estMarketValue in _estimatedMarketValues.ToAsyncEnumerable())
+            {
+                ItemController.SetEstimatedMarketValue(estMarketValue.UniqueItemName, estMarketValue.EstimatedMarketValueInternal, estMarketValue.Timestamp);
+            }
+        }
+
+        #endregion
+
         #region Top looters
 
         private void AddTopLooter(string name, int quantity)
@@ -246,6 +293,21 @@ namespace StatisticsAnalysisTool.Network.Manager
                 });
                 await Task.Delay(100);
             }
+        }
+
+        #endregion
+
+        #region Load / Save local file data
+
+        public async Task LoadFromFileAsync()
+        {
+            _estimatedMarketValues = await FileController.LoadAsync<ObservableCollection<EstimatedMarketValueObject>>($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.EstimatedMarketValueFileName}");
+            await SetAllEstimatedMarketValuesToItemsAsync();
+        }
+
+        public async Task SaveInFileAsync()
+        {
+            await FileController.SaveAsync(_estimatedMarketValues, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.EstimatedMarketValueFileName}");
         }
 
         #endregion

@@ -13,6 +13,7 @@ namespace StatisticsAnalysisTool.Network.Events
         private readonly long? _objectId;
         private readonly int _itemId;
         private readonly int _quantity;
+        private readonly long _estimatedMarketValue;
 
         public NewFurnitureItemEvent(Dictionary<byte, object> parameters)
         {
@@ -35,13 +36,19 @@ namespace StatisticsAnalysisTool.Network.Events
                     _quantity = parameters[2].ObjectToInt();
                 }
 
+                if (parameters.ContainsKey(4))
+                {
+                    _estimatedMarketValue = parameters[4].ObjectToLong() ?? 0;
+                }
+
                 if (_objectId != null)
                 {
                     Item = new DiscoveredItem()
                     {
                         ObjectId = (long)_objectId,
                         ItemIndex = _itemId,
-                        Quantity = _quantity
+                        Quantity = _quantity,
+                        EstimatedMarketValue = FixPoint.FromInternalValue(_estimatedMarketValue)
                     };
                 }
                 else
