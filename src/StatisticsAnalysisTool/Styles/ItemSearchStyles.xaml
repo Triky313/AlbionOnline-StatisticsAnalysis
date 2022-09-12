@@ -28,8 +28,11 @@
                     <Label Content="{Binding EstimatedMarketValueString, IsAsync=True, Mode=OneWay}" ToolTip="{Binding LastEstimatedUpdateTimeString, IsAsync=True, Mode=OneWay}">
                         <Label.Style>
                             <Style TargetType="{x:Type Label}">
-                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}"/>
+                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}"/>
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:PastTime.VeryVeryOld}">
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.TimeValue.PastTime.7}"/>
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding EstimatedMarketValueStatus, IsAsync=True}" Value="{x:Static enum:PastTime.VeryOld}">
                                         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.TimeValue.PastTime.6}"/>
                                     </DataTrigger>

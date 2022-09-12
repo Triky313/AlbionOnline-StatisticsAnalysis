@@ -147,6 +147,7 @@
     <Color x:Key="TimeValue.PastTime.4">#FFED8C24</Color>
     <Color x:Key="TimeValue.PastTime.5">#FFE66322</Color>
     <Color x:Key="TimeValue.PastTime.6">#FFD93641</Color>
+    <Color x:Key="TimeValue.PastTime.7">#FF9E212A</Color>
 
     <!-- Donation -->
     <Color x:Key="Color.Patreon">#FFFF424D</Color>
@@ -295,5 +296,6 @@
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.4" Color="{StaticResource TimeValue.PastTime.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.5" Color="{StaticResource TimeValue.PastTime.5}"/>
     <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.6" Color="{StaticResource TimeValue.PastTime.6}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.TimeValue.PastTime.7" Color="{StaticResource TimeValue.PastTime.7}"/>
 
 </ResourceDictionary>

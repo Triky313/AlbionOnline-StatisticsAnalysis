@@ -289,6 +289,11 @@ namespace StatisticsAnalysisTool.Common
                 return PastTime.Unknown;
             }
             
+            if (dateTime.AddDays(30) <= DateTime.UtcNow)
+            {
+                return PastTime.VeryVeryOld;
+            }
+
             if (dateTime.AddDays(7) <= DateTime.UtcNow)
             {
                 return PastTime.VeryOld;
