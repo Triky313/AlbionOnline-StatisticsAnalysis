@@ -34,3 +34,36 @@ DEBU[2022-07-08T15:30:46+02:00] EventDataType: [371]evAvatarUnlocked - map[0:177
 DEBU[2022-07-08T15:31:20+02:00] EventDataType: [371]evAvatarUnlocked - map[0:17733 1:5 2:637928838310252080 
 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [23 60 26 107 70 -97 -119 67 -119 17 117 2 14 87 72 -69] [-79 81 126 -46 126 -119 -106 78 -84 90 5 6 -58 124 126 -21] [-28 11 87 -39 -49 -33 -57 64 -86 126 -26 -36 51 29 7 95]] 
 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [23 60 26 107 70 -97 -119 67 -119 17 117 2 14 87 72 -69]] 5:true 6:true 7:true 8:2.6 252:371]
+
+------------
+0:106 
+1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 
+2:Triky313
+47:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96]
+------------
+
+[370]evUnlockVanityUnlock - map[0:105 1:[-317.5 79.5] 2:270 3:KEEPER_SOLO_CHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_STANDARD 5:2 7:[] 8:[] 13:true 14:KEEPER_SOLO_LOOTCHEST_STANDARD 252:370]
+[371]evAvatarUnlocked - map[0:105 1:4 2:637983366614759222 3:[] 4:[] 9:true 252:371]
+[371]evAvatarUnlocked - map[0:105 1:5 2:637983366674077239 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
+[372]evCustomizationChanged - map[0:105 252:372]
+
+# Neues Item entdeckt (27 bis 32)
+[29]evNewJournalItem - map[0:-30 1:461 2:3 252:29]
+[29]evNewJournalItem - map[0:-29 1:1527 2:2 4:522720 252:29]
+[29]evNewJournalItem - map[0:-28 1:1529 2:1 4:13311008 252:29]
+[29]evNewJournalItem - map[0:-27 1:1521 2:5 4:199328 252:29]
+[29]evNewJournalItem - map[0:-26 1:1533 2:1 4:2130053 252:29]
+[29]evNewJournalItem - map[0:-25 1:1528 2:1 4:3395964 252:29]
+[29]evNewJournalItem - map[0:-88 1:461 2:13 252:29]
+
+# 26 Löscht iten aus Inventar
+[26]evNewEquipmentItem - map[0:-30 1:2 252:26]
+[29]evNewJournalItem - map[0:-87 1:1527 2:10 4:522720 252:29]
+[26]evNewEquipmentItem - map[0:-29 1:3 252:26]
+
+# 25 Fügt Item dem Inventar hinzu
+[25]evNewCharacter - map[0:-28 1:9 2:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 3:12 252:25]
+[29]evNewJournalItem - map[0:-85 1:1528 2:4 4:3395964 252:29]
+[26]evNewEquipmentItem - map[0:-25 1:5 252:26]
+[29]evNewJournalItem - map[0:-83 1:1533 2:3 4:2130053 252:29]
+[26]evNewEquipmentItem - map[0:-26 1:6 252:26]

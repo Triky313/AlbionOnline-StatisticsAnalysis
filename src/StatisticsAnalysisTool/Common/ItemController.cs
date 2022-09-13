@@ -115,6 +115,8 @@ namespace StatisticsAnalysisTool.Common
                 GameLanguage.Spain => localizedNames.EsEs ?? alternativeName,
                 GameLanguage.Chinese => localizedNames.ZhCn ?? alternativeName,
                 GameLanguage.Korean => localizedNames.KoKr ?? alternativeName,
+                GameLanguage.Italy => localizedNames.ItIt ?? alternativeName,
+                GameLanguage.Japan => localizedNames.JaJp ?? alternativeName,
                 _ => alternativeName
             };
         }
@@ -567,6 +569,22 @@ namespace StatisticsAnalysisTool.Common
         public static bool IsItemsJsonLoaded()
         {
             return ItemsJson?.Items != null;
+        }
+
+        #endregion
+
+        #region Estimated market value
+
+        public static void SetEstimatedMarketValue(string uniqueName, long estimatedMarketValueInternal, DateTime timestamp)
+        {
+            var item = GetItemByUniqueName(uniqueName);
+            if (item == null)
+            {
+                return;
+            }
+
+            item.LastEstimatedMarketValueUpdate = timestamp;
+            item.EstimatedMarketValue = FixPoint.FromInternalValue(estimatedMarketValueInternal);
         }
 
         #endregion

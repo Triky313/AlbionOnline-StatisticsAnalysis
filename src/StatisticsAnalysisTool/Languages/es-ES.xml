@@ -637,4 +637,6 @@
 	<translation name="DELETE_MAILS_AFTER_365_DAYS">Eliminar correos a los 365 días</translation>
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Ignorar correos sin valores</translation>
 	<translation name="CHECK_FOR_UPDATE">Comprobar actualizaciones</translation>
+	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Plata gastada en re-espec en esta sesión</translation>
+	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Plata gastada en re-espec por hora</translation>
 </translations>

@@ -1,3 +1,4 @@
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections;
@@ -65,6 +66,11 @@ namespace StatisticsAnalysisTool.Common
             }
 
             return null;
+        }
+
+        public static ulong? ObjectToUlong(this object value)
+        {
+            return value as byte? ?? value as ushort? ?? value as uint? ?? value as ulong?;
         }
 
         public static long? ObjectToLong(this object value)
@@ -228,6 +234,93 @@ namespace StatisticsAnalysisTool.Common
         #endregion
 
         #region DateTime
+
+        public static string CurrentDateTimeFormat(this DateTime value)
+        {
+            return DateTime.SpecifyKind(value, DateTimeKind.Utc).ToLocalTime()
+                .ToString("G", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
+        }
+
+        public static string DateTimeToLastUpdateTime(this DateTime dateTime)
+        {
+            var endTime = DateTime.UtcNow;
+            var minutes = (endTime - dateTime).TotalMinutes;
+            var hours = (endTime - dateTime).TotalHours;
+            var days = (endTime - dateTime).TotalDays;
+
+            if (minutes <= 120) return $"{minutes:N0} {LanguageController.Translation("MINUTES")}";
+
+            if (hours <= 48) return $"{hours:N0} {LanguageController.Translation("HOURS")}";
+
+            if (days <= 365) return $"{days:N0} {LanguageController.Translation("DAYS")}";
+
+            return $"{LanguageController.Translation("OVER_A_YEAR")}";
+        }
+
+        public static ValueTimeStatus GetValueTimeStatus(this DateTime dateTime)
+        {
+            if (dateTime.Date <= DateTime.MinValue.Date)
+            {
+                return ValueTimeStatus.NoValue;
+            }
+
+            if (dateTime.AddHours(8) <= DateTime.UtcNow)
+            {
+                return ValueTimeStatus.ToOldThird;
+            }
+
+            if (dateTime.AddHours(4) <= DateTime.UtcNow)
+            {
+                return ValueTimeStatus.ToOldSecond;
+            }
+
+            if (dateTime.AddHours(2) <= DateTime.UtcNow)
+            {
+                return ValueTimeStatus.ToOldFirst;
+            }
+
+            return ValueTimeStatus.Normal;
+        }
+
+        public static PastTime GetPastTimeEnumByDateTime(this DateTime dateTime)
+        {
+            if (dateTime.Date <= DateTime.MinValue.Date)
+            {
+                return PastTime.Unknown;
+            }
+            
+            if (dateTime.AddDays(30) <= DateTime.UtcNow)
+            {
+                return PastTime.VeryVeryOld;
+            }
+
+            if (dateTime.AddDays(7) <= DateTime.UtcNow)
+            {
+                return PastTime.VeryOld;
+            }
+
+            if (dateTime.AddHours(24) <= DateTime.UtcNow)
+            {
+                return PastTime.Old;
+            }
+
+            if (dateTime.AddHours(8) <= DateTime.UtcNow)
+            {
+                return PastTime.BitOld;
+            }
+
+            if (dateTime.AddHours(4) <= DateTime.UtcNow)
+            {
+                return PastTime.LittleNew;
+            }
+
+            if (dateTime.AddHours(2) <= DateTime.UtcNow)
+            {
+                return PastTime.AlmostNew;
+            }
+
+            return PastTime.New;
+        }
 
         public static bool IsDateInWeekOfYear(this DateTime date1, DateTime date2)
         {

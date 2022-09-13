@@ -172,10 +172,10 @@
         ClaimRealEstate,
         GiveUpRealEstate,
         ChangeRealEstateOutline,
-        GetMailInfos = 169, // map[0:- 2:0 3:[MAIL_ID, MAIL_ID] 4:- 5:- 6:[CLUSTER_ID or UserName] 7:[3 3] 8:[3 3] 9:[true true]
+        GetMailInfos = 170, // map[0:- 2:0 3:[MAIL_ID, MAIL_ID] 4:- 5:- 6:[CLUSTER_ID or UserName] 7:[3 3] 8:[3 3] 9:[true true]
                             // 10:[MARKETPLACE_BUYORDER_FINISHED_SUMMARY MARKETPLACE_SELLORDER_FINISHED_SUMMARY] 11:[637852747555964630 637852641241345990] 12:[false false]]
         GetMailCount,
-        ReadMail = 171, //  map[0: MailId 1:QUANTITY|UNIQUE_ITEM_NAME(T4_ARMOR_CLOTH_SET3)|TOTAL_PRICE|UNIT_PRICE 2:[] 3:[] 4:[] 5:[] 6:[] 253:170]
+        ReadMail = 172, //  map[0: MailId 1:QUANTITY|UNIQUE_ITEM_NAME(T4_ARMOR_CLOTH_SET3)|TOTAL_PRICE|UNIT_PRICE 2:[] 3:[] 4:[] 5:[] 6:[] 253:170]
         SendNewMail,
         DeleteMail,
         MarkMailUnread,

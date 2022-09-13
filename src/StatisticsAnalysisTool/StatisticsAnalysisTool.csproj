@@ -142,6 +142,15 @@
     <Resource Include="Assets\blue_glow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\book.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\book_oblique.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\dungeon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\empty_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -517,16 +526,13 @@
   <ItemGroup>
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.220" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.310801">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1293.44" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.0-preview.3.22175.4" />
     <PackageReference Include="Autoupdater.NET.Official" Version="1.7.4" />
     <PackageReference Include="FontAwesome5" Version="2.1.6" />
     <PackageReference Include="log4net" Version="2.0.14" />
     <PackageReference Include="PhotonPackageParser" Version="4.1.0" />
-    <PackageReference Include="SharpPcap" Version="6.2.1" />
+    <PackageReference Include="SharpPcap" Version="6.2.2" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="7.0.0-preview.2.22152.2" />
     <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
@@ -540,6 +546,9 @@
     <None Remove="Assets\ava_chest.png" />
     <None Remove="Assets\bg01.png" />
     <None Remove="Assets\blue_glow.png" />
+    <None Remove="Assets\book.png" />
+    <None Remove="Assets\book_oblique.png" />
+    <None Remove="Assets\dungeon.png" />
     <None Remove="Assets\empty_icon.png" />
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />

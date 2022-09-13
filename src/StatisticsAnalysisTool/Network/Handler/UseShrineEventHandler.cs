@@ -1,21 +1,20 @@
 ﻿using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
-using StatisticsAnalysisTool.Network.Operations.Requests;
+using StatisticsAnalysisTool.Network.Operations.Responses;
 
-namespace StatisticsAnalysisTool.Network.Handler
+namespace StatisticsAnalysisTool.Network.Handler;
+
+public class UseShrineRequestHandler
 {
-    public class UseShrineRequestHandler
+    private readonly TrackingController _trackingController;
+
+    public UseShrineRequestHandler(TrackingController trackingController)
     {
-        private readonly TrackingController _trackingController;
+        _trackingController = trackingController;
+    }
 
-        public UseShrineRequestHandler(TrackingController trackingController)
-        {
-            _trackingController = trackingController;
-        }
-
-        public async Task OnActionAsync(UseShrineRequest value)
-        {
-            await Task.CompletedTask;
-        }
+    public async Task OnActionAsync(UseShrineRequest value)
+    {
+        await Task.CompletedTask;
     }
 }

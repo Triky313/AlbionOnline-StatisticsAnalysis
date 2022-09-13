@@ -4,30 +4,29 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace StatisticsAnalysisTool.Network.Operations.Requests
+namespace StatisticsAnalysisTool.Network.Operations.Responses;
+
+public class UseShrineRequest
 {
-    public class UseShrineRequest
+    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+
+    public UseShrineRequest(Dictionary<byte, object> parameters)
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+        ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
 
-        public UseShrineRequest(Dictionary<byte, object> parameters)
+        try
         {
-            ConsoleManager.WriteLineForNetworkHandler(GetType().Name, parameters);
+            //Debug.Print("----- UseShrine (Operation) -----");
 
-            try
-            {
-                //Debug.Print("----- UseShrine (Operation) -----");
-
-                //foreach (var parameter in parameters)
-                //{
-                //    Debug.Print($"{parameter}");
-                //}
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
+            //foreach (var parameter in parameters)
+            //{
+            //    Debug.Print($"{parameter}");
+            //}
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
         }
     }
 }

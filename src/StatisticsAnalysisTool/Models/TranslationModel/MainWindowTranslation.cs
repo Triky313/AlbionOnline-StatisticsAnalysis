@@ -39,6 +39,7 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string ResetDamageMeter => LanguageController.Translation("RESET_DAMAGE_METER");
         public static string Settings => LanguageController.Translation("SETTINGS");
         public static string Favorite => LanguageController.Translation("FAVORITE");
+        public static string EstMarketValue => LanguageController.Translation("EST_MARKET_VALUE");
         public static string Loot => LanguageController.Translation("LOOT");
         public static string Fame => LanguageController.Translation("FAME");
         public static string Silver => LanguageController.Translation("SILVER");
@@ -58,6 +59,7 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string TryDownloadingTheItemJsonAgain => LanguageController.Translation("TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN");
         public static string DamageMeterOnOff => LanguageController.Translation("DAMAGE_METER_ON_OFF");
         public static string DeleteSelectedDungeons => LanguageController.Translation("DELETE_SELECTED_DUNGEONS");
+        public static string ResetTodaysDungeons => LanguageController.Translation("RESET_TODAYS_DUNGEONS");
         public static string SeasonPoints => LanguageController.Translation("SEASON_POINTS");
         public static string ExportLootToFile => LanguageController.Translation("EXPORT_LOOT_TO_FILE");
         public static string TrackPartyLootOnly => LanguageController.Translation("TRACK_PARTY_LOOT_ONLY");

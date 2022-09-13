@@ -31,11 +31,6 @@ namespace StatisticsAnalysisTool.UserControls
             vm?.ItemFilterReset();
         }
         
-        private void TxtBoxMinSellPriceIsUndercutPrice_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !char.IsDigit(e.Text.Last()) && e.Text.Last() != '.';
-        }
-
         private void AlertModeAlertActiveToggle_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var vm = (MainWindowViewModel)DataContext;
