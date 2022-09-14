@@ -2,7 +2,6 @@ Chest open
 
  [2]opJoin - map[0:4854 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 2:Triky313]
 
-
 [370]evUnlockVanityUnlock - map[0:4769 1:[-69 339] 3:TREASURE_SOLO_STANDARD 4:STEPPE_RED_LOOTCHEST_TREASURE_SOLO_STANDARD 5:4 6:637927505842117998 7:[] 8:[] 13:true 14:STEPPE_RED_TREASURE_SOLO 16:685fc1a1-7e7c-5e40-9802-86451090a5ce 252:370]
 [371]evAvatarUnlocked - map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
 [372]evCustomizationChanged - map[0:4769 252:372]
@@ -10,14 +9,11 @@ Chest open
 
 [370]evUnlockVanityUnlock - map[0:69156 1:[-10 -239] 3:TREASURE_ELITE_UNCOMMON 4:MOUNTAIN_DEAD_LOOTCHEST_TREASURE_ELITE_UNCOMMON 5:1 6:637928083287883255 7:[] 8:[] 13:true 14:MOUNTAIN_DEAD_TREASURE_ELITE 16:575fdfe5-4296-5934-9195-234f86107c49 252:370]
 
-
-
 [370]evUnlockVanityUnlock - map[0:2916 1:[-14 -144] 2:315 3:AVALON_STANDARD_UNCOMMON_T8 4:FOREST_RED_LOOTCHEST_AVALON_STANDARD_UNCOMMON_T8 5:2 6:637928786354147399 7:[] 8:[] 13:true 14:AVALON_MEDIUM_STANDARD_T8 252:370]
 [370]evUnlockVanityUnlock - map[0:2905 1:[95 -142] 3:AVALON_STANDARD_STANDARD_T8 4:FOREST_RED_LOOTCHEST_AVALON_STANDARD_STANDARD_T8 5:2 6:637928783952135144 7:[] 8:[] 13:true 14:AVALON_MEDIUM_STANDARD_T8 252:370]
 [370]evUnlockVanityUnlock - map[0:2916 1:[-14 -144] 2:315 3:AVALON_STANDARD_UNCOMMON_T8 4:FOREST_RED_LOOTCHEST_AVALON_STANDARD_UNCOMMON_T8 5:2 6:637928786354147399 7:[] 8:[] 13:true 14:AVALON_MEDIUM_STANDARD_T8 252:370]
 [371]evAvatarUnlocked - map[0:2916 1:4 2:637928817891015357 3:[] 4:[] 9:true 252:371]
 [371]evAvatarUnlocked - map[0:2916 1:5 2:637928817954849147 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [23 60 26 107 70 -97 -119 67 -119 17 117 2 14 87 72 -69]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [23 60 26 107 70 -97 -119 67 -119 17 117 2 14 87 72 -69]] 5:true 6:true 7:true 8:2.6 252:371]
-
 
 0:264 
 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 
@@ -61,9 +57,55 @@ DEBU[2022-07-08T15:31:20+02:00] EventDataType: [371]evAvatarUnlocked - map[0:177
 [29]evNewJournalItem - map[0:-87 1:1527 2:10 4:522720 252:29]
 [26]evNewEquipmentItem - map[0:-29 1:3 252:26]
 
-# 25 Fügt Item dem Inventar hinzu
+# 25 Fügt neues Item dem Inventar hinzu
 [25]evNewCharacter - map[0:-28 1:9 2:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 3:12 252:25]
 [29]evNewJournalItem - map[0:-85 1:1528 2:4 4:3395964 252:29]
 [26]evNewEquipmentItem - map[0:-25 1:5 252:26]
 [29]evNewJournalItem - map[0:-83 1:1533 2:3 4:2130053 252:29]
 [26]evNewEquipmentItem - map[0:-26 1:6 252:26]
+
+----------------------------------
+### 3 T6 Runen zu 13 in Inventar ###
+# Object register
+[40]opCraftBuildingChangeSettings - map[0:-93 253:40]
+
+# Neues Item entdeckt (28 bis 32) <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< WICHTIG
+[29]evNewJournalItem - map[0:430 1:1533 2:3 4:2133248 252:29] <-- T6 Runen
+[29]evNewJournalItem - map[0:432 1:1529 2:2 4:13191594 252:29]
+[29]evNewJournalItem - map[0:433 1:1528 2:1 4:3366269 252:29]
+[29]evNewJournalItem - map[0:436 1:1522 2:1 4:1719261 252:29]
+[28]evNewFurnitureItem - map[0:437 1:5838 2:1 4:17314524 5:Anellisa 6:1 7:135000000 8:[-1 -1 1919] 9:[-1] 252:28]
+[29]evNewJournalItem - map[0:438 1:-78 2:1 4:8434437 252:29]
+
+# AttachItemContainer <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< WICHTIG
+[90]evDetachItemContainer - map[0:-93 1:[78 28 -67 -38 57 122 -90 77 -76 52 43 58 -18 -39 93 85] 3:[0 0 430 0 432 433 0 0 436 437 438] 4:11 252:90]
+1: ContainerGuid, 3: ItemIndex-Array
+
+# Bewegt Item in Inventar <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< WICHTIG
+[30]opInventoryRecoverAllItems - map[0:2 1:[78 28 -67 -38 57 122 -90 77 -76 52 43 58 -18 -39 93 85] 2:2 3:14 4:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 5:23 253:30]
+0: ContainerSlot, 1: ContainerGuid, 2: ??, 3: InventarSlot, 4: UserInteractiveGuid
+
+# Neues Item entdeckt (27 bis 32)
+[29]evNewJournalItem - map[0:-74 1:1533 2:13 4:2133248 252:29]
+
+# 26 Löscht iten aus Inventar
+[26]evNewEquipmentItem - map[0:430 1:2 252:26]
+
+# Object unregister
+[41]opCraftBuildingTakeMoney - map[0:-93 253:41]
+--------------------------------
+### 1x (Slot 9) T4 Dolch zu in Inventar (Slot 22) ###
+[40]opCraftBuildingChangeSettings - map[0:-93 253:40]
+
+[28]evNewFurnitureItem - map[0:437 1:5838 2:1 4:17314524 5:Anellisa 6:1 7:135000000 8:[-1 -1 1919] 9:[-1] 252:28]
+
+[90]evDetachItemContainer - map[0:-93 1:[78 28 -67 -38 57 122 -90 77 -76 52 43 58 -18 -39 93 85] 3:[0 0 0 0 0 0 0 0 0 437 0] 4:11 252:90]
+
+[30]opInventoryRecoverAllItems - map[0:9 1:[78 28 -67 -38 57 122 -90 77 -76 52 43 58 -18 -39 93 85] 2:2 3:22 4:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 5:27 253:30]
+
+[25]evNewCharacter - map[0:437 1:22 2:[118 -97 114 112 -46 84 -60 75 -103 -93 -3 -29 118 -125 -50 96] 3:27 252:25]
+
+[41]opCraftBuildingTakeMoney - map[0:-93 253:41]
+[91]evInvalidateItemContainer - map[0:[78 28 -67 -38 57 122 -90 77 -76 52 43 58 -18 -39 93 85] 252:91]
+--------------------------------
+

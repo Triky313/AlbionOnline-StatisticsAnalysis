@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -20,9 +21,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
-
-        private readonly Dictionary<long, Guid> _putLoot = new();
-        private readonly List<DiscoveredItem> _discoveredLoot = new();
+        
         private readonly List<LootLoggerObject> _lootLoggerObjects = new();
         private ObservableCollection<EstimatedMarketValueObject> _estimatedMarketValues = new();
 
@@ -86,7 +85,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             await RemoveLootIfMoreThanLimitAsync(MaxLoot);
         }
-
+        
         private async Task RemoveLootIfMoreThanLimitAsync(int limit)
         {
             try
@@ -117,67 +116,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 _mainWindowViewModel?.LoggingBindings?.TopLooters?.Clear();
             });
-        }
-
-        [Obsolete]
-        public void AddDiscoveredLoot(DiscoveredItem item)
-        {
-            if (_discoveredLoot.Exists(x => x.ObjectId == item.ObjectId))
-            {
-                return;
-            }
-
-            _discoveredLoot.Add(item);
-        }
-
-        [Obsolete]
-        public async Task AddPutLootAsync(long? objectId, Guid? interactGuid)
-        {
-            if (_trackingController.EntityController.GetLocalEntity()?.Value?.InteractGuid != interactGuid)
-            {
-                return;
-            }
-
-            if (objectId != null && interactGuid != null && !_putLoot.ContainsKey((long)objectId))
-            {
-                _putLoot.Add((long)objectId, (Guid)interactGuid);
-            }
-
-            await LootMergeAsync();
-        }
-
-        public void ResetViewedLootLists()
-        {
-            _putLoot.Clear();
-            _discoveredLoot.Clear();
-        }
-
-        [Obsolete]
-        private async Task LootMergeAsync()
-        {
-            foreach (var lootedObject in _putLoot)
-            {
-                if (!_discoveredLoot.Exists(x => x.ObjectId == lootedObject.Key))
-                {
-                    continue;
-                }
-
-                var discoveredLoot = _discoveredLoot.FirstOrDefault(x => x.ObjectId == lootedObject.Key);
-                if (discoveredLoot != null)
-                {
-                    var loot = new Loot()
-                    {
-                        LootedFromName = discoveredLoot.BodyName,
-                        IsTrash = ItemController.IsTrash(discoveredLoot.ItemIndex),
-                        ItemIndex = discoveredLoot.ItemIndex,
-                        LootedByName = discoveredLoot.LooterName,
-                        Quantity = discoveredLoot.Quantity
-                    };
-
-                    await AddLootAsync(loot);
-                    _discoveredLoot.Remove(discoveredLoot);
-                }
-            }
         }
 
         public string GetLootLoggerObjectsAsCsv()

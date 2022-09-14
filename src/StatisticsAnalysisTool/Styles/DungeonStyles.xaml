@@ -814,7 +814,7 @@
                                        Style="{StaticResource DungeonNotificationFragment.MainMapName}" MinWidth="138" />
                                     <Grid Margin="5 0 20 0">
                                         <StackPanel Orientation="Horizontal" MinWidth="210">
-                                            <ItemsControl ItemsSource="{Binding DungeonChests, IsAsync=True}" ItemTemplate="{StaticResource DungeonEventObjectFragmentTemplate}">
+                                            <ItemsControl ItemsSource="{Binding DungeonChestsFragments, IsAsync=True}" ItemTemplate="{StaticResource DungeonEventObjectFragmentTemplate}">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <UniformGrid Rows="1"/>
@@ -960,6 +960,7 @@
                                     <fa5:ImageAwesome Icon="Solid_Dungeon" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                                 </Grid>
                                 <Label Content="{Binding NumberOfDungeonFloors, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55" />
+                                <Label Content="{Binding TotalLootValue, IsAsync=True, FallbackValue=0}" ContentStringFormat="{}{0}" VerticalAlignment="Center" Margin="2 0 10 0" MinWidth="55" />
                             </StackPanel>
                         </Grid>
                     </DockPanel>
