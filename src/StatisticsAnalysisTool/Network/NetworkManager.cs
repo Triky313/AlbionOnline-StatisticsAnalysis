@@ -103,6 +103,10 @@ public static class NetworkManager
                 _receiver.ReceivePacket(packet.PayloadData);
             }
         }
+        catch (IndexOutOfRangeException ioore)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ioore);
+        }
         catch (InvalidOperationException ioe)
         {
             ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ioe);
