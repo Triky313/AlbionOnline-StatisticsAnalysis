@@ -676,7 +676,6 @@ namespace StatisticsAnalysisTool.Network.Manager
                         var index = orderedDungeon.IndexOf(dungeonObject);
                         var dunFragment = new DungeonNotificationFragment(index, dungeonObject.GuidList, dungeonObject.MainMapIndex, dungeonObject.EnterDungeonFirstTime);
                         dunFragment.SetValues(dungeonObject);
-
                         _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Insert(index, dunFragment);
                     });
                 }
@@ -775,26 +774,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             Application.Current.Dispatcher.Invoke(() =>
             {
                 uiDungeon?.SetValues(dungeon);
-            });
-        }
-
-        public async Task UpdateDungeonLootUiAsync(DungeonObject dungeon)
-        {
-            if (dungeon?.DungeonLoot == null)
-            {
-                return;
-            }
-
-            var uiDungeon = GetCurrentUiDungeon(dungeon);
-
-            if (uiDungeon == null)
-            {
-                return;
-            }
-
-            await Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                await uiDungeon.UpdateDungeonLootAsync(dungeon.DungeonLoot.ToAsyncEnumerable());
             });
         }
 
@@ -946,7 +925,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                         UtcDiscoveryTime = discoveredItem.UtcDiscoveryTime
                     });
 
-                    _ = UpdateDungeonLootUiAsync(dun);
+                    UpdateDungeonDataUi(dun);
                 }
             }
             catch (Exception e)
@@ -955,7 +934,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
-
+        
         public void ResetLocalPlayerDiscoveredLoot()
         {
             _discoveredLoot.Clear();

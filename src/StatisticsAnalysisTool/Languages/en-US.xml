@@ -647,4 +647,6 @@
 	<translation name="EST_MARKET_VALUE">Est. market value</translation>
 	<translation name="LAST_ESTIMATED_VALUE_UPDATE">Last estimated value update</translation>
 	<translation name="BOOK_CHEST_STATS">Book Chest Stats</translation>
+	<translation name="BEST_LOOTED_ITEM">Best looted item</translation>
+	<translation name="TOTAL_LOOT_VALUE">Total looted value</translation>
 </translations>

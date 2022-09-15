@@ -71,6 +71,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isBestMightPerHour;
         private bool _isBestFavorPerHour;
         private long _totalLootValue;
+        private long _bestLootedItemValue;
+        private string _bestLootedItemName;
 
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
 
@@ -103,6 +105,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             Tier = dungeonObject.Tier;
 
             UpdateChests(dungeonObject.DungeonEventObjects.ToList());
+            _ = UpdateDungeonLootAsync(dungeonObject.DungeonLoot.ToAsyncEnumerable());
         }
 
         private void UpdateChests(IEnumerable<DungeonEventObject> dungeonEventObjects)
@@ -172,6 +175,15 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
 
             TotalLootValue = DungeonLootFragments?.Sum(x => x.TotalEstimatedMarketValue.IntegerValue) ?? 0;
+
+            var bestItem = DungeonLootFragments?.MaxBy(x => x.TotalEstimatedMarketValue.IntegerValue);
+
+            if (bestItem != null)
+            {
+                var itemName = ItemController.GetItemByUniqueName(bestItem.UniqueName).LocalizedName;
+                BestLootedItemName = (string.IsNullOrEmpty(itemName)) ? "-" : itemName;
+                BestLootedItemValue = bestItem.EstimatedMarketValue.IntegerValue;
+            }
         }
 
         public string TierString {
@@ -387,6 +399,26 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _totalLootValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public long BestLootedItemValue
+        {
+            get => _bestLootedItemValue;
+            set
+            {
+                _bestLootedItemValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string BestLootedItemName
+        {
+            get => _bestLootedItemName;
+            set
+            {
+                _bestLootedItemName = value;
                 OnPropertyChanged();
             }
         }
@@ -813,6 +845,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonIgnore] public static string TranslationMightPerHour => LanguageController.Translation("MIGHT_PER_HOUR");
         [JsonIgnore] public static string TranslationFavor => LanguageController.Translation("FAVOR");
         [JsonIgnore] public static string TranslationFavorPerHour => LanguageController.Translation("FAVOR_PER_HOUR");
+        [JsonIgnore] public static string TranslationBestLootedItem => LanguageController.Translation("BEST_LOOTED_ITEM");
+        [JsonIgnore] public static string TranslationTotalLootedValue => LanguageController.Translation("TOTAL_LOOT_VALUE");
 
         public event PropertyChangedEventHandler PropertyChanged;
         
