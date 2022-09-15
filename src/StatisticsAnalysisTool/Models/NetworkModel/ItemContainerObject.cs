@@ -5,11 +5,11 @@ namespace StatisticsAnalysisTool.Models.NetworkModel;
 
 public class ItemContainerObject
 {
-    public ItemContainerObject(long? objectId, Guid containerGuid, List<int> slotItemId)
+    public ItemContainerObject(long? objectId, Guid containerGuid, List<long> slotItemIds)
     {
         ObjectId = objectId;
         ContainerGuid = containerGuid;
-        SlotItemId = slotItemId;
+        SlotItemIds = slotItemIds;
 
         LastUpdate = DateTime.UtcNow;
     }
@@ -17,5 +17,5 @@ public class ItemContainerObject
     public DateTime LastUpdate { get; }
     public long? ObjectId { get; set; }
     public Guid ContainerGuid { get; set; }
-    public List<int> SlotItemId { get; set; }
+    public List<long> SlotItemIds { get; set; }
 }

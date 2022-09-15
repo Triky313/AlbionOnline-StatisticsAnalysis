@@ -257,13 +257,10 @@ namespace StatisticsAnalysisTool.Enumerations
         EnteringArenaLockCancel,
         InvitedToArenaMatch,
         PlayerCounts,
-        Unknown254,
         OtherGrabbedLoot,
+        InCombatStateUpdate = 257, // map[0:671362 1:true 2:true 252:257] | 1 = true; player hits enemy | 2 = true; enemy hits player
         GrabbedLoot = 258, // LOOT: map[0:424 1:Triky313 2:Bruno313 4:1841 5:1 252:256] | SILVER: map[0:6436 2:Triky313 3:true 5:1550115 252:256] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity) 
-        Unknown259,
-        InCombatStateUpdate = 260, // <- 1 = true; player hits enemy | 2 = true; enemy hits player
-        Unknown261,
-        SiegeCampClaimStart = 262,
+        SiegeCampClaimStart = 259,
         SiegeCampClaimCancel,
         SiegeCampClaimFinished,
         SiegeCampScheduleResult,

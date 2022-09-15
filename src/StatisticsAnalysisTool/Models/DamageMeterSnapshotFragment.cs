@@ -24,7 +24,7 @@ public class DamageMeterSnapshotFragment
         Hps = damageMeterFragment.Hps;
         HealInPercent = damageMeterFragment.HealInPercent;
         HealPercentage = damageMeterFragment.HealPercentage;
-        CauserMainHandItemUniqueName = damageMeterFragment.CauserMainHand.UniqueName;
+        CauserMainHandItemUniqueName = damageMeterFragment.CauserMainHand?.UniqueName ?? string.Empty;
     }
 
     public DamageMeterSnapshotFragment()

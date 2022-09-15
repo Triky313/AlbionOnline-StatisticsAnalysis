@@ -135,6 +135,11 @@ namespace StatisticsAnalysisTool.Common
             return Items?.FirstOrDefault(i => i.UniqueName == uniqueName) ?? Items?.FirstOrDefault(i => GetCleanUniqueName(i.UniqueName) == uniqueName);
         }
 
+        public static string GetUniqueNameByIndex(int index)
+        {
+            return Items?.FirstOrDefault(i => i.Index == index)?.UniqueName ?? string.Empty;
+        }
+
         public static bool IsTrash(int index)
         {
             var item = Items.FirstOrDefault(i => i.Index == index);

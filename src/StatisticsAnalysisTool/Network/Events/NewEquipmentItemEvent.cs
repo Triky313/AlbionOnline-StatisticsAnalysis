@@ -79,7 +79,7 @@ namespace StatisticsAnalysisTool.Network.Events
                         ItemIndex = _itemId,
                         Quantity = _quantity,
                         SpellDictionary = SpellDictionary,
-                        EstimatedMarketValue = FixPoint.FromInternalValue(_estimatedMarketValue)
+                        EstimatedMarketValueInternal = _estimatedMarketValue
                     };
                 }
                 else
