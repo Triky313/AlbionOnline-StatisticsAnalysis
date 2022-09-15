@@ -177,7 +177,7 @@ public class VaultController
 
     private void SetItemsToVaultContainer(ItemContainerObject containerObject, VaultContainer vaultContainer, List<DiscoveredItem> discoveredItems)
     {
-        foreach (var slotItemId in containerObject?.SlotItemId ?? new List<int>())
+        foreach (var slotItemId in containerObject?.SlotItemIds ?? new List<long>())
         {
             var slotItem = discoveredItems.FirstOrDefault(x => x.ObjectId == slotItemId);
 

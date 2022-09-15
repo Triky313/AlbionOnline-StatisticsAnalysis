@@ -647,4 +647,6 @@
 	<translation name="EST_MARKET_VALUE">Gesch. Marktwert</translation>
 	<translation name="LAST_ESTIMATED_VALUE_UPDATE">Letztes geschätzter Martwert update</translation>
 	<translation name="BOOK_CHEST_STATS">Buch Truhen Statistiken</translation>
+	<translation name="BEST_LOOTED_ITEM">Bester geplünderter Gegenstand</translation>
+	<translation name="TOTAL_LOOT_VALUE">Gesamtwert geplünderter Gegenstände</translation>
 </translations>

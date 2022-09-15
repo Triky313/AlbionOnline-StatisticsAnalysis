@@ -8,6 +8,7 @@ namespace StatisticsAnalysisTool.Network.Events
     public class InventoryPutItemEvent
     {
         public long? ObjectId { get; }
+        public int InventorySlot { get; }
         public Guid? InteractGuid { get; }
 
         public InventoryPutItemEvent(Dictionary<byte, object> parameters)
@@ -20,6 +21,8 @@ namespace StatisticsAnalysisTool.Network.Events
                 {
                     ObjectId = parameters[0].ObjectToLong();
                 }
+
+                InventorySlot = parameters.ContainsKey(1) ? parameters[1].ObjectToInt() : 0;
 
                 if (parameters.ContainsKey(2))
                 {

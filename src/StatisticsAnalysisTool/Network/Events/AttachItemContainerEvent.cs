@@ -11,7 +11,7 @@ namespace StatisticsAnalysisTool.Network.Events
         public ItemContainerObject ItemContainerObject;
         private readonly long? _objectId;
         private readonly Guid _containerGuid;
-        private readonly List<int> _containerSlots = new();
+        private readonly List<long> _containerSlots = new();
 
         public AttachItemContainerEvent(Dictionary<byte, object> parameters)
         {
@@ -24,9 +24,9 @@ namespace StatisticsAnalysisTool.Network.Events
                     _objectId = parameters[0].ObjectToLong();
                 }
                 
-                if (parameters.ContainsKey(2))
+                if (parameters.ContainsKey(1))
                 {
-                    var guid = parameters[2].ObjectToGuid();
+                    var guid = parameters[1].ObjectToGuid();
                     if (guid != null)
                     {
                         _containerGuid = (Guid)guid;
@@ -36,7 +36,16 @@ namespace StatisticsAnalysisTool.Network.Events
                 if (parameters.ContainsKey(3) && parameters[3] != null)
                 {
                     var valueType = parameters[3].GetType();
-                    if (valueType.IsArray && typeof(int[]) == valueType)
+                    if (valueType.IsArray && typeof(long[]) == valueType)
+                    {
+                        var intArray = ((long[])parameters[3]).ToDictionary();
+
+                        foreach (var slot in intArray)
+                        {
+                            _containerSlots.Add(slot.Value);
+                        }
+                    }
+                    else if (valueType.IsArray && typeof(int[]) == valueType)
                     {
                         var intArray = ((int[])parameters[3]).ToDictionary();
 
@@ -58,9 +67,9 @@ namespace StatisticsAnalysisTool.Network.Events
                     {
                         var byteArray = ((byte[])parameters[3]).ToDictionary();
 
-                        foreach (var unused in byteArray)
+                        foreach (var slot in byteArray)
                         {
-                            _containerSlots.Add(0);
+                            _containerSlots.Add(slot.Value);
                         }
                     }
                 }

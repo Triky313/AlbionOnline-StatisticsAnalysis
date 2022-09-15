@@ -9,8 +9,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using System.Windows;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.Models;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
@@ -19,7 +21,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _diedInDungeon;
         private string _diedName;
         private string _killedBy;
-        private ObservableCollection<DungeonEventObjectFragment> _dungeonChests = new ();
+        private ObservableCollection<DungeonEventObjectFragment> _dungeonChestsFragments = new ();
+        private ObservableCollection<DungeonLootFragment> _dungeonLootFragments = new ();
         private DateTime _enterDungeonFirstTime;
         private Faction _faction = Faction.Unknown;
         private double _fame;
@@ -67,6 +70,9 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isBestFavor;
         private bool _isBestMightPerHour;
         private bool _isBestFavorPerHour;
+        private long _totalLootValue;
+        private long _bestLootedItemValue;
+        private string _bestLootedItemName;
 
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
 
@@ -98,14 +104,15 @@ namespace StatisticsAnalysisTool.Network.Notification
             Status = dungeonObject.Status;
             Tier = dungeonObject.Tier;
 
-            UpdateChests(dungeonObject.DungeonEventObjects.ToAsyncEnumerable());
+            UpdateChests(dungeonObject.DungeonEventObjects.ToList());
+            _ = UpdateDungeonLootAsync(dungeonObject.DungeonLoot.ToAsyncEnumerable());
         }
 
-        private async void UpdateChests(IAsyncEnumerable<DungeonEventObject> dungeonEventObjects)
+        private void UpdateChests(IEnumerable<DungeonEventObject> dungeonEventObjects)
         {
-            foreach (var dungeonEventObject in await dungeonEventObjects.ToListAsync().ConfigureAwait(false))
+            foreach (var dungeonEventObject in dungeonEventObjects.ToList())
             {
-                var dungeon = DungeonChests?.FirstOrDefault(x => x.Hash == dungeonEventObject.Hash);
+                var dungeon = DungeonChestsFragments?.FirstOrDefault(x => x.Hash == dungeonEventObject.Hash);
 
                 if (dungeon != null)
                 {
@@ -120,9 +127,9 @@ namespace StatisticsAnalysisTool.Network.Notification
                 }
                 else
                 {
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        DungeonChests?.Add(new DungeonEventObjectFragment()
+                        DungeonChestsFragments?.Add(new DungeonEventObjectFragment()
                         {
                             Id = dungeonEventObject.Id,
                             IsBossChest = dungeonEventObject.IsBossChest,
@@ -136,6 +143,46 @@ namespace StatisticsAnalysisTool.Network.Notification
                         });
                     });
                 }
+            }
+        }
+
+        public async Task UpdateDungeonLootAsync(IAsyncEnumerable<DungeonLoot> dungeonLoot)
+        {
+            foreach (var loot in await dungeonLoot.ToListAsync().ConfigureAwait(false))
+            {
+                var dunLootFragment = DungeonLootFragments?.FirstOrDefault(x => x.Hash == loot.Hash);
+
+                if (dunLootFragment != null)
+                {
+                    dunLootFragment.UniqueName = loot.UniqueName;
+                    dunLootFragment.Quantity = loot.Quantity;
+                    dunLootFragment.UtcDiscoveryTime = loot.UtcDiscoveryTime;
+                    dunLootFragment.EstimatedMarketValue = loot.EstimatedMarketValue;
+                }
+                else
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        DungeonLootFragments?.Add(new DungeonLootFragment()
+                        {
+                            UniqueName = loot.UniqueName,
+                            Quantity = loot.Quantity,
+                            UtcDiscoveryTime = loot.UtcDiscoveryTime,
+                            EstimatedMarketValue = loot.EstimatedMarketValue
+                        });
+                    });
+                }
+            }
+
+            TotalLootValue = DungeonLootFragments?.Sum(x => x.TotalEstimatedMarketValue.IntegerValue) ?? 0;
+
+            var bestItem = DungeonLootFragments?.MaxBy(x => x.TotalEstimatedMarketValue.IntegerValue);
+
+            if (bestItem != null)
+            {
+                var itemName = ItemController.GetItemByUniqueName(bestItem.UniqueName).LocalizedName;
+                BestLootedItemName = (string.IsNullOrEmpty(itemName)) ? "-" : itemName;
+                BestLootedItemValue = bestItem.EstimatedMarketValue.IntegerValue;
             }
         }
 
@@ -157,12 +204,22 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public ObservableCollection<DungeonEventObjectFragment> DungeonChests
+        public ObservableCollection<DungeonEventObjectFragment> DungeonChestsFragments
         {
-            get => _dungeonChests;
+            get => _dungeonChestsFragments;
             set
             {
-                _dungeonChests = value;
+                _dungeonChestsFragments = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<DungeonLootFragment> DungeonLootFragments
+        {
+            get => _dungeonLootFragments;
+            set
+            {
+                _dungeonLootFragments = value;
                 OnPropertyChanged();
             }
         }
@@ -326,7 +383,8 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
         
-        public int NumberOfDungeonFloors {
+        public int NumberOfDungeonFloors 
+        {
             get => _numberOfDungeonFloors;
             set
             {
@@ -334,7 +392,37 @@ namespace StatisticsAnalysisTool.Network.Notification
                 OnPropertyChanged();
             }
         }
-        
+
+        public long TotalLootValue
+        {
+            get => _totalLootValue;
+            set
+            {
+                _totalLootValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public long BestLootedItemValue
+        {
+            get => _bestLootedItemValue;
+            set
+            {
+                _bestLootedItemValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string BestLootedItemName
+        {
+            get => _bestLootedItemName;
+            set
+            {
+                _bestLootedItemName = value;
+                OnPropertyChanged();
+            }
+        }
+
         public double Fame
         {
             get => _fame;
@@ -757,6 +845,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         [JsonIgnore] public static string TranslationMightPerHour => LanguageController.Translation("MIGHT_PER_HOUR");
         [JsonIgnore] public static string TranslationFavor => LanguageController.Translation("FAVOR");
         [JsonIgnore] public static string TranslationFavorPerHour => LanguageController.Translation("FAVOR_PER_HOUR");
+        [JsonIgnore] public static string TranslationBestLootedItem => LanguageController.Translation("BEST_LOOTED_ITEM");
+        [JsonIgnore] public static string TranslationTotalLootedValue => LanguageController.Translation("TOTAL_LOOT_VALUE");
 
         public event PropertyChangedEventHandler PropertyChanged;
         

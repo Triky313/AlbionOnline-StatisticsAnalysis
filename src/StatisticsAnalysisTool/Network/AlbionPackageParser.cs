@@ -52,6 +52,7 @@ namespace StatisticsAnalysisTool.Network
         private readonly GuildVaultInfoEventHandler _guildVaultInfoEventHandler;
         private readonly AttachItemContainerEventHandler _attachItemContainerEventHandler;
 
+        private readonly InventoryMoveItemRequestHandler _inventoryMoveItemRequestHandler;
         private readonly UseShrineRequestHandler _useShrineRequestHandler;
         private readonly ReSpecBoostRequestHandler _reSpecBoostRequestHandler;
 
@@ -101,6 +102,7 @@ namespace StatisticsAnalysisTool.Network
             _guildVaultInfoEventHandler = new GuildVaultInfoEventHandler(trackingController);
             _attachItemContainerEventHandler = new AttachItemContainerEventHandler(trackingController);
 
+            _inventoryMoveItemRequestHandler = new InventoryMoveItemRequestHandler(trackingController);
             _useShrineRequestHandler = new UseShrineRequestHandler(trackingController);
             _reSpecBoostRequestHandler = new ReSpecBoostRequestHandler(trackingController);
 
@@ -251,6 +253,9 @@ namespace StatisticsAnalysisTool.Network
 
             switch (opCode)
             {
+                case OperationCodes.InventoryMoveItem:
+                    await InventoryMoveItemRequestHandlerAsync(parameters);
+                    return;
                 case OperationCodes.UseShrine:
                     await UseShrineRequestHandlerAsync(parameters);
                     return;
@@ -532,6 +537,12 @@ namespace StatisticsAnalysisTool.Network
         #endregion
 
         #region Requests
+
+        private async Task InventoryMoveItemRequestHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new InventoryMoveItemRequest(parameters);
+            await _inventoryMoveItemRequestHandler.OnActionAsync(value);
+        }
 
         private async Task UseShrineRequestHandlerAsync(Dictionary<byte, object> parameters)
         {

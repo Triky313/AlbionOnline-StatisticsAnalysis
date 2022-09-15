@@ -18,6 +18,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public DateTime EnterDungeonFirstTime { get; set; }
         public string MainMapIndex { get; set; }
         public List<DungeonEventObject> DungeonEventObjects { get; set; } = new ();
+        public List<DungeonLoot> DungeonLoot { get; set; } = new ();
         public DungeonStatus Status { get; set; }
         public double Fame { get; set; }
         public double ReSpec { get; set; }

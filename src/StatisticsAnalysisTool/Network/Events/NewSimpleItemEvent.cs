@@ -48,7 +48,7 @@ namespace StatisticsAnalysisTool.Network.Events
                         ObjectId = (long)_objectId,
                         ItemIndex = _itemId,
                         Quantity = _quantity,
-                        EstimatedMarketValue = FixPoint.FromInternalValue(_estimatedMarketValue)
+                        EstimatedMarketValueInternal = _estimatedMarketValue
                     };
                 }
                 else
