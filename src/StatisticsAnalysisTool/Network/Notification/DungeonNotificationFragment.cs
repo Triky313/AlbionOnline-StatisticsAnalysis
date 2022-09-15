@@ -83,7 +83,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             Faction = Faction.Unknown;
         }
 
-        public async Task SetValuesAsync(DungeonObject dungeonObject)
+        public void SetValues(DungeonObject dungeonObject)
         {
             TotalRunTimeInSeconds = dungeonObject.TotalRunTimeInSeconds;
             DiedInDungeon = dungeonObject.DiedInDungeon;
@@ -102,13 +102,12 @@ namespace StatisticsAnalysisTool.Network.Notification
             Status = dungeonObject.Status;
             Tier = dungeonObject.Tier;
 
-            await UpdateChestsAsync(dungeonObject.DungeonEventObjects.ToAsyncEnumerable());
-            await UpdateDungeonLootAsync(dungeonObject.DungeonLoot.ToAsyncEnumerable());
+            UpdateChests(dungeonObject.DungeonEventObjects.ToList());
         }
 
-        private async Task UpdateChestsAsync(IAsyncEnumerable<DungeonEventObject> dungeonEventObjects)
+        private void UpdateChests(IEnumerable<DungeonEventObject> dungeonEventObjects)
         {
-            foreach (var dungeonEventObject in await dungeonEventObjects.ToListAsync().ConfigureAwait(false))
+            foreach (var dungeonEventObject in dungeonEventObjects.ToList())
             {
                 var dungeon = DungeonChestsFragments?.FirstOrDefault(x => x.Hash == dungeonEventObject.Hash);
 
@@ -125,7 +124,7 @@ namespace StatisticsAnalysisTool.Network.Notification
                 }
                 else
                 {
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
                         DungeonChestsFragments?.Add(new DungeonEventObjectFragment()
                         {
@@ -144,52 +143,35 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        private async Task UpdateDungeonLootAsync(IAsyncEnumerable<DungeonLoot> dungeonLoot)
+        public async Task UpdateDungeonLootAsync(IAsyncEnumerable<DungeonLoot> dungeonLoot)
         {
-            // TODO: Better solution needed here (Collection was modified; enumeration operation may not execute)
-            try
+            foreach (var loot in await dungeonLoot.ToListAsync().ConfigureAwait(false))
             {
-                DungeonLootFragments = new ObservableCollection<DungeonLootFragment>(
-                    (await dungeonLoot.ToListAsync()).Select(x => new DungeonLootFragment()
+                var dunLootFragment = DungeonLootFragments?.FirstOrDefault(x => x.Hash == loot.Hash);
+
+                if (dunLootFragment != null)
+                {
+                    dunLootFragment.UniqueName = loot.UniqueName;
+                    dunLootFragment.Quantity = loot.Quantity;
+                    dunLootFragment.UtcDiscoveryTime = loot.UtcDiscoveryTime;
+                    dunLootFragment.EstimatedMarketValue = loot.EstimatedMarketValue;
+                }
+                else
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        UniqueName = x.UniqueName,
-                        Quantity = x.Quantity,
-                        UtcDiscoveryTime = x.UtcDiscoveryTime,
-                        EstimatedMarketValue = x.EstimatedMarketValue
-                    }));
-
-                //foreach (var loot in await dungeonLoot.ToListAsync().ConfigureAwait(false))
-                //{
-                //    var dunLootFragment = DungeonLootFragments?.FirstOrDefault(x => x.Hash == loot.Hash);
-
-                //    if (dunLootFragment != null)
-                //    {
-                //        dunLootFragment.UniqueName = loot.UniqueName;
-                //        dunLootFragment.Quantity = loot.Quantity;
-                //        dunLootFragment.UtcDiscoveryTime = loot.UtcDiscoveryTime;
-                //        dunLootFragment.EstimatedMarketValue = loot.EstimatedMarketValue;
-                //    }
-                //    else
-                //    {
-                //        Application.Current.Dispatcher.Invoke(() =>
-                //        {
-                //            DungeonLootFragments?.Add(new DungeonLootFragment()
-                //            {
-                //                UniqueName = loot.UniqueName,
-                //                Quantity = loot.Quantity,
-                //                UtcDiscoveryTime = loot.UtcDiscoveryTime,
-                //                EstimatedMarketValue = loot.EstimatedMarketValue
-                //            });
-                //        });
-                //    }
-                //}
-
-                TotalLootValue = DungeonLootFragments?.Sum(x => x.TotalEstimatedMarketValue.IntegerValue) ?? 0;
+                        DungeonLootFragments?.Add(new DungeonLootFragment()
+                        {
+                            UniqueName = loot.UniqueName,
+                            Quantity = loot.Quantity,
+                            UtcDiscoveryTime = loot.UtcDiscoveryTime,
+                            EstimatedMarketValue = loot.EstimatedMarketValue
+                        });
+                    });
+                }
             }
-            catch (Exception)
-            {
-                // ignore
-            }
+
+            TotalLootValue = DungeonLootFragments?.Sum(x => x.TotalEstimatedMarketValue.IntegerValue) ?? 0;
         }
 
         public string TierString {

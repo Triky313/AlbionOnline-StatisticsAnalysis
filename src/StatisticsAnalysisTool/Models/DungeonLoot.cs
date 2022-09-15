@@ -13,5 +13,5 @@ public class DungeonLoot
     [JsonIgnore] 
     public FixPoint EstimatedMarketValue => FixPoint.FromInternalValue(EstimatedMarketValueInternal);
     [JsonIgnore]
-    public string Hash => $"{UniqueName}{UtcDiscoveryTime}{Quantity}{EstimatedMarketValueInternal}";
+    public string Hash => $"{UniqueName}{UtcDiscoveryTime.Ticks}{Quantity}{EstimatedMarketValueInternal}";
 }

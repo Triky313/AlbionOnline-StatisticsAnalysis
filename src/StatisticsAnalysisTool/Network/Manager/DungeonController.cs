@@ -663,19 +663,19 @@ namespace StatisticsAnalysisTool.Network.Manager
                 var dungeonFragment = _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.FirstOrDefault(x => x.DungeonHash == dungeonObject.DungeonHash);
                 if (dungeonFragment != null && IsDungeonDifferenceToAnother(dungeonObject, dungeonFragment))
                 {
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        dungeonFragment.SetValuesAsync(dungeonObject);
+                        dungeonFragment.SetValues(dungeonObject);
                         dungeonFragment.DungeonNumber = orderedDungeon.IndexOf(dungeonObject);
                     });
                 }
                 else if (dungeonFragment == null)
                 {
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
                         var index = orderedDungeon.IndexOf(dungeonObject);
                         var dunFragment = new DungeonNotificationFragment(index, dungeonObject.GuidList, dungeonObject.MainMapIndex, dungeonObject.EnterDungeonFirstTime);
-                        dunFragment.SetValuesAsync(dungeonObject);
+                        dunFragment.SetValues(dungeonObject);
 
                         _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Insert(index, dunFragment);
                     });
@@ -763,20 +763,45 @@ namespace StatisticsAnalysisTool.Network.Manager
             await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
         }
 
-        public void UpdateDungeonDataUi(DungeonObject dungeon)
+        private void UpdateDungeonDataUi(DungeonObject dungeon)
         {
             if (dungeon == null)
             {
                 return;
             }
 
-            var uiDungeon = _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.FirstOrDefault(x =>
-                x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
+            var uiDungeon = GetCurrentUiDungeon(dungeon);
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                uiDungeon?.SetValuesAsync(dungeon);
+                uiDungeon?.SetValues(dungeon);
             });
+        }
+
+        public async Task UpdateDungeonLootUiAsync(DungeonObject dungeon)
+        {
+            if (dungeon?.DungeonLoot == null)
+            {
+                return;
+            }
+
+            var uiDungeon = GetCurrentUiDungeon(dungeon);
+
+            if (uiDungeon == null)
+            {
+                return;
+            }
+
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                await uiDungeon.UpdateDungeonLootAsync(dungeon.DungeonLoot.ToAsyncEnumerable());
+            });
+        }
+
+        private DungeonNotificationFragment GetCurrentUiDungeon(DungeonObject dungeon)
+        {
+            return _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.FirstOrDefault(x =>
+                x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
         }
 
         private static bool AddClusterToExistDungeon(List<DungeonObject> dungeons, Guid? currentGuid, Guid? lastGuid, out DungeonObject dungeon)
@@ -861,7 +886,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             _discoveredLoot.Add(discoveredItem);
         }
 
-        public async Task AddNewLocalPlayerLootOnCurrentDungeonAsync(int containerSlot, Guid containerGuid, Guid userInteractGuid)
+        public void AddNewLocalPlayerLootOnCurrentDungeon(int containerSlot, Guid containerGuid, Guid userInteractGuid)
         {
             if (_trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
             {
@@ -881,7 +906,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            await AddLocalPlayerLootedItemToCurrentDungeonAsync(lootedItem);
+            AddLocalPlayerLootedItemToCurrentDungeon(lootedItem);
         }
 
         private long GetItemObjectIdFromContainer(int containerSlot)
@@ -894,7 +919,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             return _currentItemContainer!.SlotItemIds![containerSlot];
         }
 
-        public async Task AddLocalPlayerLootedItemToCurrentDungeonAsync(DiscoveredItem discoveredItem)
+        public void AddLocalPlayerLootedItemToCurrentDungeon(DiscoveredItem discoveredItem)
         {
             if (_currentGuid == null)
             {
@@ -903,23 +928,26 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             try
             {
-                var dun = GetDungeon((Guid)_currentGuid);
-                if (dun == null)
+                lock (_dungeons)
                 {
-                    return;
+                    var dun = GetDungeon((Guid)_currentGuid);
+                    if (dun == null)
+                    {
+                        return;
+                    }
+
+                    var uniqueItemName = ItemController.GetUniqueNameByIndex(discoveredItem.ItemIndex);
+
+                    dun.DungeonLoot.Add(new DungeonLoot()
+                    {
+                        EstimatedMarketValueInternal = discoveredItem.EstimatedMarketValueInternal,
+                        Quantity = discoveredItem.Quantity,
+                        UniqueName = uniqueItemName,
+                        UtcDiscoveryTime = discoveredItem.UtcDiscoveryTime
+                    });
+
+                    _ = UpdateDungeonLootUiAsync(dun);
                 }
-
-                var uniqueItemName = ItemController.GetUniqueNameByIndex(discoveredItem.ItemIndex);
-
-                dun.DungeonLoot.Add(new DungeonLoot()
-                {
-                    EstimatedMarketValueInternal = discoveredItem.EstimatedMarketValueInternal,
-                    Quantity = discoveredItem.Quantity,
-                    UniqueName = uniqueItemName,
-                    UtcDiscoveryTime = discoveredItem.UtcDiscoveryTime
-                });
-
-                await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
             }
             catch (Exception e)
             {

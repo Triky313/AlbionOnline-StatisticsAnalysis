@@ -55,7 +55,7 @@ public class DungeonLootFragment : INotifyPropertyChanged
 
     public FixPoint TotalEstimatedMarketValue => Quantity * EstimatedMarketValue;
 
-    public string Hash => $"{UniqueName}{UtcDiscoveryTime}{Quantity}{EstimatedMarketValue}";
+    public string Hash => $"{UniqueName}{UtcDiscoveryTime.Ticks}{Quantity}{EstimatedMarketValue.InternalValue}";
 
 
     public event PropertyChangedEventHandler PropertyChanged;
