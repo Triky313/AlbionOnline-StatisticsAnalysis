@@ -770,11 +770,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             var uiDungeon = GetCurrentUiDungeon(dungeon);
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                uiDungeon?.SetValues(dungeon);
-            });
+            uiDungeon?.SetValues(dungeon);
         }
 
         private DungeonNotificationFragment GetCurrentUiDungeon(DungeonObject dungeon)
