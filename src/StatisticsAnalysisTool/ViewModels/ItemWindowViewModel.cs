@@ -335,14 +335,36 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private async Task SetRequiredResourcesAsync()
         {
-            var craftingRequirements = Item?.FullItemInformation switch
+            var currentItemEnchantmentLevel = Item.Level;
+            List<CraftingRequirements> craftingRequirements = null;
+
+            if (currentItemEnchantmentLevel <= 0)
             {
-                Weapon weapon => weapon.CraftingRequirements,
-                EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
-                Mount mount => mount.CraftingRequirements,
-                ConsumableItem consumableItem => consumableItem.CraftingRequirements,
-                _ => null
-            };
+                craftingRequirements = Item?.FullItemInformation switch
+                {
+                    Weapon weapon => weapon.CraftingRequirements,
+                    EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
+                    Mount mount => mount.CraftingRequirements,
+                    ConsumableItem consumableItem => consumableItem.CraftingRequirements,
+                    _ => null
+                };
+            }
+            else
+            {
+                var enchantments = Item?.FullItemInformation switch
+                {
+                    EquipmentItem equipmentItem => equipmentItem.Enchantments,
+                    ConsumableItem consumableItem => consumableItem.Enchantments,
+                    _ => null
+                };
+
+                var enchantment = enchantments?.Enchantment?.FirstOrDefault(x => x.EnchantmentLevelInteger == currentItemEnchantmentLevel);
+
+                if (enchantment != null)
+                {
+                    craftingRequirements = enchantment.CraftingRequirements;
+                }
+            }
 
             if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
             {

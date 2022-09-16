@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using StatisticsAnalysisTool.Common.Converters;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
@@ -6,6 +8,9 @@ public class Enchantment
 {
     [JsonPropertyName("@enchantmentlevel")]
     public string EnchantmentLevel { get; set; }
+
+    [JsonIgnore]
+    public int EnchantmentLevelInteger => int.TryParse(EnchantmentLevel, out var enchantmentLevel) ? enchantmentLevel : 0;
 
     [JsonPropertyName("@abilitypower")]
     public string AbilityPower { get; set; }
@@ -15,14 +20,11 @@ public class Enchantment
 
     [JsonPropertyName("@consumespell")]
     public string ConsumeSpell { get; set; }
+
+    [JsonConverter(typeof(CraftingRequirementsToCraftingRequirementsList))]
     [JsonPropertyName("craftingrequirements")]
-    public CraftingRequirements CraftingRequirements { get; set; }
+    public List<CraftingRequirements> CraftingRequirements { get; set; }
+
     [JsonPropertyName("upgraderequirements")]
     public UpgradeRequirements UpgradeRequirements { get; set; }
-
-    [JsonPropertyName("@itempower")]
-    public string ItemPower { get; set; }
-
-    [JsonPropertyName("@durability")]
-    public string Durability { get; set; }
 }
