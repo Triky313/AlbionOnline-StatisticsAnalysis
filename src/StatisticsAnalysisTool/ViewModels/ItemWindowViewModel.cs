@@ -538,6 +538,7 @@ namespace StatisticsAnalysisTool.ViewModels
             }
             catch (TooManyRequestsException)
             {
+                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
                 SetErrorValues(Error.ToManyRequests);
                 return;
             }
