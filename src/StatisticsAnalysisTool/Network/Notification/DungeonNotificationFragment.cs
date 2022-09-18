@@ -181,7 +181,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 
             if (bestItem != null)
             {
-                var itemName = ItemController.GetItemByUniqueName(bestItem.UniqueName).LocalizedName;
+                var itemName = ItemController.GetItemByUniqueName(bestItem.UniqueName)?.LocalizedName;
                 BestLootedItemName = (string.IsNullOrEmpty(itemName)) ? "-" : itemName;
                 BestLootedItemValue = bestItem.EstimatedMarketValue.IntegerValue;
             }
