@@ -533,16 +533,19 @@
 
             <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
 
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="20,10" MinWidth="200">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding Translation.ChestStats, IsAsync=True, FallbackValue=CHEST_STATS}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
+                <StackPanel Orientation="Vertical" Margin="0,22,25,0">
+                    <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+                        <Grid Height="40" Width="40" ToolTip="{Binding Translation.EnteredDungeon}">
+                            <Image Source="/Assets/dungeon.png" Height="32" Width="32" />
+                        </Grid>
+                        <TextBlock Text="{Binding DungeonStatsSelection.EnteredDungeon, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Numbers}" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0,0,25,0">
+                    <TextBlock Text="{Binding Translation.ChestStats, IsAsync=True, FallbackValue=CHEST_STATS}" FontSize="16" 
+                               Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                     <StackPanel Orientation="Horizontal">
-                        <StackPanel Orientation="Vertical" Margin="5,0">
-                            <Grid Height="40" Width="40" ToolTip="{Binding Translation.EnteredDungeon}">
-                                <Image Source="/Assets/dungeon.png" Height="32" Width="32" />
-                            </Grid>
-                            <TextBlock Text="{Binding DungeonStatsSelection.EnteredDungeon, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Numbers}" />
-                        </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="5,0">
                             <Grid Height="40" Width="40" ToolTip="{Binding Translation.OpenedStandardChests}">
                                 <Image Source="/Assets/static_chest.png" Height="26" Width="26" />
@@ -572,9 +575,11 @@
                             <TextBlock Text="{Binding DungeonStatsSelection.OpenedLegendaryChests, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Numbers}" />
                         </StackPanel>
                     </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
                     <TextBlock Text="{Binding Translation.BookChestStats, IsAsync=True, FallbackValue=BOOK_CHEST_STATS}" FontSize="16" 
-                               Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" Margin="0,15,0,0" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                               Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Margin="5,0">
                             <Grid Height="40" Width="40" ToolTip="{Binding Translation.OpenedStandardChests}">
                                 <Image Source="/Assets/static_chest.png" Height="26" Width="26" />
@@ -609,7 +614,6 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-                <!--TODO: Added Book chests-->
             </StackPanel>
 
             <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
