@@ -17,4 +17,5 @@ public class DungeonsTranslation
     public static string AverageReSpec => LanguageController.Translation("AVERAGE_RESPEC");
     public static string AverageSilver => LanguageController.Translation("AVERAGE_SILVER");
     public static string DeleteAndReset => LanguageController.Translation("DELETE_AND_RESET");
+    public static string BestLootedItem => LanguageController.Translation("BEST_LOOTED_ITEM");
 }

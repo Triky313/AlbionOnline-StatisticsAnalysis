@@ -128,11 +128,6 @@ namespace StatisticsAnalysisTool.Common
                 var result = JsonSerializer.Deserialize<List<MarketHistoriesResponse>>(await content.ReadAsStringAsync());
                 return MergeCityAndPortalCity(result);
             }
-            catch (TooManyRequestsException)
-            {
-                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
-                throw new TooManyRequestsException();
-            }
             catch (Exception e)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);

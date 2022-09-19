@@ -323,6 +323,14 @@ namespace StatisticsAnalysisTool.Network.Manager
                 .Sum();
         }
 
+        private DungeonLoot GetBestLootedItem(DateTime dungeonIsNewerAsDateTime)
+        {
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            var filteredDungeons = _dungeons?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode));
+            var mostExpensiveLoot = filteredDungeons?.MaxBy(x => x.MostExpensiveLoot?.EstimatedMarketValueInternal);
+            return mostExpensiveLoot?.MostExpensiveLoot;
+        }
+
         public void UpdateDungeonStatsUi()
         {
             _mainWindowViewModel.DungeonBindings.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
@@ -366,6 +374,12 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Silver = GetSilver(null);
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Might = GetMight(null);
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Favor = GetFavor(null);
+
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.BestLootedItem = GetBestLootedItem(DateTime.UtcNow.AddDays(-1));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.BestLootedItem = GetBestLootedItem(DateTime.UtcNow.AddDays(-7));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.BestLootedItem = GetBestLootedItem(DateTime.UtcNow.AddDays(-30));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.BestLootedItem = GetBestLootedItem(DateTime.UtcNow.AddDays(-365));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.BestLootedItem = GetBestLootedItem(DateTime.UtcNow.AddYears(-10));
         }
 
         public void SetDungeonStatsUi()
@@ -770,11 +784,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             var uiDungeon = GetCurrentUiDungeon(dungeon);
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                uiDungeon?.SetValues(dungeon);
-            });
+            uiDungeon?.SetValues(dungeon);
         }
 
         private DungeonNotificationFragment GetCurrentUiDungeon(DungeonObject dungeon)

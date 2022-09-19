@@ -36,7 +36,11 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public Tier Tier { get; set; } = Tier.Unknown;
         [JsonIgnore]
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
-        
+
+        [JsonIgnore] 
+        public DungeonLoot MostExpensiveLoot => DungeonLoot.MaxBy(x => x.EstimatedMarketValueInternal);
+
+
         private double? _lastReSpecValue;
 
         public DungeonObject()

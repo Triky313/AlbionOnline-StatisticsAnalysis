@@ -557,6 +557,7 @@ namespace StatisticsAnalysisTool.Common
                     Converters =
                     {
                         new CraftingRequirementsToCraftingRequirementsList(),
+                        new EnchantmentToEnchantmentList(),
                         new BoolConverter()
                     }
                 };

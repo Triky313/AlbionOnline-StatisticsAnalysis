@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.Models;
+using System.Windows.Threading;
 
 namespace StatisticsAnalysisTool.Network.Notification
 {
@@ -127,7 +128,7 @@ namespace StatisticsAnalysisTool.Network.Notification
                 }
                 else
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.DataBind, () =>
                     {
                         DungeonChestsFragments?.Add(new DungeonEventObjectFragment()
                         {
@@ -161,7 +162,7 @@ namespace StatisticsAnalysisTool.Network.Notification
                 }
                 else
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.DataBind, () =>
                     {
                         DungeonLootFragments?.Add(new DungeonLootFragment()
                         {
@@ -180,7 +181,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 
             if (bestItem != null)
             {
-                var itemName = ItemController.GetItemByUniqueName(bestItem.UniqueName).LocalizedName;
+                var itemName = ItemController.GetItemByUniqueName(bestItem.UniqueName)?.LocalizedName;
                 BestLootedItemName = (string.IsNullOrEmpty(itemName)) ? "-" : itemName;
                 BestLootedItemValue = bestItem.EstimatedMarketValue.IntegerValue;
             }
