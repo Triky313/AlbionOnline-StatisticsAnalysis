@@ -1,7 +1,7 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models
 {
@@ -32,6 +32,7 @@ namespace StatisticsAnalysisTool.Models
         private double _mightPerHour;
         private double _favorPerHour;
         private int _dungeonRunTimeTotal;
+        private DungeonLoot _bestLootedItem;
 
         public int EnteredDungeon
         {
@@ -139,7 +140,7 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public double Fame 
+        public double Fame
         {
             get => _fame;
             set
@@ -150,7 +151,7 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public double ReSpec 
+        public double ReSpec
         {
             get => _reSpec;
             set
@@ -161,7 +162,7 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public double Silver 
+        public double Silver
         {
             get => _silver;
             set
@@ -183,7 +184,7 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public double Favor 
+        public double Favor
         {
             get => _favor;
             set
@@ -244,7 +245,7 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public double FameAverage 
+        public double FameAverage
         {
             get => _fameAverage;
             set
@@ -254,7 +255,7 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public double ReSpecAverage 
+        public double ReSpecAverage
         {
             get => _reSpecAverage;
             set
@@ -264,7 +265,7 @@ namespace StatisticsAnalysisTool.Models
             }
         }
 
-        public double SilverAverage 
+        public double SilverAverage
         {
             get => _silverAverage;
             set
@@ -273,8 +274,8 @@ namespace StatisticsAnalysisTool.Models
                 OnPropertyChanged();
             }
         }
-        
-        public double MightAverage 
+
+        public double MightAverage
         {
             get => _mightAverage;
             set
@@ -283,13 +284,23 @@ namespace StatisticsAnalysisTool.Models
                 OnPropertyChanged();
             }
         }
-        
-        public double FavorAverage 
+
+        public double FavorAverage
         {
             get => _favorAverage;
             set
             {
                 _favorAverage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DungeonLoot BestLootedItem
+        {
+            get => _bestLootedItem;
+            set
+            {
+                _bestLootedItem = value;
                 OnPropertyChanged();
             }
         }

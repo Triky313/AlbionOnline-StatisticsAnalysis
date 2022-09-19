@@ -10,6 +10,8 @@ public class DungeonLoot
     public DateTime UtcDiscoveryTime { get; set; }
     public int Quantity { get; set; }
     public long EstimatedMarketValueInternal { get; set; }
+    [JsonIgnore]
+    public Item Item => ItemController.GetItemByUniqueName(UniqueName);
     [JsonIgnore] 
     public FixPoint EstimatedMarketValue => FixPoint.FromInternalValue(EstimatedMarketValueInternal);
     [JsonIgnore]
