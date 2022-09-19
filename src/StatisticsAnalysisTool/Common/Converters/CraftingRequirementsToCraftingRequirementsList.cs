@@ -40,7 +40,7 @@ public class CraftingRequirementsToCraftingRequirementsList : JsonConverter<List
     }
 
 
-    private static List<CraftingRequirements> SetCraftingRequirementsArray(ref Utf8JsonReader reader)
+    public static List<CraftingRequirements> SetCraftingRequirementsArray(ref Utf8JsonReader reader)
     {
         var craftingRequirements = new List<CraftingRequirements>();
         var craftingRequirement = new CraftingRequirements();
@@ -117,7 +117,7 @@ public class CraftingRequirementsToCraftingRequirementsList : JsonConverter<List
         return craftingRequirements;
     }
 
-    private static List<CraftingRequirements> SetCraftingRequirementsObject(ref Utf8JsonReader reader)
+    public static List<CraftingRequirements> SetCraftingRequirementsObject(ref Utf8JsonReader reader)
     {
         var craftingRequirements = new List<CraftingRequirements>();
         var craftingRequirement = new CraftingRequirements();
