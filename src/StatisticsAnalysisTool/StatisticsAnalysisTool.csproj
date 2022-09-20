@@ -136,6 +136,9 @@
     <Resource Include="Assets\ava_chest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\bag.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\bg01.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -544,6 +547,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\ava_chest.png" />
+    <None Remove="Assets\bag.png" />
     <None Remove="Assets\bg01.png" />
     <None Remove="Assets\blue_glow.png" />
     <None Remove="Assets\book.png" />
