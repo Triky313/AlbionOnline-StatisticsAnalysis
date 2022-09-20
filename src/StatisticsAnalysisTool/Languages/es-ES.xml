@@ -639,4 +639,14 @@
 	<translation name="CHECK_FOR_UPDATE">Comprobar actualizaciones</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Plata gastada en re-espec en esta sesión</translation>
 	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Plata gastada en re-espec por hora</translation>
+	<translation name="RESET_TODAYS_DUNGEONS">Reiniciar mazmorras de hoy</translation>
+	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEONS">¿Estás seguro de que quieres reiniciar las mazmorras?</translation>
+	<translation name="DELETE_AND_RESET">Eliminar y reiniciar</translation>
+	<translation name="DUNGEON_STATS">Estadísticas de mazmorra</translation>
+	<translation name="CHEST_STATS">Estadísticas de cofre</translation>
+	<translation name="EST_MARKET_VALUE">Valor estimado de mercado</translation>
+	<translation name="LAST_ESTIMATED_VALUE_UPDATE">;Ultima actualización de valor estimado</translation>
+	<translation name="BOOK_CHEST_STATS">Estadísticas de cofre de libros</translation>
+	<translation name="BEST_LOOTED_ITEM">Mejor objeto looteado</translation>
+	<translation name="TOTAL_LOOT_VALUE">Valor total looteado</translation>
 </translations>
