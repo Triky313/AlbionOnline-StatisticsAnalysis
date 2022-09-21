@@ -327,10 +327,10 @@
 	<translation name="BOSS_CHEST">Босс-сундук</translation>
 	<translation name="BOOK_CHEST">Книжный-сундук</translation>
 	<translation name="ENTERED_DUNGEON">Количество данжей</translation>
-	<translation name="OPENED_STANDARD_CHESTS">Открыто стандартных сундуки</translation>
-	<translation name="OPENED_UNCOMMON_CHESTS">Открыто необычных сундуки</translation>
-	<translation name="OPENED_RARE_CHESTS">Открыто редких сундуки</translation>
-	<translation name="OPENED_LEGENDARY_CHESTS">Открыто легендарных сундуки</translation>
+	<translation name="OPENED_STANDARD_CHESTS">Открыто стандартных сундуков</translation>
+	<translation name="OPENED_UNCOMMON_CHESTS">Открыто необычных сундуков</translation>
+	<translation name="OPENED_RARE_CHESTS">Открыто редких сундуков</translation>
+	<translation name="OPENED_LEGENDARY_CHESTS">Открыто легендарных сундуков</translation>
 	<translation name="MAIN_TRACKER_DESCRIPTION_1">При правильной работе трекера значок Wi-Fi должен быть зеленым. Для достижения этого статуса необходимо изменить свою локацию.</translation>
 	<translation name="MAIN_TRACKER_DESCRIPTION_2">Присоединяйтесь к группе или пригласите кого-нибудь в свою группу, чтобы обновить кол-во людей в счётчике. Неважно, приглашаете ли вы игроков в группу сами или кто-то другой.</translation>
 	<translation name="MAIN_TRACKER_DESCRIPTION_3">Слава, которую отслеживает трекер - настоящая всеобщая слава. То есть с Премиумом и Кошелем Интуиции. Слава в профиле игрока - это обычный опыт, без усилений к опыту.</translation>
@@ -499,7 +499,7 @@
 	<translation name="WEEK">За неделю</translation>
 	<translation name="MONTH">За месяц</translation>
 	<translation name="KILLS">Убийств:</translation>
-	<translation name="SOLO_KILLS">Одиночных убийтсв:</translation>
+	<translation name="SOLO_KILLS">Одиночных убийств:</translation>
 	<translation name="DEATHS">Смертей:</translation>
 	<translation name="AVERAGE_ITEM_POWER_WHEN_KILLING">Средний IP при убийствах</translation>
 	<translation name="AVERAGE_ITEM_POWER_OF_THE_KILLED_ENEMIES">Средний IP убийц</translation>
@@ -605,4 +605,16 @@
 	<translation name="DELETE_MAILS_AFTER_365_DAYS">Удалять письма после 365 дней</translation>
 	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Игнорировать пустые письма</translation>
 	<translation name="CHECK_FOR_UPDATE">Проверить обновления</translation>
+	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Потрачено серебра на выкачку за сеанс</translation>
+	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Потрачено серебра на выкачку за час</translation>
+	<translation name="RESET_TODAYS_DUNGEONS">Сбросить подземелья за сегодня</translation>
+	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEONS">Вы уверены, что хотите обнулить подземелья?</translation>
+	<translation name="DELETE_AND_RESET">Удаление и сброс</translation>
+	<translation name="DUNGEON_STATS">Получено из подземелий</translation>
+	<translation name="CHEST_STATS">Открыто сундуков</translation>
+	<translation name="EST_MARKET_VALUE">Предполагаемая цена на рынке</translation>
+	<translation name="LAST_ESTIMATED_VALUE_UPDATE">Последнее обновление цены</translation>
+	<translation name="BOOK_CHEST_STATS">Открыто книжных сундуков</translation>
+	<translation name="BEST_LOOTED_ITEM">Лучший предмет</translation>
+	<translation name="TOTAL_LOOT_VALUE">Всего взято предметов</translation>
 </translations>

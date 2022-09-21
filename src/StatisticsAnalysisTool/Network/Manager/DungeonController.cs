@@ -312,13 +312,14 @@ namespace StatisticsAnalysisTool.Network.Manager
         private int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
         {
             var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            return _dungeons.Count(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)));
+            return _dungeons.Count(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)));
         }
 
         private int GetDungeonsRunTime(DateTime dungeonIsNewerAsDateTime)
         {
             var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            return _dungeons.Where(x => x.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)))
+            return _dungeons.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)))
+                .ToList()
                 .Select(x => x.TotalRunTimeInSeconds)
                 .Sum();
         }
@@ -326,48 +327,61 @@ namespace StatisticsAnalysisTool.Network.Manager
         private DungeonLoot GetBestLootedItem(DateTime dungeonIsNewerAsDateTime)
         {
             var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            var filteredDungeons = _dungeons?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode));
+            var filteredDungeons = _dungeons?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode)).ToList();
             var mostExpensiveLoot = filteredDungeons?.MaxBy(x => x.MostExpensiveLoot?.EstimatedMarketValueInternal);
             return mostExpensiveLoot?.MostExpensiveLoot;
         }
 
+        private long GetLootInSilver(DateTime dungeonIsNewerAsDateTime)
+        {
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            var filteredDungeons = _dungeons?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode)).ToList();
+            return filteredDungeons?.Sum(x => x.TotalLootInSilver) ?? 0;
+        }
+
         public void UpdateDungeonStatsUi()
         {
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-1));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-7));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-30));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddDays(-365));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(DateTime.UtcNow.AddYears(-10));
+            var nowMinus1days = DateTime.UtcNow.AddDays(-1);
+            var nowMinus7days = DateTime.UtcNow.AddDays(-7);
+            var nowMinus30days = DateTime.UtcNow.AddDays(-30);
+            var nowMinus365days = DateTime.UtcNow.AddDays(-365);
+            var nowMinus10Years = DateTime.UtcNow.AddYears(-10);
 
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.DungeonRunTimeTotal = GetDungeonsRunTime(DateTime.UtcNow.AddDays(-1));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.DungeonRunTimeTotal = GetDungeonsRunTime(DateTime.UtcNow.AddDays(-7));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.DungeonRunTimeTotal = GetDungeonsRunTime(DateTime.UtcNow.AddDays(-30));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.DungeonRunTimeTotal = GetDungeonsRunTime(DateTime.UtcNow.AddDays(-365));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.DungeonRunTimeTotal = GetDungeonsRunTime(DateTime.UtcNow.AddYears(-10));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.EnteredDungeon = GetDungeonsCount(nowMinus1days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.EnteredDungeon = GetDungeonsCount(nowMinus7days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.EnteredDungeon = GetDungeonsCount(nowMinus30days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.EnteredDungeon = GetDungeonsCount(nowMinus365days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.EnteredDungeon = GetDungeonsCount(nowMinus10Years);
 
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Fame = GetFame(DateTime.UtcNow.AddDays(-1));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.ReSpec = GetReSpec(DateTime.UtcNow.AddDays(-1));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Silver = GetSilver(DateTime.UtcNow.AddDays(-1));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Might = GetMight(DateTime.UtcNow.AddDays(-1));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Favor = GetFavor(DateTime.UtcNow.AddDays(-1));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus1days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus7days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus30days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus365days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.DungeonRunTimeTotal = GetDungeonsRunTime(nowMinus10Years);
 
-            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Fame = GetFame(DateTime.UtcNow.AddDays(-7));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.ReSpec = GetReSpec(DateTime.UtcNow.AddDays(-7));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Silver = GetSilver(DateTime.UtcNow.AddDays(-7));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Might = GetMight(DateTime.UtcNow.AddDays(-7));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Favor = GetFavor(DateTime.UtcNow.AddDays(-7));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Fame = GetFame(nowMinus1days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.ReSpec = GetReSpec(nowMinus1days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Silver = GetSilver(nowMinus1days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Might = GetMight(nowMinus1days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.Favor = GetFavor(nowMinus1days);
 
-            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Fame = GetFame(DateTime.UtcNow.AddDays(-30));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.ReSpec = GetReSpec(DateTime.UtcNow.AddDays(-30));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Silver = GetSilver(DateTime.UtcNow.AddDays(-30));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Might = GetMight(DateTime.UtcNow.AddDays(-30));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Favor = GetFavor(DateTime.UtcNow.AddDays(-30));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Fame = GetFame(nowMinus7days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.ReSpec = GetReSpec(nowMinus7days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Silver = GetSilver(nowMinus7days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Might = GetMight(nowMinus7days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.Favor = GetFavor(nowMinus7days);
 
-            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Fame = GetFame(DateTime.UtcNow.AddDays(-365));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.ReSpec = GetReSpec(DateTime.UtcNow.AddDays(-365));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Silver = GetSilver(DateTime.UtcNow.AddDays(-365));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Might = GetMight(DateTime.UtcNow.AddDays(-365));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Favor = GetFavor(DateTime.UtcNow.AddDays(-365));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Fame = GetFame(nowMinus30days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.ReSpec = GetReSpec(nowMinus30days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Silver = GetSilver(nowMinus30days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Might = GetMight(nowMinus30days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.Favor = GetFavor(nowMinus30days);
+
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Fame = GetFame(nowMinus365days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.ReSpec = GetReSpec(nowMinus365days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Silver = GetSilver(nowMinus365days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Might = GetMight(nowMinus365days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.Favor = GetFavor(nowMinus365days);
 
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Fame = GetFame(null);
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.ReSpec = GetReSpec(null);
@@ -375,11 +389,17 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Might = GetMight(null);
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.Favor = GetFavor(null);
 
-            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.BestLootedItem = GetBestLootedItem(DateTime.UtcNow.AddDays(-1));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.BestLootedItem = GetBestLootedItem(DateTime.UtcNow.AddDays(-7));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.BestLootedItem = GetBestLootedItem(DateTime.UtcNow.AddDays(-30));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.BestLootedItem = GetBestLootedItem(DateTime.UtcNow.AddDays(-365));
-            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.BestLootedItem = GetBestLootedItem(DateTime.UtcNow.AddYears(-10));
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.BestLootedItem = GetBestLootedItem(nowMinus1days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.BestLootedItem = GetBestLootedItem(nowMinus7days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.BestLootedItem = GetBestLootedItem(nowMinus30days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.BestLootedItem = GetBestLootedItem(nowMinus365days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.BestLootedItem = GetBestLootedItem(nowMinus10Years);
+
+            _mainWindowViewModel.DungeonBindings.DungeonStatsDay.LootInSilver = GetLootInSilver(nowMinus1days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsWeek.LootInSilver = GetLootInSilver(nowMinus7days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsMonth.LootInSilver = GetLootInSilver(nowMinus30days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsYear.LootInSilver = GetLootInSilver(nowMinus365days);
+            _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.LootInSilver = GetLootInSilver(nowMinus10Years);
         }
 
         public void SetDungeonStatsUi()

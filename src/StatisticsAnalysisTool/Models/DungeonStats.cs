@@ -33,6 +33,9 @@ namespace StatisticsAnalysisTool.Models
         private double _favorPerHour;
         private int _dungeonRunTimeTotal;
         private DungeonLoot _bestLootedItem;
+        private double _lootInSilver;
+        private double _lootInSilverPerHour;
+        private double _lootInSilverAverage;
 
         public int EnteredDungeon
         {
@@ -50,12 +53,6 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _dungeonRunTimeTotal = value;
-
-                FamePerHour = Utilities.GetValuePerHourToDouble(Fame, _dungeonRunTimeTotal);
-                ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, _dungeonRunTimeTotal);
-                SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, _dungeonRunTimeTotal);
-                MightPerHour = Utilities.GetValuePerHourToDouble(Might, _dungeonRunTimeTotal);
-                FavorPerHour = Utilities.GetValuePerHourToDouble(Favor, _dungeonRunTimeTotal);
                 OnPropertyChanged();
             }
         }
@@ -147,6 +144,7 @@ namespace StatisticsAnalysisTool.Models
             {
                 _fame = value;
                 FameAverage = (_fame / EnteredDungeon).ToShortNumber(99999999.99);
+                FamePerHour = Utilities.GetValuePerHourToDouble(Fame, _dungeonRunTimeTotal);
                 OnPropertyChanged();
             }
         }
@@ -158,6 +156,7 @@ namespace StatisticsAnalysisTool.Models
             {
                 _reSpec = value;
                 ReSpecAverage = (_reSpec / EnteredDungeon).ToShortNumber(99999999.99);
+                ReSpecPerHour = Utilities.GetValuePerHourToDouble(ReSpec, _dungeonRunTimeTotal);
                 OnPropertyChanged();
             }
         }
@@ -169,6 +168,7 @@ namespace StatisticsAnalysisTool.Models
             {
                 _silver = value;
                 SilverAverage = (_silver / EnteredDungeon).ToShortNumber(99999999.99);
+                SilverPerHour = Utilities.GetValuePerHourToDouble(Silver, _dungeonRunTimeTotal);
                 OnPropertyChanged();
             }
         }
@@ -180,6 +180,7 @@ namespace StatisticsAnalysisTool.Models
             {
                 _might = value;
                 MightAverage = (_might / EnteredDungeon).ToShortNumber(99999999.99);
+                MightPerHour = Utilities.GetValuePerHourToDouble(Might, _dungeonRunTimeTotal);
                 OnPropertyChanged();
             }
         }
@@ -191,6 +192,19 @@ namespace StatisticsAnalysisTool.Models
             {
                 _favor = value;
                 FavorAverage = (_favor / EnteredDungeon).ToShortNumber(99999999.99);
+                FavorPerHour = Utilities.GetValuePerHourToDouble(Favor, _dungeonRunTimeTotal);
+                OnPropertyChanged();
+            }
+        }
+
+        public double LootInSilver
+        {
+            get => _lootInSilver;
+            set
+            {
+                _lootInSilver = value;
+                LootInSilverAverage = (_lootInSilver / EnteredDungeon).ToShortNumber(99999999.99);
+                LootInSilverPerHour = Utilities.GetValuePerHourToDouble(LootInSilver, _dungeonRunTimeTotal);
                 OnPropertyChanged();
             }
         }
@@ -304,12 +318,33 @@ namespace StatisticsAnalysisTool.Models
                 OnPropertyChanged();
             }
         }
+        
+        public double LootInSilverPerHour
+        {
+            get => _lootInSilverPerHour;
+            set
+            {
+                _lootInSilverPerHour = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double LootInSilverAverage
+        {
+            get => _lootInSilverAverage;
+            set
+            {
+                _lootInSilverAverage = value;
+                OnPropertyChanged();
+            }
+        }
 
         public static string TranslationFame => LanguageController.Translation("FAME");
         public static string TranslationReSpec => LanguageController.Translation("RESPEC");
         public static string TranslationSilver => LanguageController.Translation("SILVER");
         public static string TranslationMight => LanguageController.Translation("MIGHT");
         public static string TranslationFavor => LanguageController.Translation("FAVOR");
+        public static string TranslationLootInSilver => LanguageController.Translation("LOOT_IN_SILVER");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

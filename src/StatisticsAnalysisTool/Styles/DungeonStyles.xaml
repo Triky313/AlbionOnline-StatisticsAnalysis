@@ -541,6 +541,12 @@
                             <TextBlock Text="{Binding DungeonStatsSelection.FavorPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.FavorAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="10,0,10,0">
+                            <Image Source="../Assets/bag.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationLootInSilver, FallbackValue='LOOT_IN_SILVER'}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.LootInSilver, StringFormat='{}{0:N0}', FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.LootInSilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.LootInSilverAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
+                        </StackPanel>
                     </DockPanel>
                 </StackPanel>
             </StackPanel>
