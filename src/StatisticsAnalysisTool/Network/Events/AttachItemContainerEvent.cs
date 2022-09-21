@@ -24,9 +24,9 @@ namespace StatisticsAnalysisTool.Network.Events
                     _objectId = parameters[0].ObjectToLong();
                 }
                 
-                if (parameters.ContainsKey(1))
+                if (parameters.ContainsKey(2))
                 {
-                    var guid = parameters[1].ObjectToGuid();
+                    var guid = parameters[2].ObjectToGuid();
                     if (guid != null)
                     {
                         _containerGuid = (Guid)guid;
