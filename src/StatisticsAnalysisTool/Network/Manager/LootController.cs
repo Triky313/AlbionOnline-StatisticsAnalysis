@@ -12,7 +12,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -21,9 +20,10 @@ namespace StatisticsAnalysisTool.Network.Manager
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
-        
         private readonly List<LootLoggerObject> _lootLoggerObjects = new();
         private ObservableCollection<EstimatedMarketValueObject> _estimatedMarketValues = new();
+        private ItemContainerObject _currentItemContainer;
+        private readonly List<DiscoveredItem> _discoveredLoot = new();
 
         private const int MaxLoot = 5000;
 
@@ -85,7 +85,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             await RemoveLootIfMoreThanLimitAsync(MaxLoot);
         }
-        
+
         private async Task RemoveLootIfMoreThanLimitAsync(int limit)
         {
             try
@@ -135,9 +135,96 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private static TrackingNotification SetNotificationAsync(string lootedByName, string lootedFromName, string lootedByGuild, string lootedFromGuild, Item item, int quantity)
         {
-            return new TrackingNotification(DateTime.Now, 
+            return new TrackingNotification(DateTime.Now,
                 new OtherGrabbedLootNotificationFragment(lootedByName, lootedFromName, lootedByGuild, lootedFromGuild, item, quantity), item.Index);
         }
+
+        #region Lokal player loot tracking
+
+        private IdentifiedBody _currentIdentifiedBody;
+
+        public struct IdentifiedBody
+        {
+            public long ObjectId { get; set; }
+            public string Name { get; set; }
+        }
+
+        public void SetIdentifiedBody(long objectId, string lootBody)
+        {
+            _currentIdentifiedBody = new IdentifiedBody()
+            {
+                ObjectId = objectId,
+                Name = lootBody
+            };
+        }
+
+        public void SetCurrentItemContainer(ItemContainerObject itemContainerObject)
+        {
+            _currentItemContainer = itemContainerObject;
+        }
+
+        public void AddDiscoveredItem(DiscoveredItem discoveredItem)
+        {
+            if (_discoveredLoot.Any(x => x?.ObjectId == discoveredItem?.ObjectId))
+            {
+                return;
+            }
+
+            _discoveredLoot.Add(discoveredItem);
+        }
+
+        public async Task AddNewLocalPlayerLootAsync(int containerSlot, Guid containerGuid, Guid userInteractGuid)
+        {
+            if (_trackingController.EntityController.LocalUserData.InteractGuid != userInteractGuid)
+            {
+                return;
+            }
+
+            if (_currentItemContainer?.ContainerGuid != containerGuid || _currentItemContainer?.ObjectId != _currentIdentifiedBody.ObjectId)
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(_trackingController?.EntityController?.LocalUserData?.Username) || string.IsNullOrEmpty(_currentIdentifiedBody.Name))
+            {
+                return;
+            }
+
+            var itemObjectId = GetItemObjectIdFromContainer(containerSlot);
+            var lootedItem = _discoveredLoot.FirstOrDefault(x => x.ObjectId == itemObjectId);
+
+            if (lootedItem == null)
+            {
+                return;
+            }
+
+            await AddLootAsync(new Loot()
+            {
+                IsSilver = false,
+                IsTrash = false,
+                ItemIndex = lootedItem.ItemIndex,
+                LootedByName = _trackingController?.EntityController?.LocalUserData?.Username,
+                LootedFromName = _currentIdentifiedBody.Name,
+                Quantity = lootedItem.Quantity
+            });
+        }
+
+        private long GetItemObjectIdFromContainer(int containerSlot)
+        {
+            if (_currentItemContainer == null || _currentItemContainer?.SlotItemIds?.Count is null or <= 0 || _currentItemContainer?.SlotItemIds?.Count <= containerSlot)
+            {
+                return 0;
+            }
+
+            return _currentItemContainer!.SlotItemIds![containerSlot];
+        }
+
+        public void ResetLocalPlayerDiscoveredLoot()
+        {
+            _discoveredLoot.Clear();
+        }
+
+        #endregion
 
         #region Estimated market value
 

@@ -20,6 +20,7 @@ namespace StatisticsAnalysisTool.Network.Handler
                 _trackingController.VaultController.AddContainer(value.ItemContainerObject);
             }
 
+            _trackingController.LootController.SetCurrentItemContainer(value.ItemContainerObject);
             _trackingController.DungeonController.SetCurrentItemContainer(value.ItemContainerObject);
             await Task.CompletedTask;
         }

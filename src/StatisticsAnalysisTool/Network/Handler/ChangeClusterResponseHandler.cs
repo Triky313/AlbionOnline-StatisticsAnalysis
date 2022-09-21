@@ -17,6 +17,7 @@ public class ChangeClusterResponseHandler
     {
         _trackingController.ClusterController.ChangeClusterInformation(value.MapType, value.Guid, value.Index, value.IslandName, value.WorldMapDataType, value.DungeonInformation, value.MainClusterIndex);
         _trackingController.EntityController.RemoveEntitiesByLastUpdate(2);
+        _trackingController.LootController.ResetLocalPlayerDiscoveredLoot();
         _trackingController.DungeonController.ResetLocalPlayerDiscoveredLoot();
 
         await Task.CompletedTask;
