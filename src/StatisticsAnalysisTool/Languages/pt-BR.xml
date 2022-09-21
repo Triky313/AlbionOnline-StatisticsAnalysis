@@ -119,6 +119,7 @@
 	<translation name="FULL_ITEM_INFO_UPDATE_CYCLE_DAYS">Atualização do ciclo de dias de info do item </translation>
 	<translation name="LOAD_FULL_ITEM_INFO">Carregar info completa do item</translation>
 	<translation name="UNKNOWN">Desconhecido</translation>
+	
 	<translation name="CLOTH_ARMOR">Armadura de Pano</translation>
 	<translation name="CLOTH_HELMET">Elmo de Pano</translation>
 	<translation name="CLOTH_SHOES">Sapato de Pano</translation>
@@ -131,16 +132,19 @@
 	<translation name="UNIQUE_ARMOR">Armadura Única</translation>
 	<translation name="UNIQUE_HELMET">Elmo Único</translation>
 	<translation name="UNIQUE_SHOES">Sapato Único</translation>
+	
 	<translation name="ARMOR_ARTEFACT">Artefato de Armadura</translation>
 	<translation name="MAGIC_ARTEFACT">Artefato Mágico</translation>
 	<translation name="MELEE_ARTEFACT">Artefato Corpo a Corpo</translation>
 	<translation name="OFFHAND_ARTEFACT">Artefato OffHand</translation>
 	<translation name="RANGED_ARTEFACT">Artefato a distância</translation>
-	<translation name="BEASTHEART">Coração Bestial</translation>
+	
+	<translation name="BEASTHEART">Coração Bestial</translation>	
 	<translation name="MOUNTAINHEART">Coração Montanhoso</translation>
 	<translation name="ROCKHEART">Coração Empedrado</translation>
 	<translation name="TREEHEART">Coração Arbóreo</translation>
 	<translation name="VINEHEART">Coração Videira</translation>
+	
 	<translation name="COOKED">Cozinhado</translation>
 	<translation name="FISH">Peixe</translation>
 	<translation name="FISHING_BAIT">Isca de pesca</translation>
@@ -149,8 +153,10 @@
 	<translation name="POTION">Poção</translation>
 	<translation name="SKILL_BOOK">Livro de Habilidades</translation>
 	<translation name="VANITY">Vaidade</translation>
+	
 	<translation name="ANIMALS">Animais</translation>
 	<translation name="SEED">Semente</translation>
+	
 	<translation name="BANNER">Banner</translation>
 	<translation name="BED">Cama</translation>
 	<translation name="CHEST">Baú</translation>
@@ -162,46 +168,56 @@
 	<translation name="TABLE">Mesa</translation>
 	<translation name="REPAIR_KIT">KitDeReparação</translation>
 	<translation name="UNIQUE">Único</translation>
+	
 	<translation name="FIBERGATHERER_ARMOR">Traje do Ceifeiro</translation>
 	<translation name="FIBERGATHERER_HELMET">Chapéu do Ceifeiro</translation>
 	<translation name="FIBERGATHERER_SHOES">Botas do Ceifeiro</translation>
 	<translation name="FIBERGATHERER_BACKPACK">Mochila de Ceifeiro</translation>
+	
 	<translation name="FISHGATHERER_ARMOR">Traje de Pescador</translation>
 	<translation name="FISHGATHERER_HELMET">Chapéu de Pescador</translation>
 	<translation name="FISHGATHERER_SHOES">Botas de Pescador</translation>
 	<translation name="FISHGATHERER_BACKPACK">Mochila de Pescador</translation>
+	
 	<translation name="HIDEGATHERER_ARMOR">Traje do Esfolador</translation>
 	<translation name="HIDEGATHERER_HELMET">Chapéu do Esfolador</translation>
 	<translation name="HIDEGATHERER_SHOES">Botas de Esfolador</translation>
 	<translation name="HIDEGATHERERR_BACKPACK">Mochila de Esfolador</translation>
+	
 	<translation name="OREGATHERER_ARMOR">Traje de Minerador</translation>
 	<translation name="OREGATHERER_HELMET">Chapéu de Minerador</translation>
 	<translation name="OREGATHERER_SHOES">Botas de Minerador</translation>
 	<translation name="OREGATHERER_BACKPACK">Mochila de Minerador</translation>
+	
 	<translation name="ROCKGATHERER_ARMOR">Traje do Cavouqueiro</translation>
 	<translation name="ROCKGATHERER_HELMET">Chapéu do Cavouqueiro</translation>
 	<translation name="ROCKGATHERER_SHOES">Botas do Cavouqueiro</translation>
 	<translation name="ROCKGATHERER_BACKPACK">Mochila do Cavouqueiro</translation>
+	
 	<translation name="WOODGATHERER_ARMOR">Traje de Lenhador</translation>
 	<translation name="WOODGATHERER_HELMET">Chapéu de Lenhador</translation>
 	<translation name="WOODGATHERER_SHOES">Botas de Lenhador</translation>
 	<translation name="WOODGATHERER_BACKPACK">Mochila de Lenhador</translation>
+	
 	<translation name="BRIDGEWATCH">Bridgewatch</translation>
 	<translation name="CAERLEON">Caerleon</translation>
 	<translation name="FORT_STERLING">Fort Sterling</translation>
 	<translation name="LYMHURST">Lymhurst</translation>
 	<translation name="MARTLOCK">Martlock</translation>
 	<translation name="THETFORD">Thetford</translation>
+	
 	<translation name="ARCANE_STAFF">Cajado Arcano</translation>
 	<translation name="CURSE_STAFF">Cajado Amaldiçoado</translation>
 	<translation name="FIRE_STAFF">Cajado de Fogo</translation>
 	<translation name="FROST_STAFF">Cajado de Gelo</translation>
 	<translation name="HOLY_STAFF">Cajado Divino</translation>
 	<translation name="NATURE_STAFF">Cajado da Natureza</translation>
+	
 	<translation name="ESSENCE">Essência</translation>
 	<translation name="RELIC">Reliquia</translation>
 	<translation name="RUNE">Runa</translation>
 	<translation name="SOUL">Alma</translation>
+	
 	<translation name="AXE">Machado</translation>
 	<translation name="DAGGER">Adaga</translation>
 	<translation name="HAMMER">Martelo</translation>
@@ -209,10 +225,12 @@
 	<translation name="QUARTER_STAFF">Bastão</translation>
 	<translation name="SPEAR">Lança</translation>
 	<translation name="SWORD">Espada</translation>
+	
 	<translation name="ARMORED_HORSE">Cavalo blindado</translation>
 	<translation name="OX">Boi</translation>
 	<translation name="RARE_MOUNT">Montaria Rara</translation>
 	<translation name="RIDING_HORSE">Cavalo de Montar</translation>
+	
 	<translation name="BOOK">Livro</translation>
 	<translation name="HORN">Brumário</translation>
 	<translation name="ORB">Olho dos Segredos</translation>
@@ -220,10 +238,13 @@
 	<translation name="TORCH">Tocha</translation>
 	<translation name="TOTEM">Raiz Mestra</translation>
 	<translation name="TRASH">Lixo</translation>
+	
 	<translation name="FARMING">Agricultura</translation>
 	<translation name="JOURNAL">Diário</translation>
+	
 	<translation name="BOW">Arco</translation>
 	<translation name="CROSSBOW">Besta</translation>
+	
 	<translation name="CLOTH">Tecido</translation>
 	<translation name="FIBER">Fibra</translation>
 	<translation name="HIDE">Pele</translation>
@@ -234,9 +255,11 @@
 	<translation name="PLANKS">Tábua</translation>
 	<translation name="ROCK">Pedra</translation>
 	<translation name="STONEBLOCK">Bloco de Pedra</translation>
+	
 	<translation name="ARENA_SIGILS">Selo de Arena</translation>
 	<translation name="EVENT">Evento</translation>
 	<translation name="ROYAL_SIGILS">Selo Real</translation>
+	
 	<translation name="DEMOLITION_HAMMER">Martelo de Demolição</translation>
 	<translation name="FISHING">Pescaria</translation>
 	<translation name="PICKAXE">Picareta</translation>
@@ -244,6 +267,7 @@
 	<translation name="SKINNING_KNIFE">Faca de Esfolar</translation>
 	<translation name="STONE_HAMMER">Martelo de Pedra</translation>
 	<translation name="WOOD_AXE">Machado de Madeira</translation>
+	
 	<translation name="FIBER_TROPHY">Troféu de Fibra</translation>
 	<translation name="FISH_TROPHY">Troféu de Pesca</translation>
 	<translation name="GENERAL_TROPHY">Troféu do Generalista</translation>
@@ -252,31 +276,37 @@
 	<translation name="ORE_TROPHY">Troféu de Minerador</translation>
 	<translation name="ROCK_TROPHY">Troféu de Canteiro</translation>
 	<translation name="WOOD_TROPHY">Troféu de Lenhador</translation>
+	
 	<translation name="ACCESSORIES">Acessório</translation>
 	<translation name="ARMOR">Armadura</translation>
 	<translation name="ARTEFACT">Artefato</translation>
 	<translation name="CITY_RESOURCES">Recursos da Cidade</translation>
 	<translation name="CONSUMABLE">Consumíveis</translation>
+	
 	<translation name="FARMABLE">Cultivável</translation>
 	<translation name="FURNITURE">Mobilia</translation>
 	<translation name="GATHERING_GEAR">Equipamento de Coleta</translation>
 	<translation name="LUXURY_GOODS">Produto de Luxo</translation>
 	<translation name="MAGIC">Magia</translation>
+	
 	<translation name="MATERIALS">Materiais</translation>
 	<translation name="MELEE">Corpo a Corpo</translation>
 	<translation name="MOUNT">Montaria</translation>
 	<translation name="OFFHAND">Mão Secundária</translation>
 	<translation name="PRODUCT">Produto</translation>
+	
 	<translation name="RANGED">Á distância</translation>
 	<translation name="RESOURCE">Recursos</translation>
 	<translation name="TOKEN">Tomo</translation>
 	<translation name="TOOL">Ferramentas</translation>
 	<translation name="TROPHIES">Troféus</translation>
+	
 	<translation name="WEIGHT">Peso</translation>
 	<translation name="ITEM_POWER">Poder do Item</translation>
 	<translation name="DURABILITY">Durabilidade</translation>
 	<translation name="REAL_MONEY_PRICE">Preço real em dinheiro</translation>
 	<translation name="TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT">Muitas requisições, feche algumas janelas ou espere alguns minutos.</translation>
+	
 	<translation name="ALARM_SOUND_USED">Alarme de Som Usado</translation>
 	<translation name="ITEM_PRICE_UNDERCUT">Corte do Preço do Item</translation>
 	<translation name="THE_PRICE_OF">O preço de</translation>
@@ -288,10 +318,11 @@
 	<translation name="UNDERCUTTING_PRICE">Preço de Corte</translation>
 	<translation name="AVERAGE_PRICES">Preço Médio</translation>
 	<translation name="AVERAGE_PRICES_TOOLTIP">Preço de Venda Min | Preço de Venda Max | Preço de Compra Min | Preço de Compra Max</translation>
+	
 	<translation name="TRACKING">Rastreando</translation>
 	<translation name="IS_TRACKING_ACTIVE">O rastreamento esta ativado? (Verde - ON | Amarelo - Parcialmente | Cinza - OFF)</translation>
 	<translation name="USERNAME">Nome de Usuário</translation>
-	<translation name="GUILD">Guilda</translation>
+	<translation name="GUILD">Guild</translation>
 	<translation name="ALLIANCE">Aliança</translation>
 	<translation name="RESET_TRACKING_COUNTER">Resetar Contador de Rastreio</translation>
 	<translation name="MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP">Tenha certeza de que tem o NPCAP instalado. https://nmap.org/npcap</translation>
@@ -304,6 +335,7 @@
 	<translation name="TOTAL_SILVER">Prata Total</translation>
 	<translation name="TOTAL_RESPEC">Fama Amarela Total</translation>
 	<translation name="SILVER">Prata</translation>
+	
 	<translation name="MINUTES">Minutos</translation>
 	<translation name="HOURS">Horas</translation>
 	<translation name="DAYS">Dias</translation>
@@ -315,13 +347,14 @@
 	<translation name="ISLAND">Ilha</translation>
 	<translation name="HIDEOUT">Esconderijo</translation>
 	<translation name="DAY">Dia</translation>
-	<translation name="RESET_DUNGEON_TRACKING">Resetar Rastreio da Masmorra</translation>
+	<translation name="RESET_DUNGEON_TRACKING">Resetar Rastreio da Masmorra</translation>	
 	<translation name="SOLO">Sozinho</translation>
 	<translation name="KILLED_BY">Morto por</translation>
 	<translation name="DUNGEON_FAME">Fama de Masmorra</translation>
 	<translation name="DUNGEON_RUN_TIME">Tempo de execução da Masmorra</translation>
 	<translation name="DAMAGE_METER">Medidor de Dano</translation>
 	<translation name="RESET_DAMAGE_METER">Resetar Medidor de Dano</translation>
+	
 	<translation name="STANDARD">Comum</translation>
 	<translation name="UNCOMMON">Incomum</translation>
 	<translation name="RARE">Raro</translation>
@@ -335,6 +368,7 @@
 	<translation name="OPENED_LEGENDARY_CHESTS">Baús lendários abertos</translation>
 	
 	<translation name="DAMAGE_METER_DESCRIPTION_1">Para aparecer o dano de outros jogadores ser reconhecido, o StatisticsAnalysisTool primeiro precisa ser ativada e então você deve sair e entrar do grupo.</translation>
+	
 	<translation name="SORT_BY_DAMAGE">Filtrar por dano</translation>
 	<translation name="SORT_BY_DPS">Filtrar por Dano por Segundo</translation>
 	<translation name="SORT_BY_NAME">Filtrar por Nome</translation>
@@ -351,9 +385,11 @@
 	<translation name="SILVER_SHRINE">Santuário de Prata</translation>
 	<translation name="FAME_SHRINE">Santuário de Fama</translation>
 	<translation name="COMBAT_BUFF">Buff de Combate</translation>
+	
 	<translation name="CITY_PRICES_API_URL">URL da API do Preço das Cidades</translation>
 	<translation name="CITY_PRICES_HISTORY_API_URL">URL da API do Histórico de Preços</translation>
 	<translation name="GOLD_STATS_API_URL">URL da API do Status de Ouro</translation>
+	
 	<translation name="SAFE">Seguro</translation>
 	<translation name="DUNGEON_TIMER">Temporizador da Masmorra</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Você tem certeza que deseja dar reset no medidor de dano?</translation>
@@ -374,14 +410,14 @@
 	<translation name="AVERAGE_SILVER">Média de Prata</translation>
 	<translation name="LOOTED">Saqueado</translation>
 	<translation name="FROM">A partir</translation>
-	<translation name="LOOT">Loot</translation>
+	<translation name="LOOT">Saque</translation>
 	<translation name="MOB">Mob</translation>
 	<translation name="RESET_TRACKING_NOTIFICATIONS">Resetar Rastreador de Notificações</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_TRACKING_NOTIFICATIONS">Você tem certeza que deseja dar reset no Rastreador de Notificações?</translation>
-	<translation name="EQUIPMENT_LOOT">Pilha de Equipamentos</translation>
-	<translation name="CONSUMABLE_LOOT">Pilha de Consumíveis</translation>
-	<translation name="SIMPLE_LOOT">Pilha Simples</translation>
-	<translation name="UNKNOWN_LOOT">Pilha Desconhecida</translation>
+	<translation name="EQUIPMENT_LOOT">Saque de Equipamentos</translation>
+	<translation name="CONSUMABLE_LOOT">Saque de Consumíveis</translation>
+	<translation name="SIMPLE_LOOT">Saque Simples</translation>
+	<translation name="UNKNOWN_LOOT">Saque Desconhecido</translation>
 	<translation name="FACTION">Facção</translation>
 	<translation name="RESET_PARTY">Grupo de Reset</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_THE_PARTY">Você tem certeza que deseja dar reset no grupo?</translation>
@@ -407,12 +443,12 @@
 	<translation name="DESC_UPDATE_MARKET_PRICES_TITLE">Como eu mesmo atualizo os preços dos itens?</translation>
 	<translation name="DESC_UPDATE_MARKET_PRICES_1">Para poder atualizar os preços de um item você mesmo, você precisa instalar o Albion Online Data Project: </translation>
 	<translation name="SEASON_POINTS">Pontos de Temporada</translation>
-	<translation name="EXPORT_LOOT_TO_FILE">Exportar pilhagem para arquivo</translation>
+	<translation name="EXPORT_LOOT_TO_FILE">Exportar saques para arquivo</translation>
 	<translation name="TRACK_PARTY_LOOT_ONLY">Rastrear somente saques do grupo</translation>
 	<translation name="RESET_DUNGEON_TIMER">Resetar temporizador de Masmorra</translation>
 	<translation name="REQUIRED_RESOURCES">Recursos necessários</translation>
 	<translation name="SELL_PRICE_PER_ITEM">Preço de Venda por Item</translation>
-	<translation name="SELL_PRICE_PER_JOURNAL">Preço de Venda por Diária</translation>
+	<translation name="SELL_PRICE_PER_JOURNAL">Preço de Venda por Diário</translation>
 	<translation name="ITEM_QUANTITY">Quantidade de itens</translation>
 	<translation name="SETUP_FEE_PERCENT">Configuração de taxa da casa de leilões %</translation>
 	<translation name="AUCTIONS_HOUSE_TAX_PERCENT">Taxa da casa de leilões %</translation>
@@ -422,7 +458,7 @@
 	<translation name="OTHER_COSTS">Outros custos</translation>
 	<translation name="REQUIRED_JOURNALS">Diários necessários</translation>
 	<translation name="COSTS_PER_JOURNAL">Custo por diário</translation>
-	<translation name="REQUIRED_JOURNAL_AMOUNT">Número de diários necessário</translation>
+	<translation name="REQUIRED_JOURNAL_AMOUNT">Número de diários necessários</translation>
 	<translation name="COST">Custo</translation>
 	<translation name="ONE_PRODUCTION_AMOUNT">Quantia de produção única</translation>
 	<translation name="TOTAL_QUANTITY">Quantidade total</translation>
@@ -591,6 +627,28 @@
 	<translation name="RANDOM_SOLO_DUNGEONS">Masmorras individuais aleatórias</translation>
 	<translation name="RANDOM_GROUP_DUNGEONS">Masmorras de grupo aleatório</translation>
 	<translation name="SNAPSHOT_AFTER_MAP_CHANGE">Captura de tela após mudança de mapa</translation>
-	<translation name="GUILD">Guild</translation>
-	<translation name="ALLIANCE">Aliança</translation>
+	<translation name="MAIL_MONITORING_ACTIVE">Monitoramento de e-mail ativo</translation>
+	<translation name="DELETE_MAILS_NEVER">Nunca excluir e-mails</translation>
+	<translation name="DELETE_MAILS_AFTER_7_DAYS">Excluir e-mails após 7 dias</translation>
+	<translation name="DELETE_MAILS_AFTER_30_DAYS">Excluir e-mails após 30 dias</translation>
+	<translation name="DELETE_MAILS_AFTER_60_DAYS">Excluir e-mails após 60 dias</translation>
+	<translation name="DELETE_MAILS_AFTER_90_DAYS">Excluir e-mails após 90 dias</translation>
+	<translation name="DELETE_MAILS_AFTER_180_DAYS">Excluir e-mails após 180 dias</translation>
+	<translation name="DELETE_MAILS_AFTER_365_DAYS">Excluir e-mails após 365 dias</translation>
+	<translation name="IGNORE_MAILS_WITH_ZERO_VALUES">Ignorar e-mails com 0 valores</translation>
+	<translation name="CHECK_FOR_UPDATE">Verificar atualização</translation>
+	<translation name="PAID_SILVER_FOR_RESPEC_THIS_SESSION">Prata paga em ReSpec nesta sessão</translation>
+	<translation name="PAID_SILVER_FOR_RESPEC_PER_HOUR">Prata paga em ReSpec por hora</translation>
+	<translation name="RESET_TODAYS_DUNGEONS">Redefinir as masmorras de hoje</translation>
+	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEONS">Tem certeza de que deseja redefinir masmorras?</translation>
+	<translation name="DELETE_AND_RESET">Excluir e redefinir</translation>
+	<translation name="DUNGEON_STATS">Estatísticas das masmorras</translation>
+	<translation name="CHEST_STATS">Estatísticas dos Baús</translation>
+	<translation name="EST_MARKET_VALUE">Est. valor de mercado</translation>
+	<translation name="LAST_ESTIMATED_VALUE_UPDATE">Última atualização de valor estimado</translation>
+	<translation name="BOOK_CHEST_STATS">Estatísticas dos Baús de Livros</translation>
+	<translation name="BEST_LOOTED_ITEM">Melhor item saqueado</translation>
+	<translation name="TOTAL_LOOT_VALUE">Valor total saqueado</translation>
+	<translation name="FILTER">Filtro</translation>
+	<translation name="LOOT_IN_SILVER">Saque em prata</translation>
 </translations>
