@@ -50,6 +50,7 @@ namespace StatisticsAnalysisTool.Network
         private readonly MightFavorPointsEventHandler _mightFavorPointsEventHandler;
         private readonly BaseVaultInfoEventHandler _baseVaultInfoEventHandler;
         private readonly GuildVaultInfoEventHandler _guildVaultInfoEventHandler;
+        private readonly NewLootEventHandler _newLootEventHandler;
         private readonly AttachItemContainerEventHandler _attachItemContainerEventHandler;
 
         private readonly InventoryMoveItemRequestHandler _inventoryMoveItemRequestHandler;
@@ -100,6 +101,7 @@ namespace StatisticsAnalysisTool.Network
             _mightFavorPointsEventHandler = new MightFavorPointsEventHandler(trackingController);
             _baseVaultInfoEventHandler = new BaseVaultInfoEventHandler(trackingController);
             _guildVaultInfoEventHandler = new GuildVaultInfoEventHandler(trackingController);
+            _newLootEventHandler = new NewLootEventHandler(trackingController);
             _attachItemContainerEventHandler = new AttachItemContainerEventHandler(trackingController);
 
             _inventoryMoveItemRequestHandler = new InventoryMoveItemRequestHandler(trackingController);
@@ -229,6 +231,9 @@ namespace StatisticsAnalysisTool.Network
                         return;
                     case EventCodes.RecoveryVaultPlayerInfo:
                         await RecoveryVaultPlayerInfoEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.NewLoot:
+                        await NewLootEventHandlerAsync(parameters).ConfigureAwait(true);
                         return;
                     case EventCodes.AttachItemContainer:
                         await AttachItemContainerEventHandlerAsync(parameters).ConfigureAwait(true);
@@ -526,6 +531,12 @@ namespace StatisticsAnalysisTool.Network
         {
             var value = new GuildVaultInfoEvent(parameters);
             await _guildVaultInfoEventHandler.OnActionAsync(value);
+        }
+
+        private async Task NewLootEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new NewLootEvent(parameters);
+            await _newLootEventHandler.OnActionAsync(value);
         }
 
         private async Task AttachItemContainerEventHandlerAsync(Dictionary<byte, object> parameters)

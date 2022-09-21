@@ -10,6 +10,7 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public ItemContainerObject ItemContainerObject;
         private readonly long? _objectId;
+        private readonly Guid _privateContainerGuid;
         private readonly Guid _containerGuid;
         private readonly List<long> _containerSlots = new();
 
@@ -24,12 +25,21 @@ namespace StatisticsAnalysisTool.Network.Events
                     _objectId = parameters[0].ObjectToLong();
                 }
                 
+                if (parameters.ContainsKey(1))
+                {
+                    var guid = parameters[1].ObjectToGuid();
+                    if (guid != null)
+                    {
+                        _containerGuid = (Guid)guid;
+                    }
+                }
+
                 if (parameters.ContainsKey(2))
                 {
                     var guid = parameters[2].ObjectToGuid();
                     if (guid != null)
                     {
-                        _containerGuid = (Guid)guid;
+                        _privateContainerGuid = (Guid)guid;
                     }
                 }
 
@@ -74,7 +84,7 @@ namespace StatisticsAnalysisTool.Network.Events
                     }
                 }
 
-                ItemContainerObject = new ItemContainerObject(_objectId, _containerGuid, _containerSlots);
+                ItemContainerObject = new ItemContainerObject(_objectId, _privateContainerGuid, _containerGuid, _containerSlots);
             }
             catch (Exception e)
             {

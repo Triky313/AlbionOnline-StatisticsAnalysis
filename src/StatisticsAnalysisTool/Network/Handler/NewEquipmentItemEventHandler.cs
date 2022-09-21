@@ -29,6 +29,7 @@ public class NewEquipmentItemEventHandler
         });
 
         _trackingController.LootController.AddEstimatedMarketValue(value.Item.ItemIndex, value.Item.EstimatedMarketValueInternal);
+        _trackingController.LootController.AddDiscoveredItem(value.Item);
         _trackingController.DungeonController.AddDiscoveredItem(value.Item);
         await Task.CompletedTask;
     }

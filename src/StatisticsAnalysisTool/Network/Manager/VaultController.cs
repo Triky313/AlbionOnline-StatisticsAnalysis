@@ -65,12 +65,12 @@ public class VaultController
 
     public void AddContainer(ItemContainerObject newContainerObject)
     {
-        if (newContainerObject?.ContainerGuid == default)
+        if (newContainerObject?.PrivateContainerGuid == default)
         {
             return;
         }
 
-        var container = _vaultContainer.FirstOrDefault(x => x.ContainerGuid == newContainerObject.ContainerGuid);
+        var container = _vaultContainer.FirstOrDefault(x => x.PrivateContainerGuid == newContainerObject.PrivateContainerGuid);
         if (container != null)
         {
             _vaultContainer.Remove(container);
@@ -113,7 +113,7 @@ public class VaultController
             return;
         }
 
-        foreach (var removableContainer in vault.VaultContainer.Select(container => _vaultContainer?.FirstOrDefault(x => x?.ContainerGuid == container?.Guid)))
+        foreach (var removableContainer in vault.VaultContainer.Select(container => _vaultContainer?.FirstOrDefault(x => x?.PrivateContainerGuid == container?.Guid)))
         {
             _vaultContainer?.Remove(removableContainer);
         }
@@ -156,7 +156,7 @@ public class VaultController
                     Name = (_currentVaultInfo.ContainerNames[i] == "@BUILDINGS_T1_BANK") ? LanguageController.Translation("BANK") : _currentVaultInfo.ContainerNames[i]
                 };
 
-                var itemContainer = _vaultContainer.FirstOrDefault(x => x.ContainerGuid == vaultContainer.Guid);
+                var itemContainer = _vaultContainer.FirstOrDefault(x => x.PrivateContainerGuid == vaultContainer.Guid);
                 if (itemContainer != null)
                 {
                     vaultContainer.LastUpdate = itemContainer.LastUpdate;
