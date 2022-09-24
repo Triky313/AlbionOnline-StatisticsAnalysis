@@ -649,4 +649,6 @@
 	<translation name="BOOK_CHEST_STATS">Estadísticas de cofre de libros</translation>
 	<translation name="BEST_LOOTED_ITEM">Mejor objeto looteado</translation>
 	<translation name="TOTAL_LOOT_VALUE">Valor total looteado</translation>
+	<translation name="FILTER">Filtro</translation>
+	<translation name="LOOT_IN_SILVER">Loot en plata</translation>
 </translations>
