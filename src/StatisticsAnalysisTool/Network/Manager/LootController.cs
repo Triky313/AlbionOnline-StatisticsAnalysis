@@ -204,8 +204,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 IsTrash = false,
                 ItemIndex = lootedItem.ItemIndex,
                 LootedByName = _trackingController?.EntityController?.LocalUserData?.Username,
-                LootedFromName = _currentIdentifiedBody.Name,
-                Quantity = lootedItem.Quantity
+                LootedFromName = MobController.IsMob(_currentIdentifiedBody.Name) ? LanguageController.Translation("MOB") : _currentIdentifiedBody.Name,
+            Quantity = lootedItem.Quantity
             });
         }
 
