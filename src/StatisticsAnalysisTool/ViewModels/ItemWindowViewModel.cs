@@ -338,7 +338,21 @@ namespace StatisticsAnalysisTool.ViewModels
             var currentItemEnchantmentLevel = Item.Level;
             List<CraftingRequirements> craftingRequirements = null;
 
-            if (currentItemEnchantmentLevel <= 0)
+            var enchantments = Item?.FullItemInformation switch
+            {
+                EquipmentItem equipmentItem => equipmentItem.Enchantments,
+                ConsumableItem consumableItem => consumableItem.Enchantments,
+                _ => null
+            };
+
+            var enchantment = enchantments?.Enchantment?.FirstOrDefault(x => x.EnchantmentLevelInteger == currentItemEnchantmentLevel);
+
+            if (enchantment != null)
+            {
+                craftingRequirements = enchantment.CraftingRequirements;
+            }
+
+            if (craftingRequirements == null)
             {
                 craftingRequirements = Item?.FullItemInformation switch
                 {
@@ -348,22 +362,6 @@ namespace StatisticsAnalysisTool.ViewModels
                     ConsumableItem consumableItem => consumableItem.CraftingRequirements,
                     _ => null
                 };
-            }
-            else
-            {
-                var enchantments = Item?.FullItemInformation switch
-                {
-                    EquipmentItem equipmentItem => equipmentItem.Enchantments,
-                    ConsumableItem consumableItem => consumableItem.Enchantments,
-                    _ => null
-                };
-
-                var enchantment = enchantments?.Enchantment?.FirstOrDefault(x => x.EnchantmentLevelInteger == currentItemEnchantmentLevel);
-
-                if (enchantment != null)
-                {
-                    craftingRequirements = enchantment.CraftingRequirements;
-                }
             }
 
             if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
