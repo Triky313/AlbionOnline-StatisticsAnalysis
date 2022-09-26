@@ -651,4 +651,5 @@
 	<translation name="TOTAL_LOOT_VALUE">Total looted value</translation>
 	<translation name="FILTER">Filter</translation>
 	<translation name="LOOT_IN_SILVER">Loot in silver</translation>
+	<translation name="COMBAT_TIME">Combat time</translation>
 </translations>
