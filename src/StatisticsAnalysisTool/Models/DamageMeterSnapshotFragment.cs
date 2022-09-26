@@ -16,6 +16,7 @@ public class DamageMeterSnapshotFragment
     {
         Name = damageMeterFragment.Name;
         CauserGuid = damageMeterFragment.CauserGuid;
+        CombatTime = damageMeterFragment.CombatTime;
         Damage = damageMeterFragment.Damage;
         Dps = damageMeterFragment.Dps;
         DamageInPercent = damageMeterFragment.DamageInPercent;
@@ -34,6 +35,7 @@ public class DamageMeterSnapshotFragment
     public string Name { get; set; }
     public Guid CauserGuid { get; set; }
     public bool IsDamageMeterShowing { get; set; } = true;
+    public TimeSpan CombatTime { get; set; }
 
     #region Damage
 
@@ -98,6 +100,8 @@ public class DamageMeterSnapshotFragment
     public double HealPercentage { get; set; }
 
     #endregion
+
+    public string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
 
     public string CauserMainHandItemUniqueName
     {
