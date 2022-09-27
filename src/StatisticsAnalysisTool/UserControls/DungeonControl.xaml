@@ -32,12 +32,20 @@
                             <ContentPresenter ContentTemplate="{StaticResource DungeonStatsFilterTemplate}" Content="{Binding DungeonBindings.DungeonStatsFilter}"/>
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" MinWidth="250" Margin="10,10,0,0">
                                 <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding DungeonBindings.Translation.DeleteAndReset, FallbackValue=DELETE__AND__RESET}" FontWeight="Bold"/>
-                                <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="500" 
-                                    Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
-                                <Button Content="{Binding Translation.ResetTodaysDungeons, FallbackValue=RESET__TODAYS__DUNGEONS}" Height="26" MaxWidth="500" 
-                                    Margin="0,2,0,5" Click="BtnResetTodaysDungeons_Click" />
-                                <Button Content="{Binding Translation.DeleteSelectedDungeons, FallbackValue=DELETE__SELECTED__DUNGEONS}" Height="26" MaxWidth="500" 
-                                    Margin="0,2,0,5" Click="BtnDeleteSelectedDungeons_Click" />
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical" Margin="0,0,5,0">
+                                        <Button Content="{Binding Translation.DeleteSelectedDungeons, FallbackValue=DELETE__SELECTED__DUNGEONS}" Height="26" MaxWidth="250" 
+                                                Margin="0,2,0,5" Click="BtnDeleteSelectedDungeons_Click" />
+                                        <Button Content="{Binding Translation.DeleteZeroFameDungeons, FallbackValue='DELETE__ZERO__FAME__DUNGEONS'}" Height="26" MaxWidth="250" 
+                                                Margin="0,2,0,5" Click="BtnDeleteZeroFameDungeons_Click" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+                                        <Button Content="{Binding Translation.ResetDungeonTracking, FallbackValue=RESET__DUNGEON__TRACKING}" Height="26" MaxWidth="250" 
+                                                Margin="0,2,0,5" Click="BtnDungeonTrackingReset_Click" />
+                                        <Button Content="{Binding Translation.ResetTodaysDungeons, FallbackValue='RESET__TODAYS__DUNGEONS'}" Height="26" MaxWidth="250" 
+                                                Margin="0,2,0,5" Click="BtnResetTodaysDungeons_Click" />
+                                    </StackPanel>
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

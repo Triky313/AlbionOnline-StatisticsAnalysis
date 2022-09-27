@@ -133,6 +133,21 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
+        public void DeleteDungeonsWithZeroFame()
+        {
+            var dungeonsToDelete = _dungeons?.Where(x => x.Fame <= 0).ToList();
+            foreach (var dungeonObject in dungeonsToDelete ?? new List<DungeonObject>())
+            {
+                _dungeons?.Remove(dungeonObject);
+            }
+
+            var trackingDungeonsToDelete = _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x => x.Fame <= 0).ToList();
+            foreach (var dungeonObject in trackingDungeonsToDelete ?? new List<DungeonNotificationFragment>())
+            {
+                _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Remove(dungeonObject);
+            }
+        }
+
         public void SetDungeonChestOpen(int id)
         {
             if (_currentGuid != null)
@@ -781,7 +796,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        public async void RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
+        public async Task RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
         {
             _ = _dungeons.RemoveAll(x => dungeonHash.Contains(x.DungeonHash));
 
