@@ -27,7 +27,7 @@ namespace StatisticsAnalysisTool.UserControls
             if (dialogResult is true)
             {
                 vm?.TrackingController.DungeonController.ResetDungeons();
-                vm?.TrackingController.DungeonController.SetOrUpdateDungeonsDataUiAsync();
+                _ = vm?.TrackingController.DungeonController.SetOrUpdateDungeonsDataUiAsync();
             }
         }
 
@@ -41,7 +41,7 @@ namespace StatisticsAnalysisTool.UserControls
             if (dialogResult is true)
             {
                 vm?.TrackingController.DungeonController.ResetDungeonsByDateAscending(DateTime.UtcNow.Date);
-                vm?.TrackingController.DungeonController.SetOrUpdateDungeonsDataUiAsync();
+                _ = vm?.TrackingController.DungeonController.SetOrUpdateDungeonsDataUiAsync();
             }
         }
 
@@ -55,7 +55,21 @@ namespace StatisticsAnalysisTool.UserControls
             if (dialogResult is true)
             {
                 var selectedDungeons = vm?.DungeonBindings?.TrackingDungeons.Where(x => x.IsSelectedForDeletion ?? false).Select(x => x.DungeonHash);
-                vm?.TrackingController.DungeonController.RemoveDungeonByHashAsync(selectedDungeons);
+                _ = vm?.TrackingController.DungeonController.RemoveDungeonByHashAsync(selectedDungeons);
+            }
+        }
+
+        public void DeleteZeroFameDungeons()
+        {
+            var dialog = new DialogWindow(LanguageController.Translation("DELETE_ZERO_FAME_DUNGEONS"), LanguageController.Translation("SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS"));
+            var dialogResult = dialog.ShowDialog();
+
+            var vm = (MainWindowViewModel)DataContext;
+
+            if (dialogResult is true)
+            {
+                vm?.TrackingController.DungeonController.DeleteDungeonsWithZeroFame();
+                _ = vm?.TrackingController.DungeonController.SetOrUpdateDungeonsDataUiAsync();
             }
         }
 
@@ -69,6 +83,11 @@ namespace StatisticsAnalysisTool.UserControls
         private void BtnResetTodaysDungeons_Click(object sender, RoutedEventArgs e)
         {
             ResetTodaysDungeons();
+        }
+
+        private void BtnDeleteZeroFameDungeons_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteZeroFameDungeons();
         }
 
         private void BtnDeleteSelectedDungeons_Click(object sender, RoutedEventArgs e)

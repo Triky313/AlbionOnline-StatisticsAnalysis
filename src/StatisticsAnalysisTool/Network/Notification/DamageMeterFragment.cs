@@ -26,6 +26,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool _isDamageMeterShowing = true;
         private string _damageShortString;
         private string _healShortString;
+        private TimeSpan _combatTime;
 
         public DamageMeterFragment(DamageMeterFragment damageMeterFragment)
         {
@@ -66,11 +67,22 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
-        public bool IsDamageMeterShowing {
+        public bool IsDamageMeterShowing 
+        {
             get => _isDamageMeterShowing;
             set
             {
                 _isDamageMeterShowing = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public TimeSpan CombatTime
+        {
+            get => _combatTime;
+            set
+            {
+                _combatTime = value;
                 OnPropertyChanged();
             }
         }
@@ -203,6 +215,8 @@ namespace StatisticsAnalysisTool.Network.Notification
                 OnPropertyChanged();
             }
         }
+
+        public string TranslationCombatTime => LanguageController.Translation("COMBAT_TIME");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

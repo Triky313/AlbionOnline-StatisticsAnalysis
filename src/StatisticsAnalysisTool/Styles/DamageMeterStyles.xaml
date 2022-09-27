@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:notification="clr-namespace:StatisticsAnalysisTool.Network.Notification"
                     xmlns:common="clr-namespace:StatisticsAnalysisTool.Common"
-                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models">
+                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+                    xmlns:fa5="http://schemas.fontawesome.com/icons/">
 
     <!-- Damage meter icon -->
     <Style TargetType="Image" x:Key="DamageMeter.Icon">
@@ -100,6 +101,18 @@
                     <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"/>
                     <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamageShortString}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
                     <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
+                    <Grid Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationCombatTime, FallbackValue='COMBAT_TIME'}">
+                        <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </Grid>
+                    <TextBlock Foreground="{StaticResource SolidColorBrush.Weapon.Text}" MinWidth="75" MaxWidth="100" FontWeight="Bold" Margin="10,13,50,0">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:00}:{1:00}:{2:00}">
+                                <Binding Path="CombatTime.Hours" />
+                                <Binding Path="CombatTime.Minutes" />
+                                <Binding Path="CombatTime.Seconds" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </StackPanel>
             </Grid>
             <Grid>
@@ -127,6 +140,18 @@
                     <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
                     <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HealShortString}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
                     <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HpsString}" ContentStringFormat="{}{0:N0}/hps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
+                    <Grid Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationCombatTime, FallbackValue='COMBAT_TIME'}">
+                        <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </Grid>
+                    <TextBlock Foreground="{StaticResource SolidColorBrush.Weapon.Text}" MinWidth="75" MaxWidth="100" FontWeight="Bold" Margin="10,13,50,0">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:00}:{1:00}:{2:00}">
+                                <Binding Path="CombatTime.Hours" />
+                                <Binding Path="CombatTime.Minutes" />
+                                <Binding Path="CombatTime.Seconds" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </StackPanel>
             </Grid>
         </Grid>
@@ -168,6 +193,18 @@
                     <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"/>
                     <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DamageShortString}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
                     <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding DpsString}" ContentStringFormat="{}{0:N0}/dps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
+                    <Grid Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationCombatTime, FallbackValue='COMBAT_TIME'}">
+                        <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </Grid>
+                    <TextBlock Foreground="{StaticResource SolidColorBrush.Weapon.Text}" MinWidth="75" MaxWidth="100" FontWeight="Bold" Margin="10,13,50,0">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:00}:{1:00}:{2:00}">
+                                <Binding Path="CombatTime.Hours" />
+                                <Binding Path="CombatTime.Minutes" />
+                                <Binding Path="CombatTime.Seconds" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </StackPanel>
             </Grid>
             <Grid>
@@ -195,6 +232,18 @@
                     <Label Content="{Binding Name}" MinWidth="125" MaxWidth="125" Margin="10,0, 0, 0"></Label>
                     <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HealShortString}" MinWidth="100" MaxWidth="100" FontWeight="Bold" Margin="10,3, 5, 0"/>
                     <Label Foreground="{StaticResource SolidColorBrush.Weapon.Text}" Content="{Binding HpsString}" ContentStringFormat="{}{0:N0}/hps" MinWidth="75" MaxWidth="75" FontWeight="Bold" Margin="10,3, 50, 0"/>
+                    <Grid Width="16" Height="16" VerticalAlignment="Center" ToolTip="{Binding TranslationCombatTime, FallbackValue='COMBAT_TIME'}">
+                        <fa5:ImageAwesome Icon="Regular_Clock" Foreground="{StaticResource SolidColorBrush.Text.1}" />
+                    </Grid>
+                    <TextBlock Foreground="{StaticResource SolidColorBrush.Weapon.Text}" MinWidth="75" MaxWidth="100" FontWeight="Bold" Margin="10,13,50,0">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:00}:{1:00}:{2:00}">
+                                <Binding Path="CombatTime.Hours" />
+                                <Binding Path="CombatTime.Minutes" />
+                                <Binding Path="CombatTime.Seconds" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
                 </StackPanel>
             </Grid>
         </Grid>

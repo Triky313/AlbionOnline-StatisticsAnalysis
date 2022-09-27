@@ -651,4 +651,7 @@
 	<translation name="TOTAL_LOOT_VALUE">Gesamtwert geplünderter Gegenstände</translation>
 	<translation name="FILTER">Filter</translation>
 	<translation name="LOOT_IN_SILVER">Beute in Silber</translation>
+	<translation name="COMBAT_TIME">Zeit im Kampf</translation>
+	<translation name="DELETE_ZERO_FAME_DUNGEONS">Lösche 0 Ruhm Dungeons</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS">Sicher, dass du 0 Ruhm Dungeons löschen möchtest?</translation>
 </translations>

@@ -59,6 +59,7 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string TryDownloadingTheItemJsonAgain => LanguageController.Translation("TRY_DOWNLOADING_THE_ITEM_JSON_AGAIN");
         public static string DamageMeterOnOff => LanguageController.Translation("DAMAGE_METER_ON_OFF");
         public static string DeleteSelectedDungeons => LanguageController.Translation("DELETE_SELECTED_DUNGEONS");
+        public static string DeleteZeroFameDungeons => LanguageController.Translation("DELETE_ZERO_FAME_DUNGEONS");
         public static string ResetTodaysDungeons => LanguageController.Translation("RESET_TODAYS_DUNGEONS");
         public static string SeasonPoints => LanguageController.Translation("SEASON_POINTS");
         public static string ExportLootToFile => LanguageController.Translation("EXPORT_LOOT_TO_FILE");
