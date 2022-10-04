@@ -651,4 +651,7 @@
 	<translation name="TOTAL_LOOT_VALUE">Valor total saqueado</translation>
 	<translation name="FILTER">Filtro</translation>
 	<translation name="LOOT_IN_SILVER">Saque em prata</translation>
+	<translation name="COMBAT_TIME">Tempo de combate</translation>
+	<translation name="DELETE_ZERO_FAME_DUNGEONS">Excluir masmorras com 0 de fama</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS">Tem certeza de que deseja excluir masmorras com 0 de fama?</translation>
 </translations>
