@@ -396,6 +396,16 @@
                     <Label Content="{Binding TranslationPossibleCrafting, FallbackValue=POSSIBLE__CRAFTING}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding TranslationPossibleItemCrafting, FallbackValue=POSSIBLE__ITEM__CRAFTING}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
 
+                    <Label Content="{Binding TranslationWeight, FallbackValue=WEIGHT}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                    <Label Content="{Binding TranslationTotalResourcesWeight, FallbackValue=TOTAL__RESOURCES__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    <Label Content="{Binding TranslationTotalJournalWeight, FallbackValue=TOTAL__REQUIRED__JOURNAL__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    <Separator />
+                    <Label Content="{Binding TranslationTotalUnfinishedCraftingWeight, FallbackValue=TOTAL__UNFINISHED__CRAFTING__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    
+                    <Label Content="{Binding TranslationTotalCraftedItemWeight, FallbackValue=TOTAL_CRAFTED__ITEM__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    <Separator />
+                    <Label Content="{Binding TranslationTotalFinishedCraftingWeight, FallbackValue=TOTAL__FINISHED__CRAFTING__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    
                     <Label Content="{Binding TranslationStatementOfCost, FallbackValue=STATEMENT__OF__COST}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding TranslationCraftingTax, FallbackValue=CRAFTING__TAX}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Label Content="{Binding TranslationSetupFee, FallbackValue=SETUP__FEE}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
@@ -441,6 +451,17 @@
                             </Label.Style>
                         </Label>
                     </StackPanel>
+
+                    <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                    <Label Content="{Binding TotalResourcesWeight}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                    <Label Content="{Binding TotalRequiredJournalWeight}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                    <Separator />
+                    <Label Content="{Binding TotalUnfinishedCraftingWeight}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                    
+                    <Label Content="{Binding TotalCraftedItemWeight}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                    <Separator />
+                    <Label Content="{Binding TotalFinishedCraftingWeight}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+
                     <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding CraftingTax}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                     <Label Content="{Binding SetupFee}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />

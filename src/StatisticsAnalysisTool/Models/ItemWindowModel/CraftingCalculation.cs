@@ -20,6 +20,11 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private double _otherCosts;
         private int _amountCrafted;
         private bool _isAmountCraftedRelevant;
+        private double _totalResourcesWeight;
+        private double _totalRequiredJournalWeight;
+        private double _totalCraftedItemWeight;
+        private double _totalUnfinishedCraftingWeight;
+        private double _totalFinishedCraftingWeight;
 
         private double GetTotalCosts()
         {
@@ -178,6 +183,56 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
+        public double TotalResourcesWeight
+        {
+            get => _totalResourcesWeight;
+            set
+            {
+                _totalResourcesWeight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TotalRequiredJournalWeight
+        {
+            get => _totalRequiredJournalWeight;
+            set
+            {
+                _totalRequiredJournalWeight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TotalCraftedItemWeight
+        {
+            get => _totalCraftedItemWeight;
+            set
+            {
+                _totalCraftedItemWeight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TotalFinishedCraftingWeight
+        {
+            get => _totalFinishedCraftingWeight;
+            set
+            {
+                _totalFinishedCraftingWeight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TotalUnfinishedCraftingWeight
+        {
+            get => _totalUnfinishedCraftingWeight;
+            set
+            {
+                _totalUnfinishedCraftingWeight = value;
+                OnPropertyChanged();
+            }
+        }
+
         public static string TranslationCalculation => LanguageController.Translation("CALCULATION");
         public static string TranslationPossibleCrafting => LanguageController.Translation("POSSIBLE_CRAFTING");
         public static string TranslationPossibleItemCrafting => LanguageController.Translation("POSSIBLE_ITEM_CRAFTING");
@@ -193,6 +248,12 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         public static string TranslationTotalJournalSells => LanguageController.Translation("TOTAL_JOURNAL_SELLS");
         public static string TranslationTotalSells => LanguageController.Translation("TOTAL_SELLS");
         public static string TranslationGrandTotal => LanguageController.Translation("GRAND_TOTAL");
+        public static string TranslationWeight => LanguageController.Translation("WEIGHT");
+        public static string TranslationTotalResourcesWeight => LanguageController.Translation("TOTAL_RESOURCES_WEIGHT");
+        public static string TranslationTotalJournalWeight => LanguageController.Translation("TOTAL_JOURNAL_WEIGHT");
+        public static string TranslationTotalCraftedItemWeight => LanguageController.Translation("TOTAL_CRAFTED_WEIGHT");
+        public static string TranslationTotalUnfinishedCraftingWeight => LanguageController.Translation("TOTAL_UNFINISHED_CRAFTING_WEIGHT");
+        public static string TranslationTotalFinishedCraftingWeight => LanguageController.Translation("TOTAL_FINISHED_CRAFTING_WEIGHT");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

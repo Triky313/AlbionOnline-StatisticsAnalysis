@@ -28,6 +28,8 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private List<MarketResponse> _marketResponse = new();
         private Location _itemPricesLocationSelected;
         private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
+        private double _weight;
+        private double _totalWeight;
 
         public RequiredResource(ItemWindowViewModel itemWindowViewModel)
         {
@@ -156,6 +158,27 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
 
                 TotalQuantity = OneProductionAmount * _craftingQuantity;
                 TotalCost = ResourceCost * TotalQuantity;
+                TotalWeight = Weight * TotalQuantity;
+                OnPropertyChanged();
+            }
+        }
+
+        public double Weight
+        {
+            get => _weight;
+            set
+            {
+                _weight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TotalWeight
+        {
+            get => _totalWeight;
+            set
+            {
+                _totalWeight = value;
                 OnPropertyChanged();
             }
         }

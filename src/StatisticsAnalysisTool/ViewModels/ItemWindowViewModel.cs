@@ -322,12 +322,15 @@ namespace StatisticsAnalysisTool.ViewModels
 
             RequiredJournalVisibility = Visibility.Visible;
 
+            var fullItemInformation = ItemController.GetItemByUniqueName(ItemController.GetGeneralJournalName(craftingJournalType.UniqueName))?.FullItemInformation;
+
             RequiredJournal = new RequiredJournal(this)
             {
                 UniqueName = craftingJournalType.UniqueName,
                 CostsPerJournal = 0,
                 CraftingResourceName = craftingJournalType.LocalizedName,
                 Icon = craftingJournalType.Icon,
+                Weight = ItemController.GetWeight(fullItemInformation),
                 RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting),
                 SellPricePerJournal = 0
             };
@@ -389,6 +392,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     OneProductionAmount = craftResource.Count,
                     Icon = item?.Icon,
                     ResourceCost = 0,
+                    Weight = 0, // ItemController.GetWeight(item?.FullItemInformation),
                     CraftingQuantity = craftingQuantity,
                     IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
                 });
@@ -458,6 +462,20 @@ namespace StatisticsAnalysisTool.ViewModels
 
             // Amount crafted
             CraftingCalculation.AmountCrafted = EssentialCraftingValues.AmountCrafted;
+
+            // Weight
+            var requiredResourcesWeights = RequiredResources?.Sum(x => x.TotalWeight) ?? 0;
+            //var possibleItemCraftingWeights = CraftingCalculation?.PossibleItemCrafting * ItemController.GetWeight(Item?.FullItemInformation) ?? 0;
+
+            if (CraftingCalculation != null)
+            {
+                CraftingCalculation.TotalResourcesWeight = requiredResourcesWeights;
+                CraftingCalculation.TotalRequiredJournalWeight = RequiredJournal?.TotalWeight ?? 0;
+                CraftingCalculation.TotalUnfinishedCraftingWeight = CraftingCalculation.TotalResourcesWeight + CraftingCalculation.TotalRequiredJournalWeight;
+
+                CraftingCalculation.TotalCraftedItemWeight = 0; // possibleItemCraftingWeights;
+                CraftingCalculation.TotalFinishedCraftingWeight = CraftingCalculation.TotalCraftedItemWeight;
+            }
         }
 
         #endregion Crafting tab
