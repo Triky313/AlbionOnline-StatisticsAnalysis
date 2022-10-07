@@ -392,7 +392,7 @@ namespace StatisticsAnalysisTool.ViewModels
                     OneProductionAmount = craftResource.Count,
                     Icon = item?.Icon,
                     ResourceCost = 0,
-                    Weight = 0, // ItemController.GetWeight(item?.FullItemInformation),
+                    Weight = ItemController.GetWeight(item?.FullItemInformation),
                     CraftingQuantity = craftingQuantity,
                     IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
                 });
@@ -465,7 +465,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             // Weight
             var requiredResourcesWeights = RequiredResources?.Sum(x => x.TotalWeight) ?? 0;
-            //var possibleItemCraftingWeights = CraftingCalculation?.PossibleItemCrafting * ItemController.GetWeight(Item?.FullItemInformation) ?? 0;
+            var possibleItemCraftingWeights = CraftingCalculation?.PossibleItemCrafting * ItemController.GetWeight(Item?.FullItemInformation) ?? 0;
 
             if (CraftingCalculation != null)
             {
@@ -473,7 +473,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 CraftingCalculation.TotalRequiredJournalWeight = RequiredJournal?.TotalWeight ?? 0;
                 CraftingCalculation.TotalUnfinishedCraftingWeight = CraftingCalculation.TotalResourcesWeight + CraftingCalculation.TotalRequiredJournalWeight;
 
-                CraftingCalculation.TotalCraftedItemWeight = 0; // possibleItemCraftingWeights;
+                CraftingCalculation.TotalCraftedItemWeight = possibleItemCraftingWeights;
                 CraftingCalculation.TotalFinishedCraftingWeight = CraftingCalculation.TotalCraftedItemWeight;
             }
         }
