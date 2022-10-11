@@ -1,6 +1,10 @@
 ﻿using StatisticsAnalysisTool.Common;
 using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Input;
+using FontAwesome5;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
@@ -25,6 +29,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private double _totalCraftedItemWeight;
         private double _totalUnfinishedCraftingWeight;
         private double _totalFinishedCraftingWeight;
+        private Visibility _weightValuesVisibility = Visibility.Collapsed;
 
         private double GetTotalCosts()
         {
@@ -232,6 +237,29 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 OnPropertyChanged();
             }
         }
+
+        public Visibility WeightValuesVisibility
+        {
+            get => _weightValuesVisibility;
+            set
+            {
+                _weightValuesVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        #region Commands
+
+        public void FoldUnfoldWeightValues(object value)
+        {
+            WeightValuesVisibility = WeightValuesVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private ICommand _foldUnfoldWeightValuesCommand;
+
+        public ICommand FoldUnfoldWeightValuesCommand => _foldUnfoldWeightValuesCommand ??= new CommandHandler(FoldUnfoldWeightValues, true);
+
+        #endregion
 
         public static string TranslationCalculation => LanguageController.Translation("CALCULATION");
         public static string TranslationPossibleCrafting => LanguageController.Translation("POSSIBLE_CRAFTING");
