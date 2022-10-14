@@ -654,4 +654,9 @@
 	<translation name="COMBAT_TIME">Zeit im Kampf</translation>
 	<translation name="DELETE_ZERO_FAME_DUNGEONS">Lösche 0 Ruhm Dungeons</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS">Sicher, dass du 0 Ruhm Dungeons löschen möchtest?</translation>
+	<translation name="TOTAL_RESOURCES_WEIGHT">Gesamtgewicht Ressourcen</translation>
+	<translation name="TOTAL_JOURNAL_WEIGHT">Gesamtgewicht Journal</translation>
+	<translation name="TOTAL_CRAFTED_WEIGHT">Gesamtgewicht hergestelltes</translation>
+	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Gesamtesgewicht unfertige Herstellungen</translation>
+	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Gesamtesgewicht fertige Herstellungen</translation>
 </translations>
