@@ -477,14 +477,14 @@
 
                     <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <StackPanel Visibility="{Binding WeightValuesVisibility, FallbackValue=Collapsed}">
-                        <Label Content="{Binding TotalResourcesWeight}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
-                        <Label Content="{Binding TotalRequiredJournalWeight}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Label Content="{Binding TotalResourcesWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Label Content="{Binding TotalRequiredJournalWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
                         <Separator />
-                        <Label Content="{Binding TotalUnfinishedCraftingWeight}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Label Content="{Binding TotalUnfinishedCraftingWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
                         <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
-                        <Label Content="{Binding TotalCraftedItemWeight}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Label Content="{Binding TotalCraftedItemWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
                         <Separator />
-                        <Label Content="{Binding TotalFinishedCraftingWeight}" ContentStringFormat="{}{0:N2}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Label Content="{Binding TotalFinishedCraftingWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
                     </StackPanel>
 
                     <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
