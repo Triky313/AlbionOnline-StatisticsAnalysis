@@ -601,10 +601,7 @@
 	<translation name="TAXES_TOTAL">Taxes total</translation>
 	<translation name="NOTES">Notes</translation>
 	<translation name="UNSUPPORTED_OS">Unsupported OS: Errors may occur.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">If your internet is too slow or you have other problems, you can also download the file manually.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT2">Download the file from the link below</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT3">Rename the file to ItemList.json and put the file in the tools directory.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT4">Put the file in the tools directory.</translation>
+	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Close the tool and double-click the DownloadItemJsonFilesManually.bat file in the tool directory.</translation>
 	<translation name="THEN_RESTART_THE_TOOL">Then restart the tool.</translation>
 	<translation name="OR">OR</translation>
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Copy short damage meter to the clipboard</translation>

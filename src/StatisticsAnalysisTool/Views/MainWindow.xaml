@@ -195,7 +195,7 @@
         </TabControl>
 
         <!-- ItemList.json Info -->
-        <Grid ZIndex="2" Margin="0,90,0,42" Visibility="{Binding GridTryToLoadTheItemListAgainVisibility, FallbackValue=Collapsed}" Background="{StaticResource SolidColorBrush.Background.1}">
+        <Grid ZIndex="2" Margin="0,90,0,42" Visibility="{Binding GridTryToLoadTheItemListAgainVisibility, FallbackValue=Visible}" Background="{StaticResource SolidColorBrush.Background.1}">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Button Height="50" Width="auto" MinWidth="100" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                         Content="{Binding Translation.TryDownloadingTheItemListAgain, FallbackValue=CLICK__HERE__AND__TRY__DOWNLOADING__THE__ITEMS.JSON__AGAIN}" 
@@ -204,15 +204,6 @@
                        Content="{Binding Translation.Or, FallbackValue=OR}" FontSize="24" Height="40" Margin="10,10,10,10" />
                 <Label Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalContentAlignment="Center" 
                        Content="{Binding Translation.FileDownloadFailedText1}" Margin="10,0,10,0" />
-                <Label Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalContentAlignment="Center" 
-                       Content="{Binding Translation.FileDownloadFailedText2, FallbackValue=DOWNLOAD_FILE_FROM_LINK_BELOW}" Margin="10,0,10,0" />
-                <TextBlock HorizontalAlignment="Center" TextDecorations="Underline" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="Bold">
-                    <Hyperlink NavigateUri="{Binding ItemListJsonHyperlink}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}">
-                        https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json
-                    </Hyperlink>
-                </TextBlock>
-                <Label Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalContentAlignment="Center" 
-                       Content="{Binding Translation.FileDownloadFailedText3}" Margin="10,0,10,0" />
                 <Button Height="24" Width="auto" MinWidth="100" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                         Content="{Binding Translation.OpenToolDirectory, FallbackValue=OPEN__TOOL__DIRECTORY}" Click="OpenToolDirectory_Click" />
                 <Label Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalContentAlignment="Center" 
@@ -230,15 +221,6 @@
                        Content="{Binding Translation.Or, FallbackValue=OR}" FontSize="24" Height="40" Margin="10,10,10,10" />
                 <Label Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalContentAlignment="Center" 
                        Content="{Binding Translation.FileDownloadFailedText1}" Margin="10,0,10,0" />
-                <Label Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalContentAlignment="Center" 
-                       Content="{Binding Translation.FileDownloadFailedText2, FallbackValue=DOWNLOAD_FILE_FROM_LINK_BELOW}" Margin="10,0,10,0" />
-                <TextBlock HorizontalAlignment="Center" TextDecorations="Underline" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" FontSize="16" FontWeight="Bold">
-                    <Hyperlink NavigateUri="{Binding ItemsJsonHyperlink}" RequestNavigate="Hyperlink_RequestNavigate" TextDecorations="{x:Null}" Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}">
-                        https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json
-                    </Hyperlink>
-                </TextBlock>
-                <Label Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalContentAlignment="Center" 
-                       Content="{Binding Translation.FileDownloadFailedText4}" Margin="10,0,10,0" />
                 <Button Height="24" Width="auto" MinWidth="100" MaxWidth="500" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                         Content="{Binding Translation.OpenToolDirectory, FallbackValue=OPEN__TOOL__DIRECTORY}" Click="OpenToolDirectory_Click" />
                 <Label Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" HorizontalContentAlignment="Center" 
