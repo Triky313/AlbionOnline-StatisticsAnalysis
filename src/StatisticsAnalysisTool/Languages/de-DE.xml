@@ -601,10 +601,7 @@
 	<translation name="TAXES_TOTAL">Steuern gesamt</translation>
 	<translation name="NOTES">Notizen</translation>
 	<translation name="UNSUPPORTED_OS">Nicht unterstütztes Betriebssystem: Es kann zu Fehlern kommen.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Wenn dein Internet zu langsam ist oder du andere Probleme hast, kannst du die Datei auch manuell herunterladen.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT2">Lade die Datei über folgenden Link herunter</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT3">Bennene die Datei in ItemList.json um und lege sie in das Tool-Verzeichnis.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT4">Lege die Datei in das Tool-Verzeichnis.</translation>
+	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Schließe das Tool und Doppeklicke auf die Datei DownloadItemJsonFilesManually.bat im Tool Verzeichnis.</translation>
 	<translation name="THEN_RESTART_THE_TOOL">Starte das Tool neu.</translation>
 	<translation name="OR">OR</translation>
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Kurze Schadensanzeige in die Zwischenablage kopieren</translation>

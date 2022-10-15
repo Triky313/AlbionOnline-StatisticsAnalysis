@@ -81,6 +81,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Update="DownloadItemJsonFilesManually.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
