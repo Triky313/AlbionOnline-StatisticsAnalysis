@@ -654,4 +654,10 @@
 	<translation name="COMBAT_TIME">Combat time</translation>
 	<translation name="DELETE_ZERO_FAME_DUNGEONS">Delete 0 fame dungeons</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS">Are you sure you want to delete 0 fame dungeons?</translation>
+	<translation name="TOTAL_RESOURCES_WEIGHT">Total resources weight</translation>
+	<translation name="TOTAL_JOURNAL_WEIGHT">Total journal weight</translation>
+	<translation name="TOTAL_CRAFTED_WEIGHT">Total crafted weight</translation>
+	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Total unfinished crafting weight</translation>
+	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Total finished crafting weight</translation>
+	<translation name="MARKET_TAX_RATE">Market tax rate</translation>
 </translations>

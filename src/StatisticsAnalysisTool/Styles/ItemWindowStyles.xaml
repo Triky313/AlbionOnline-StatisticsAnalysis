@@ -396,6 +396,39 @@
                     <Label Content="{Binding TranslationPossibleCrafting, FallbackValue=POSSIBLE__CRAFTING}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding TranslationPossibleItemCrafting, FallbackValue=POSSIBLE__ITEM__CRAFTING}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
 
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding TranslationWeight, FallbackValue=WEIGHT}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                        <Grid Margin="2,9,0,0" Width="10" Height="10" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <fa5:ImageAwesome HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                <fa5:ImageAwesome.Style>
+                                    <Style TargetType="{x:Type fa5:ImageAwesome}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding WeightValuesVisibility, IsAsync=True}" Value="Visible">
+                                                <Setter Property="Icon" Value="Solid_AngleDoubleUp"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding WeightValuesVisibility, IsAsync=True}" Value="Collapsed">
+                                                <Setter Property="Icon" Value="Solid_AngleDoubleDown"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </fa5:ImageAwesome.Style>
+                                <fa5:ImageAwesome.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick" Command="{Binding FoldUnfoldWeightValuesCommand}" />
+                                </fa5:ImageAwesome.InputBindings>
+                            </fa5:ImageAwesome>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding WeightValuesVisibility, FallbackValue=Collapsed}">
+                        <Label Content="{Binding TranslationTotalResourcesWeight, FallbackValue=TOTAL__RESOURCES__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                        <Label Content="{Binding TranslationTotalJournalWeight, FallbackValue=TOTAL__REQUIRED__JOURNAL__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                        <Separator />
+                        <Label Content="{Binding TranslationTotalUnfinishedCraftingWeight, FallbackValue=TOTAL__UNFINISHED__CRAFTING__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                        <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                        <Label Content="{Binding TranslationTotalCraftedItemWeight, FallbackValue=TOTAL_CRAFTED__ITEM__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                        <Separator />
+                        <Label Content="{Binding TranslationTotalFinishedCraftingWeight, FallbackValue=TOTAL__FINISHED__CRAFTING__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    </StackPanel>
+
                     <Label Content="{Binding TranslationStatementOfCost, FallbackValue=STATEMENT__OF__COST}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding TranslationCraftingTax, FallbackValue=CRAFTING__TAX}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Label Content="{Binding TranslationSetupFee, FallbackValue=SETUP__FEE}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
@@ -441,6 +474,19 @@
                             </Label.Style>
                         </Label>
                     </StackPanel>
+
+                    <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                    <StackPanel Visibility="{Binding WeightValuesVisibility, FallbackValue=Collapsed}">
+                        <Label Content="{Binding TotalResourcesWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Label Content="{Binding TotalRequiredJournalWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Separator />
+                        <Label Content="{Binding TotalUnfinishedCraftingWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                        <Label Content="{Binding TotalCraftedItemWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Separator />
+                        <Label Content="{Binding TotalFinishedCraftingWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                    </StackPanel>
+
                     <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding CraftingTax}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                     <Label Content="{Binding SetupFee}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />

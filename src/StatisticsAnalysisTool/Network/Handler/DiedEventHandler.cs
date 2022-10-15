@@ -21,12 +21,12 @@ namespace StatisticsAnalysisTool.Network.Handler
         public async Task OnActionAsync(DiedEvent value)
         {
             _trackingController.DungeonController?.SetDiedIfInDungeon(new DiedObject(value.Died, value.KilledBy, value.KilledByGuild));
-            await _trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.KilledBy));
+            await _trackingController.AddNotificationAsync(SetKillNotification(value.Died, value.KilledBy, value.KilledByGuild));
         }
 
-        private static TrackingNotification SetKillNotification(string died, string killedBy)
+        private static TrackingNotification SetKillNotification(string died, string killedBy, string killedByGuild)
         {
-            return new TrackingNotification(DateTime.Now, new KillNotificationFragment(died, killedBy, LanguageController.Translation("WAS_KILLED_BY")), NotificationType.Kill);
+            return new TrackingNotification(DateTime.Now, new KillNotificationFragment(died, killedBy, killedByGuild, LanguageController.Translation("WAS_KILLED_BY")), NotificationType.Kill);
         }
     }
 }

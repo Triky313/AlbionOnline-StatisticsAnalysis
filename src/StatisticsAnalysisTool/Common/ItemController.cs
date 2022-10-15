@@ -8,6 +8,7 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -575,6 +576,50 @@ namespace StatisticsAnalysisTool.Common
         public static bool IsItemsJsonLoaded()
         {
             return ItemsJson?.Items != null;
+        }
+
+        public static double GetWeight(ItemJsonObject itemJsonObject)
+        {
+            double weight;
+            switch (itemJsonObject)
+            {
+                case Weapon item:
+                    double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
+                    return weight;
+                case EquipmentItem item:
+                    double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
+                    return weight;
+                case Mount item:
+                    double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
+                    return weight;
+                case ConsumableItem item:
+                    double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
+                    return weight;
+                case SimpleItem item:
+                    double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
+                    return weight;
+                case JournalItem item:
+                    double.TryParse(item.Weight, NumberStyles.Float, CultureInfo.InvariantCulture, out weight);
+                    return weight;
+                default: return 0;
+            }
+        }
+
+        public static string GetGeneralJournalName(string uniqueName)
+        {
+            var resultUniqueName = "";
+
+            if (uniqueName.Contains("_FULL"))
+            {
+                resultUniqueName = uniqueName.Replace("_FULL", "");
+            }
+
+            if (uniqueName.Contains("_EMPTY"))
+            {
+                resultUniqueName = uniqueName.Replace("_EMPTY", "");
+            }
+
+            return resultUniqueName;
         }
 
         #endregion

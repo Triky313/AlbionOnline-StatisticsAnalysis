@@ -62,8 +62,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 return;
             }
-
-            var mailContent = ContentToObject(mailInfo.MailType, content);
+            
+            var mailContent = ContentToObject(mailInfo.MailType, content, SettingsController.CurrentSettings.MailMonitoringMarketTaxRate);
 
             if (SettingsController.CurrentSettings.IgnoreMailsWithZeroValues && mailContent.IsMailWithoutValues)
             {
@@ -135,7 +135,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
-        private static MailContent ContentToObject(MailType type, string content, double taxRate = 3)
+        private static MailContent ContentToObject(MailType type, string content, double taxRate)
         {
             switch (type)
             {
