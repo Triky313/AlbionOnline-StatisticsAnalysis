@@ -347,7 +347,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="MailOptionsObjectTemplate"  DataType="{x:Type models:MailOptionsObject}">
+    <DataTemplate x:Key="MailOptionsObjectTemplate" DataType="{x:Type models:MailOptionsObject}">
         <Grid>
             <StackPanel Orientation="Vertical" Margin="0,0,0,0">
                 <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
@@ -362,6 +362,11 @@
                     <CheckBox IsChecked="{Binding IgnoreMailsWithZeroValues}" 
                               Content="{Binding TranslationIgnoreMailsWithZeroValues, FallbackValue=IGNORE__MAILS__WITH__ZERO__VALUES}" 
                               HorizontalContentAlignment="Left" Margin="0,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding MarketTaxRate}" Width="25" Height="20"  Margin="5,-2,0,0" common:TextBoxHelper.OnlyNumeric="Double" />
+                        <Label Content="{Binding TranslationMarketTaxRate, FallbackValue=MARKET__TAX__RATE}" MinWidth="300" VerticalAlignment="Top" />
+                    </StackPanel>
 
                     <ComboBox Width="200" Height="26" Margin="0,5,0,5" ItemsSource="{Binding DeleteMailsOlderThanSpecifiedDays}" 
                               SelectedItem="{Binding DeleteMailsOlderThanSpecifiedDaysSelection, IsAsync=true}" 
@@ -469,7 +474,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock Text="{Binding TranslationTax, IsAsync=True, FallbackValue=TAX}" Width="150" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                <TextBlock Width="150" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -483,6 +488,12 @@
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} ({1}%)">
+                                            <Binding Path="TranslationTax" IsAsync="True" />
+                                            <Binding Path="MailContent.TaxRate" IsAsync="True" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
                                 </TextBlock>
                             </StackPanel>
                             <TextBlock Style="{StaticResource Mail.City.Text}" />

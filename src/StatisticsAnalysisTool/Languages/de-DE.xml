@@ -659,4 +659,5 @@
 	<translation name="TOTAL_CRAFTED_WEIGHT">Gesamtgewicht hergestelltes</translation>
 	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Gesamtesgewicht unfertige Herstellungen</translation>
 	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Gesamtesgewicht fertige Herstellungen</translation>
+	<translation name="MARKET_TAX_RATE">Marktsteuersatz</translation>
 </translations>

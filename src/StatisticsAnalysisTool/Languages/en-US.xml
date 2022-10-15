@@ -659,4 +659,5 @@
 	<translation name="TOTAL_CRAFTED_WEIGHT">Total crafted weight</translation>
 	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Total unfinished crafting weight</translation>
 	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Total finished crafting weight</translation>
+	<translation name="MARKET_TAX_RATE">Market tax rate</translation>
 </translations>
