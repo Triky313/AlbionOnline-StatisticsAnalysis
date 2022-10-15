@@ -174,10 +174,10 @@
 	<translation name="FIBERGATHERER_SHOES">Buty zbieracza włókna</translation>
 	<translation name="FIBERGATHERER_BACKPACK">Plecak zbieracza włókna</translation>
 	
-	<translation name="FISHGATHERER_ARMOR">Zbroja zbieracza ryb</translation>
-    <translation name="FISHGATHERER_HELMET">Hełm zbieracza ryb</translation>
-	<translation name="FISHGATHERER_SHOES">Buty zbieracza ryb</translation>
-	<translation name="FISHGATHERER_BACKPACK">Plecak zbieracza ryb</translation>
+	<translation name="FISHGATHERER_ARMOR">Zbroja zbieracza rybaka</translation>
+    <translation name="FISHGATHERER_HELMET">Hełm zbieracza rybaka</translation>
+	<translation name="FISHGATHERER_SHOES">Buty zbieracza rybaka</translation>
+	<translation name="FISHGATHERER_BACKPACK">Plecak zbieracza rybaka</translation>
 	
 	<translation name="HIDEGATHERER_ARMOR">Zbroja zbieracza skóry</translation>
 	<translation name="HIDEGATHERER_HELMET">Hełm zbieracza skóry</translation>
@@ -454,7 +454,7 @@
 	<translation name="AUCTIONS_HOUSE_TAX_PERCENT">Procent podatku od domu na aukcjach</translation>
 	<translation name="CRAFTING_TAX_PERCENT">% opłaty za użytkowanie</translation>
 	<translation name="CRAFTING_BONUS_PERCENT">Bonus rzemieślniczy %</translation>
-	<translation name="CRAFTING_WITH_FOCUS">Tworzenie z naciskiem</translation>
+	<translation name="CRAFTING_WITH_FOCUS">Tworzenie z skupieniem</translation>
 	<translation name="OTHER_COSTS">Inne koszty</translation>
 	<translation name="REQUIRED_JOURNALS">Wymagane czasopisma</translation>
 	<translation name="COSTS_PER_JOURNAL">Koszty na czasopismo</translation>
@@ -654,4 +654,9 @@
 	<translation name="COMBAT_TIME">Czas Walki</translation>
 	<translation name="DELETE_ZERO_FAME_DUNGEONS">Skasować Loch z 0 fame</translation>
 	<translation name="SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS">Czy na pewno skasować locha z 0 fame?</translation>
+	<translation name="TOTAL_RESOURCES_WEIGHT">Łaczna waga materiału</translation>
+	<translation name="TOTAL_JOURNAL_WEIGHT">Łaczna waga dzienników</translation>
+	<translation name="TOTAL_CRAFTED_WEIGHT">Łaczna waga wyprodukowanego produktu</translation>
+	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Łaczna waga niedokończonego produktu</translation>
+	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Całkowita waga gotowego produktu</translation>
 </translations>
