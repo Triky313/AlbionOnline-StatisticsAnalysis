@@ -63,7 +63,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
             
-            var mailContent = ContentToObject(mailInfo.MailType, content, SettingsController.CurrentSettings.MailMonitoringMarketTaxRate);
+            var mailContent = ContentToObject(mailInfo.MailType, content, SettingsController.CurrentSettings.MailMonitoringMarketTaxRate, SettingsController.CurrentSettings.MailMonitoringMarketTaxSetupRate);
 
             if (SettingsController.CurrentSettings.IgnoreMailsWithZeroValues && mailContent.IsMailWithoutValues)
             {
@@ -135,7 +135,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
-        private static MailContent ContentToObject(MailType type, string content, double taxRate)
+        private static MailContent ContentToObject(MailType type, string content, double taxRate, double taxSetupRate)
         {
             switch (type)
             {
@@ -162,7 +162,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                             InternalTotalPrice = totalPriceLong,
                             InternalUnitPrice = unitPriceLong,
                             UniqueItemName = uniqueItemName,
-                            TaxRate = taxRate
+                            TaxRate = taxRate,
+                            TaxSetupRate = taxSetupRate
                         };
                     }
 
@@ -172,7 +173,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                         Quantity = quantity,
                         InternalTotalPrice = totalPriceLong,
                         InternalUnitPrice = unitPriceLong,
-                        UniqueItemName = uniqueItemName
+                        UniqueItemName = uniqueItemName,
+                        TaxSetupRate = taxSetupRate
                     };
                 case MailType.MarketplaceSellOrderExpired:
                 case MailType.MarketplaceBuyOrderExpired:
@@ -204,7 +206,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                             InternalTotalPrice = FixPoint.FromFloatingPointValue(totalPrice).InternalValue,
                             InternalUnitPrice = FixPoint.FromFloatingPointValue(singlePrice).InternalValue,
                             UniqueItemName = uniqueItemExpiredName,
-                            TaxRate = taxRate
+                            TaxRate = taxRate,
+                            TaxSetupRate = taxSetupRate
                         };
                     }
 
@@ -214,7 +217,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                         Quantity = expiredQuantity,
                         InternalTotalPrice = FixPoint.FromFloatingPointValue(totalPrice).InternalValue,
                         InternalUnitPrice = FixPoint.FromFloatingPointValue(singlePrice).InternalValue,
-                        UniqueItemName = uniqueItemExpiredName
+                        UniqueItemName = uniqueItemExpiredName,
+                        TaxSetupRate = taxSetupRate
                     };
                 default:
                     return new MailContent();
@@ -235,9 +239,15 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                     // The if block convert data from old versions to new version
                     if (item.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired
-                        && item.MailContent?.TaxRate != null && !item.MailContent.TaxRate.Equals(3) && item.Timestamp < new DateTime(2022, 12, 1))
+                        && item.MailContent?.TaxRate != null && item.Timestamp < new DateTime(2022, 12, 1))
                     {
-                        item.MailContent.TaxRate = 3;
+                        item.MailContent.TaxRate = item.Timestamp < new DateTime(2022, 9, 14) ? 3 : 4; // Into the Fray Patch 6 tax increase
+                    }
+
+                    // The if block convert data from old versions to new version
+                    if (item.MailContent?.TaxSetupRate != null && item.Timestamp < new DateTime(2022, 12, 1))
+                    {
+                        item.MailContent.TaxSetupRate = item.Timestamp < new DateTime(2022, 9, 14) ? 1.5 : 2.5; // Into the Fray Patch 6 tax increase
                     }
                 }
 

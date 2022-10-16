@@ -11,6 +11,7 @@ public class MailContent
     public long InternalTotalPrice { get; set; }
     public long InternalUnitPrice { get; set; }
     public double TaxRate { get; set; } = 0;
+    public double TaxSetupRate { get; set; } = 0;
     [JsonIgnore]
     public bool IsTaxesStated => TaxRate > 0;
     [JsonIgnore]
@@ -23,10 +24,11 @@ public class MailContent
         : FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue / UsedQuantity);
     [JsonIgnore]
     public FixPoint TaxPrice => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue / 100 * TaxRate);
+    public FixPoint TaxSetupPrice => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue / 100 * TaxSetupRate);
     [JsonIgnore]
-    public FixPoint TotalPriceWithDeductedTaxes => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue * ((100 - TaxRate) / 100));
+    public FixPoint TotalPriceWithDeductedTaxes => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalTotalPrice).DoubleValue * ((100 - TaxRate - TaxSetupRate) / 100));
     [JsonIgnore]
-    public FixPoint UnitPriceWithDeductedTaxes => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalUnitPrice).DoubleValue * ((100 - TaxRate) / 100));
+    public FixPoint UnitPriceWithDeductedTaxes => FixPoint.FromFloatingPointValue(FixPoint.FromInternalValue(InternalUnitPrice).DoubleValue * ((100 - TaxRate - TaxSetupRate) / 100));
     [JsonIgnore]
     public bool IsMailWithoutValues => InternalTotalPrice == 0 && UsedQuantity == 0;
 }

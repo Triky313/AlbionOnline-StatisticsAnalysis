@@ -15,6 +15,7 @@ public class MailOptionsObject : INotifyPropertyChanged
     private DeleteMailsAfterDaysStruct _damageMeterSortSelection;
     private bool _ignoreMailsWithZeroValues;
     private double _marketTaxRate;
+    private double _marketTaxSetupRate;
 
     public MailOptionsObject()
     {
@@ -35,6 +36,7 @@ public class MailOptionsObject : INotifyPropertyChanged
         IsMailMonitoringActive = SettingsController.CurrentSettings.IsMailMonitoringActive;
         IgnoreMailsWithZeroValues = SettingsController.CurrentSettings.IgnoreMailsWithZeroValues;
         MarketTaxRate = SettingsController.CurrentSettings.MailMonitoringMarketTaxRate;
+        MarketTaxSetupRate = SettingsController.CurrentSettings.MailMonitoringMarketTaxSetupRate;
     }
 
     public bool IsMailMonitoringActive
@@ -90,10 +92,21 @@ public class MailOptionsObject : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+    public double MarketTaxSetupRate
+    {
+        get => _marketTaxSetupRate;
+        set
+        {
+            _marketTaxSetupRate = value;
+            SettingsController.CurrentSettings.MailMonitoringMarketTaxSetupRate = _marketTaxSetupRate;
+            OnPropertyChanged();
+        }
+    }
 
     public static string TranslationMailMonitoringActive => LanguageController.Translation("MAIL_MONITORING_ACTIVE");
     public static string TranslationIgnoreMailsWithZeroValues => LanguageController.Translation("IGNORE_MAILS_WITH_ZERO_VALUES");
     public static string TranslationMarketTaxRate => LanguageController.Translation("MARKET_TAX_RATE");
+    public static string TranslationMarketTaxSetupRate => LanguageController.Translation("MARKET_TAX_SETUP_RATE");
     public static string TranslationSettings => LanguageController.Translation("SETTINGS");
 
     public event PropertyChangedEventHandler PropertyChanged;

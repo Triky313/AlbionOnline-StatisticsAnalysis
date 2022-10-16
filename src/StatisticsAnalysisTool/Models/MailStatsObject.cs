@@ -61,15 +61,15 @@ public class MailStatsObject : INotifyPropertyChanged
         BoughtMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
         BoughtYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPriceWithDeductedTaxes.IntegerValue);
 
-        TaxesToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date).Sum(x => x.MailContent.TaxPrice.IntegerValue);
-        TaxesThisWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc)).Sum(x => x.MailContent.TaxPrice.IntegerValue);
-        TaxesLastWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7))).Sum(x => x.MailContent.TaxPrice.IntegerValue);
-        TaxesMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month).Sum(x => x.MailContent.TaxPrice.IntegerValue);
-        TaxesYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year).Sum(x => x.MailContent.TaxPrice.IntegerValue);
+        TaxesToday = mails.Where(x => x.Timestamp.Date == DateTime.UtcNow.Date).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+        TaxesThisWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc)).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+        TaxesLastWeek = mails.Where(x => x.Timestamp.IsDateInWeekOfYear(currentUtc.AddDays(-7))).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+        TaxesMonth = mails.Where(x => x.Timestamp.Year == currentUtc.Year && x.Timestamp.Month == currentUtc.Month).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
+        TaxesYear = mails.Where(x => x.Timestamp.Year == currentUtc.Year).Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
 
         SoldTotal = mails.Where(x => x.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
         BoughtTotal = mails.Where(x => x.MailType is MailType.MarketplaceBuyOrderFinished or MailType.MarketplaceBuyOrderExpired).Sum(x => x.MailContent.TotalPrice.IntegerValue);
-        TaxesTotal = mails.Sum(x => x.MailContent.TaxPrice.IntegerValue);
+        TaxesTotal = mails.Sum(x => x.MailContent.TaxSetupPrice.IntegerValue + x.MailContent.TaxPrice.IntegerValue);
 
         SalesToday = SoldToday - (BoughtToday + TaxesToday);
         SalesThisWeek = SoldThisWeek - (BoughtThisWeek + TaxesThisWeek);

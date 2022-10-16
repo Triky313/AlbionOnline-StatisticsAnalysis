@@ -651,4 +651,15 @@
 	<translation name="TOTAL_LOOT_VALUE">Valor total looteado</translation>
 	<translation name="FILTER">Filtro</translation>
 	<translation name="LOOT_IN_SILVER">Loot en plata</translation>
+	<translation name="COMBAT_TIME">Tiempo de combate</translation>
+	<translation name="DELETE_ZERO_FAME_DUNGEONS">Eliminar mazmorras con 0 de fama</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS">¿Estás seguro de querer eliminar las mazmorras con 0 de fama?</translation>
+	<translation name="TOTAL_RESOURCES_WEIGHT">Peso total de los recursos</translation>
+	<translation name="TOTAL_JOURNAL_WEIGHT">Peso total de los diarios</translation>
+	<translation name="TOTAL_CRAFTED_WEIGHT">Peso total de la fabricación</translation>
+	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Peso total pre-fabricación</translation>
+	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Peso total post-fabricación</translation>
+	<translation name="MARKET_TAX_RATE">Tasa de mercado</translation>
+	<translation name="MARKET_TAX_SETUP_RATE">Tasa de mercado (orden)</translation>
+	<translation name="SETUP_TAX">Tasa de mercado (orden)</translation>
 </translations>
