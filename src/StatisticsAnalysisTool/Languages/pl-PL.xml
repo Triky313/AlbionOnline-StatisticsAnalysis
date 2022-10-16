@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 
 <translations>
 	<translation name="LANGUAGE">Język</translation>
@@ -175,7 +175,7 @@
 	<translation name="FIBERGATHERER_BACKPACK">Plecak zbieracza włókna</translation>
 	
 	<translation name="FISHGATHERER_ARMOR">Zbroja zbieracza rybaka</translation>
-    <translation name="FISHGATHERER_HELMET">Hełm zbieracza rybaka</translation>
+        <translation name="FISHGATHERER_HELMET">Hełm zbieracza rybaka</translation>
 	<translation name="FISHGATHERER_SHOES">Buty zbieracza rybaka</translation>
 	<translation name="FISHGATHERER_BACKPACK">Plecak zbieracza rybaka</translation>
 	
@@ -394,7 +394,7 @@
 	<translation name="DUNGEON_TIMER">Ile do bezpiecznej strefy:</translation>
 	<translation name="SURE_YOU_WANT_TO_RESET_DAMAGE_METER">Czy na pewno chcesz zresetować Zadane Obrażenia?</translation>
 	<translation name="RESET_DUNGEON_TRACKER">Zresetuj śledzenie lochów</translation>
-	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER">Czy na pewno chcesz zresetować Dungeon Tracker?</translation>
+	<translation name="SURE_YOU_WANT_TO_RESET_DUNGEON_TRACKER">Czy na pewno chcesz zresetować sledzenie lochów?</translation>
 	<translation name="REMOVE_DUNGEON">Usuń loch</translation>
 	<translation name="SURE_YOU_WANT_TO_REMOVE_DUNGEON">Czy na pewno chcesz usunąć Loch?</translation>
 	<translation name="RESPEC">Bitewne Kredyty Sławy</translation>
@@ -652,11 +652,12 @@
 	<translation name="FILTER">Filter</translation>
 	<translation name="LOOT_IN_SILVER">Łacznie w Srebrze</translation>
 	<translation name="COMBAT_TIME">Czas Walki</translation>
-	<translation name="DELETE_ZERO_FAME_DUNGEONS">Skasować Loch z 0 fame</translation>
-	<translation name="SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS">Czy na pewno skasować locha z 0 fame?</translation>
+	<translation name="DELETE_ZERO_FAME_DUNGEONS">Skasować loch z 0 fame</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS">Czy na pewno skasować loch z 0 fame?</translation>
 	<translation name="TOTAL_RESOURCES_WEIGHT">Łaczna waga materiału</translation>
 	<translation name="TOTAL_JOURNAL_WEIGHT">Łaczna waga dzienników</translation>
 	<translation name="TOTAL_CRAFTED_WEIGHT">Łaczna waga wyprodukowanego produktu</translation>
 	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Łaczna waga niedokończonego produktu</translation>
 	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Całkowita waga gotowego produktu</translation>
+	<translation name="MARKET_TAX_RATE">Podatek w sklepie</translation>
 </translations>
