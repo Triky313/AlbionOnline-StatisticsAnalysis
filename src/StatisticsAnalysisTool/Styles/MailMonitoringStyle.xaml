@@ -436,8 +436,8 @@
                         </DockPanel>
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
-                                <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -458,7 +458,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                <TextBlock Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -479,7 +479,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                <TextBlock Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} ({1}%)">
                                             <Binding Path="TranslationSetupTax" IsAsync="True" />
@@ -487,7 +487,7 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                                <TextBlock Width="150" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                <TextBlock Width="110" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -513,22 +513,22 @@
                         </DockPanel>
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Grid Width="200">
+                                <Grid Width="160">
                                     <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.ActualUnitPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" />
                                 </Grid>
-                                <Grid Width="200">
+                                <Grid Width="160">
                                     <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPriceWithDeductedTaxes.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" ToolTip="{Binding MailContent.TotalPrice}" />
                                 </Grid>
-                                <Grid Width="200">
+                                <Grid Width="160">
                                     <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.TaxSetupPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                                HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
                                 </Grid>
-                                <Grid Width="200">
+                                <Grid Width="110">
                                     <Grid.Style>
                                         <Style TargetType="{x:Type Grid}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
