@@ -85,6 +85,8 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
     public static string TranslationTotalRevenue => LanguageController.Translation("TOTAL_REVENUE");
     [JsonIgnore]
     public static string TranslationTax => LanguageController.Translation("TAX");
+    [JsonIgnore]
+    public static string TranslationSetupTax => LanguageController.Translation("SETUP_TAX");
     [JsonIgnore] 
     public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
     [JsonIgnore] 
