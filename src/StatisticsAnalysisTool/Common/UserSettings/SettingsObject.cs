@@ -48,5 +48,6 @@
         public bool IsSnapshotAfterMapChangeActive { get; set; } = false;
         public bool IsDamageMeterResetByMapChangeActive { get; set; } = false;
         public double MailMonitoringMarketTaxRate { get; set; } = 4;
+        public double MailMonitoringMarketTaxSetupRate { get; set; } = 2.5;
     }
 }
