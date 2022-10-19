@@ -601,10 +601,7 @@
 	<translation name="TAXES_TOTAL">Podatki łącznie</translation>
 	<translation name="NOTES">Notatki</translation>
 	<translation name="UNSUPPORTED_OS">Nieobsługiwany system operacyjny: mogą wystąpić błędy.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Jeśli Twój internet jest zbyt wolny lub masz inne problemy, możesz również pobrać plik ręcznie.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT2">Pobierz plik z poniższego linku</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT3">Zmień nazwę pliku na ItemList.json i umieść plik w katalogu narzędzi.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT4">Umieść plik w katalogu narzędzi.</translation>
+	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Zamknij program i uruchom plik DownloadItemJsonFilesManually.bat który znajduje sie w folderze programu.</translation>
 	<translation name="THEN_RESTART_THE_TOOL">Następnie uruchom ponownie narzędzie.</translation>
 	<translation name="OR">LUB</translation>
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Skopiuj krótki wskaźnik zadanych obrażeń do schowka</translation>
@@ -660,4 +657,6 @@
 	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Łaczna waga niedokończonego produktu</translation>
 	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Całkowita waga gotowego produktu</translation>
 	<translation name="MARKET_TAX_RATE">Podatek w sklepie</translation>
+	<translation name="MARKET_TAX_SETUP_RATE">Podatek w sklepie do ustawienia</translation>
+	<translation name="SETUP_TAX">Ustawienie podatku</translation>
 </translations>
