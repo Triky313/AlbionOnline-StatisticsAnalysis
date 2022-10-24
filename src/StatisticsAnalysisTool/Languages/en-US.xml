@@ -659,4 +659,9 @@
 	<translation name="MARKET_TAX_RATE">Market tax rate</translation>
 	<translation name="MARKET_TAX_SETUP_RATE">Market tax setup rate</translation>
 	<translation name="SETUP_TAX">Setup tax</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_1">The crafting bonus is the bonus of the city or Hideout you are crafting in.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_2">To find the number you need to open the mini-map and hover over the top right corner where you can see what bonus this city/HO gives.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_3">In a city like Lymhurst it's 118%. If the city gives a bonus to the item to be crafted, it's 133%. In Hideouts it can be higher, also there can be a Daily Bonus which can be 10% or 20%.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_4">The auction house setup fee and taxes can be found in-game when you want to sell an item on the market.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_5">If you have Premium, you can leave the two values as they are. If you want to sell something manually, set both to 0. If you don't have a premium, the values are usually twice as high.</translation>
 </translations>

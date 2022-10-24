@@ -81,6 +81,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private string _craftingNotes;
         private readonly Timer _timer = new();
         private double _refreshRateInMilliseconds = 10;
+        private Visibility _craftingInfoPopupVisibility = Visibility.Hidden;
 
         private CraftingCalculation _craftingCalculation = new()
         {
@@ -1021,6 +1022,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _informationLoadingImageVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility CraftingInfoPopupVisibility
+        {
+            get => _craftingInfoPopupVisibility;
+            set
+            {
+                _craftingInfoPopupVisibility = value;
                 OnPropertyChanged();
             }
         }
