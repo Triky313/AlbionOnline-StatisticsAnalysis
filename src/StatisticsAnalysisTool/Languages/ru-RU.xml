@@ -617,4 +617,15 @@
 	<translation name="BOOK_CHEST_STATS">Открыто книжных сундуков</translation>
 	<translation name="BEST_LOOTED_ITEM">Лучший предмет</translation>
 	<translation name="TOTAL_LOOT_VALUE">Всего взято предметов</translation>
+	<translation name="FILTER">Фильтры</translation>
+	<translation name="LOOT_IN_SILVER">Лута серебром</translation>
+	<translation name="COMBAT_TIME">Время боя</translation>
+	<translation name="DELETE_ZERO_FAME_DUNGEONS">Удалить пустые данжи</translation>
+	<translation name="SURE_YOU_WANT_TO_DELETE_ZERO_FAME_DUNGEONS">Вы уверены, что хотите удалить пустые данжи?</translation>
+	<translation name="TOTAL_RESOURCES_WEIGHT">Вес ресурсов</translation>
+	<translation name="TOTAL_JOURNAL_WEIGHT">Вес журналов</translation>
+	<translation name="TOTAL_CRAFTED_WEIGHT">Вес скрафченных вещей</translation>
+	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Всего для крафта</translation>
+	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Всего скрафченных вещей</translation>
+	<translation name="MARKET_TAX_RATE">Налоговая ставка рынка</translation>
 </translations>

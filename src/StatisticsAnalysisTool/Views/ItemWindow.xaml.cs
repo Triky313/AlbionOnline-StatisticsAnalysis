@@ -109,5 +109,10 @@ namespace StatisticsAnalysisTool.Views
         {
             CraftingTabController.SaveInFile();
         }
+
+        private void CraftingInfoPopup_MouseUp(object sender, MouseEventArgs e)
+        {
+            _itemWindowViewModel.CraftingInfoPopupVisibility = _itemWindowViewModel.CraftingInfoPopupVisibility == Visibility.Hidden ? Visibility.Visible : Visibility.Hidden;
+        }
     }
 }

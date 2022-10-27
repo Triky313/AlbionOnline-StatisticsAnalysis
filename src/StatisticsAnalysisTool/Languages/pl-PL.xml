@@ -601,10 +601,7 @@
 	<translation name="TAXES_TOTAL">Podatki łącznie</translation>
 	<translation name="NOTES">Notatki</translation>
 	<translation name="UNSUPPORTED_OS">Nieobsługiwany system operacyjny: mogą wystąpić błędy.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Jeśli Twój internet jest zbyt wolny lub masz inne problemy, możesz również pobrać plik ręcznie.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT2">Pobierz plik z poniższego linku</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT3">Zmień nazwę pliku na ItemList.json i umieść plik w katalogu narzędzi.</translation>
-	<translation name="FILE_DOWNLOAD_FAILED_TEXT4">Umieść plik w katalogu narzędzi.</translation>
+	<translation name="FILE_DOWNLOAD_FAILED_TEXT1">Zamknij program i uruchom plik DownloadItemJsonFilesManually.bat który znajduje sie w folderze programu.</translation>
 	<translation name="THEN_RESTART_THE_TOOL">Następnie uruchom ponownie narzędzie.</translation>
 	<translation name="OR">LUB</translation>
 	<translation name="COPY_SHORT_DAMAGE_METER_TO_THE_CLIPBOARD">Skopiuj krótki wskaźnik zadanych obrażeń do schowka</translation>
@@ -660,4 +657,11 @@
 	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Łaczna waga niedokończonego produktu</translation>
 	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Całkowita waga gotowego produktu</translation>
 	<translation name="MARKET_TAX_RATE">Podatek w sklepie</translation>
+	<translation name="MARKET_TAX_SETUP_RATE">Podatek w sklepie do ustawienia</translation>
+	<translation name="SETUP_TAX">Ustawienie podatku</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_1">Premia za wytwarzanie to premia za miasto lub kryjówkę, w której wytwarzasz.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_2">Aby znaleźć numer, musisz otworzyć mini-mapę i najechać na prawy górny róg, gdzie możesz zobaczyć, jaki bonus daje to miasto/HO.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_3">W mieście takim jak Lymhurst jest to 118%. Jeśli miasto daje premię do przedmiotu, który ma zostać wytworzony, wynosi 133%. W Kryjówkach może być wyższy, może być również dzienny bonus, który może wynosić 10% lub 20%.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_4">Opłatę za założenie domu aukcyjnego i podatki można znaleźć w grze, gdy chcesz sprzedać przedmiot na rynku.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_5">Jeśli masz Premium, możesz pozostawić te dwie wartości bez zmian. Jeśli chcesz sprzedać coś ręcznie, ustaw oba na 0. Jeśli nie masz premii, wartości są zwykle dwa razy wyższe.</translation>
 </translations>

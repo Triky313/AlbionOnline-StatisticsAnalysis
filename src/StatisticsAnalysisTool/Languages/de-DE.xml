@@ -659,4 +659,9 @@
 	<translation name="MARKET_TAX_RATE">Marktsteuersatz</translation>
 	<translation name="MARKET_TAX_SETUP_RATE">Einstellungsgebührsatz</translation>
 	<translation name="SETUP_TAX">Einstellungsgebühr</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_1">Der Herstellungsbonus ist der Bonus der Stadt oder des Hideouts, in der/dem du herstellst.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_2">Um die Zahl zu finden, müssen Sie die Minikarte öffnen und mit der Maus oben rechts darüber hovern, wo Sie sehen können, welchen Bonus diese Stadt/HO gibt.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_3">In einer Stadt wie Lymhurst sind es 118%. Wenn die Stadt einen Bonus auf das zu craftende Item gibt, sind es 133%. In Hideouts kann es höher sein, zudem kann es einen Täglichen Bonus geben, der 10% oder 20% sein kann.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_4">Die Einrichtungsgebühr und die Steuern für das Auktionshaus findest du im Spiel, wenn du eine Item auf dem Markt verkaufen möchten.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_5">Wenn du Premium hast, kannst du die beiden Werte so lassen, wie sie sind. Wenn du etwas manuell verkaufen willst, setze beide auf 0. Hast du kein Premium sind die Werte im Normallfall doppelt so hoch.</translation>
 </translations>
