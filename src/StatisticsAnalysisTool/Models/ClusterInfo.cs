@@ -94,7 +94,7 @@ namespace StatisticsAnalysisTool.Models
         
         public void ClusterHistoryString()
         {
-            if (ClusterMode is ClusterMode.Black or ClusterMode.Red or ClusterMode.Yellow or ClusterMode.SafeArea && MapType is MapType.Unknown)
+            if (ClusterMode is ClusterMode.Black or ClusterMode.Red or ClusterMode.Yellow  or ClusterMode.SafeArea && MapType is MapType.Unknown)
             {
                 ClusterHistoryString1 = ClusterModeString(ClusterMode);
                 ClusterHistoryString2 = UniqueName;
@@ -102,7 +102,7 @@ namespace StatisticsAnalysisTool.Models
                 return;
             }
 
-            if (MapType is MapType.Arena or MapType.CorruptedDungeon or MapType.RandomDungeon or MapType.Expedition or MapType.HellGate)
+            if (MapType is MapType.Arena or MapType.CorruptedDungeon or MapType.RandomDungeon or MapType.Expedition or MapType.HellGate or MapType.Mists)
             {
                 ClusterHistoryString1 = MapTypeString;
                 ClusterHistoryString2 = string.Empty;
@@ -156,6 +156,7 @@ namespace StatisticsAnalysisTool.Models
                 ClusterMode.Red => LanguageController.Translation("RED_ZONE"),
                 ClusterMode.Yellow => LanguageController.Translation("YELLOW_ZONE"),
                 ClusterMode.SafeArea => LanguageController.Translation("SAFE_AREA"),
+                ClusterMode.Mists => LanguageController.Translation("MISTS"),
                 ClusterMode.Unknown => LanguageController.Translation("UNKNOWN_ZONE"),
                 _ => ""
             };
@@ -266,6 +267,11 @@ namespace StatisticsAnalysisTool.Models
                 return ClusterMode.Black;
             }
 
+            if (type.ToUpper().Contains("MISTS"))
+            {
+                return ClusterMode.Mists;
+            }
+
             return ClusterMode.Unknown;
         }
 
@@ -308,6 +314,7 @@ namespace StatisticsAnalysisTool.Models
                 MapType.Hideout => LanguageController.Translation("HIDEOUT"),
                 MapType.Expedition => LanguageController.Translation("EXPEDITION"),
                 MapType.Arena => LanguageController.Translation("ARENA"),
+                MapType.Mists => LanguageController.Translation("MISTS"),
                 _ => ""
             };
         }

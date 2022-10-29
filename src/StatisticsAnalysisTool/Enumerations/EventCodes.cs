@@ -120,7 +120,7 @@ namespace StatisticsAnalysisTool.Enumerations
         EndArenaMatch,
         MatchUpdate,
         ActiveMatchUpdate,
-        NewMob = 113,
+        NewMob = 116,
         DebugAggroInfo,
         DebugVariablesInfo,
         DebugReputationInfo,

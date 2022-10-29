@@ -122,6 +122,7 @@
     <Color x:Key="Cluster.Red">#FFD81320</Color>
     <Color x:Key="Cluster.Black">#FF323B43</Color>
     <Color x:Key="Cluster.Avalon">#ffE9C86D</Color>
+    <Color x:Key="Cluster.Mists">#ff705BCF</Color>
 
     <!-- Value colors -->
     <Color x:Key="Color.Value.Fame">#FFCF2026</Color>
