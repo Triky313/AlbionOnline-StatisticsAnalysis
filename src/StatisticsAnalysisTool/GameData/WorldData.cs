@@ -126,6 +126,7 @@ namespace StatisticsAnalysisTool.GameData
                 MapType.Hideout => LanguageController.Translation("HIDEOUT"),
                 MapType.Expedition => LanguageController.Translation("EXPEDITION"),
                 MapType.Arena => LanguageController.Translation("ARENA"),
+                MapType.Mists => LanguageController.Translation("MISTS"),
                 _ => LanguageController.Translation("UNKNOWN")
             };
         }
@@ -145,6 +146,8 @@ namespace StatisticsAnalysisTool.GameData
             if (index.ToUpper().Contains("EXPEDITION")) return MapType.Expedition;
 
             if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
+
+            if (index.ToUpper().Contains("MISTS")) return MapType.Mists;
 
             return MapType.Unknown;
         }
@@ -213,6 +216,7 @@ namespace StatisticsAnalysisTool.GameData
         Island,
         Hideout,
         Expedition,
-        Arena
+        Arena,
+        Mists
     }
 }
