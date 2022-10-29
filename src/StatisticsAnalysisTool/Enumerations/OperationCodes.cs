@@ -31,13 +31,13 @@
         ChannelingCancel,
         AttackBuildingStart,
         InventoryDestroyItem,
-        InventoryMoveItem = 30, // map[0:4 1:[39 -87 28 -11 -124 -89 51 72 -111 -18 117 74 87 91 -56 72] 2:14 4:[39 -87 28 -11 -124 -89 51 72 -111 -18 117 74 87 91 -56 72] 5:14 253:29]
+        InventoryMoveItem = 28, // map[0:4 1:[39 -87 28 -11 -124 -89 51 72 -111 -18 117 74 87 91 -56 72] 2:14 4:[39 -87 28 -11 -124 -89 51 72 -111 -18 117 74 87 91 -56 72] 5:14 253:29]
         InventoryRecoverItem,
         InventoryRecoverAllItems,
         InventorySplitStack,
         InventorySplitStackInto,
         GetClusterData,
-        ChangeCluster = 36, // Request: map[0:2 1: 2:[-1] 253:36 255:114] - Response: map[0:4000 253:36 255:114]
+        ChangeCluster = 34, // Request: map[0:2 1: 2:[-1] 253:36 255:114] - Response: map[0:4000 253:36 255:114]
         ConsoleCommand,
         ChatMessage,
         ReportClientError,

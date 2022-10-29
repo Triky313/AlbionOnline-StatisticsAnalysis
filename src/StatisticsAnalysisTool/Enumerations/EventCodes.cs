@@ -54,7 +54,7 @@ namespace StatisticsAnalysisTool.Enumerations
         HarvestStart, // map[0:5270 1:637926215956544319 2:637926215956544319 3:4250 4:16 5:1.6169999 6:5287 7:2195 252:52] - 0 = UserId, 3 = ObjectId, 7 = Abbau-Tool (T8_2H_TOOL_SICKLE), 
         HarvestCancel,
         HarvestFinished, // map[0:5270 1:637926215956544319 2:637926215972723131 3:4250 4:1 5:1 7:28 8:[] 9:[] 252:54] - 0 = UserId, 3 = ObjectId, 4 = Res Standard Quantity 5 = Sammelbonus Res, 6 = Premium Bonus Res, 7 = Inhalt in der Ressource
-        TakeSilver = 55, // map[0:-57 1:2178162 2:-57 3:10000000 8:10000 252:55]
+        TakeSilver = 57, // map[0:-57 1:2178162 2:-57 3:10000000 8:10000 252:55]
         ActionOnBuildingStart,
         ActionOnBuildingCancel,
         ActionOnBuildingFinished,
@@ -74,15 +74,15 @@ namespace StatisticsAnalysisTool.Enumerations
         StopEmote,
         SystemMessage,
         UtilityTextMessage,
-        UpdateSilver = 73, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
-        UpdateFame = 74, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 7: ItemId, 9: SatchelFame, )
+        UpdateSilver = 75, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
+        UpdateFame = 76, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 7: ItemId, 9: SatchelFame, )
         UpdateLearningPoints,
-        UpdateReSpecPoints = 76,
-        UpdateCurrency = 77,
-        UpdateFactionStanding = 78,
+        UpdateReSpecPoints = 78, // map[0:[0 44021343632 0 0 0] 1:1 2:160000000 3:160000000 252:78]
+        UpdateCurrency = 79,
+        UpdateFactionStanding = 80,
         Respawn,
         ServerDebugLog,
-        CharacterEquipmentChanged = 81,
+        CharacterEquipmentChanged = 84,
         RegenerationHealthChanged,
         RegenerationEnergyChanged,
         RegenerationMountHealthChanged,
@@ -92,7 +92,9 @@ namespace StatisticsAnalysisTool.Enumerations
         DurabilityChanged,
         NewLoot = 89, // map[0:1863 2:1853 3:Dicky 4:[236.79169 -185.40233] 5:42.864536 6:true 7:1 10:[[-85 -58 82 55 101 -15 76 79 -103 -113 -21 8 -33 46 -99 -28]] 
         // 12:637993823308929158 18:[] 19:[-63 68 12 104 -29 1 114 78 -91 -75 -21 68 -13 -96 -29 -67] 20:[-23 20 93 -6 73 127 19 78 -65 44 -42 65 -97 105 -82 -16] 21:25900 22:0 23:3 24:-1 252:89]
-        AttachItemContainer = 90, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
+        EventCode91,
+        EventCode92,
+        AttachItemContainer = 93, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
         DetachItemContainer, //  map[0:[-95 72 -77 -75 -70 34 127 73 -114 -96 28 8 75 -107 -106 125] 252:90]
         InvalidateItemContainer,
         LockItemContainer,
@@ -259,9 +261,9 @@ namespace StatisticsAnalysisTool.Enumerations
         InvitedToArenaMatch,
         PlayerCounts,
         OtherGrabbedLoot,
-        InCombatStateUpdate = 257, // map[0:671362 1:true 2:true 252:257] | 1 = true; player hits enemy | 2 = true; enemy hits player
-        GrabbedLoot = 258, // LOOT: map[0:424 1:Triky313 2:Bruno313 4:1841 5:1 252:256] | SILVER: map[0:6436 2:Triky313 3:true 5:1550115 252:256] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity) 
-        SiegeCampClaimStart = 259,
+        InCombatStateUpdate = 261, // map[0:671362 1:true 2:true 252:257] | 1 = true; player hits enemy | 2 = true; enemy hits player
+        GrabbedLoot = 262, // LOOT: map[0:424 1:Triky313 2:Bruno313 4:1841 5:1 252:256] | SILVER: map[0:6436 2:Triky313 3:true 5:1550115 252:256] (0: ObjectId, 1: LootedBody, 2: Looter, 4: ItemId, 5: Quantity) 
+        SiegeCampClaimStart = 263,
         SiegeCampClaimCancel,
         SiegeCampClaimFinished,
         SiegeCampScheduleResult,
@@ -367,11 +369,12 @@ namespace StatisticsAnalysisTool.Enumerations
         TutorialUpdate,
         TriggerHintBox,
         RandomDungeonPositionInfo,
-        NewLootChest = 370, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367] // map[0:4399 1:[165 -263] 3:TREASURE_SOLO_UNCOMMON 4:SWAMP_DEAD_LOOTCHEST_TREASURE_SOLO_UNCOMMON 5:4 6:637926439332719127 7:[] 8:[] 13:true 14:SWAMP_DEAD_TREASURE_SOLO 16:31ff503a-ded6-53d6-974a-7e32e3126457 252:370]
-        UpdateLootChest = 371, // 0=ObjectId, 3=PlayerGuid, 4=PlayerGuid, 7=Free4All map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
-        LootChestOpened = 372, // map[0:23 252:369]
-        NewShrine = 374, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
-        UpdateShrine = 375, // map[0:19 1:2 2:637734313445294913 252:372]
+        NewLootChest = 374, // map[0:23 1:[20.5 177.5] 2:423 3:KEEPER_SOLO_BOOKCHEST_STANDARD 4:FOREST_GREEN_LOOTCHEST_KEEPER_SOLO_BOOKCHEST_STANDARD 5:4 6:637734315213820408 7:[] 8:[] 13:true 252:367] // map[0:4399 1:[165 -263] 3:TREASURE_SOLO_UNCOMMON 4:SWAMP_DEAD_LOOTCHEST_TREASURE_SOLO_UNCOMMON 5:4 6:637926439332719127 7:[] 8:[] 13:true 14:SWAMP_DEAD_TREASURE_SOLO 16:31ff503a-ded6-53d6-974a-7e32e3126457 252:370]
+        UpdateLootChest = 375, // 0=ObjectId, 3=PlayerGuid, 4=PlayerGuid, 7=Free4All map[0:4769 1:5 2:637927794424868192 3:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101]] 6:true 7:true 8:2.6 9:true 252:371]
+        LootChestOpened = 376, // map[0:23 252:369]
+        EventCode377,
+        NewShrine = 378, // map[0:19 1:[-89 90] 2:180 3:GENERAL_SHRINE_COMBAT_BUFF 4:SHRINE_NON_COMBAT_BUFF 5:1 6:637734312344532502 252:371]
+        UpdateShrine = 379, // map[0:19 1:2 2:637734313445294913 252:372]
         MutePlayerUpdate,
         ShopTileUpdate,
         ShopUpdate,
@@ -379,10 +382,10 @@ namespace StatisticsAnalysisTool.Enumerations
         UnlockVanityUnlock,
         AvatarUnlocked,
         CustomizationChanged,
-        GuildVaultInfo = 388,
-        BaseVaultInfo = 389,
+        GuildVaultInfo = 392,
+        BaseVaultInfo = 393,
         BankVaultInfo, // map[0:6 1:6466931c-65a1-4c5d-870b-8724cf2611dc@3007 2:[] 3:[] 4:[] 5:[] 6:[] 7:[] 8:[] 252:390]
-        RecoveryVaultPlayerInfo = 391,
+        RecoveryVaultPlayerInfo = 395,
         RecoveryVaultGuildInfo,
         UpdateWardrobe,
         CastlePhaseChanged,
