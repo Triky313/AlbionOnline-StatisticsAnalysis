@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -12,7 +13,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -62,7 +62,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 return;
             }
-            
+
             var mailContent = ContentToObject(mailInfo.MailType, content, SettingsController.CurrentSettings.MailMonitoringMarketTaxRate, SettingsController.CurrentSettings.MailMonitoringMarketTaxSetupRate);
 
             if (SettingsController.CurrentSettings.IgnoreMailsWithZeroValues && mailContent.IsMailWithoutValues)
@@ -227,7 +227,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task SetMailsAsync(List<Mail> mails)
         {
-            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
             {
                 foreach (var item in mails)
                 {
@@ -251,10 +251,10 @@ namespace StatisticsAnalysisTool.Network.Manager
                     }
                 }
 
-                await _mainWindowViewModel?.MailMonitoringBindings?.Mails?.AddRangeAsync(mails)!;
-
+                _mainWindowViewModel?.MailMonitoringBindings?.Mails?.AddRange(mails.AsEnumerable());
                 _mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Refresh();
                 _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(mails);
+
             }, DispatcherPriority.Background, CancellationToken.None);
         }
 

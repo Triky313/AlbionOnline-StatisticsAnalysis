@@ -341,17 +341,5 @@ namespace StatisticsAnalysisTool.Common
         }
 
         #endregion
-
-        #region Collections
-
-        public static async Task AddRangeAsync<T>(this ObservableCollection<T> collection, IEnumerable<T> list)
-        {
-            await foreach (var item in list?.ToAsyncEnumerable() ?? new List<T>().ToAsyncEnumerable())
-            {
-                collection.Add(item);
-            }
-        }
-
-        #endregion
     }
 }
