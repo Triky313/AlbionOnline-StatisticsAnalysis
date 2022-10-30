@@ -183,7 +183,7 @@
                             </StackPanel>
                         </Grid>
                     </ScrollViewer>
-                    <ScrollViewer Visibility="{Binding CraftingInfoPopupVisibility, FallbackValue=Visible}" 
+                    <ScrollViewer Visibility="{Binding CraftingInfoPopupVisibility, FallbackValue=Hidden}" 
                                   Background="{StaticResource SolidColorBrush.Background.2}" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                             <DockPanel Margin="0,0,0,10">
