@@ -220,19 +220,19 @@ namespace StatisticsAnalysisTool.Enumerations
         Cloak,
         PartyInvitation,
         PartyJoined,
-        PartyChangedOrder = 214, // map[0:14368 2:1 3:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2]] 5:[Triky313 Bruno313] 6:[0 0] 7:[18 0] 8:[35 0] 9:[-1 -1] 10:[true true] 252:212]
-        PartyDisbanded = 215, // map[1:14184 252:213]
-        PartyPlayerJoined = 216, // map[0:11925 1:[-63 -19 39 16 26 35 -25 67 -111 60 -87 -58 -31 -100 -124 -44] 2:Mitch77 3:1 4:20 5:12 6:-1 7:true 252:214]
-        PartyPlayerLeft = 218, // map[0:14368 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:216]
-        PartyLeaderChanged = 219, // map[0:14595 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:217]
+        PartyChangedOrder = 218, // map[0:14368 2:1 3:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 4:[[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] [-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2]] 5:[Triky313 Bruno313] 6:[0 0] 7:[18 0] 8:[35 0] 9:[-1 -1] 10:[true true] 252:212]
+        PartyDisbanded = 219, // map[1:14184 252:213]
+        PartyPlayerJoined = 220, // map[0:11925 1:[-63 -19 39 16 26 35 -25 67 -111 60 -87 -58 -31 -100 -124 -44] 2:Mitch77 3:1 4:20 5:12 6:-1 7:true 252:214]
+        PartyPlayerLeft = 222, // map[0:14368 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:216]
+        PartyLeaderChanged = 223, // map[0:14595 1:[-45 -35 124 14 -23 103 -41 74 -71 66 67 20 -12 60 44 -101] 252:217]
         PartyLootSettingChangedPlayer = 220, // map[0:14368 1:1 252:218]
         PartySilverGained,
-        PartyPlayerUpdated = 223, // map[0:Bruno313 1:true 3:5 252:221]
+        PartyPlayerUpdated = 227, // map[0:Bruno313 1:true 3:5 252:221]
         PartyInvitationPlayerBusy,
         PartyMarkedObjectsUpdated,
         PartyOnClusterPartyJoined,
         PartySetRoleFlag, // map[0:8 1:[-118 61 -70 72 17 -107 121 72 -102 110 20 -25 64 20 106 2] 252:225] (0: FlagType, 1: ObjectId)
-        PartyJoinRequest = 228,
+        PartyJoinRequest = 232,
         SpellCooldownUpdate,
         NewHellgate,
         NewHellgateExit,
