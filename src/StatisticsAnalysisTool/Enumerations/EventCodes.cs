@@ -57,7 +57,7 @@ namespace StatisticsAnalysisTool.Enumerations
         TakeSilver = 57, // map[0:-57 1:2178162 2:-57 3:10000000 8:10000 252:55]
         ActionOnBuildingStart,
         ActionOnBuildingCancel,
-        ActionOnBuildingFinished,
+        ActionOnBuildingFinished = 60, // Repear: [60]evInstallResourceCancel - map[0:1562 1:63802829 282167 2:442 3:454 4:2 252:60] 0: UserObjectId, 2: ActionId
         ItemRerollQualityStart,
         ItemRerollQualityCancel,
         ItemRerollQualityFinished,

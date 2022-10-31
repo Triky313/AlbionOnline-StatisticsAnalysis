@@ -1,6 +1,7 @@
 using log4net;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
@@ -10,6 +11,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using StatisticsAnalysisTool.Common;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -280,6 +283,49 @@ public class TrackingController : ITrackingController
         }
 
         return true;
+    }
+
+    #endregion
+
+    #region Upcoming Repair
+
+    private long _buildingObjectId = -1;
+    private long _upcomingRepairCosts = 0;
+
+    public void RegisterBuilding(long buildingObjectId)
+    {
+        _buildingObjectId = buildingObjectId;
+    }
+
+    public void UnregisterBuilding(long buildingObjectId)
+    {
+        if (buildingObjectId != _buildingObjectId)
+        {
+            return;
+        }
+
+        _buildingObjectId = -1;
+        _upcomingRepairCosts = 0;
+    }
+
+    public void SetUpcomingRepair(long buildingObjectId, long costs)
+    {
+        if (_buildingObjectId != buildingObjectId)
+        {
+            return;
+        }
+
+        _upcomingRepairCosts = costs;
+    }
+    
+    public void RepairFinished(long userObjectId, long buildingObjectId)
+    {
+        if (EntityController.LocalUserData.UserObjectId != userObjectId || _upcomingRepairCosts <= 0 || _buildingObjectId != buildingObjectId)
+        {
+            return;
+        }
+
+        StatisticController?.AddValue(ValueType.RepairCosts, FixPoint.FromInternalValue(_upcomingRepairCosts).DoubleValue);
     }
 
     #endregion

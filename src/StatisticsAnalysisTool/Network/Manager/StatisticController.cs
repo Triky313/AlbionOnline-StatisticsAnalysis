@@ -31,7 +31,10 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly ObservableCollection<DashboardHourObject> _stats = new();
-        private readonly List<ValueType> _valueTypes = new() { ValueType.Fame, ValueType.Silver, ValueType.ReSpec, ValueType.FactionFame, ValueType.FactionPoints, ValueType.Might, ValueType.Favor };
+        private readonly List<ValueType> _valueTypes = new()
+        {
+            ValueType.Fame, ValueType.Silver, ValueType.ReSpec, ValueType.FactionFame, ValueType.FactionPoints, ValueType.Might, ValueType.Favor, ValueType.RepairCosts
+        };
         private double? _lastReSpecValue;
         private DateTime _lastChartUpdate;
         private DashboardStatistics _dashboardStatistics = new();
