@@ -42,7 +42,7 @@ public class VaultController
 
     public event Action OnVaultsChange;
     public event Action OnVaultsRemove;
-
+    
     public void SetCurrentVault(VaultInfo vaultInfo)
     {
         if (vaultInfo == null)

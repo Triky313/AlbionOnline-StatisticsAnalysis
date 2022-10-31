@@ -8,5 +8,6 @@ public enum ValueType
     FactionFame,
     FactionPoints,
     Might,
-    Favor
+    Favor,
+    RepairCosts
 }

@@ -30,17 +30,23 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private readonly TrackingController _trackingController;
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private readonly ObservableCollection<DashboardHourObject> _stats = new();
-        private readonly List<ValueType> _valueTypes = new() { ValueType.Fame, ValueType.Silver, ValueType.ReSpec, ValueType.FactionFame, ValueType.FactionPoints, ValueType.Might, ValueType.Favor };
+        private readonly List<ValueType> _valueTypes = new()
+        {
+            ValueType.Fame, ValueType.Silver, ValueType.ReSpec, ValueType.FactionFame, ValueType.FactionPoints, ValueType.Might, ValueType.Favor, ValueType.RepairCosts
+        };
         private double? _lastReSpecValue;
         private DateTime _lastChartUpdate;
         private DashboardStatistics _dashboardStatistics = new();
+
+        public event Action OnAddValue;
 
         public StatisticController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
             _trackingController = trackingController;
             _mainWindowViewModel = mainWindowViewModel;
             InitStartHourValues();
+
+            OnAddValue += UpdateRepairCostsUi;
         }
 
         #region Dashboard
@@ -63,14 +69,9 @@ namespace StatisticsAnalysisTool.Network.Manager
                         Value = 0f
                     });
                 }
-
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    _stats.Add(dashboardHourObject);
-                });
             }
         }
-
+        
         public void AddValue(ValueType valueType, double gainedValue)
         {
             if (!_trackingController.IsTrackingAllowedByMainCharacter())
@@ -80,23 +81,10 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             gainedValue = GetGainedValue(valueType, gainedValue);
 
-            var dateTimeNow = DateTime.Now;
-            var dbHourObject = _stats?.FirstOrDefault(x => x.Type == valueType);
-
-            var dbHourValues = dbHourObject?.HourValues?.FirstOrDefault(x => x.Date.Date.Equals(dateTimeNow.Date) && x.Hour.Equals(dateTimeNow.Hour));
-
-            if (dbHourValues == null)
-            {
-                return;
-            }
-
-            dbHourValues.Value += gainedValue;
-
-            _dashboardStatistics.Add(new DailyValues(valueType, gainedValue, dateTimeNow));
-
-            //UpdateDailyChart(_stats);
+            _dashboardStatistics.Add(new DailyValues(valueType, gainedValue, DateTime.Now));
+            OnAddValue?.Invoke();
         }
-
+        
         private void UpdateDailyChart(ObservableCollection<DashboardHourObject> stats)
         {
             if (!IsUpdateChartAllowed())
@@ -216,6 +204,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private double GetGainedValue(ValueType type, double gainedValue)
         {
+            // Calculates the obtained value based on the change in the current total and the previous total
             return type switch
             {
                 ValueType.ReSpec => Utilities.AddValue(gainedValue, _lastReSpecValue, out _lastReSpecValue),
@@ -261,6 +250,32 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #endregion
 
+        #region Repair costs stats
+
+        public void UpdateRepairCostsUi()
+        {
+            var currentDate = DateTime.Now;
+
+            _mainWindowViewModel.DashboardBindings.RepairCostsToday = _dashboardStatistics?.DailyValues
+                ?.Where(x => x.ValueType == ValueType.RepairCosts
+                             && x.Date.Year == currentDate.Year
+                             && x.Date.Month == currentDate.Month
+                             && x.Date.Day == currentDate.Day)
+                .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue) ?? 0;
+
+            _mainWindowViewModel.DashboardBindings.RepairCostsLast7Days = _dashboardStatistics?.DailyValues
+                ?.Where(x => x.ValueType == ValueType.RepairCosts
+                             && x.Date.Ticks > currentDate.AddDays(-7).Ticks)
+                .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue) ?? 0;
+
+            _mainWindowViewModel.DashboardBindings.RepairCostsLast30Days = _dashboardStatistics?.DailyValues
+                ?.Where(x => x.ValueType == ValueType.RepairCosts
+                             && x.Date.Ticks > currentDate.AddDays(-30).Ticks)
+                .Sum(x => FixPoint.FromFloatingPointValue(x.Value).IntegerValue) ?? 0;
+        }
+
+        #endregion
+
         #region Load / Save local file data
 
         public async Task LoadFromFileAsync()
@@ -274,6 +289,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                     var localFileString = await File.ReadAllTextAsync(localFilePath, Encoding.UTF8);
                     var stats = JsonSerializer.Deserialize<DashboardStatistics>(localFileString) ?? new DashboardStatistics();
                     _dashboardStatistics = stats;
+                    UpdateRepairCostsUi();
                     return;
                 }
                 catch (Exception e)
