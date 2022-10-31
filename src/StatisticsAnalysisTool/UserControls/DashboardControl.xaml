@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
-             d:DesignHeight="1000" d:DesignWidth="800"
+             d:DesignHeight="1400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
 
     <Grid Style="{StaticResource TabItemGridStyle}" Visibility="Visible">
@@ -64,15 +64,19 @@
                 </Grid>
                 <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
                 <Grid>
-                    <ContentControl Margin="3" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource SilverCostForReSpecTemplate}" />
-                </Grid>
-                <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
-                <Grid>
                     <ContentControl Margin="3" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource KillDeathStatsTemplate}" />
                 </Grid>
                 <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
                 <Grid>
                     <ContentControl Margin="3" Content="{Binding DashboardBindings.LootedChests}" ContentTemplate="{StaticResource LootedChestsTemplate}" />
+                </Grid>
+                <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
+                <Grid>
+                    <ContentControl Margin="3" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource SilverCostForReSpecTemplate}" />
+                </Grid>
+                <Separator Background="{StaticResource SolidColorBrush.Background.3}" Height="4" Margin="0,2,0,2" />
+                <Grid>
+                    <ContentControl Margin="3" Content="{Binding DashboardBindings}" ContentTemplate="{StaticResource RepairCostsTemplate}" />
                 </Grid>
             </StackPanel>
         </ScrollViewer>

@@ -287,7 +287,7 @@ public class TrackingController : ITrackingController
 
     #endregion
 
-    #region Upcoming Repair
+    #region Gear repairing
 
     private long _buildingObjectId = -1;
     private long _upcomingRepairCosts = 0;
@@ -326,6 +326,7 @@ public class TrackingController : ITrackingController
         }
 
         StatisticController?.AddValue(ValueType.RepairCosts, FixPoint.FromInternalValue(_upcomingRepairCosts).DoubleValue);
+        StatisticController?.UpdateRepairCostsUi();
     }
 
     #endregion
