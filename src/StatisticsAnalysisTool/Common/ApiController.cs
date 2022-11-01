@@ -401,7 +401,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 marketHistoriesResponse.Location = "Bridgewatch";
             }
-
+            
             return values;
         }
 

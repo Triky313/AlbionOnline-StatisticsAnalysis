@@ -24,7 +24,8 @@ namespace StatisticsAnalysisTool.Common
             {ItemLevel.Level0, "0"},
             {ItemLevel.Level1, "1"},
             {ItemLevel.Level2, "2"},
-            {ItemLevel.Level3, "3"}
+            {ItemLevel.Level3, "3"},
+            {ItemLevel.Level4, "4"}
         };
 
         public static readonly Dictionary<ItemQuality, int> ItemQualities = new()
@@ -70,7 +71,8 @@ namespace StatisticsAnalysisTool.Common
         Level0 = 0,
         Level1 = 1,
         Level2 = 2,
-        Level3 = 3
+        Level3 = 3,
+        Level4 = 4
     }
 
     public enum ItemQuality

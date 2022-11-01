@@ -8,6 +8,7 @@
         Red,
         Black,
         AvalonTunnel,
-        Island
+        Island,
+        Mists
     }
 }

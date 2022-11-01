@@ -1,21 +1,21 @@
-﻿using StatisticsAnalysisTool.Properties;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.Comparer;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Properties;
 using System;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
-using StatisticsAnalysisTool.Common.Comparer;
-using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
 public class MailMonitoringBindings : INotifyPropertyChanged
 {
     private ListCollectionView _mailCollectionView;
-    private ObservableCollection<Mail> _mails = new();
+    private ObservableRangeCollection<Mail> _mails = new();
     private string _mailsSearchText;
     private DateTime _datePickerMailsFrom = new(2017, 1, 1);
     private DateTime _datePickerMailsTo = DateTime.UtcNow.AddDays(1);
@@ -53,7 +53,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<Mail> Mails
+    public ObservableRangeCollection<Mail> Mails
     {
         get => _mails;
         set

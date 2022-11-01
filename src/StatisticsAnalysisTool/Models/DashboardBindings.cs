@@ -42,6 +42,9 @@ namespace StatisticsAnalysisTool.Models
         private int _soloKillsThisWeek;
         private int _soloKillsThisMonth;
         private LootedChests _lootedChests = new();
+        private long _repairCostsToday;
+        private long _repairCostsLast7Days;
+        private long _repairCostsLast30Days;
 
         #region Fame / Respec / Silver / Might / Faction
 
@@ -428,6 +431,40 @@ namespace StatisticsAnalysisTool.Models
 
         #endregion
 
+        #region Repair costs
+
+        public long RepairCostsToday
+        {
+            get => _repairCostsToday;
+            set
+            {
+                _repairCostsToday = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public long RepairCostsLast7Days
+        {
+            get => _repairCostsLast7Days;
+            set
+            {
+                _repairCostsLast7Days = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public long RepairCostsLast30Days
+        {
+            get => _repairCostsLast30Days;
+            set
+            {
+                _repairCostsLast30Days = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         public static string TranslationTitle => $"{LanguageController.Translation("DASHBOARD")}";
         public static string TranslationFame => LanguageController.Translation("FAME");
         public static string TranslationSilver => LanguageController.Translation("SILVER");
@@ -449,6 +486,9 @@ namespace StatisticsAnalysisTool.Models
         public static string TranslationAverageItemPowerWhenDying => LanguageController.Translation("AVERAGE_ITEM_POWER_WHEN_DYING");
         public static string TranslationPaidSilverForReSpecThisSession => LanguageController.Translation("PAID_SILVER_FOR_RESPEC_THIS_SESSION");
         public static string TranslationPaidSilverForReSpecPerHour => LanguageController.Translation("PAID_SILVER_FOR_RESPEC_PER_HOUR");
+        public static string TranslationRepairCostsToday => LanguageController.Translation("REPAIR_COSTS_TODAY");
+        public static string TranslationRepairCostsLast7Days => LanguageController.Translation("REPAIR_COSTS_LAST_7_DAYS");
+        public static string TranslationRepairCostsLast30Days => LanguageController.Translation("REPAIR_COSTS_LAST_30_DAYS");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,10 +1,8 @@
 ﻿using StatisticsAnalysisTool.Common;
 using System.ComponentModel;
-using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using FontAwesome5;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
@@ -111,7 +109,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 OnPropertyChanged();
             }
         }
-        
+
         public double TotalJournalCosts
         {
             get => _totalJournalCosts;
@@ -247,7 +245,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 OnPropertyChanged();
             }
         }
-        
+
         #region Commands
 
         public void FoldUnfoldWeightValues(object value)

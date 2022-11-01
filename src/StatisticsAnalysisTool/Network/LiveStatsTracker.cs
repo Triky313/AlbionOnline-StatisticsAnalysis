@@ -20,16 +20,16 @@ namespace StatisticsAnalysisTool.Network
         private readonly List<ValuePerHour> _silverPerHourList = new();
         private readonly List<ValuePerHour> _mightPerHourList = new();
         private readonly List<ValuePerHour> _favorPerHourList = new();
+        private readonly List<ValuePerHour> _paidSilverForReSpecPerHourList = new();
         private readonly List<ValuePerHour> _factionPointsPerHourList = new();
-        private readonly List<ValuePerHour> _reSpecPerHourWithReSpecBoostList = new();
 
         private double _famePerHourValue;
         private double _reSpecPerHourValue;
         private double _silverPerHourValue;
         private double _mightPerHourValue;
         private double _favorPerHourValue;
+        private double _paidSilverForReSpecPerHourValue;
         private double _factionPointsPerHourValue;
-        private double _reSpecPerHourValueWithReSpecBoost;
 
         private DateTime _startTime;
         private double _totalGainedFameInSession;
@@ -37,14 +37,11 @@ namespace StatisticsAnalysisTool.Network
         private double _totalGainedSilverInSession;
         private double _totalGainedMightInSession;
         private double _totalGainedFavorInSession;
+        private double _totalPaidSilverForReSpecInSession;
         private double _totalGainedFactionPointsInSession;
-        private double _totalGainedReSpecInSessionWithReSpecBoost;
         private CityFaction _currentCityFaction = CityFaction.Unknown;
-        private double? _lastReSpecValue;
         private readonly TrackingController _trackingController;
         private readonly DispatcherTimer _dispatcherTimer = new();
-
-        private const double SilverCostPerFameCredit = 0.75d;
 
         public LiveStatsTracker(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
@@ -69,26 +66,11 @@ namespace StatisticsAnalysisTool.Network
                     RemoveValueFromValuePerHour(_famePerHourList, ref _famePerHourValue);
                     break;
                 case ValueType.ReSpec:
-                    var internalReSpecValue = Utilities.AddValue(value, _lastReSpecValue, out _lastReSpecValue);
-                    if (internalReSpecValue <= 0)
-                    {
-                        break;
-                    }
-
-                    _reSpecPerHourValue += internalReSpecValue;
+                    _reSpecPerHourValue += value;
                     _reSpecPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
-                    _totalGainedReSpecInSession += internalReSpecValue;
+                    _totalGainedReSpecInSession += value;
 
                     RemoveValueFromValuePerHour(_reSpecPerHourList, ref _reSpecPerHourValue);
-
-                    if (_trackingController.EntityController.LocalUserData.IsReSpecActive)
-                    {
-                        _reSpecPerHourValueWithReSpecBoost += internalReSpecValue;
-                        _reSpecPerHourWithReSpecBoostList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
-                        _totalGainedReSpecInSessionWithReSpecBoost += internalReSpecValue;
-
-                        RemoveValueFromValuePerHour(_reSpecPerHourWithReSpecBoostList, ref _reSpecPerHourValueWithReSpecBoost);
-                    }
                     break;
                 case ValueType.Silver:
                     _silverPerHourValue += value;
@@ -118,6 +100,13 @@ namespace StatisticsAnalysisTool.Network
                     _totalGainedFavorInSession += value;
 
                     RemoveValueFromValuePerHour(_favorPerHourList, ref _favorPerHourValue);
+                    break;
+                case ValueType.PaidSilverForReSpec:
+                    _paidSilverForReSpecPerHourValue += value;
+                    _paidSilverForReSpecPerHourList.Add(new ValuePerHour { DateTime = DateTime.UtcNow, Value = value });
+                    _totalPaidSilverForReSpecInSession += value;
+
+                    RemoveValueFromValuePerHour(_paidSilverForReSpecPerHourList, ref _paidSilverForReSpecPerHourValue);
                     break;
             }
             Start();
@@ -162,24 +151,24 @@ namespace StatisticsAnalysisTool.Network
             _totalGainedSilverInSession = 0;
             _totalGainedMightInSession = 0;
             _totalGainedFavorInSession = 0;
+            _totalPaidSilverForReSpecInSession = 0;
             _totalGainedFactionPointsInSession = 0;
-            _totalGainedReSpecInSessionWithReSpecBoost = 0;
 
             _famePerHourValue = 0;
             _reSpecPerHourValue = 0;
             _silverPerHourValue = 0;
             _mightPerHourValue = 0;
             _favorPerHourValue = 0;
+            _paidSilverForReSpecPerHourValue = 0;
             _factionPointsPerHourValue = 0;
-            _reSpecPerHourValueWithReSpecBoost = 0;
 
             _famePerHourList.Clear();
             _reSpecPerHourList.Clear();
             _silverPerHourList.Clear();
             _mightPerHourList.Clear();
             _favorPerHourList.Clear();
+            _paidSilverForReSpecPerHourList.Clear();
             _factionPointsPerHourList.Clear();
-            _reSpecPerHourWithReSpecBoostList.Clear();
 
             UpdateUi(null, EventArgs.Empty);
         }
@@ -212,8 +201,7 @@ namespace StatisticsAnalysisTool.Network
             _mainWindowViewModel.DashboardBindings.TotalGainedSilverInSession = _totalGainedSilverInSession;
             _mainWindowViewModel.DashboardBindings.TotalGainedMightInSession = _totalGainedMightInSession;
             _mainWindowViewModel.DashboardBindings.TotalGainedFavorInSession = _totalGainedFavorInSession;
-
-            _mainWindowViewModel.DashboardBindings.TotalSilverCostForReSpecInSession = _totalGainedReSpecInSessionWithReSpecBoost * SilverCostPerFameCredit;
+            _mainWindowViewModel.DashboardBindings.TotalSilverCostForReSpecInSession = _totalPaidSilverForReSpecInSession;
 
             var factionPointStat = _mainWindowViewModel.FactionPointStats.FirstOrDefault();
             if (factionPointStat != null)
@@ -228,8 +216,7 @@ namespace StatisticsAnalysisTool.Network
             _mainWindowViewModel.DashboardBindings.SilverPerHour = Utilities.GetValuePerHourToDouble(_silverPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
             _mainWindowViewModel.DashboardBindings.MightPerHour = Utilities.GetValuePerHourToDouble(_mightPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
             _mainWindowViewModel.DashboardBindings.FavorPerHour = Utilities.GetValuePerHourToDouble(_favorPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
-
-            _mainWindowViewModel.DashboardBindings.SilverCostForReSpecHour = Utilities.GetValuePerHourToDouble(_reSpecPerHourValueWithReSpecBoost * SilverCostPerFameCredit, (DateTime.UtcNow - _startTime).TotalSeconds);
+            _mainWindowViewModel.DashboardBindings.SilverCostForReSpecHour = Utilities.GetValuePerHourToDouble(_paidSilverForReSpecPerHourValue, (DateTime.UtcNow - _startTime).TotalSeconds);
 
             var duration = _startTime - DateTime.UtcNow;
             _mainWindowViewModel.MainTrackerTimer = duration.ToString("hh\\:mm\\:ss");

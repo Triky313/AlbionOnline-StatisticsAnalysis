@@ -1,10 +1,9 @@
-﻿using System;
+﻿using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
@@ -12,13 +11,13 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
     public class DungeonObject
     {
         [JsonIgnore]
-        public List<TimeCollectObject> DungeonRunTimes { get; } = new ();
+        public List<TimeCollectObject> DungeonRunTimes { get; } = new();
         public int TotalRunTimeInSeconds { get; set; }
-        public List<Guid> GuidList { get; set; } = new ();
+        public List<Guid> GuidList { get; set; } = new();
         public DateTime EnterDungeonFirstTime { get; set; }
         public string MainMapIndex { get; set; }
-        public List<DungeonEventObject> DungeonEventObjects { get; set; } = new ();
-        public List<DungeonLoot> DungeonLoot { get; set; } = new ();
+        public List<DungeonEventObject> DungeonEventObjects { get; set; } = new();
+        public List<DungeonLoot> DungeonLoot { get; set; } = new();
         public DungeonStatus Status { get; set; }
         public double Fame { get; set; }
         public double ReSpec { get; set; }
@@ -36,13 +35,10 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public Tier Tier { get; set; } = Tier.Unknown;
         [JsonIgnore]
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
-        [JsonIgnore] 
+        [JsonIgnore]
         public DungeonLoot MostExpensiveLoot => DungeonLoot.MaxBy(x => x.EstimatedMarketValueInternal);
-        [JsonIgnore] 
+        [JsonIgnore]
         public long TotalLootInSilver => DungeonLoot.Sum(x => x.EstimatedMarketValue.IntegerValue);
-
-
-        private double? _lastReSpecValue;
 
         public DungeonObject()
         {
@@ -67,12 +63,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
                     Fame += value;
                     return;
                 case ValueType.ReSpec:
-                    var internalReSpecValue = Utilities.AddValue(value, _lastReSpecValue, out _lastReSpecValue);
-                    if (internalReSpecValue <= 0)
-                    {
-                        return;
-                    }
-                    ReSpec += internalReSpecValue;
+                    ReSpec += value;
                     return;
                 case ValueType.Silver:
                     Silver += value;
@@ -98,7 +89,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
                     return;
             }
         }
-        
+
         public void AddTimer(DateTime time)
         {
             if (DungeonRunTimes.Any(x => x.EndTime == null))
@@ -117,7 +108,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
 
             SetTotalRunTimeInSeconds();
         }
-        
+
         public void EndTimer()
         {
             var dateTime = DateTime.UtcNow;

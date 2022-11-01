@@ -659,6 +659,16 @@
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Mists}">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,1" EndPoint="0.9,0">
+                                        <GradientStop Color="{StaticResource Cluster.Mists}" Offset="0.0" />
+                                        <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
                         <DataTrigger Binding="{Binding ClusterMode}" Value="{x:Static enumerations:ClusterMode.Unknown}">
                             <Setter Property="Background">
                                 <Setter.Value>
