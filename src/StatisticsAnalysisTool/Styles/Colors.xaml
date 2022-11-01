@@ -106,6 +106,7 @@
     <Color x:Key="Item.Level.Color.1">#FF6bff91</Color>
     <Color x:Key="Item.Level.Color.2">#FF4ff0fd</Color>
     <Color x:Key="Item.Level.Color.3">#FFb866fe</Color>
+    <Color x:Key="Item.Level.Color.4">#FFf3dc59</Color>
 
     <!-- Pvp/Pve colors -->
     <Color x:Key="Text.Color.Pvp">#ffe05761</Color>
@@ -241,6 +242,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.4" Color="{StaticResource Item.Level.Color.4}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pvp" Color="{StaticResource Text.Color.Pvp}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pve" Color="{StaticResource Text.Color.Pve}"/>
