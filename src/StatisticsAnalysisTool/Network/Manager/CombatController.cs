@@ -23,6 +23,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private readonly MainWindow _mainWindow;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly TrackingController _trackingController;
+        private bool _combatModeWasCombatOver;
 
         public bool IsDamageMeterActive { get; set; } = false;
 
@@ -33,6 +34,8 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel = mainWindowViewModel;
 
             OnChangeCombatMode += AddCombatTime;
+            OnChangeCombatMode += SetLastCombatMode;
+            OnChangeCombatMode += ResetDamageMeterBeforeCombatStart;
             OnDamageUpdate += UpdateDamageMeterUiAsync;
 
 #if DEBUG
@@ -254,8 +257,49 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            _trackingController.CombatController.ResetDamageMeter();
-            _trackingController.CombatController.LastPlayersHealth.Clear();
+            ResetDamageMeter();
+            LastPlayersHealth.Clear();
+        }
+
+        public void ResetDamageMeterBeforeCombatStart(long objectId, bool inActiveCombat, bool inPassiveCombat)
+        {
+            if (!_combatModeWasCombatOver)
+            {
+                return;
+            }
+
+            if (!inActiveCombat && !inPassiveCombat)
+            {
+                return;
+            }
+
+            if (!_mainWindowViewModel.DamageMeterBindings?.IsDamageMeterResetBeforeCombatActive ?? false)
+            {
+                return;
+            }
+
+            if (!_trackingController.EntityController.IsEntityInParty(objectId))
+            {
+                return;
+            }
+
+            ResetDamageMeter();
+            LastPlayersHealth.Clear();
+
+            _combatModeWasCombatOver = false;
+        }
+
+        private void SetLastCombatMode(long objectId, bool inActiveCombat, bool inPassiveCombat)
+        {
+            if (!_trackingController.EntityController.IsEntityInParty(objectId))
+            {
+                return;
+            }
+
+            if (!inActiveCombat && !inPassiveCombat)
+            {
+                _combatModeWasCombatOver = true;
+            }
         }
 
         public void ResetDamageMeter()

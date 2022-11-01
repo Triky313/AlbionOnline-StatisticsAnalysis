@@ -47,6 +47,7 @@
         public int DeleteMailsOlderThanSpecifiedDays { get; set; } = 0;
         public bool IsSnapshotAfterMapChangeActive { get; set; } = false;
         public bool IsDamageMeterResetByMapChangeActive { get; set; } = false;
+        public bool IsDamageMeterResetBeforeCombatActive { get; set; } = false;
         public double MailMonitoringMarketTaxRate { get; set; } = 4;
         public double MailMonitoringMarketTaxSetupRate { get; set; } = 2.5;
     }
