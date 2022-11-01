@@ -668,4 +668,5 @@
 	<translation name="REPAIR_COSTS_TODAY">Koszty naprawy dziś</translation>
 	<translation name="REPAIR_COSTS_LAST_7_DAYS">Koszty naprawy z ostatnich 7 dni</translation>
 	<translation name="REPAIR_COSTS_LAST_30_DAYS">Koszty naprawy z ostatnich 30 dni</translation>
+	<translation name="RESET_BEFORE_COMBAT">Zresetuj przed walka</translation>
 </translations>
