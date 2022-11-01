@@ -34,7 +34,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         {
             ValueType.Fame, ValueType.Silver, ValueType.ReSpec, ValueType.FactionFame, ValueType.FactionPoints, ValueType.Might, ValueType.Favor, ValueType.RepairCosts
         };
-        private double? _lastReSpecValue;
+
         private DateTime _lastChartUpdate;
         private DashboardStatistics _dashboardStatistics = new();
 
@@ -78,8 +78,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 return;
             }
-
-            gainedValue = GetGainedValue(valueType, gainedValue);
 
             _dashboardStatistics.Add(new DailyValues(valueType, gainedValue, DateTime.Now));
             OnAddValue?.Invoke();
@@ -201,17 +199,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 };
             }
         }
-
-        private double GetGainedValue(ValueType type, double gainedValue)
-        {
-            // Calculates the obtained value based on the change in the current total and the previous total
-            return type switch
-            {
-                ValueType.ReSpec => Utilities.AddValue(gainedValue, _lastReSpecValue, out _lastReSpecValue),
-                _ => gainedValue
-            };
-        }
-
+        
         private class DashboardHourObject
         {
             public ValueType Type { get; init; }

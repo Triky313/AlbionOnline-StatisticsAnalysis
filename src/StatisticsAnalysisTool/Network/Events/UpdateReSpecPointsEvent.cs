@@ -12,8 +12,7 @@ namespace StatisticsAnalysisTool.Network.Events
     {
         public FixPoint? CurrentTotalReSpecPoints { get; }
         public FixPoint GainedReSpecPoints { get; }
-
-        private readonly double? _lastReSpecValue;
+        public FixPoint PaidSilver { get; }
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
@@ -23,6 +22,16 @@ namespace StatisticsAnalysisTool.Network.Events
 
             try
             {
+                if (parameters.ContainsKey(2))
+                {
+                    GainedReSpecPoints = FixPoint.FromInternalValue(parameters[2].ObjectToLong() ?? 0);
+                }
+
+                if (parameters.ContainsKey(3))
+                {
+                    PaidSilver = FixPoint.FromInternalValue(parameters[3].ObjectToLong() ?? 0);
+                }
+
                 if (parameters.ContainsKey(0) && parameters[0] != null)
                 {
                     var parameterType = parameters[0].GetType();
@@ -36,8 +45,6 @@ namespace StatisticsAnalysisTool.Network.Events
                                 if (reSpecPointsArray?.Count > 0 && reSpecPointsArray.ContainsKey(1))
                                 {
                                     CurrentTotalReSpecPoints = FixPoint.FromInternalValue(reSpecPointsArray[1].ObjectToLong() ?? 0);
-                                    Utilities.AddValue(CurrentTotalReSpecPoints.Value.DoubleValue, _lastReSpecValue, out _lastReSpecValue);
-                                    GainedReSpecPoints = _lastReSpecValue != null ? FixPoint.FromFloatingPointValue((double)_lastReSpecValue) : FixPoint.FromFloatingPointValue(0);
                                 }
 
                                 break;
@@ -49,8 +56,6 @@ namespace StatisticsAnalysisTool.Network.Events
                                 if (reSpecPointsArray?.Count > 0 && reSpecPointsArray.ContainsKey(1))
                                 {
                                     CurrentTotalReSpecPoints = FixPoint.FromInternalValue(reSpecPointsArray[1].ObjectToLong() ?? 0);
-                                    Utilities.AddValue(CurrentTotalReSpecPoints.Value.DoubleValue, _lastReSpecValue, out _lastReSpecValue);
-                                    GainedReSpecPoints = _lastReSpecValue != null ? FixPoint.FromFloatingPointValue((double)_lastReSpecValue) : FixPoint.FromFloatingPointValue(0);
                                 }
 
                                 break;

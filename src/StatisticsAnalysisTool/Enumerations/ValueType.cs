@@ -9,5 +9,6 @@ public enum ValueType
     FactionPoints,
     Might,
     Favor,
-    RepairCosts
+    RepairCosts,
+    PaidSilverForReSpec
 }
