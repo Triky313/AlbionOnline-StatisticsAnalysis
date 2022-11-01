@@ -63,6 +63,7 @@
     <Color x:Key="Color.City.Martlock">#FF5066CC</Color>
     <Color x:Key="Color.City.Lymhurst">#FF18A170</Color>
     <Color x:Key="Color.City.FortSterling">#FFE1F7FA</Color>
+    <Color x:Key="Color.City.Brecilien">#FFEE68BB</Color>
     <Color x:Key="Color.City.ArthursRest">#FFF75656</Color>
     <Color x:Key="Color.City.MerlynsRest">#FF3A9DC7</Color>
     <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
@@ -211,6 +212,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.Martlock" Color="{StaticResource Color.City.Martlock}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst" Color="{StaticResource Color.City.Lymhurst}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling" Color="{StaticResource Color.City.FortSterling}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Brecilien" Color="{StaticResource Color.City.Brecilien}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest" Color="{StaticResource Color.City.ArthursRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>

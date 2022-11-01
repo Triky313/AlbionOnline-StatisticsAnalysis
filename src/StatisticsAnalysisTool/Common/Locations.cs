@@ -22,6 +22,7 @@ namespace StatisticsAnalysisTool.Common
             { Location.Martlock, "Martlock" },
             { Location.Caerleon, "Caerleon" },
             { Location.FortSterling, "Fort Sterling" },
+            { Location.Brecilien, "Brecilien" },
             { Location.MountainCross, "Mountain Cross" },
             { Location.ArthursRest, "Arthurs Rest" },
             { Location.MerlynsRest, "Merlyns Rest" },
@@ -43,6 +44,11 @@ namespace StatisticsAnalysisTool.Common
             if (index.Equals("3013-Auction2"))
             {
                 return Location.Caerleon;
+            }
+
+            if (index.Equals("5001"))
+            {
+                return Location.Brecilien;
             }
 
             return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
@@ -102,6 +108,7 @@ namespace StatisticsAnalysisTool.Common
                         locations.Add(Location.Martlock);
                         locations.Add(Location.FortSterling);
                         locations.Add(Location.Caerleon);
+                        locations.Add(Location.Brecilien);
                         if (withPortalCities)
                         {
                             locations.Add(Location.ThetfordPortal);
@@ -131,6 +138,7 @@ namespace StatisticsAnalysisTool.Common
                 "2301" or "Bridgewatch Portal" => Location.BridgewatchPortal,
                 "3301" or "Martlock Portal" => Location.MartlockPortal,
                 "4301" or "Fort Sterling Portal" => Location.FortSterlingPortal,
+                "5000" or "5001" or "Brecilien" => Location.Brecilien,
                 "Caerleon" => Location.Caerleon,
                 "Swamp Cross" => Location.SwampCross,
                 "Forest Cross" => Location.ForestCross,
@@ -216,7 +224,8 @@ namespace StatisticsAnalysisTool.Common
         MountainCross = 4006,
         ArthursRest = 4300,
         MerlynsRest = 1012,
-        MorganasRest = 0008
+        MorganasRest = 0008,
+        Brecilien = 5000
     }
 
     public enum LocationArea

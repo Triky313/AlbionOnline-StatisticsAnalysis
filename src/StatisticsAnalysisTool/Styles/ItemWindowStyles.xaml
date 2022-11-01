@@ -176,6 +176,16 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
+            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.Brecilien}">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
+                            <GradientStop Color="{StaticResource Color.City.Brecilien}"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.ArthursRest}">
                 <Setter Property="Background">
                     <Setter.Value>
