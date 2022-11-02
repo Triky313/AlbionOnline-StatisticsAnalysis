@@ -4,7 +4,8 @@
                     xmlns:enum="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:itemWindowModel="clr-namespace:StatisticsAnalysisTool.Models.ItemWindowModel"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
-                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models">
+                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
+                    xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels">
 
     <Style x:Key="ListView.Grid.Item.Price" TargetType="Grid">
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -41,7 +42,6 @@
         <Setter Property="Width" Value="auto"/>
     </Style>
 
-
     <Style x:Key="ItemWindowStyle" TargetType="{x:Type Window}">
         <Setter Property="BorderThickness" Value="1,1,1,1" />
         <Setter Property="AllowsTransparency" Value="True" />
@@ -54,6 +54,62 @@
         <Setter Property="FontSize" Value="{StaticResource BaseFontSize}" />
         <Setter Property="BorderBrush" Value="{StaticResource SolidColorBrush.Background.1}"/>
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.1}"/>
+    </Style>
+
+    <Style x:Key="ItemWindow.BorderColor.ItemLevel.Style" TargetType="Border">
+        <Setter Property="BorderThickness" Value="0,1,0,0" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Level, IsAsync=True}" Value="0">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource Item.Level.Color.0}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Level, IsAsync=True}" Value="1">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource Item.Level.Color.1}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Level, IsAsync=True}" Value="2">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource Item.Level.Color.2}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Level, IsAsync=True}" Value="3">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource Item.Level.Color.3}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Level, IsAsync=True}" Value="4">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource Item.Level.Color.4}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="ListView.City.Color.Style" TargetType="Label">
