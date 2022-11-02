@@ -45,13 +45,23 @@ namespace StatisticsAnalysisTool.Common
             {
                 return Location.Caerleon;
             }
+            
+            return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
+        }
 
-            if (index.Equals("5001"))
+        public static MarketLocation GetMarketLocationByIndex(string index)
+        {
+            if (index.Equals("@BLACK_MARKET"))
             {
-                return Location.Brecilien;
+                return MarketLocation.BlackMarket;
             }
 
-            return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
+            if (index.Equals("3013-Auction2"))
+            {
+                return MarketLocation.CaerleonMarket;
+            }
+
+            return Enum.TryParse(index, true, out MarketLocation location) ? location : MarketLocation.Unknown;
         }
 
         public static List<Location> GetLocationsListByArea(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool withPortalCities)
@@ -202,6 +212,33 @@ namespace StatisticsAnalysisTool.Common
         }
     }
 
+    public enum MarketLocation
+    {
+        Unknown = 0000,
+        SwampCross = 0004,
+        ThetfordMarket = 0007,
+        ThetfordPortal = 0301,
+        LymhurstMarket = 1002,
+        LymhurstPortal = 1301,
+        ForestCross = 1006,
+        SteppeCross = 2002,
+        BridgewatchMarket = 2004,
+        BridgewatchPortal = 2301,
+        HighlandCross = 3002,
+        BlackMarket = 3003,
+        CaerleonMarket = 3005,
+        MartlockMarket = 3008,
+        MartlockPortal = 3301,
+        FortSterlingMarket = 4002,
+        FortSterlingPortal = 4301,
+        MountainCross = 4006,
+        ArthursRest = 4300,
+        MerlynsRest = 1012,
+        MorganasRest = 0008,
+        BrecilienMarket = 5003
+    }
+
+    // TODO: Rework with correct city ID's otherwise use MarketLocation
     public enum Location
     {
         Unknown = 0000,
