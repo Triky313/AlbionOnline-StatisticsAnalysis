@@ -669,4 +669,6 @@
 	<translation name="REPAIR_COSTS_LAST_7_DAYS">Repait costs last 7 days</translation>
 	<translation name="REPAIR_COSTS_LAST_30_DAYS">Repait costs last 30 days</translation>
 	<translation name="RESET_BEFORE_COMBAT">Reset before combat</translation>
+	<translation name="SEARCHED_PLAYER">Searched player</translation>
+	<translation name="LOCAL_PLAYER">Local player</translation>
 </translations>

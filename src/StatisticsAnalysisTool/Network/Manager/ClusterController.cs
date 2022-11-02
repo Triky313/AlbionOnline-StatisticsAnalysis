@@ -115,7 +115,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         }
 
         #endregion
-
+        
         #region Test methods
 
         private static readonly Random Random = new ();
