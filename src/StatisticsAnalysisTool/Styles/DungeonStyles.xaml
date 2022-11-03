@@ -841,6 +841,7 @@
                     <DockPanel>
                         <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
                         <Label Style="{StaticResource DungeonNotificationFragment.Label.DungeonMode}" Content="{Binding TierString}"/>
+                        <Label Content="{Binding Level}"/>
                         <Grid Height="96">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Height="24" Margin="0">

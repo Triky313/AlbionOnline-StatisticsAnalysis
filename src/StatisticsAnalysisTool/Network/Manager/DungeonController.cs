@@ -73,7 +73,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
                 var newDungeon = new DungeonObject(ClusterController.CurrentCluster.MainClusterIndex,
-                    mapGuid ?? new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), DungeonStatus.Active, ClusterController.CurrentCluster.Tier);
+                    mapGuid ?? new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), DungeonStatus.Active);
                 SetDungeonMapType(newDungeon, mapType);
 
                 _dungeons.Insert(0, newDungeon);
@@ -844,9 +844,14 @@ namespace StatisticsAnalysisTool.Network.Manager
             return false;
         }
 
-        public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
+        public void AddTierLevelToCurrentDungeon(int? mobIndex, double hitPointsMax)
         {
-            if (_currentGuid == null)
+            if (!ExistActiveDungeon())
+            {
+                return;
+            }
+
+            if (mobIndex is not { } mobIndexInt)
             {
                 return;
             }
@@ -855,7 +860,36 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 lock (_dungeons)
                 {
-                    var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
+                    var dun = _dungeons?.FirstOrDefault(x => _currentGuid != null && x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
+                    if (dun == null)
+                    {
+                        return;
+                    }
+
+                    dun.Tier = (Tier)MobsData.GetMobTierByIndex(mobIndexInt);
+                    dun.Level = MobsData.GetMobLevelByIndex(mobIndexInt, hitPointsMax);
+
+                    UpdateDungeonDataUi(dun);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
+        public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
+        {
+            if (!ExistActiveDungeon())
+            {
+                return;
+            }
+
+            try
+            {
+                lock (_dungeons)
+                {
+                    var dun = _dungeons?.FirstOrDefault(x => _currentGuid != null && x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
                     dun?.Add(value, valueType, cityFaction);
 
                     UpdateDungeonDataUi(dun);
@@ -988,6 +1022,11 @@ namespace StatisticsAnalysisTool.Network.Manager
         #endregion
 
         #region Helper methods
+
+        private bool ExistActiveDungeon()
+        {
+            return _dungeons.Exists(x => _currentGuid != null && x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
+        }
 
         private bool ExistDungeon(Guid? mapGuid)
         {

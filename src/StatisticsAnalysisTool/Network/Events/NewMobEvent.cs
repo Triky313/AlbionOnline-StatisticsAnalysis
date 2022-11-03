@@ -17,25 +17,25 @@ namespace StatisticsAnalysisTool.Network.Events
                     ObjectId = parameters[0].ObjectToLong();
 
                 if (parameters.ContainsKey(1)) 
-                    Type = parameters[1].ObjectToLong() ?? 0;
+                    MobIndex = parameters[1].ObjectToInt();
 
                 if (parameters.ContainsKey(11))
                     MoveSpeed = parameters[11].ObjectToDouble();
 
                 if (parameters.ContainsKey(13))
-                    HitPoints = parameters[13].ObjectToInt();
+                    HitPoints = parameters[13].ObjectToDouble();
 
                 if (parameters.ContainsKey(14))
-                    HitPointsMax = parameters[14].ObjectToInt();
+                    HitPointsMax = parameters[14].ObjectToDouble();
 
                 if (parameters.ContainsKey(17))
-                    Energy = parameters[17].ObjectToInt();
+                    Energy = parameters[17].ObjectToDouble();
 
                 if (parameters.ContainsKey(18))
-                    EnergyMax = parameters[18].ObjectToInt();
+                    EnergyMax = parameters[18].ObjectToDouble();
 
                 if (parameters.ContainsKey(19))
-                    EnergyRegeneration = parameters[19].ObjectToInt();
+                    EnergyRegeneration = parameters[19].ObjectToDouble();
             }
             catch (Exception e)
             {
@@ -44,12 +44,12 @@ namespace StatisticsAnalysisTool.Network.Events
         }
 
         public long? ObjectId { get; }
-        public long Type { get; }
+        public int MobIndex { get; }
         public double MoveSpeed { get; }
-        public int HitPoints { get; }
-        public int HitPointsMax { get; }
-        public int Energy { get; }
-        public int EnergyMax { get; }
-        public int EnergyRegeneration { get; }
+        public double HitPoints { get; }
+        public double HitPointsMax { get; }
+        public double Energy { get; }
+        public double EnergyMax { get; }
+        public double EnergyRegeneration { get; }
     }
 }

@@ -62,6 +62,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool? _isSelectedForDeletion = false;
         private Visibility _visibility;
         private Tier _tier = Tier.Unknown;
+        private int _level;
         private double _might;
         private double _favor;
         private double _mightPerHour;
@@ -74,6 +75,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private long _totalLootValue;
         private long _bestLootedItemValue;
         private string _bestLootedItemName;
+        private string _tierString = "?";
 
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
 
@@ -104,6 +106,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             Mode = dungeonObject.Mode;
             Status = dungeonObject.Status;
             Tier = dungeonObject.Tier;
+            Level = dungeonObject.Level;
 
             UpdateChests(dungeonObject.DungeonEventObjects.ToList());
             _ = UpdateDungeonLootAsync(dungeonObject.DungeonLoot.ToAsyncEnumerable());
@@ -187,21 +190,28 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        private static string SetTierString(Tier tier)
+        {
+            return tier switch
+            {
+                Tier.T1 => "I",
+                Tier.T2 => "II",
+                Tier.T3 => "III",
+                Tier.T4 => "IV",
+                Tier.T5 => "V",
+                Tier.T6 => "VI",
+                Tier.T7 => "VII",
+                Tier.T8 => "VIII",
+                _ => "?"
+            };
+        }
+
         public string TierString {
-            get {
-                return Tier switch
-                {
-                    Tier.T1 => "I",
-                    Tier.T2 => "II",
-                    Tier.T3 => "III",
-                    Tier.T4 => "IV",
-                    Tier.T5 => "V",
-                    Tier.T6 => "VI",
-                    Tier.T7 => "VII",
-                    Tier.T8 => "VIII",
-                    Tier.Unknown => "?",
-                    _ => "?"
-                };
+            get => _tierString;
+            set
+            {
+                _tierString = value;
+                OnPropertyChanged();
             }
         }
 
@@ -276,6 +286,17 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _tier = value;
+                TierString = SetTierString(_tier);
+                OnPropertyChanged();
+            }
+        }
+        
+        public int Level
+        {
+            get => _level;
+            set
+            {
+                _level = value;
                 OnPropertyChanged();
             }
         }
