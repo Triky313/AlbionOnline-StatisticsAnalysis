@@ -175,6 +175,9 @@
     <Resource Include="Assets\green_glow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\heart.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\MiniMapMarker\group_dungeon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -573,6 +576,7 @@
     <None Remove="Assets\empty_icon.png" />
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />
+    <None Remove="Assets\heart.png" />
     <None Remove="Assets\MiniMapMarker\group_dungeon.png" />
     <None Remove="Assets\MiniMapMarker\minimapmarker_fiber.png" />
     <None Remove="Assets\MiniMapMarker\minimapmarker_hide.png" />
@@ -654,6 +658,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\DashboardStyles.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\ThanksStyle.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

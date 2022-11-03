@@ -99,6 +99,7 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string To => LanguageController.Translation("TO");
         public static string DeleteCurrentStorage => LanguageController.Translation("DELETE_SELECTED_STORAGE");
         public static string Donations => LanguageController.Translation("DONATIONS");
+        public static string Thanks => LanguageController.Translation("THANKS");
         public static string UnsupportedOs => LanguageController.Translation("UNSUPPORTED_OS");
         public static string OpenToolDirectory => LanguageController.Translation("OPEN_TOOL_DIRECTORY");
         public static string FileDownloadFailedText1 => LanguageController.Translation("FILE_DOWNLOAD_FAILED_TEXT1");
