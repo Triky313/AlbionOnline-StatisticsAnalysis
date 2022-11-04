@@ -354,6 +354,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             WorldData.GetDataListFromJson();
             DungeonObjectData.GetDataListFromJson();
+            MobsData.GetDatFromLocalFile();
 
             TrackingController ??= new TrackingController(this, _mainWindow);
 

@@ -94,6 +94,9 @@
     <Content Include="GameFiles\lootchests.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="GameFiles\mobs.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="GameFiles\world.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -167,6 +170,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\empty_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\gem_level1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\gem_level2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\gem_level3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\gem_level4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\gold_glow.png">
@@ -507,18 +522,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="ao-update-check.xml" />
-    <Resource Include="Resources\level3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\level2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\level1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\level0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\t8.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -574,6 +577,10 @@
     <None Remove="Assets\crafting_description_image002.png" />
     <None Remove="Assets\dungeon.png" />
     <None Remove="Assets\empty_icon.png" />
+    <None Remove="Assets\gem_level1.png" />
+    <None Remove="Assets\gem_level2.png" />
+    <None Remove="Assets\gem_level3.png" />
+    <None Remove="Assets\gem_level4.png" />
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />
     <None Remove="Assets\heart.png" />
@@ -595,6 +602,7 @@
     <None Remove="Assets\sat-icon.png" />
     <None Remove="Assets\static_chest.png" />
     <None Remove="GameFiles\lootchests.json" />
+    <None Remove="GameFiles\mobs.json" />
     <None Remove="GameFiles\world.json" />
     <None Remove="Languages\de-DE.xml" />
     <None Remove="Languages\en-US.xml" />

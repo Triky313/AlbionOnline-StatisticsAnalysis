@@ -1,4 +1,5 @@
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections;
@@ -288,7 +289,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 return PastTime.Unknown;
             }
-            
+
             if (dateTime.AddDays(30) <= DateTime.UtcNow)
             {
                 return PastTime.VeryVeryOld;
@@ -338,6 +339,15 @@ namespace StatisticsAnalysisTool.Common
             stream.Position = 0;
             using var reader = new StreamReader(stream);
             return await reader.ReadToEndAsync();
+        }
+
+        #endregion
+
+        #region Lists / Arrays
+
+        public static bool IsInBounds<T>(this IEnumerable<T> array, long index)
+        {
+            return index >= 0 && index < array.Count() - 1;
         }
 
         #endregion

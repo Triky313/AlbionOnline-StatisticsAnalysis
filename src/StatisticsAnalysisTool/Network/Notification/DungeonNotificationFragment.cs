@@ -62,6 +62,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private bool? _isSelectedForDeletion = false;
         private Visibility _visibility;
         private Tier _tier = Tier.Unknown;
+        private int _level;
         private double _might;
         private double _favor;
         private double _mightPerHour;
@@ -74,6 +75,8 @@ namespace StatisticsAnalysisTool.Network.Notification
         private long _totalLootValue;
         private long _bestLootedItemValue;
         private string _bestLootedItemName;
+        private string _tierString = "?";
+        private string _levelString = "?";
 
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
 
@@ -104,6 +107,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             Mode = dungeonObject.Mode;
             Status = dungeonObject.Status;
             Tier = dungeonObject.Tier;
+            Level = dungeonObject.Level;
 
             UpdateChests(dungeonObject.DungeonEventObjects.ToList());
             _ = UpdateDungeonLootAsync(dungeonObject.DungeonLoot.ToAsyncEnumerable());
@@ -187,21 +191,55 @@ namespace StatisticsAnalysisTool.Network.Notification
             }
         }
 
+        private static string SetTierString(Tier tier)
+        {
+            var tierString = tier switch
+            {
+                Tier.T1 => "T1",
+                Tier.T2 => "T2",
+                Tier.T3 => "T3",
+                Tier.T4 => "T4",
+                Tier.T5 => "T5",
+                Tier.T6 => "T6",
+                Tier.T7 => "T7",
+                Tier.T8 => "T8",
+                _ => "T?"
+            };
+
+            return tierString;
+        }
+        // Flat-Map: 16% (green), .1-Map 36% (blue), .2-Map 58% (purple), .3-Map 84% (gold)
+        private static string SetLevelString(int level)
+        {
+            var levelString = level switch
+            {
+                0 => "",
+                1 => ".0",
+                2 => ".1",
+                3 => ".2",
+                4 => ".3",
+                _ => ".?"
+            };
+
+            return levelString;
+        }
+
         public string TierString {
-            get {
-                return Tier switch
-                {
-                    Tier.T1 => "I",
-                    Tier.T2 => "II",
-                    Tier.T3 => "III",
-                    Tier.T4 => "IV",
-                    Tier.T5 => "V",
-                    Tier.T6 => "VI",
-                    Tier.T7 => "VII",
-                    Tier.T8 => "VIII",
-                    Tier.Unknown => "?",
-                    _ => "?"
-                };
+            get => _tierString;
+            set
+            {
+                _tierString = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string LevelString
+        {
+            get => _levelString;
+            set
+            {
+                _levelString = value;
+                OnPropertyChanged();
             }
         }
 
@@ -276,6 +314,18 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _tier = value;
+                TierString = SetTierString(_tier);
+                OnPropertyChanged();
+            }
+        }
+        
+        public int Level
+        {
+            get => _level;
+            set
+            {
+                _level = value;
+                LevelString = SetLevelString(_level);
                 OnPropertyChanged();
             }
         }

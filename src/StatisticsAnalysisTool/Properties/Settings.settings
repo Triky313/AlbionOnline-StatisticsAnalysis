@@ -113,5 +113,8 @@
     <Setting Name="EstimatedMarketValueFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">EstimatedMarketValues.json</Value>
     </Setting>
+    <Setting Name="MobDataFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mobs.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

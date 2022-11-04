@@ -644,7 +644,7 @@
                                Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" Margin="0,0,0,5" />
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal" Margin="5,0">
-                            <Image Source="{Binding DungeonStatsSelection.BestLootedItem.Item.Icon, IsAsync=True, FallbackValue='../Resources/Trash.png'}" Height="40" Width="40" Margin="0,0,5,0" />
+                            <Image Source="{Binding DungeonStatsSelection.BestLootedItem.Item.Icon, IsAsync=True}" Height="40" Width="40" Margin="0,0,5,0" />
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="{Binding DungeonStatsSelection.BestLootedItem.Item.LocalizedName, FallbackValue='-'}" 
                                            Style="{StaticResource Dungeons.Stats.TitleText}" />
@@ -808,6 +808,134 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="DungeonNotificationFragment.MapTypeIcon.Template" DataType="{x:Type notification:DungeonNotificationFragment}">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Image Source="../Assets/gem_level1.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="1">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="2">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="2">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="3">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="3">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="3">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="4">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="4">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="4">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,0,-5,0">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Level}" Value="4">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+        </StackPanel>
+    </DataTemplate>
+
     <DataTemplate x:Key="DungeonNotificationFragment" DataType="{x:Type notification:DungeonNotificationFragment}">
         <Border BorderBrush="{StaticResource SolidColorBrush.Background.2}" BorderThickness="0,0,0,1" Visibility="{Binding Visibility}">
             <Grid Height="96" Margin="0">
@@ -840,7 +968,42 @@
                 <StackPanel Orientation="Vertical" Style="{StaticResource DungeonNotificationFragment.Faction}">
                     <DockPanel>
                         <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
-                        <Label Style="{StaticResource DungeonNotificationFragment.Label.DungeonMode}" Content="{Binding TierString}"/>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="TextAlignment" Value="Center"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="Width" Value="35"/>
+                                        <Setter Property="Margin" Value="5,0,0,0"/>
+                                        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Level}" Value="1">
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Level}" Value="2">
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.1}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Level}" Value="3">
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.2}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Level}" Value="4">
+                                                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.3}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0}{1}">
+                                        <Binding Path="TierString" FallbackValue="?" />
+                                        <Binding Path="LevelString" FallbackValue="?" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <ContentPresenter ContentTemplate="{StaticResource DungeonNotificationFragment.MapTypeIcon.Template}" Content="{Binding}"/>
+                        </StackPanel>
                         <Grid Height="96">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Height="24" Margin="0">
