@@ -644,7 +644,7 @@
                                Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" Margin="0,0,0,5" />
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal" Margin="5,0">
-                            <Image Source="{Binding DungeonStatsSelection.BestLootedItem.Item.Icon, IsAsync=True, FallbackValue='../Resources/Trash.png'}" Height="40" Width="40" Margin="0,0,5,0" />
+                            <Image Source="{Binding DungeonStatsSelection.BestLootedItem.Item.Icon, IsAsync=True}" Height="40" Width="40" Margin="0,0,5,0" />
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="{Binding DungeonStatsSelection.BestLootedItem.Item.LocalizedName, FallbackValue='-'}" 
                                            Style="{StaticResource Dungeons.Stats.TitleText}" />
