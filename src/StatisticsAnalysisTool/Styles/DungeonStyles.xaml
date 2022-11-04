@@ -840,8 +840,41 @@
                 <StackPanel Orientation="Vertical" Style="{StaticResource DungeonNotificationFragment.Faction}">
                     <DockPanel>
                         <Grid HorizontalAlignment="Left" Style="{StaticResource DungeonNotificationFragment.Grid.DungeonMode}" />
-                        <Label Style="{StaticResource DungeonNotificationFragment.Label.DungeonMode}" Content="{Binding TierString}"/>
-                        <Label Content="{Binding Level}"/>
+                        <TextBlock>
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Width" Value="40"/>
+                                    <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.6}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Level}" Value="0">
+                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.2}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Level}" Value="1">
+                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.1}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Level}" Value="2">
+                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.2}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Level}" Value="3">
+                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.3}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Level}" Value="4">
+                                            <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Item.Level.Color.4}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}{1}">
+                                    <Binding Path="TierString" FallbackValue="?" />
+                                    <Binding Path="LevelString" FallbackValue="?" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                         <Grid Height="96">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Height="24" Margin="0">

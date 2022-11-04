@@ -76,6 +76,7 @@ namespace StatisticsAnalysisTool.Network.Notification
         private long _bestLootedItemValue;
         private string _bestLootedItemName;
         private string _tierString = "?";
+        private string _levelString = "?";
 
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
 
@@ -192,18 +193,35 @@ namespace StatisticsAnalysisTool.Network.Notification
 
         private static string SetTierString(Tier tier)
         {
-            return tier switch
+            var tierString = tier switch
             {
-                Tier.T1 => "I",
-                Tier.T2 => "II",
-                Tier.T3 => "III",
-                Tier.T4 => "IV",
-                Tier.T5 => "V",
-                Tier.T6 => "VI",
-                Tier.T7 => "VII",
-                Tier.T8 => "VIII",
-                _ => "?"
+                Tier.T1 => "T1",
+                Tier.T2 => "T2",
+                Tier.T3 => "T3",
+                Tier.T4 => "T4",
+                Tier.T5 => "T5",
+                Tier.T6 => "T6",
+                Tier.T7 => "T7",
+                Tier.T8 => "T8",
+                _ => "T?"
             };
+
+            return tierString;
+        }
+
+        private static string SetLevelString(int level)
+        {
+            var levelString = level switch
+            {
+                0 => "",
+                1 => ".0",
+                2 => ".1",
+                3 => ".2",
+                4 => ".3",
+                _ => ".?"
+            };
+
+            return levelString;
         }
 
         public string TierString {
@@ -211,6 +229,16 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _tierString = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string LevelString
+        {
+            get => _levelString;
+            set
+            {
+                _levelString = value;
                 OnPropertyChanged();
             }
         }
@@ -297,6 +325,7 @@ namespace StatisticsAnalysisTool.Network.Notification
             set
             {
                 _level = value;
+                LevelString = SetLevelString(_level);
                 OnPropertyChanged();
             }
         }

@@ -32,8 +32,8 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public Faction Faction { get; set; } = Faction.Unknown;
         public DungeonMode Mode { get; set; } = DungeonMode.Unknown;
         public CityFaction CityFaction { get; set; } = CityFaction.Unknown;
-        public Tier Tier { get; set; } = Tier.Unknown;
-        public int Level { get; set; } = 0;
+        public Tier Tier { get; private set; } = Tier.Unknown;
+        public int Level { get; private set; } = -1;
         [JsonIgnore]
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
         [JsonIgnore]
@@ -119,6 +119,26 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
                 dun.EndTime = dateTime;
                 SetTotalRunTimeInSeconds();
             }
+        }
+
+        public void SetTier(Tier tier)
+        {
+            if (Tier != Tier.Unknown)
+            {
+                return;
+            }
+
+            Tier = tier;
+        }
+
+        public void SetLevel(int level)
+        {
+            if (Level >= 0)
+            {
+                return;
+            }
+
+            Level = level;
         }
 
         private void SetTotalRunTimeInSeconds()
