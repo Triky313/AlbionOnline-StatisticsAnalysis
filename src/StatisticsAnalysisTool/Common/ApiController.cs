@@ -135,8 +135,7 @@ namespace StatisticsAnalysisTool.Common
                 return null;
             }
         }
-
-        // TODO: System.Text.Json.JsonException: ''<' is an invalid start of a value. Path: $ | LineNumber: 0 | BytePositionInLine: 0.'
+        
         public static async Task<GameInfoSearchResponse> GetGameInfoSearchFromJsonAsync(string username)
         {
             var gameInfoSearchResponse = new GameInfoSearchResponse();
@@ -153,6 +152,11 @@ namespace StatisticsAnalysisTool.Common
                 using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 return JsonSerializer.Deserialize<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
+            }
+            catch (JsonException ex)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                return gameInfoSearchResponse;
             }
             catch (Exception e)
             {
