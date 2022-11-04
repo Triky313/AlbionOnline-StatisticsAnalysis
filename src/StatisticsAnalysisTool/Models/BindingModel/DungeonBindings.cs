@@ -30,6 +30,7 @@ public class DungeonBindings : INotifyPropertyChanged
     private DungeonsTranslation _translation = new();
     private DungeonStatsFilterStruct _dungeonStatTimeSelection;
     private DungeonStats _dungeonStatsSelection;
+    private DungeonOptionsObject _dungeonOptionsObject = new ();
 
     public DungeonBindings()
     {
@@ -127,6 +128,16 @@ public class DungeonBindings : INotifyPropertyChanged
         set
         {
             _dungeonStatsFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DungeonOptionsObject DungeonOptionsObject
+    {
+        get => _dungeonOptionsObject;
+        set
+        {
+            _dungeonOptionsObject = value;
             OnPropertyChanged();
         }
     }

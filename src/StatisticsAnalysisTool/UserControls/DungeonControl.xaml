@@ -47,7 +47,9 @@
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
+                            <ContentControl Margin="0,0,0,0" ContentTemplate="{StaticResource DungeonOptionsObjectTemplate}" Content="{Binding DungeonBindings.DungeonOptionsObject}" />
                         </StackPanel>
+
                     </StackPanel>
 
                     <StackPanel HorizontalAlignment="Right" Width="250" Height="auto" VerticalAlignment="Top">

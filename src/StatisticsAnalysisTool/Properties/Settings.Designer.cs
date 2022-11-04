@@ -423,5 +423,14 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((string)(this["MobDataFileName"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("dungeon_closed.wav")]
+        public string DungeonClosedSoundFileName {
+            get {
+                return ((string)(this["DungeonClosedSoundFileName"]));
+            }
+        }
     }
 }

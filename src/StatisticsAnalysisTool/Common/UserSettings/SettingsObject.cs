@@ -49,5 +49,6 @@
         public bool IsDamageMeterResetBeforeCombatActive { get; set; } = false;
         public double MailMonitoringMarketTaxRate { get; set; } = 4;
         public double MailMonitoringMarketTaxSetupRate { get; set; } = 2.5;
+        public bool IsDungeonClosedSoundActive { get; set; } = false;
     }
 }

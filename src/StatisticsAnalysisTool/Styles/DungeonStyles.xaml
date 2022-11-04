@@ -1249,4 +1249,21 @@
         </Border>
     </DataTemplate>
 
+    <DataTemplate x:Key="DungeonOptionsObjectTemplate" DataType="{x:Type models:DungeonOptionsObject}">
+        <Grid>
+            <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+                <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
+                <StackPanel>
+                    <Label Content="{Binding TranslationSettings, FallbackValue=SETTINGS}" Style="{StaticResource HeaderStyle.Tracking.Title}" Margin="2,5,0,0"
+                           Foreground="{StaticResource SolidColorBrush.Accent.Blue.2}" />
+
+                    <CheckBox IsChecked="{Binding IsDungeonClosedSoundActive}" 
+                              Content="{Binding TranslationDungeonClosedSoundActive, FallbackValue=DUNGEON__CLOSED__SOUND__ACTIVE}" 
+                              HorizontalContentAlignment="Left" Margin="0,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
+                    <Grid Height="25"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
 </ResourceDictionary>
