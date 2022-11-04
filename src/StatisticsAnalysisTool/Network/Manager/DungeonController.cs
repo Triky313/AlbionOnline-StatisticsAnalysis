@@ -33,6 +33,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private List<DungeonObject> _dungeons = new();
         private int _addDungeonCounter;
         private readonly List<DiscoveredItem> _discoveredLoot = new();
+        private List<Guid> _lastGuidWithRecognizedTierLevel = new ();
 
         public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
@@ -73,7 +74,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _dungeons.Where(x => x.Status != DungeonStatus.Done).ToList().ForEach(x => x.Status = DungeonStatus.Done);
 
                 var newDungeon = new DungeonObject(ClusterController.CurrentCluster.MainClusterIndex,
-                    mapGuid ?? new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), DungeonStatus.Active, ClusterController.CurrentCluster.Tier);
+                    mapGuid ?? new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), DungeonStatus.Active);
                 SetDungeonMapType(newDungeon, mapType);
 
                 _dungeons.Insert(0, newDungeon);
@@ -95,6 +96,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 lastDungeon.EndTimer();
                 lastDungeon.Status = DungeonStatus.Done;
                 await SaveInFileAfterExceedingLimit(NumberOfDungeonsUntilSaved);
+                _lastGuidWithRecognizedTierLevel = new List<Guid>();
             }
 
             RemoveDungeonsAfterCertainNumber(_dungeons, MaxDungeons);
@@ -844,9 +846,29 @@ namespace StatisticsAnalysisTool.Network.Manager
             return false;
         }
 
-        public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
+        #region Tier / Level recognize
+
+        public void AddTierLevelToCurrentDungeon(int? mobIndex, double hitPointsMax)
         {
-            if (_currentGuid == null)
+            if (_currentGuid is not { } currentGuid)
+            {
+                return;
+            }
+
+            if (_lastGuidWithRecognizedTierLevel.Contains(currentGuid))
+            {
+                return;
+            }
+            
+            if (mobIndex is null || ClusterController.CurrentCluster.Guid != currentGuid)
+            {
+                return;
+            }
+
+            if (ClusterController.CurrentCluster.MapType != MapType.Expedition
+                && ClusterController.CurrentCluster.MapType != MapType.CorruptedDungeon
+                && ClusterController.CurrentCluster.MapType != MapType.HellGate
+                && ClusterController.CurrentCluster.MapType != MapType.RandomDungeon)
             {
                 return;
             }
@@ -855,7 +877,35 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 lock (_dungeons)
                 {
-                    var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
+                    var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
+                    if (dun == null)
+                    {
+                        return;
+                    }
+
+                    dun.SetTier((Tier)MobsData.GetMobTierByIndex((int)mobIndex));
+                    dun.SetLevel(MobsData.GetMobLevelByIndex((int)mobIndex, hitPointsMax));
+
+                    _lastGuidWithRecognizedTierLevel = dun.GuidList;
+
+                    UpdateDungeonDataUi(dun);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+        
+        #endregion
+
+        public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
+        {
+            try
+            {
+                lock (_dungeons)
+                {
+                    var dun = _dungeons?.FirstOrDefault(x => _currentGuid != null && x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
                     dun?.Add(value, valueType, cityFaction);
 
                     UpdateDungeonDataUi(dun);
@@ -988,7 +1038,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         #endregion
 
         #region Helper methods
-
+        
         private bool ExistDungeon(Guid? mapGuid)
         {
             return mapGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid)mapGuid));

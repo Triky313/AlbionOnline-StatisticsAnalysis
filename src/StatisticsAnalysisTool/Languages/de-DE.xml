@@ -669,4 +669,9 @@
 	<translation name="REPAIR_COSTS_LAST_7_DAYS">Reparaturkosten die letzten 7 Tage</translation>
 	<translation name="REPAIR_COSTS_LAST_30_DAYS">Reparaturkosten die letzten 30 Tage</translation>
 	<translation name="RESET_BEFORE_COMBAT">Vor Kampf zurücksetzen</translation>
+	<translation name="SEARCHED_PLAYER">Gesuchter Spieler</translation>
+	<translation name="LOCAL_PLAYER">Lokaler Spieler</translation>
+	<translation name="THANKS">Danke</translation>
+	<translation name="THANK_YOU">Vielen Dank</translation>
+	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Dungeon geschlossen Sound aktiv</translation>
 </translations>

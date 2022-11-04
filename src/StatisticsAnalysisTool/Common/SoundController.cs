@@ -46,26 +46,23 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static void PlayAlertSound()
+        public static void PlayAlertSound(string soundPath)
         {
             try
             {
-#pragma warning disable CA1416 // Validate platform compatibility
-                var player = new SoundPlayer(GetCurrentSound());
+                var player = new SoundPlayer(soundPath);
                 player.Load();
                 player.Play();
                 player.Dispose();
-#pragma warning restore CA1416 // Validate platform compatibility
             }
-            catch (Exception e) when (e is InvalidOperationException || e is UriFormatException || e is FileNotFoundException ||
-                                      e is ArgumentException)
+            catch (Exception e) when (e is InvalidOperationException or UriFormatException or FileNotFoundException or ArgumentException)
             {
                 ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
 
-        private static string GetCurrentSound()
+        public static string GetCurrentSoundPath()
         {
             try
             {

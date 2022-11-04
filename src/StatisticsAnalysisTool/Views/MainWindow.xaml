@@ -187,6 +187,11 @@
                     <userControls:DonationControl />
                 </Grid>
             </TabItem>
+            <TabItem Style="{StaticResource ItemContainerThanksStyle}" Header="{Binding Translation.Thanks, FallbackValue=THANKS}">
+                <Grid Style="{StaticResource TabItemGridStyle}">
+                    <userControls:ThanksControl />
+                </Grid>
+            </TabItem>
             <TabItem Header="{Binding Translation.Settings, FallbackValue=SETTINGS}">
                 <Grid Style="{StaticResource TabItemGridStyle}">
                     <userControls:SettingsControl />

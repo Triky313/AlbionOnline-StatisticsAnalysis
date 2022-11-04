@@ -33,6 +33,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         public DungeonMode Mode { get; set; } = DungeonMode.Unknown;
         public CityFaction CityFaction { get; set; } = CityFaction.Unknown;
         public Tier Tier { get; set; } = Tier.Unknown;
+        public int Level { get; set; } = -1;
         [JsonIgnore]
         public string DungeonHash => $"{EnterDungeonFirstTime.Ticks}{string.Join(",", GuidList)}";
         [JsonIgnore]
@@ -44,7 +45,7 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
         {
         }
 
-        public DungeonObject(string mainMapIndex, Guid guid, DungeonStatus status, Tier tier)
+        public DungeonObject(string mainMapIndex, Guid guid, DungeonStatus status)
         {
             MainMapIndex = mainMapIndex;
             EnterDungeonFirstTime = DateTime.UtcNow;
@@ -52,7 +53,6 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             Status = status;
             AddTimer(DateTime.UtcNow);
             Mode = (Mode == DungeonMode.Unknown) ? DungeonObjectData.GetDungeonMode(mainMapIndex) : Mode;
-            Tier = tier;
         }
 
         public void Add(double value, ValueType type, CityFaction cityFaction = CityFaction.Unknown)
@@ -119,6 +119,26 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
                 dun.EndTime = dateTime;
                 SetTotalRunTimeInSeconds();
             }
+        }
+
+        public void SetTier(Tier tier)
+        {
+            if (Tier != Tier.Unknown)
+            {
+                return;
+            }
+
+            Tier = tier;
+        }
+
+        public void SetLevel(int level)
+        {
+            if (Level >= 0)
+            {
+                return;
+            }
+
+            Level = level;
         }
 
         private void SetTotalRunTimeInSeconds()

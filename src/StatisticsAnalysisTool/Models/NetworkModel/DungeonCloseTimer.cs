@@ -1,10 +1,12 @@
 ﻿using StatisticsAnalysisTool.Common;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Models.NetworkModel
@@ -73,6 +75,12 @@ namespace StatisticsAnalysisTool.Models.NetworkModel
             if (duration.TotalSeconds <= 0)
             {
                 IsDungeonClosed = true;
+
+                if (SettingsController.CurrentSettings.IsDungeonClosedSoundActive)
+                {
+                    SoundController.PlayAlertSound(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.SoundDirectoryName, Settings.Default.DungeonClosedSoundFileName));
+                }
+
                 _dispatcherTimer.Stop();
             }
         }

@@ -50,5 +50,7 @@ namespace StatisticsAnalysisTool.Models
         public static string GeneralInformation => LanguageController.Translation("GENERAL_INFORMATION");
         public static string Pvp => LanguageController.Translation("PVP");
         public static string Pve => LanguageController.Translation("PVE");
+        public static string SearchedPlayer => LanguageController.Translation("SEARCHED_PLAYER");
+        public static string LocalPlayer => LanguageController.Translation("LOCAL_PLAYER");
     }
 }

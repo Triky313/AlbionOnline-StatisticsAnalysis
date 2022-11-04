@@ -32,6 +32,7 @@
     <Color x:Key="Color.Accent.Red.4">#FFE23B3E</Color>
     <Color x:Key="Color.Accent.Red.5">#FFCD3638</Color>
     <Color x:Key="Color.Accent.Red.6">#FFB52F31</Color>
+    <Color x:Key="Color.Accent.Red.7">#55FF8082</Color>
 
     <Color x:Key="Color.Accent.Green.1">#FF98EDB4</Color>
     <Color x:Key="Color.Accent.Green.2">#FF64E38E</Color>
@@ -189,6 +190,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.4" Color="{StaticResource Color.Accent.Red.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.5" Color="{StaticResource Color.Accent.Red.5}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.6" Color="{StaticResource Color.Accent.Red.6}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.7" Color="{StaticResource Color.Accent.Red.7}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.1" Color="{StaticResource Color.Accent.Green.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.2" Color="{StaticResource Color.Accent.Green.2}"/>

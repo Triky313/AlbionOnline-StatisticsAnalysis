@@ -79,7 +79,7 @@ namespace StatisticsAnalysisTool.Common
                             && marketResponse.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice
                             && AlertModeMinSellPriceIsUndercutPrice > 0)
                         {
-                            SoundController.PlayAlertSound();
+                            SoundController.PlayAlertSound(SoundController.GetCurrentSoundPath());
                             StopEvent();
                             AlertController.DeactivateAlert(uniqueName);
 

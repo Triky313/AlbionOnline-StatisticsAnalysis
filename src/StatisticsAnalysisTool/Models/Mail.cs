@@ -22,18 +22,18 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
     public long MailId { get; set; }
     public string ClusterIndex { get; set; }
     [JsonIgnore]
-    public Location Location => Locations.GetLocationByIndex(ClusterIndex);
+    public MarketLocation Location => Locations.GetMarketLocationByIndex(ClusterIndex);
     [JsonIgnore]
     public string LocationName
     {
         get
         {
-            if (Location == Location.Unknown && ClusterIndex.Contains("HIDEOUT"))
+            if (Location == MarketLocation.Unknown && ClusterIndex.Contains("HIDEOUT"))
             {
                 return $"{ClusterIndex.Split("_")[1]} ({LanguageController.Translation("HIDEOUT")})";
             }
             
-            if (Location == Location.BlackMarket)
+            if (Location == MarketLocation.BlackMarket)
             {
                 return "Black Market";
             }

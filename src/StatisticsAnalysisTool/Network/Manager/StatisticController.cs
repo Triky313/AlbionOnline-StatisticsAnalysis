@@ -108,7 +108,6 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                     amount.Add(new ObservablePoint(counter++, data.Value));
                 }
-                // TODO: System.InvalidOperationException: 'Operations that change non-concurrent collections must have exclusive access. A concurrent update was performed on this collection and corrupted its state. The collection's state is no longer correct.'
 
                 var lineSeries = new LineSeries<ObservablePoint>
                 {
