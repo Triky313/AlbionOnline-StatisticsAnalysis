@@ -859,7 +859,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 return;
             }
-
+            
             if (mobIndex is null || ClusterController.CurrentCluster.Guid != currentGuid)
             {
                 return;
@@ -901,11 +901,6 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
         {
-            if (!ExistActiveDungeon())
-            {
-                return;
-            }
-
             try
             {
                 lock (_dungeons)
@@ -1043,12 +1038,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         #endregion
 
         #region Helper methods
-
-        private bool ExistActiveDungeon()
-        {
-            return _dungeons.Exists(x => _currentGuid != null && x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
-        }
-
+        
         private bool ExistDungeon(Guid? mapGuid)
         {
             return mapGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid)mapGuid));

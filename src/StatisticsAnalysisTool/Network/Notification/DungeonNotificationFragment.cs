@@ -208,7 +208,7 @@ namespace StatisticsAnalysisTool.Network.Notification
 
             return tierString;
         }
-
+        // Flat-Map: 16% (green), .1-Map 36% (blue), .2-Map 58% (purple), .3-Map 84% (gold)
         private static string SetLevelString(int level)
         {
             var levelString = level switch

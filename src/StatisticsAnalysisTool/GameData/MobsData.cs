@@ -14,9 +14,6 @@ using System.Text.Json.Serialization;
 
 namespace StatisticsAnalysisTool.GameData;
 
-// 0: MobObjectId, 13 and 14 Mob HP this | 100 / HitPointsMax * InGameMobHp = 0,16,36,58%
-// [116]evDebugAggroInfo - map[0:41 1:2782 2:-1 6: 7:[-23.47 6.39] 8:[-23.47 6.39] 9:28863518 10:103.52002 11:1.5 13:991 14:991 16:28860088 17:340 18:340 19:10 20:28863488 28:0 31:0 252:116]
-
 public static class MobsData
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
@@ -27,7 +24,7 @@ public static class MobsData
     {
         return GetMobJsonObjectByIndex(index).Tier;
     }
-
+    
     public static int GetMobLevelByIndex(int index, double currentInGameMobHp)
     {
         var mob = GetMobJsonObjectByIndex(index);
