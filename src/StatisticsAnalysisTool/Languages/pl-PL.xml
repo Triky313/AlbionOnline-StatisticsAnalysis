@@ -669,8 +669,9 @@
 	<translation name="REPAIR_COSTS_LAST_7_DAYS">Koszty naprawy z ostatnich 7 dni</translation>
 	<translation name="REPAIR_COSTS_LAST_30_DAYS">Koszty naprawy z ostatnich 30 dni</translation>
 	<translation name="RESET_BEFORE_COMBAT">Zresetuj przed walka</translation>
-	<translation name="SEARCHED_PLAYER">Przeszukano gracza</translation>
-	<translation name="LOCAL_PLAYER">Gracz lokalny</translation>
+	<translation name="SEARCHED_PLAYER">Sprawdzony gracz</translation>
+	<translation name="LOCAL_PLAYER">Twoja postać</translation>
 	<translation name="THANKS">Dziękuję</translation>
 	<translation name="THANK_YOU">Dziękuję tobie</translation>
+	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Dzwięk zamykania lochu</translation>
 </translations>
