@@ -58,7 +58,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private int _localImageCounter;
         private string _numberOfValuesTranslation;
         private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new();
-        private PlayerModeTranslation _playerModeTranslation = new();
         private string _searchText;
         private ShopSubCategory _selectedItemShopSubCategories;
         private ItemLevel _selectedItemLevel;
