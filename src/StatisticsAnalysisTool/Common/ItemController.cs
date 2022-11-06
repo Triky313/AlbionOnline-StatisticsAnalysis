@@ -89,6 +89,98 @@ namespace StatisticsAnalysisTool.Common
 
         #endregion
 
+        #region Item value
+        
+        public static double GetConsumableItemValue(ItemJsonObject itemJsonObject)
+        {
+            var resultItemValue = 0d;
+
+            switch (itemJsonObject)
+            {
+                case HideoutItem hideoutItem:
+                    resultItemValue += hideoutItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
+                    break;
+                case FarmableItem farmableItem:
+                    resultItemValue += farmableItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
+                    break;
+                case SimpleItem simpleItem:
+                    resultItemValue += simpleItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
+                    break;
+                case ConsumableItem consumableItem:
+                    resultItemValue += consumableItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
+                    break;
+                case ConsumableFromInventoryItem consumableFromInventoryItem:
+                    resultItemValue += consumableFromInventoryItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
+                    break;
+                case EquipmentItem equipmentItem:
+                    resultItemValue += equipmentItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
+                    break;
+                case Weapon weapon:
+                    resultItemValue += weapon.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
+                    break;
+                case Mount mount:
+                    resultItemValue += mount.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
+                    break;
+                case FurnitureItem furnitureItem:
+                    resultItemValue += furnitureItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
+                    break;
+                case JournalItem journalItem:
+                    resultItemValue += journalItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
+                    break;
+            }
+            
+            return resultItemValue;
+        }
+
+        private static double GetItemValueByCraftingRequirements(CraftingRequirements craftingRequirements)
+        {
+            var resultItemValue = 0d;
+
+            foreach (var craftResource in craftingRequirements.CraftResource)
+            {
+                var itemObject = GetItemByUniqueName(craftResource.UniqueName)?.FullItemInformation;
+                var itemValue = GetItemValue(itemObject);
+
+                if (itemValue <= 0 && ExistMoreCraftingRequirements(itemObject) && itemObject is SimpleItem simpleItem)
+                {
+                    itemValue = GetConsumableItemValue(simpleItem);
+                }
+
+                resultItemValue += itemValue * craftResource.Count;
+            }
+
+            return resultItemValue;
+        }
+
+        private static double GetItemValue(ItemJsonObject itemJsonObject)
+        {
+            var itemValue = 0;
+
+            switch (itemJsonObject)
+            {
+                case SimpleItem simpleItem:
+                    int.TryParse(simpleItem.ItemValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out itemValue);
+                    return itemValue;
+                case ConsumableItem consumableItem:
+                    int.TryParse(consumableItem.ItemValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out itemValue);
+                    return itemValue;
+                default:
+                    return itemValue;
+            }
+        }
+
+        private static bool ExistMoreCraftingRequirements(ItemJsonObject itemJsonObject)
+        {
+            if (itemJsonObject is not SimpleItem simpleItem)
+            {
+                return false;
+            }
+
+            return string.IsNullOrEmpty(simpleItem.ItemValue) && simpleItem.CraftingRequirements?.Count > 0;
+        }
+
+        #endregion
+
         #region Localized
 
         public static string LocalizedName(LocalizedNames localizedNames, string currentLanguage = null, string alternativeName = "NO_ITEM_NAME")
