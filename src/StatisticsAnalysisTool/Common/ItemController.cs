@@ -86,73 +86,96 @@ namespace StatisticsAnalysisTool.Common
 
             return -1;
         }
-
+        
         #endregion
 
         #region Item value
-        
-        public static double GetConsumableItemValue(ItemJsonObject itemJsonObject)
+
+        public static double GetItemValue(ItemJsonObject itemJsonObject, int level)
         {
             var resultItemValue = 0d;
 
             switch (itemJsonObject)
             {
                 case HideoutItem hideoutItem:
-                    resultItemValue += hideoutItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
-                    break;
+                    return (hideoutItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
                 case FarmableItem farmableItem:
-                    resultItemValue += farmableItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
-                    break;
+                    return (farmableItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
                 case SimpleItem simpleItem:
-                    resultItemValue += simpleItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
-                    break;
+                    return (simpleItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
                 case ConsumableItem consumableItem:
-                    resultItemValue += consumableItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
-                    break;
+                    if (level > 0)
+                    {
+                        return GetCraftingRequirementsByEnchantment(consumableItem.Enchantments?.Enchantment, level)
+                            .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+                    }
+
+                    return (consumableItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
                 case ConsumableFromInventoryItem consumableFromInventoryItem:
-                    resultItemValue += consumableFromInventoryItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
-                    break;
+                    if (level > 0)
+                    {
+                        return GetCraftingRequirementsByEnchantment(consumableFromInventoryItem.Enchantments?.Enchantment, level)
+                            .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+                    }
+
+                    return (consumableFromInventoryItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
                 case EquipmentItem equipmentItem:
-                    resultItemValue += equipmentItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
-                    break;
+                    if (level > 0)
+                    {
+                        return GetCraftingRequirementsByEnchantment(equipmentItem.Enchantments?.Enchantment, level)
+                            .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+                    }
+
+                    return (equipmentItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
                 case Weapon weapon:
-                    resultItemValue += weapon.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
-                    break;
+                    if (level > 0)
+                    {
+                        return GetCraftingRequirementsByEnchantment(weapon.Enchantments?.Enchantment, level)
+                            .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+                    }
+
+                    return (weapon.CraftingRequirements ?? new List<CraftingRequirements>())
+                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
                 case Mount mount:
-                    resultItemValue += mount.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
-                    break;
+                    return (mount.CraftingRequirements ?? new List<CraftingRequirements>())
+                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
                 case FurnitureItem furnitureItem:
-                    resultItemValue += furnitureItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
-                    break;
+                    return (furnitureItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
                 case JournalItem journalItem:
-                    resultItemValue += journalItem.CraftingRequirements.Sum(GetItemValueByCraftingRequirements);
-                    break;
+                    return (journalItem.CraftingRequirements ?? new List<CraftingRequirements>())
+                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
             }
-            
+
             return resultItemValue;
         }
 
-        private static double GetItemValueByCraftingRequirements(CraftingRequirements craftingRequirements)
+        private static double GetItemValueByCraftingRequirements(CraftingRequirements craftingRequirements, int level)
         {
             var resultItemValue = 0d;
 
-            foreach (var craftResource in craftingRequirements.CraftResource)
+            foreach (var craftResource in craftingRequirements?.CraftResource ?? new List<CraftResource>())
             {
                 var itemObject = GetItemByUniqueName(craftResource.UniqueName)?.FullItemInformation;
-                var itemValue = GetItemValue(itemObject);
+                var itemValue = ItemValueFromGroundItem(itemObject);
 
                 if (itemValue <= 0 && ExistMoreCraftingRequirements(itemObject) && itemObject is SimpleItem simpleItem)
                 {
-                    itemValue = GetConsumableItemValue(simpleItem);
+                    itemValue = GetItemValue(simpleItem, level);
                 }
 
                 resultItemValue += itemValue * craftResource.Count;
             }
-
             return resultItemValue;
         }
 
-        private static double GetItemValue(ItemJsonObject itemJsonObject)
+        private static double ItemValueFromGroundItem(ItemJsonObject itemJsonObject)
         {
             var itemValue = 0;
 
@@ -169,6 +192,12 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
+        private static IEnumerable<CraftingRequirements> GetCraftingRequirementsByEnchantment(IEnumerable<Enchantment> enchantments, int level)
+        {
+            var enchantment = enchantments?.FirstOrDefault(x => x?.EnchantmentLevelInteger == level);
+            return enchantment == null ? new List<CraftingRequirements>() : enchantment.CraftingRequirements;
+        }
+
         private static bool ExistMoreCraftingRequirements(ItemJsonObject itemJsonObject)
         {
             if (itemJsonObject is not SimpleItem simpleItem)
@@ -177,6 +206,49 @@ namespace StatisticsAnalysisTool.Common
             }
 
             return string.IsNullOrEmpty(simpleItem.ItemValue) && simpleItem.CraftingRequirements?.Count > 0;
+        }
+
+        #endregion
+
+        #region Durability
+
+        public static double GetDurability(ItemJsonObject itemJsonObject, int level)
+        {
+            switch (itemJsonObject)
+            {
+                case EquipmentItem equipmentItem:
+                    if (level > 0)
+                    {
+                        return GetDurabilityByEnchantment(equipmentItem.Enchantments?.Enchantment, level);
+                    }
+                    return equipmentItem.Durability;
+                case Weapon weapon:
+                    if (level > 0)
+                    {
+                        return GetDurabilityByEnchantment(weapon.Enchantments?.Enchantment, level);
+                    }
+                    return weapon.Durability;
+                case Mount mount:
+                    return mount.Durability;
+                case FurnitureItem furnitureItem:
+                    return furnitureItem.Durability;
+                default:
+                    return 0;
+            }
+        }
+
+        private static long GetDurabilityByEnchantment(IEnumerable<Enchantment> enchantments, int level)
+        {
+            var enchantment = enchantments?.FirstOrDefault(x => x?.EnchantmentLevelInteger == level);
+            try
+            {
+                return Convert.ToInt64(enchantment?.Durability);
+            }
+            catch
+            {
+                return 0;
+            }
+            //return long.TryParse(enchantment?.Durability, NumberStyles.Integer, CultureInfo.InvariantCulture, out var durabilityResult) ? durabilityResult : 0;
         }
 
         #endregion
@@ -645,7 +717,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 var options = new JsonSerializerOptions()
                 {
-                    NumberHandling = JsonNumberHandling.AllowReadingFromString
+                    NumberHandling = JsonNumberHandling.AllowReadingFromString 
                                      | JsonNumberHandling.WriteAsString,
                     Converters =
                     {

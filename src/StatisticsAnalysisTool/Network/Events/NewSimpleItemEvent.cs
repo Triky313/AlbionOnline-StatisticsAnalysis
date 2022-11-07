@@ -14,6 +14,7 @@ namespace StatisticsAnalysisTool.Network.Events
         private readonly int _itemId;
         private readonly int _quantity;
         private readonly long _estimatedMarketValue;
+        private readonly FixPoint _durability;
 
         public NewSimpleItemEvent(Dictionary<byte, object> parameters)
         {
@@ -41,6 +42,12 @@ namespace StatisticsAnalysisTool.Network.Events
                     _estimatedMarketValue = parameters[4].ObjectToLong() ?? 0;
                 }
 
+                if (parameters.ContainsKey(7))
+                {
+                    var durability = parameters[7].ObjectToLong();
+                    _durability = FixPoint.FromInternalValue(durability ?? 0);
+                }
+
                 if (_objectId != null)
                 {
                     Item = new DiscoveredItem()
@@ -48,6 +55,7 @@ namespace StatisticsAnalysisTool.Network.Events
                         ObjectId = (long)_objectId,
                         ItemIndex = _itemId,
                         Quantity = _quantity,
+                        CurrentDurability = _durability,
                         EstimatedMarketValueInternal = _estimatedMarketValue
                     };
                 }

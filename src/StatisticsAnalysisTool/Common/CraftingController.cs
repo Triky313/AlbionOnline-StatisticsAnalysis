@@ -236,7 +236,7 @@ namespace StatisticsAnalysisTool.Common
 
             return string.IsNullOrEmpty(simpleItem.ItemValue) && simpleItem.CraftingRequirements?.Count > 0;
         }
-
+        
         private static double GetItemValue(ItemJsonObject itemJsonObject)
         {
             var itemValue = 0;

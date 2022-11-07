@@ -60,7 +60,7 @@ public class Weapon : ItemJsonObject
     public string PassiveSpellSlots { get; set; }
 
     [JsonPropertyName("@durability")]
-    public string Durability { get; set; }
+    public double Durability { get; set; }
 
     [JsonPropertyName("@durabilityloss_attack")]
     public string DurabilityLossAttack { get; set; }
@@ -122,4 +122,7 @@ public class Weapon : ItemJsonObject
 
     [JsonPropertyName("craftingspelllist")]
     public CraftingSpellList CraftingSpellList { get; set; }
+
+    [JsonPropertyName("enchantments")]
+    public Enchantments Enchantments { get; set; }
 }
