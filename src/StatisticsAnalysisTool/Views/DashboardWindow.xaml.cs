@@ -4,6 +4,7 @@ using StatisticsAnalysisTool.ViewModels;
 using System.Windows;
 using System.Windows.Input;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models.BindingModel;
 
 namespace StatisticsAnalysisTool.Views
 {

@@ -60,7 +60,7 @@ public class EquipmentItem : ItemJsonObject
     public string MagicResistance { get; set; }
 
     [JsonPropertyName("@durability")]
-    public string Durability { get; set; }
+    public double Durability { get; set; }
 
     [JsonPropertyName("@durabilityloss_attack")]
     public string DurabilityLossAttack { get; set; }
