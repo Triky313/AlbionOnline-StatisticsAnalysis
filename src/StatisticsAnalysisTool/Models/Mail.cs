@@ -8,6 +8,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using StatisticsAnalysisTool.GameData;
+using StatisticsAnalysisTool.ViewModels;
+using System.Windows.Input;
+using System.Windows;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -104,6 +107,19 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
         if (guidComparison != 0) return guidComparison;
         return MailId.CompareTo(other.MailId);
     }
+    
+    #region Commands
+
+    public void OpenItemWindow(object value)
+    {
+        MainWindowViewModel.OpenItemWindow(Item);
+    }
+
+    private ICommand _openItemWindowCommand;
+
+    public ICommand OpenItemWindowCommand => _openItemWindowCommand ??= new CommandHandler(OpenItemWindow, true);
+
+    #endregion
 
     public event PropertyChangedEventHandler PropertyChanged;
 
