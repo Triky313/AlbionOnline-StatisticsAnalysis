@@ -51,7 +51,7 @@ public class DashboardBindings : INotifyPropertyChanged
 
     public DashboardBindings()
     {
-        RepairCostsChestVisibility = !Settings.Default.IsContainerRepairCostsVisible ? Visibility.Visible : Visibility.Collapsed;
+        RepairCostsChestVisibility = Settings.Default.IsContainerRepairCostsVisible ? Visibility.Visible : Visibility.Collapsed;
     }
 
     #region Fame / Respec / Silver / Might / Faction

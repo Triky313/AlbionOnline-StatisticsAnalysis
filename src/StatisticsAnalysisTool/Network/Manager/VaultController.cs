@@ -262,6 +262,12 @@ public class VaultController
         foreach (var discoveredItem in discoveredItems)
         {
             var item = ItemController.GetItemByIndex(discoveredItem.ItemIndex);
+
+            if (item == null)
+            {
+                return;
+            }
+
             var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
 
             double lostDurability;
