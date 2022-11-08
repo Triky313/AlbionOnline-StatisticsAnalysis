@@ -107,41 +107,21 @@ namespace StatisticsAnalysisTool.Common
                     return (simpleItem.CraftingRequirements ?? new List<CraftingRequirements>())
                         .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
                 case ConsumableItem consumableItem:
-                    if (level > 0)
-                    {
-                        return GetCraftingRequirementsByEnchantment(consumableItem.Enchantments?.Enchantment, level)
-                            .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
-                    }
-
-                    return (consumableItem.CraftingRequirements ?? new List<CraftingRequirements>())
-                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+                    return GetItemValueByCraftingRequirements(level > 0 
+                        ? GetCraftingRequirementsByEnchantment(consumableItem.Enchantments?.Enchantment, level) 
+                        : consumableItem.CraftingRequirements?.FirstOrDefault(), level);
                 case ConsumableFromInventoryItem consumableFromInventoryItem:
-                    if (level > 0)
-                    {
-                        return GetCraftingRequirementsByEnchantment(consumableFromInventoryItem.Enchantments?.Enchantment, level)
-                            .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
-                    }
-
-                    return (consumableFromInventoryItem.CraftingRequirements ?? new List<CraftingRequirements>())
-                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+                    return GetItemValueByCraftingRequirements(level > 0 
+                        ? GetCraftingRequirementsByEnchantment(consumableFromInventoryItem.Enchantments?.Enchantment, level) 
+                        : consumableFromInventoryItem.CraftingRequirements?.FirstOrDefault(), level);
                 case EquipmentItem equipmentItem:
-                    if (level > 0)
-                    {
-                        return GetCraftingRequirementsByEnchantment(equipmentItem.Enchantments?.Enchantment, level)
-                            .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
-                    }
-
-                    return (equipmentItem.CraftingRequirements ?? new List<CraftingRequirements>())
-                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+                    return GetItemValueByCraftingRequirements(level > 0 
+                        ? GetCraftingRequirementsByEnchantment(equipmentItem.Enchantments?.Enchantment, level) 
+                        : equipmentItem.CraftingRequirements?.FirstOrDefault(), level);
                 case Weapon weapon:
-                    if (level > 0)
-                    {
-                        return GetCraftingRequirementsByEnchantment(weapon.Enchantments?.Enchantment, level)
-                            .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
-                    }
-
-                    return (weapon.CraftingRequirements ?? new List<CraftingRequirements>())
-                        .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
+                    return GetItemValueByCraftingRequirements(level > 0 
+                        ? GetCraftingRequirementsByEnchantment(weapon.Enchantments?.Enchantment, level) 
+                        : weapon.CraftingRequirements?.FirstOrDefault(), level);
                 case Mount mount:
                     return (mount.CraftingRequirements ?? new List<CraftingRequirements>())
                         .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
@@ -192,10 +172,10 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        private static IEnumerable<CraftingRequirements> GetCraftingRequirementsByEnchantment(IEnumerable<Enchantment> enchantments, int level)
+        private static CraftingRequirements GetCraftingRequirementsByEnchantment(IEnumerable<Enchantment> enchantments, int level)
         {
             var enchantment = enchantments?.FirstOrDefault(x => x?.EnchantmentLevelInteger == level);
-            return enchantment == null ? new List<CraftingRequirements>() : enchantment.CraftingRequirements;
+            return enchantment == null ? new CraftingRequirements() : enchantment.CraftingRequirements?.FirstOrDefault();
         }
 
         private static bool ExistMoreCraftingRequirements(ItemJsonObject itemJsonObject)

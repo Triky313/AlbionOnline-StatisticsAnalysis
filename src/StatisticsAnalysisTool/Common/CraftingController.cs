@@ -4,7 +4,6 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -159,8 +158,10 @@ namespace StatisticsAnalysisTool.Common
                 {
                     case Weapon weapon:
                         {
-                            var resources = GetTotalAmountResources(weapon.CraftingRequirements);
-                            return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                            //var resources = GetTotalAmountResources(weapon.CraftingRequirements);
+                            var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
+                            return itemQuantity * (foodValue / 44.44 / 100) * (itemValue * 5);
+                            //return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource);
                         }
                     case EquipmentItem equipmentItem:
                         {
@@ -173,9 +174,10 @@ namespace StatisticsAnalysisTool.Common
                             return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, mount.CraftingRequirements?.FirstOrDefault()?.CraftResource);
                         }
                     case ConsumableItem consumableItem:
-                        {
-                            return itemQuantity * (foodValue / 44.44 / 100) * ((GetConsumableItemValue(consumableItem) * 5));
-                        }
+                    {
+                        var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
+                        return itemQuantity * (foodValue / 44.44 / 100) * (itemValue * 5);
+                    }
                 }
 
                 return 0;
@@ -186,71 +188,6 @@ namespace StatisticsAnalysisTool.Common
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
                 return 0;
             }
-        }
-
-        private static double GetConsumableItemValue(ConsumableItem consumableItem)
-        {
-            var resultItemValue = 0d;
-            foreach (var consumableItemCraftingRequirement in consumableItem.CraftingRequirements)
-            {
-                foreach (var craftResource in consumableItemCraftingRequirement.CraftResource)
-                {
-                    var itemObject = ItemController.GetItemByUniqueName(craftResource.UniqueName)?.FullItemInformation;
-                    var itemValue = GetItemValue(itemObject);
-
-                    if (itemValue <= 0 && ExistMoreCraftingRequirements(itemObject) && itemObject is SimpleItem simpleItem)
-                    {
-                        itemValue = GetConsumableItemValue(simpleItem);
-                    }
-
-                    resultItemValue += itemValue * craftResource.Count;
-                }
-            }
-
-            return resultItemValue;
-        }
-
-        private static double GetConsumableItemValue(SimpleItem simpleItem)
-        {
-            var resultItemValue = 0d;
-            foreach (var simpleItemCraftingRequirement in simpleItem.CraftingRequirements)
-            {
-                foreach (var craftResource in simpleItemCraftingRequirement.CraftResource)
-                {
-                    var itemObject = ItemController.GetItemByUniqueName(craftResource.UniqueName)?.FullItemInformation;
-                    var itemValue = GetItemValue(itemObject);
-
-                    resultItemValue += itemValue * craftResource.Count;
-                }
-            }
-
-            return resultItemValue;
-        }
-
-        private static bool ExistMoreCraftingRequirements(ItemJsonObject itemJsonObject)
-        {
-            if (itemJsonObject is not SimpleItem simpleItem)
-            {
-                return false;
-            }
-
-            return string.IsNullOrEmpty(simpleItem.ItemValue) && simpleItem.CraftingRequirements?.Count > 0;
-        }
-        
-        private static double GetItemValue(ItemJsonObject itemJsonObject)
-        {
-            var itemValue = 0;
-            if (itemJsonObject is SimpleItem simpleItem)
-            {
-                int.TryParse(simpleItem.ItemValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out itemValue);
-            }
-
-            if (itemJsonObject is ConsumableItem consumableItem)
-            {
-                int.TryParse(consumableItem.ItemValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out itemValue);
-            }
-
-            return itemValue;
         }
         
         public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResource> craftResource)
