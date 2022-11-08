@@ -387,6 +387,9 @@
 
     <DataTemplate x:Key="MailTemplate" DataType="{x:Type models:Mail}">
         <Grid Height="50">
+            <Grid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
+            </Grid.InputBindings>
             <Grid Style="{StaticResource Mail.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
