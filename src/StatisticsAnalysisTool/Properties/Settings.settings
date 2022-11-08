@@ -119,5 +119,8 @@
     <Setting Name="DungeonClosedSoundFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">dungeon_closed.wav</Value>
     </Setting>
+    <Setting Name="IsContainerRepairCostsVisible" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

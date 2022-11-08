@@ -42,7 +42,7 @@ public class VaultController
 
     public event Action OnVaultsChange;
     public event Action OnVaultsRemove;
-    
+
     public void SetCurrentVault(VaultInfo vaultInfo)
     {
         if (vaultInfo == null)
@@ -77,8 +77,8 @@ public class VaultController
         }
 
         _vaultContainer.Add(newContainerObject);
-
         ParseVault();
+        GetRepairCostsOfContainer(newContainerObject);
     }
 
     public void Add(DiscoveredItem item)
@@ -236,6 +236,69 @@ public class VaultController
             _mainWindowViewModel.VaultBindings.VaultSearchList.AddRange(vaultSearchItem);
             _mainWindowViewModel?.VaultBindings?.VaultSearchCollectionView?.Refresh();
         });
+    }
+
+    #endregion
+
+    #region Repair costs calculation
+
+    private const double RepairCostModifier = 6.0606d;
+
+    private void GetRepairCostsOfContainer(ItemContainerObject newContainerObject)
+    {
+        var discoveredItems = new List<DiscoveredItem>();
+        foreach (var slotItemId in newContainerObject.SlotItemIds)
+        {
+            var slotItem = _discoveredItems.FirstOrDefault(x => x.ObjectId == slotItemId);
+            if (slotItem == null)
+            {
+                continue;
+            }
+            discoveredItems.Add(slotItem);
+        }
+
+        var totalCosts = 0d;
+
+        foreach (var discoveredItem in discoveredItems)
+        {
+            var item = ItemController.GetItemByIndex(discoveredItem.ItemIndex);
+
+            if (item == null)
+            {
+                return;
+            }
+
+            var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
+
+            double lostDurability;
+            if (discoveredItem.CurrentDurability.IntegerValue <= 0)
+            {
+                lostDurability = 0;
+            }
+            else
+            {
+                var fullDurability = ItemController.GetDurability(item.FullItemInformation, item.Level);
+                lostDurability = (fullDurability - discoveredItem.CurrentDurability.IntegerValue) / fullDurability * 100;
+            }
+
+            if (lostDurability <= 1)
+            {
+                continue;
+            }
+
+            var repairCosts = Math.Round((itemValue / RepairCostModifier * lostDurability), MidpointRounding.ToPositiveInfinity);
+
+            totalCosts += repairCosts * discoveredItem.Quantity;
+        }
+
+        try
+        {
+            _mainWindowViewModel.DashboardBindings.RepairCostsChest = Convert.ToInt32(totalCosts);
+        }
+        catch
+        {
+            // ignore
+        }
     }
 
     #endregion
