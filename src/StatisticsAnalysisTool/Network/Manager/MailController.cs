@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using LiveChartsCore.Geo;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
@@ -289,7 +290,23 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            await FileController.SaveAsync(_mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList(), $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}");
+            if (_mainWindowViewModel?.MailMonitoringBindings?.Mails == null)
+            {
+                return;
+            }
+
+            List<Mail> mails;
+            lock (_mainWindowViewModel.MailMonitoringBindings.Mails)
+            {
+                mails = _mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList();
+            }
+
+            if (mails == null)
+            {
+                return;
+            }
+
+            await FileController.SaveAsync(mails, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}");
             _addMailCounter = 0;
         }
 
