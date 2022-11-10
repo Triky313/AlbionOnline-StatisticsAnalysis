@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Network.Events;
 
@@ -9,6 +10,7 @@ public class ActionOnBuildingFinishedEvent
 {
     public long? UserObjectId;
     public long BuildingObjectId;
+    public ActionOnBuildingType ActionType;
 
     public ActionOnBuildingFinishedEvent(Dictionary<byte, object> parameters)
     {
@@ -24,6 +26,12 @@ public class ActionOnBuildingFinishedEvent
             if (parameters.ContainsKey(2))
             {
                 BuildingObjectId = parameters[2].ObjectToLong() ?? -1;
+            }
+
+            if (parameters.ContainsKey(4))
+            {
+                var actionTypeNumber = parameters[4].ObjectToLong() ?? 0;
+                ActionType = (ActionOnBuildingType)actionTypeNumber;
             }
         }
         catch (Exception e)
