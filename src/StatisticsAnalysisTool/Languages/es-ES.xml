@@ -450,7 +450,7 @@
 	<translation name="SELL_PRICE_PER_ITEM">Precio de venta por artículo</translation>
 	<translation name="SELL_PRICE_PER_JOURNAL">Precio de venta por diario</translation>
 	<translation name="ITEM_QUANTITY">Cantidad</translation>
-	<translation name="SETUP_FEE_PERCENT">Tasa de modificación %</translation>
+	<translation name="SETUP_FEE_PERCENT">Cuota de ajuste %</translation>
 	<translation name="AUCTIONS_HOUSE_TAX_PERCENT">Tasa de mercado %</translation>
 	<translation name="CRAFTING_TAX_PERCENT">Tasa de elaboración %</translation>
 	<translation name="CRAFTING_BONUS_PERCENT">Bonificación de elaboración %</translation>
@@ -468,7 +468,7 @@
 	<translation name="POSSIBLE_ITEM_CRAFTING">Elaboración posible de artículos</translation>
 	<translation name="STATEMENT_OF_COST">Informe de coste</translation>
 	<translation name="CRAFTING_TAX">Tasa de elaboración</translation>
-	<translation name="SETUP_FEE">Tasa de modificación</translation>
+	<translation name="SETUP_FEE">Cuota de ajuste</translation>
 	<translation name="AUCTIONS_HOUSE_TAX">Tasa de mercado</translation>
 	<translation name="TOTAL_JOURNAL_COSTS">Coste total de diarios</translation>
 	<translation name="TOTAL_COSTS">Coste total</translation>
@@ -660,6 +660,11 @@
 	<translation name="TOTAL_UNFINISHED_CRAFTING_WEIGHT">Peso total pre-fabricación</translation>
 	<translation name="TOTAL_FINISHED_CRAFTING_WEIGHT">Peso total post-fabricación</translation>
 	<translation name="MARKET_TAX_RATE">Tasa de mercado</translation>
-	<translation name="MARKET_TAX_SETUP_RATE">Tasa de mercado (orden)</translation>
-	<translation name="SETUP_TAX">Tasa de mercado (orden)</translation>
+	<translation name="MARKET_TAX_SETUP_RATE">Cuota de ajuste de tasa de mercado</translation>
+	<translation name="SETUP_TAX">Cuota de ajuste</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_1">El bono de fabricación es el bono de la ciudad o Escondite en el que estés fabricando.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_2">Para saber el bono necesitas abrir el mini-mapa y desplegar en la esquina superior derecha, ahí podrás ver qué bono da esa ciudad o Escondite.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_3">En una ciudad como Lymhurst es del 118%. Si la ciudad da una bonificación al objeto a fabricar, es del 133%. En los Escondites puede ser mayor, también puede haber un bono diario que puede ser del 10% o del 20%.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_4">La cuota de ajuste y las tasas de mercado las puedes encontrar en el juego cuando vayas a vender un objeto en el mercado.</translation>
+	<translation name="CRAFTING_INFO_DESCRIPTION_5">Si tienes Premium, puedes dejar los dos valores como están. Si quieres vender algo manualmente, pon ambos a 0. Si no tienes Premium, los valores suelen ser el doble.</translation>
 </translations>
