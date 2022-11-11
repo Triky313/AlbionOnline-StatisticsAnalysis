@@ -39,6 +39,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
             MailCollectionView.IsLiveFiltering = true;
             MailCollectionView.CustomSort = new MailComparer();
 
+            MailCollectionView.Filter = Filter;
             MailCollectionView?.Refresh();
         }
     }
@@ -69,19 +70,7 @@ public class MailMonitoringBindings : INotifyPropertyChanged
         set
         {
             _mailsSearchText = value;
-
-            if (_mailsSearchText.Length >= 2)
-            {
-                MailCollectionView.Filter = Filter;
-                MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
-            }
-
-            if (_mailsSearchText.Length <= 0)
-            {
-                MailCollectionView.Filter = null;
-                MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
-            }
-
+            MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
             OnPropertyChanged();
         }
     }
@@ -92,7 +81,6 @@ public class MailMonitoringBindings : INotifyPropertyChanged
         set
         {
             _datePickerMailsFrom = value;
-            MailCollectionView.Filter = Filter;
             MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
             OnPropertyChanged();
         }
@@ -104,7 +92,6 @@ public class MailMonitoringBindings : INotifyPropertyChanged
         set
         {
             _datePickerMailsTo = value;
-            MailCollectionView.Filter = Filter;
             MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
             OnPropertyChanged();
         }
