@@ -1,7 +1,7 @@
 using log4net;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Notification;
 using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
@@ -11,7 +11,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using StatisticsAnalysisTool.Common;
 using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
@@ -290,7 +289,7 @@ public class TrackingController : ITrackingController
     #region Gear repairing
 
     private long _buildingObjectId = -1;
-    private long _upcomingRepairCosts = 0;
+    private long _upcomingRepairCosts;
 
     public void RegisterBuilding(long buildingObjectId)
     {
@@ -317,7 +316,7 @@ public class TrackingController : ITrackingController
 
         _upcomingRepairCosts = costs;
     }
-    
+
     public void RepairFinished(long userObjectId, long buildingObjectId)
     {
         if (EntityController.LocalUserData.UserObjectId != userObjectId || _upcomingRepairCosts <= 0 || _buildingObjectId != buildingObjectId)
