@@ -63,9 +63,9 @@ public class UpdateFameEvent
                 IsBonusFactorActive = (BonusFactorInPercent > 0);
             }
 
-            if (parameters.ContainsKey(9))
+            if (parameters.ContainsKey(10))
             {
-                SatchelFame = FixPoint.FromInternalValue(parameters[9].ObjectToLong() ?? 0);
+                SatchelFame = FixPoint.FromInternalValue(parameters[10].ObjectToLong() ?? 0);
             }
 
             double fameWithZoneAndPremium = 0;
