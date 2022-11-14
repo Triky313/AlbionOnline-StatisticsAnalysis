@@ -38,7 +38,7 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
     /// </summary> 
     public void Replace(T item)
     {
-        ReplaceRange(new T[] { item });
+        ReplaceRange(new[] { item });
     }
 
     /// <summary> 
@@ -57,7 +57,7 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
     /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class. 
     /// </summary> 
     public ObservableRangeCollection()
-        : base() { }
+    { }
 
     /// <summary> 
     /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class that contains elements copied from the specified collection. 
