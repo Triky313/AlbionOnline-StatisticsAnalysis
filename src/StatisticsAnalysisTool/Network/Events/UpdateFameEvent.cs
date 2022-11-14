@@ -14,6 +14,7 @@ public class UpdateFameEvent
     public bool IsPremiumBonus;
     public FixPoint SatchelFame;
     public bool IsBonusFactorActive;
+    public long UsedBagInsightItemIndex;
 
     public FixPoint TotalPlayerFame { get; }
     public FixPoint Multiplier { get; } = FixPoint.FromFloatingPointValue(1);
@@ -30,7 +31,7 @@ public class UpdateFameEvent
         {
             if (parameters.ContainsKey(1))
             {
-                var totalPlayerFame = parameters[1] as long? ?? 0;
+                var totalPlayerFame = parameters[1].ObjectToLong() ?? 0;
                 TotalPlayerFame = FixPoint.FromInternalValue(totalPlayerFame);
             }
 
@@ -42,7 +43,7 @@ public class UpdateFameEvent
 
             if (parameters.ContainsKey(3))
             {
-                GroupSize = parameters[3] as byte? ?? 0;
+                GroupSize = parameters[3].ObjectToByte();
             }
 
             if (parameters.ContainsKey(4))
@@ -52,7 +53,7 @@ public class UpdateFameEvent
 
             if (parameters.ContainsKey(5))
             {
-                IsPremiumBonus = parameters[5] as bool? ?? false;
+                IsPremiumBonus = parameters[5].ObjectToBool();
             }
 
             if (parameters.ContainsKey(6))
@@ -62,6 +63,13 @@ public class UpdateFameEvent
                 BonusFactorInPercent = (BonusFactor - 1) * 100;
                 IsBonusFactorActive = (BonusFactorInPercent > 0);
             }
+
+
+            if (parameters.ContainsKey(8))
+            {
+                UsedBagInsightItemIndex = parameters[8].ObjectToLong() ?? -1;
+            }
+
 
             if (parameters.ContainsKey(10))
             {

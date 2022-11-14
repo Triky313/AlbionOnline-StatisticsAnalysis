@@ -75,7 +75,7 @@ namespace StatisticsAnalysisTool.Enumerations
         SystemMessage,
         UtilityTextMessage,
         UpdateSilver = 75, // map[0:4195 1:884995625105 252:71] (0: ObjectId, 1: CurrentSilver)
-        UpdateFame = 76, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 7: ItemId, 10: SatchelFame, )
+        UpdateFame = 76, // map[0:4195 1:5811910006347 2:100000000 4:10000 6:1 7:427 252:72] (0: ObjectId, 1: TotalPlayerFame, 2: fameWithZoneMultiplier, 3: GroupSize, 4: Multiplier, 5: IsPremiumBonus, 6: BonusFactor, 8: UsedBagInsightItemIndex, 10: SatchelFame, )
         UpdateLearningPoints,
         UpdateReSpecPoints = 78, // map[0:[0 55814284204 0 0 0] 1:1 2:9948534 3:10000000 252:78] 2: GainedReSpec, 3: PaidSilver
         UpdateCurrency = 79,
