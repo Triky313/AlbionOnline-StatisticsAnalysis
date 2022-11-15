@@ -591,8 +591,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.TreasureController.UnregisterEvents();
             TrackingController?.LootController.UnregisterEvents();
             TrackingController?.ClusterController.UnregisterEvents();
-
-            await TrackingController?.DungeonController?.SaveInFileAsync()!;
+            
             await TrackingController?.VaultController?.SaveInFileAsync()!;
             await TrackingController?.TreasureController?.SaveInFileAsync()!;
             await TrackingController?.StatisticController?.SaveInFileAsync()!;

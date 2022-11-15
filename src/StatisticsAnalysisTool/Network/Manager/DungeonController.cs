@@ -23,7 +23,7 @@ namespace StatisticsAnalysisTool.Network.Manager
     public class DungeonController
     {
         private const int MaxDungeons = 9999;
-        private const int NumberOfDungeonsUntilSaved = 2;
+        private const int NumberOfDungeonsUntilSaved = 1;
 
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
         private readonly MainWindowViewModel _mainWindowViewModel;
@@ -33,7 +33,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private List<DungeonObject> _dungeons = new();
         private int _addDungeonCounter;
         private readonly List<DiscoveredItem> _discoveredLoot = new();
-        private List<Guid> _lastGuidWithRecognizedTierLevel = new ();
+        private List<Guid> _lastGuidWithRecognizedTierLevel = new();
 
         public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
@@ -109,11 +109,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             UpdateDungeonChestsUi();
         }
 
-        private void UpdateDungeonSaveTimerUi(MapType mapType = MapType.Unknown)
-        {
-            _mainWindowViewModel.DungeonBindings.DungeonCloseTimer.Visibility = mapType == MapType.RandomDungeon ? Visibility.Visible : Visibility.Collapsed;
-        }
-
         public void ResetDungeons()
         {
             _dungeons.Clear();
@@ -150,6 +145,221 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
+        public async void RemoveDungeonAsync(string dungeonHash)
+        {
+            var dungeon = _dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
+
+            if (dungeon == null)
+            {
+                return;
+            }
+
+            var dialog = new DialogWindow(LanguageController.Translation("REMOVE_DUNGEON"), LanguageController.Translation("SURE_YOU_WANT_TO_REMOVE_DUNGEON"));
+            var dialogResult = dialog.ShowDialog();
+
+            if (dialogResult is not true)
+            {
+                return;
+            }
+
+            _ = _dungeons.Remove(dungeon);
+            await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
+        }
+
+        private void RemoveDungeonsAfterCertainNumber(List<DungeonObject> dungeons, int dungeonLimit)
+        {
+            if (_trackingController.IsMainWindowNull())
+            {
+                return;
+            }
+
+            try
+            {
+                var toDelete = dungeons?.Count - dungeonLimit;
+
+                if (toDelete <= 0)
+                {
+                    return;
+                }
+
+                for (var i = toDelete; i <= 0; i--)
+                {
+                    var dateTime = GetLowestDate(dungeons);
+                    if (dateTime != null)
+                    {
+                        var removableItem = dungeons.FirstOrDefault(x => x.EnterDungeonFirstTime == dateTime);
+                        dungeons.Remove(removableItem);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            }
+        }
+
+        private static bool IsDungeonDifferenceToAnother(DungeonObject dungeonObject, DungeonNotificationFragment dungeonNotificationFragment)
+        {
+            return dungeonObject.TotalRunTimeInSeconds != dungeonNotificationFragment.TotalRunTimeInSeconds
+                   || !dungeonObject.GuidList.SequenceEqual(dungeonNotificationFragment.GuidList)
+                   || dungeonObject.DungeonEventObjects.Count != dungeonNotificationFragment.DungeonChestsFragments.Count
+                   || dungeonObject.Status != dungeonNotificationFragment.Status
+                   || Math.Abs(dungeonObject.Fame - dungeonNotificationFragment.Fame) > 0.0d
+                   || Math.Abs(dungeonObject.ReSpec - dungeonNotificationFragment.ReSpec) > 0.0d
+                   || Math.Abs(dungeonObject.Silver - dungeonNotificationFragment.Silver) > 0.0d
+                   || Math.Abs(dungeonObject.FactionCoins - dungeonNotificationFragment.FactionCoins) > 0.0d
+                   || Math.Abs(dungeonObject.FactionFlags - dungeonNotificationFragment.FactionFlags) > 0.0d
+                   || dungeonObject.DiedInDungeon != dungeonNotificationFragment.DiedInDungeon
+                   || dungeonObject.Faction != dungeonNotificationFragment.Faction
+                   || dungeonObject.Mode != dungeonNotificationFragment.Mode
+                   || dungeonObject.CityFaction != dungeonNotificationFragment.CityFaction;
+        }
+
+        private async Task RemoveLeftOverDungeonNotificationFragments()
+        {
+            await foreach (var dungeonFragment in _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToAsyncEnumerable().ConfigureAwait(false) ?? new ConfiguredCancelableAsyncEnumerable<DungeonNotificationFragment>())
+            {
+                var dungeonObjectFound = _dungeons.Select(x => x.DungeonHash).Contains(dungeonFragment.DungeonHash);
+                if (dungeonObjectFound)
+                {
+                    continue;
+                }
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Remove(dungeonFragment);
+                });
+            }
+        }
+
+        public async Task RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
+        {
+            _ = _dungeons.RemoveAll(x => dungeonHash.Contains(x.DungeonHash));
+
+            foreach (var dungeonFragment in _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToList() ?? new List<DungeonNotificationFragment>())
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Remove(dungeonFragment);
+                });
+            }
+
+            await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
+        }
+
+        private static bool AddClusterToExistDungeon(List<DungeonObject> dungeons, Guid? currentGuid, Guid? lastGuid, out DungeonObject dungeon)
+        {
+            if (currentGuid != null && lastGuid != null && dungeons?.Any(x => x.GuidList.Contains((Guid)currentGuid)) != true)
+            {
+                var dun = dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)lastGuid));
+                dun?.GuidList.Add((Guid)currentGuid);
+
+                dungeon = dun;
+
+                return dungeons?.Any(x => x.GuidList.Contains((Guid)currentGuid)) ?? false;
+            }
+
+            dungeon = null;
+            return false;
+        }
+
+        public static DateTime? GetLowestDate(List<DungeonObject> items)
+        {
+            if (items?.Count <= 0)
+            {
+                return null;
+            }
+
+            try
+            {
+                return items?.Select(x => x.EnterDungeonFirstTime).Min();
+            }
+            catch (ArgumentNullException e)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                return null;
+            }
+        }
+
+        private async Task DungeonUiFilteringAsync()
+        {
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(
+                    x => !_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status != DungeonStatus.Active)
+                // ReSharper disable once ConstantConditionalAccessQualifier
+                ?.ToAsyncEnumerable().ForEachAsync(d =>
+                {
+                    d.Visibility = Visibility.Collapsed;
+                });
+
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(
+                    x => _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
+                // ReSharper disable once ConstantConditionalAccessQualifier
+                ?.ToAsyncEnumerable().ForEachAsync(d =>
+                {
+                    d.Visibility = Visibility.Visible;
+                });
+        }
+
+        public async Task SetOrUpdateDungeonsDataUiAsync()
+        {
+            var orderedDungeon = _dungeons.OrderBy(x => x.EnterDungeonFirstTime).ToList();
+            foreach (var dungeonObject in orderedDungeon)
+            {
+                var dungeonFragment = _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.FirstOrDefault(x => x.DungeonHash == dungeonObject.DungeonHash);
+                if (dungeonFragment != null && IsDungeonDifferenceToAnother(dungeonObject, dungeonFragment))
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        dungeonFragment.SetValues(dungeonObject);
+                        dungeonFragment.DungeonNumber = orderedDungeon.IndexOf(dungeonObject);
+                    });
+                }
+                else if (dungeonFragment == null)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var index = orderedDungeon.IndexOf(dungeonObject);
+                        var dunFragment = new DungeonNotificationFragment(index, dungeonObject.GuidList, dungeonObject.MainMapIndex, dungeonObject.EnterDungeonFirstTime);
+                        dunFragment.SetValues(dungeonObject);
+                        _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Insert(index, dunFragment);
+                    });
+                }
+            }
+
+            await RemoveLeftOverDungeonNotificationFragments().ConfigureAwait(false);
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                await SetBestDungeonTimeAsync(_mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToAsyncEnumerable());
+                await CalculateBestDungeonValues(_mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToAsyncEnumerable());
+            });
+
+            await DungeonUiFilteringAsync();
+
+            UpdateDungeonStatsUi();
+            UpdateDungeonChestsUi();
+        }
+
+        private void UpdateDungeonDataUi(DungeonObject dungeon)
+        {
+            if (dungeon == null)
+            {
+                return;
+            }
+
+            var uiDungeon = GetCurrentUiDungeon(dungeon);
+            uiDungeon?.SetValues(dungeon);
+        }
+
+        private DungeonNotificationFragment GetCurrentUiDungeon(DungeonObject dungeon)
+        {
+            return _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.FirstOrDefault(x =>
+                x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
+        }
+
+        #region Dungeon object
+
         public void SetDungeonChestOpen(int id)
         {
             if (_currentGuid != null)
@@ -175,6 +385,11 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
 
             UpdateDungeonChestsUi();
+        }
+
+        private DungeonObject GetDungeon(Guid? guid)
+        {
+            return guid == null ? null : _dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid)guid));
         }
 
         public async Task SetDungeonEventObjectInformationAsync(int id, string uniqueName)
@@ -215,32 +430,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        public async void RemoveDungeonAsync(string dungeonHash)
-        {
-            var dungeon = _dungeons.FirstOrDefault(x => x.DungeonHash.Contains(dungeonHash));
-
-            if (dungeon == null)
-            {
-                return;
-            }
-
-            var dialog = new DialogWindow(LanguageController.Translation("REMOVE_DUNGEON"), LanguageController.Translation("SURE_YOU_WANT_TO_REMOVE_DUNGEON"));
-            var dialogResult = dialog.ShowDialog();
-
-            if (dialogResult is not true)
-            {
-                return;
-            }
-
-            _ = _dungeons.Remove(dungeon);
-            await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
-        }
-
-        private DungeonObject GetDungeon(Guid? guid)
-        {
-            return guid == null ? null : _dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid)guid));
-        }
-
         private static void SetDungeonMapType(DungeonObject dungeon, MapType mapType)
         {
             switch (mapType)
@@ -271,90 +460,224 @@ namespace StatisticsAnalysisTool.Network.Manager
             }
         }
 
-        private int GetChests(DateTime? chestIsNewerAsDateTime, TreasureRarity rarity, DungeonEventObjectType dungeonEventObjectType = DungeonEventObjectType.Chest)
+        public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
         {
-            var dungeons = _dungeons.Where(x => (x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null)
-                                                && ((_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters != null
-                                                     && _mainWindowViewModel.DungeonBindings.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
-                                                    || _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters == null));
+            try
+            {
+                lock (_dungeons)
+                {
+                    var dun = _dungeons?.FirstOrDefault(x => _currentGuid != null && x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
+                    dun?.Add(value, valueType, cityFaction);
 
-            return dungeons.Select(dun => dun.DungeonEventObjects.Where(x => x.Rarity == rarity && x.ObjectType == dungeonEventObjectType)).Select(filteredChests => filteredChests.Count()).Sum();
+                    UpdateDungeonDataUi(dun);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
-        private double GetFame(DateTime? dateTime)
+        public void SetDiedIfInDungeon(DiedObject dieObject)
         {
-            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            return _dungeons.Where(
-                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
-                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
-                .Select(x => x.Fame).Sum();
+            if (_currentGuid != null && _trackingController.EntityController.LocalUserData.Username != null && dieObject.DiedName == _trackingController.EntityController.LocalUserData.Username)
+            {
+                try
+                {
+                    var item = _dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid)_currentGuid) && x.EnterDungeonFirstTime > DateTime.UtcNow.AddDays(-1));
+
+                    if (item == null)
+                    {
+                        return;
+                    }
+
+                    item.DiedName = dieObject.DiedName;
+                    item.KilledBy = dieObject.KilledBy;
+                    item.DiedInDungeon = true;
+                }
+                catch (Exception e)
+                {
+                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+                }
+            }
         }
 
-        private double GetReSpec(DateTime? dateTime)
+        #endregion
+
+        #region Best values
+
+        private static async Task CalculateBestDungeonValues(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
         {
-            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            return _dungeons.Where(
-                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
-                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
-                .Select(x => x.ReSpec).Sum();
+            if (await dungeons.CountAsync() <= 0)
+            {
+                return;
+            }
+
+            await ResetAllBestValuesAsync(dungeons);
+
+            var highestFame = await dungeons.Where(x => x is { Status: DungeonStatus.Done, Fame: > 0 }).Select(x => x?.Fame).MaxAsync();
+            var bestDungeonFame = await dungeons.FirstOrDefaultAsync(x => x.Fame.CompareTo(highestFame) == 0);
+
+            if (bestDungeonFame != null)
+            {
+                bestDungeonFame.IsBestFame = true;
+            }
+
+            var highestReSpec = await dungeons.Where(x => x is { Status: DungeonStatus.Done, ReSpec: > 0 }).Select(x => x?.ReSpec).MaxAsync();
+            var bestDungeonReSpec = await dungeons.FirstOrDefaultAsync(x => x.ReSpec.CompareTo(highestReSpec) == 0);
+
+            if (bestDungeonReSpec != null)
+            {
+                bestDungeonReSpec.IsBestReSpec = true;
+            }
+
+            var highestSilver = await dungeons.Where(x => x is { Status: DungeonStatus.Done, Silver: > 0 }).Select(x => x?.Silver).MaxAsync();
+            var bestDungeonSilver = await dungeons.FirstOrDefaultAsync(x => x.Silver.CompareTo(highestSilver) == 0);
+
+            if (bestDungeonSilver != null)
+            {
+                bestDungeonSilver.IsBestSilver = true;
+            }
+
+            var highestFactionFlags = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FactionFlags: > 0 }).Select(x => x?.FactionFlags).MaxAsync();
+            var bestDungeonFlags = await dungeons.FirstOrDefaultAsync(x => x.FactionFlags.CompareTo(highestFactionFlags) == 0);
+
+            if (bestDungeonFlags != null)
+            {
+                bestDungeonFlags.IsBestFactionFlags = true;
+            }
+
+            var highestFactionCoins = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FactionCoins: > 0 }).Select(x => x?.FactionCoins).MaxAsync();
+            var bestDungeonCoins = await dungeons.FirstOrDefaultAsync(x => x.FactionCoins.CompareTo(highestFactionCoins) == 0);
+
+            if (bestDungeonCoins != null)
+            {
+                bestDungeonCoins.IsBestFactionCoins = true;
+            }
+
+            var highestMight = await dungeons.Where(x => x is { Status: DungeonStatus.Done, Might: > 0 }).Select(x => x?.Might).MaxAsync();
+            var bestDungeonMight = await dungeons.FirstOrDefaultAsync(x => x.Might.CompareTo(highestMight) == 0);
+
+            if (bestDungeonMight != null)
+            {
+                bestDungeonMight.IsBestMight = true;
+            }
+
+            var highestFavor = await dungeons.Where(x => x is { Status: DungeonStatus.Done, Favor: > 0 }).Select(x => x?.Favor).MaxAsync();
+            var bestDungeonFavor = await dungeons.FirstOrDefaultAsync(x => x.Favor.CompareTo(highestFavor) == 0);
+
+            if (bestDungeonFavor != null)
+            {
+                bestDungeonFavor.IsBestMightPerHour = true;
+            }
+
+            var highestFamePerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FamePerHour: > 0 }).Select(x => x?.FamePerHour).MaxAsync();
+            var bestDungeonFamePerHour = await dungeons.FirstOrDefaultAsync(x => x.FamePerHour.CompareTo(highestFamePerHour) == 0);
+
+            if (bestDungeonFamePerHour != null)
+            {
+                bestDungeonFamePerHour.IsBestFamePerHour = true;
+            }
+
+            var highestReSpecPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, ReSpecPerHour: > 0 }).Select(x => x?.ReSpecPerHour).MaxAsync();
+            var bestDungeonReSpecPerHour = await dungeons.FirstOrDefaultAsync(x => x.ReSpecPerHour.CompareTo(highestReSpecPerHour) == 0);
+
+            if (bestDungeonReSpecPerHour != null)
+            {
+                bestDungeonReSpecPerHour.IsBestReSpecPerHour = true;
+            }
+
+            var highestSilverPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, SilverPerHour: > 0 }).Select(x => x?.SilverPerHour).MaxAsync();
+            var bestDungeonSilverPerHour = await dungeons.FirstOrDefaultAsync(x => x.SilverPerHour.CompareTo(highestSilverPerHour) == 0);
+
+            if (bestDungeonSilverPerHour != null)
+            {
+                bestDungeonSilverPerHour.IsBestSilverPerHour = true;
+            }
+
+            var highestFactionFlagsPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FactionFlagsPerHour: > 0 }).Select(x => x?.FactionFlagsPerHour).MaxAsync();
+            var bestDungeonFactionFlagsPerHour = await dungeons.FirstOrDefaultAsync(x => x.FactionFlagsPerHour.CompareTo(highestFactionFlagsPerHour) == 0);
+
+            if (bestDungeonFactionFlagsPerHour != null)
+            {
+                bestDungeonFactionFlagsPerHour.IsBestFactionFlagsPerHour = true;
+            }
+
+            var highestFactionCoinsPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FactionCoinsPerHour: > 0 }).Select(x => x?.FactionCoinsPerHour).MaxAsync();
+            var bestDungeonFactionCoinsPerHour = await dungeons.FirstOrDefaultAsync(x => x.FactionCoinsPerHour.CompareTo(highestFactionCoinsPerHour) == 0);
+
+            if (bestDungeonFactionCoinsPerHour != null)
+            {
+                bestDungeonFactionCoinsPerHour.IsBestFactionCoinsPerHour = true;
+            }
+
+            var highestMightPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, MightPerHour: > 0 }).Select(x => x?.MightPerHour).MaxAsync();
+            var bestDungeonMightPerHour = await dungeons.FirstOrDefaultAsync(x => x.MightPerHour.CompareTo(highestMightPerHour) == 0);
+
+            if (bestDungeonMightPerHour != null)
+            {
+                bestDungeonMightPerHour.IsBestMightPerHour = true;
+            }
+
+            var highestFavorPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FavorPerHour: > 0 }).Select(x => x?.FavorPerHour).MaxAsync();
+            var bestDungeonFavorPerHour = await dungeons.FirstOrDefaultAsync(x => x.FavorPerHour.CompareTo(highestFavorPerHour) == 0);
+
+            if (bestDungeonFavorPerHour != null)
+            {
+                bestDungeonFavorPerHour.IsBestFavorPerHour = true;
+            }
         }
 
-        private double GetSilver(DateTime? dateTime)
+        private static async Task SetBestDungeonTimeAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
         {
-            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            return _dungeons.Where(
-                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
-                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
-                .Select(x => x.Silver).Sum();
+            if (await dungeons.CountAsync() <= 0)
+            {
+                return;
+            }
+
+            try
+            {
+                await dungeons.Where(x => x?.IsBestTime == true).ForEachAsync(x => x.IsBestTime = false).ConfigureAwait(false);
+                var bestTime = await dungeons.Where(x => x?.DungeonChestsFragments?.Any(y => y?.IsBossChest ?? false) == true).MinAsync(x => x?.TotalRunTimeInSeconds).ConfigureAwait(false);
+                var bestTimeDungeon = await dungeons.FirstOrDefaultAsync(x => x.TotalRunTimeInSeconds == bestTime);
+
+                if (bestTimeDungeon != null)
+                {
+                    bestTimeDungeon.IsBestTime = true;
+                }
+            }
+            catch
+            {
+                // ignore
+            }
         }
 
-        private double GetMight(DateTime? dateTime)
+        private static async Task ResetAllBestValuesAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
         {
-            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            return _dungeons.Where(
-                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
-                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
-                .Select(x => x.Might).Sum();
+            // ReSharper disable once PossibleNullReferenceException
+            await (dungeons?.ForEachAsync(x =>
+            {
+                x.IsBestFame = false;
+                x.IsBestReSpec = false;
+                x.IsBestSilver = false;
+                x.IsBestFactionFlags = false;
+                x.IsBestFactionCoins = false;
+                x.IsBestFamePerHour = false;
+                x.IsBestReSpecPerHour = false;
+                x.IsBestSilverPerHour = false;
+                x.IsBestFactionFlagsPerHour = false;
+                x.IsBestFactionCoinsPerHour = false;
+                x.IsBestMight = false;
+                x.IsBestMightPerHour = false;
+                x.IsBestFavor = false;
+                x.IsBestFavorPerHour = false;
+            })).ConfigureAwait(false);
         }
 
-        private double GetFavor(DateTime? dateTime)
-        {
-            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            return _dungeons.Where(
-                x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
-                   || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
-                .Select(x => x.Favor).Sum();
-        }
+        #endregion
 
-        private int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
-        {
-            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            return _dungeons.Count(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)));
-        }
-
-        private int GetDungeonsRunTime(DateTime dungeonIsNewerAsDateTime)
-        {
-            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            return _dungeons.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)))
-                .ToList()
-                .Select(x => x.TotalRunTimeInSeconds)
-                .Sum();
-        }
-
-        private DungeonLoot GetBestLootedItem(DateTime dungeonIsNewerAsDateTime)
-        {
-            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            var filteredDungeons = _dungeons?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode)).ToList();
-            var mostExpensiveLoot = filteredDungeons?.MaxBy(x => x.MostExpensiveLoot?.EstimatedMarketValueInternal);
-            return mostExpensiveLoot?.MostExpensiveLoot;
-        }
-
-        private long GetLootInSilver(DateTime dungeonIsNewerAsDateTime)
-        {
-            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            var filteredDungeons = _dungeons?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode)).ToList();
-            return filteredDungeons?.Sum(x => x.TotalLootInSilver) ?? 0;
-        }
+        #region Stats
 
         public void UpdateDungeonStatsUi()
         {
@@ -480,371 +803,92 @@ namespace StatisticsAnalysisTool.Network.Manager
             _mainWindowViewModel.DungeonBindings.DungeonStatsTotal.OpenedLegendaryBookChests = GetChests(null, TreasureRarity.Legendary, DungeonEventObjectType.BookChest);
         }
 
-        public void SetDiedIfInDungeon(DiedObject dieObject)
+        private int GetChests(DateTime? chestIsNewerAsDateTime, TreasureRarity rarity, DungeonEventObjectType dungeonEventObjectType = DungeonEventObjectType.Chest)
         {
-            if (_currentGuid != null && _trackingController.EntityController.LocalUserData.Username != null && dieObject.DiedName == _trackingController.EntityController.LocalUserData.Username)
-            {
-                try
-                {
-                    var item = _dungeons.FirstOrDefault(x => x.GuidList.Contains((Guid)_currentGuid) && x.EnterDungeonFirstTime > DateTime.UtcNow.AddDays(-1));
+            var dungeons = _dungeons.Where(x => (x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null)
+                                                && ((_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters != null
+                                                     && _mainWindowViewModel.DungeonBindings.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
+                                                    || _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters == null));
 
-                    if (item == null)
-                    {
-                        return;
-                    }
-
-                    item.DiedName = dieObject.DiedName;
-                    item.KilledBy = dieObject.KilledBy;
-                    item.DiedInDungeon = true;
-                }
-                catch (Exception e)
-                {
-                    ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                    Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                }
-            }
+            return dungeons.Select(dun => dun.DungeonEventObjects.Where(x => x.Rarity == rarity && x.ObjectType == dungeonEventObjectType)).Select(filteredChests => filteredChests.Count()).Sum();
         }
 
-        private void RemoveDungeonsAfterCertainNumber(List<DungeonObject> dungeons, int dungeonLimit)
+        private double GetFame(DateTime? dateTime)
         {
-            if (_trackingController.IsMainWindowNull())
-            {
-                return;
-            }
-
-            try
-            {
-                var toDelete = dungeons?.Count - dungeonLimit;
-
-                if (toDelete <= 0)
-                {
-                    return;
-                }
-
-                for (var i = toDelete; i <= 0; i--)
-                {
-                    var dateTime = GetLowestDate(dungeons);
-                    if (dateTime != null)
-                    {
-                        var removableItem = dungeons.FirstOrDefault(x => x.EnterDungeonFirstTime == dateTime);
-                        dungeons.Remove(removableItem);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-            }
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
+                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                .Select(x => x.Fame).Sum();
         }
 
-        private static async Task SetBestDungeonTimeAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
+        private double GetReSpec(DateTime? dateTime)
         {
-            if (await dungeons.CountAsync() <= 0)
-            {
-                return;
-            }
-
-            try
-            {
-                await dungeons.Where(x => x?.IsBestTime == true).ForEachAsync(x => x.IsBestTime = false).ConfigureAwait(false);
-                var bestTime = await dungeons.Where(x => x?.DungeonChestsFragments?.Any(y => y?.IsBossChest ?? false) == true).MinAsync(x => x?.TotalRunTimeInSeconds).ConfigureAwait(false);
-                var bestTimeDungeon = await dungeons.FirstOrDefaultAsync(x => x.TotalRunTimeInSeconds == bestTime);
-
-                if (bestTimeDungeon != null)
-                {
-                    bestTimeDungeon.IsBestTime = true;
-                }
-            }
-            catch
-            {
-                // ignore
-            }
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
+                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                .Select(x => x.ReSpec).Sum();
         }
 
-        private static async Task ResetAllBestValuesAsync(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
+        private double GetSilver(DateTime? dateTime)
         {
-            // ReSharper disable once PossibleNullReferenceException
-            await (dungeons?.ForEachAsync(x =>
-            {
-                x.IsBestFame = false;
-                x.IsBestReSpec = false;
-                x.IsBestSilver = false;
-                x.IsBestFactionFlags = false;
-                x.IsBestFactionCoins = false;
-                x.IsBestFamePerHour = false;
-                x.IsBestReSpecPerHour = false;
-                x.IsBestSilverPerHour = false;
-                x.IsBestFactionFlagsPerHour = false;
-                x.IsBestFactionCoinsPerHour = false;
-                x.IsBestMight = false;
-                x.IsBestMightPerHour = false;
-                x.IsBestFavor = false;
-                x.IsBestFavorPerHour = false;
-            })).ConfigureAwait(false);
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
+                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                .Select(x => x.Silver).Sum();
         }
 
-        private static async Task CalculateBestDungeonValues(IAsyncEnumerable<DungeonNotificationFragment> dungeons)
+        private double GetMight(DateTime? dateTime)
         {
-            if (await dungeons.CountAsync() <= 0)
-            {
-                return;
-            }
-
-            await ResetAllBestValuesAsync(dungeons);
-
-            var highestFame = await dungeons.Where(x => x is { Status: DungeonStatus.Done, Fame: > 0 }).Select(x => x?.Fame).MaxAsync();
-            var bestDungeonFame = await dungeons.FirstOrDefaultAsync(x => x.Fame.CompareTo(highestFame) == 0);
-
-            if (bestDungeonFame != null)
-            {
-                bestDungeonFame.IsBestFame = true;
-            }
-
-            var highestReSpec = await dungeons.Where(x => x is { Status: DungeonStatus.Done, ReSpec: > 0 }).Select(x => x?.ReSpec).MaxAsync();
-            var bestDungeonReSpec = await dungeons.FirstOrDefaultAsync(x => x.ReSpec.CompareTo(highestReSpec) == 0);
-
-            if (bestDungeonReSpec != null)
-            {
-                bestDungeonReSpec.IsBestReSpec = true;
-            }
-
-            var highestSilver = await dungeons.Where(x => x is { Status: DungeonStatus.Done, Silver: > 0 }).Select(x => x?.Silver).MaxAsync();
-            var bestDungeonSilver = await dungeons.FirstOrDefaultAsync(x => x.Silver.CompareTo(highestSilver) == 0);
-
-            if (bestDungeonSilver != null)
-            {
-                bestDungeonSilver.IsBestSilver = true;
-            }
-
-            var highestFactionFlags = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FactionFlags: > 0 }).Select(x => x?.FactionFlags).MaxAsync();
-            var bestDungeonFlags = await dungeons.FirstOrDefaultAsync(x => x.FactionFlags.CompareTo(highestFactionFlags) == 0);
-
-            if (bestDungeonFlags != null)
-            {
-                bestDungeonFlags.IsBestFactionFlags = true;
-            }
-
-            var highestFactionCoins = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FactionCoins: > 0 }).Select(x => x?.FactionCoins).MaxAsync();
-            var bestDungeonCoins = await dungeons.FirstOrDefaultAsync(x => x.FactionCoins.CompareTo(highestFactionCoins) == 0);
-
-            if (bestDungeonCoins != null)
-            {
-                bestDungeonCoins.IsBestFactionCoins = true;
-            }
-
-            var highestMight = await dungeons.Where(x => x is { Status: DungeonStatus.Done, Might: > 0 }).Select(x => x?.Might).MaxAsync();
-            var bestDungeonMight = await dungeons.FirstOrDefaultAsync(x => x.Might.CompareTo(highestMight) == 0);
-
-            if (bestDungeonMight != null)
-            {
-                bestDungeonMight.IsBestMight = true;
-            }
-
-            var highestFavor = await dungeons.Where(x => x is { Status: DungeonStatus.Done, Favor: > 0 }).Select(x => x?.Favor).MaxAsync();
-            var bestDungeonFavor = await dungeons.FirstOrDefaultAsync(x => x.Favor.CompareTo(highestFavor) == 0);
-
-            if (bestDungeonFavor != null)
-            {
-                bestDungeonFavor.IsBestMightPerHour = true;
-            }
-
-            var highestFamePerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FamePerHour: > 0 }).Select(x => x?.FamePerHour).MaxAsync();
-            var bestDungeonFamePerHour = await dungeons.FirstOrDefaultAsync(x => x.FamePerHour.CompareTo(highestFamePerHour) == 0);
-
-            if (bestDungeonFamePerHour != null)
-            {
-                bestDungeonFamePerHour.IsBestFamePerHour = true;
-            }
-
-            var highestReSpecPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, ReSpecPerHour: > 0 }).Select(x => x?.ReSpecPerHour).MaxAsync();
-            var bestDungeonReSpecPerHour = await dungeons.FirstOrDefaultAsync(x => x.ReSpecPerHour.CompareTo(highestReSpecPerHour) == 0);
-
-            if (bestDungeonReSpecPerHour != null)
-            {
-                bestDungeonReSpecPerHour.IsBestReSpecPerHour = true;
-            }
-
-            var highestSilverPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, SilverPerHour: > 0 }).Select(x => x?.SilverPerHour).MaxAsync();
-            var bestDungeonSilverPerHour = await dungeons.FirstOrDefaultAsync(x => x.SilverPerHour.CompareTo(highestSilverPerHour) == 0);
-
-            if (bestDungeonSilverPerHour != null)
-            {
-                bestDungeonSilverPerHour.IsBestSilverPerHour = true;
-            }
-
-            var highestFactionFlagsPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FactionFlagsPerHour: > 0 }).Select(x => x?.FactionFlagsPerHour).MaxAsync();
-            var bestDungeonFactionFlagsPerHour = await dungeons.FirstOrDefaultAsync(x => x.FactionFlagsPerHour.CompareTo(highestFactionFlagsPerHour) == 0);
-
-            if (bestDungeonFactionFlagsPerHour != null)
-            {
-                bestDungeonFactionFlagsPerHour.IsBestFactionFlagsPerHour = true;
-            }
-
-            var highestFactionCoinsPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FactionCoinsPerHour: > 0 }).Select(x => x?.FactionCoinsPerHour).MaxAsync();
-            var bestDungeonFactionCoinsPerHour = await dungeons.FirstOrDefaultAsync(x => x.FactionCoinsPerHour.CompareTo(highestFactionCoinsPerHour) == 0);
-
-            if (bestDungeonFactionCoinsPerHour != null)
-            {
-                bestDungeonFactionCoinsPerHour.IsBestFactionCoinsPerHour = true;
-            }
-
-            var highestMightPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, MightPerHour: > 0 }).Select(x => x?.MightPerHour).MaxAsync();
-            var bestDungeonMightPerHour = await dungeons.FirstOrDefaultAsync(x => x.MightPerHour.CompareTo(highestMightPerHour) == 0);
-
-            if (bestDungeonMightPerHour != null)
-            {
-                bestDungeonMightPerHour.IsBestMightPerHour = true;
-            }
-
-            var highestFavorPerHour = await dungeons.Where(x => x is { Status: DungeonStatus.Done, FavorPerHour: > 0 }).Select(x => x?.FavorPerHour).MaxAsync();
-            var bestDungeonFavorPerHour = await dungeons.FirstOrDefaultAsync(x => x.FavorPerHour.CompareTo(highestFavorPerHour) == 0);
-
-            if (bestDungeonFavorPerHour != null)
-            {
-                bestDungeonFavorPerHour.IsBestFavorPerHour = true;
-            }
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
+                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                .Select(x => x.Might).Sum();
         }
 
-        public async Task SetOrUpdateDungeonsDataUiAsync()
+        private double GetFavor(DateTime? dateTime)
         {
-            var orderedDungeon = _dungeons.OrderBy(x => x.EnterDungeonFirstTime).ToList();
-            foreach (var dungeonObject in orderedDungeon)
-            {
-                var dungeonFragment = _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.FirstOrDefault(x => x.DungeonHash == dungeonObject.DungeonHash);
-                if (dungeonFragment != null && IsDungeonDifferenceToAnother(dungeonObject, dungeonFragment))
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        dungeonFragment.SetValues(dungeonObject);
-                        dungeonFragment.DungeonNumber = orderedDungeon.IndexOf(dungeonObject);
-                    });
-                }
-                else if (dungeonFragment == null)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        var index = orderedDungeon.IndexOf(dungeonObject);
-                        var dunFragment = new DungeonNotificationFragment(index, dungeonObject.GuidList, dungeonObject.MainMapIndex, dungeonObject.EnterDungeonFirstTime);
-                        dunFragment.SetValues(dungeonObject);
-                        _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Insert(index, dunFragment);
-                    });
-                }
-            }
-
-            await RemoveLeftOverDungeonNotificationFragments().ConfigureAwait(false);
-            await Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                await SetBestDungeonTimeAsync(_mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToAsyncEnumerable());
-                await CalculateBestDungeonValues(_mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToAsyncEnumerable());
-            });
-
-            await DungeonUiFilteringAsync();
-
-            UpdateDungeonStatsUi();
-            UpdateDungeonChestsUi();
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(
+                x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
+                   || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                .Select(x => x.Favor).Sum();
         }
 
-        private static bool IsDungeonDifferenceToAnother(DungeonObject dungeonObject, DungeonNotificationFragment dungeonNotificationFragment)
+        private int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
         {
-            return dungeonObject.TotalRunTimeInSeconds != dungeonNotificationFragment.TotalRunTimeInSeconds
-                   || !dungeonObject.GuidList.SequenceEqual(dungeonNotificationFragment.GuidList)
-                   || dungeonObject.DungeonEventObjects.Count != dungeonNotificationFragment.DungeonChestsFragments.Count
-                   || dungeonObject.Status != dungeonNotificationFragment.Status
-                   || Math.Abs(dungeonObject.Fame - dungeonNotificationFragment.Fame) > 0.0d
-                   || Math.Abs(dungeonObject.ReSpec - dungeonNotificationFragment.ReSpec) > 0.0d
-                   || Math.Abs(dungeonObject.Silver - dungeonNotificationFragment.Silver) > 0.0d
-                   || Math.Abs(dungeonObject.FactionCoins - dungeonNotificationFragment.FactionCoins) > 0.0d
-                   || Math.Abs(dungeonObject.FactionFlags - dungeonNotificationFragment.FactionFlags) > 0.0d
-                   || dungeonObject.DiedInDungeon != dungeonNotificationFragment.DiedInDungeon
-                   || dungeonObject.Faction != dungeonNotificationFragment.Faction
-                   || dungeonObject.Mode != dungeonNotificationFragment.Mode
-                   || dungeonObject.CityFaction != dungeonNotificationFragment.CityFaction;
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Count(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)));
         }
 
-        private async Task DungeonUiFilteringAsync()
+        private int GetDungeonsRunTime(DateTime dungeonIsNewerAsDateTime)
         {
-            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(
-                    x => !_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status != DungeonStatus.Active)
-                // ReSharper disable once ConstantConditionalAccessQualifier
-                ?.ToAsyncEnumerable().ForEachAsync(d =>
-                {
-                    d.Visibility = Visibility.Collapsed;
-                });
-
-            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(
-                    x => _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
-                // ReSharper disable once ConstantConditionalAccessQualifier
-                ?.ToAsyncEnumerable().ForEachAsync(d =>
-                {
-                    d.Visibility = Visibility.Visible;
-                });
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            return _dungeons.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)))
+                .ToList()
+                .Select(x => x.TotalRunTimeInSeconds)
+                .Sum();
         }
 
-        private async Task RemoveLeftOverDungeonNotificationFragments()
+        private DungeonLoot GetBestLootedItem(DateTime dungeonIsNewerAsDateTime)
         {
-            await foreach (var dungeonFragment in _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToAsyncEnumerable().ConfigureAwait(false) ?? new ConfiguredCancelableAsyncEnumerable<DungeonNotificationFragment>())
-            {
-                var dungeonObjectFound = _dungeons.Select(x => x.DungeonHash).Contains(dungeonFragment.DungeonHash);
-                if (dungeonObjectFound)
-                {
-                    continue;
-                }
-
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Remove(dungeonFragment);
-                });
-            }
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            var filteredDungeons = _dungeons?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode)).ToList();
+            var mostExpensiveLoot = filteredDungeons?.MaxBy(x => x.MostExpensiveLoot?.EstimatedMarketValueInternal);
+            return mostExpensiveLoot?.MostExpensiveLoot;
         }
 
-        public async Task RemoveDungeonByHashAsync(IEnumerable<string> dungeonHash)
+        private long GetLootInSilver(DateTime dungeonIsNewerAsDateTime)
         {
-            _ = _dungeons.RemoveAll(x => dungeonHash.Contains(x.DungeonHash));
-
-            foreach (var dungeonFragment in _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.ToList() ?? new List<DungeonNotificationFragment>())
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Remove(dungeonFragment);
-                });
-            }
-
-            await SetOrUpdateDungeonsDataUiAsync().ConfigureAwait(false);
+            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            var filteredDungeons = _dungeons?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode)).ToList();
+            return filteredDungeons?.Sum(x => x.TotalLootInSilver) ?? 0;
         }
 
-        private void UpdateDungeonDataUi(DungeonObject dungeon)
-        {
-            if (dungeon == null)
-            {
-                return;
-            }
-
-            var uiDungeon = GetCurrentUiDungeon(dungeon);
-            uiDungeon?.SetValues(dungeon);
-        }
-
-        private DungeonNotificationFragment GetCurrentUiDungeon(DungeonObject dungeon)
-        {
-            return _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.FirstOrDefault(x =>
-                x.GuidList.Contains(dungeon.GuidList.FirstOrDefault()) && x.EnterDungeonFirstTime.Equals(dungeon.EnterDungeonFirstTime));
-        }
-
-        private static bool AddClusterToExistDungeon(List<DungeonObject> dungeons, Guid? currentGuid, Guid? lastGuid, out DungeonObject dungeon)
-        {
-            if (currentGuid != null && lastGuid != null && dungeons?.Any(x => x.GuidList.Contains((Guid)currentGuid)) != true)
-            {
-                var dun = dungeons?.FirstOrDefault(x => x.GuidList.Contains((Guid)lastGuid));
-                dun?.GuidList.Add((Guid)currentGuid);
-
-                dungeon = dun;
-
-                return dungeons?.Any(x => x.GuidList.Contains((Guid)currentGuid)) ?? false;
-            }
-
-            dungeon = null;
-            return false;
-        }
+        #endregion
 
         #region Tier / Level recognize
 
@@ -859,7 +903,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             {
                 return;
             }
-            
+
             if (mobIndex is null || ClusterController.CurrentCluster.Guid != currentGuid)
             {
                 return;
@@ -896,45 +940,8 @@ namespace StatisticsAnalysisTool.Network.Manager
                 // ignored
             }
         }
-        
+
         #endregion
-
-        public void AddValueToDungeon(double value, ValueType valueType, CityFaction cityFaction = CityFaction.Unknown)
-        {
-            try
-            {
-                lock (_dungeons)
-                {
-                    var dun = _dungeons?.FirstOrDefault(x => _currentGuid != null && x.GuidList.Contains((Guid)_currentGuid) && x.Status == DungeonStatus.Active);
-                    dun?.Add(value, valueType, cityFaction);
-
-                    UpdateDungeonDataUi(dun);
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-        }
-
-        public static DateTime? GetLowestDate(List<DungeonObject> items)
-        {
-            if (items?.Count <= 0)
-            {
-                return null;
-            }
-
-            try
-            {
-                return items?.Select(x => x.EnterDungeonFirstTime).Min();
-            }
-            catch (ArgumentNullException e)
-            {
-                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
-                return null;
-            }
-        }
 
         #region Dungeon loot tracking
 
@@ -1029,7 +1036,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 Log.Error(MethodBase.GetCurrentMethod()?.DeclaringType, e);
             }
         }
-        
+
         public void ResetLocalPlayerDiscoveredLoot()
         {
             _discoveredLoot.Clear();
@@ -1037,8 +1044,17 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #endregion
 
+        #region Dungeon timer
+
+        private void UpdateDungeonSaveTimerUi(MapType mapType = MapType.Unknown)
+        {
+            _mainWindowViewModel.DungeonBindings.DungeonCloseTimer.Visibility = mapType == MapType.RandomDungeon ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        #endregion
+
         #region Helper methods
-        
+
         private bool ExistDungeon(Guid? mapGuid)
         {
             return mapGuid != null && _dungeons.Any(x => x.GuidList.Contains((Guid)mapGuid));
