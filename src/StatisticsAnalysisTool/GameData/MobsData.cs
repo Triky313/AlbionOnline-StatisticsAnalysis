@@ -44,7 +44,7 @@ public static class MobsData
 
     private static MobJsonObject GetMobJsonObjectByIndex(int index)
     {
-        return _mobs.IsInBounds(index) ? _mobs?.ElementAt((int) index) : new MobJsonObject();
+        return _mobs.IsInBounds(index) ? _mobs?.ElementAt(index) : new MobJsonObject();
     }
     
     public static bool GetDatFromLocalFile()

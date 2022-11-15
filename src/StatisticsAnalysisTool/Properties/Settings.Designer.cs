@@ -52,8 +52,7 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LEM458PZ4FV4" +
-            "C&source=url")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC")]
         public string DonateUrl {
             get {
                 return ((string)(this["DonateUrl"]));

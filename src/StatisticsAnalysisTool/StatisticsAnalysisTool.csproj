@@ -235,6 +235,9 @@
     <Resource Include="Assets\outpost_chest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\paypal-QR-Code.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\purple_glow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -600,6 +603,7 @@
     <None Remove="Assets\MiniMapMarker\solo_dungeon.png" />
     <None Remove="Assets\openworld_chests.png" />
     <None Remove="Assets\outpost_chest.png" />
+    <None Remove="Assets\paypal-QR-Code.png" />
     <None Remove="Assets\purple_glow.png" />
     <None Remove="Assets\repair_cross.png" />
     <None Remove="Assets\sat-icon.png" />
