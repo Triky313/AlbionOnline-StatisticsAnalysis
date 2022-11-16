@@ -304,7 +304,6 @@ namespace StatisticsAnalysisTool.Network.Manager
                 _mainWindowViewModel?.MailMonitoringBindings?.Mails?.AddRange(mails.AsEnumerable());
                 _mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Refresh();
                 _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(mails);
-
             }, DispatcherPriority.Background, CancellationToken.None);
         }
 
