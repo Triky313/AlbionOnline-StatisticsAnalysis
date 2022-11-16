@@ -159,17 +159,16 @@ public class TrackingController : ITrackingController
                 await _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToAsyncEnumerable().Where(x =>
                     (_notificationTypesFilters?.Contains(x.Type) ?? true)
                     &&
-                    (
-                        x.Fragment is OtherGrabbedLootNotificationFragment fragment &&
-                        (fragment.LootedByName.ToLower().Contains(text.ToLower())
-                         || fragment.LocalizedName.ToLower().Contains(text.ToLower())
-                         || fragment.LootedFromName.ToLower().Contains(text.ToLower())
-                        )
-                        ||
-                        x.Fragment is KillNotificationFragment killFragment &&
-                        (killFragment.Died.ToLower().Contains(text.ToLower())
-                         || killFragment.KilledBy.ToLower().Contains(text.ToLower())
-                        )
+                    (x.Fragment is OtherGrabbedLootNotificationFragment fragment &&
+                     (fragment.LootedByName.ToLower().Contains(text.ToLower())
+                      || fragment.LocalizedName.ToLower().Contains(text.ToLower())
+                      || fragment.LootedFromName.ToLower().Contains(text.ToLower())
+                     )
+                     ||
+                     x.Fragment is KillNotificationFragment killFragment &&
+                     (killFragment.Died.ToLower().Contains(text.ToLower())
+                      || killFragment.KilledBy.ToLower().Contains(text.ToLower())
+                     )
                     )
                     && (IsLootFromMobShown || x.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment)
                 ).ForEachAsync(d =>

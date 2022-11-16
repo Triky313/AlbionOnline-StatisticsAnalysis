@@ -72,7 +72,7 @@ public class UserTrackingBindings : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
+
     public Visibility UsernameInformationVisibility
     {
         get => _usernameInformationVisibility;
@@ -122,7 +122,6 @@ public class UserTrackingBindings : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
 
     public event PropertyChangedEventHandler PropertyChanged;
 

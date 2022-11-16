@@ -64,12 +64,10 @@ public class UpdateFameEvent
                 IsBonusFactorActive = (BonusFactorInPercent > 0);
             }
 
-
             if (parameters.ContainsKey(8))
             {
                 UsedBagInsightItemIndex = parameters[8].ObjectToLong() ?? -1;
             }
-
 
             if (parameters.ContainsKey(10))
             {
