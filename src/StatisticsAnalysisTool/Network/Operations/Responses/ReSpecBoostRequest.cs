@@ -24,7 +24,6 @@ public class ReSpecBoostRequest
             {
                 IsReSpecBoostActive = parameters[1].ObjectToBool();
             }
-            
         }
         catch (Exception e)
         {
