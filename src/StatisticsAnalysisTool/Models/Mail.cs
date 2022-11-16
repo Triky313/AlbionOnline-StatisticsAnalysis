@@ -1,26 +1,25 @@
 ﻿using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Properties;
+using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.GameData;
-using StatisticsAnalysisTool.ViewModels;
 using System.Windows.Input;
-using System.Windows;
 
 namespace StatisticsAnalysisTool.Models;
 
 public class Mail : IComparable<Mail>, INotifyPropertyChanged
 {
     private bool? _isSelectedForDeletion = false;
-    
+
     public long Tick { get; set; }
     [JsonIgnore]
-    public DateTime Timestamp => new (Tick);
+    public DateTime Timestamp => new(Tick);
     public Guid Guid { get; set; }
     public long MailId { get; set; }
     public string ClusterIndex { get; set; }
@@ -35,7 +34,7 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
             {
                 return $"{ClusterIndex.Split("_")[1]} ({LanguageController.Translation("HIDEOUT")})";
             }
-            
+
             if (Location == MarketLocation.BlackMarket)
             {
                 return "Black Market";
@@ -90,10 +89,12 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
     public static string TranslationTax => LanguageController.Translation("TAX");
     [JsonIgnore]
     public static string TranslationSetupTax => LanguageController.Translation("SETUP_TAX");
-    [JsonIgnore] 
+    [JsonIgnore]
     public static string TranslationSelectToDelete => LanguageController.Translation("SELECT_TO_DELETE");
-    [JsonIgnore] 
+    [JsonIgnore]
     public static string TranslationFrom => LanguageController.Translation("FROM");
+    [JsonIgnore]
+    public static string TranslationTotalPriceWithDeductedTaxes => LanguageController.Translation("TOTAL_PRICE_WITH_DEDUCTED_TAXES");
 
     #endregion
 
@@ -107,7 +108,7 @@ public class Mail : IComparable<Mail>, INotifyPropertyChanged
         if (guidComparison != 0) return guidComparison;
         return MailId.CompareTo(other.MailId);
     }
-    
+
     #region Commands
 
     public void OpenItemWindow(object value)
