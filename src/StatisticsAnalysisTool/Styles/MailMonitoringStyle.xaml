@@ -526,8 +526,19 @@
                                 </Grid>
                                 <Grid Width="160">
                                     <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPriceWithDeductedTaxes.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
-                                           Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" ToolTip="{Binding MailContent.TotalPrice}" />
+                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                           Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0">
+                                        <TextBlock.ToolTip>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}: {1:N0}">
+                                                        <Binding Path="TranslationTotalPriceWithDeductedTaxes" IsAsync="True" />
+                                                        <Binding Path="MailContent.TotalPriceWithDeductedTaxes.DoubleValue" IsAsync="True" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
                                 </Grid>
                                 <Grid Width="160">
                                     <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />

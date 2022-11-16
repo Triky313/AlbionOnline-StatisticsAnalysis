@@ -674,4 +674,5 @@
 	<translation name="THANKS">Danke</translation>
 	<translation name="THANK_YOU">Vielen Dank</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Dungeon geschlossen Sound aktiv</translation>
+	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Gesamtpreis ohne Steuern</translation>
 </translations>
