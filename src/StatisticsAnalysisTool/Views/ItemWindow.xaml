@@ -168,7 +168,7 @@
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <StackPanel>
                                         <Label Margin="5,10,5,0" Content="{Binding Translation.RequiredResources, FallbackValue=REQUIRED__RESOURCES}" Style="{StaticResource Label.Crafting}" />
-                                        <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}"/>
+                                        <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}" ItemTemplate="{StaticResource RequiredResourceTemplate}" />
                                     </StackPanel>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <ContentControl Visibility="{Binding RequiredJournalVisibility}" ContentTemplate="{StaticResource RequiredJournalTemplate}" Content="{Binding RequiredJournal}" />

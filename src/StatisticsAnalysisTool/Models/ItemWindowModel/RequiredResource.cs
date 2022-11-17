@@ -30,6 +30,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
         private double _weight;
         private double _totalWeight;
+        private bool _isTomeOfInsightResource;
 
         public RequiredResource(ItemWindowViewModel itemWindowViewModel)
         {
@@ -91,6 +92,16 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _isArtifactResource = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTomeOfInsightResource
+        {
+            get => _isTomeOfInsightResource;
+            set
+            {
+                _isTomeOfInsightResource = value;
                 OnPropertyChanged();
             }
         }
