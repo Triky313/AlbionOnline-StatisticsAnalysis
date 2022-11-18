@@ -4,8 +4,7 @@
                     xmlns:enum="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:itemWindowModel="clr-namespace:StatisticsAnalysisTool.Models.ItemWindowModel"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
-                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
-                    xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels">
+                    xmlns:models="clr-namespace:StatisticsAnalysisTool.Models">
 
     <Style x:Key="ListView.Grid.Item.Price" TargetType="Grid">
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -312,7 +311,7 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
 
-    <DataTemplate DataType="{x:Type itemWindowModel:RequiredResource}">
+    <DataTemplate x:Key="RequiredResourceTemplate" DataType="{x:Type itemWindowModel:RequiredResource}">
         <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
             <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,0,0,0" VerticalAlignment="Top" />
             <StackPanel Orientation="Vertical">
