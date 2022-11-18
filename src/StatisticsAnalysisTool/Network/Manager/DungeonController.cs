@@ -10,6 +10,7 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -294,7 +295,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 });
 
             await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(
-                    x => _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
+                    x => _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
                 {

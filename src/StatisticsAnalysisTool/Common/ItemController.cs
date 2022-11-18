@@ -8,7 +8,6 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -440,7 +439,6 @@ public static class ItemController
 
     public static async Task SetFullItemInfoToItems()
     {
-        var sw = Stopwatch.StartNew();
         var tasks = await Items.ToAsyncEnumerable()
             .Select(item => Task.Run(() =>
             {
@@ -451,7 +449,6 @@ public static class ItemController
             .ToListAsync();
 
         await Task.WhenAll(tasks);
-        Debug.Print($"{sw.ElapsedMilliseconds}");
     }
 
     private static ItemJsonObject GetSpecificItemInfo(string uniqueName)
