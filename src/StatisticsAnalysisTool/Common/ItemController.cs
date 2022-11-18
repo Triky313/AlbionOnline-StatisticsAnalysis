@@ -8,11 +8,13 @@ using StatisticsAnalysisTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -73,12 +75,7 @@ namespace StatisticsAnalysisTool.Common
 
         public static int GetItemTier(Item item)
         {
-            if (item?.UniqueName == null)
-            {
-                return -1;
-            }
-
-            var itemNameTierText = item.UniqueName?.Split('_')[0];
+            var itemNameTierText = item?.UniqueName?.Split('_')[0];
             if (itemNameTierText != null && itemNameTierText[..1] == "T" && int.TryParse(itemNameTierText.AsSpan(1, 1), out var result))
             {
                 return result;
@@ -86,7 +83,7 @@ namespace StatisticsAnalysisTool.Common
 
             return -1;
         }
-        
+
         #endregion
 
         #region Item value
@@ -107,20 +104,20 @@ namespace StatisticsAnalysisTool.Common
                     return (simpleItem.CraftingRequirements ?? new List<CraftingRequirements>())
                         .Sum(craftingRequirement => GetItemValueByCraftingRequirements(craftingRequirement, level));
                 case ConsumableItem consumableItem:
-                    return GetItemValueByCraftingRequirements(level > 0 
-                        ? GetCraftingRequirementsByEnchantment(consumableItem.Enchantments?.Enchantment, level) 
+                    return GetItemValueByCraftingRequirements(level > 0
+                        ? GetCraftingRequirementsByEnchantment(consumableItem.Enchantments?.Enchantment, level)
                         : consumableItem.CraftingRequirements?.FirstOrDefault(), level);
                 case ConsumableFromInventoryItem consumableFromInventoryItem:
-                    return GetItemValueByCraftingRequirements(level > 0 
-                        ? GetCraftingRequirementsByEnchantment(consumableFromInventoryItem.Enchantments?.Enchantment, level) 
+                    return GetItemValueByCraftingRequirements(level > 0
+                        ? GetCraftingRequirementsByEnchantment(consumableFromInventoryItem.Enchantments?.Enchantment, level)
                         : consumableFromInventoryItem.CraftingRequirements?.FirstOrDefault(), level);
                 case EquipmentItem equipmentItem:
-                    return GetItemValueByCraftingRequirements(level > 0 
-                        ? GetCraftingRequirementsByEnchantment(equipmentItem.Enchantments?.Enchantment, level) 
+                    return GetItemValueByCraftingRequirements(level > 0
+                        ? GetCraftingRequirementsByEnchantment(equipmentItem.Enchantments?.Enchantment, level)
                         : equipmentItem.CraftingRequirements?.FirstOrDefault(), level);
                 case Weapon weapon:
-                    return GetItemValueByCraftingRequirements(level > 0 
-                        ? GetCraftingRequirementsByEnchantment(weapon.Enchantments?.Enchantment, level) 
+                    return GetItemValueByCraftingRequirements(level > 0
+                        ? GetCraftingRequirementsByEnchantment(weapon.Enchantments?.Enchantment, level)
                         : weapon.CraftingRequirements?.FirstOrDefault(), level);
                 case Mount mount:
                     return (mount.CraftingRequirements ?? new List<CraftingRequirements>())
@@ -443,19 +440,21 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task SetFullItemInfoToItems()
         {
+            var sw = Stopwatch.StartNew();
             var tasks = await Items.ToAsyncEnumerable()
-                .Select(item => Task.Run(async () =>
+                .Select(item => Task.Run(() =>
                 {
-                    item.FullItemInformation = await GetSpecificItemInfoAsync(item.UniqueName);
+                    item.FullItemInformation = GetSpecificItemInfo(item.UniqueName);
                     item.ShopCategory = GetShopCategory(item.UniqueName);
                     item.ShopShopSubCategory1 = GetShopSubCategory(item.UniqueName);
                 }))
                 .ToListAsync();
 
             await Task.WhenAll(tasks);
+            Debug.Print($"{sw.ElapsedMilliseconds}");
         }
 
-        private static async Task<ItemJsonObject> GetSpecificItemInfoAsync(string uniqueName)
+        private static ItemJsonObject GetSpecificItemInfo(string uniqueName)
         {
             var cleanUniqueName = GetCleanUniqueName(uniqueName);
 
@@ -469,79 +468,114 @@ namespace StatisticsAnalysisTool.Common
                 return ItemsJson.Items.HideoutItem;
             }
 
-            await foreach (var item in ItemsJson.Items.FarmableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var farmableItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.FarmableItem);
+            if (farmableItem != null)
             {
-                item.ItemType = ItemType.Farmable;
-                return item;
+                return farmableItem;
             }
 
-            await foreach (var item in ItemsJson.Items.SimpleItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var simpleItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.SimpleItem);
+            if (simpleItem != null)
             {
-                item.ItemType = ItemType.Simple;
-                return item;
+                return simpleItem;
             }
 
-            await foreach (var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var consumableItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.ConsumableItem);
+            if (consumableItem != null)
             {
-                item.ItemType = ItemType.Consumable;
-                return item;
+                return consumableItem;
             }
 
-            await foreach (var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var consumableFromInventoryItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.ConsumableFromInventoryItem);
+            if (consumableFromInventoryItem != null)
             {
-                item.ItemType = ItemType.ConsumableFromInventory;
-                return item;
+                return consumableFromInventoryItem;
             }
 
-            await foreach (var item in ItemsJson.Items.EquipmentItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var equipmentItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.EquipmentItem);
+            if (equipmentItem != null)
             {
-                item.ItemType = ItemType.Equipment;
-                return item;
+                return equipmentItem;
             }
 
-            await foreach (var item in ItemsJson.Items.Weapon.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var weapon = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.Weapon);
+            if (weapon != null)
             {
-                item.ItemType = ItemType.Weapon;
-                return item;
+                return weapon;
             }
 
-            await foreach (var item in ItemsJson.Items.Mount.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var mount = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.Mount);
+            if (mount != null)
             {
-                item.ItemType = ItemType.Mount;
-                return item;
+                return mount;
             }
 
-            await foreach (var item in ItemsJson.Items.FurnitureItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var furnitureItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.FurnitureItem);
+            if (furnitureItem != null)
             {
-                item.ItemType = ItemType.Furniture;
-                return item;
+                return furnitureItem;
             }
 
-            await foreach (var item in ItemsJson.Items.JournalItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var journalItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.JournalItem);
+            if (journalItem != null)
             {
-                item.ItemType = ItemType.Journal;
-                return item;
+                return journalItem;
             }
 
-            await foreach (var item in ItemsJson.Items.LabourerContract.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var labourerContract = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.LabourerContract);
+            if (labourerContract != null)
             {
-                item.ItemType = ItemType.LabourerContract;
-                return item;
+                return labourerContract;
             }
 
-            await foreach (var item in ItemsJson.Items.MountSkin.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var mountSkin = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.MountSkin);
+            if (mountSkin != null)
             {
-                item.ItemType = ItemType.MountSkin;
-                return item;
+                return mountSkin;
             }
 
-            await foreach (var item in ItemsJson.Items.CrystalLeagueItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+            var crystalLeagueItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.CrystalLeagueItem);
+            return crystalLeagueItem;
+        }
+
+
+        private static T GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects) where T : ItemJsonObject
+        {
+            var itemAsSpan = CollectionsMarshal.AsSpan(itemJsonObjects);
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for (var i = 0; i < itemAsSpan.Length; i++)
             {
-                item.ItemType = ItemType.CrystalLeague;
-                return item;
+                if (itemAsSpan[i].UniqueName == uniqueName)
+                {
+                    continue;
+                }
+
+                itemAsSpan[i].ItemType = GetItemType(itemAsSpan[i]);
+                return itemAsSpan[i];
             }
 
             return null;
+        }
+
+        private static ItemType GetItemType<T>(T itemJsonObject)
+        {
+            return itemJsonObject switch
+            {
+                HideoutItem => ItemType.Hideout,
+                FarmableItem => ItemType.Farmable,
+                SimpleItem => ItemType.Simple,
+                ConsumableItem => ItemType.Consumable,
+                ConsumableFromInventoryItem => ItemType.ConsumableFromInventory,
+                EquipmentItem => ItemType.Equipment,
+                Weapon => ItemType.Weapon,
+                Mount => ItemType.Mount,
+                FurnitureItem => ItemType.Furniture,
+                JournalItem => ItemType.Journal,
+                LabourerContract => ItemType.LabourerContract,
+                MountSkin => ItemType.MountSkin,
+                CrystalLeagueItem => ItemType.CrystalLeague,
+                _ => ItemType.Unknown
+            };
         }
 
         public static ShopCategory GetShopCategory(string uniqueName)
@@ -697,7 +731,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 var options = new JsonSerializerOptions()
                 {
-                    NumberHandling = JsonNumberHandling.AllowReadingFromString 
+                    NumberHandling = JsonNumberHandling.AllowReadingFromString
                                      | JsonNumberHandling.WriteAsString,
                     Converters =
                     {
