@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common.Converters;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.ApiModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -424,9 +425,9 @@ public static class ItemController
     public static async Task SetFullItemInfoToItems()
     {
         var tasks = await Items.ToAsyncEnumerable()
-            .Select(item => Task.Run(() =>
+            .Select(item => Task.Run(async () =>
             {
-                item.FullItemInformation = GetSpecificItemInfo(item.UniqueName);
+                item.FullItemInformation = await GetSpecificItemInfoAsync(item.UniqueName);
                 item.ShopCategory = GetShopCategory(item.UniqueName);
                 item.ShopShopSubCategory1 = GetShopSubCategory(item.UniqueName);
             }))
@@ -435,7 +436,7 @@ public static class ItemController
         await Task.WhenAll(tasks);
     }
 
-    private static ItemJsonObject GetSpecificItemInfo(string uniqueName)
+    private static async Task<ItemJsonObject> GetSpecificItemInfoAsync(string uniqueName)
     {
         var cleanUniqueName = GetCleanUniqueName(uniqueName);
 
@@ -449,80 +450,85 @@ public static class ItemController
             return ItemsJson.Items.HideoutItem;
         }
 
-        var farmableItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.FarmableItem);
-        if (farmableItem != null)
+        await foreach (var item in ItemsJson.Items.FarmableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
         {
-            return farmableItem;
+            item.ItemType = ItemType.Farmable;
+            return item;
         }
 
-        var simpleItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.SimpleItem);
-        if (simpleItem != null)
+        await foreach (var item in ItemsJson.Items.SimpleItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
         {
-            return simpleItem;
+            item.ItemType = ItemType.Simple;
+            return item;
         }
 
-        var consumableItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.ConsumableItem);
-        if (consumableItem != null)
+        await foreach (var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
         {
-            return consumableItem;
+            item.ItemType = ItemType.Consumable;
+            return item;
         }
 
-        var consumableFromInventoryItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.ConsumableFromInventoryItem);
-        if (consumableFromInventoryItem != null)
+        await foreach (var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
         {
-            return consumableFromInventoryItem;
+            item.ItemType = ItemType.ConsumableFromInventory;
+            return item;
         }
 
-        var equipmentItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.EquipmentItem);
-        if (equipmentItem != null)
+        await foreach (var item in ItemsJson.Items.EquipmentItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
         {
-            return equipmentItem;
+            item.ItemType = ItemType.Equipment;
+            return item;
         }
 
-        var weapon = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.Weapon);
-        if (weapon != null)
+        await foreach (var item in ItemsJson.Items.Weapon.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
         {
-            return weapon;
+            item.ItemType = ItemType.Weapon;
+            return item;
         }
 
-        var mount = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.Mount);
-        if (mount != null)
+        await foreach (var item in ItemsJson.Items.Mount.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
         {
-            return mount;
+            item.ItemType = ItemType.Mount;
+            return item;
         }
 
-        var furnitureItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.FurnitureItem);
-        if (furnitureItem != null)
+        await foreach (var item in ItemsJson.Items.FurnitureItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
         {
-            return furnitureItem;
+            item.ItemType = ItemType.Furniture;
+            return item;
         }
 
-        var journalItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.JournalItem);
-        if (journalItem != null)
+        await foreach (var item in ItemsJson.Items.JournalItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
         {
-            return journalItem;
+            item.ItemType = ItemType.Journal;
+            return item;
         }
 
-        var labourerContract = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.LabourerContract);
-        if (labourerContract != null)
+        await foreach (var item in ItemsJson.Items.LabourerContract.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
         {
-            return labourerContract;
+            item.ItemType = ItemType.LabourerContract;
+            return item;
         }
 
-        var mountSkin = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.MountSkin);
-        if (mountSkin != null)
+        await foreach (var item in ItemsJson.Items.MountSkin.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
         {
-            return mountSkin;
+            item.ItemType = ItemType.MountSkin;
+            return item;
         }
 
-        var crystalLeagueItem = GetItemJsonObject(cleanUniqueName, ItemsJson.Items.CrystalLeagueItem);
-        return crystalLeagueItem;
+        await foreach (var item in ItemsJson.Items.CrystalLeagueItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        {
+            item.ItemType = ItemType.CrystalLeague;
+            return item;
+        }
+
+        return null;
     }
 
-
-    private static T GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects) where T : ItemJsonObject
+    // TODO: Preparation for improved performance
+    private static ItemJsonObject GetItemJsonObject<T>(string uniqueName, IEnumerable<T> itemJsonObjects)
     {
-        var itemAsSpan = CollectionsMarshal.AsSpan(itemJsonObjects);
+        var itemAsSpan = CollectionsMarshal.AsSpan(itemJsonObjects.Cast<ItemJsonObject>().ToList());
         // ReSharper disable once ForCanBeConvertedToForeach
         for (var i = 0; i < itemAsSpan.Length; i++)
         {
@@ -532,12 +538,28 @@ public static class ItemController
             }
 
             itemAsSpan[i].ItemType = GetItemType(itemAsSpan[i]);
-            return itemAsSpan[i];
+            return itemAsSpan[i].ItemType switch
+            {
+                ItemType.Hideout => itemAsSpan[i] as HideoutItem,
+                ItemType.Farmable => itemAsSpan[i] as SimpleItem,
+                ItemType.Simple => itemAsSpan[i] as ConsumableItem,
+                ItemType.Consumable => itemAsSpan[i] as ConsumableFromInventoryItem,
+                ItemType.ConsumableFromInventory => itemAsSpan[i] as ConsumableFromInventoryItem,
+                ItemType.Equipment => itemAsSpan[i] as EquipmentItem,
+                ItemType.Weapon => itemAsSpan[i] as Weapon,
+                ItemType.Mount => itemAsSpan[i] as Mount,
+                ItemType.Furniture => itemAsSpan[i] as FurnitureItem,
+                ItemType.Journal => itemAsSpan[i] as JournalItem,
+                ItemType.LabourerContract => itemAsSpan[i] as LabourerContract,
+                ItemType.MountSkin => itemAsSpan[i] as MountSkin,
+                ItemType.CrystalLeague => itemAsSpan[i] as CrystalLeagueItem,
+                _ => null
+            };
         }
 
         return null;
     }
-
+    
     private static ItemType GetItemType<T>(T itemJsonObject)
     {
         return itemJsonObject switch
