@@ -1,2 +1,2 @@
 powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json -OutFile ItemList.json"
-powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json  -OutFile items.json"
+powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json  -OutFile Items.json"

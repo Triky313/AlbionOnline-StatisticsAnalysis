@@ -20,9 +20,10 @@ namespace StatisticsAnalysisTool.Network.Handler
         {
             if (value?.CurrentTotalReSpecPoints != null)
             {
-                _liveStatsTracker.Add(ValueType.ReSpec, value.CurrentTotalReSpecPoints.Value.DoubleValue);
-                _trackingController.DungeonController?.AddValueToDungeon(value.CurrentTotalReSpecPoints.Value.DoubleValue, ValueType.ReSpec);
-                _trackingController.StatisticController?.AddValue(ValueType.ReSpec, value.CurrentTotalReSpecPoints.Value.DoubleValue);
+                _liveStatsTracker.Add(ValueType.ReSpec, value.GainedReSpecPoints.DoubleValue);
+                _liveStatsTracker.Add(ValueType.PaidSilverForReSpec, value.PaidSilver.DoubleValue);
+                _trackingController.DungeonController?.AddValueToDungeon(value.GainedReSpecPoints.DoubleValue, ValueType.ReSpec);
+                _trackingController.StatisticController?.AddValue(ValueType.ReSpec, value.GainedReSpecPoints.DoubleValue);
             }
 
             await Task.CompletedTask;

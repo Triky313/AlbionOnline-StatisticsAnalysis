@@ -27,6 +27,7 @@
                 <ResourceDictionary Source="Styles/MailMonitoringStyle.xaml" />
                 <ResourceDictionary Source="Styles/StorageHistoryStyle.xaml" />
                 <ResourceDictionary Source="Styles/DonationStyles.xaml" />
+                <ResourceDictionary Source="Styles/ThanksStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

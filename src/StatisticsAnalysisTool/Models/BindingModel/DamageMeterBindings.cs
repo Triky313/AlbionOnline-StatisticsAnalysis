@@ -30,6 +30,7 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
     private bool _isDamageMeterResetByMapChangeActive;
     private bool _isSnapshotAfterMapChangeActive;
     private GridLength _gridSplitterPosition;
+    private bool _isDamageMeterResetBeforeCombatActive;
     public Task Initialization { get; init; }
 
     public DamageMeterBindings()
@@ -78,6 +79,7 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
 
         IsSnapshotAfterMapChangeActive = SettingsController.CurrentSettings.IsSnapshotAfterMapChangeActive;
         IsDamageMeterResetByMapChangeActive = SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive;
+        IsDamageMeterResetBeforeCombatActive = SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive;
 
         Initialization = LoadLocalFileAsync();
     }
@@ -192,6 +194,17 @@ public class DamageMeterBindings : INotifyPropertyChanged, IAsyncInitialization
         {
             _isDamageMeterResetByMapChangeActive = value;
             SettingsController.CurrentSettings.IsDamageMeterResetByMapChangeActive = _isDamageMeterResetByMapChangeActive;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsDamageMeterResetBeforeCombatActive
+    {
+        get => _isDamageMeterResetBeforeCombatActive;
+        set
+        {
+            _isDamageMeterResetBeforeCombatActive = value;
+            SettingsController.CurrentSettings.IsDamageMeterResetBeforeCombatActive = _isDamageMeterResetBeforeCombatActive;
             OnPropertyChanged();
         }
     }

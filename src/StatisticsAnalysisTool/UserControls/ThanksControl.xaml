@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="StatisticsAnalysisTool.UserControls.ThanksControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="650" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=viewModels:ThanksViewModel}">
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical" Width="auto">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Image Source="../Assets/heart.png" Height="18" Width="21" />
+                    <TextBlock Text="{Binding Translation.ThankYou, FallbackValue='THANK__YOU'}" FontSize="30" FontWeight="Light" 
+                               Foreground="{StaticResource SolidColorBrush.Accent.Red.1}" VerticalAlignment="Center" Margin="10,0,10,0" />
+                    <Image Source="../Assets/heart.png" Height="18" Width="21" />
+                </StackPanel>
+                <TextBlock Text="I want to say thank you for all the support and motivational words over the years!" Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock />
+                <TextBlock Text="Thanks to everyone who helped solve issues." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock Text="Thanks to everyone who helped translate the tool into other languages." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock Text="Thanks to everyone who helped expand and improve the tool." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock Text="Thanks also to everyone who explained my crazy tool to all the newbies." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock />
+                <TextBlock Text="Rhaegaryn" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
+                <TextBlock Text="Thank you Rhae for the many good ideas, suggested solutions and nice conversations we had." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock />
+                <TextBlock Text="BloodySupport" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
+                <TextBlock Text="Thanks for the help on Discord and translations into Russian! I hope you can play OW2 soon!" Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock />
+                <TextBlock Text="Nuberu" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
+                <TextBlock Text="Thanks to you too for your help in the Discord and your translations into Spanish." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock />
+                <TextBlock Text="ZwergGimli" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
+                <TextBlock Text="Thank you Gimli for the night of calculations! Without you, I would never have gotten a handle on the Albion taxes!" Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock />
+                <TextBlock Text="arabinos" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
+                <TextBlock Text="Thank you for your translations into Polish." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock />
+                <TextBlock Text="Ewerson" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
+                <TextBlock Text="Thank you for your Brazilian translations." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock />
+                <TextBlock Text="Me1onSeed" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
+                <TextBlock Text="Thank you for your Chinese translations." Style="{StaticResource Thanks.TextBlock.Text.Style}" />
+                <TextBlock />
+                <TextBlock />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Last but not least, thanks to all the players who use my tool!" Style="{StaticResource Thanks.TextBlock.Name.Style}" />
+                    <Image Source="../Assets/heart.png" Height="18" Width="21" Margin="10,0,10,0" />
+                </StackPanel>
+                <TextBlock Text="Ps.: If I forgot someone, please write me a PM!" Style="{StaticResource Thanks.TextBlock.Text.Style}" Foreground="{StaticResource SolidColorBrush.Text.5}" FontSize="10" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

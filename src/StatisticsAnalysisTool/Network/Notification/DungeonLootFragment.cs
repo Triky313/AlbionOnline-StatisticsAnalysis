@@ -57,7 +57,6 @@ public class DungeonLootFragment : INotifyPropertyChanged
 
     public string Hash => $"{UniqueName}{UtcDiscoveryTime.Ticks}{Quantity}{EstimatedMarketValue.InternalValue}";
 
-
     public event PropertyChangedEventHandler PropertyChanged;
 
     [NotifyPropertyChangedInvocator]

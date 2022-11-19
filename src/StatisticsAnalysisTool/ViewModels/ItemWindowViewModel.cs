@@ -395,7 +395,8 @@ namespace StatisticsAnalysisTool.ViewModels
                     ResourceCost = 0,
                     Weight = ItemController.GetWeight(item?.FullItemInformation),
                     CraftingQuantity = craftingQuantity,
-                    IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
+                    IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false,
+                    IsTomeOfInsightResource = item?.UniqueName?.ToUpper().Contains("SKILLBOOK_STANDARD") ?? false
                 });
             }
         }
@@ -422,9 +423,13 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 foreach (var requiredResource in RequiredResources.ToList())
                 {
-                    requiredResource.CraftingQuantity = requiredResource.IsArtifactResource
-                        ? (long)Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity)
-                        : EssentialCraftingValues.CraftingItemQuantity;
+                    if (requiredResource.IsArtifactResource || requiredResource.IsTomeOfInsightResource)
+                    {
+                        requiredResource.CraftingQuantity = (long) Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
+                        continue;
+                    }
+                    
+                    requiredResource.CraftingQuantity = EssentialCraftingValues.CraftingItemQuantity;
                 }
             }
 

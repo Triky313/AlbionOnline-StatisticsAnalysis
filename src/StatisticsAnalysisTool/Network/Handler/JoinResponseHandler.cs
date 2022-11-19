@@ -43,6 +43,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
             ResetFameCounterByMapChangeIfActive();
             SetTrackingActivityText();
+
+            await _mainWindowViewModel?.PlayerInformationBindings?.LoadLocalPlayerDataAsync(value.Username)!;
         }
 
         private async Task SetLocalUserData(JoinResponse value)

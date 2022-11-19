@@ -22,6 +22,7 @@ namespace StatisticsAnalysisTool.Common
             { Location.Martlock, "Martlock" },
             { Location.Caerleon, "Caerleon" },
             { Location.FortSterling, "Fort Sterling" },
+            { Location.Brecilien, "Brecilien" },
             { Location.MountainCross, "Mountain Cross" },
             { Location.ArthursRest, "Arthurs Rest" },
             { Location.MerlynsRest, "Merlyns Rest" },
@@ -44,8 +45,23 @@ namespace StatisticsAnalysisTool.Common
             {
                 return Location.Caerleon;
             }
-
+            
             return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
+        }
+
+        public static MarketLocation GetMarketLocationByIndex(string index)
+        {
+            if (index.Equals("@BLACK_MARKET"))
+            {
+                return MarketLocation.BlackMarket;
+            }
+
+            if (index.Equals("3013-Auction2"))
+            {
+                return MarketLocation.CaerleonMarket;
+            }
+
+            return Enum.TryParse(index, true, out MarketLocation location) ? location : MarketLocation.Unknown;
         }
 
         public static List<Location> GetLocationsListByArea(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool withPortalCities)
@@ -102,6 +118,7 @@ namespace StatisticsAnalysisTool.Common
                         locations.Add(Location.Martlock);
                         locations.Add(Location.FortSterling);
                         locations.Add(Location.Caerleon);
+                        locations.Add(Location.Brecilien);
                         if (withPortalCities)
                         {
                             locations.Add(Location.ThetfordPortal);
@@ -131,6 +148,7 @@ namespace StatisticsAnalysisTool.Common
                 "2301" or "Bridgewatch Portal" => Location.BridgewatchPortal,
                 "3301" or "Martlock Portal" => Location.MartlockPortal,
                 "4301" or "Fort Sterling Portal" => Location.FortSterlingPortal,
+                "5000" or "5001" or "Brecilien" => Location.Brecilien,
                 "Caerleon" => Location.Caerleon,
                 "Swamp Cross" => Location.SwampCross,
                 "Forest Cross" => Location.ForestCross,
@@ -194,6 +212,33 @@ namespace StatisticsAnalysisTool.Common
         }
     }
 
+    public enum MarketLocation
+    {
+        Unknown = 0000,
+        SwampCross = 0004,
+        ThetfordMarket = 0007,
+        ThetfordPortal = 0301,
+        LymhurstMarket = 1002,
+        LymhurstPortal = 1301,
+        ForestCross = 1006,
+        SteppeCross = 2002,
+        BridgewatchMarket = 2004,
+        BridgewatchPortal = 2301,
+        HighlandCross = 3002,
+        BlackMarket = 3003,
+        CaerleonMarket = 3005,
+        MartlockMarket = 3008,
+        MartlockPortal = 3301,
+        FortSterlingMarket = 4002,
+        FortSterlingPortal = 4301,
+        MountainCross = 4006,
+        ArthursRest = 4300,
+        MerlynsRest = 1012,
+        MorganasRest = 0008,
+        BrecilienMarket = 5003
+    }
+
+    // TODO: Rework with correct city ID's otherwise use MarketLocation
     public enum Location
     {
         Unknown = 0000,
@@ -216,7 +261,8 @@ namespace StatisticsAnalysisTool.Common
         MountainCross = 4006,
         ArthursRest = 4300,
         MerlynsRest = 1012,
-        MorganasRest = 0008
+        MorganasRest = 0008,
+        Brecilien = 5000
     }
 
     public enum LocationArea

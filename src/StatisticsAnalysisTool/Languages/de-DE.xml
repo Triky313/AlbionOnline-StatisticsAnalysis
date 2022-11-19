@@ -664,4 +664,15 @@
 	<translation name="CRAFTING_INFO_DESCRIPTION_3">In einer Stadt wie Lymhurst sind es 118%. Wenn die Stadt einen Bonus auf das zu craftende Item gibt, sind es 133%. In Hideouts kann es höher sein, zudem kann es einen Täglichen Bonus geben, der 10% oder 20% sein kann.</translation>
 	<translation name="CRAFTING_INFO_DESCRIPTION_4">Die Einrichtungsgebühr und die Steuern für das Auktionshaus findest du im Spiel, wenn du eine Item auf dem Markt verkaufen möchten.</translation>
 	<translation name="CRAFTING_INFO_DESCRIPTION_5">Wenn du Premium hast, kannst du die beiden Werte so lassen, wie sie sind. Wenn du etwas manuell verkaufen willst, setze beide auf 0. Hast du kein Premium sind die Werte im Normallfall doppelt so hoch.</translation>
+	<translation name="MISTS">Nebel</translation>
+	<translation name="REPAIR_COSTS_TODAY">Reparaturkosten heute</translation>
+	<translation name="REPAIR_COSTS_LAST_7_DAYS">Reparaturkosten die letzten 7 Tage</translation>
+	<translation name="REPAIR_COSTS_LAST_30_DAYS">Reparaturkosten die letzten 30 Tage</translation>
+	<translation name="RESET_BEFORE_COMBAT">Vor Kampf zurücksetzen</translation>
+	<translation name="SEARCHED_PLAYER">Gesuchter Spieler</translation>
+	<translation name="LOCAL_PLAYER">Lokaler Spieler</translation>
+	<translation name="THANKS">Danke</translation>
+	<translation name="THANK_YOU">Vielen Dank</translation>
+	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Dungeon geschlossen Sound aktiv</translation>
+	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Gesamtpreis ohne Steuern</translation>
 </translations>

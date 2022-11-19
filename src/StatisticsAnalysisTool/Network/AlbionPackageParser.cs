@@ -25,6 +25,7 @@ namespace StatisticsAnalysisTool.Network
         private readonly InventoryDeleteItemEventHandler _inventoryDeleteItemEventHandler;
         private readonly InventoryPutItemEventHandler _inventoryPutItemEventHandler;
         private readonly TakeSilverEventHandler _takeSilverEventHandler;
+        private readonly ActionOnBuildingFinishedEventHandler _actionOnBuildingFinishedEventHandler;
         private readonly UpdateFameEventHandler _updateFameEventHandler;
         private readonly UpdateSilverEventHandler _updateSilverEventHandler;
         private readonly UpdateReSpecPointsEventHandler _updateReSpecPointsEventHandler;
@@ -56,6 +57,9 @@ namespace StatisticsAnalysisTool.Network
         private readonly InventoryMoveItemRequestHandler _inventoryMoveItemRequestHandler;
         private readonly UseShrineRequestHandler _useShrineRequestHandler;
         private readonly ReSpecBoostRequestHandler _reSpecBoostRequestHandler;
+        private readonly TakeSilverRequestHandler _takeSilverRequestHandler;
+        private readonly RegisterToObjectRequestHandler _registerToObjectRequestHandler;
+        private readonly UnRegisterFromObjectRequestHandler _unRegisterFromObjectRequestHandler;
 
         private readonly ChangeClusterResponseHandler _changeClusterResponseHandler;
         private readonly PartyMakeLeaderResponseHandler _partyMakeLeaderResponseHandler;
@@ -76,6 +80,7 @@ namespace StatisticsAnalysisTool.Network
             _inventoryDeleteItemEventHandler = new InventoryDeleteItemEventHandler(trackingController);
             _inventoryPutItemEventHandler = new InventoryPutItemEventHandler(trackingController);
             _takeSilverEventHandler = new TakeSilverEventHandler(trackingController);
+            _actionOnBuildingFinishedEventHandler = new ActionOnBuildingFinishedEventHandler(trackingController);
             _updateFameEventHandler = new UpdateFameEventHandler(trackingController);
             _updateSilverEventHandler = new UpdateSilverEventHandler(trackingController);
             _updateReSpecPointsEventHandler = new UpdateReSpecPointsEventHandler(trackingController);
@@ -107,6 +112,9 @@ namespace StatisticsAnalysisTool.Network
             _inventoryMoveItemRequestHandler = new InventoryMoveItemRequestHandler(trackingController);
             _useShrineRequestHandler = new UseShrineRequestHandler(trackingController);
             _reSpecBoostRequestHandler = new ReSpecBoostRequestHandler(trackingController);
+            _takeSilverRequestHandler = new TakeSilverRequestHandler(trackingController);
+            _registerToObjectRequestHandler = new RegisterToObjectRequestHandler(trackingController);
+            _unRegisterFromObjectRequestHandler = new UnRegisterFromObjectRequestHandler(trackingController);
 
             _changeClusterResponseHandler = new ChangeClusterResponseHandler(trackingController);
             _partyMakeLeaderResponseHandler = new PartyMakeLeaderResponseHandler(trackingController);
@@ -156,6 +164,9 @@ namespace StatisticsAnalysisTool.Network
                         return;
                     case EventCodes.TakeSilver:
                         await TakeSilverEventHandlerAsync(parameters).ConfigureAwait(true);
+                        return;
+                    case EventCodes.ActionOnBuildingFinished:
+                        await ActionOnBuildingFinishedEventHandlerAsync(parameters).ConfigureAwait(true);
                         return;
                     case EventCodes.UpdateFame:
                         await UpdateFameEventHandlerAsync(parameters).ConfigureAwait(true);
@@ -265,7 +276,16 @@ namespace StatisticsAnalysisTool.Network
                     await UseShrineRequestHandlerAsync(parameters);
                     return;
                 case OperationCodes.ReSpecBoost:
-                    await ReSpecBoostHandlerAsync(parameters);
+                    await ReSpecBoostRequestHandlerAsync(parameters);
+                    return;
+                case OperationCodes.TakeSilver:
+                    await TakeSilverRequestHandlerAsync(parameters);
+                    return;
+                case OperationCodes.RegisterToObject:
+                    await RegisterToObjectRequestHandlerAsync(parameters);
+                    return;
+                case OperationCodes.UnRegisterFromObject:
+                    await UnRegisterFromObjectRequestHandlerAsync(parameters);
                     return;
             }
         }
@@ -381,6 +401,12 @@ namespace StatisticsAnalysisTool.Network
         {
             var value = new TakeSilverEvent(parameters);
             await _takeSilverEventHandler.OnActionAsync(value);
+        }
+
+        private async Task ActionOnBuildingFinishedEventHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new ActionOnBuildingFinishedEvent(parameters);
+            await _actionOnBuildingFinishedEventHandler.OnActionAsync(value);
         }
 
         private async Task UpdateFameEventHandlerAsync(Dictionary<byte, object> parameters)
@@ -561,10 +587,28 @@ namespace StatisticsAnalysisTool.Network
             await _useShrineRequestHandler.OnActionAsync(value);
         }
 
-        private async Task ReSpecBoostHandlerAsync(Dictionary<byte, object> parameters)
+        private async Task ReSpecBoostRequestHandlerAsync(Dictionary<byte, object> parameters)
         {
             var value = new ReSpecBoostRequest(parameters);
             await _reSpecBoostRequestHandler.OnActionAsync(value);
+        }
+
+        private async Task TakeSilverRequestHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new TakeSilverRequest(parameters);
+            await _takeSilverRequestHandler.OnActionAsync(value);
+        }
+
+        private async Task RegisterToObjectRequestHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new RegisterToObjectRequest(parameters);
+            await _registerToObjectRequestHandler.OnActionAsync(value);
+        }
+
+        private async Task UnRegisterFromObjectRequestHandlerAsync(Dictionary<byte, object> parameters)
+        {
+            var value = new UnRegisterFromObjectRequest(parameters);
+            await _unRegisterFromObjectRequestHandler.OnActionAsync(value);
         }
 
         #endregion

@@ -13,38 +13,41 @@
         <Setter Property="Text" Value="{Binding LocationName, IsAsync=True}" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Default}" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Caerleon">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="CaerleonMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Caerleon}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Thetford">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="ThetfordMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Thetford}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="ThetfordPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Thetford}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Bridgewatch">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="BridgewatchMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Bridgewatch}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="BridgewatchPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Bridgewatch}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Martlock">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="MartlockMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Martlock}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="MartlockPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Martlock}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Lymhurst">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="LymhurstMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Lymhurst}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="LymhurstPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Lymhurst}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="FortSterling">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="FortSterlingMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.FortSterling}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="FortSterlingPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.FortSterling}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="BrecilienMarket">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Brecilien}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="ArthursRest">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.ArthursRest}" />
@@ -384,6 +387,9 @@
 
     <DataTemplate x:Key="MailTemplate" DataType="{x:Type models:Mail}">
         <Grid Height="50">
+            <Grid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
+            </Grid.InputBindings>
             <Grid Style="{StaticResource Mail.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
@@ -520,8 +526,19 @@
                                 </Grid>
                                 <Grid Width="160">
                                     <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPriceWithDeductedTaxes.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
-                                           Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" ToolTip="{Binding MailContent.TotalPrice}" />
+                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                           Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0">
+                                        <TextBlock.ToolTip>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}: {1:N0}">
+                                                        <Binding Path="TranslationTotalPriceWithDeductedTaxes" IsAsync="True" />
+                                                        <Binding Path="MailContent.TotalPriceWithDeductedTaxes.DoubleValue" IsAsync="True" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
                                 </Grid>
                                 <Grid Width="160">
                                     <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />

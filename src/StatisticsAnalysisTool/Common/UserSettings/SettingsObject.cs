@@ -33,7 +33,6 @@
         public bool IsTrackingSilver { get; set; }
         public bool IsTrackingFame { get; set; }
         public bool IsTrackingMobLoot { get; set; }
-        public string SavedPlayerInformationName { get; set; }
         public bool IsLootLoggerSaveReminderActive { get; set; }
         public bool IsSuggestPreReleaseUpdatesActive { get; set; }
         public bool IsLootFromMobShown { get; set; }
@@ -47,7 +46,9 @@
         public int DeleteMailsOlderThanSpecifiedDays { get; set; } = 0;
         public bool IsSnapshotAfterMapChangeActive { get; set; } = false;
         public bool IsDamageMeterResetByMapChangeActive { get; set; } = false;
+        public bool IsDamageMeterResetBeforeCombatActive { get; set; } = false;
         public double MailMonitoringMarketTaxRate { get; set; } = 4;
         public double MailMonitoringMarketTaxSetupRate { get; set; } = 2.5;
+        public bool IsDungeonClosedSoundActive { get; set; } = false;
     }
 }

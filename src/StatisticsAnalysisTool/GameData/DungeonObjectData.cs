@@ -47,15 +47,15 @@ namespace StatisticsAnalysisTool.GameData
                 return DungeonMode.Solo;
             }
 
-            if (value.Contains("MORGANA_CHEST")
-                || value.Contains("KEEPER_CHEST")
-                || value.Contains("HERETIC_CHEST")
-                || value.Contains("UNDEAD_CHEST")
+            if (value.Contains("MORGANA_VETERAN_CHEST")
+                || value.Contains("KEEPER_VETERAN_CHEST")
+                || value.Contains("HERETIC_VETERAN_CHEST")
+                || value.Contains("UNDEAD_VETERAN_CHEST")
                 || value.Contains("UNDEAD_CHEST_BOSS_HALLOWEEN")
-                || value.Contains("MORGANA_BOOKCHEST")
-                || value.Contains("KEEPER_BOOKCHEST")
-                || value.Contains("HERETIC_BOOKCHEST")
-                || value.Contains("UNDEAD_BOOKCHEST"))
+                || value.Contains("MORGANA_VETERAN_BOOKCHEST")
+                || value.Contains("KEEPER_VETERAN_BOOKCHEST")
+                || value.Contains("HERETIC_VETERAN_BOOKCHEST")
+                || value.Contains("UNDEAD_VETERAN_BOOKCHEST"))
             {
                 return DungeonMode.Standard;
             }

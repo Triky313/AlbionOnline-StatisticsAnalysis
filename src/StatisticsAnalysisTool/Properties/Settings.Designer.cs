@@ -52,8 +52,7 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LEM458PZ4FV4" +
-            "C&source=url")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.paypal.com/donate/?hosted_button_id=N6T3CWXYNGHKC")]
         public string DonateUrl {
             get {
                 return ((string)(this["DonateUrl"]));
@@ -412,6 +411,33 @@ namespace StatisticsAnalysisTool.Properties {
         public string EstimatedMarketValueFileName {
             get {
                 return ((string)(this["EstimatedMarketValueFileName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mobs.json")]
+        public string MobDataFileName {
+            get {
+                return ((string)(this["MobDataFileName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("dungeon_closed.wav")]
+        public string DungeonClosedSoundFileName {
+            get {
+                return ((string)(this["DungeonClosedSoundFileName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsContainerRepairCostsVisible {
+            get {
+                return ((bool)(this["IsContainerRepairCostsVisible"]));
             }
         }
     }

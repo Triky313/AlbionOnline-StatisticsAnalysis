@@ -1,6 +1,5 @@
-﻿using StatisticsAnalysisTool.Enumerations;
+﻿using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
-using StatisticsAnalysisTool.Network.Events;
 using System.Threading.Tasks;
 
 namespace StatisticsAnalysisTool.Network.Handler
@@ -16,10 +15,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(NewMobEvent value)
         {
-            //if (value.ObjectId != null)
-            //{
-            //    TrackingController.EntityController.AddEntity((long) value.ObjectId, string.Empty, GameObjectType.Mob, (GameObjectSubType) value.Type);
-            //}
+            _trackingController.DungeonController.AddTierLevelToCurrentDungeon(value.MobIndex, value.HitPointsMax);
             await Task.CompletedTask;
         }
     }

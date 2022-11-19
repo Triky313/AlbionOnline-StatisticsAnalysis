@@ -36,9 +36,7 @@ namespace StatisticsAnalysisTool.ViewModels
     {
         private static MainWindow _mainWindow;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
-        private static PlayerModeInformationModel _playerModeInformationLocal;
-        private static PlayerModeInformationModel _playerModeInformation;
+        
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
         private string _errorBarText;
@@ -60,8 +58,6 @@ namespace StatisticsAnalysisTool.ViewModels
         private int _localImageCounter;
         private string _numberOfValuesTranslation;
         private ObservableCollection<PartyMemberCircle> _partyMemberCircles = new();
-        private PlayerModeTranslation _playerModeTranslation = new();
-        private string _savedPlayerInformationName;
         private string _searchText;
         private ShopSubCategory _selectedItemShopSubCategories;
         private ItemLevel _selectedItemLevel;
@@ -102,6 +98,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private DamageMeterBindings _damageMeterBindings = new();
         private Visibility _unsupportedOsVisibility = Visibility.Collapsed;
         private LoggingBindings _loggingBindings = new();
+        private PlayerInformationBindings _playerInformationBindings = new();
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
@@ -146,13 +143,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SelectedItemLevel = ItemLevel.Unknown;
 
             #endregion Full Item Info elements
-
-            #region Player information
-
-            SavedPlayerInformationName = SettingsController.CurrentSettings.SavedPlayerInformationName;
-
-            #endregion Player information
-
+            
             #region Tracking
 
             UserTrackingBindings.UsernameInformationVisibility = Visibility.Hidden;
@@ -362,6 +353,7 @@ namespace StatisticsAnalysisTool.ViewModels
         {
             WorldData.GetDataListFromJson();
             DungeonObjectData.GetDataListFromJson();
+            MobsData.GetDatFromLocalFile();
 
             TrackingController ??= new TrackingController(this, _mainWindow);
 
@@ -556,60 +548,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-
-        #region Player information
-
-        public async Task SetComparedPlayerModeInfoValues()
-        {
-            PlayerModeInformationLocal = PlayerModeInformation;
-            PlayerModeInformation = new PlayerModeInformationModel();
-            PlayerModeInformation = await GetPlayerModeInformationByApi().ConfigureAwait(true);
-        }
-
-        private async Task<PlayerModeInformationModel> GetPlayerModeInformationByApi()
-        {
-            if (string.IsNullOrWhiteSpace(SavedPlayerInformationName))
-                return null;
-
-            var gameInfoSearch = await ApiController.GetGameInfoSearchFromJsonAsync(SavedPlayerInformationName);
-
-            if (gameInfoSearch?.SearchPlayer?.FirstOrDefault()?.Id == null)
-                return null;
-
-            var searchPlayer = gameInfoSearch.SearchPlayer?.FirstOrDefault();
-            var gameInfoPlayers = await ApiController.GetGameInfoPlayersFromJsonAsync(gameInfoSearch.SearchPlayer?.FirstOrDefault()?.Id);
-
-            return new PlayerModeInformationModel
-            {
-                Timestamp = DateTime.UtcNow,
-                GameInfoSearch = gameInfoSearch,
-                SearchPlayer = searchPlayer,
-                GameInfoPlayers = gameInfoPlayers
-            };
-        }
-
-        public PlayerModeInformationModel PlayerModeInformation
-        {
-            get => _playerModeInformation;
-            set
-            {
-                _playerModeInformation = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public PlayerModeInformationModel PlayerModeInformationLocal
-        {
-            get => _playerModeInformationLocal;
-            set
-            {
-                _playerModeInformationLocal = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion Player information (Player Mode)
-
+        
         #region Tracking
 
         public async Task StartTrackingAsync()
@@ -652,8 +591,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.TreasureController.UnregisterEvents();
             TrackingController?.LootController.UnregisterEvents();
             TrackingController?.ClusterController.UnregisterEvents();
-
-            await TrackingController?.DungeonController?.SaveInFileAsync()!;
+            
             await TrackingController?.VaultController?.SaveInFileAsync()!;
             await TrackingController?.TreasureController?.SaveInFileAsync()!;
             await TrackingController?.StatisticController?.SaveInFileAsync()!;
@@ -852,6 +790,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _userTrackingBindings = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public PlayerInformationBindings PlayerInformationBindings
+        {
+            get => _playerInformationBindings;
+            set
+            {
+                _playerInformationBindings = value;
                 OnPropertyChanged();
             }
         }
@@ -1207,17 +1155,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public PlayerModeTranslation PlayerModeTranslation
-        {
-            get => _playerModeTranslation;
-            set
-            {
-                _playerModeTranslation = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public string LoadTranslation
         {
             get => _loadTranslation;
@@ -1247,18 +1185,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public string SavedPlayerInformationName
-        {
-            get => _savedPlayerInformationName;
-            set
-            {
-                _savedPlayerInformationName = value;
-                SettingsController.CurrentSettings.SavedPlayerInformationName = _savedPlayerInformationName;
-                OnPropertyChanged();
-            }
-        }
-
+        
         public ObservableCollection<MainStatObject> FactionPointStats
         {
             get => _factionPointStats;

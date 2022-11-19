@@ -15,7 +15,7 @@
         Closing="ItemWindow_OnClosing">
     <Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
-        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
+        <Border Style="{StaticResource ItemWindow.BorderColor.ItemLevel.Style}" DataContext="{Binding Item}" />
         <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
         <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
 
@@ -168,7 +168,7 @@
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <StackPanel>
                                         <Label Margin="5,10,5,0" Content="{Binding Translation.RequiredResources, FallbackValue=REQUIRED__RESOURCES}" Style="{StaticResource Label.Crafting}" />
-                                        <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}"/>
+                                        <ItemsControl ItemsSource="{Binding RequiredResources, IsAsync=True}" ItemTemplate="{StaticResource RequiredResourceTemplate}" />
                                     </StackPanel>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <ContentControl Visibility="{Binding RequiredJournalVisibility}" ContentTemplate="{StaticResource RequiredJournalTemplate}" Content="{Binding RequiredJournal}" />
@@ -183,7 +183,7 @@
                             </StackPanel>
                         </Grid>
                     </ScrollViewer>
-                    <ScrollViewer Visibility="{Binding CraftingInfoPopupVisibility, FallbackValue=Visible}" 
+                    <ScrollViewer Visibility="{Binding CraftingInfoPopupVisibility, FallbackValue=Hidden}" 
                                   Background="{StaticResource SolidColorBrush.Background.2}" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                             <DockPanel Margin="0,0,0,10">

@@ -19,6 +19,7 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string ResetTrackingCounter => LanguageController.Translation("RESET_TRACKING_COUNTER");
         public static string MakeSureYouHaveInstalledNpcap => LanguageController.Translation("MAKE_SURE_YOU_HAVE_INSTALLED_NPCAP");
         public static string MapChangeReset => LanguageController.Translation("MAP_CHANGE_RESET");
+        public static string ResetBeforeCombat => LanguageController.Translation("RESET_BEFORE_COMBAT");
         public static string SnapshotAfterMapChange => LanguageController.Translation("SNAPSHOT_AFTER_MAP_CHANGE");
         public static string TotalFame => LanguageController.Translation("TOTAL_FAME");
         public static string TotalSilver => LanguageController.Translation("TOTAL_SILVER");
@@ -98,6 +99,7 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string To => LanguageController.Translation("TO");
         public static string DeleteCurrentStorage => LanguageController.Translation("DELETE_SELECTED_STORAGE");
         public static string Donations => LanguageController.Translation("DONATIONS");
+        public static string Thanks => LanguageController.Translation("THANKS");
         public static string UnsupportedOs => LanguageController.Translation("UNSUPPORTED_OS");
         public static string OpenToolDirectory => LanguageController.Translation("OPEN_TOOL_DIRECTORY");
         public static string FileDownloadFailedText1 => LanguageController.Translation("FILE_DOWNLOAD_FAILED_TEXT1");

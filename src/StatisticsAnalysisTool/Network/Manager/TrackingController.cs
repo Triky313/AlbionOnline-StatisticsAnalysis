@@ -1,4 +1,5 @@
 using log4net;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Network.Notification;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using ValueType = StatisticsAnalysisTool.Enumerations.ValueType;
 
 namespace StatisticsAnalysisTool.Network.Manager;
 
@@ -157,17 +159,16 @@ public class TrackingController : ITrackingController
                 await _mainWindowViewModel?.LoggingBindings?.TrackingNotifications?.ToAsyncEnumerable().Where(x =>
                     (_notificationTypesFilters?.Contains(x.Type) ?? true)
                     &&
-                    (
-                        x.Fragment is OtherGrabbedLootNotificationFragment fragment &&
-                        (fragment.LootedByName.ToLower().Contains(text.ToLower())
-                         || fragment.LocalizedName.ToLower().Contains(text.ToLower())
-                         || fragment.LootedFromName.ToLower().Contains(text.ToLower())
-                        )
-                        ||
-                        x.Fragment is KillNotificationFragment killFragment &&
-                        (killFragment.Died.ToLower().Contains(text.ToLower())
-                         || killFragment.KilledBy.ToLower().Contains(text.ToLower())
-                        )
+                    (x.Fragment is OtherGrabbedLootNotificationFragment fragment &&
+                     (fragment.LootedByName.ToLower().Contains(text.ToLower())
+                      || fragment.LocalizedName.ToLower().Contains(text.ToLower())
+                      || fragment.LootedFromName.ToLower().Contains(text.ToLower())
+                     )
+                     ||
+                     x.Fragment is KillNotificationFragment killFragment &&
+                     (killFragment.Died.ToLower().Contains(text.ToLower())
+                      || killFragment.KilledBy.ToLower().Contains(text.ToLower())
+                     )
                     )
                     && (IsLootFromMobShown || x.Fragment is OtherGrabbedLootNotificationFragment { IsLootedPlayerMob: false } or not OtherGrabbedLootNotificationFragment)
                 ).ForEachAsync(d =>
@@ -280,6 +281,50 @@ public class TrackingController : ITrackingController
         }
 
         return true;
+    }
+
+    #endregion
+
+    #region Gear repairing
+
+    private long _buildingObjectId = -1;
+    private long _upcomingRepairCosts;
+
+    public void RegisterBuilding(long buildingObjectId)
+    {
+        _buildingObjectId = buildingObjectId;
+    }
+
+    public void UnregisterBuilding(long buildingObjectId)
+    {
+        if (buildingObjectId != _buildingObjectId)
+        {
+            return;
+        }
+
+        _buildingObjectId = -1;
+        _upcomingRepairCosts = 0;
+    }
+
+    public void SetUpcomingRepair(long buildingObjectId, long costs)
+    {
+        if (_buildingObjectId != buildingObjectId)
+        {
+            return;
+        }
+
+        _upcomingRepairCosts = costs;
+    }
+
+    public void RepairFinished(long userObjectId, long buildingObjectId)
+    {
+        if (EntityController.LocalUserData.UserObjectId != userObjectId || _upcomingRepairCosts <= 0 || _buildingObjectId != buildingObjectId)
+        {
+            return;
+        }
+
+        StatisticController?.AddValue(ValueType.RepairCosts, FixPoint.FromInternalValue(_upcomingRepairCosts).DoubleValue);
+        StatisticController?.UpdateRepairCostsUi();
     }
 
     #endregion

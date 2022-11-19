@@ -1,4 +1,5 @@
 using StatisticsAnalysisTool.Enumerations;
+using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
 using System;
 using System.Collections;
@@ -288,7 +289,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 return PastTime.Unknown;
             }
-            
+
             if (dateTime.AddDays(30) <= DateTime.UtcNow)
             {
                 return PastTime.VeryVeryOld;
@@ -342,14 +343,11 @@ namespace StatisticsAnalysisTool.Common
 
         #endregion
 
-        #region Collections
+        #region Lists / Arrays
 
-        public static async Task AddRangeAsync<T>(this ObservableCollection<T> collection, IEnumerable<T> list)
+        public static bool IsInBounds<T>(this IEnumerable<T> array, long index)
         {
-            await foreach (var item in list?.ToAsyncEnumerable() ?? new List<T>().ToAsyncEnumerable())
-            {
-                collection.Add(item);
-            }
+            return index >= 0 && index < array.Count() - 1;
         }
 
         #endregion
