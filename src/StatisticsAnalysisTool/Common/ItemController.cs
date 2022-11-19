@@ -300,13 +300,18 @@ public static class ItemController
             return false;
         }
 
+        using var client = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(1200)
+        };
+
         if (File.Exists(localFilePath))
         {
             var fileDateTime = File.GetLastWriteTime(localFilePath);
 
             if (fileDateTime.AddDays(SettingsController.CurrentSettings.UpdateItemListByDays) < DateTime.Now)
             {
-                if (await GetItemListFromWebAsync(url))
+                if (await client.DownloadFileAsync(url, localFilePath))
                 {
                     Items = await GetItemListFromLocal();
                 }
@@ -317,7 +322,7 @@ public static class ItemController
             return Items?.Count > 0;
         }
 
-        if (await GetItemListFromWebAsync(url))
+        if (await client.DownloadFileAsync(url, localFilePath))
         {
             Items = await GetItemListFromLocal();
         }
@@ -356,27 +361,6 @@ public static class ItemController
         }).ToList();
 
         return new ObservableCollection<Item>(result);
-    }
-
-    private static async Task<bool> GetItemListFromWebAsync(string url)
-    {
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(600)
-        };
-        try
-        {
-            using var response = await client.GetAsync(url);
-            using var content = response.Content;
-
-            var fileString = await content.ReadAsStringAsync();
-            await File.WriteAllTextAsync($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemListFileName}", fileString, Encoding.UTF8);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
     }
 
     public static async Task SetFavoriteItemsFromLocalFileAsync()
@@ -668,13 +652,18 @@ public static class ItemController
             return false;
         }
 
+        using var client = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(1200)
+        };
+
         if (File.Exists(localFilePath))
         {
             var fileDateTime = File.GetLastWriteTime(localFilePath);
 
             if (fileDateTime.AddDays(SettingsController.CurrentSettings.UpdateItemsJsonByDays) < DateTime.Now)
             {
-                if (await GetItemsJsonFromWebAsync(url))
+                if (await client.DownloadFileAsync(url, localFilePath))
                 {
                     ItemsJson = await GetItemsJsonFromLocal();
                     await SetFullItemInfoToItems();
@@ -689,7 +678,7 @@ public static class ItemController
             return ItemsJson?.Items != null;
         }
 
-        if (await GetItemsJsonFromWebAsync(url))
+        if (await client.DownloadFileAsync(url, localFilePath))
         {
             ItemsJson = await GetItemsJsonFromLocal();
             await SetFullItemInfoToItems();
@@ -697,29 +686,7 @@ public static class ItemController
 
         return ItemsJson?.Items != null;
     }
-
-    private static async Task<bool> GetItemsJsonFromWebAsync(string url)
-    {
-        using var client = new HttpClient
-        {
-            Timeout = TimeSpan.FromSeconds(600)
-        };
-
-        try
-        {
-            using var response = await client.GetAsync(url);
-            using var content = response.Content;
-
-            var fileString = await content.ReadAsStringAsync();
-            await File.WriteAllTextAsync($"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}", fileString, Encoding.UTF8);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
+    
     private static async Task<ItemsJson> GetItemsJsonFromLocal()
     {
         var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
