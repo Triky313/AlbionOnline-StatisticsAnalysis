@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Common.Converters;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.ApiModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -29,7 +28,7 @@ public static class ItemController
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
     public static ObservableCollection<Item> Items;
-    public static ItemsJson ItemsJson;
+    private static ItemsJson _itemsJson;
 
     #region General
 
@@ -425,18 +424,17 @@ public static class ItemController
     public static async Task SetFullItemInfoToItems()
     {
         var tasks = await Items.ToAsyncEnumerable()
-            .Select(item => Task.Run(async () =>
+            .Select(item => Task.Run(() =>
             {
-                item.FullItemInformation = await GetSpecificItemInfoAsync(item.UniqueName);
+                item.FullItemInformation = GetSpecificItemInfo(item.UniqueName);
                 item.ShopCategory = GetShopCategory(item.UniqueName);
                 item.ShopShopSubCategory1 = GetShopSubCategory(item.UniqueName);
             }))
             .ToListAsync();
-
         await Task.WhenAll(tasks);
     }
 
-    private static async Task<ItemJsonObject> GetSpecificItemInfoAsync(string uniqueName)
+    private static ItemJsonObject GetSpecificItemInfo(string uniqueName)
     {
         var cleanUniqueName = GetCleanUniqueName(uniqueName);
 
@@ -445,140 +443,168 @@ public static class ItemController
             return null;
         }
 
-        if (ItemsJson.Items.HideoutItem.UniqueName == cleanUniqueName)
+        var hideoutItem = GetItemJsonObject(cleanUniqueName, new List<HideoutItem> { _itemsJson.Items.HideoutItem });
+        if (hideoutItem != null)
         {
-            return ItemsJson.Items.HideoutItem;
+            return hideoutItem;
         }
 
-        await foreach (var item in ItemsJson.Items.FarmableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        var farmableItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FarmableItem);
+        if (farmableItem != null)
         {
-            item.ItemType = ItemType.Farmable;
-            return item;
+            return farmableItem;
         }
 
-        await foreach (var item in ItemsJson.Items.SimpleItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        var simpleItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.SimpleItem);
+        if (simpleItem != null)
         {
-            item.ItemType = ItemType.Simple;
-            return item;
+            return simpleItem;
         }
 
-        await foreach (var item in ItemsJson.Items.ConsumableItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        var consumableItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableItem);
+        if (consumableItem != null)
         {
-            item.ItemType = ItemType.Consumable;
-            return item;
+            return consumableItem;
         }
 
-        await foreach (var item in ItemsJson.Items.ConsumableFromInventoryItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        var consumableFromInventoryItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableFromInventoryItem);
+        if (consumableFromInventoryItem != null)
         {
-            item.ItemType = ItemType.ConsumableFromInventory;
-            return item;
+            return consumableFromInventoryItem;
         }
 
-        await foreach (var item in ItemsJson.Items.EquipmentItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        var equipmentItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.EquipmentItem);
+        if (equipmentItem != null)
         {
-            item.ItemType = ItemType.Equipment;
-            return item;
+            return equipmentItem;
         }
 
-        await foreach (var item in ItemsJson.Items.Weapon.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        var weapon = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Weapon);
+        if (weapon != null)
         {
-            item.ItemType = ItemType.Weapon;
-            return item;
+            return weapon;
         }
 
-        await foreach (var item in ItemsJson.Items.Mount.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        var mount = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Mount);
+        if (mount != null)
         {
-            item.ItemType = ItemType.Mount;
-            return item;
+            return mount;
         }
 
-        await foreach (var item in ItemsJson.Items.FurnitureItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        var furnitureItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FurnitureItem);
+        if (furnitureItem != null)
         {
-            item.ItemType = ItemType.Furniture;
-            return item;
+            return furnitureItem;
         }
 
-        await foreach (var item in ItemsJson.Items.JournalItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        var journalItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.JournalItem);
+        if (journalItem != null)
         {
-            item.ItemType = ItemType.Journal;
-            return item;
+            return journalItem;
         }
 
-        await foreach (var item in ItemsJson.Items.LabourerContract.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        var labourerContract = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.LabourerContract);
+        if (labourerContract != null)
         {
-            item.ItemType = ItemType.LabourerContract;
-            return item;
+            return labourerContract;
         }
 
-        await foreach (var item in ItemsJson.Items.MountSkin.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
+        var mountSkin = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.MountSkin);
+        if (mountSkin != null)
         {
-            item.ItemType = ItemType.MountSkin;
-            return item;
+            return mountSkin;
         }
 
-        await foreach (var item in ItemsJson.Items.CrystalLeagueItem.Where(item => item.UniqueName == cleanUniqueName).ToAsyncEnumerable())
-        {
-            item.ItemType = ItemType.CrystalLeague;
-            return item;
-        }
-
-        return null;
+        var crystalLeagueItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.CrystalLeagueItem);
+        return crystalLeagueItem;
     }
 
-    // TODO: Preparation for improved performance
-    private static ItemJsonObject GetItemJsonObject<T>(string uniqueName, IEnumerable<T> itemJsonObjects)
+    private static ItemJsonObject GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects)
     {
-        var itemAsSpan = CollectionsMarshal.AsSpan(itemJsonObjects.Cast<ItemJsonObject>().ToList());
+        var itemAsSpan = CollectionsMarshal.AsSpan(itemJsonObjects);
         // ReSharper disable once ForCanBeConvertedToForeach
         for (var i = 0; i < itemAsSpan.Length; i++)
         {
-            if (itemAsSpan[i].UniqueName == uniqueName)
+            if (itemAsSpan[i] is HideoutItem hideoutItem && hideoutItem.UniqueName == uniqueName)
             {
-                continue;
+                hideoutItem.ItemType = ItemType.Hideout;
+                return hideoutItem;
             }
 
-            itemAsSpan[i].ItemType = GetItemType(itemAsSpan[i]);
-            return itemAsSpan[i].ItemType switch
+            if (itemAsSpan[i] is FarmableItem farmableItem && farmableItem.UniqueName == uniqueName)
             {
-                ItemType.Hideout => itemAsSpan[i] as HideoutItem,
-                ItemType.Farmable => itemAsSpan[i] as SimpleItem,
-                ItemType.Simple => itemAsSpan[i] as ConsumableItem,
-                ItemType.Consumable => itemAsSpan[i] as ConsumableFromInventoryItem,
-                ItemType.ConsumableFromInventory => itemAsSpan[i] as ConsumableFromInventoryItem,
-                ItemType.Equipment => itemAsSpan[i] as EquipmentItem,
-                ItemType.Weapon => itemAsSpan[i] as Weapon,
-                ItemType.Mount => itemAsSpan[i] as Mount,
-                ItemType.Furniture => itemAsSpan[i] as FurnitureItem,
-                ItemType.Journal => itemAsSpan[i] as JournalItem,
-                ItemType.LabourerContract => itemAsSpan[i] as LabourerContract,
-                ItemType.MountSkin => itemAsSpan[i] as MountSkin,
-                ItemType.CrystalLeague => itemAsSpan[i] as CrystalLeagueItem,
-                _ => null
-            };
+                farmableItem.ItemType = ItemType.Farmable;
+                return farmableItem;
+            }
+
+            if (itemAsSpan[i] is SimpleItem simpleItem && simpleItem.UniqueName == uniqueName)
+            {
+                simpleItem.ItemType = ItemType.Simple;
+                return simpleItem;
+            }
+
+            if (itemAsSpan[i] is ConsumableItem consumableItem && consumableItem.UniqueName == uniqueName)
+            {
+                consumableItem.ItemType = ItemType.Consumable;
+                return consumableItem;
+            }
+
+            if (itemAsSpan[i] is ConsumableFromInventoryItem consumableFromInventoryItem && consumableFromInventoryItem.UniqueName == uniqueName)
+            {
+                consumableFromInventoryItem.ItemType = ItemType.ConsumableFromInventory;
+                return consumableFromInventoryItem;
+            }
+
+            if (itemAsSpan[i] is EquipmentItem equipmentItem && equipmentItem.UniqueName == uniqueName)
+            {
+                equipmentItem.ItemType = ItemType.Equipment;
+                return equipmentItem;
+            }
+
+            if (itemAsSpan[i] is Weapon weapon && weapon.UniqueName == uniqueName)
+            {
+                weapon.ItemType = ItemType.Weapon;
+                return weapon;
+            }
+
+            if (itemAsSpan[i] is Mount mount && mount.UniqueName == uniqueName)
+            {
+                mount.ItemType = ItemType.Mount;
+                return mount;
+            }
+
+            if (itemAsSpan[i] is FurnitureItem furnitureItem && furnitureItem.UniqueName == uniqueName)
+            {
+                furnitureItem.ItemType = ItemType.Furniture;
+                return furnitureItem;
+            }
+
+            if (itemAsSpan[i] is JournalItem journalItem && journalItem.UniqueName == uniqueName)
+            {
+                journalItem.ItemType = ItemType.Journal;
+                return journalItem;
+            }
+
+            if (itemAsSpan[i] is LabourerContract labourerContract && labourerContract.UniqueName == uniqueName)
+            {
+                labourerContract.ItemType = ItemType.LabourerContract;
+                return labourerContract;
+            }
+
+            if (itemAsSpan[i] is MountSkin mountSkin && mountSkin.UniqueName == uniqueName)
+            {
+                mountSkin.ItemType = ItemType.MountSkin;
+                return mountSkin;
+            }
+
+            if (itemAsSpan[i] is CrystalLeagueItem crystalLeagueItem && crystalLeagueItem.UniqueName == uniqueName)
+            {
+                crystalLeagueItem.ItemType = ItemType.CrystalLeague;
+                return crystalLeagueItem;
+            }
         }
 
         return null;
-    }
-    
-    private static ItemType GetItemType<T>(T itemJsonObject)
-    {
-        return itemJsonObject switch
-        {
-            HideoutItem => ItemType.Hideout,
-            FarmableItem => ItemType.Farmable,
-            SimpleItem => ItemType.Simple,
-            ConsumableItem => ItemType.Consumable,
-            ConsumableFromInventoryItem => ItemType.ConsumableFromInventory,
-            EquipmentItem => ItemType.Equipment,
-            Weapon => ItemType.Weapon,
-            Mount => ItemType.Mount,
-            FurnitureItem => ItemType.Furniture,
-            JournalItem => ItemType.Journal,
-            LabourerContract => ItemType.LabourerContract,
-            MountSkin => ItemType.MountSkin,
-            CrystalLeagueItem => ItemType.CrystalLeague,
-            _ => ItemType.Unknown
-        };
     }
 
     public static ShopCategory GetShopCategory(string uniqueName)
@@ -639,24 +665,24 @@ public static class ItemController
     {
         var itemObject = Items?.FirstOrDefault(i => i.Index == index);
 
-        if (itemObject == null || ItemsJson?.Items == null)
+        if (itemObject == null || _itemsJson?.Items == null)
         {
             return ItemType.Unknown;
         }
 
-        var itemTypeStructs = new List<ItemTypeStruct> { new(ItemsJson.Items.HideoutItem.UniqueName, ItemType.Hideout) };
-        itemTypeStructs.AddRange(ItemsJson.Items.FarmableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(ItemsJson.Items.SimpleItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(ItemsJson.Items.ConsumableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(ItemsJson.Items.ConsumableFromInventoryItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(ItemsJson.Items.EquipmentItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(ItemsJson.Items.Weapon.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(ItemsJson.Items.Mount.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(ItemsJson.Items.FurnitureItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(ItemsJson.Items.JournalItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(ItemsJson.Items.LabourerContract.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(ItemsJson.Items.MountSkin.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
-        itemTypeStructs.AddRange(ItemsJson.Items.CrystalLeagueItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        var itemTypeStructs = new List<ItemTypeStruct> { new(_itemsJson.Items.HideoutItem.UniqueName, ItemType.Hideout) };
+        itemTypeStructs.AddRange(_itemsJson.Items.FarmableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.SimpleItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.ConsumableItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.ConsumableFromInventoryItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.EquipmentItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.Weapon.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.Mount.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.FurnitureItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.JournalItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.LabourerContract.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.MountSkin.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
+        itemTypeStructs.AddRange(_itemsJson.Items.CrystalLeagueItem.Select(x => new ItemTypeStruct(x.UniqueName, x.ItemType)));
 
         return itemTypeStructs.FirstOrDefault(x => x.UniqueName == itemObject.UniqueName).ItemType;
     }
@@ -687,28 +713,28 @@ public static class ItemController
             {
                 if (await client.DownloadFileAsync(url, localFilePath))
                 {
-                    ItemsJson = await GetItemsJsonFromLocal();
+                    _itemsJson = await GetItemsJsonFromLocal();
                     await SetFullItemInfoToItems();
                 }
 
-                return ItemsJson?.Items != null;
+                return _itemsJson?.Items != null;
             }
 
-            ItemsJson = await GetItemsJsonFromLocal();
+            _itemsJson = await GetItemsJsonFromLocal();
             await SetFullItemInfoToItems();
 
-            return ItemsJson?.Items != null;
+            return _itemsJson?.Items != null;
         }
 
         if (await client.DownloadFileAsync(url, localFilePath))
         {
-            ItemsJson = await GetItemsJsonFromLocal();
+            _itemsJson = await GetItemsJsonFromLocal();
             await SetFullItemInfoToItems();
         }
 
-        return ItemsJson?.Items != null;
+        return _itemsJson?.Items != null;
     }
-    
+
     private static async Task<ItemsJson> GetItemsJsonFromLocal()
     {
         var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.ItemsJsonFileName}";
@@ -739,7 +765,7 @@ public static class ItemController
 
     public static bool IsItemsJsonLoaded()
     {
-        return ItemsJson?.Items != null;
+        return _itemsJson?.Items != null;
     }
 
     public static double GetWeight(ItemJsonObject itemJsonObject)
