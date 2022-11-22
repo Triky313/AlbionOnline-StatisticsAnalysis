@@ -17,17 +17,24 @@ public static class AutoUpdateController
     public static void AutoUpdate(bool reportErrors = false)
     {
 #pragma warning disable CA1416 // Validate platform compatibility
+        try
+        {
+            AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExitAsync;
 
-        AutoUpdater.ApplicationExitEvent -= AutoUpdaterApplicationExitAsync;
+            AutoUpdater.Start(SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive
+                ? Settings.Default.AutoUpdatePreReleaseConfigUrl
+                : Settings.Default.AutoUpdateConfigUrl);
 
-        AutoUpdater.Start(SettingsController.CurrentSettings.IsSuggestPreReleaseUpdatesActive
-            ? Settings.Default.AutoUpdatePreReleaseConfigUrl
-            : Settings.Default.AutoUpdateConfigUrl);
-
-        AutoUpdater.DownloadPath = Environment.CurrentDirectory;
-        AutoUpdater.RunUpdateAsAdmin = false;
-        AutoUpdater.ReportErrors = reportErrors;
-        AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExitAsync;
+            AutoUpdater.DownloadPath = Environment.CurrentDirectory;
+            AutoUpdater.RunUpdateAsAdmin = false;
+            AutoUpdater.ReportErrors = reportErrors;
+            AutoUpdater.ApplicationExitEvent += AutoUpdaterApplicationExitAsync;
+        }
+        catch (Exception e)
+        {
+            ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, e);
+            Log.Warn($"{MethodBase.GetCurrentMethod()?.DeclaringType}: {e.Message}");
+        }
 #pragma warning restore CA1416 // Validate platform compatibility
     }
 
