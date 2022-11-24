@@ -665,9 +665,9 @@
 	<translation name="CRAFTING_INFO_DESCRIPTION_4">The auction house setup fee and taxes can be found in-game when you want to sell an item on the market.</translation>
 	<translation name="CRAFTING_INFO_DESCRIPTION_5">If you have Premium, you can leave the two values as they are. If you want to sell something manually, set both to 0. If you don't have a premium, the values are usually twice as high.</translation>
 	<translation name="MISTS">Mists</translation>
-	<translation name="REPAIR_COSTS_TODAY">Repait costs today</translation>
-	<translation name="REPAIR_COSTS_LAST_7_DAYS">Repait costs last 7 days</translation>
-	<translation name="REPAIR_COSTS_LAST_30_DAYS">Repait costs last 30 days</translation>
+	<translation name="REPAIR_COSTS_TODAY">Repair costs today</translation>
+	<translation name="REPAIR_COSTS_LAST_7_DAYS">Repair costs last 7 days</translation>
+	<translation name="REPAIR_COSTS_LAST_30_DAYS">Repair costs last 30 days</translation>
 	<translation name="RESET_BEFORE_COMBAT">Reset before combat</translation>
 	<translation name="SEARCHED_PLAYER">Searched player</translation>
 	<translation name="LOCAL_PLAYER">Local player</translation>
