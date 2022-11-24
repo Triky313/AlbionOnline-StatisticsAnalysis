@@ -23,7 +23,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private long _totalCost;
         private long _craftingQuantity;
         private long _oneProductionAmount;
-        private readonly ItemWindowViewModel _itemWindowViewModel;
+        private readonly ItemWindowViewModelOld _itemWindowViewModelOld;
         private bool _isArtifactResource;
         private List<MarketResponse> _marketResponse = new();
         private Location _itemPricesLocationSelected;
@@ -32,9 +32,9 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private double _totalWeight;
         private bool _isTomeOfInsightResource;
 
-        public RequiredResource(ItemWindowViewModel itemWindowViewModel)
+        public RequiredResource(ItemWindowViewModelOld itemWindowViewModelOld)
         {
-            _itemWindowViewModel = itemWindowViewModel;
+            _itemWindowViewModelOld = itemWindowViewModelOld;
         }
 
         private async void LoadSellPriceAsync(Location location)
@@ -124,7 +124,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 _resourceCost = value;
                 
                 TotalCost = ResourceCost * TotalQuantity;
-                _itemWindowViewModel.UpdateCraftingCalculationTab();
+                _itemWindowViewModelOld.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }

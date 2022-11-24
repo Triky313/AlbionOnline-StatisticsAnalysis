@@ -1,118 +1,66 @@
-﻿using System.ComponentModel;
-using System.Windows.Controls;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.ViewModels;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
 
-namespace StatisticsAnalysisTool.Views
+namespace StatisticsAnalysisTool.Views;
+
+/// <summary>
+/// Interaction logic for ItemWindowNew.xaml
+/// </summary>
+public partial class ItemWindow
 {
-    using Models;
-    using System.Windows;
-    using System.Windows.Input;
-    using ViewModels;
-
-    /// <summary>
-    ///     Interaktionslogik für ItemWindow.xaml
-    /// </summary>
-    public partial class ItemWindow
+    public ItemWindow(Item item)
     {
-        private readonly ItemWindowViewModel _itemWindowViewModel;
+        InitializeComponent();
+        var itemWindowViewModel = new ItemWindowViewModel();
+        DataContext = itemWindowViewModel;
 
-        public ItemWindow(Item item)
+        Init(item);
+    }
+
+    public void Init(Item item)
+    {
+        var vm = (ItemWindowViewModel)DataContext;
+        vm?.Init(this, item);
+    }
+
+    private void ItemWindow_OnClosing(object sender, CancelEventArgs e)
+    {
+        CraftingTabController.SaveInFile();
+    }
+
+    private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e?.ChangedButton == MouseButton.Left)
+            DragMove();
+    }
+
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+
+    private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        switch (e?.ClickCount)
         {
-            InitializeComponent();
-            _itemWindowViewModel = new ItemWindowViewModel(this, item);
-            DataContext = _itemWindowViewModel;
-        }
-
-        public void InitializeItemWindow(Item item) => _itemWindowViewModel.InitializeItemWindow(item);
-
-        private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-                DragMove();
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            _itemWindowViewModel.RunUpdate = false;
-            Close();
-        }
-
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
-
-        private void ShowVillagesPrices_Click(object sender, RoutedEventArgs e)
-        {
-            FilterItemPriceValues();
-        }
-
-        private void ChbShowBlackZoneOutposts_Click(object sender, RoutedEventArgs e)
-        {
-            FilterItemPriceValues();
-        }
-
-        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2 && WindowState == WindowState.Normal)
-            {
+            case 2 when WindowState == WindowState.Normal:
                 WindowState = WindowState.Maximized;
                 return;
-            }
+            case 2 when WindowState == WindowState.Maximized:
+                WindowState = WindowState.Normal;
+                break;
+        }
+    }
 
-            if (e.ClickCount == 2 && WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
-        }
-
-        private void CbNormalQuality_Click(object sender, RoutedEventArgs e)
-        {
-            FilterItemPriceValues();
-        }
-        private void CbGoodQuality_Click(object sender, RoutedEventArgs e)
-        {
-            FilterItemPriceValues();
-        }
-        private void CbCbOutstandingQuality_Click(object sender, RoutedEventArgs e)
-        {
-            FilterItemPriceValues();
-        }
-        private void CbExcellentQuality_Click(object sender, RoutedEventArgs e)
-        {
-            FilterItemPriceValues();
-        }
-        private void CbMasterpieceQuality_Click(object sender, RoutedEventArgs e)
-        {
-            FilterItemPriceValues();
-        }
-
-        private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            _itemWindowViewModel.IsAutoUpdateActive = !_itemWindowViewModel.IsAutoUpdateActive;
-            _itemWindowViewModel.RefreshSpin = _itemWindowViewModel.IsAutoUpdateActive;
-        }
-
-        private void FilterItemPriceValues()
-        {
-            _itemWindowViewModel.GetMainPriceStats();
-            _itemWindowViewModel.SetQualityPriceStatsOnListView();
-            _ = _itemWindowViewModel.SetHistoryChartPricesAsync();
-            _ = _itemWindowViewModel.GetItemPricesInRealMoneyAsync();
-        }
-        
-        private void LabelNotes_OnLostFocus(object sender, RoutedEventArgs e)
-        {
-            if (sender is not TextBox textBox)
-            {
-                return;
-            }
-
-            CraftingTabController.Add(_itemWindowViewModel.Item.UniqueName, textBox.Text);
-        }
-
-        private void ItemWindow_OnClosing(object sender, CancelEventArgs e)
-        {
-            CraftingTabController.SaveInFile();
-        }
-
-        private void CraftingInfoPopup_MouseUp(object sender, MouseEventArgs e)
-        {
-            _itemWindowViewModel.CraftingInfoPopupVisibility = _itemWindowViewModel.CraftingInfoPopupVisibility == Visibility.Hidden ? Visibility.Visible : Visibility.Hidden;
-        }
+    private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        var vm = (ItemWindowViewModel)DataContext;
+        vm?.AutoUpdateSwitcher();
     }
 }

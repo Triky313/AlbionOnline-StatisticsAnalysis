@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private string _craftingResourceName;
         private long _costsPerJournal;
         private double _requiredJournalAmount;
-        private readonly ItemWindowViewModel _itemWindowViewModel;
+        private readonly ItemWindowViewModelOld _itemWindowViewModelOld;
         private double _sellPricePerJournal;
         private List<MarketResponse> _marketResponseEmptyJournal = new();
         private List<MarketResponse> _marketResponseFullJournal = new();
@@ -100,9 +100,9 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
-        public RequiredJournal(ItemWindowViewModel itemWindowViewModel)
+        public RequiredJournal(ItemWindowViewModelOld itemWindowViewModelOld)
         {
-            _itemWindowViewModel = itemWindowViewModel;
+            _itemWindowViewModelOld = itemWindowViewModelOld;
         }
 
         public BitmapImage Icon
@@ -131,7 +131,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _costsPerJournal = value;
-                _itemWindowViewModel.UpdateCraftingCalculationTab();
+                _itemWindowViewModelOld.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -153,7 +153,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _sellPricePerJournal = value;
-                _itemWindowViewModel.UpdateCraftingCalculationTab();
+                _itemWindowViewModelOld.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }

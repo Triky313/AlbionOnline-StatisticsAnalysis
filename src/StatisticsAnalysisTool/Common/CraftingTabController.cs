@@ -19,7 +19,7 @@ public static class CraftingTabController
     private static bool _isLoading;
     private static bool _isSaving;
 
-    public static void Add(string uniqueItemName, string text)
+    public static void AddNote(string uniqueItemName, string text)
     {
         if (string.IsNullOrEmpty(text))
         {
