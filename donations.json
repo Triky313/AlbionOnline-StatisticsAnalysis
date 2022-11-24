@@ -1,5 +1,12 @@
 [ 
     {
+	"Timestamp": "2022-11-24T00:00:00",
+	"Amount": 18000000,
+	"RealMoneyAmount": 0,
+	"Contributor": "arabinos",
+	"IsDonationRealMoney": false
+    },
+    {
 	"Timestamp": "2022-11-19T00:00:00",
 	"Amount": 2550000,
 	"RealMoneyAmount": 0,
