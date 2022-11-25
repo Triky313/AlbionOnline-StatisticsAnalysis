@@ -157,7 +157,7 @@ namespace StatisticsAnalysisTool.Enumerations
         ChangeMountSkin,
         GameEvent,
         KilledPlayer,
-        Died = 151,
+        Died = 154,
         KnockedDown,
         MatchPlayerJoinedEvent,
         MatchPlayerStatsEvent,
