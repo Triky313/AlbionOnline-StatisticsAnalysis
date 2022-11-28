@@ -46,8 +46,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         ItemTierLevel = Item?.Tier != -1 && Item?.Level != -1 ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
 
         var localizedName = ItemController.LocalizedName(Item?.LocalizedNames, null, Item?.UniqueName);
-
-        itemWindow.Icon = Item?.Icon;
+        
+        Icon = Item?.Icon;
         TitleName = localizedName;
         
         IsAutoUpdateActive = true;
