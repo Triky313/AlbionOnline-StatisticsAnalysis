@@ -205,7 +205,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 ItemIndex = lootedItem.ItemIndex,
                 LootedByName = _trackingController?.EntityController?.LocalUserData?.Username,
                 LootedFromName = MobController.IsMob(_currentIdentifiedBody.Name) ? LanguageController.Translation("MOB") : _currentIdentifiedBody.Name,
-            Quantity = lootedItem.Quantity
+                Quantity = lootedItem.Quantity
             });
         }
 
