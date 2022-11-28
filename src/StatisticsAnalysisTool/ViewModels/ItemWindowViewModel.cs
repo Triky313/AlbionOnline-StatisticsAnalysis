@@ -102,6 +102,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         RefreshSpin = IsAutoUpdateActive;
     }
 
+    // TODO:  IsAvalonianEnergy = item?.UniqueName?.ToUpper().Contains("QUESTITEM_TOKEN_AVALON") ?? false muss noch mal COMMIT: ba039ee3d11bc2d20dfad6669bd2736029fc8836 hinzugefügt werden.
+
     #region Bindings
 
     public Item Item
