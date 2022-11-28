@@ -21,6 +21,10 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private bool _refreshSpin;
     private bool _isAutoUpdateActive;
     private readonly Timer _timer = new();
+    private double _taskProgressbarMinimum;
+    private double _taskProgressbarMaximum = 100;
+    private double _taskProgressbarValue;
+    private bool _isTaskProgressbarIndeterminate;
 
     public enum Error
     {
@@ -32,6 +36,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     public void Init(ItemWindow itemWindow, Item item)
     {
+        IsTaskProgressbarIndeterminate = true;
         Icon = null;
         TitleName = "-";
         ItemTierLevel = string.Empty;
@@ -46,6 +51,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         TitleName = localizedName;
         
         IsAutoUpdateActive = true;
+        IsTaskProgressbarIndeterminate = false;
     }
 
     //private async void InitializeItemData(Item item)
@@ -178,6 +184,47 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    public double TaskProgressbarMinimum
+    {
+        get => _taskProgressbarMinimum;
+        set
+        {
+            _taskProgressbarMinimum = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TaskProgressbarMaximum
+    {
+        get => _taskProgressbarMaximum;
+        set
+        {
+            _taskProgressbarMaximum = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TaskProgressbarValue
+    {
+        get => _taskProgressbarValue;
+        set
+        {
+            _taskProgressbarValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsTaskProgressbarIndeterminate
+    {
+        get => _isTaskProgressbarIndeterminate;
+        set
+        {
+            _isTaskProgressbarIndeterminate = value;
+            OnPropertyChanged();
+        }
+    }
+
 
     public ItemWindowTranslation Translation
     {
