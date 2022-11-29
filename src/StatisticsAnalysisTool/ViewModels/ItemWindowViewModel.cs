@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -105,16 +106,9 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             return;
         }
 
-        ItemTierLevel = Item?.Tier != -1 && Item?.Level != -1 ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
         InitExtraItemInformation();
         await InitCraftingTabAsync();
-
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            _itemWindow.Icon = null;
-            _itemWindow.Title = "-";
-        });
-
+        
         if (Application.Current.Dispatcher == null)
         {
             SetErrorValues(Error.GeneralError);
@@ -123,14 +117,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
         var localizedName = ItemController.LocalizedName(Item?.LocalizedNames, null, Item?.UniqueName);
 
-        Icon = Item?.Icon;
-        TitleName = localizedName;
-
-        await Application.Current.Dispatcher.InvokeAsync(() =>
-        {
-            _itemWindow.Icon = item.Icon;
-            _itemWindow.Title = $"{localizedName} (T{item.Tier})";
-        });
+        ChangeHeaderValues(item);
+        ChangeWindowValuesAsync(item);
 
         InitTimer();
         IsAutoUpdateActive = true;
@@ -217,54 +205,26 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    //private async void InitializeItemData(Item item)
-    //{
-    //    //InformationLoadingImageVisibility = Visibility.Visible;
+    private async void ChangeWindowValuesAsync(Item item)
+    {
+        var localizedName = ItemController.LocalizedName(item?.LocalizedNames, null, item?.UniqueName);
 
-    //    Icon = null;
-    //    ItemName = "-";
-    //    ItemTierLevel = string.Empty;
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            _itemWindow.Icon = item?.Icon;
+            _itemWindow.Title = $"{localizedName} (T{item?.Tier})";
+        });
+    }
 
-    //    if (item == null)
-    //    {
-    //        SetErrorValues(Error.NoItemInfo);
-    //        return;
-    //    }
+    private void ChangeHeaderValues(Item item)
+    {
+        var localizedName = ItemController.LocalizedName(item?.LocalizedNames, null, item?.UniqueName);
 
-    //    ItemTierLevel = Item?.Tier != -1 && Item?.Level != -1 ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
-    //    //InitExtraItemInformation();
-    //    //await InitCraftingTabAsync();
-
-    //    await Application.Current.Dispatcher.InvokeAsync(() =>
-    //    {
-    //        _itemWindow.Icon = null;
-    //        _itemWindow.Title = "-";
-    //    });
-
-    //    if (Application.Current.Dispatcher == null)
-    //    {
-    //        SetErrorValues(Error.GeneralError);
-    //        return;
-    //    }
-
-    //    var localizedName = ItemController.LocalizedName(Item?.LocalizedNames, null, Item?.UniqueName);
-
-    //    Icon = item.Icon;
-    //    ItemName = localizedName;
-
-    //    await _itemWindow.Dispatcher.InvokeAsync(() =>
-    //    {
-    //        _itemWindow.Icon = item.Icon;
-    //        _itemWindow.Title = $"{localizedName} (T{item.Tier})";
-    //    });
-
-    //    InitTimer();
-    //    IsAutoUpdateActive = true;
-    //    UpdateValues(null, null);
-
-    //    //InformationLoadingImageVisibility = Visibility.Hidden;
-    //}
-
+        Icon = item?.Icon;
+        TitleName = localizedName;
+        ItemTierLevel = item?.Tier != -1 && item?.Level != -1 ? $"T{item?.Tier}.{item?.Level}" : string.Empty;
+    }
+    
     #region Timer
 
     private void InitTimer()
