@@ -31,6 +31,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private double _weight;
         private double _totalWeight;
         private bool _isTomeOfInsightResource;
+        private bool _isAvalonianEnergy;
 
         public RequiredResource(ItemWindowViewModel itemWindowViewModel)
         {
@@ -102,6 +103,16 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _isTomeOfInsightResource = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsAvalonianEnergy
+        {
+            get => _isAvalonianEnergy;
+            set
+            {
+                _isAvalonianEnergy = value;
                 OnPropertyChanged();
             }
         }

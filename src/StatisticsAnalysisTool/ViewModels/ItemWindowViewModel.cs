@@ -396,7 +396,8 @@ namespace StatisticsAnalysisTool.ViewModels
                     Weight = ItemController.GetWeight(item?.FullItemInformation),
                     CraftingQuantity = craftingQuantity,
                     IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false,
-                    IsTomeOfInsightResource = item?.UniqueName?.ToUpper().Contains("SKILLBOOK_STANDARD") ?? false
+                    IsTomeOfInsightResource = item?.UniqueName?.ToUpper().Contains("SKILLBOOK_STANDARD") ?? false,
+                    IsAvalonianEnergy = item?.UniqueName?.ToUpper().Contains("QUESTITEM_TOKEN_AVALON") ?? false
                 });
             }
         }
@@ -423,7 +424,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 foreach (var requiredResource in RequiredResources.ToList())
                 {
-                    if (requiredResource.IsArtifactResource || requiredResource.IsTomeOfInsightResource)
+                    if (requiredResource.IsArtifactResource || requiredResource.IsTomeOfInsightResource || requiredResource.IsAvalonianEnergy)
                     {
                         requiredResource.CraftingQuantity = (long) Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
                         continue;

@@ -391,13 +391,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFaction,
                 Name = MainWindowTranslation.Faction
             });
-
-            LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.SeasonPoints)
-            {
-                IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterSeasonPoints,
-                Name = MainWindowTranslation.SeasonPoints
-            });
-
+            
             LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.ConsumableLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot,

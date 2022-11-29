@@ -91,10 +91,8 @@ namespace StatisticsAnalysisTool.Enumerations
         RegenerationHealthEnergyComboChanged,
         RegenerationPlayerComboChanged,
         DurabilityChanged,
-        NewLoot = 89, // map[0:1863 2:1853 3:Dicky 4:[236.79169 -185.40233] 5:42.864536 6:true 7:1 10:[[-85 -58 82 55 101 -15 76 79 -103 -113 -21 8 -33 46 -99 -28]] 
+        NewLoot = 92, // map[0:1863 2:1853 3:Dicky 4:[236.79169 -185.40233] 5:42.864536 6:true 7:1 10:[[-85 -58 82 55 101 -15 76 79 -103 -113 -21 8 -33 46 -99 -28]] 
         // 12:637993823308929158 18:[] 19:[-63 68 12 104 -29 1 114 78 -91 -75 -21 68 -13 -96 -29 -67] 20:[-23 20 93 -6 73 127 19 78 -65 44 -42 65 -97 105 -82 -16] 21:25900 22:0 23:3 24:-1 252:89]
-        EventCode91,
-        EventCode92,
         AttachItemContainer = 93, //  map[0:78 1:[-99 -50 125 -49 86 0 -115 74 -74 67 9 101 -87 -71 -66 -10] 3:[0 0 0 0 0 0 656 657] 4:8 252:89] (0: ObjectId, 3: ItemId[])
         DetachItemContainer, //  map[0:[-95 72 -77 -75 -70 34 127 73 -114 -96 28 8 75 -107 -106 125] 252:90]
         InvalidateItemContainer,
@@ -159,7 +157,7 @@ namespace StatisticsAnalysisTool.Enumerations
         ChangeMountSkin,
         GameEvent,
         KilledPlayer,
-        Died = 151,
+        Died = 154,
         KnockedDown,
         MatchPlayerJoinedEvent,
         MatchPlayerStatsEvent,
