@@ -499,7 +499,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 if (!SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked && Utilities.IsWindowOpen<ItemWindow>())
                 {
                     var existItemWindow = Application.Current.Windows.OfType<ItemWindow>().FirstOrDefault();
-                    existItemWindow?.Init(item);
+                    //existItemWindow?.Init(item);
                     existItemWindow?.Activate();
                 }
                 else

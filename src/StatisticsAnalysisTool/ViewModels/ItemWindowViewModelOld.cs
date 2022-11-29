@@ -300,7 +300,7 @@ namespace StatisticsAnalysisTool.ViewModels
             {
                 CraftingTabVisibility = Visibility.Visible;
 
-                EssentialCraftingValues = new EssentialCraftingValuesTemplate(this, CurrentCityPrices, Item.UniqueName);
+                //EssentialCraftingValues = new EssentialCraftingValuesTemplate(this, CurrentCityPrices, Item.UniqueName);
                 SetJournalInfo();
                 await SetRequiredResourcesAsync();
                 CraftingNotes = CraftingTabController.GetNote(Item.UniqueName);
@@ -325,16 +325,16 @@ namespace StatisticsAnalysisTool.ViewModels
 
             var fullItemInformation = ItemController.GetItemByUniqueName(ItemController.GetGeneralJournalName(craftingJournalType.UniqueName))?.FullItemInformation;
 
-            RequiredJournal = new RequiredJournal(this)
-            {
-                UniqueName = craftingJournalType.UniqueName,
-                CostsPerJournal = 0,
-                CraftingResourceName = craftingJournalType.LocalizedName,
-                Icon = craftingJournalType.Icon,
-                Weight = ItemController.GetWeight(fullItemInformation),
-                RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting),
-                SellPricePerJournal = 0
-            };
+            //RequiredJournal = new RequiredJournal(this)
+            //{
+            //    UniqueName = craftingJournalType.UniqueName,
+            //    CostsPerJournal = 0,
+            //    CraftingResourceName = craftingJournalType.LocalizedName,
+            //    Icon = craftingJournalType.Icon,
+            //    Weight = ItemController.GetWeight(fullItemInformation),
+            //    RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting),
+            //    SellPricePerJournal = 0
+            //};
         }
 
         private async Task SetRequiredResourcesAsync()
@@ -386,18 +386,18 @@ namespace StatisticsAnalysisTool.ViewModels
                     ? CraftingCalculation.PossibleItemCrafting
                     : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
 
-                RequiredResources.Add(new RequiredResource(this)
-                {
-                    CraftingResourceName = item?.LocalizedName,
-                    UniqueName = item?.UniqueName,
-                    OneProductionAmount = craftResource.Count,
-                    Icon = item?.Icon,
-                    ResourceCost = 0,
-                    Weight = ItemController.GetWeight(item?.FullItemInformation),
-                    CraftingQuantity = craftingQuantity,
-                    IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false,
-                    IsTomeOfInsightResource = item?.UniqueName?.ToUpper().Contains("SKILLBOOK_STANDARD") ?? false
-                });
+                //RequiredResources.Add(new RequiredResource(this)
+                //{
+                //    CraftingResourceName = item?.LocalizedName,
+                //    UniqueName = item?.UniqueName,
+                //    OneProductionAmount = craftResource.Count,
+                //    Icon = item?.Icon,
+                //    ResourceCost = 0,
+                //    Weight = ItemController.GetWeight(item?.FullItemInformation),
+                //    CraftingQuantity = craftingQuantity,
+                //    IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false,
+                //    IsTomeOfInsightResource = item?.UniqueName?.ToUpper().Contains("SKILLBOOK_STANDARD") ?? false
+                //});
             }
         }
 

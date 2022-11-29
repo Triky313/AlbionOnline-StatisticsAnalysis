@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
@@ -19,7 +19,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private string _craftingResourceName;
         private long _costsPerJournal;
         private double _requiredJournalAmount;
-        private readonly ItemWindowViewModelOld _itemWindowViewModelOld;
+        private readonly ItemWindowViewModel _itemWindowViewModel;
         private double _sellPricePerJournal;
         private List<MarketResponse> _marketResponseEmptyJournal = new();
         private List<MarketResponse> _marketResponseFullJournal = new();
@@ -43,7 +43,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         };
 
         public string UniqueName { get; set; }
-        
+
         private async void LoadSellPriceEmptyJournalAsync(Location location)
         {
             if (_lastUpdateEmptyJournal.AddMilliseconds(SettingsController.CurrentSettings.RefreshRate) < DateTime.UtcNow)
@@ -100,9 +100,9 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
-        public RequiredJournal(ItemWindowViewModelOld itemWindowViewModelOld)
+        public RequiredJournal(ItemWindowViewModel itemWindowViewModel)
         {
-            _itemWindowViewModelOld = itemWindowViewModelOld;
+            _itemWindowViewModel = itemWindowViewModel;
         }
 
         public BitmapImage Icon
@@ -131,7 +131,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _costsPerJournal = value;
-                _itemWindowViewModelOld.UpdateCraftingCalculationTab();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -153,7 +153,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _sellPricePerJournal = value;
-                _itemWindowViewModelOld.UpdateCraftingCalculationTab();
+                _itemWindowViewModel.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }

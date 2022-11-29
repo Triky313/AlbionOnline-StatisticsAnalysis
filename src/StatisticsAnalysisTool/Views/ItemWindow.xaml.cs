@@ -15,17 +15,17 @@ public partial class ItemWindow
     public ItemWindow(Item item)
     {
         InitializeComponent();
-        var itemWindowViewModel = new ItemWindowViewModel();
+        var itemWindowViewModel = new ItemWindowViewModel(this, item);
         DataContext = itemWindowViewModel;
 
-        Init(item);
+        //Init(item);
     }
 
-    public void Init(Item item)
-    {
-        var vm = (ItemWindowViewModel)DataContext;
-        vm?.Init(this, item);
-    }
+    //public async void Init(Item item)
+    //{
+    //    var vm = (ItemWindowViewModel)DataContext;
+    //    await vm?.InitAsync(this, item)!;
+    //}
 
     private void ItemWindow_OnClosing(object sender, CancelEventArgs e)
     {
@@ -58,7 +58,7 @@ public partial class ItemWindow
         }
     }
 
-    private void ImageAwesome_MouseUp(object sender, MouseButtonEventArgs e)
+    private void RefreshSpin_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var vm = (ItemWindowViewModel)DataContext;
         vm?.AutoUpdateSwitcher();

@@ -23,7 +23,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private long _totalCost;
         private long _craftingQuantity;
         private long _oneProductionAmount;
-        private readonly ItemWindowViewModelOld _itemWindowViewModelOld;
+        private readonly ItemWindowViewModel _itemWindowViewModelOld;
         private bool _isArtifactResource;
         private List<MarketResponse> _marketResponse = new();
         private Location _itemPricesLocationSelected;
@@ -33,7 +33,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private bool _isTomeOfInsightResource;
         private bool _isAvalonianEnergy;
 
-        public RequiredResource(ItemWindowViewModelOld itemWindowViewModelOld)
+        public RequiredResource(ItemWindowViewModel itemWindowViewModelOld)
         {
             _itemWindowViewModelOld = itemWindowViewModelOld;
         }

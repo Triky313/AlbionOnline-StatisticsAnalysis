@@ -6,6 +6,7 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         xmlns:viewmodels="clr-namespace:StatisticsAnalysisTool.ViewModels"
+        xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
         d:DataContext="{d:DesignInstance Type=viewmodels:ItemWindowViewModel}"
         mc:Ignorable="d"
         Title="ItemWindow" 
@@ -20,7 +21,7 @@
         <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
 
         <Grid ZIndex="-1" Height="80" VerticalAlignment="Top" Background="{StaticResource SolidColorBrush.Background.1}" MouseDown="Hotbar_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
-            <Border Style="{StaticResource ItemWindow.BorderColor.ItemLevel.Style}" DataContext="{Binding Item}" />
+            <Border BorderThickness="1" Height="1" BorderBrush="{StaticResource SolidColorBrush.Background.2}" VerticalAlignment="Bottom" />
             <Button Style="{StaticResource WindowButtonStyle}" Content="r" Margin="-2,0,0,0" Click="CloseButton_Click" />
             <Button Style="{StaticResource WindowButtonStyle}" Content="0" Margin="0,0,28,0" Click="MinimizeButton_Click" />
             <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="75" Margin="10,5,0,0" VerticalAlignment="Top" Width="75" />
@@ -29,20 +30,19 @@
                 <Label Content="{Binding ItemTierLevel, FallbackValue=T0.0}" HorizontalAlignment="Left" FontSize="14" Margin="-5 0 0 0" Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" />
             </DockPanel>
             <Grid ZIndex="1" Width="24" Height="24" Margin="0,0,5,5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                <fa5:ImageAwesome Visibility="Visible" Icon="Solid_Sync" ToolTip="{Binding Translation.RefreshIconTooltipText, FallbackValue=LAST__UPDATE: TIME}" Spin="{Binding RefreshSpin, FallbackValue=false, UpdateSourceTrigger=PropertyChanged}" SpinDuration="10" Foreground="{StaticResource SolidColorBrush.Text.1}" MouseUp="ImageAwesome_MouseUp" />
+                <fa5:ImageAwesome Visibility="Visible" Icon="Solid_Sync" ToolTip="{Binding Translation.RefreshIconTooltipText, FallbackValue=LAST__UPDATE: TIME}" 
+                                  Spin="{Binding RefreshSpin, FallbackValue=false, UpdateSourceTrigger=PropertyChanged}" SpinDuration="10" 
+                                  Foreground="{StaticResource SolidColorBrush.Text.1}" MouseLeftButtonDown="RefreshSpin_MouseLeftButtonDown" />
             </Grid>
-            <ProgressBar Margin="0,80,0,0" Height="1" Minimum="{Binding TaskProgressbarMinimum}" Maximum="{Binding TaskProgressbarMaximum}" 
-                         Value="{Binding TaskProgressbarValue}" IsIndeterminate="{Binding IsTaskProgressbarIndeterminate}" />
+            <ProgressBar Margin="0,1,0,0" Height="1" Minimum="{Binding TaskProgressbarMinimum}" Maximum="{Binding TaskProgressbarMaximum}" 
+                         Value="{Binding TaskProgressbarValue}" IsIndeterminate="{Binding IsTaskProgressbarIndeterminate}" HorizontalAlignment="Left" VerticalAlignment="Top" />
         </Grid>
 
-        <TabControl Background="Transparent" Margin="1,80,1,0">
+        <TabControl Background="Transparent" Margin="1,77,1,0">
             <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}">
                 <Grid>
-                    <!--<Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                    </Grid>-->
-                    <!--<ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" 
-                              BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" d:ItemsSource="{d:SampleData ItemCount=7}">
+                    <ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" 
+                              BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" d:ItemsSource="{d:SampleData ItemCount=10}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" CellTemplate="{StaticResource GridViewColumnCityTemplate}"/>
@@ -56,7 +56,7 @@
                                 <GridViewColumn Header="{Binding Translation.BuyPriceMaxDate, FallbackValue=BUY_PRICE_MAX_DATE}" CellTemplate="{StaticResource GridViewColumnBuyPriceMaxDateTemplate}"/>
                             </GridView>
                         </ListView.View>
-                    </ListView>-->
+                    </ListView>
                 </Grid>
             </TabItem>
             <!--<TabItem Header="{Binding Translation.Quality, FallbackValue=QUALITY}" ToolTip="{Binding Translation.TabAllQualityToolTipDescription}">
@@ -191,5 +191,6 @@
             </TabItem>-->
         </TabControl>
 
+        <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Visible}" ErrorBarText="{Binding ErrorBarText}" />
     </Grid>
 </Window>
