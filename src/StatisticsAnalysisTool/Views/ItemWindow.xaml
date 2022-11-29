@@ -41,8 +41,16 @@
         <TabControl Background="Transparent" Margin="1,77,1,0">
             <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}">
                 <Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox Width="200" Height="26" Margin="0,0,0,5" VerticalAlignment="Top" ItemsSource="{Binding Qualities}" 
+                                  SelectedItem="{Binding QualitiesSelection, IsAsync=true}" 
+                                  HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Quality" />
+                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0,5,0" Width="150" Height="26" ItemsSource="{Binding CityFilters}" 
+                                  ItemTemplate="{StaticResource CityFilterObject}" />
+                    </StackPanel>
+
                     <ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" 
-                              BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" d:ItemsSource="{d:SampleData ItemCount=10}">
+                              BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,30,0,0" d:ItemsSource="{d:SampleData ItemCount=10}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" CellTemplate="{StaticResource GridViewColumnCityTemplate}"/>

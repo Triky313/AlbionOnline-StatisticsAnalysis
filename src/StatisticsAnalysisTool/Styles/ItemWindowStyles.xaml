@@ -1279,4 +1279,11 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="CityFilterObject" DataType="{x:Type models:CityFilterObject}">
+        <StackPanel Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding IsSelected}" Width="20" VerticalAlignment="Top" />
+            <TextBlock Text="{Binding Name}" Width="100" TextWrapping="Wrap" />
+        </StackPanel>
+    </DataTemplate>
+
 </ResourceDictionary>

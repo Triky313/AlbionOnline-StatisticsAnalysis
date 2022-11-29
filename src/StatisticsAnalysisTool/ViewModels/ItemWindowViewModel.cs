@@ -1,12 +1,16 @@
 ﻿using log4net;
+using log4net.Filter;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.ItemWindowModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
+using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
@@ -53,6 +57,9 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private List<MarketResponse> _currentCityPrices;
     private ExtraItemInformation _extraItemInformation = new();
     private string _errorBarText;
+    private List<QualityStruct> _qualities = new();
+    private QualityStruct _qualitiesSelection;
+    private ObservableCollection<CityFilterObject> _cityFilters = new();
 
     private CraftingCalculation _craftingCalculation = new()
     {
@@ -106,6 +113,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             return;
         }
 
+        InitCityFiltering();
+        InitQualityFiltering();
         InitExtraItemInformation();
         await InitCraftingTabAsync();
         
@@ -114,9 +123,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             SetErrorValues(Error.GeneralError);
             return;
         }
-
-        var localizedName = ItemController.LocalizedName(Item?.LocalizedNames, null, Item?.UniqueName);
-
+        
         ChangeHeaderValues(item);
         ChangeWindowValuesAsync(item);
 
@@ -125,6 +132,34 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         UpdateValues(null, null);
 
         IsTaskProgressbarIndeterminate = false;
+    }
+
+    private void InitCityFiltering()
+    {
+        CityFilters.Add(new CityFilterObject(MarketLocation.ThetfordMarket, Locations.GetParameterName(Location.Thetford), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.FortSterlingMarket, Locations.GetParameterName(Location.FortSterling), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.LymhurstMarket, Locations.GetParameterName(Location.Lymhurst), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.BridgewatchMarket, Locations.GetParameterName(Location.Bridgewatch), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.MartlockMarket, Locations.GetParameterName(Location.Martlock), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.BrecilienMarket, Locations.GetParameterName(Location.Brecilien), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.ArthursRest, Locations.GetParameterName(Location.ArthursRest), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.MerlynsRest, Locations.GetParameterName(Location.MerlynsRest), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.MorganasRest, Locations.GetParameterName(Location.MorganasRest), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.BlackMarket, Locations.GetParameterName(Location.BlackMarket), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.ForestCross, Locations.GetParameterName(Location.ForestCross), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.SwampCross, Locations.GetParameterName(Location.SwampCross), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.SteppeCross, Locations.GetParameterName(Location.SteppeCross), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.HighlandCross, Locations.GetParameterName(Location.HighlandCross), true));
+        CityFilters.Add(new CityFilterObject(MarketLocation.MountainCross, Locations.GetParameterName(Location.MountainCross), true));
+    }
+
+    private void InitQualityFiltering()
+    {
+        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("NORMAL"), Quality = 0 });
+        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("GOOD"), Quality = 1 });
+        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("OUTSTANDING"), Quality = 2 });
+        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("EXCELLENT"), Quality = 3 });
+        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("MASTERPIECE"), Quality = 4 });
     }
 
     private void InitExtraItemInformation()
@@ -232,6 +267,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         _timer.Interval = SettingsController.CurrentSettings.RefreshRate;
         _timer.Elapsed += UpdateInterval;
         _timer.Elapsed += UpdateValues;
+        _timer.Elapsed += UpdateValues;
     }
 
     private void UpdateInterval(object sender, EventArgs e)
@@ -244,7 +280,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         _refreshRateInMilliseconds = SettingsController.CurrentSettings.RefreshRate;
         _timer.Interval = _refreshRateInMilliseconds;
     }
-
+    
     private async void UpdateValues(object sender, EventArgs e)
     {
         //if (Item.UniqueName != null)
@@ -677,37 +713,38 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    //private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool getAllQualities = false)
+    //private List<MarketResponse> GetFilteredCityPrices(List<CityFilterObject> locations)
     //{
-    //    return CurrentCityPrices?.Where(x =>
-    //        Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket, true).Contains(x.CityEnum)
-    //        && (GetQualities().Contains(x.QualityLevel) || getAllQualities)).ToList();
+    //    // TODO: All Cities to choice
+    //    //return CurrentCityPrices?.Where(x =>
+    //    //    Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket, true).Contains(x.CityEnum)
+    //    //    && (GetQualities().Contains(x.QualityLevel) || getAllQualities)).ToList();
     //}
 
-    //public void GetMainPriceStats()
-    //{
-    //    if (CurrentCityPrices is not { Count: > 0 })
-    //    {
-    //        return;
-    //    }
+    public void GetMainPriceStats(object sender, EventArgs e)
+    {
+        if (CurrentCityPrices is not { Count: > 0 })
+        {
+            return;
+        }
 
-    //    var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
-    //    var statsPricesTotalList = PriceUpdate(filteredCityPrices);
+        //var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
+        //var statsPricesTotalList = PriceUpdate(filteredCityPrices);
 
-    //    FindBestPrice(ref statsPricesTotalList);
+        //FindBestPrice(ref statsPricesTotalList);
 
-    //    var marketCurrentPricesItemList = statsPricesTotalList.Select(item => new MarketCurrentPricesItem(item)).ToList();
+        //var marketCurrentPricesItemList = statsPricesTotalList.Select(item => new MarketCurrentPricesItem(item)).ToList();
 
-    //    if (LoadingImageVisibility != Visibility.Hidden)
-    //    {
-    //        LoadingImageVisibility = Visibility.Hidden;
-    //    }
+        //if (LoadingImageVisibility != Visibility.Hidden)
+        //{
+        //    LoadingImageVisibility = Visibility.Hidden;
+        //}
 
-    //    MarketCurrentPricesItemList = marketCurrentPricesItemList;
-    //    SetAveragePricesString();
+        //MarketCurrentPricesItemList = marketCurrentPricesItemList;
+        //SetAveragePricesString();
 
-    //    RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.CurrentDateTimeFormat()}";
-    //}
+        //RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.CurrentDateTimeFormat()}";
+    }
 
     private static List<MarketResponseTotal> PriceUpdate(List<MarketResponse> newStatsPricesList)
     {
@@ -924,6 +961,37 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public List<QualityStruct> Qualities
+    {
+        get => _qualities;
+        set
+        {
+            _qualities = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public QualityStruct QualitiesSelection
+    {
+        get => _qualitiesSelection;
+        set
+        {
+            _qualitiesSelection = value;
+            SettingsController.CurrentSettings.ItemWindowQualitiesSelection = _qualitiesSelection.Quality;
+            OnPropertyChanged();
+        }
+    }
+    
+    public ObservableCollection<CityFilterObject> CityFilters
+    {
+        get => _cityFilters;
+        set
+        {
+            _cityFilters = value;
+            OnPropertyChanged();
+        }
+    }
+
     public RequiredJournal RequiredJournal
     {
         get => _requiredJournal;
@@ -1120,6 +1188,12 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         return result;
     }
 
+    public struct QualityStruct
+    {
+        public string Name { get; set; }
+        public int Quality { get; set; }
+    }
+    
     //private List<int> GetQualities()
     //{
     //    var qualities = new List<int>();
