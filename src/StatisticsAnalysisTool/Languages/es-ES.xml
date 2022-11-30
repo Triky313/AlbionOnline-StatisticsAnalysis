@@ -79,7 +79,7 @@
 	<translation name="OUTLANDS">Tierras lejanas</translation>
 	<translation name="HELLGATE">Hellgate</translation>
 	<translation name="EXPEDITION">Expedición</translation>
-	<translation name="CRAFTING">Elaboración</translation>
+	<translation name="CRAFTING">Fabricación</translation>
 	<translation name="GATHERING">Recolección</translation>
 	<translation name="MAINHAND">Arma principal</translation>
 	<translation name="HEAD">Casco</translation>
@@ -452,9 +452,9 @@
 	<translation name="ITEM_QUANTITY">Cantidad</translation>
 	<translation name="SETUP_FEE_PERCENT">Cuota de ajuste %</translation>
 	<translation name="AUCTIONS_HOUSE_TAX_PERCENT">Tasa de mercado %</translation>
-	<translation name="CRAFTING_TAX_PERCENT">Tasa de elaboración %</translation>
-	<translation name="CRAFTING_BONUS_PERCENT">Bonificación de elaboración %</translation>
-	<translation name="CRAFTING_WITH_FOCUS">Elaboración con foco</translation>
+	<translation name="CRAFTING_TAX_PERCENT">Tasa de fabricación %</translation>
+	<translation name="CRAFTING_BONUS_PERCENT">Bonificación de fabricación %</translation>
+	<translation name="CRAFTING_WITH_FOCUS">Fabricación con foco</translation>
 	<translation name="OTHER_COSTS">Otros costes</translation>
 	<translation name="REQUIRED_JOURNALS">Diarios requeridos</translation>
 	<translation name="COSTS_PER_JOURNAL">Coste por diario</translation>
@@ -464,10 +464,10 @@
 	<translation name="TOTAL_QUANTITY">Cantidad total</translation>
 	<translation name="TOTAL_COST">Coste total</translation>
 	<translation name="CALCULATION">Estimación</translation>
-	<translation name="POSSIBLE_CRAFTING">Elaboración posible</translation>
-	<translation name="POSSIBLE_ITEM_CRAFTING">Elaboración posible de artículos</translation>
+	<translation name="POSSIBLE_CRAFTING">Fabricación posible</translation>
+	<translation name="POSSIBLE_ITEM_CRAFTING">Fabricación posible de artículos</translation>
 	<translation name="STATEMENT_OF_COST">Informe de coste</translation>
-	<translation name="CRAFTING_TAX">Tasa de elaboración</translation>
+	<translation name="CRAFTING_TAX">Tasa de fabricación</translation>
 	<translation name="SETUP_FEE">Cuota de ajuste</translation>
 	<translation name="AUCTIONS_HOUSE_TAX">Tasa de mercado</translation>
 	<translation name="TOTAL_JOURNAL_COSTS">Coste total de diarios</translation>
@@ -667,4 +667,15 @@
 	<translation name="CRAFTING_INFO_DESCRIPTION_3">En una ciudad como Lymhurst es del 118%. Si la ciudad da una bonificación al objeto a fabricar, es del 133%. En los Escondites puede ser mayor, también puede haber un bono diario que puede ser del 10% o del 20%.</translation>
 	<translation name="CRAFTING_INFO_DESCRIPTION_4">La cuota de ajuste y las tasas de mercado las puedes encontrar en el juego cuando vayas a vender un objeto en el mercado.</translation>
 	<translation name="CRAFTING_INFO_DESCRIPTION_5">Si tienes Premium, puedes dejar los dos valores como están. Si quieres vender algo manualmente, pon ambos a 0. Si no tienes Premium, los valores suelen ser el doble.</translation>
+	<translation name="MISTS">Nieblas</translation>
+	<translation name="REPAIR_COSTS_TODAY">Costes de reparación hoy</translation>
+	<translation name="REPAIR_COSTS_LAST_7_DAYS">Costes de reparación los últimos 7 días</translation>
+	<translation name="REPAIR_COSTS_LAST_30_DAYS">Costes de reparación los últimos 30 días</translation>
+	<translation name="RESET_BEFORE_COMBAT">Reiniciar antes de combate</translation>
+	<translation name="SEARCHED_PLAYER">Jugador buscado</translation>
+	<translation name="LOCAL_PLAYER">Jugador local</translation>
+	<translation name="THANKS">Agradecimientos</translation>
+	<translation name="THANK_YOU">Gracias</translation>
+	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Sonido de mazmorra cerrada activado</translation>
+	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Precio total con tasas deducidas</translation>	
 </translations>
