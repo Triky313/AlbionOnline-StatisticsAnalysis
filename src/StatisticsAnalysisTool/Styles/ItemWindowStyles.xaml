@@ -594,7 +594,7 @@
     </Style>
 
     <!-- MarketCurrentPricesItem -->
-    <DataTemplate x:Key="GridViewColumnCityTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
+    <DataTemplate x:Key="GridViewColumnCityTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Label Content="{Binding LocationName}" Style="{StaticResource ListView.City.Color.Style}">
             <Label.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" CommandParameter="{Binding LocationName}" />
@@ -602,10 +602,10 @@
         </Label>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
+    <DataTemplate x:Key="GridViewColumnSellPriceMinTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinString}">
+                <Label Content="{Binding MarketResponse.SellPriceMin}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
@@ -639,7 +639,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinDateTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
+    <DataTemplate x:Key="GridViewColumnSellPriceMinDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
             <Label Content="{Binding SellPriceMinDateLastUpdateTime}" 
                    ToolTip="{Binding SellPriceMinDateString}">
@@ -673,10 +673,10 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMaxTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
+    <DataTemplate x:Key="GridViewColumnSellPriceMaxTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMaxString}" 
+                <Label Content="{Binding MarketResponse.SellPriceMax}" 
                        ToolTip="{Binding SellPriceMaxDateString}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
@@ -711,7 +711,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMaxDateTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
+    <DataTemplate x:Key="GridViewColumnSellPriceMaxDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
             <Label Content="{Binding SellPriceMaxDateLastUpdateTime}" 
                    ToolTip="{Binding SellPriceMaxDateString}">
@@ -745,10 +745,10 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnBuyPriceMinTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
+    <DataTemplate x:Key="GridViewColumnBuyPriceMinTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding BuyPriceMinString}" 
+                <Label Content="{Binding MarketResponse.BuyPriceMin}" 
                        ToolTip="{Binding BuyPriceMinDateString}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
@@ -783,7 +783,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnBuyPriceMinDateTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
+    <DataTemplate x:Key="GridViewColumnBuyPriceMinDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
             <Label Content="{Binding BuyPriceMinDateLastUpdateTime}" 
                    ToolTip="{Binding BuyPriceMinDateString}">
@@ -817,10 +817,10 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnBuyPriceMaxTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
+    <DataTemplate x:Key="GridViewColumnBuyPriceMaxTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding BuyPriceMaxString}" 
+                <Label Content="{Binding MarketResponse.BuyPriceMax}" 
                        ToolTip="{Binding BuyPriceMaxDateString}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
@@ -855,7 +855,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnBuyPriceMaxDateTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
+    <DataTemplate x:Key="GridViewColumnBuyPriceMaxDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Date}">
             <Label Content="{Binding BuyPriceMaxDateLastUpdateTime}" 
                    ToolTip="{Binding BuyPriceMaxDateString}">
@@ -1281,7 +1281,7 @@
 
     <DataTemplate x:Key="CityFilterObject" DataType="{x:Type models:CityFilterObject}">
         <StackPanel Orientation="Horizontal">
-            <CheckBox IsChecked="{Binding IsSelected}" Width="20" VerticalAlignment="Top" />
+            <CheckBox IsChecked="{Binding IsChecked}" Width="20" VerticalAlignment="Top" />
             <TextBlock Text="{Binding Name}" Width="100" TextWrapping="Wrap" />
         </StackPanel>
     </DataTemplate>

@@ -7,24 +7,24 @@ namespace StatisticsAnalysisTool.Models
 {
     public class CityFilterObject : INotifyPropertyChanged
     {
-        private bool? _isSelected;
+        private bool? _isChecked;
         private string _name;
 
-        public CityFilterObject(MarketLocation location, string name, bool isSelected)
+        public CityFilterObject(MarketLocation location, string name, bool isChecked)
         {
             Location = location;
             Name = name;
-            IsSelected = isSelected;
+            IsChecked = isChecked;
         }
 
         public MarketLocation Location { get; }
 
-        public bool? IsSelected
+        public bool? IsChecked
         {
-            get => _isSelected;
+            get => _isChecked;
             set
             {
-                _isSelected = value;
+                _isChecked = value;
                 OnPropertyChanged();
             }
         }

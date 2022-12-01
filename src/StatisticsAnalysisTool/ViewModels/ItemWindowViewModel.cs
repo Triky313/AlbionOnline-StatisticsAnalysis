@@ -1,22 +1,16 @@
 ﻿using log4net;
-using log4net.Filter;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Exceptions;
-using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.ItemWindowModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
-using StatisticsAnalysisTool.Network.Manager;
 using StatisticsAnalysisTool.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -45,8 +39,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private double _taskProgressbarMaximum = 100;
     private double _taskProgressbarValue;
     private bool _isTaskProgressbarIndeterminate;
-    private List<MarketCurrentPricesItem> _marketCurrentPricesItemList;
-    private XmlLanguage _itemListViewLanguage;
+    private XmlLanguage _itemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
     private double _refreshRateInMilliseconds = 10;
     private RequiredJournal _requiredJournal;
     private EssentialCraftingValuesTemplate _essentialCraftingValues;
@@ -54,12 +47,13 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private Visibility _requiredJournalVisibility = Visibility.Collapsed;
     private Visibility _craftingTabVisibility = Visibility.Collapsed;
     private string _craftingNotes;
-    private List<MarketResponse> _currentCityPrices;
+    private List<MarketResponse> _currentItemPrices = new();
     private ExtraItemInformation _extraItemInformation = new();
     private string _errorBarText;
     private List<QualityStruct> _qualities = new();
     private QualityStruct _qualitiesSelection;
     private ObservableCollection<CityFilterObject> _cityFilters = new();
+    private ObservableRangeCollection<ItemPricesObject> _mainTabItemPrices = new ();
 
     private CraftingCalculation _craftingCalculation = new()
     {
@@ -98,6 +92,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         ItemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
     }
 
+    #region Inits
+
     private async Task InitAsync(Item item)
     {
         IsTaskProgressbarIndeterminate = true;
@@ -117,19 +113,18 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         InitQualityFiltering();
         InitExtraItemInformation();
         await InitCraftingTabAsync();
-        
+
         if (Application.Current.Dispatcher == null)
         {
             SetErrorValues(Error.GeneralError);
             return;
         }
-        
+
         ChangeHeaderValues(item);
         ChangeWindowValuesAsync(item);
 
-        InitTimer();
+        await InitTimerAsync();
         IsAutoUpdateActive = true;
-        UpdateValues(null, null);
 
         IsTaskProgressbarIndeterminate = false;
     }
@@ -155,11 +150,16 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     private void InitQualityFiltering()
     {
-        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("NORMAL"), Quality = 0 });
-        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("GOOD"), Quality = 1 });
-        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("OUTSTANDING"), Quality = 2 });
-        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("EXCELLENT"), Quality = 3 });
-        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("MASTERPIECE"), Quality = 4 });
+        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("NORMAL"), Quality = 1 });
+        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("GOOD"), Quality = 2 });
+        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("OUTSTANDING"), Quality = 3 });
+        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("EXCELLENT"), Quality = 4 });
+        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("MASTERPIECE"), Quality = 5 });
+
+        if (Qualities != null)
+        {
+            QualitiesSelection = Qualities.FirstOrDefault();
+        }
     }
 
     private void InitExtraItemInformation()
@@ -240,6 +240,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    #endregion
+
     private async void ChangeWindowValuesAsync(Item item)
     {
         var localizedName = ItemController.LocalizedName(item?.LocalizedNames, null, item?.UniqueName);
@@ -259,15 +261,18 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         TitleName = localizedName;
         ItemTierLevel = item?.Tier != -1 && item?.Level != -1 ? $"T{item?.Tier}.{item?.Level}" : string.Empty;
     }
-    
+
     #region Timer
 
-    private void InitTimer()
+    private async Task InitTimerAsync()
     {
+        await UpdateMarketPricesAsync();
+        UpdateMainTabItemPrices(null, null);
+
         _timer.Interval = SettingsController.CurrentSettings.RefreshRate;
         _timer.Elapsed += UpdateInterval;
-        _timer.Elapsed += UpdateValues;
-        _timer.Elapsed += UpdateValues;
+        _timer.Elapsed += UpdateMarketPricesAsync;
+        _timer.Elapsed += UpdateMainTabItemPrices;
     }
 
     private void UpdateInterval(object sender, EventArgs e)
@@ -280,24 +285,12 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         _refreshRateInMilliseconds = SettingsController.CurrentSettings.RefreshRate;
         _timer.Interval = _refreshRateInMilliseconds;
     }
-    
-    private async void UpdateValues(object sender, EventArgs e)
-    {
-        //if (Item.UniqueName != null)
-        //{
-        //    await GetCityItemPricesAsync();
-        //    await GetItemPricesInRealMoneyAsync();
-        //}
-
-        //GetMainPriceStats();
-        //SetQualityPriceStatsOnListView();
-    }
 
     public void AutoUpdateSwitcher()
     {
         IsAutoUpdateActive = !IsAutoUpdateActive;
     }
-    
+
     #endregion
 
     #region Crafting tab
@@ -320,7 +313,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         {
             CraftingTabVisibility = Visibility.Visible;
 
-            EssentialCraftingValues = new EssentialCraftingValuesTemplate(this, CurrentCityPrices, Item.UniqueName);
+            EssentialCraftingValues = new EssentialCraftingValuesTemplate(this, CurrentItemPrices, Item.UniqueName);
             SetJournalInfo();
             await SetRequiredResourcesAsync();
             CraftingNotes = CraftingTabController.GetNote(Item.UniqueName);
@@ -564,18 +557,26 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     #region Prices
 
-    public async Task GetCityItemPricesAsync()
+    public async void UpdateMarketPricesAsync(object sender, ElapsedEventArgs e)
+    {
+        await UpdateMarketPricesAsync();
+    }
+
+    public async Task UpdateMarketPricesAsync()
     {
         try
         {
-            CurrentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item?.UniqueName).ConfigureAwait(false);
+            var marketResponses = await ApiController.GetCityItemPricesFromJsonAsync(Item?.UniqueName);
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                CurrentItemPrices = marketResponses;
+            });
             ErrorBarReset();
         }
-        catch (TooManyRequestsException e)
+        catch (TooManyRequestsException ex)
         {
-            CurrentCityPrices = null;
             SetErrorValues(Error.ToManyRequests);
-            Log.Warn(nameof(GetCityItemPricesAsync), e);
+            Log.Warn(nameof(UpdateMarketPricesAsync), ex);
         }
     }
 
@@ -679,51 +680,9 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     //    }
     //}
 
-    private static void SetQualityStat(MarketResponse marketResponse, ref MarketQualityObject marketQualityObject)
-    {
-        if (marketQualityObject == null)
-            return;
-
-        switch (ItemController.GetQuality(marketResponse.QualityLevel))
-        {
-            case ItemQuality.Normal:
-                marketQualityObject.SellPriceMinNormal = marketResponse.SellPriceMin;
-                marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
-                return;
-
-            case ItemQuality.Good:
-                marketQualityObject.SellPriceMinGood = marketResponse.SellPriceMin;
-                marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
-                return;
-
-            case ItemQuality.Outstanding:
-                marketQualityObject.SellPriceMinOutstanding = marketResponse.SellPriceMin;
-                marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
-                return;
-
-            case ItemQuality.Excellent:
-                marketQualityObject.SellPriceMinExcellent = marketResponse.SellPriceMin;
-                marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
-                return;
-
-            case ItemQuality.Masterpiece:
-                marketQualityObject.SellPriceMinMasterpiece = marketResponse.SellPriceMin;
-                marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
-                return;
-        }
-    }
-
-    //private List<MarketResponse> GetFilteredCityPrices(List<CityFilterObject> locations)
-    //{
-    //    // TODO: All Cities to choice
-    //    //return CurrentCityPrices?.Where(x =>
-    //    //    Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket, true).Contains(x.CityEnum)
-    //    //    && (GetQualities().Contains(x.QualityLevel) || getAllQualities)).ToList();
-    //}
-
     public void GetMainPriceStats(object sender, EventArgs e)
     {
-        if (CurrentCityPrices is not { Count: > 0 })
+        if (CurrentItemPrices is not { Count: > 0 })
         {
             return;
         }
@@ -733,7 +692,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
         //FindBestPrice(ref statsPricesTotalList);
 
-        //var marketCurrentPricesItemList = statsPricesTotalList.Select(item => new MarketCurrentPricesItem(item)).ToList();
+        //var marketCurrentPricesItemList = statsPricesTotalList.Select(item => new CurrentMarketPrices(item)).ToList();
 
         //if (LoadingImageVisibility != Visibility.Hidden)
         //{
@@ -746,54 +705,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         //RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.CurrentDateTimeFormat()}";
     }
 
-    private static List<MarketResponseTotal> PriceUpdate(List<MarketResponse> newStatsPricesList)
-    {
-        var currentStatsPricesTotalList = new List<MarketResponseTotal>();
-
-        foreach (var newStats in newStatsPricesList ?? new List<MarketResponse>())
-            try
-            {
-                if (currentStatsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == newStats.City))
-                {
-                    var curStats = currentStatsPricesTotalList.Find(s => WorldData.GetUniqueNameOrDefault((int)s.City) == newStats.City);
-
-                    if (newStats?.SellPriceMinDate < curStats?.SellPriceMinDate)
-                    {
-                        curStats.SellPriceMin = newStats.SellPriceMin;
-                        curStats.SellPriceMinDate = newStats.SellPriceMinDate;
-                    }
-
-                    if (newStats?.SellPriceMaxDate < curStats?.SellPriceMaxDate)
-                    {
-                        curStats.SellPriceMax = newStats.SellPriceMax;
-                        curStats.SellPriceMaxDate = newStats.SellPriceMaxDate;
-                    }
-
-                    if (newStats?.BuyPriceMinDate < curStats?.BuyPriceMinDate)
-                    {
-                        curStats.BuyPriceMin = newStats.BuyPriceMin;
-                        curStats.BuyPriceMinDate = newStats.BuyPriceMinDate;
-                    }
-
-                    if (newStats?.BuyPriceMaxDate < curStats?.BuyPriceMaxDate)
-                    {
-                        curStats.BuyPriceMax = newStats.BuyPriceMax;
-                        curStats.BuyPriceMaxDate = newStats.BuyPriceMaxDate;
-                    }
-                }
-                else
-                {
-                    currentStatsPricesTotalList.Add(new MarketResponseTotal(newStats));
-                }
-            }
-            catch
-            {
-                return currentStatsPricesTotalList;
-            }
-
-        return currentStatsPricesTotalList;
-    }
-
+    // TODO: Without try catch
     private void FindBestPrice(ref List<MarketResponseTotal> list)
     {
         if (list.Count == 0)
@@ -889,6 +801,30 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     #endregion Prices
 
+    #region Main tab
+
+    private async void UpdateMainTabItemPrices(object sender, ElapsedEventArgs e)
+    {
+        var currentItemPrices = CurrentItemPrices?.Select(x => new ItemPricesObject(x)).ToList();
+        var filteredAndSortedPrices = currentItemPrices?.Where(x => GetMainTabCheckedLocations().Contains(x.MarketLocation) && QualitiesSelection.Quality == x.MarketResponse?.QualityLevel).OrderBy(x => x.LocationName);
+
+        if (filteredAndSortedPrices == null)
+            return;
+
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            // TODO: Is stucking while updating.. change to update values, if there exist
+            MainTabItemPrices.ReplaceRange(filteredAndSortedPrices);
+        });
+    }
+
+    private List<MarketLocation> GetMainTabCheckedLocations()
+    {
+        return CityFilters?.Where(x => x?.IsChecked == true).Select(x => x.Location).ToList() ?? new List<MarketLocation>();
+    }
+
+    #endregion
+
     #region Bindings
 
     public Item Item
@@ -941,16 +877,6 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public List<MarketCurrentPricesItem> MarketCurrentPricesItemList
-    {
-        get => _marketCurrentPricesItemList;
-        set
-        {
-            _marketCurrentPricesItemList = value;
-            OnPropertyChanged();
-        }
-    }
-
     public XmlLanguage ItemListViewLanguage
     {
         get => _itemListViewLanguage;
@@ -981,7 +907,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
+
     public ObservableCollection<CityFilterObject> CityFilters
     {
         get => _cityFilters;
@@ -1082,17 +1008,27 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public List<MarketResponse> CurrentCityPrices
+    public List<MarketResponse> CurrentItemPrices
     {
-        get => _currentCityPrices;
+        get => _currentItemPrices;
         set
         {
-            _currentCityPrices = value;
+            _currentItemPrices = value;
             if (EssentialCraftingValues != null)
             {
                 EssentialCraftingValues.CurrentCityPrices = value;
             }
 
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableRangeCollection<ItemPricesObject> MainTabItemPrices
+    {
+        get => _mainTabItemPrices;
+        set
+        {
+            _mainTabItemPrices = value;
             OnPropertyChanged();
         }
     }
@@ -1193,7 +1129,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         public string Name { get; set; }
         public int Quality { get; set; }
     }
-    
+
     //private List<int> GetQualities()
     //{
     //    var qualities = new List<int>();

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Common;
 
 namespace StatisticsAnalysisTool.Models;
 
@@ -11,9 +10,6 @@ public class MarketResponse
 
     [JsonPropertyName("city")]
     public string City { get; set; }
-
-    [JsonIgnore] 
-    public Location CityEnum => Locations.GetLocationByLocationNameOrId(City);
 
     [JsonPropertyName("quality")]
     public int QualityLevel { get; set; }

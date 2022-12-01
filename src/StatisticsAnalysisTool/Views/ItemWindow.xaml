@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
-        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         xmlns:viewmodels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
         d:DataContext="{d:DesignInstance Type=viewmodels:ItemWindowViewModel}"
@@ -49,7 +48,7 @@
                                   ItemTemplate="{StaticResource CityFilterObject}" />
                     </StackPanel>
 
-                    <ListView ItemsSource="{Binding MarketCurrentPricesItemList}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" 
+                    <ListView ItemsSource="{Binding MainTabItemPrices}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" 
                               BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,30,0,0" d:ItemsSource="{d:SampleData ItemCount=10}">
                         <ListView.View>
                             <GridView>

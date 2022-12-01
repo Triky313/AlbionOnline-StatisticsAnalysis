@@ -9,32 +9,22 @@ using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Models;
 
-public class MarketCurrentPricesItem
+public class CurrentMarketPrices
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
-    public MarketCurrentPricesItem(MarketResponseTotal marketResponseTotal)
+    public CurrentMarketPrices(ItemPricesObject itemPricesObject)
     {
-        ItemTypeId = marketResponseTotal.ItemTypeId;
-        LocationEnumType = marketResponseTotal.City;
-        QualityLevel = marketResponseTotal.QualityLevel;
-        SellPriceMin = marketResponseTotal.SellPriceMin;
-        SellPriceMinDate = marketResponseTotal.SellPriceMinDate;
-        SellPriceMax = marketResponseTotal.SellPriceMax;
-        SellPriceMaxDate = marketResponseTotal.SellPriceMaxDate;
-        BuyPriceMin = marketResponseTotal.BuyPriceMin;
-        BuyPriceMinDate = marketResponseTotal.BuyPriceMinDate;
-        BuyPriceMax = marketResponseTotal.BuyPriceMax;
-        BuyPriceMaxDate = marketResponseTotal.BuyPriceMaxDate;
-        BestSellMinPrice = marketResponseTotal.BestSellMinPrice;
-        BestSellMaxPrice = marketResponseTotal.BestSellMaxPrice;
-        BestBuyMinPrice = marketResponseTotal.BestBuyMinPrice;
-        BestBuyMaxPrice = marketResponseTotal.BestBuyMaxPrice;
+        Location = itemPricesObject.MarketLocation;
+        BestSellMinPrice = itemPricesObject.BestSellMinPrice;
+        BestSellMaxPrice = itemPricesObject.BestSellMaxPrice;
+        BestBuyMinPrice = itemPricesObject.BestBuyMinPrice;
+        BestBuyMaxPrice = itemPricesObject.BestBuyMaxPrice;
     }
 
     public string ItemTypeId { get; set; }
-    public Location LocationEnumType { get; set; }
-    public string LocationName => WorldData.GetUniqueNameOrDefault((int)LocationEnumType);
+    public MarketLocation Location { get; set; }
+    public string LocationName => WorldData.GetUniqueNameOrDefault((int)Location);
     public byte QualityLevel { get; set; }
     public ulong SellPriceMin { get; set; }
     public string SellPriceMinString => Utilities.UlongMarketPriceToString(SellPriceMin);
