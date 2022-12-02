@@ -50,7 +50,7 @@ namespace StatisticsAnalysisTool.Common
         {
             return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
         }
-        
+
         public static double GetValuePerHourToDouble(double value, double seconds)
         {
             try
@@ -86,25 +86,6 @@ namespace StatisticsAnalysisTool.Common
             var currentDateTime = DateTime.UtcNow;
             var difference = currentDateTime.Subtract(dateTime);
             return difference.Seconds >= waitingSeconds;
-        }
-
-        public static double AddValue(double value, double? lastValue, out double? newLastValue)
-        {
-            if (lastValue == null)
-            {
-                newLastValue = value;
-                return 0;
-            }
-
-            var newValue = (double)(value - lastValue);
-            if (newValue == 0)
-            {
-                newLastValue = value;
-                return 0;
-            }
-
-            newLastValue = value;
-            return newValue;
         }
 
         #region Window Flash

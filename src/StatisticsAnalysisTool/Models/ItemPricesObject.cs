@@ -16,10 +16,10 @@ public class ItemPricesObject : INotifyPropertyChanged
     private Visibility _visibility;
     private readonly MarketResponse _marketResponse;
     private readonly MarketLocation _marketLocation = MarketLocation.Unknown;
-    private bool _bestSellMinPrice;
-    private bool _bestSellMaxPrice;
-    private bool _bestBuyMinPrice;
-    private bool _bestBuyMaxPrice;
+    private bool _isBestSellMinPrice;
+    private bool _isBestSellMaxPrice;
+    private bool _isBestBuyMinPrice;
+    private bool _isBestBuyMaxPrice;
 
     public ItemPricesObject(MarketResponse marketResponse)
     {
@@ -57,42 +57,42 @@ public class ItemPricesObject : INotifyPropertyChanged
         }
     }
 
-    public bool BestSellMinPrice
+    public bool IsBestSellMinPrice
     {
-        get => _bestSellMinPrice;
+        get => _isBestSellMinPrice;
         set
         {
-            _bestSellMinPrice = value;
+            _isBestSellMinPrice = value;
             OnPropertyChanged();
         }
     }
 
-    public bool BestSellMaxPrice
+    public bool IsBestSellMaxPrice
     {
-        get => _bestSellMaxPrice;
+        get => _isBestSellMaxPrice;
         set
         {
-            _bestSellMaxPrice = value;
+            _isBestSellMaxPrice = value;
             OnPropertyChanged();
         }
     }
 
-    public bool BestBuyMinPrice
+    public bool IsBestBuyMinPrice
     {
-        get => _bestBuyMinPrice;
+        get => _isBestBuyMinPrice;
         set
         {
-            _bestBuyMinPrice = value;
+            _isBestBuyMinPrice = value;
             OnPropertyChanged();
         }
     }
 
-    public bool BestBuyMaxPrice
+    public bool IsBestBuyMaxPrice
     {
-        get => _bestBuyMaxPrice;
+        get => _isBestBuyMaxPrice;
         set
         {
-            _bestBuyMaxPrice = value;
+            _isBestBuyMaxPrice = value;
             OnPropertyChanged();
         }
     }

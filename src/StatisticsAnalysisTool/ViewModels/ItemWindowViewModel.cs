@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -96,6 +97,9 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     private async Task InitAsync(Item item)
     {
+        var watch = new Stopwatch();
+        watch.Start();
+
         IsTaskProgressbarIndeterminate = true;
         Icon = null;
         TitleName = "-";
@@ -127,6 +131,9 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         IsAutoUpdateActive = true;
 
         IsTaskProgressbarIndeterminate = false;
+
+        Debug.Print($"{watch.Elapsed.Milliseconds}ms");
+        watch.Stop();
     }
 
     private void InitCityFiltering()
@@ -789,7 +796,6 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private async void UpdateMainTabItemPricesAsync()
     {
         var currentItemPrices = CurrentItemPrices?.Select(x => new ItemPricesObject(x)).ToList();
-
         await UpdateMainTabItemPricesObjectsAsync(currentItemPrices);
         SetItemPricesObjectVisibility(MainTabItemPrices);
     }
@@ -798,9 +804,6 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     {
         foreach (var currentItemPricesObject in prices?.ToList() ?? new List<ItemPricesObject>())
         {
-            var test = GetMainTabCheckedLocations();
-            var test2 = currentItemPricesObject.MarketLocation;
-
             if (GetMainTabCheckedLocations().Contains(currentItemPricesObject.MarketLocation) && currentItemPricesObject.MarketResponse.QualityLevel == QualitiesSelection.Quality)
             {
                 currentItemPricesObject.Visibility = Visibility.Visible;

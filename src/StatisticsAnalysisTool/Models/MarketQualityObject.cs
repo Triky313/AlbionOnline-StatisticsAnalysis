@@ -10,6 +10,7 @@ using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Models;
 
+//TODO: Rework
 public class MarketQualityObject
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);

@@ -52,7 +52,7 @@
                               BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,30,0,0" d:ItemsSource="{d:SampleData ItemCount=10}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" CellTemplate="{StaticResource GridViewColumnCityTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Location, FallbackValue=LOCATION}" CellTemplate="{StaticResource GridViewColumnCityTemplate}"/>
                                 <GridViewColumn Header="{Binding Translation.SellPriceMin, FallbackValue=SELL_PRICE_MIN}" CellTemplate="{StaticResource GridViewColumnSellPriceMinTemplate}"/>
                                 <GridViewColumn Header="{Binding Translation.SellPriceMinDate, FallbackValue=SELL_PRICE_MIN_DATE}" CellTemplate="{StaticResource GridViewColumnSellPriceMinDateTemplate}"/>
                                 <GridViewColumn Header="{Binding Translation.SellPriceMax, FallbackValue=SELL_PRICE_MAX}" CellTemplate="{StaticResource GridViewColumnSellPriceMaxTemplate}"/>

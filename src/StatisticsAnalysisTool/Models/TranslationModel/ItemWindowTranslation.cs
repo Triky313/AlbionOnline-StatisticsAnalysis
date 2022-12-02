@@ -15,6 +15,7 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string AutoUpdateData => LanguageController.Translation("AUTO_UPDATE_DATA");
         public static string LastUpdate => LanguageController.Translation("LAST_UPDATE");
         public static string City => LanguageController.Translation("CITY");
+        public static string Location => LanguageController.Translation("LOCATION");
         public static string SellPriceMin => LanguageController.Translation("SELL_PRICE_MIN");
         public static string SellPriceMinDate => LanguageController.Translation("SELL_PRICE_MIN_DATE");
         public static string SellPriceMax => LanguageController.Translation("SELL_PRICE_MAX");
