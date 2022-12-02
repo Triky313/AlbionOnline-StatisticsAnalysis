@@ -44,7 +44,7 @@
                         <ComboBox Width="200" Height="26" Margin="0,0,0,5" VerticalAlignment="Top" ItemsSource="{Binding Qualities}" 
                                   SelectedItem="{Binding QualitiesSelection, IsAsync=true}" 
                                   HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Quality" />
-                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0,5,0" Width="150" Height="26" ItemsSource="{Binding CityFilters}" 
+                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0,5,0" Width="150" Height="26" ItemsSource="{Binding LocationFilters}" 
                                   ItemTemplate="{StaticResource CityFilterObject}" />
                     </StackPanel>
 

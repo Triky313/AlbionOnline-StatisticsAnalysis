@@ -1,4 +1,5 @@
-﻿using StatisticsAnalysisTool.Common;
+﻿using System;
+using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Properties;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -9,6 +10,8 @@ namespace StatisticsAnalysisTool.Models
     {
         private bool? _isChecked;
         private string _name;
+
+        public event Action OnCheckedChanged;
 
         public CityFilterObject(MarketLocation location, string name, bool isChecked)
         {
@@ -25,6 +28,7 @@ namespace StatisticsAnalysisTool.Models
             set
             {
                 _isChecked = value;
+                OnCheckedChanged?.Invoke();
                 OnPropertyChanged();
             }
         }

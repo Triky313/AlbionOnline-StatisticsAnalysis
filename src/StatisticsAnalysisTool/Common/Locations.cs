@@ -1,6 +1,7 @@
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -98,7 +99,9 @@ namespace StatisticsAnalysisTool.Common
 
         public static List<MarketLocation> GetAllMarketLocations()
         {
-            return Enum.GetValues(typeof(MarketLocation)).Cast<MarketLocation>().ToList();
+            var list = Enum.GetValues(typeof(MarketLocation)).Cast<MarketLocation>().ToList();
+            _ = list.Remove(MarketLocation.Unknown);
+            return list;
         }
 
         [Obsolete]

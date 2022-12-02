@@ -1,7 +1,6 @@
 ﻿using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Enumerations;
-using StatisticsAnalysisTool.GameData;
 using System;
 using System.ComponentModel;
 using System.Reflection;
@@ -14,6 +13,7 @@ namespace StatisticsAnalysisTool.Models;
 public class ItemPricesObject : INotifyPropertyChanged
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+    private Visibility _visibility;
     private readonly MarketResponse _marketResponse;
     private readonly MarketLocation _marketLocation = MarketLocation.Unknown;
     private bool _bestSellMinPrice;
@@ -25,6 +25,16 @@ public class ItemPricesObject : INotifyPropertyChanged
     {
         MarketResponse = marketResponse;
         MarketLocation = (marketResponse?.City ?? string.Empty).GetMarketLocationByLocationNameOrId();
+    }
+
+    public Visibility Visibility
+    {
+        get => _visibility;
+        set
+        {
+            _visibility = value;
+            OnPropertyChanged();
+        }
     }
 
     public MarketResponse MarketResponse

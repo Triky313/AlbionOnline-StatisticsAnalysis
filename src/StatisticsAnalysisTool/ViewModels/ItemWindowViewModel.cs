@@ -52,8 +52,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private string _errorBarText;
     private List<QualityStruct> _qualities = new();
     private QualityStruct _qualitiesSelection;
-    private ObservableCollection<CityFilterObject> _cityFilters = new();
-    private ObservableRangeCollection<ItemPricesObject> _mainTabItemPrices = new ();
+    private ObservableCollection<CityFilterObject> _locationFilters = new();
+    private ObservableCollection<ItemPricesObject> _mainTabItemPrices = new();
 
     private CraftingCalculation _craftingCalculation = new()
     {
@@ -131,21 +131,23 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     private void InitCityFiltering()
     {
-        CityFilters.Add(new CityFilterObject(MarketLocation.ThetfordMarket, Locations.GetParameterName(Location.Thetford), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.FortSterlingMarket, Locations.GetParameterName(Location.FortSterling), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.LymhurstMarket, Locations.GetParameterName(Location.Lymhurst), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.BridgewatchMarket, Locations.GetParameterName(Location.Bridgewatch), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.MartlockMarket, Locations.GetParameterName(Location.Martlock), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.BrecilienMarket, Locations.GetParameterName(Location.Brecilien), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.ArthursRest, Locations.GetParameterName(Location.ArthursRest), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.MerlynsRest, Locations.GetParameterName(Location.MerlynsRest), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.MorganasRest, Locations.GetParameterName(Location.MorganasRest), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.BlackMarket, Locations.GetParameterName(Location.BlackMarket), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.ForestCross, Locations.GetParameterName(Location.ForestCross), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.SwampCross, Locations.GetParameterName(Location.SwampCross), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.SteppeCross, Locations.GetParameterName(Location.SteppeCross), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.HighlandCross, Locations.GetParameterName(Location.HighlandCross), true));
-        CityFilters.Add(new CityFilterObject(MarketLocation.MountainCross, Locations.GetParameterName(Location.MountainCross), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.ThetfordMarket, Locations.GetParameterName(Location.Thetford), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.FortSterlingMarket, Locations.GetParameterName(Location.FortSterling), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.LymhurstMarket, Locations.GetParameterName(Location.Lymhurst), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.BridgewatchMarket, Locations.GetParameterName(Location.Bridgewatch), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.MartlockMarket, Locations.GetParameterName(Location.Martlock), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.BrecilienMarket, Locations.GetParameterName(Location.Brecilien), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.ArthursRest, Locations.GetParameterName(Location.ArthursRest), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.MerlynsRest, Locations.GetParameterName(Location.MerlynsRest), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.MorganasRest, Locations.GetParameterName(Location.MorganasRest), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.BlackMarket, Locations.GetParameterName(Location.BlackMarket), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.ForestCross, Locations.GetParameterName(Location.ForestCross), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.SwampCross, Locations.GetParameterName(Location.SwampCross), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.SteppeCross, Locations.GetParameterName(Location.SteppeCross), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.HighlandCross, Locations.GetParameterName(Location.HighlandCross), true));
+        LocationFilters.Add(new CityFilterObject(MarketLocation.MountainCross, Locations.GetParameterName(Location.MountainCross), true));
+
+        AddLocationFiltersEvents();
     }
 
     private void InitQualityFiltering()
@@ -680,32 +682,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     //    }
     //}
 
-    public void GetMainPriceStats(object sender, EventArgs e)
-    {
-        if (CurrentItemPrices is not { Count: > 0 })
-        {
-            return;
-        }
-
-        //var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
-        //var statsPricesTotalList = PriceUpdate(filteredCityPrices);
-
-        //FindBestPrice(ref statsPricesTotalList);
-
-        //var marketCurrentPricesItemList = statsPricesTotalList.Select(item => new CurrentMarketPrices(item)).ToList();
-
-        //if (LoadingImageVisibility != Visibility.Hidden)
-        //{
-        //    LoadingImageVisibility = Visibility.Hidden;
-        //}
-
-        //MarketCurrentPricesItemList = marketCurrentPricesItemList;
-        //SetAveragePricesString();
-
-        //RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.CurrentDateTimeFormat()}";
-    }
-
     // TODO: Without try catch
+
     private void FindBestPrice(ref List<MarketResponseTotal> list)
     {
         if (list.Count == 0)
@@ -803,24 +781,88 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     #region Main tab
 
-    private async void UpdateMainTabItemPrices(object sender, ElapsedEventArgs e)
+    private void UpdateMainTabItemPrices(object sender, ElapsedEventArgs e)
+    {
+        UpdateMainTabItemPricesAsync();
+    }
+
+    private async void UpdateMainTabItemPricesAsync()
     {
         var currentItemPrices = CurrentItemPrices?.Select(x => new ItemPricesObject(x)).ToList();
-        var filteredAndSortedPrices = currentItemPrices?.Where(x => GetMainTabCheckedLocations().Contains(x.MarketLocation) && QualitiesSelection.Quality == x.MarketResponse?.QualityLevel).OrderBy(x => x.LocationName);
 
-        if (filteredAndSortedPrices == null)
-            return;
+        await UpdateMainTabItemPricesObjectsAsync(currentItemPrices);
+        SetItemPricesObjectVisibility(MainTabItemPrices);
+    }
 
-        await Application.Current.Dispatcher.InvokeAsync(() =>
+    private void SetItemPricesObjectVisibility(ObservableCollection<ItemPricesObject> prices)
+    {
+        foreach (var currentItemPricesObject in prices?.ToList() ?? new List<ItemPricesObject>())
         {
-            // TODO: Is stucking while updating.. change to update values, if there exist
-            MainTabItemPrices.ReplaceRange(filteredAndSortedPrices);
-        });
+            var test = GetMainTabCheckedLocations();
+            var test2 = currentItemPricesObject.MarketLocation;
+
+            if (GetMainTabCheckedLocations().Contains(currentItemPricesObject.MarketLocation) && currentItemPricesObject.MarketResponse.QualityLevel == QualitiesSelection.Quality)
+            {
+                currentItemPricesObject.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                currentItemPricesObject.Visibility = Visibility.Collapsed;
+            }
+        }
+    }
+
+    private async Task UpdateMainTabItemPricesObjectsAsync(List<ItemPricesObject> newPrices)
+    {
+        foreach (var newItemPricesObject in newPrices)
+        {
+            var currentItemPricesObject = MainTabItemPrices?.FirstOrDefault(x => x.MarketLocation == newItemPricesObject.MarketLocation && x.MarketResponse.QualityLevel == newItemPricesObject.MarketResponse.QualityLevel);
+
+            if (currentItemPricesObject == null)
+            {
+                await Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    MainTabItemPrices?.Add(newItemPricesObject);
+                });
+            }
+
+            if (newItemPricesObject?.MarketResponse?.SellPriceMinDate < currentItemPricesObject?.MarketResponse?.SellPriceMinDate)
+            {
+                currentItemPricesObject.MarketResponse.SellPriceMin = newItemPricesObject.MarketResponse.SellPriceMin;
+                currentItemPricesObject.MarketResponse.SellPriceMinDate = newItemPricesObject.MarketResponse.SellPriceMinDate;
+            }
+
+            if (newItemPricesObject?.MarketResponse?.SellPriceMaxDate < currentItemPricesObject?.MarketResponse?.SellPriceMaxDate)
+            {
+                currentItemPricesObject.MarketResponse.SellPriceMax = newItemPricesObject.MarketResponse.SellPriceMax;
+                currentItemPricesObject.MarketResponse.SellPriceMaxDate = newItemPricesObject.MarketResponse.SellPriceMaxDate;
+            }
+
+            if (newItemPricesObject?.MarketResponse?.BuyPriceMinDate < currentItemPricesObject?.MarketResponse?.BuyPriceMinDate)
+            {
+                currentItemPricesObject.MarketResponse.BuyPriceMin = newItemPricesObject.MarketResponse.BuyPriceMin;
+                currentItemPricesObject.MarketResponse.BuyPriceMinDate = newItemPricesObject.MarketResponse.BuyPriceMinDate;
+            }
+
+            if (newItemPricesObject?.MarketResponse?.BuyPriceMaxDate < currentItemPricesObject?.MarketResponse?.BuyPriceMaxDate)
+            {
+                currentItemPricesObject.MarketResponse.BuyPriceMax = newItemPricesObject.MarketResponse.BuyPriceMax;
+                currentItemPricesObject.MarketResponse.BuyPriceMaxDate = newItemPricesObject.MarketResponse.BuyPriceMaxDate;
+            }
+        }
     }
 
     private List<MarketLocation> GetMainTabCheckedLocations()
     {
-        return CityFilters?.Where(x => x?.IsChecked == true).Select(x => x.Location).ToList() ?? new List<MarketLocation>();
+        return LocationFilters?.Where(x => x?.IsChecked == true).Select(x => x.Location).ToList() ?? new List<MarketLocation>();
+    }
+
+    private void AddLocationFiltersEvents()
+    {
+        foreach (var cityFilterObject in LocationFilters)
+        {
+            cityFilterObject.OnCheckedChanged += UpdateMainTabItemPricesAsync;
+        }
     }
 
     #endregion
@@ -904,16 +946,17 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         {
             _qualitiesSelection = value;
             SettingsController.CurrentSettings.ItemWindowQualitiesSelection = _qualitiesSelection.Quality;
+            UpdateMainTabItemPrices(null, null);
             OnPropertyChanged();
         }
     }
 
-    public ObservableCollection<CityFilterObject> CityFilters
+    public ObservableCollection<CityFilterObject> LocationFilters
     {
-        get => _cityFilters;
+        get => _locationFilters;
         set
         {
-            _cityFilters = value;
+            _locationFilters = value;
             OnPropertyChanged();
         }
     }
@@ -1023,7 +1066,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableRangeCollection<ItemPricesObject> MainTabItemPrices
+    public ObservableCollection<ItemPricesObject> MainTabItemPrices
     {
         get => _mainTabItemPrices;
         set

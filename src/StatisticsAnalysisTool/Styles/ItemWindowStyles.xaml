@@ -595,7 +595,7 @@
 
     <!-- MarketCurrentPricesItem -->
     <DataTemplate x:Key="GridViewColumnCityTemplate"  DataType="{x:Type models:ItemPricesObject}">
-        <Label Content="{Binding LocationName}" Style="{StaticResource ListView.City.Color.Style}">
+        <Label Content="{Binding LocationName}" Style="{StaticResource ListView.City.Color.Style}" Visibility="{Binding Visibility}">
             <Label.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" CommandParameter="{Binding LocationName}" />
             </Label.InputBindings>
@@ -603,7 +603,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMinTemplate"  DataType="{x:Type models:ItemPricesObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding MarketResponse.SellPriceMin}">
                     <Label.InputBindings>
@@ -640,7 +640,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMinDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Date}" Visibility="{Binding Visibility}">
             <Label Content="{Binding SellPriceMinDateLastUpdateTime}" 
                    ToolTip="{Binding SellPriceMinDateString}">
                 <Label.Style>
@@ -674,7 +674,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMaxTemplate"  DataType="{x:Type models:ItemPricesObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding MarketResponse.SellPriceMax}" 
                        ToolTip="{Binding SellPriceMaxDateString}">
@@ -712,7 +712,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMaxDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Date}" Visibility="{Binding Visibility}">
             <Label Content="{Binding SellPriceMaxDateLastUpdateTime}" 
                    ToolTip="{Binding SellPriceMaxDateString}">
                 <Label.Style>
@@ -746,7 +746,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnBuyPriceMinTemplate"  DataType="{x:Type models:ItemPricesObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding MarketResponse.BuyPriceMin}" 
                        ToolTip="{Binding BuyPriceMinDateString}">
@@ -784,7 +784,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnBuyPriceMinDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Date}" Visibility="{Binding Visibility}">
             <Label Content="{Binding BuyPriceMinDateLastUpdateTime}" 
                    ToolTip="{Binding BuyPriceMinDateString}">
                 <Label.Style>
@@ -818,7 +818,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnBuyPriceMaxTemplate"  DataType="{x:Type models:ItemPricesObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding MarketResponse.BuyPriceMax}" 
                        ToolTip="{Binding BuyPriceMaxDateString}">
@@ -856,7 +856,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnBuyPriceMaxDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Date}" Visibility="{Binding Visibility}">
             <Label Content="{Binding BuyPriceMaxDateLastUpdateTime}" 
                    ToolTip="{Binding BuyPriceMaxDateString}">
                 <Label.Style>
@@ -891,7 +891,7 @@
 
     <!-- MarketQualityObject -->
     <DataTemplate x:Key="GridViewColumnCityForMarketQualityObjectTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Label Content="{Binding LocationName}" Style="{StaticResource ListView.City.Color.Style}">
+        <Label Content="{Binding LocationName}" Style="{StaticResource ListView.City.Color.Style}" Visibility="{Binding Visibility}">
             <Label.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" CommandParameter="{Binding LocationName}" />
             </Label.InputBindings>
@@ -899,7 +899,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMinNormalTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding SellPriceMinNormalString}" 
                        ToolTip="{Binding SellPriceMinNormalDateString}">
@@ -937,7 +937,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMinGoodTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding SellPriceMinGoodString}" 
                        ToolTip="{Binding SellPriceMinGoodDateString}">
@@ -975,7 +975,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMinOutstandingTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding SellPriceMinOutstandingString}" 
                        ToolTip="{Binding SellPriceMinOutstandingDateString}">
@@ -1013,7 +1013,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMinExcellentTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding SellPriceMinExcellentString}" 
                        ToolTip="{Binding SellPriceMinExcellentDateString}">
@@ -1051,7 +1051,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMinMasterpieceTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding SellPriceMinMasterpieceString}" 
                        ToolTip="{Binding SellPriceMinMasterpieceDateString}">
@@ -1090,7 +1090,7 @@
 
     <!-- MarketQualityObject (real money) -->
     <DataTemplate x:Key="GridViewColumnSellPriceMinNormalRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding SellPriceMinNormalStringInRalMoney}" 
                        ToolTip="{Binding SellPriceMinNormalDateString}">
@@ -1128,7 +1128,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMinGoodRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding SellPriceMinGoodStringInRalMoney}" 
                        ToolTip="{Binding SellPriceMinGoodDateString}">
@@ -1166,7 +1166,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMinOutstandingRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding SellPriceMinOutstandingStringInRalMoney}" 
                        ToolTip="{Binding SellPriceMinOutstandingDateString}">
@@ -1204,7 +1204,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMinExcellentRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding SellPriceMinExcellentStringInRalMoney}" 
                        ToolTip="{Binding SellPriceMinExcellentDateString}">
@@ -1242,7 +1242,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GridViewColumnSellPriceMinMasterpieceRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
                 <Label Content="{Binding SellPriceMinMasterpieceStringInRalMoney}" 
                        ToolTip="{Binding SellPriceMinMasterpieceDateString}">

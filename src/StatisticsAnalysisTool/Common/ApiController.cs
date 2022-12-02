@@ -414,48 +414,42 @@ namespace StatisticsAnalysisTool.Common
         private static List<MarketResponse> MergeMarketAndPortalLocations(List<MarketResponse> values)
         {
             var fortSterlingMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal).ToList();
-            var fortSterlingResult = MergeMarketAndPortalPrices(fortSterlingMarketResponses, Locations.GetDisplayName(MarketLocation.FortSterlingMarket));
-            foreach (var marketResponse in fortSterlingMarketResponses)
-            {
-                values.Remove(marketResponse);
-            }
-            values.Add(fortSterlingResult);
+            SetMarketResponseByQuality(fortSterlingMarketResponses, MarketLocation.FortSterlingMarket);
 
-            var martlockMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.MartlockMarket or MarketLocation.MartlockPortal).ToList();
-            var martlockResult = MergeMarketAndPortalPrices(martlockMarketResponses, Locations.GetDisplayName(MarketLocation.MartlockMarket));
-            foreach (var marketResponse in martlockMarketResponses)
-            {
-                values.Remove(marketResponse);
-            }
-            values.Add(martlockResult);
-
+            var martlockMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal).ToList();
+            SetMarketResponseByQuality(martlockMarketResponses, MarketLocation.FortSterlingMarket);
+            
             var lymhurstMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.LymhurstMarket or MarketLocation.LymhurstPortal).ToList();
-            var lymhurstResult = MergeMarketAndPortalPrices(lymhurstMarketResponses, Locations.GetDisplayName(MarketLocation.LymhurstMarket));
-            foreach (var marketResponse in lymhurstMarketResponses)
-            {
-                values.Remove(marketResponse);
-            }
-            values.Add(lymhurstResult);
+            SetMarketResponseByQuality(lymhurstMarketResponses, MarketLocation.LymhurstMarket);
 
             var thetfordMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.ThetfordMarket or MarketLocation.ThetfordPortal).ToList();
-            var thetfordResult = MergeMarketAndPortalPrices(thetfordMarketResponses, Locations.GetDisplayName(MarketLocation.ThetfordMarket));
-            foreach (var marketResponse in thetfordMarketResponses)
-            {
-                values.Remove(marketResponse);
-            }
-            values.Add(thetfordResult);
+            SetMarketResponseByQuality(thetfordMarketResponses, MarketLocation.ThetfordMarket);
 
             var bridgewatchMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.BridgewatchMarket or MarketLocation.BridgewatchPortal).ToList();
-            var bridgewatchResult = MergeMarketAndPortalPrices(bridgewatchMarketResponses, Locations.GetDisplayName(MarketLocation.BridgewatchMarket));
-            foreach (var marketResponse in bridgewatchMarketResponses)
-            {
-                values.Remove(marketResponse);
-            }
-            values.Add(bridgewatchResult);
-            
+            SetMarketResponseByQuality(bridgewatchMarketResponses, MarketLocation.BridgewatchMarket);
+
             return values;
         }
-        
+
+        private static void SetMarketResponseByQuality(List<MarketResponse> values, MarketLocation marketLocation)
+        {
+            for (var i = 1; i <= 5; i++)
+            {
+                var marketResponsesByQuality = GetMarketResponsesByQuality(i, values);
+                var result = MergeMarketAndPortalPrices(marketResponsesByQuality, Locations.GetDisplayName(marketLocation));
+                foreach (var marketResponse in marketResponsesByQuality)
+                {
+                    values.Remove(marketResponse);
+                }
+                values.Add(result);
+            }
+        }
+
+        private static List<MarketResponse> GetMarketResponsesByQuality(int quality, IEnumerable<MarketResponse> marketResponses)
+        {
+            return marketResponses.Where(x => x.QualityLevel == quality).ToList();
+        }
+
         private static MarketResponse MergeMarketAndPortalPrices(List<MarketResponse> list, string locationName)
         {
             foreach (var marketResponse in list)
