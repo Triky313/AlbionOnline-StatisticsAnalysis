@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -97,9 +96,6 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     private async Task InitAsync(Item item)
     {
-        var watch = new Stopwatch();
-        watch.Start();
-
         IsTaskProgressbarIndeterminate = true;
         Icon = null;
         TitleName = "-";
@@ -131,9 +127,6 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         IsAutoUpdateActive = true;
 
         IsTaskProgressbarIndeterminate = false;
-
-        Debug.Print($"{watch.Elapsed.Milliseconds}ms");
-        watch.Stop();
     }
 
     private void InitCityFiltering()
@@ -547,13 +540,13 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     private void ErrorBarReset()
     {
-        IsTaskProgressbarIndeterminate = true;
+        IsTaskProgressbarIndeterminate = false;
         SetErrorBar(Visibility.Hidden, string.Empty);
     }
 
     private void SetLoadingImageToError()
     {
-        IsTaskProgressbarIndeterminate = false;
+        IsTaskProgressbarIndeterminate = true;
     }
 
     private void SetErrorBar(Visibility visibility, string errorMessage)

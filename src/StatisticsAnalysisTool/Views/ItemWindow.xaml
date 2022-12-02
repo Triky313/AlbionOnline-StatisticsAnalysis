@@ -34,7 +34,7 @@
                                   Foreground="{StaticResource SolidColorBrush.Text.1}" MouseLeftButtonDown="RefreshSpin_MouseLeftButtonDown" />
             </Grid>
             <ProgressBar Margin="0,1,0,0" Height="1" Minimum="{Binding TaskProgressbarMinimum}" Maximum="{Binding TaskProgressbarMaximum}" 
-                         Value="{Binding TaskProgressbarValue}" IsIndeterminate="{Binding IsTaskProgressbarIndeterminate}" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                         Value="{Binding TaskProgressbarValue}" IsIndeterminate="{Binding IsTaskProgressbarIndeterminate}" VerticalAlignment="Top" />
         </Grid>
 
         <TabControl Background="Transparent" Margin="1,77,1,0">
