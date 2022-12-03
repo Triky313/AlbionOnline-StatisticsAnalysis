@@ -684,63 +684,58 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     // TODO: Without try catch
 
-    private void FindBestPrice(ref List<MarketResponseTotal> list)
+    private static void FindBestPrice(IReadOnlyCollection<ItemPricesObject> list)
     {
-        if (list.Count == 0)
+        if (list == null || list.Count == 0)
             return;
 
-        var max = GetMaxPrice(list);
-
-        try
+        for (var i = 1; i <= 5; i++)
         {
-            if (list.Exists(s => s.BuyPriceMax == max))
+            var max = GetMaxPrice(list, i);
+
+            var itemPricesObjectBuyPriceMax = list
+                .Where(x => x.Visibility == Visibility.Visible && x.MarketResponse.QualityLevel == i).FirstOrDefault(s => s.MarketResponse?.BuyPriceMax == max);
+            if (itemPricesObjectBuyPriceMax != null)
             {
-                // ReSharper disable once PossibleNullReferenceException
-                list.Find(s => s?.BuyPriceMax == max).BestBuyMaxPrice = true;
+                itemPricesObjectBuyPriceMax.IsBestBuyMaxPrice = true;
             }
-        }
-        catch
-        {
-            // ignored
-        }
 
-        var min = GetMinPrice(list);
+            var min = GetMinPrice(list, i);
 
-        try
-        {
-            if (list.Exists(s => s.SellPriceMin == min)) list.First(s => s.SellPriceMin == min).BestSellMinPrice = true;
-        }
-        catch
-        {
-            // ignored
+            var itemPricesObjectSellPriceMin = list
+                .Where(x => x.Visibility == Visibility.Visible && x.MarketResponse.QualityLevel == i).FirstOrDefault(s => s.MarketResponse?.SellPriceMin == min);
+            if (itemPricesObjectSellPriceMin != null)
+            {
+                itemPricesObjectSellPriceMin.IsBestSellMinPrice = true;
+            }
         }
     }
 
-    private static ulong GetMaxPrice(List<MarketResponseTotal> list)
+    private static ulong GetMaxPrice(IEnumerable<ItemPricesObject> list, int quality)
     {
         var max = ulong.MinValue;
-        foreach (var type in list)
+        foreach (var type in list.Where(x => x.MarketResponse.QualityLevel == quality))
         {
-            if (type.BuyPriceMax == 0)
+            if (type.MarketResponse.BuyPriceMax == 0)
                 continue;
 
-            if (type.BuyPriceMax > max)
-                max = type.BuyPriceMax;
+            if (type.MarketResponse.BuyPriceMax > max)
+                max = type.MarketResponse.BuyPriceMax;
         }
 
         return max;
     }
 
-    private static ulong GetMinPrice(List<MarketResponseTotal> list)
+    private static ulong GetMinPrice(IEnumerable<ItemPricesObject> list, int quality)
     {
         var min = ulong.MaxValue;
-        foreach (var type in list)
+        foreach (var type in list.Where(x => x.MarketResponse.QualityLevel == quality))
         {
-            if (type.SellPriceMin == 0)
+            if (type.MarketResponse.SellPriceMin == 0)
                 continue;
 
-            if (type.SellPriceMin < min)
-                min = type.SellPriceMin;
+            if (type.MarketResponse.SellPriceMin < min)
+                min = type.MarketResponse.SellPriceMin;
         }
 
         return min;
@@ -806,6 +801,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
                 currentItemPricesObject.Visibility = Visibility.Collapsed;
             }
         }
+
+        FindBestPrice(prices);
     }
 
     private async Task UpdateMainTabItemPricesObjectsAsync(List<ItemPricesObject> newPrices)
