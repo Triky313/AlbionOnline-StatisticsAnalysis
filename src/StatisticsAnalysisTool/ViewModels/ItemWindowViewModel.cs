@@ -573,11 +573,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     {
         try
         {
-            var marketResponses = await ApiController.GetCityItemPricesFromJsonAsync(Item?.UniqueName);
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                CurrentItemPrices = marketResponses;
-            });
+            CurrentItemPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item?.UniqueName);
             RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.UtcNow.CurrentDateTimeFormat()}";
             ErrorBarReset();
         }
@@ -825,25 +821,25 @@ public class ItemWindowViewModel : INotifyPropertyChanged
                 });
             }
 
-            if (newItemPricesObject?.SellPriceMinDate < currentItemPricesObject?.SellPriceMinDate)
+            if (newItemPricesObject?.SellPriceMinDate > currentItemPricesObject?.SellPriceMinDate)
             {
                 currentItemPricesObject.SellPriceMin = newItemPricesObject.SellPriceMin;
                 currentItemPricesObject.SellPriceMinDate = newItemPricesObject.SellPriceMinDate;
             }
 
-            if (newItemPricesObject?.SellPriceMaxDate < currentItemPricesObject?.SellPriceMaxDate)
+            if (newItemPricesObject?.SellPriceMaxDate > currentItemPricesObject?.SellPriceMaxDate)
             {
                 currentItemPricesObject.SellPriceMax = newItemPricesObject.SellPriceMax;
                 currentItemPricesObject.SellPriceMaxDate = newItemPricesObject.SellPriceMaxDate;
             }
 
-            if (newItemPricesObject?.BuyPriceMinDate < currentItemPricesObject?.BuyPriceMinDate)
+            if (newItemPricesObject?.BuyPriceMinDate > currentItemPricesObject?.BuyPriceMinDate)
             {
                 currentItemPricesObject.BuyPriceMin = newItemPricesObject.BuyPriceMin;
                 currentItemPricesObject.BuyPriceMinDate = newItemPricesObject.BuyPriceMinDate;
             }
 
-            if (newItemPricesObject?.BuyPriceMaxDate < currentItemPricesObject?.BuyPriceMaxDate)
+            if (newItemPricesObject?.BuyPriceMaxDate > currentItemPricesObject?.BuyPriceMaxDate)
             {
                 currentItemPricesObject.BuyPriceMax = newItemPricesObject.BuyPriceMax;
                 currentItemPricesObject.BuyPriceMaxDate = newItemPricesObject.BuyPriceMaxDate;
