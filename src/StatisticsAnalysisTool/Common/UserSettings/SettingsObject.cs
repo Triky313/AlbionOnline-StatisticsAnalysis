@@ -1,4 +1,7 @@
-﻿namespace StatisticsAnalysisTool.Common.UserSettings
+﻿using StatisticsAnalysisTool.Models;
+using System.Collections.Generic;
+
+namespace StatisticsAnalysisTool.Common.UserSettings
 {
     public class SettingsObject
     {
@@ -51,5 +54,6 @@
         public double MailMonitoringMarketTaxSetupRate { get; set; } = 2.5;
         public bool IsDungeonClosedSoundActive { get; set; } = false;
         public int ItemWindowQualitiesSelection { get; set; }
+        public List<MainTabLocationFilterSettingsObject> ItemWindowMainTabLocationFilters { get; set; } = new();
     }
 }

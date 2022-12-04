@@ -30,6 +30,9 @@ public partial class ItemWindow
     private void ItemWindow_OnClosing(object sender, CancelEventArgs e)
     {
         CraftingTabController.SaveInFile();
+
+        var vm = (ItemWindowViewModel)DataContext;
+        vm?.SaveSettings();
     }
 
     private void Hotbar_MouseDown(object sender, MouseButtonEventArgs e)

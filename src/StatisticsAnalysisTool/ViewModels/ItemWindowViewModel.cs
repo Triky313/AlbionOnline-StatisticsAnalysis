@@ -52,10 +52,9 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private string _errorBarText;
     private List<QualityStruct> _qualities = new();
     private QualityStruct _qualitiesSelection;
-    private ObservableCollection<CityFilterObject> _locationFilters = new();
+    private ObservableCollection<MainTabLocationFilterObject> _locationFilters = new();
     private ObservableCollection<ItemPricesObject> _mainTabItemPrices = new();
     private string _refreshIconTooltipText;
-    private bool _isQualitiesEnabled;
 
     private CraftingCalculation _craftingCalculation = new()
     {
@@ -132,8 +131,9 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     private void InitCityFiltering()
     {
-        var locationFilters = new List<CityFilterObject>
+        var locationFilters = new List<MainTabLocationFilterObject>
         {
+            new (MarketLocation.CaerleonMarket, Locations.GetParameterName(Location.Caerleon), true),
             new (MarketLocation.ThetfordMarket, Locations.GetParameterName(Location.Thetford), true),
             new (MarketLocation.FortSterlingMarket, Locations.GetParameterName(Location.FortSterling), true),
             new (MarketLocation.LymhurstMarket, Locations.GetParameterName(Location.Lymhurst), true),
@@ -151,7 +151,16 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             new (MarketLocation.MountainCross, Locations.GetParameterName(Location.MountainCross), true)
         };
 
-        LocationFilters = new ObservableCollection<CityFilterObject>(locationFilters.OrderBy(x => x.Name));
+        foreach (var itemWindowMainTabLocationFilter in SettingsController.CurrentSettings.ItemWindowMainTabLocationFilters)
+        {
+            var filter = locationFilters.FirstOrDefault(x => x.Location == itemWindowMainTabLocationFilter?.Location);
+            if (filter != null)
+            {
+                filter.IsChecked = itemWindowMainTabLocationFilter.IsChecked;
+            }
+        }
+
+        LocationFilters = new ObservableCollection<MainTabLocationFilterObject>(locationFilters.OrderBy(x => x.Name));
 
         AddLocationFiltersEvents();
     }
@@ -250,6 +259,21 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     #endregion
 
+    #region Saving
+
+    public void SaveSettings()
+    {
+        SettingsController.CurrentSettings.ItemWindowMainTabLocationFilters = LocationFilters?.Select(x => new MainTabLocationFilterSettingsObject()
+        {
+            IsChecked = x.IsChecked ?? false, 
+            Location = x.Location
+        }).ToList();
+    }
+
+    #endregion
+
+    #region Ui
+
     private async void ChangeWindowValuesAsync(Item item)
     {
         var localizedName = ItemController.LocalizedName(item?.LocalizedNames, null, item?.UniqueName);
@@ -269,6 +293,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         TitleName = localizedName;
         ItemTierLevel = item?.Tier != -1 && item?.Level != -1 ? $"T{item?.Tier}.{item?.Level}" : string.Empty;
     }
+
+    #endregion
 
     #region Timer
 
@@ -814,7 +840,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<CityFilterObject> LocationFilters
+    public ObservableCollection<MainTabLocationFilterObject> LocationFilters
     {
         get => _locationFilters;
         set

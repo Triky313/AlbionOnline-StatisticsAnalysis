@@ -6,14 +6,14 @@ using System.Runtime.CompilerServices;
 
 namespace StatisticsAnalysisTool.Models
 {
-    public class CityFilterObject : INotifyPropertyChanged
+    public class MainTabLocationFilterObject : INotifyPropertyChanged
     {
         private bool? _isChecked;
         private string _name;
 
         public event Action OnCheckedChanged;
 
-        public CityFilterObject(MarketLocation location, string name, bool isChecked)
+        public MainTabLocationFilterObject(MarketLocation location, string name, bool isChecked)
         {
             Location = location;
             Name = name;
