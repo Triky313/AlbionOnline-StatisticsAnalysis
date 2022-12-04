@@ -414,34 +414,40 @@ namespace StatisticsAnalysisTool.Common
         private static List<MarketResponse> MergeMarketAndPortalLocations(List<MarketResponse> values)
         {
             var fortSterlingMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal).ToList();
-            SetMarketResponseByQuality(fortSterlingMarketResponses, MarketLocation.FortSterlingMarket);
+            SetMarketResponseByQuality(fortSterlingMarketResponses, values, MarketLocation.FortSterlingMarket);
 
             var martlockMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal).ToList();
-            SetMarketResponseByQuality(martlockMarketResponses, MarketLocation.FortSterlingMarket);
+            SetMarketResponseByQuality(martlockMarketResponses, values, MarketLocation.FortSterlingMarket);
             
             var lymhurstMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.LymhurstMarket or MarketLocation.LymhurstPortal).ToList();
-            SetMarketResponseByQuality(lymhurstMarketResponses, MarketLocation.LymhurstMarket);
+            SetMarketResponseByQuality(lymhurstMarketResponses, values, MarketLocation.LymhurstMarket);
 
             var thetfordMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.ThetfordMarket or MarketLocation.ThetfordPortal).ToList();
-            SetMarketResponseByQuality(thetfordMarketResponses, MarketLocation.ThetfordMarket);
+            SetMarketResponseByQuality(thetfordMarketResponses, values, MarketLocation.ThetfordMarket);
 
             var bridgewatchMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.BridgewatchMarket or MarketLocation.BridgewatchPortal).ToList();
-            SetMarketResponseByQuality(bridgewatchMarketResponses, MarketLocation.BridgewatchMarket);
+            SetMarketResponseByQuality(bridgewatchMarketResponses, values, MarketLocation.BridgewatchMarket);
 
             return values;
         }
 
-        private static void SetMarketResponseByQuality(List<MarketResponse> values, MarketLocation marketLocation)
+        private static void SetMarketResponseByQuality(List<MarketResponse> filteredValues, List<MarketResponse> usedValues, MarketLocation marketLocation)
         {
             for (var i = 1; i <= 5; i++)
             {
-                var marketResponsesByQuality = GetMarketResponsesByQuality(i, values);
+                var marketResponsesByQuality = GetMarketResponsesByQuality(i, filteredValues);
                 var result = MergeMarketAndPortalPrices(marketResponsesByQuality, Locations.GetDisplayName(marketLocation));
+
+                if (string.IsNullOrEmpty(result.ItemTypeId))
+                {
+                    continue;
+                }
+
                 foreach (var marketResponse in marketResponsesByQuality)
                 {
-                    values.Remove(marketResponse);
+                    usedValues.Remove(marketResponse);
                 }
-                values.Add(result);
+                usedValues.Add(result);
             }
         }
 
@@ -506,7 +512,8 @@ namespace StatisticsAnalysisTool.Common
                 SellPriceMin = sellPriceMin,
                 SellPriceMinDate = sellPriceMinDate,
                 City = firstMarketResponse?.City,
-                ItemTypeId = firstMarketResponse?.ItemTypeId
+                ItemTypeId = firstMarketResponse?.ItemTypeId ?? string.Empty,
+                QualityLevel = (firstMarketResponse?.QualityLevel ?? -1)
             };
         }
 

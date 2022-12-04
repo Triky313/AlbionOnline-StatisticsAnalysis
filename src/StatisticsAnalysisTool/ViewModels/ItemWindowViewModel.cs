@@ -54,6 +54,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private QualityStruct _qualitiesSelection;
     private ObservableCollection<CityFilterObject> _locationFilters = new();
     private ObservableCollection<ItemPricesObject> _mainTabItemPrices = new();
+    private string _refreshIconTooltipText;
 
     private CraftingCalculation _craftingCalculation = new()
     {
@@ -82,7 +83,6 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         _itemWindow = itemWindow;
 
         ErrorBarVisibility = Visibility.Hidden;
-        //SetDefaultQualityIfNoOneChecked();
 
         Item = item;
 
@@ -578,6 +578,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             {
                 CurrentItemPrices = marketResponses;
             });
+            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.UtcNow.CurrentDateTimeFormat()}";
             ErrorBarReset();
         }
         catch (TooManyRequestsException ex)
@@ -699,7 +700,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             var max = GetMaxPrice(list, i);
 
             var itemPricesObjectBuyPriceMax = list
-                .Where(x => x.Visibility == Visibility.Visible && x.MarketResponse.QualityLevel == i).FirstOrDefault(s => s.MarketResponse?.BuyPriceMax == max);
+                .Where(x => x.Visibility == Visibility.Visible && x.QualityLevel == i).FirstOrDefault(s => s.BuyPriceMax == max);
             if (itemPricesObjectBuyPriceMax != null)
             {
                 itemPricesObjectBuyPriceMax.IsBestBuyMaxPrice = true;
@@ -708,7 +709,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             var min = GetMinPrice(list, i);
 
             var itemPricesObjectSellPriceMin = list
-                .Where(x => x.Visibility == Visibility.Visible && x.MarketResponse.QualityLevel == i).FirstOrDefault(s => s.MarketResponse?.SellPriceMin == min);
+                .Where(x => x.Visibility == Visibility.Visible && x.QualityLevel == i).FirstOrDefault(s => s.SellPriceMin == min);
             if (itemPricesObjectSellPriceMin != null)
             {
                 itemPricesObjectSellPriceMin.IsBestSellMinPrice = true;
@@ -719,13 +720,13 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private static ulong GetMaxPrice(IEnumerable<ItemPricesObject> list, int quality)
     {
         var max = ulong.MinValue;
-        foreach (var type in list.Where(x => x.MarketResponse.QualityLevel == quality))
+        foreach (var type in list.Where(x => x.QualityLevel == quality))
         {
-            if (type.MarketResponse.BuyPriceMax == 0)
+            if (type.BuyPriceMax == 0)
                 continue;
 
-            if (type.MarketResponse.BuyPriceMax > max)
-                max = type.MarketResponse.BuyPriceMax;
+            if (type.BuyPriceMax > max)
+                max = type.BuyPriceMax;
         }
 
         return max;
@@ -734,13 +735,13 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private static ulong GetMinPrice(IEnumerable<ItemPricesObject> list, int quality)
     {
         var min = ulong.MaxValue;
-        foreach (var type in list.Where(x => x.MarketResponse.QualityLevel == quality))
+        foreach (var type in list.Where(x => x.QualityLevel == quality))
         {
-            if (type.MarketResponse.SellPriceMin == 0)
+            if (type.SellPriceMin == 0)
                 continue;
 
-            if (type.MarketResponse.SellPriceMin < min)
-                min = type.MarketResponse.SellPriceMin;
+            if (type.SellPriceMin < min)
+                min = type.SellPriceMin;
         }
 
         return min;
@@ -797,7 +798,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     {
         foreach (var currentItemPricesObject in prices?.ToList() ?? new List<ItemPricesObject>())
         {
-            if (GetMainTabCheckedLocations().Contains(currentItemPricesObject.MarketLocation) && currentItemPricesObject.MarketResponse.QualityLevel == QualitiesSelection.Quality)
+            if (GetMainTabCheckedLocations().Contains(currentItemPricesObject.MarketLocation) && currentItemPricesObject.QualityLevel == QualitiesSelection.Quality)
             {
                 currentItemPricesObject.Visibility = Visibility.Visible;
             }
@@ -812,9 +813,9 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     private async Task UpdateMainTabItemPricesObjectsAsync(List<ItemPricesObject> newPrices)
     {
-        foreach (var newItemPricesObject in newPrices)
+        foreach (var newItemPricesObject in newPrices ?? new List<ItemPricesObject>())
         {
-            var currentItemPricesObject = MainTabItemPrices?.FirstOrDefault(x => x.MarketLocation == newItemPricesObject.MarketLocation && x.MarketResponse.QualityLevel == newItemPricesObject.MarketResponse.QualityLevel);
+            var currentItemPricesObject = MainTabItemPrices?.FirstOrDefault(x => x.MarketLocation == newItemPricesObject.MarketLocation && x.QualityLevel == newItemPricesObject.QualityLevel);
 
             if (currentItemPricesObject == null)
             {
@@ -824,28 +825,28 @@ public class ItemWindowViewModel : INotifyPropertyChanged
                 });
             }
 
-            if (newItemPricesObject?.MarketResponse?.SellPriceMinDate < currentItemPricesObject?.MarketResponse?.SellPriceMinDate)
+            if (newItemPricesObject?.SellPriceMinDate < currentItemPricesObject?.SellPriceMinDate)
             {
-                currentItemPricesObject.MarketResponse.SellPriceMin = newItemPricesObject.MarketResponse.SellPriceMin;
-                currentItemPricesObject.MarketResponse.SellPriceMinDate = newItemPricesObject.MarketResponse.SellPriceMinDate;
+                currentItemPricesObject.SellPriceMin = newItemPricesObject.SellPriceMin;
+                currentItemPricesObject.SellPriceMinDate = newItemPricesObject.SellPriceMinDate;
             }
 
-            if (newItemPricesObject?.MarketResponse?.SellPriceMaxDate < currentItemPricesObject?.MarketResponse?.SellPriceMaxDate)
+            if (newItemPricesObject?.SellPriceMaxDate < currentItemPricesObject?.SellPriceMaxDate)
             {
-                currentItemPricesObject.MarketResponse.SellPriceMax = newItemPricesObject.MarketResponse.SellPriceMax;
-                currentItemPricesObject.MarketResponse.SellPriceMaxDate = newItemPricesObject.MarketResponse.SellPriceMaxDate;
+                currentItemPricesObject.SellPriceMax = newItemPricesObject.SellPriceMax;
+                currentItemPricesObject.SellPriceMaxDate = newItemPricesObject.SellPriceMaxDate;
             }
 
-            if (newItemPricesObject?.MarketResponse?.BuyPriceMinDate < currentItemPricesObject?.MarketResponse?.BuyPriceMinDate)
+            if (newItemPricesObject?.BuyPriceMinDate < currentItemPricesObject?.BuyPriceMinDate)
             {
-                currentItemPricesObject.MarketResponse.BuyPriceMin = newItemPricesObject.MarketResponse.BuyPriceMin;
-                currentItemPricesObject.MarketResponse.BuyPriceMinDate = newItemPricesObject.MarketResponse.BuyPriceMinDate;
+                currentItemPricesObject.BuyPriceMin = newItemPricesObject.BuyPriceMin;
+                currentItemPricesObject.BuyPriceMinDate = newItemPricesObject.BuyPriceMinDate;
             }
 
-            if (newItemPricesObject?.MarketResponse?.BuyPriceMaxDate < currentItemPricesObject?.MarketResponse?.BuyPriceMaxDate)
+            if (newItemPricesObject?.BuyPriceMaxDate < currentItemPricesObject?.BuyPriceMaxDate)
             {
-                currentItemPricesObject.MarketResponse.BuyPriceMax = newItemPricesObject.MarketResponse.BuyPriceMax;
-                currentItemPricesObject.MarketResponse.BuyPriceMaxDate = newItemPricesObject.MarketResponse.BuyPriceMaxDate;
+                currentItemPricesObject.BuyPriceMax = newItemPricesObject.BuyPriceMax;
+                currentItemPricesObject.BuyPriceMaxDate = newItemPricesObject.BuyPriceMaxDate;
             }
         }
     }
@@ -1127,6 +1128,16 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public string RefreshIconTooltipText
+    {
+        get => _refreshIconTooltipText;
+        set
+        {
+            _refreshIconTooltipText = value;
+            OnPropertyChanged();
+        }
+    }
+
     public ExtraItemInformation ExtraItemInformation
     {
         get => _extraItemInformation;
@@ -1170,47 +1181,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         public string Name { get; set; }
         public int Quality { get; set; }
     }
-
-    //private List<int> GetQualities()
-    //{
-    //    var qualities = new List<int>();
-
-    //    if (NormalQualityChecked)
-    //    {
-    //        qualities.Add(1);
-    //    }
-
-    //    if (GoodQualityChecked)
-    //    {
-    //        qualities.Add(2);
-    //    }
-
-    //    if (OutstandingQualityChecked)
-    //    {
-    //        qualities.Add(3);
-    //    }
-
-    //    if (ExcellentQualityChecked)
-    //    {
-    //        qualities.Add(4);
-    //    }
-
-    //    if (MasterpieceQualityChecked)
-    //    {
-    //        qualities.Add(5);
-    //    }
-
-    //    return qualities;
-    //}
-
-    //private void SetDefaultQualityIfNoOneChecked()
-    //{
-    //    if (!NormalQualityChecked && !GoodQualityChecked && !OutstandingQualityChecked && !ExcellentQualityChecked && !MasterpieceQualityChecked)
-    //    {
-    //        NormalQualityChecked = true;
-    //    }
-    //}
-
+    
     #endregion
 
     public event PropertyChangedEventHandler PropertyChanged;

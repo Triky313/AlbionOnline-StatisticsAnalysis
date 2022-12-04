@@ -29,7 +29,7 @@
                 <Label Content="{Binding ItemTierLevel, FallbackValue=T0.0}" HorizontalAlignment="Left" FontSize="14" Margin="-5 0 0 0" Foreground="{StaticResource SolidColorBrush.Text.1}" FontWeight="Bold" />
             </DockPanel>
             <Grid ZIndex="1" Width="24" Height="24" Margin="0,0,5,5" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                <fa5:ImageAwesome Visibility="Visible" Icon="Solid_Sync" ToolTip="{Binding Translation.RefreshIconTooltipText, FallbackValue=LAST__UPDATE: TIME}" 
+                <fa5:ImageAwesome Visibility="Visible" Icon="Solid_Sync" ToolTip="{Binding RefreshIconTooltipText, FallbackValue=LAST__UPDATE: TIME}" 
                                   Spin="{Binding RefreshSpin, FallbackValue=false, UpdateSourceTrigger=PropertyChanged}" SpinDuration="10" 
                                   Foreground="{StaticResource SolidColorBrush.Text.1}" MouseLeftButtonDown="RefreshSpin_MouseLeftButtonDown" />
             </Grid>
@@ -48,11 +48,15 @@
                                   ItemTemplate="{StaticResource CityFilterObject}" />
                     </StackPanel>
 
-                    <ListView ItemsSource="{Binding MainTabItemPrices}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" 
-                              BorderThickness="0" SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,30,0,0" d:ItemsSource="{d:SampleData ItemCount=10}">
+                    <ListView ItemsSource="{Binding MainTabItemPrices}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" BorderThickness="0" 
+                              SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,30,0,0" d:ItemsSource="{d:SampleData ItemCount=10}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="{Binding Translation.Location, FallbackValue=LOCATION}" CellTemplate="{StaticResource GridViewColumnCityTemplate}"/>
+                                <GridViewColumn CellTemplate="{StaticResource GridViewColumnCityTemplate}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Tag="LocationName" Content="{Binding Translation.Location, FallbackValue=LOCATION}" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
                                 <GridViewColumn Header="{Binding Translation.SellPriceMin, FallbackValue=SELL_PRICE_MIN}" CellTemplate="{StaticResource GridViewColumnSellPriceMinTemplate}"/>
                                 <GridViewColumn Header="{Binding Translation.SellPriceMinDate, FallbackValue=SELL_PRICE_MIN_DATE}" CellTemplate="{StaticResource GridViewColumnSellPriceMinDateTemplate}"/>
                                 <GridViewColumn Header="{Binding Translation.SellPriceMax, FallbackValue=SELL_PRICE_MAX}" CellTemplate="{StaticResource GridViewColumnSellPriceMaxTemplate}"/>

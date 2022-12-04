@@ -14,17 +14,41 @@ public class ItemPricesObject : INotifyPropertyChanged
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private Visibility _visibility;
-    private readonly MarketResponse _marketResponse;
-    private readonly MarketLocation _marketLocation = MarketLocation.Unknown;
+    private MarketLocation _marketLocation = MarketLocation.Unknown;
     private bool _isBestSellMinPrice;
     private bool _isBestSellMaxPrice;
     private bool _isBestBuyMinPrice;
     private bool _isBestBuyMaxPrice;
+    private string _itemTypeId;
+    private int _qualityLevel;
+    private ulong _sellPriceMin;
+    private DateTime _sellPriceMinDate;
+    private ulong _sellPriceMax;
+    private DateTime _sellPriceMaxDate;
+    private ulong _buyPriceMin;
+    private DateTime _buyPriceMinDate;
+    private ulong _buyPriceMax;
+    private DateTime _buyPriceMaxDate;
 
     public ItemPricesObject(MarketResponse marketResponse)
     {
-        MarketResponse = marketResponse;
+        ItemTypeId = marketResponse?.ItemTypeId ?? string.Empty;
         MarketLocation = (marketResponse?.City ?? string.Empty).GetMarketLocationByLocationNameOrId();
+
+        if (marketResponse == null)
+        {
+            return;
+        }
+        
+        QualityLevel = marketResponse.QualityLevel;
+        SellPriceMin = marketResponse.SellPriceMin;
+        SellPriceMinDate = marketResponse.SellPriceMinDate;
+        SellPriceMax = marketResponse.SellPriceMax;
+        SellPriceMaxDate = marketResponse.SellPriceMaxDate;
+        BuyPriceMin = marketResponse.BuyPriceMin;
+        BuyPriceMinDate = marketResponse.BuyPriceMinDate;
+        BuyPriceMax = marketResponse.BuyPriceMax;
+        BuyPriceMaxDate = marketResponse.BuyPriceMaxDate;
     }
 
     public Visibility Visibility
@@ -37,25 +61,7 @@ public class ItemPricesObject : INotifyPropertyChanged
         }
     }
 
-    public MarketResponse MarketResponse
-    {
-        get => _marketResponse;
-        init
-        {
-            _marketResponse = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public MarketLocation MarketLocation
-    {
-        get => _marketLocation;
-        init
-        {
-            _marketLocation = value;
-            OnPropertyChanged();
-        }
-    }
+    #region Best values
 
     public bool IsBestSellMinPrice
     {
@@ -97,19 +103,135 @@ public class ItemPricesObject : INotifyPropertyChanged
         }
     }
 
+    #endregion
+
+    #region Market response values
+
+    public string ItemTypeId
+    {
+        get => _itemTypeId;
+        set
+        {
+            _itemTypeId = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public MarketLocation MarketLocation
+    {
+        get => _marketLocation;
+        set
+        {
+            _marketLocation = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int QualityLevel
+    {
+        get => _qualityLevel;
+        set
+        {
+            _qualityLevel = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ulong SellPriceMin
+    {
+        get => _sellPriceMin;
+        set
+        {
+            _sellPriceMin = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DateTime SellPriceMinDate
+    {
+        get => _sellPriceMinDate;
+        set
+        {
+            _sellPriceMinDate = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ulong SellPriceMax
+    {
+        get => _sellPriceMax;
+        set
+        {
+            _sellPriceMax = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DateTime SellPriceMaxDate
+    {
+        get => _sellPriceMaxDate;
+        set
+        {
+            _sellPriceMaxDate = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ulong BuyPriceMin
+    {
+        get => _buyPriceMin;
+        set
+        {
+            _buyPriceMin = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DateTime BuyPriceMinDate
+    {
+        get => _buyPriceMinDate;
+        set
+        {
+            _buyPriceMinDate = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ulong BuyPriceMax
+    {
+        get => _buyPriceMax;
+        set
+        {
+            _buyPriceMax = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DateTime BuyPriceMaxDate
+    {
+        get => _buyPriceMaxDate;
+        set
+        {
+            _buyPriceMaxDate = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
+
     public string LocationName => Locations.GetDisplayName(MarketLocation);
-    public ValueTimeStatus SellPriceMinDateStatus => MarketResponse.SellPriceMinDate.GetValueTimeStatus();
-    public string SellPriceMinDateString => MarketResponse.SellPriceMinDate.CurrentDateTimeFormat();
-    public string SellPriceMinDateLastUpdateTime => MarketResponse.SellPriceMinDate.DateTimeToLastUpdateTime();
-    public ValueTimeStatus SellPriceMaxDateStatus => MarketResponse.SellPriceMaxDate.GetValueTimeStatus();
-    public string SellPriceMaxDateString => MarketResponse.SellPriceMaxDate.CurrentDateTimeFormat();
-    public string SellPriceMaxDateLastUpdateTime => MarketResponse.SellPriceMaxDate.DateTimeToLastUpdateTime();
-    public ValueTimeStatus BuyPriceMinDateStatus => MarketResponse.BuyPriceMinDate.GetValueTimeStatus();
-    public string BuyPriceMinDateString => MarketResponse.BuyPriceMinDate.CurrentDateTimeFormat();
-    public string BuyPriceMinDateLastUpdateTime => MarketResponse.BuyPriceMinDate.DateTimeToLastUpdateTime();
-    public ValueTimeStatus BuyPriceMaxDateStatus => MarketResponse.BuyPriceMaxDate.GetValueTimeStatus();
-    public string BuyPriceMaxDateString => MarketResponse.BuyPriceMaxDate.CurrentDateTimeFormat();
-    public string BuyPriceMaxDateLastUpdateTime => MarketResponse.BuyPriceMaxDate.DateTimeToLastUpdateTime();
+    public ValueTimeStatus SellPriceMinDateStatus => SellPriceMinDate.GetValueTimeStatus();
+    public string SellPriceMinDateString => SellPriceMinDate.CurrentDateTimeFormat();
+    public string SellPriceMinDateLastUpdateTime => SellPriceMinDate.DateTimeToLastUpdateTime();
+    public ValueTimeStatus SellPriceMaxDateStatus => SellPriceMaxDate.GetValueTimeStatus();
+    public string SellPriceMaxDateString => SellPriceMaxDate.CurrentDateTimeFormat();
+    public string SellPriceMaxDateLastUpdateTime => SellPriceMaxDate.DateTimeToLastUpdateTime();
+    public ValueTimeStatus BuyPriceMinDateStatus => BuyPriceMinDate.GetValueTimeStatus();
+    public string BuyPriceMinDateString => BuyPriceMinDate.CurrentDateTimeFormat();
+    public string BuyPriceMinDateLastUpdateTime => BuyPriceMinDate.DateTimeToLastUpdateTime();
+    public ValueTimeStatus BuyPriceMaxDateStatus => BuyPriceMaxDate.GetValueTimeStatus();
+    public string BuyPriceMaxDateString => BuyPriceMaxDate.CurrentDateTimeFormat();
+    public string BuyPriceMaxDateLastUpdateTime => BuyPriceMaxDate.DateTimeToLastUpdateTime();
 
     private ICommand _copyTextToClipboard;
     public ICommand CopyTextToClipboard => _copyTextToClipboard ??= new CommandHandler(PerformCopyTextToClipboard, true);

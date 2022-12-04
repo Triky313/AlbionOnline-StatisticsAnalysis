@@ -51,7 +51,6 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string ShopCategory => LanguageController.Translation("SHOP_CATEGORY");
         public static string ShopSubCategory => LanguageController.Translation("SHOP_SUB_CATEGORY");
         public static string CanBeOvercharged => LanguageController.Translation("CAN_BE_OVERCHARGED");
-        public static string RefreshIconTooltipText => $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.CurrentDateTimeFormat()}";
         public static string Notes => LanguageController.Translation("NOTES");
         public static string CraftingInfoDescription1 => LanguageController.Translation("CRAFTING_INFO_DESCRIPTION_1");
         public static string CraftingInfoDescription2 => LanguageController.Translation("CRAFTING_INFO_DESCRIPTION_2");
