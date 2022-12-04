@@ -55,6 +55,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<CityFilterObject> _locationFilters = new();
     private ObservableCollection<ItemPricesObject> _mainTabItemPrices = new();
     private string _refreshIconTooltipText;
+    private bool _isQualitiesEnabled;
 
     private CraftingCalculation _craftingCalculation = new()
     {
@@ -583,109 +584,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             Log.Warn(nameof(UpdateMarketPricesAsync), ex);
         }
     }
-
-    //public async Task GetItemPricesInRealMoneyAsync()
-    //{
-    //    if (CurrentCityPrices == null)
-    //    {
-    //        return;
-    //    }
-
-    //    var realMoneyMarketObject = new List<MarketQualityObject>();
-
-    //    var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
-    //    foreach (var stat in filteredCityPrices)
-    //    {
-    //        if (realMoneyMarketObject.Exists(x => x.Location == stat.City))
-    //        {
-    //            var marketQualityObject = realMoneyMarketObject.Find(x => x.LocationName == stat.City);
-    //            await SetRealMoneyQualityStat(stat, marketQualityObject);
-    //        }
-    //        else
-    //        {
-    //            var marketQualityObject = new MarketQualityObject { Location = stat.City };
-    //            await SetRealMoneyQualityStat(stat, marketQualityObject);
-    //            realMoneyMarketObject.Add(marketQualityObject);
-    //        }
-    //    }
-    //    RealMoneyPriceList = realMoneyMarketObject;
-    //}
-
-    //public void SetQualityPriceStatsOnListView()
-    //{
-    //    if (CurrentCityPrices == null)
-    //    {
-    //        return;
-    //    }
-
-    //    var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
-    //    var marketQualityObjectList = new List<MarketQualityObject>();
-
-    //    foreach (var stat in filteredCityPrices)
-    //    {
-    //        if (marketQualityObjectList.Exists(x => x.Location == stat.City))
-    //        {
-    //            var marketQualityObject = marketQualityObjectList.Find(x => x.LocationName == stat.City);
-    //            SetQualityStat(stat, ref marketQualityObject);
-    //        }
-    //        else
-    //        {
-    //            var marketQualityObject = new MarketQualityObject { Location = stat.City };
-    //            SetQualityStat(stat, ref marketQualityObject);
-    //            marketQualityObjectList.Add(marketQualityObject);
-    //        }
-    //    }
-
-    //    AllQualityPricesList = marketQualityObjectList;
-    //}
-
-    //private async Task SetRealMoneyQualityStat(MarketResponse marketResponse, MarketQualityObject marketQualityObject)
-    //{
-    //    if (marketQualityObject == null)
-    //        return;
-
-    //    if (_currentGoldPrice == null)
-    //    {
-    //        var getGoldPricesObjectList = await ApiController.GetGoldPricesFromJsonAsync(null, 1);
-    //        _currentGoldPrice = getGoldPricesObjectList?.FirstOrDefault();
-    //    }
-
-    //    switch (ItemController.GetQuality(marketResponse.QualityLevel))
-    //    {
-    //        case ItemQuality.Normal:
-    //            marketQualityObject.SellPriceMinNormalStringInRalMoney =
-    //                Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
-    //            marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
-    //            return;
-
-    //        case ItemQuality.Good:
-    //            marketQualityObject.SellPriceMinGoodStringInRalMoney =
-    //                Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
-    //            marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
-    //            return;
-
-    //        case ItemQuality.Outstanding:
-    //            marketQualityObject.SellPriceMinOutstandingStringInRalMoney =
-    //                Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
-    //            marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
-    //            return;
-
-    //        case ItemQuality.Excellent:
-    //            marketQualityObject.SellPriceMinExcellentStringInRalMoney =
-    //                Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
-    //            marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
-    //            return;
-
-    //        case ItemQuality.Masterpiece:
-    //            marketQualityObject.SellPriceMinMasterpieceStringInRalMoney =
-    //                Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
-    //            marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
-    //            return;
-    //    }
-    //}
-
-    // TODO: Without try catch
-
+    
     private static void FindBestPrice(IReadOnlyCollection<ItemPricesObject> list)
     {
         if (list == null || list.Count == 0)
@@ -742,38 +641,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
         return min;
     }
-
-    //private void SetAveragePricesString()
-    //{
-    //    var cityPrices = GetFilteredCityPrices(false, false, true, false);
-
-    //    var sellPriceMin = new List<ulong>();
-    //    var sellPriceMax = new List<ulong>();
-    //    var buyPriceMin = new List<ulong>();
-    //    var buyPriceMax = new List<ulong>();
-
-    //    foreach (var price in cityPrices ?? new List<MarketResponse>())
-    //    {
-    //        if (price.SellPriceMin != 0) sellPriceMin.Add(price.SellPriceMin);
-
-    //        if (price.SellPriceMax != 0) sellPriceMax.Add(price.SellPriceMax);
-
-    //        if (price.BuyPriceMin != 0) buyPriceMin.Add(price.BuyPriceMin);
-
-    //        if (price.BuyPriceMax != 0) buyPriceMax.Add(price.BuyPriceMax);
-    //    }
-
-    //    var sellPriceMinAverage = Average(sellPriceMin.ToArray());
-    //    var sellPriceMaxAverage = Average(sellPriceMax.ToArray());
-    //    var buyPriceMinAverage = Average(buyPriceMin.ToArray());
-    //    var buyPriceMaxAverage = Average(buyPriceMax.ToArray());
-
-    //    AveragePrices = $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", sellPriceMinAverage)}  |  " +
-    //                    $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", sellPriceMaxAverage)}  |  " +
-    //                    $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", buyPriceMinAverage)}  |  " +
-    //                    $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", buyPriceMaxAverage)}";
-    //}
-
+    
     #endregion Prices
 
     #region Main tab
@@ -1133,7 +1001,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
+    
     public ExtraItemInformation ExtraItemInformation
     {
         get => _extraItemInformation;
