@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.ItemWindowModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
@@ -50,11 +51,9 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private List<MarketResponse> _currentItemPrices = new();
     private ExtraItemInformation _extraItemInformation = new();
     private string _errorBarText;
-    private List<QualityStruct> _qualities = new();
-    private QualityStruct _qualitiesSelection;
-    private ObservableCollection<MainTabLocationFilterObject> _locationFilters = new();
-    private ObservableCollection<ItemPricesObject> _mainTabItemPrices = new();
     private string _refreshIconTooltipText;
+    private ItemWindowMainTabBindings _mainTabBindings;
+    private ItemWindowQualityTabBindings _qualityTabBindings;
 
     private CraftingCalculation _craftingCalculation = new()
     {
@@ -109,7 +108,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             return;
         }
 
-        InitCityFiltering();
+        InitBindings();
         InitQualityFiltering();
         InitExtraItemInformation();
         await InitCraftingTabAsync();
@@ -129,53 +128,23 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         IsTaskProgressbarIndeterminate = false;
     }
 
-    private void InitCityFiltering()
+    private void InitBindings()
     {
-        var locationFilters = new List<MainTabLocationFilterObject>
-        {
-            new (MarketLocation.CaerleonMarket, Locations.GetParameterName(Location.Caerleon), true),
-            new (MarketLocation.ThetfordMarket, Locations.GetParameterName(Location.Thetford), true),
-            new (MarketLocation.FortSterlingMarket, Locations.GetParameterName(Location.FortSterling), true),
-            new (MarketLocation.LymhurstMarket, Locations.GetParameterName(Location.Lymhurst), true),
-            new (MarketLocation.BridgewatchMarket, Locations.GetParameterName(Location.Bridgewatch), true),
-            new (MarketLocation.MartlockMarket, Locations.GetParameterName(Location.Martlock), true),
-            new (MarketLocation.BrecilienMarket, Locations.GetParameterName(Location.Brecilien), true),
-            new (MarketLocation.ArthursRest, Locations.GetParameterName(Location.ArthursRest), true),
-            new (MarketLocation.MerlynsRest, Locations.GetParameterName(Location.MerlynsRest), true),
-            new (MarketLocation.MorganasRest, Locations.GetParameterName(Location.MorganasRest), true),
-            new (MarketLocation.BlackMarket, Locations.GetParameterName(Location.BlackMarket), true),
-            new (MarketLocation.ForestCross, Locations.GetParameterName(Location.ForestCross), true),
-            new (MarketLocation.SwampCross, Locations.GetParameterName(Location.SwampCross), true),
-            new (MarketLocation.SteppeCross, Locations.GetParameterName(Location.SteppeCross), true),
-            new (MarketLocation.HighlandCross, Locations.GetParameterName(Location.HighlandCross), true),
-            new (MarketLocation.MountainCross, Locations.GetParameterName(Location.MountainCross), true)
-        };
-
-        foreach (var itemWindowMainTabLocationFilter in SettingsController.CurrentSettings.ItemWindowMainTabLocationFilters)
-        {
-            var filter = locationFilters.FirstOrDefault(x => x.Location == itemWindowMainTabLocationFilter?.Location);
-            if (filter != null)
-            {
-                filter.IsChecked = itemWindowMainTabLocationFilter.IsChecked;
-            }
-        }
-
-        LocationFilters = new ObservableCollection<MainTabLocationFilterObject>(locationFilters.OrderBy(x => x.Name));
-
-        AddLocationFiltersEvents();
+        MainTabBindings = new ItemWindowMainTabBindings(this);
+        QualityTabBindings = new ItemWindowQualityTabBindings(this);
     }
 
     private void InitQualityFiltering()
     {
-        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("NORMAL"), Quality = 1 });
-        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("GOOD"), Quality = 2 });
-        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("OUTSTANDING"), Quality = 3 });
-        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("EXCELLENT"), Quality = 4 });
-        Qualities.Add(new QualityStruct() { Name = LanguageController.Translation("MASTERPIECE"), Quality = 5 });
+        MainTabBindings.Qualities.Add(new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("NORMAL"), Quality = 1 });
+        MainTabBindings.Qualities.Add(new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("GOOD"), Quality = 2 });
+        MainTabBindings.Qualities.Add(new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("OUTSTANDING"), Quality = 3 });
+        MainTabBindings.Qualities.Add(new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("EXCELLENT"), Quality = 4 });
+        MainTabBindings.Qualities.Add(new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("MASTERPIECE"), Quality = 5 });
 
-        if (Qualities != null)
+        if (MainTabBindings.Qualities != null)
         {
-            QualitiesSelection = Qualities.FirstOrDefault();
+            MainTabBindings.QualitiesSelection = MainTabBindings.Qualities.FirstOrDefault();
         }
     }
 
@@ -263,9 +232,9 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     public void SaveSettings()
     {
-        SettingsController.CurrentSettings.ItemWindowMainTabLocationFilters = LocationFilters?.Select(x => new MainTabLocationFilterSettingsObject()
+        SettingsController.CurrentSettings.ItemWindowMainTabLocationFilters = MainTabBindings.LocationFilters?.Select(x => new MainTabLocationFilterSettingsObject()
         {
-            IsChecked = x.IsChecked ?? false, 
+            IsChecked = x.IsChecked ?? false,
             Location = x.Location
         }).ToList();
     }
@@ -302,11 +271,13 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     {
         await UpdateMarketPricesAsync();
         UpdateMainTabItemPrices(null, null);
+        UpdateQualityTabItemPrices(null, null);
 
         _timer.Interval = SettingsController.CurrentSettings.RefreshRate;
         _timer.Elapsed += UpdateInterval;
         _timer.Elapsed += UpdateMarketPricesAsync;
         _timer.Elapsed += UpdateMainTabItemPrices;
+        _timer.Elapsed += UpdateQualityTabItemPrices;
     }
 
     private void UpdateInterval(object sender, EventArgs e)
@@ -610,7 +581,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             Log.Warn(nameof(UpdateMarketPricesAsync), ex);
         }
     }
-    
+
     private static void FindBestPrice(IReadOnlyCollection<ItemPricesObject> list)
     {
         if (list == null || list.Count == 0)
@@ -620,8 +591,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         {
             var max = GetMaxPrice(list, i);
 
-            var itemPricesObjectBuyPriceMax = list
-                .Where(x => x.Visibility == Visibility.Visible && x.QualityLevel == i).FirstOrDefault(s => s.BuyPriceMax == max);
+            var itemPricesObjectBuyPriceMax = list.Where(x => x.Visibility == Visibility.Visible && x.QualityLevel == i).FirstOrDefault(s => s.BuyPriceMax == max);
             if (itemPricesObjectBuyPriceMax != null)
             {
                 itemPricesObjectBuyPriceMax.IsBestBuyMaxPrice = true;
@@ -629,8 +599,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
             var min = GetMinPrice(list, i);
 
-            var itemPricesObjectSellPriceMin = list
-                .Where(x => x.Visibility == Visibility.Visible && x.QualityLevel == i).FirstOrDefault(s => s.SellPriceMin == min);
+            var itemPricesObjectSellPriceMin = list.Where(x => x.Visibility == Visibility.Visible && x.QualityLevel == i).FirstOrDefault(s => s.SellPriceMin == min);
             if (itemPricesObjectSellPriceMin != null)
             {
                 itemPricesObjectSellPriceMin.IsBestSellMinPrice = true;
@@ -667,51 +636,34 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
         return min;
     }
-    
+
     #endregion Prices
 
     #region Main tab
 
-    private void UpdateMainTabItemPrices(object sender, ElapsedEventArgs e)
+    public void UpdateMainTabItemPrices(object sender, ElapsedEventArgs e)
     {
         UpdateMainTabItemPricesAsync();
     }
 
-    private async void UpdateMainTabItemPricesAsync()
+    public async void UpdateMainTabItemPricesAsync()
     {
         var currentItemPrices = CurrentItemPrices?.Select(x => new ItemPricesObject(x)).ToList();
         await UpdateMainTabItemPricesObjectsAsync(currentItemPrices);
-        SetItemPricesObjectVisibility(MainTabItemPrices);
-    }
-
-    private void SetItemPricesObjectVisibility(ObservableCollection<ItemPricesObject> prices)
-    {
-        foreach (var currentItemPricesObject in prices?.ToList() ?? new List<ItemPricesObject>())
-        {
-            if (GetMainTabCheckedLocations().Contains(currentItemPricesObject.MarketLocation) && currentItemPricesObject.QualityLevel == QualitiesSelection.Quality)
-            {
-                currentItemPricesObject.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                currentItemPricesObject.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        FindBestPrice(prices?.Where(x => GetMainTabCheckedLocations().Contains(x.MarketLocation)).ToList());
+        SetItemPricesObjectVisibility(MainTabBindings.ItemPrices);
     }
 
     private async Task UpdateMainTabItemPricesObjectsAsync(List<ItemPricesObject> newPrices)
     {
         foreach (var newItemPricesObject in newPrices ?? new List<ItemPricesObject>())
         {
-            var currentItemPricesObject = MainTabItemPrices?.FirstOrDefault(x => x.MarketLocation == newItemPricesObject.MarketLocation && x.QualityLevel == newItemPricesObject.QualityLevel);
+            var currentItemPricesObject = MainTabBindings.ItemPrices?.FirstOrDefault(x => x.MarketLocation == newItemPricesObject.MarketLocation && x.QualityLevel == newItemPricesObject.QualityLevel);
 
             if (currentItemPricesObject == null)
             {
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    MainTabItemPrices?.Add(newItemPricesObject);
+                    MainTabBindings.ItemPrices?.Add(newItemPricesObject);
                 });
             }
 
@@ -741,16 +693,80 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    private List<MarketLocation> GetMainTabCheckedLocations()
+    private void SetItemPricesObjectVisibility(ObservableCollection<ItemPricesObject> prices)
     {
-        return LocationFilters?.Where(x => x?.IsChecked == true).Select(x => x.Location).ToList() ?? new List<MarketLocation>();
+        foreach (var currentItemPricesObject in prices?.ToList() ?? new List<ItemPricesObject>())
+        {
+            if (GetMainTabCheckedLocations().Contains(currentItemPricesObject.MarketLocation) && currentItemPricesObject.QualityLevel == MainTabBindings.QualitiesSelection.Quality)
+            {
+                currentItemPricesObject.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                currentItemPricesObject.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        FindBestPrice(prices?.Where(x => GetMainTabCheckedLocations().Contains(x.MarketLocation)).ToList());
     }
 
-    private void AddLocationFiltersEvents()
+    private List<MarketLocation> GetMainTabCheckedLocations()
     {
-        foreach (var cityFilterObject in LocationFilters)
+        return MainTabBindings.LocationFilters?.Where(x => x?.IsChecked == true).Select(x => x.Location).ToList() ?? new List<MarketLocation>();
+    }
+
+    #endregion
+
+    #region Quality tab
+
+    private void UpdateQualityTabItemPrices(object sender, ElapsedEventArgs e)
+    {
+        UpdateQualityTabItemPricesAsync();
+    }
+
+    public async void UpdateQualityTabItemPricesAsync()
+    {
+        var marketResponse = CurrentItemPrices?.ToList();
+        await UpdateQualityTabItemPricesObjectsAsync(marketResponse);
+        SetMarketQualityObjectVisibility(QualityTabBindings?.Prices);
+    }
+
+    private async Task UpdateQualityTabItemPricesObjectsAsync(List<MarketResponse> newPrices)
+    {
+        if (QualityTabBindings?.Prices == null)
         {
-            cityFilterObject.OnCheckedChanged += UpdateMainTabItemPricesAsync;
+            return;
+        }
+
+        foreach (var marketResponse in newPrices ?? new List<MarketResponse>())
+        {
+            var currentPriceObject = QualityTabBindings?.Prices?.FirstOrDefault(x => x.MarketLocation == marketResponse.MarketLocation);
+
+            if(currentPriceObject == null)
+            {
+                await Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    QualityTabBindings?.Prices?.Add(new MarketQualityObject(marketResponse));
+                });
+                continue;
+            }
+
+            currentPriceObject.SetValues(marketResponse);
+        }
+    }
+
+    private void SetMarketQualityObjectVisibility(List<MarketQualityObject> prices)
+    {
+        foreach (var currentItemPricesObject in prices?.ToList() ?? new List<MarketQualityObject>())
+        {
+            if (GetMainTabCheckedLocations().Contains(currentItemPricesObject.MarketLocation))
+            {
+                currentItemPricesObject.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                currentItemPricesObject.Visibility = Visibility.Collapsed;
+            }
         }
     }
 
@@ -818,34 +834,22 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public List<QualityStruct> Qualities
+    public ItemWindowMainTabBindings MainTabBindings
     {
-        get => _qualities;
+        get => _mainTabBindings;
         set
         {
-            _qualities = value;
+            _mainTabBindings = value;
             OnPropertyChanged();
         }
     }
 
-    public QualityStruct QualitiesSelection
+    public ItemWindowQualityTabBindings QualityTabBindings
     {
-        get => _qualitiesSelection;
+        get => _qualityTabBindings;
         set
         {
-            _qualitiesSelection = value;
-            SettingsController.CurrentSettings.ItemWindowQualitiesSelection = _qualitiesSelection.Quality;
-            UpdateMainTabItemPrices(null, null);
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableCollection<MainTabLocationFilterObject> LocationFilters
-    {
-        get => _locationFilters;
-        set
-        {
-            _locationFilters = value;
+            _qualityTabBindings = value;
             OnPropertyChanged();
         }
     }
@@ -955,16 +959,6 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<ItemPricesObject> MainTabItemPrices
-    {
-        get => _mainTabItemPrices;
-        set
-        {
-            _mainTabItemPrices = value;
-            OnPropertyChanged();
-        }
-    }
-
     public bool IsAutoUpdateActive
     {
         get => _isAutoUpdateActive;
@@ -1027,7 +1021,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
+
     public ExtraItemInformation ExtraItemInformation
     {
         get => _extraItemInformation;
@@ -1066,12 +1060,6 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         return result;
     }
 
-    public struct QualityStruct
-    {
-        public string Name { get; set; }
-        public int Quality { get; set; }
-    }
-    
     #endregion
 
     public event PropertyChangedEventHandler PropertyChanged;

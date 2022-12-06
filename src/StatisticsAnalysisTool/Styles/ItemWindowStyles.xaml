@@ -836,7 +836,7 @@
     </DataTemplate>
 
     <!-- MarketQualityObject -->
-    <DataTemplate x:Key="GridViewColumnCityForMarketQualityObjectTemplate"  DataType="{x:Type models:MarketQualityObject}">
+    <DataTemplate x:Key="GridViewColumn.CityForMarketQualityObjectTemplate"  DataType="{x:Type models:MarketQualityObject}">
         <Label Content="{Binding LocationName}" Style="{StaticResource ListView.City.Color.Style}" Visibility="{Binding Visibility}">
             <Label.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" CommandParameter="{Binding LocationName}" />
@@ -844,15 +844,15 @@
         </Label>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinNormalTemplate"  DataType="{x:Type models:MarketQualityObject}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinNormalTemplate"  DataType="{x:Type models:MarketQualityObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinNormalString}" 
-                       ToolTip="{Binding SellPriceMinNormalDateString}">
+                <Label Content="{Binding SellPriceMinNormal}" 
+                       ToolTip="{Binding SellPriceMinNormalDate, StringFormat='G'}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinNormalString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinNormal, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -882,15 +882,15 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinGoodTemplate"  DataType="{x:Type models:MarketQualityObject}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinGoodTemplate"  DataType="{x:Type models:MarketQualityObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinGoodString}" 
-                       ToolTip="{Binding SellPriceMinGoodDateString}">
+                <Label Content="{Binding SellPriceMinGood}" 
+                       ToolTip="{Binding SellPriceMinGoodDate}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinGoodString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinGood, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -920,15 +920,15 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinOutstandingTemplate"  DataType="{x:Type models:MarketQualityObject}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinOutstandingTemplate"  DataType="{x:Type models:MarketQualityObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinOutstandingString}" 
-                       ToolTip="{Binding SellPriceMinOutstandingDateString}">
+                <Label Content="{Binding SellPriceMinOutstanding}" 
+                       ToolTip="{Binding SellPriceMinOutstandingDate}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinOutstandingString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinOutstanding, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -958,15 +958,15 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinExcellentTemplate"  DataType="{x:Type models:MarketQualityObject}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinExcellentTemplate"  DataType="{x:Type models:MarketQualityObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinExcellentString}" 
-                       ToolTip="{Binding SellPriceMinExcellentDateString}">
+                <Label Content="{Binding SellPriceMinExcellent}" 
+                       ToolTip="{Binding SellPriceMinExcellentDate}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinExcellentString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinExcellent, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -996,15 +996,15 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinMasterpieceTemplate"  DataType="{x:Type models:MarketQualityObject}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinMasterpieceTemplate"  DataType="{x:Type models:MarketQualityObject}">
         <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinMasterpieceString}" 
-                       ToolTip="{Binding SellPriceMinMasterpieceDateString}">
+                <Label Content="{Binding SellPriceMinMasterpiece}" 
+                       ToolTip="{Binding SellPriceMinMasterpieceDate}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinMasterpieceString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinMasterpiece, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -1225,7 +1225,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="CityFilterObject" DataType="{x:Type models:MainTabLocationFilterObject}">
+    <DataTemplate x:Key="LocationFilterObjectTemplate" DataType="{x:Type models:MainTabLocationFilterObject}">
         <StackPanel Orientation="Horizontal">
             <CheckBox IsChecked="{Binding IsChecked}" Width="20" VerticalAlignment="Top" />
             <TextBlock Text="{Binding Name}" Width="100" TextWrapping="Wrap" />

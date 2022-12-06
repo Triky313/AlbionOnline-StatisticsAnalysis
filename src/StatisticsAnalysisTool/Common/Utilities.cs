@@ -40,12 +40,7 @@ namespace StatisticsAnalysisTool.Common
                 ? Application.Current.Windows.OfType<T>().Any()
                 : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
         }
-
-        public static string UlongMarketPriceToString(ulong value)
-        {
-            return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));
-        }
-
+        
         public static string LongMarketPriceToString(long value)
         {
             return value.ToString("N0", new CultureInfo(LanguageController.CurrentCultureInfo.TextInfo.CultureName));

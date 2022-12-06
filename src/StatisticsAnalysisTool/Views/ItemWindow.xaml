@@ -41,14 +41,14 @@
             <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}">
                 <Grid>
                     <StackPanel Orientation="Horizontal">
-                        <ComboBox Width="200" Height="26" Margin="0,0,0,5" VerticalAlignment="Top" ItemsSource="{Binding Qualities}" 
-                                  SelectedItem="{Binding QualitiesSelection, IsAsync=true}" 
+                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2,0,0,0" Width="150" Height="26" ItemsSource="{Binding MainTabBindings.LocationFilters}" 
+                                  ItemTemplate="{StaticResource LocationFilterObjectTemplate}" />
+                        <ComboBox Width="200" Height="26" Margin="5,0,5,5" VerticalAlignment="Top" ItemsSource="{Binding MainTabBindings.Qualities}" 
+                                  SelectedItem="{Binding MainTabBindings.QualitiesSelection, IsAsync=true}" 
                                   HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Quality" />
-                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0,5,0" Width="150" Height="26" ItemsSource="{Binding LocationFilters}" 
-                                  ItemTemplate="{StaticResource CityFilterObject}" />
                     </StackPanel>
 
-                    <ListView ItemsSource="{Binding MainTabItemPrices}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" BorderThickness="0" 
+                    <ListView ItemsSource="{Binding MainTabBindings.ItemPrices}" Language="{Binding ItemListViewLanguage}" SnapsToDevicePixels="True" BorderThickness="0" 
                               SelectionMode="Single" Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,30,0,0" d:ItemsSource="{d:SampleData ItemCount=10}">
                         <ListView.View>
                             <GridView>
@@ -70,27 +70,28 @@
                     </ListView>
                 </Grid>
             </TabItem>
-            <!--<TabItem Header="{Binding Translation.Quality, FallbackValue=QUALITY}" ToolTip="{Binding Translation.TabAllQualityToolTipDescription}">
+            <TabItem Header="{Binding Translation.Quality, FallbackValue=QUALITY}" ToolTip="{Binding Translation.TabAllQualityToolTipDescription}">
                 <Grid>
-                    <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                    </Grid>
-                    <ListView ItemsSource="{Binding AllQualityPricesList}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" 
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2,0,5,0" Width="150" Height="26" ItemsSource="{Binding MainTabBindings.LocationFilters}" 
+                                  ItemTemplate="{StaticResource LocationFilterObjectTemplate}" />
+                    </StackPanel>
+                    <ListView ItemsSource="{Binding QualityTabBindings.Prices}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Margin="0,30,0,0"
                               Foreground="{StaticResource SolidColorBrush.Text.1}" d:ItemsSource="{d:SampleData ItemCount=5}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" CellTemplate="{StaticResource GridViewColumnCityForMarketQualityObjectTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.Normal, FallbackValue=NORMAL}" CellTemplate="{StaticResource GridViewColumnSellPriceMinNormalTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.Good, FallbackValue=GOOD}" CellTemplate="{StaticResource GridViewColumnSellPriceMinGoodTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.Outstanding, FallbackValue=Outstanding}" CellTemplate="{StaticResource GridViewColumnSellPriceMinOutstandingTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.Excellent, FallbackValue=Excellent}" CellTemplate="{StaticResource GridViewColumnSellPriceMinExcellentTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.Masterpiece, FallbackValue=Masterpiece}" CellTemplate="{StaticResource GridViewColumnSellPriceMinMasterpieceTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Location, FallbackValue=LOCATION}" CellTemplate="{StaticResource GridViewColumn.CityForMarketQualityObjectTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Normal, FallbackValue=NORMAL}" CellTemplate="{StaticResource GridViewColumn.SellPriceMinNormalTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Good, FallbackValue=GOOD}" CellTemplate="{StaticResource GridViewColumn.SellPriceMinGoodTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Outstanding, FallbackValue=OUTSTANDING}" CellTemplate="{StaticResource GridViewColumn.SellPriceMinOutstandingTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Excellent, FallbackValue=EXCELLENT}" CellTemplate="{StaticResource GridViewColumn.SellPriceMinExcellentTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Masterpiece, FallbackValue=MASTERPIECE}" CellTemplate="{StaticResource GridViewColumn.SellPriceMinMasterpieceTemplate}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.History, FallbackValue=HISTORY}">
+            <!--<TabItem Header="{Binding Translation.History, FallbackValue=HISTORY}">
                 <Grid>
                     <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
