@@ -41,7 +41,7 @@
             <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}">
                 <Grid>
                     <StackPanel Orientation="Horizontal">
-                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2,0,0,0" Width="150" Height="26" ItemsSource="{Binding MainTabBindings.LocationFilters}" 
+                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2,0,0,0" Width="150" Height="26" ItemsSource="{Binding LocationFilters}" 
                                   ItemTemplate="{StaticResource LocationFilterObjectTemplate}" />
                         <ComboBox Width="200" Height="26" Margin="5,0,5,5" VerticalAlignment="Top" ItemsSource="{Binding MainTabBindings.Qualities}" 
                                   SelectedItem="{Binding MainTabBindings.QualitiesSelection, IsAsync=true}" 
@@ -73,7 +73,7 @@
             <TabItem Header="{Binding Translation.Quality, FallbackValue=QUALITY}" ToolTip="{Binding Translation.TabAllQualityToolTipDescription}">
                 <Grid>
                     <StackPanel Orientation="Horizontal">
-                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2,0,5,0" Width="150" Height="26" ItemsSource="{Binding MainTabBindings.LocationFilters}" 
+                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2,0,5,0" Width="150" Height="26" ItemsSource="{Binding LocationFilters}" 
                                   ItemTemplate="{StaticResource LocationFilterObjectTemplate}" />
                     </StackPanel>
                     <ListView ItemsSource="{Binding QualityTabBindings.Prices}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" Margin="0,30,0,0"

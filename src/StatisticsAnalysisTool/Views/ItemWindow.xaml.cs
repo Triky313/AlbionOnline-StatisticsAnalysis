@@ -32,6 +32,7 @@ public partial class ItemWindow
         CraftingTabController.SaveInFile();
 
         var vm = (ItemWindowViewModel)DataContext;
+        vm?.RemoveLocationFiltersEvents();
         vm?.SaveSettings();
     }
 
