@@ -77,6 +77,7 @@
     <Color x:Key="Color.City.Martlock.Transparent">#335066CC</Color>
     <Color x:Key="Color.City.Lymhurst.Transparent">#3318A170</Color>
     <Color x:Key="Color.City.FortSterling.Transparent">#33E1F7FA</Color>
+    <Color x:Key="Color.City.Brecilien.Transparent">#33EE68BB</Color>
     <Color x:Key="Color.City.ArthursRest.Transparent">#33F75656</Color>
     <Color x:Key="Color.City.MerlynsRest.Transparent">#333A9DC7</Color>
     <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
@@ -228,6 +229,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.Martlock.Transparent" Color="{StaticResource Color.City.Martlock.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst.Transparent" Color="{StaticResource Color.City.Lymhurst.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling.Transparent" Color="{StaticResource Color.City.FortSterling.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Brecilien.Transparent" Color="{StaticResource Color.City.Brecilien.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest.Transparent" Color="{StaticResource Color.City.ArthursRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest.Transparent" Color="{StaticResource Color.City.MerlynsRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest.Transparent" Color="{StaticResource Color.City.MorganasRest.Transparent}"/>

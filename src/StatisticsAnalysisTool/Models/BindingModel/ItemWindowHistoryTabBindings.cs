@@ -1,21 +1,25 @@
-﻿using StatisticsAnalysisTool.Common.UserSettings;
+﻿using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Properties;
 using StatisticsAnalysisTool.ViewModels;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using static StatisticsAnalysisTool.Models.BindingModel.ItemWindowMainTabBindings;
 
 namespace StatisticsAnalysisTool.Models.BindingModel;
 
-public class ItemWindowMainTabBindings : INotifyPropertyChanged
+public class ItemWindowHistoryTabBindings : INotifyPropertyChanged
 {
     private readonly ItemWindowViewModel _itemWindowViewModel;
     private List<QualityStruct> _qualities = new();
     private QualityStruct _qualitiesSelection;
-    private ObservableCollection<ItemPricesObject> _itemPrices = new();
+    private ObservableCollection<ISeries> _seriesHistory = new();
+    private Axis[] _xAxesHistory;
 
-    public ItemWindowMainTabBindings(ItemWindowViewModel itemWindowViewModel)
+    public ItemWindowHistoryTabBindings(ItemWindowViewModel itemWindowViewModel)
     {
         _itemWindowViewModel = itemWindowViewModel;
     }
@@ -38,29 +42,33 @@ public class ItemWindowMainTabBindings : INotifyPropertyChanged
         set
         {
             _qualitiesSelection = value;
-            SettingsController.CurrentSettings.ItemWindowMainTabQualitySelection = _qualitiesSelection.Quality;
-            _itemWindowViewModel.UpdateMainTabItemPrices(null, null);
+            SettingsController.CurrentSettings.ItemWindowHistoryTabQualitySelection = _qualitiesSelection.Quality;
+            _itemWindowViewModel.UpdateHistoryTabChartPrices(null, null);
             OnPropertyChanged();
         }
     }
 
-    public ObservableCollection<ItemPricesObject> ItemPrices
+    public ObservableCollection<ISeries> SeriesHistory
     {
-        get => _itemPrices;
+        get => _seriesHistory;
         set
         {
-            _itemPrices = value;
+            _seriesHistory = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Axis[] XAxesHistory
+    {
+        get => _xAxesHistory;
+        set
+        {
+            _xAxesHistory = value;
             OnPropertyChanged();
         }
     }
 
     #endregion
-
-    public struct QualityStruct
-    {
-        public string Name { get; set; }
-        public int Quality { get; set; }
-    }
 
     public event PropertyChangedEventHandler PropertyChanged;
 

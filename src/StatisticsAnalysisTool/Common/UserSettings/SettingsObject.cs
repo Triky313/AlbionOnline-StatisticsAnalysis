@@ -53,7 +53,8 @@ namespace StatisticsAnalysisTool.Common.UserSettings
         public double MailMonitoringMarketTaxRate { get; set; } = 4;
         public double MailMonitoringMarketTaxSetupRate { get; set; } = 2.5;
         public bool IsDungeonClosedSoundActive { get; set; } = false;
-        public int ItemWindowQualitiesSelection { get; set; }
+        public int ItemWindowMainTabQualitySelection { get; set; }
+        public int ItemWindowHistoryTabQualitySelection { get; set; }
         public List<MainTabLocationFilterSettingsObject> ItemWindowMainTabLocationFilters { get; set; } = new();
     }
 }

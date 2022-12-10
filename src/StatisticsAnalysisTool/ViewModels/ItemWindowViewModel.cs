@@ -1,7 +1,11 @@
-﻿using log4net;
+﻿using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
+using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
@@ -12,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -55,6 +60,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private ObservableCollection<MainTabLocationFilterObject> _locationFilters;
     private ItemWindowMainTabBindings _mainTabBindings;
     private ItemWindowQualityTabBindings _qualityTabBindings;
+    private ItemWindowHistoryTabBindings _historyTabBindings;
+    private int _tabControlSelectedIndex = -1;
 
     private CraftingCalculation _craftingCalculation = new()
     {
@@ -134,6 +141,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     {
         MainTabBindings = new ItemWindowMainTabBindings(this);
         QualityTabBindings = new ItemWindowQualityTabBindings();
+        HistoryTabBindings = new ItemWindowHistoryTabBindings(this);
     }
 
     private void InitMainTabLocationFiltering()
@@ -178,6 +186,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         {
             cityFilterObject.OnCheckedChanged += UpdateMainTabItemPricesAsync;
             cityFilterObject.OnCheckedChanged += UpdateQualityTabItemPricesAsync;
+            cityFilterObject.OnCheckedChanged += UpdateHistoryTabChartPricesAsync;
         }
     }
 
@@ -187,20 +196,38 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         {
             cityFilterObject.OnCheckedChanged -= UpdateMainTabItemPricesAsync;
             cityFilterObject.OnCheckedChanged -= UpdateQualityTabItemPricesAsync;
+            cityFilterObject.OnCheckedChanged -= UpdateHistoryTabChartPricesAsync;
         }
     }
 
     private void InitQualityFiltering()
     {
-        MainTabBindings.Qualities.Add(new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("NORMAL"), Quality = 1 });
-        MainTabBindings.Qualities.Add(new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("GOOD"), Quality = 2 });
-        MainTabBindings.Qualities.Add(new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("OUTSTANDING"), Quality = 3 });
-        MainTabBindings.Qualities.Add(new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("EXCELLENT"), Quality = 4 });
-        MainTabBindings.Qualities.Add(new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("MASTERPIECE"), Quality = 5 });
+        var normalQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("NORMAL"), Quality = 1 };
+        var goodQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("GOOD"), Quality = 2 };
+        var outstandingQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("OUTSTANDING"), Quality = 3 };
+        var excellentQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("EXCELLENT"), Quality = 4 };
+        var masterpieceQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("MASTERPIECE"), Quality = 5 };
+
+        MainTabBindings.Qualities.Add(normalQuality);
+        MainTabBindings.Qualities.Add(goodQuality);
+        MainTabBindings.Qualities.Add(outstandingQuality);
+        MainTabBindings.Qualities.Add(excellentQuality);
+        MainTabBindings.Qualities.Add(masterpieceQuality);
 
         if (MainTabBindings.Qualities != null)
         {
             MainTabBindings.QualitiesSelection = MainTabBindings.Qualities.FirstOrDefault();
+        }
+
+        HistoryTabBindings.Qualities.Add(normalQuality);
+        HistoryTabBindings.Qualities.Add(goodQuality);
+        HistoryTabBindings.Qualities.Add(outstandingQuality);
+        HistoryTabBindings.Qualities.Add(excellentQuality);
+        HistoryTabBindings.Qualities.Add(masterpieceQuality);
+
+        if (HistoryTabBindings.Qualities != null)
+        {
+            HistoryTabBindings.QualitiesSelection = HistoryTabBindings.Qualities.FirstOrDefault();
         }
     }
 
@@ -328,12 +355,21 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         await UpdateMarketPricesAsync();
         UpdateMainTabItemPrices(null, null);
         UpdateQualityTabItemPrices(null, null);
+        UpdateHistoryTabChartPrices(null, null);
 
         _timer.Interval = SettingsController.CurrentSettings.RefreshRate;
         _timer.Elapsed += UpdateInterval;
         _timer.Elapsed += UpdateMarketPricesAsync;
         _timer.Elapsed += UpdateMainTabItemPrices;
         _timer.Elapsed += UpdateQualityTabItemPrices;
+    }
+
+    public void RemoveTimerAsync()
+    {
+        _timer.Elapsed -= UpdateInterval;
+        _timer.Elapsed -= UpdateMarketPricesAsync;
+        _timer.Elapsed -= UpdateMainTabItemPrices;
+        _timer.Elapsed -= UpdateQualityTabItemPrices;
     }
 
     private void UpdateInterval(object sender, EventArgs e)
@@ -793,12 +829,12 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         {
             return;
         }
-        
+
         foreach (var marketResponse in newPrices ?? new List<MarketResponse>())
         {
             var currentPriceObject = QualityTabBindings?.Prices?.FirstOrDefault(x => x.MarketLocation == marketResponse.MarketLocation);
 
-            if(currentPriceObject == null)
+            if (currentPriceObject == null)
             {
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
@@ -824,6 +860,91 @@ public class ItemWindowViewModel : INotifyPropertyChanged
                 currentItemPricesObject.Visibility = Visibility.Collapsed;
             }
         }
+    }
+
+    #endregion
+
+    #region History tab
+
+    public void UpdateHistoryTabChartPrices(object sender, ElapsedEventArgs e)
+    {
+        UpdateHistoryTabChartPricesAsync();
+    }
+
+    public async void UpdateHistoryTabChartPricesAsync()
+    {
+        List<MarketHistoriesResponse> historyItemPrices;
+
+        try
+        {
+            var locations = GetCheckedLocations();
+            historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), HistoryTabBindings.QualitiesSelection.Quality).ConfigureAwait(true);
+
+            if (historyItemPrices == null)
+            {
+                return;
+            }
+        }
+        catch (TooManyRequestsException)
+        {
+            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
+            SetErrorValues(Error.ToManyRequests);
+            return;
+        }
+
+        SetHistoryChart(historyItemPrices);
+    }
+
+    private void SetHistoryChart(List<MarketHistoriesResponse> historyItemPrices)
+    {
+        var date = new List<string>();
+        var seriesCollectionHistory = new ObservableCollection<ISeries>();
+        var xAxes = new ObservableCollection<Axis>();
+
+        foreach (var marketHistory in historyItemPrices)
+        {
+            if (marketHistory == null)
+            {
+                continue;
+            }
+
+            var amount = new ObservableCollection<ObservablePoint>();
+            var counter = 0;
+            foreach (var data in marketHistory.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
+            {
+                if (!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
+                {
+                    date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+                }
+
+                amount.Add(new ObservablePoint(counter++, data.AveragePrice));
+            }
+
+            var lineSeries = new LineSeries<ObservablePoint>
+            {
+                Name = WorldData.GetUniqueNameOrDefault(marketHistory.Location),
+                Values = amount,
+                Fill = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), true),
+                Stroke = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), false),
+                GeometryStroke = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), false),
+                GeometryFill = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), true),
+                GeometrySize = 5,
+                TooltipLabelFormatter = p => $"{p.Context.Series.Name}: {p.PrimaryValue:N0}"
+            };
+
+            seriesCollectionHistory.Add(lineSeries);
+        }
+
+        xAxes.Add(new Axis()
+        {
+            LabelsRotation = 15,
+            Labels = date,
+            Labeler = value => new DateTime((long)value).ToString(CultureInfo.CurrentCulture),
+            UnitWidth = TimeSpan.FromDays(1).Ticks
+        });
+
+        HistoryTabBindings.XAxesHistory = xAxes.ToArray();
+        HistoryTabBindings.SeriesHistory = seriesCollectionHistory;
     }
 
     #endregion
@@ -906,6 +1027,16 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         set
         {
             _qualityTabBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ItemWindowHistoryTabBindings HistoryTabBindings
+    {
+        get => _historyTabBindings;
+        set
+        {
+            _historyTabBindings = value;
             OnPropertyChanged();
         }
     }
@@ -1074,6 +1205,23 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         set
         {
             _refreshIconTooltipText = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int TabControlSelectedIndex
+    {
+        get => _tabControlSelectedIndex;
+        set
+        {
+            _tabControlSelectedIndex = value;
+
+            // 2 is History tab
+            if (_tabControlSelectedIndex == 2)
+            {
+                UpdateHistoryTabChartPricesAsync();
+            }
+
             OnPropertyChanged();
         }
     }

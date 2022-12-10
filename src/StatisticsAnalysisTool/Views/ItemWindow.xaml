@@ -6,6 +6,7 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:viewmodels="clr-namespace:StatisticsAnalysisTool.ViewModels"
         xmlns:userControls="clr-namespace:StatisticsAnalysisTool.UserControls"
+        xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         d:DataContext="{d:DesignInstance Type=viewmodels:ItemWindowViewModel}"
         mc:Ignorable="d"
         Title="ItemWindow" 
@@ -37,7 +38,7 @@
                          Value="{Binding TaskProgressbarValue}" IsIndeterminate="{Binding IsTaskProgressbarIndeterminate}" VerticalAlignment="Top" />
         </Grid>
 
-        <TabControl Background="Transparent" Margin="1,77,1,0">
+        <TabControl Background="Transparent" Margin="1,77,1,0" SelectedIndex="{Binding TabControlSelectedIndex}">
             <TabItem Header="{Binding Translation.Main, FallbackValue=MAIN}">
                 <Grid>
                     <StackPanel Orientation="Horizontal">
@@ -91,15 +92,19 @@
                     </ListView>
                 </Grid>
             </TabItem>
-            <!--<TabItem Header="{Binding Translation.History, FallbackValue=HISTORY}">
+            <TabItem x:Name="History" Header="{Binding Translation.History, FallbackValue=HISTORY}">
                 <Grid>
-                    <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                    </Grid>
-                    <lvc:CartesianChart Series="{Binding SeriesHistory, IsAsync=True}" XAxes="{Binding XAxesHistory}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2,0,0,0" Width="150" Height="26" ItemsSource="{Binding LocationFilters}" 
+                                  ItemTemplate="{StaticResource LocationFilterObjectTemplate}" />
+                        <ComboBox Width="200" Height="26" Margin="5,0,5,5" VerticalAlignment="Top" ItemsSource="{Binding HistoryTabBindings.Qualities}" 
+                                  SelectedItem="{Binding HistoryTabBindings.QualitiesSelection, IsAsync=true}" 
+                                  HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Quality" />
+                    </StackPanel>
+                    <wpf:CartesianChart Series="{Binding HistoryTabBindings.SeriesHistory, IsAsync=True}" XAxes="{Binding HistoryTabBindings.XAxesHistory}" Margin="0,30,0,0"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}">
+            <!--<TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}">
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden">
                     <Grid>
                         <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" Margin="18,88,0,0" VerticalAlignment="Top">
@@ -123,8 +128,8 @@
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
-            </TabItem>
-            <TabItem Header="{Binding Translation.RealMoneyPrice, FallbackValue=REAL_MONEY_PRICE}">
+            </TabItem>-->
+            <!--<TabItem Header="{Binding Translation.RealMoneyPrice, FallbackValue=REAL_MONEY_PRICE}">
                 <Grid>
                     <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
@@ -143,9 +148,9 @@
                         </ListView.View>
                     </ListView>
                 </Grid>
-            </TabItem>
+            </TabItem>-->
 
-            <TabItem Visibility="{Binding CraftingTabVisibility}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
+            <!--<TabItem Visibility="{Binding CraftingTabVisibility}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
                 <Grid>
                     <Grid Height="20" Width="20" ZIndex="2" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseUp="CraftingInfoPopup_MouseUp">
                         <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />

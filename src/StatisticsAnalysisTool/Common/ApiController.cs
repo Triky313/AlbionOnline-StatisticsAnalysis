@@ -87,8 +87,7 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<MarketLocation> locations,
-            DateTime? date, IList<int> qualities, int timeScale = 24)
+        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<MarketLocation> locations, DateTime? date, int quality, int timeScale = 24)
         {
             var locationsString = "";
             var qualitiesString = "";
@@ -98,10 +97,7 @@ namespace StatisticsAnalysisTool.Common
                 locationsString = string.Join(",", locations.Select(x => ((int)x).ToString()));
             }
 
-            if (qualities?.Count > 0)
-            {
-                qualitiesString = string.Join(",", qualities);
-            }
+            qualitiesString = quality.ToString();
 
             var url = SettingsController.CurrentSettings.CityPricesHistoryApiUrl ?? Settings.Default.CityPricesHistoryApiUrlDefault;
             url += uniqueName;

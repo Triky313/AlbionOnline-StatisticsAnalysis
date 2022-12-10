@@ -163,31 +163,26 @@ namespace StatisticsAnalysisTool.Common
             };
         }
         
-        public static SolidColorPaint GetLocationBrush(Location location, bool transparent)
+        public static SolidColorPaint GetLocationBrush(MarketLocation location, bool transparent)
         {
-            if (location == Location.Unknown)
-            {
-                return new SolidColorPaint
-                {
-                    Color = new SKColor(0, 0, 0, 0)
-                };
-            }
-
             try
             {
-                if (transparent)
-                {
-                    var scbt = (SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.{location}.Transparent"];
-                    return new SolidColorPaint
-                    {
-                        Color = new SKColor(scbt.Color.R, scbt.Color.G, scbt.Color.B, scbt.Color.A)
-                    };
-                }
+                var transparentText = transparent ? ".Transparent" : string.Empty;
 
-                var scb = (SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.{location}"];
-                return new SolidColorPaint
+                return location switch
                 {
-                    Color = new SKColor(scb.Color.R, scb.Color.G, scb.Color.B, scb.Color.A)
+                    MarketLocation.CaerleonMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Caerleon{transparentText}"]),
+                    MarketLocation.ThetfordMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Thetford{transparentText}"]),
+                    MarketLocation.BridgewatchMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Bridgewatch{transparentText}"]),
+                    MarketLocation.MartlockMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Martlock{transparentText}"]),
+                    MarketLocation.LymhurstMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Lymhurst{transparentText}"]),
+                    MarketLocation.FortSterlingMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.FortSterling{transparentText}"]),
+                    MarketLocation.BrecilienMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Brecilien{transparentText}"]),
+                    MarketLocation.ArthursRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.ArthursRest{transparentText}"]),
+                    MarketLocation.MerlynsRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.MerlynsRest{transparentText}"]),
+                    MarketLocation.MorganasRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.MorganasRest{transparentText}"]),
+                    MarketLocation.BlackMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.BlackMarket{transparentText}"]),
+                    _ => new SolidColorPaint {Color = new SKColor(0, 0, 0, 0)}
                 };
             }
             catch
@@ -199,19 +194,14 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        [Obsolete]
-        public static Color GetLocationColor(Location location)
+        private static SolidColorPaint GetSolidColorPaint(SolidColorBrush solidColorBrush)
         {
-            try
+            return new SolidColorPaint
             {
-                return (Color)Application.Current.Resources[$"Color.City.{location}"];
-            }
-            catch
-            {
-                return (Color)Application.Current.Resources["Color.City.Default"];
-            }
+                Color = new SKColor(solidColorBrush.Color.R, solidColorBrush.Color.G, solidColorBrush.Color.B, solidColorBrush.Color.A)
+            };
         }
-
+        
         public static Color GetLocationColor(MarketLocation location)
         {
             try
