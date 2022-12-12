@@ -104,12 +104,9 @@
                     <wpf:CartesianChart Series="{Binding HistoryTabBindings.SeriesHistory, IsAsync=True}" XAxes="{Binding HistoryTabBindings.XAxesHistory}" Margin="0,30,0,0"/>
                 </Grid>
             </TabItem>
-            <!--<TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}">
+            <TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}">
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden">
                     <Grid>
-                        <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" Margin="18,88,0,0" VerticalAlignment="Top">
-                            <fa5:ImageAwesome Visibility="{Binding InformationLoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                        </Grid>
                         <StackPanel Margin="10,10,0,10" HorizontalAlignment="Left" Width="250">
                             <Label Content="{Binding Translation.ShopCategory, FallbackValue=SHOP_CATEGORY}" ContentStringFormat="{}{0:N2}:" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
                             <Label Content="{Binding Translation.ShopSubCategory, FallbackValue=SHOP_SUB_CATEGORY_1}" Style="{StaticResource ItemWindow.Information.FullInfoValue}" />
@@ -128,7 +125,7 @@
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
-            </TabItem>-->
+            </TabItem>
             <!--<TabItem Header="{Binding Translation.RealMoneyPrice, FallbackValue=REAL_MONEY_PRICE}">
                 <Grid>
                     <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
