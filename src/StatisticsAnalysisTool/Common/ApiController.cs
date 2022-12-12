@@ -90,14 +90,13 @@ namespace StatisticsAnalysisTool.Common
         public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<MarketLocation> locations, DateTime? date, int quality, int timeScale = 24)
         {
             var locationsString = "";
-            var qualitiesString = "";
 
             if (locations?.Count > 0)
             {
                 locationsString = string.Join(",", locations.Select(x => ((int)x).ToString()));
             }
 
-            qualitiesString = quality.ToString();
+            var qualitiesString = quality.ToString();
 
             var url = SettingsController.CurrentSettings.CityPricesHistoryApiUrl ?? Settings.Default.CityPricesHistoryApiUrlDefault;
             url += uniqueName;
@@ -376,45 +375,85 @@ namespace StatisticsAnalysisTool.Common
 
         #region Helper methods
 
-        // TODO: Rework and take the newest entry
+        #region Merge history data
+
         private static List<MarketHistoriesResponse> MergeCityAndPortalCity(List<MarketHistoriesResponse> values)
         {
-            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetMarketLocationByLocationNameOrId(x.Location) is MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal))
-            {
-                marketHistoriesResponse.Location = "FortSterling";
-            }
+            var fortSterlingMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal).ToList();
+            SetMarketHistoriesResponseByQuality(fortSterlingMarketResponses, values, MarketLocation.FortSterlingMarket);
 
-            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetMarketLocationByLocationNameOrId(x.Location) is MarketLocation.MartlockMarket or MarketLocation.MartlockPortal))
-            {
-                marketHistoriesResponse.Location = "Martlock";
-            }
+            var martlockMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.MartlockMarket or MarketLocation.MartlockPortal).ToList();
+            SetMarketHistoriesResponseByQuality(martlockMarketResponses, values, MarketLocation.MartlockMarket);
 
-            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetMarketLocationByLocationNameOrId(x.Location) is MarketLocation.LymhurstMarket or MarketLocation.LymhurstPortal))
-            {
-                marketHistoriesResponse.Location = "Lymhurst";
-            }
+            var lymhurstMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.LymhurstMarket or MarketLocation.LymhurstPortal).ToList();
+            SetMarketHistoriesResponseByQuality(lymhurstMarketResponses, values, MarketLocation.LymhurstMarket);
 
-            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetMarketLocationByLocationNameOrId(x.Location) is MarketLocation.ThetfordMarket or MarketLocation.ThetfordPortal))
-            {
-                marketHistoriesResponse.Location = "Thetford";
-            }
+            var thetfordMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.ThetfordMarket or MarketLocation.ThetfordPortal).ToList();
+            SetMarketHistoriesResponseByQuality(thetfordMarketResponses, values, MarketLocation.ThetfordMarket);
 
-            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetMarketLocationByLocationNameOrId(x.Location) is MarketLocation.BridgewatchMarket or MarketLocation.BridgewatchPortal))
-            {
-                marketHistoriesResponse.Location = "Bridgewatch";
-            }
+            var bridgewatchMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.BridgewatchMarket or MarketLocation.BridgewatchPortal).ToList();
+            SetMarketHistoriesResponseByQuality(bridgewatchMarketResponses, values, MarketLocation.BridgewatchMarket);
 
             return values;
         }
-        
+
+        private static void SetMarketHistoriesResponseByQuality(List<MarketHistoriesResponse> filteredValues, List<MarketHistoriesResponse> usedValues, MarketLocation marketLocation)
+        {
+            for (var i = 1; i <= 5; i++)
+            {
+                var marketResponsesByQuality = GetMarketHistoriesResponseByQuality(i, filteredValues);
+                var result = MergeMarketAndPortalPrices(marketResponsesByQuality, Locations.GetDisplayName(marketLocation));
+
+                if (string.IsNullOrEmpty(result?.ItemId))
+                {
+                    continue;
+                }
+
+                foreach (var marketResponse in marketResponsesByQuality)
+                {
+                    usedValues.Remove(marketResponse);
+                }
+                usedValues.Add(result);
+            }
+        }
+
+        private static List<MarketHistoriesResponse> GetMarketHistoriesResponseByQuality(int quality, IEnumerable<MarketHistoriesResponse> marketResponses)
+        {
+            return marketResponses.Where(x => x.Quality == quality).ToList();
+        }
+
+        private static MarketHistoriesResponse MergeMarketAndPortalPrices(List<MarketHistoriesResponse> list, string locationName)
+        {
+            foreach (var marketResponse in list)
+            {
+                marketResponse.Location = locationName;
+            }
+
+            var marketHistoryResult = list.FirstOrDefault();
+            foreach (var marketResponse in list)
+            {
+                if (marketResponse?.Data?.Max(x => x?.Timestamp) > marketHistoryResult?.Data?.Max(x => x?.Timestamp))
+                {
+                    marketHistoryResult = marketResponse;
+                }
+
+            }
+
+            return marketHistoryResult;
+        }
+
+        #endregion
+
+        #region Merge market data
+
         private static List<MarketResponse> MergeMarketAndPortalLocations(List<MarketResponse> values)
         {
             var fortSterlingMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal).ToList();
             SetMarketResponseByQuality(fortSterlingMarketResponses, values, MarketLocation.FortSterlingMarket);
 
-            var martlockMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal).ToList();
-            SetMarketResponseByQuality(martlockMarketResponses, values, MarketLocation.FortSterlingMarket);
-            
+            var martlockMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.MartlockMarket or MarketLocation.MartlockPortal).ToList();
+            SetMarketResponseByQuality(martlockMarketResponses, values, MarketLocation.MartlockMarket);
+
             var lymhurstMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.LymhurstMarket or MarketLocation.LymhurstPortal).ToList();
             SetMarketResponseByQuality(lymhurstMarketResponses, values, MarketLocation.LymhurstMarket);
 
@@ -512,6 +551,8 @@ namespace StatisticsAnalysisTool.Common
                 QualityLevel = (firstMarketResponse?.QualityLevel ?? -1)
             };
         }
+
+        #endregion
 
         #endregion
     }
