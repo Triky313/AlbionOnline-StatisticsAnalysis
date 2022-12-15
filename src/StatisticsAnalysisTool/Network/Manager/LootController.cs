@@ -53,12 +53,17 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task AddLootAsync(Loot loot)
         {
+            if (loot == null || loot.IsSilver || loot.IsTrash)
+            {
+                return;
+            }
+
             if (IsPartyLootOnly && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName) && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
             {
                 return;
             }
 
-            if (loot == null || loot.IsSilver || loot.IsTrash)
+            if (!_mainWindowViewModel.LoggingBindings.IsTrackingMobLoot && loot.LootedFromName.ToUpper().Equals("MOB"))
             {
                 return;
             }
