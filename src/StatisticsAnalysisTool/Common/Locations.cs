@@ -1,7 +1,6 @@
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -78,7 +77,7 @@ namespace StatisticsAnalysisTool.Common
             {
                 return Location.Caerleon;
             }
-            
+
             return Enum.TryParse(index, true, out Location location) ? location : Location.Unknown;
         }
 
@@ -162,7 +161,7 @@ namespace StatisticsAnalysisTool.Common
                 _ => MarketLocation.Unknown,
             };
         }
-        
+
         public static SolidColorPaint GetLocationBrush(MarketLocation location, bool transparent)
         {
             try
@@ -171,18 +170,18 @@ namespace StatisticsAnalysisTool.Common
 
                 return location switch
                 {
-                    MarketLocation.CaerleonMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Caerleon{transparentText}"]),
-                    MarketLocation.ThetfordMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Thetford{transparentText}"]),
-                    MarketLocation.BridgewatchMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Bridgewatch{transparentText}"]),
-                    MarketLocation.MartlockMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Martlock{transparentText}"]),
-                    MarketLocation.LymhurstMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Lymhurst{transparentText}"]),
-                    MarketLocation.FortSterlingMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.FortSterling{transparentText}"]),
-                    MarketLocation.BrecilienMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.Brecilien{transparentText}"]),
-                    MarketLocation.ArthursRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.ArthursRest{transparentText}"]),
-                    MarketLocation.MerlynsRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.MerlynsRest{transparentText}"]),
-                    MarketLocation.MorganasRest => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.MorganasRest{transparentText}"]),
-                    MarketLocation.BlackMarket => GetSolidColorPaint((SolidColorBrush) Application.Current.Resources[$"SolidColorBrush.City.BlackMarket{transparentText}"]),
-                    _ => new SolidColorPaint {Color = new SKColor(0, 0, 0, 0)}
+                    MarketLocation.CaerleonMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Caerleon{transparentText}"]),
+                    MarketLocation.ThetfordMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Thetford{transparentText}"]),
+                    MarketLocation.BridgewatchMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Bridgewatch{transparentText}"]),
+                    MarketLocation.MartlockMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Martlock{transparentText}"]),
+                    MarketLocation.LymhurstMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Lymhurst{transparentText}"]),
+                    MarketLocation.FortSterlingMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.FortSterling{transparentText}"]),
+                    MarketLocation.BrecilienMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.Brecilien{transparentText}"]),
+                    MarketLocation.ArthursRest => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.ArthursRest{transparentText}"]),
+                    MarketLocation.MerlynsRest => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.MerlynsRest{transparentText}"]),
+                    MarketLocation.MorganasRest => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.MorganasRest{transparentText}"]),
+                    MarketLocation.BlackMarket => GetSolidColorPaint((SolidColorBrush)Application.Current.Resources[$"SolidColorBrush.City.BlackMarket{transparentText}"]),
+                    _ => new SolidColorPaint { Color = new SKColor(0, 0, 0, 0) }
                 };
             }
             catch
@@ -201,7 +200,7 @@ namespace StatisticsAnalysisTool.Common
                 Color = new SKColor(solidColorBrush.Color.R, solidColorBrush.Color.G, solidColorBrush.Color.B, solidColorBrush.Color.A)
             };
         }
-        
+
         public static Color GetLocationColor(MarketLocation location)
         {
             try
