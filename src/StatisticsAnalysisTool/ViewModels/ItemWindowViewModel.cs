@@ -61,6 +61,7 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private ItemWindowMainTabBindings _mainTabBindings;
     private ItemWindowQualityTabBindings _qualityTabBindings;
     private ItemWindowHistoryTabBindings _historyTabBindings;
+    private ItemWindowRealMoneyTabBindings _realMoneyTabBindings;
     private int _tabControlSelectedIndex = -1;
 
     private CraftingCalculation _craftingCalculation = new()
@@ -184,8 +185,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     {
         foreach (var cityFilterObject in LocationFilters)
         {
-            cityFilterObject.OnCheckedChanged += UpdateMainTabItemPricesAsync;
-            cityFilterObject.OnCheckedChanged += UpdateQualityTabItemPricesAsync;
+            cityFilterObject.OnCheckedChanged += UpdateMainTabItemPrices;
+            cityFilterObject.OnCheckedChanged += UpdateQualityTabItemPrices;
             cityFilterObject.OnCheckedChanged += UpdateHistoryTabChartPricesAsync;
         }
     }
@@ -194,8 +195,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     {
         foreach (var cityFilterObject in LocationFilters)
         {
-            cityFilterObject.OnCheckedChanged -= UpdateMainTabItemPricesAsync;
-            cityFilterObject.OnCheckedChanged -= UpdateQualityTabItemPricesAsync;
+            cityFilterObject.OnCheckedChanged -= UpdateMainTabItemPrices;
+            cityFilterObject.OnCheckedChanged -= UpdateQualityTabItemPrices;
             cityFilterObject.OnCheckedChanged -= UpdateHistoryTabChartPricesAsync;
         }
     }
@@ -735,52 +736,60 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     public void UpdateMainTabItemPrices(object sender, ElapsedEventArgs e)
     {
-        UpdateMainTabItemPricesAsync();
+        UpdateMainTabItemPrices();
     }
 
-    public async void UpdateMainTabItemPricesAsync()
+    public void UpdateMainTabItemPrices()
     {
         var currentItemPrices = CurrentItemPrices?.Select(x => new ItemPricesObject(x)).ToList();
-        await UpdateMainTabItemPricesObjectsAsync(currentItemPrices);
+        UpdateMainTabItemPricesObjects(currentItemPrices);
         SetItemPricesObjectVisibility(MainTabBindings.ItemPrices);
     }
 
-    private async Task UpdateMainTabItemPricesObjectsAsync(List<ItemPricesObject> newPrices)
+    private void UpdateMainTabItemPricesObjects(List<ItemPricesObject> newPrices)
     {
         foreach (var newItemPricesObject in newPrices ?? new List<ItemPricesObject>())
         {
-            var currentItemPricesObject = MainTabBindings.ItemPrices?.FirstOrDefault(x => x.MarketLocation == newItemPricesObject.MarketLocation && x.QualityLevel == newItemPricesObject.QualityLevel);
-
-            if (currentItemPricesObject == null)
+            if (MainTabBindings.ItemPrices == null)
             {
-                await Application.Current.Dispatcher.InvokeAsync(() =>
+                break;
+            }
+
+            lock (MainTabBindings.ItemPrices)
+            {
+                var currentItemPricesObject = MainTabBindings.ItemPrices?.FirstOrDefault(x => x.MarketLocation == newItemPricesObject.MarketLocation && x.QualityLevel == newItemPricesObject.QualityLevel);
+
+                if (currentItemPricesObject == null)
                 {
-                    MainTabBindings.ItemPrices?.Add(newItemPricesObject);
-                });
-            }
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MainTabBindings.ItemPrices?.Add(newItemPricesObject);
+                    });
+                }
 
-            if (newItemPricesObject?.SellPriceMinDate > currentItemPricesObject?.SellPriceMinDate)
-            {
-                currentItemPricesObject.SellPriceMin = newItemPricesObject.SellPriceMin;
-                currentItemPricesObject.SellPriceMinDate = newItemPricesObject.SellPriceMinDate;
-            }
+                if (newItemPricesObject?.SellPriceMinDate > currentItemPricesObject?.SellPriceMinDate)
+                {
+                    currentItemPricesObject.SellPriceMin = newItemPricesObject.SellPriceMin;
+                    currentItemPricesObject.SellPriceMinDate = newItemPricesObject.SellPriceMinDate;
+                }
 
-            if (newItemPricesObject?.SellPriceMaxDate > currentItemPricesObject?.SellPriceMaxDate)
-            {
-                currentItemPricesObject.SellPriceMax = newItemPricesObject.SellPriceMax;
-                currentItemPricesObject.SellPriceMaxDate = newItemPricesObject.SellPriceMaxDate;
-            }
+                if (newItemPricesObject?.SellPriceMaxDate > currentItemPricesObject?.SellPriceMaxDate)
+                {
+                    currentItemPricesObject.SellPriceMax = newItemPricesObject.SellPriceMax;
+                    currentItemPricesObject.SellPriceMaxDate = newItemPricesObject.SellPriceMaxDate;
+                }
 
-            if (newItemPricesObject?.BuyPriceMinDate > currentItemPricesObject?.BuyPriceMinDate)
-            {
-                currentItemPricesObject.BuyPriceMin = newItemPricesObject.BuyPriceMin;
-                currentItemPricesObject.BuyPriceMinDate = newItemPricesObject.BuyPriceMinDate;
-            }
+                if (newItemPricesObject?.BuyPriceMinDate > currentItemPricesObject?.BuyPriceMinDate)
+                {
+                    currentItemPricesObject.BuyPriceMin = newItemPricesObject.BuyPriceMin;
+                    currentItemPricesObject.BuyPriceMinDate = newItemPricesObject.BuyPriceMinDate;
+                }
 
-            if (newItemPricesObject?.BuyPriceMaxDate > currentItemPricesObject?.BuyPriceMaxDate)
-            {
-                currentItemPricesObject.BuyPriceMax = newItemPricesObject.BuyPriceMax;
-                currentItemPricesObject.BuyPriceMaxDate = newItemPricesObject.BuyPriceMaxDate;
+                if (newItemPricesObject?.BuyPriceMaxDate > currentItemPricesObject?.BuyPriceMaxDate)
+                {
+                    currentItemPricesObject.BuyPriceMax = newItemPricesObject.BuyPriceMax;
+                    currentItemPricesObject.BuyPriceMaxDate = newItemPricesObject.BuyPriceMaxDate;
+                }
             }
         }
     }
@@ -809,21 +818,21 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
     #endregion
 
-    #region Quality tab
+    #region Quality tab / Real money tab
 
     private void UpdateQualityTabItemPrices(object sender, ElapsedEventArgs e)
     {
-        UpdateQualityTabItemPricesAsync();
+        UpdateQualityTabItemPrices();
     }
 
-    public async void UpdateQualityTabItemPricesAsync()
+    public void UpdateQualityTabItemPrices()
     {
         var marketResponse = CurrentItemPrices?.ToList();
-        await UpdateQualityTabItemPricesObjectsAsync(marketResponse);
+        UpdateQualityTabItemPricesObjects(marketResponse);
         SetMarketQualityObjectVisibility(QualityTabBindings?.Prices);
     }
 
-    private async Task UpdateQualityTabItemPricesObjectsAsync(List<MarketResponse> newPrices)
+    private void UpdateQualityTabItemPricesObjects(List<MarketResponse> newPrices)
     {
         if (QualityTabBindings?.Prices == null)
         {
@@ -832,18 +841,26 @@ public class ItemWindowViewModel : INotifyPropertyChanged
 
         foreach (var marketResponse in newPrices ?? new List<MarketResponse>())
         {
-            var currentPriceObject = QualityTabBindings?.Prices?.FirstOrDefault(x => x.MarketLocation == marketResponse.MarketLocation);
-
-            if (currentPriceObject == null)
+            if (QualityTabBindings?.Prices == null)
             {
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    QualityTabBindings?.Prices?.Add(new MarketQualityObject(marketResponse));
-                });
                 continue;
             }
 
-            currentPriceObject.SetValues(marketResponse);
+            lock (QualityTabBindings.Prices)
+            {
+                var currentPriceObject = QualityTabBindings?.Prices?.FirstOrDefault(x => x.MarketLocation == marketResponse.MarketLocation);
+
+                if (currentPriceObject == null)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        QualityTabBindings?.Prices?.Add(new MarketQualityObject(marketResponse));
+                    });
+                    continue;
+                }
+
+                currentPriceObject.SetValues(marketResponse);
+            }
         }
     }
 
@@ -1037,6 +1054,16 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         set
         {
             _historyTabBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ItemWindowRealMoneyTabBindings RealMoneyTabBindings
+    {
+        get => _realMoneyTabBindings;
+        set
+        {
+            _realMoneyTabBindings = value;
             OnPropertyChanged();
         }
     }

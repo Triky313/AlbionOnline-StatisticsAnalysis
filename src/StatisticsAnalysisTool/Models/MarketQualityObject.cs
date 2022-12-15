@@ -8,13 +8,14 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using StatisticsAnalysisTool.Common.Converters;
 
 namespace StatisticsAnalysisTool.Models;
 
 public class MarketQualityObject : INotifyPropertyChanged
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-
+    
     private Visibility _visibility;
     private MarketLocation _marketLocation;
     private ulong _sellPriceMinNormal;
@@ -27,6 +28,11 @@ public class MarketQualityObject : INotifyPropertyChanged
     private DateTime _sellPriceMinOutstandingDate;
     private DateTime _sellPriceMinExcellentDate;
     private DateTime _sellPriceMinMasterpieceDate;
+    private string _sellPriceMinNormalRealMoney;
+    private string _sellPriceMinGoodRealMoney;
+    private string _sellPriceMinOutstandingRealMoney;
+    private string _sellPriceMinExcellentRealMoney;
+    private string _sellPriceMinMasterpieceRealMoney;
 
     public MarketQualityObject(MarketResponse marketResponse)
     {
@@ -68,6 +74,7 @@ public class MarketQualityObject : INotifyPropertyChanged
         set
         {
             _sellPriceMinNormal = value;
+            SellPriceMinNormalRealMoney = Converter.GoldToDollar(value);
             OnPropertyChanged();
         }
     }
@@ -78,6 +85,7 @@ public class MarketQualityObject : INotifyPropertyChanged
         set
         {
             _sellPriceMinGood = value;
+            SellPriceMinGoodRealMoney = Converter.GoldToDollar(value);
             OnPropertyChanged();
         }
     }
@@ -88,6 +96,7 @@ public class MarketQualityObject : INotifyPropertyChanged
         set
         {
             _sellPriceMinOutstanding = value;
+            SellPriceMinOutstandingRealMoney = Converter.GoldToDollar(value);
             OnPropertyChanged();
         }
     }
@@ -98,6 +107,7 @@ public class MarketQualityObject : INotifyPropertyChanged
         set
         {
             _sellPriceMinExcellent = value;
+            SellPriceMinExcellentRealMoney = Converter.GoldToDollar(value);
             OnPropertyChanged();
         }
     }
@@ -108,6 +118,7 @@ public class MarketQualityObject : INotifyPropertyChanged
         set
         {
             _sellPriceMinMasterpiece = value;
+            SellPriceMinMasterpieceRealMoney = Converter.GoldToDollar(value);
             OnPropertyChanged();
         }
     }
@@ -161,6 +172,60 @@ public class MarketQualityObject : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    #region Real money
+
+    public string SellPriceMinNormalRealMoney
+    {
+        get => _sellPriceMinNormalRealMoney;
+        set
+        {
+            _sellPriceMinNormalRealMoney = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string SellPriceMinGoodRealMoney
+    {
+        get => _sellPriceMinGoodRealMoney;
+        set
+        {
+            _sellPriceMinGoodRealMoney = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string SellPriceMinOutstandingRealMoney
+    {
+        get => _sellPriceMinOutstandingRealMoney;
+        set
+        {
+            _sellPriceMinOutstandingRealMoney = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string SellPriceMinExcellentRealMoney
+    {
+        get => _sellPriceMinExcellentRealMoney;
+        set
+        {
+            _sellPriceMinExcellentRealMoney = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string SellPriceMinMasterpieceRealMoney
+    {
+        get => _sellPriceMinMasterpieceRealMoney;
+        set
+        {
+            _sellPriceMinMasterpieceRealMoney = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
 
     public bool IsSellPriceMinNormalBestPrice => BestMinPrice() == BestPriceQuality.Normal;
     public bool IsSellPriceMinGoodBestPrice => BestMinPrice() == BestPriceQuality.Good;

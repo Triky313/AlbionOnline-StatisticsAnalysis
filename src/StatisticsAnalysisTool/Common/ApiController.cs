@@ -325,9 +325,8 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count, int timeout = 300)
         {
-            var checkedDateTime = dateTime != null ? dateTime.ToString() : string.Empty;
-
-            var url = $"{SettingsController.CurrentSettings.GoldStatsApiUrl ?? Settings.Default.GoldStatsApiUrlDefault}?date={checkedDateTime}&count={count}";
+            var dateString = dateTime != null ? $"{dateTime:yyyy-MM-dd'T'HH:mm:ss}" : string.Empty;
+            var url = $"{SettingsController.CurrentSettings.GoldStatsApiUrl ?? Settings.Default.GoldStatsApiUrlDefault}?date={dateString}&count={count}";
 
             using var clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;

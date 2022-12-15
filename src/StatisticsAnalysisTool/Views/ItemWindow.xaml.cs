@@ -3,7 +3,6 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Views;
@@ -34,6 +33,7 @@ public partial class ItemWindow
 
         var vm = (ItemWindowViewModel)DataContext;
         vm?.RemoveLocationFiltersEvents();
+        vm?.RemoveTimerAsync();
         vm?.SaveSettings();
     }
 

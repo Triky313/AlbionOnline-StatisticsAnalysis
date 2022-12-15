@@ -101,7 +101,28 @@
                                   SelectedItem="{Binding HistoryTabBindings.QualitiesSelection, IsAsync=true}" 
                                   HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Quality" />
                     </StackPanel>
-                    <wpf:CartesianChart Series="{Binding HistoryTabBindings.SeriesHistory, IsAsync=True}" XAxes="{Binding HistoryTabBindings.XAxesHistory}" Margin="0,30,0,0"/>
+                    <wpf:CartesianChart Series="{Binding HistoryTabBindings.SeriesHistory, IsAsync=True}" XAxes="{Binding HistoryTabBindings.XAxesHistory}" Margin="0,30,0,0" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="{Binding Translation.RealMoneyPrice, FallbackValue=REAL_MONEY_PRICE}">
+                <Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="2,0,5,0" Width="150" Height="26" ItemsSource="{Binding LocationFilters}" 
+                                  ItemTemplate="{StaticResource LocationFilterObjectTemplate}" />
+                    </StackPanel>
+                    <ListView ItemsSource="{Binding QualityTabBindings.Prices}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" 
+                              Foreground="{StaticResource SolidColorBrush.Text.1}" Margin="0,30,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" CellTemplate="{StaticResource GridViewColumnCityTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Normal, FallbackValue=NORMAL}" CellTemplate="{StaticResource GridViewColumn.SellPriceMinNormalRmTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Good, FallbackValue=GOOD}" CellTemplate="{StaticResource GridViewColumn.SellPriceMinGoodRmTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Outstanding, FallbackValue=OUTSTANDING}" CellTemplate="{StaticResource GridViewColumn.SellPriceMinOutstandingRmTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Excellent, FallbackValue=EXCELLENT}" CellTemplate="{StaticResource GridViewColumn.SellPriceMinExcellentRmTemplate}"/>
+                                <GridViewColumn Header="{Binding Translation.Masterpiece, FallbackValue=MASTERPIECE}" CellTemplate="{StaticResource GridViewColumn.SellPriceMinMasterpieceRmTemplate}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Translation.Information, FallbackValue=INFORMATION}">
@@ -126,26 +147,6 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <!--<TabItem Header="{Binding Translation.RealMoneyPrice, FallbackValue=REAL_MONEY_PRICE}">
-                <Grid>
-                    <Grid ZIndex="1" Height="100" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <fa5:ImageAwesome Visibility="{Binding LoadingImageVisibility}" Icon="Solid_CircleNotch" Spin="True" SpinDuration="4" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                    </Grid>
-                    <ListView ItemsSource="{Binding RealMoneyPriceList}" SnapsToDevicePixels="True" BorderThickness="0" SelectionMode="Single" 
-                              Foreground="{StaticResource SolidColorBrush.Text.1}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="{Binding Translation.City, FallbackValue=CITY}" CellTemplate="{StaticResource GridViewColumnCityForMarketQualityObjectTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.Normal, FallbackValue=NORMAL}" CellTemplate="{StaticResource GridViewColumnSellPriceMinNormalRmTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.Good, FallbackValue=GOOD}" CellTemplate="{StaticResource GridViewColumnSellPriceMinGoodRmTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.Outstanding, FallbackValue=OUTSTANDING}" CellTemplate="{StaticResource GridViewColumnSellPriceMinOutstandingRmTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.Excellent, FallbackValue=EXCELLENT}" CellTemplate="{StaticResource GridViewColumnSellPriceMinExcellentRmTemplate}"/>
-                                <GridViewColumn Header="{Binding Translation.Masterpiece, FallbackValue=MASTERPIECE}" CellTemplate="{StaticResource GridViewColumnSellPriceMinMasterpieceRmTemplate}"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
-            </TabItem>-->
 
             <!--<TabItem Visibility="{Binding CraftingTabVisibility}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
                 <Grid>
