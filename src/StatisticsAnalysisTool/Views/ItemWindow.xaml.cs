@@ -3,6 +3,7 @@ using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.Views;
@@ -17,15 +18,7 @@ public partial class ItemWindow
         InitializeComponent();
         var itemWindowViewModel = new ItemWindowViewModel(this, item);
         DataContext = itemWindowViewModel;
-
-        //Init(item);
     }
-
-    //public async void Init(Item item)
-    //{
-    //    var vm = (ItemWindowViewModel)DataContext;
-    //    await vm?.InitAsync(this, item)!;
-    //}
 
     private void ItemWindow_OnClosing(object sender, CancelEventArgs e)
     {
@@ -67,5 +60,22 @@ public partial class ItemWindow
     {
         var vm = (ItemWindowViewModel)DataContext;
         vm?.AutoUpdateSwitcher();
+    }
+
+    private void CraftingInfoPopup_MouseUp(object sender, MouseEventArgs e)
+    {
+        var vm = (ItemWindowViewModel)DataContext;
+        vm?.CraftingTabBindings?.SetInfoPopupVisibility();
+    }
+
+    private void LabelNotes_OnLostFocus(object sender, RoutedEventArgs e)
+    {
+        if (sender is not TextBox textBox)
+        {
+            return;
+        }
+
+        var vm = (ItemWindowViewModel)DataContext;
+        CraftingTabController.AddNote(vm?.Item.UniqueName, textBox.Text);
     }
 }

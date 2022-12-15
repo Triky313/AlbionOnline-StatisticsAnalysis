@@ -58,11 +58,12 @@ public class ItemWindowViewModel : INotifyPropertyChanged
     private string _errorBarText;
     private string _refreshIconTooltipText;
     private ObservableCollection<MainTabLocationFilterObject> _locationFilters;
+    private int _tabControlSelectedIndex = -1;
     private ItemWindowMainTabBindings _mainTabBindings;
     private ItemWindowQualityTabBindings _qualityTabBindings;
     private ItemWindowHistoryTabBindings _historyTabBindings;
     private ItemWindowRealMoneyTabBindings _realMoneyTabBindings;
-    private int _tabControlSelectedIndex = -1;
+    private ItemWindowCraftingTabBindings _craftingTabBindings;
 
     private CraftingCalculation _craftingCalculation = new()
     {
@@ -1064,6 +1065,16 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         set
         {
             _realMoneyTabBindings = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ItemWindowCraftingTabBindings CraftingTabBindings
+    {
+        get => _craftingTabBindings;
+        set
+        {
+            _craftingTabBindings = value;
             OnPropertyChanged();
         }
     }

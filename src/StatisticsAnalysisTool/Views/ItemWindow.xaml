@@ -148,7 +148,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!--<TabItem Visibility="{Binding CraftingTabVisibility}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
+            <TabItem Visibility="{Binding CraftingTabVisibility}" Header="{Binding Translation.Crafting, FallbackValue=CRAFTING}">
                 <Grid>
                     <Grid Height="20" Width="20" ZIndex="2" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseUp="CraftingInfoPopup_MouseUp">
                         <fa5:ImageAwesome Icon="Solid_InfoCircle" Foreground="{StaticResource SolidColorBrush.Text.1}" />
@@ -176,7 +176,7 @@
                             </StackPanel>
                         </Grid>
                     </ScrollViewer>
-                    <ScrollViewer Visibility="{Binding CraftingInfoPopupVisibility, FallbackValue=Hidden}" 
+                    <ScrollViewer Visibility="{Binding CraftingTabBindings.CraftingInfoPopupVisibility, FallbackValue=Hidden}" 
                                   Background="{StaticResource SolidColorBrush.Background.2}" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel CanHorizontallyScroll="False" CanVerticallyScroll="True" Margin="10,0">
                             <DockPanel Margin="0,0,0,10">
@@ -203,7 +203,7 @@
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
-            </TabItem>-->
+            </TabItem>
         </TabControl>
 
         <userControls:ErrorBarControl VerticalAlignment="Bottom" Visibility="{Binding ErrorBarVisibility, FallbackValue=Visible}" ErrorBarText="{Binding ErrorBarText}" />
