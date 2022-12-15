@@ -1,5 +1,4 @@
 ﻿using StatisticsAnalysisTool.Properties;
-using StatisticsAnalysisTool.ViewModels;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -8,13 +7,7 @@ namespace StatisticsAnalysisTool.Models.BindingModel;
 
 public class ItemWindowCraftingTabBindings : INotifyPropertyChanged
 {
-    private readonly ItemWindowViewModel _itemWindowViewModel;
     private Visibility _craftingInfoPopupVisibility = Visibility.Hidden;
-
-    public ItemWindowCraftingTabBindings(ItemWindowViewModel itemWindowViewModel)
-    {
-        _itemWindowViewModel = itemWindowViewModel;
-    }
 
     public void SetInfoPopupVisibility()
     {
