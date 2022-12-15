@@ -9,6 +9,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using StatisticsAnalysisTool.Properties;
 
 namespace StatisticsAnalysisTool.Common
@@ -74,7 +75,7 @@ namespace StatisticsAnalysisTool.Common
 
                     foreach (var marketResponse in cityPrices ?? new List<MarketResponse>())
                     {
-                        if (Locations.GetLocationByLocationNameOrId(marketResponse.City) != Location.BlackMarket
+                        if (marketResponse.City.GetMarketLocationByLocationNameOrId() != MarketLocation.BlackMarket
                             && marketResponse.SellPriceMinDate >= DateTime.UtcNow.AddMinutes(-5)
                             && marketResponse.SellPriceMin <= (ulong)AlertModeMinSellPriceIsUndercutPrice
                             && AlertModeMinSellPriceIsUndercutPrice > 0)
@@ -83,7 +84,7 @@ namespace StatisticsAnalysisTool.Common
                             StopEvent();
                             AlertController.DeactivateAlert(uniqueName);
 
-                            _mainWindow.Dispatcher.Invoke(() =>
+                            Application.Current.Dispatcher.Invoke(() =>
                             {
                                 var itemAlertWindow = new ItemAlertWindow(new AlertInfos(_item, marketResponse));
                                 itemAlertWindow.Show();

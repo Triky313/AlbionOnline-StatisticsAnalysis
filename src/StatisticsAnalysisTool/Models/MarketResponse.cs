@@ -12,8 +12,8 @@ public class MarketResponse
     [JsonPropertyName("city")]
     public string City { get; set; }
 
-    [JsonIgnore] 
-    public Location CityEnum => Locations.GetLocationByLocationNameOrId(City);
+    [JsonIgnore]
+    public MarketLocation MarketLocation => City.GetMarketLocationByLocationNameOrId();
 
     [JsonPropertyName("quality")]
     public int QualityLevel { get; set; }
