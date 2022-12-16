@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
@@ -43,7 +43,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         };
 
         public string UniqueName { get; set; }
-        
+
         private async void LoadSellPriceEmptyJournalAsync(Location location)
         {
             if (_lastUpdateEmptyJournal.AddMilliseconds(SettingsController.CurrentSettings.RefreshRate) < DateTime.UtcNow)

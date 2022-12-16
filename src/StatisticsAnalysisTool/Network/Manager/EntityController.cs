@@ -230,7 +230,6 @@ namespace StatisticsAnalysisTool.Network.Manager
             if (entity?.Value != null)
             {
                 entity.Value.Value.CharacterEquipment = equipment;
-                entity.Value.Value.CharacterEquipment = equipment;
             }
             else
             {

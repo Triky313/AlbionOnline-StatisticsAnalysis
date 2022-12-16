@@ -1,12 +1,12 @@
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
@@ -200,7 +200,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 OnPropertyChanged();
             }
         }
-        
+
         public string TranslationSellPricePerItem => LanguageController.Translation("SELL_PRICE_PER_ITEM");
         public string TranslationItemQuantity => LanguageController.Translation("ITEM_QUANTITY");
         public string TranslationSetupFeePercent => LanguageController.Translation("SETUP_FEE_PERCENT");

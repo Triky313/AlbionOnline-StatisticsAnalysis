@@ -51,6 +51,18 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
+            lock (_mainWindowViewModel.MailMonitoringBindings.Mails)
+            {
+                var list = _mainWindowViewModel.MailMonitoringBindings.Mails.ToList();
+                for (var i = 0; i < list.Count; i++)
+                {
+                    if (list[i].MailId == mailId)
+                    {
+                        return;
+                    }
+                }
+            }
+
             if (_mainWindowViewModel.MailMonitoringBindings.Mails.ToArray().Any(x => x.MailId == mailId))
             {
                 return;

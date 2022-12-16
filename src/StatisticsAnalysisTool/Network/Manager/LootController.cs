@@ -53,12 +53,17 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         public async Task AddLootAsync(Loot loot)
         {
+            if (loot == null || loot.IsSilver || loot.IsTrash)
+            {
+                return;
+            }
+
             if (IsPartyLootOnly && !_trackingController.EntityController.IsEntityInParty(loot.LootedByName) && !_trackingController.EntityController.IsEntityInParty(loot.LootedFromName))
             {
                 return;
             }
 
-            if (loot == null || loot.IsSilver || loot.IsTrash)
+            if (!_mainWindowViewModel.LoggingBindings.IsTrackingMobLoot && loot.LootedFromName.ToUpper().Equals("MOB"))
             {
                 return;
             }
@@ -205,7 +210,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 ItemIndex = lootedItem.ItemIndex,
                 LootedByName = _trackingController?.EntityController?.LocalUserData?.Username,
                 LootedFromName = MobController.IsMob(_currentIdentifiedBody.Name) ? LanguageController.Translation("MOB") : _currentIdentifiedBody.Name,
-            Quantity = lootedItem.Quantity
+                Quantity = lootedItem.Quantity
             });
         }
 

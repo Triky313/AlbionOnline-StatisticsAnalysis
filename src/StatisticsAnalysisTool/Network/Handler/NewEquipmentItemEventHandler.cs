@@ -1,5 +1,4 @@
 ﻿using StatisticsAnalysisTool.Models;
-using StatisticsAnalysisTool.Models.NetworkModel;
 using StatisticsAnalysisTool.Network.Events;
 using StatisticsAnalysisTool.Network.Manager;
 using System.Threading.Tasks;
