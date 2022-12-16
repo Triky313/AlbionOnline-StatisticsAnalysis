@@ -144,6 +144,8 @@ public class ItemWindowViewModel : INotifyPropertyChanged
         MainTabBindings = new ItemWindowMainTabBindings(this);
         QualityTabBindings = new ItemWindowQualityTabBindings();
         HistoryTabBindings = new ItemWindowHistoryTabBindings(this);
+        RealMoneyTabBindings = new ItemWindowRealMoneyTabBindings(this);
+        CraftingTabBindings = new ItemWindowCraftingTabBindings();
     }
 
     private void InitMainTabLocationFiltering()
