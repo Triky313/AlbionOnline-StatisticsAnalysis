@@ -3134,6 +3134,21 @@
     "HitPointsMax": "4167"
   },
   {
+    "UniqueName": "T4_MOB_TN_AVALON_MINION_WORKER_VETERAN",
+    "Tier": "4",
+    "HitPointsMax": "2887"
+  },
+  {
+    "UniqueName": "T6_MOB_TN_AVALON_MINION_WORKER_VETERAN",
+    "Tier": "6",
+    "HitPointsMax": "3340"
+  },
+  {
+    "UniqueName": "T8_MOB_TN_AVALON_MINION_WORKER_VETERAN",
+    "Tier": "8",
+    "HitPointsMax": "4167"
+  },
+  {
     "UniqueName": "T4_MOB_ROAMING_AVALON_MINION_LAMP_VETERAN",
     "Tier": "4",
     "HitPointsMax": "2117"
@@ -3145,6 +3160,21 @@
   },
   {
     "UniqueName": "T8_MOB_ROAMING_AVALON_MINION_LAMP_VETERAN",
+    "Tier": "8",
+    "HitPointsMax": "3056"
+  },
+  {
+    "UniqueName": "T4_MOB_TN_AVALON_MINION_LAMP_VETERAN",
+    "Tier": "4",
+    "HitPointsMax": "2117"
+  },
+  {
+    "UniqueName": "T6_MOB_TN_AVALON_MINION_LAMP_VETERAN",
+    "Tier": "6",
+    "HitPointsMax": "2449"
+  },
+  {
+    "UniqueName": "T8_MOB_TN_AVALON_MINION_LAMP_VETERAN",
     "Tier": "8",
     "HitPointsMax": "3056"
   },
@@ -3179,6 +3209,21 @@
     "HitPointsMax": "1945"
   },
   {
+    "UniqueName": "T4_MOB_TN_AVALON_MINION_SCOUT_VETERAN",
+    "Tier": "4",
+    "HitPointsMax": "1347"
+  },
+  {
+    "UniqueName": "T6_MOB_TN_AVALON_MINION_SCOUT_VETERAN",
+    "Tier": "6",
+    "HitPointsMax": "1559"
+  },
+  {
+    "UniqueName": "T8_MOB_TN_AVALON_MINION_SCOUT_VETERAN",
+    "Tier": "8",
+    "HitPointsMax": "1945"
+  },
+  {
     "UniqueName": "T4_MOB_ROAMING_AVALON_MINION_BUILDER_VETERAN",
     "Tier": "4",
     "HitPointsMax": "2310"
@@ -3190,6 +3235,21 @@
   },
   {
     "UniqueName": "T8_MOB_ROAMING_AVALON_MINION_BUILDER_VETERAN",
+    "Tier": "8",
+    "HitPointsMax": "3334"
+  },
+  {
+    "UniqueName": "T4_MOB_TN_AVALON_MINION_BUILDER_VETERAN",
+    "Tier": "4",
+    "HitPointsMax": "2310"
+  },
+  {
+    "UniqueName": "T6_MOB_TN_AVALON_MINION_BUILDER_VETERAN",
+    "Tier": "6",
+    "HitPointsMax": "2672"
+  },
+  {
+    "UniqueName": "T8_MOB_TN_AVALON_MINION_BUILDER_VETERAN",
     "Tier": "8",
     "HitPointsMax": "3334"
   },
@@ -3209,6 +3269,21 @@
     "HitPointsMax": "4515"
   },
   {
+    "UniqueName": "T4_MOB_TN_AVALON_PIKEMAN_VETERAN_STANDARD",
+    "Tier": "4",
+    "HitPointsMax": "3128"
+  },
+  {
+    "UniqueName": "T6_MOB_TN_AVALON_PIKEMAN_VETERAN_STANDARD",
+    "Tier": "6",
+    "HitPointsMax": "3618"
+  },
+  {
+    "UniqueName": "T8_MOB_TN_AVALON_PIKEMAN_VETERAN_STANDARD",
+    "Tier": "8",
+    "HitPointsMax": "4515"
+  },
+  {
     "UniqueName": "T4_MOB_ROAMING_AVALON_PIKEMAN_VETERAN_CHAMPION",
     "Tier": "4",
     "HitPointsMax": "6015"
@@ -3220,6 +3295,21 @@
   },
   {
     "UniqueName": "T8_MOB_ROAMING_AVALON_PIKEMAN_VETERAN_CHAMPION",
+    "Tier": "8",
+    "HitPointsMax": "8682"
+  },
+  {
+    "UniqueName": "T4_MOB_TN_AVALON_PIKEMAN_VETERAN_CHAMPION",
+    "Tier": "4",
+    "HitPointsMax": "6015"
+  },
+  {
+    "UniqueName": "T6_MOB_TN_AVALON_PIKEMAN_VETERAN_CHAMPION",
+    "Tier": "6",
+    "HitPointsMax": "6958"
+  },
+  {
+    "UniqueName": "T8_MOB_TN_AVALON_PIKEMAN_VETERAN_CHAMPION",
     "Tier": "8",
     "HitPointsMax": "8682"
   },
@@ -3254,6 +3344,21 @@
     "HitPointsMax": "4289"
   },
   {
+    "UniqueName": "T4_MOB_TN_AVALON_MONK_VETERAN_STANDARD",
+    "Tier": "4",
+    "HitPointsMax": "2971"
+  },
+  {
+    "UniqueName": "T6_MOB_TN_AVALON_MONK_VETERAN_STANDARD",
+    "Tier": "6",
+    "HitPointsMax": "3437"
+  },
+  {
+    "UniqueName": "T8_MOB_TN_AVALON_MONK_VETERAN_STANDARD",
+    "Tier": "8",
+    "HitPointsMax": "4289"
+  },
+  {
     "UniqueName": "T4_MOB_ROAMING_AVALON_MONK_VETERAN_CHAMPION",
     "Tier": "4",
     "HitPointsMax": "5714"
@@ -3265,6 +3370,21 @@
   },
   {
     "UniqueName": "T8_MOB_ROAMING_AVALON_MONK_VETERAN_CHAMPION",
+    "Tier": "8",
+    "HitPointsMax": "8248"
+  },
+  {
+    "UniqueName": "T4_MOB_TN_AVALON_MONK_VETERAN_CHAMPION",
+    "Tier": "4",
+    "HitPointsMax": "5714"
+  },
+  {
+    "UniqueName": "T6_MOB_TN_AVALON_MONK_VETERAN_CHAMPION",
+    "Tier": "6",
+    "HitPointsMax": "6610"
+  },
+  {
+    "UniqueName": "T8_MOB_TN_AVALON_MONK_VETERAN_CHAMPION",
     "Tier": "8",
     "HitPointsMax": "8248"
   },
@@ -3434,6 +3554,21 @@
     "HitPointsMax": "4063"
   },
   {
+    "UniqueName": "T4_MOB_TN_AVALON_WIZARD_VETERAN_STANDARD",
+    "Tier": "4",
+    "HitPointsMax": "2815"
+  },
+  {
+    "UniqueName": "T6_MOB_TN_AVALON_WIZARD_VETERAN_STANDARD",
+    "Tier": "6",
+    "HitPointsMax": "3256"
+  },
+  {
+    "UniqueName": "T8_MOB_TN_AVALON_WIZARD_VETERAN_STANDARD",
+    "Tier": "8",
+    "HitPointsMax": "4063"
+  },
+  {
     "UniqueName": "T4_MOB_ROAMING_AVALON_CLERIC_VETERAN_CHAMPION",
     "Tier": "4",
     "HitPointsMax": "4511"
@@ -3445,6 +3580,21 @@
   },
   {
     "UniqueName": "T8_MOB_ROAMING_AVALON_CLERIC_VETERAN_CHAMPION",
+    "Tier": "8",
+    "HitPointsMax": "6512"
+  },
+  {
+    "UniqueName": "T4_MOB_TN_AVALON_CLERIC_VETERAN_CHAMPION",
+    "Tier": "4",
+    "HitPointsMax": "4511"
+  },
+  {
+    "UniqueName": "T6_MOB_TN_AVALON_CLERIC_VETERAN_CHAMPION",
+    "Tier": "6",
+    "HitPointsMax": "5218"
+  },
+  {
+    "UniqueName": "T8_MOB_TN_AVALON_CLERIC_VETERAN_CHAMPION",
     "Tier": "8",
     "HitPointsMax": "6512"
   },
@@ -17899,21 +18049,6 @@
     "HitPointsMax": "2226"
   },
   {
-    "UniqueName": "T4_MOB_TN_AVALON_MINION_SCOUT_VETERAN",
-    "Tier": "4",
-    "HitPointsMax": "1684"
-  },
-  {
-    "UniqueName": "T6_MOB_TN_AVALON_MINION_SCOUT_VETERAN",
-    "Tier": "6",
-    "HitPointsMax": "1948"
-  },
-  {
-    "UniqueName": "T8_MOB_TN_AVALON_MINION_SCOUT_VETERAN",
-    "Tier": "8",
-    "HitPointsMax": "2431"
-  },
-  {
     "UniqueName": "T4_MOB_TN_AVALON_MINION_VETERAN_SUMMON",
     "Tier": "4",
     "HitPointsMax": "722"
@@ -17927,51 +18062,6 @@
     "UniqueName": "T8_MOB_TN_AVALON_MINION_VETERAN_SUMMON",
     "Tier": "8",
     "HitPointsMax": "1042"
-  },
-  {
-    "UniqueName": "T4_MOB_TN_AVALON_MINION_LAMP_VETERAN",
-    "Tier": "4",
-    "HitPointsMax": "2646"
-  },
-  {
-    "UniqueName": "T6_MOB_TN_AVALON_MINION_LAMP_VETERAN",
-    "Tier": "6",
-    "HitPointsMax": "3061"
-  },
-  {
-    "UniqueName": "T8_MOB_TN_AVALON_MINION_LAMP_VETERAN",
-    "Tier": "8",
-    "HitPointsMax": "3820"
-  },
-  {
-    "UniqueName": "T4_MOB_TN_AVALON_MINION_BUILDER_VETERAN",
-    "Tier": "4",
-    "HitPointsMax": "2887"
-  },
-  {
-    "UniqueName": "T6_MOB_TN_AVALON_MINION_BUILDER_VETERAN",
-    "Tier": "6",
-    "HitPointsMax": "3340"
-  },
-  {
-    "UniqueName": "T8_MOB_TN_AVALON_MINION_BUILDER_VETERAN",
-    "Tier": "8",
-    "HitPointsMax": "4167"
-  },
-  {
-    "UniqueName": "T4_MOB_TN_AVALON_MINION_WORKER_VETERAN",
-    "Tier": "4",
-    "HitPointsMax": "3609"
-  },
-  {
-    "UniqueName": "T6_MOB_TN_AVALON_MINION_WORKER_VETERAN",
-    "Tier": "6",
-    "HitPointsMax": "4175"
-  },
-  {
-    "UniqueName": "T8_MOB_TN_AVALON_MINION_WORKER_VETERAN",
-    "Tier": "8",
-    "HitPointsMax": "5209"
   },
   {
     "UniqueName": "T4_MOB_TN_AVALON_PIKEMAN_VETERAN",
