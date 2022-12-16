@@ -1,4 +1,4 @@
-﻿// Filter for this site: https://jsoneditoronline.org/
+// Filter for this site: https://jsoneditoronline.org/
 // Mobs.Mob[*].{"UniqueName": "@uniquename", "Tier": "@tier", "HitPointsMax": "@hitpointsmax"}
 // INFO: Original mobs.json is in the main extracted folder
 // https://github.com/broderickhyman/ao-bin-dumps/blob/master/mobs.json
