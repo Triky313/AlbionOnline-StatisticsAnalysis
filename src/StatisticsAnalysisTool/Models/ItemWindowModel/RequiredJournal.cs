@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using StatisticsAnalysisTool.Common;
+﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
+using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using StatisticsAnalysisTool.Common.UserSettings;
-using StatisticsAnalysisTool.GameData;
 
 namespace StatisticsAnalysisTool.Models.ItemWindowModel
 {
@@ -27,6 +27,8 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private DateTime _lastUpdateFullJournal = DateTime.UtcNow.AddDays(-100);
         private Location _itemPricesLocationEmptyJournalSelected;
         private Location _itemPricesLocationFullJournalSelected;
+        private double _weight;
+        private double _totalWeight;
 
         private static readonly KeyValuePair<Location, string>[] ItemPricesLocations = {
             new (Location.Martlock, WorldData.GetUniqueNameOrDefault((int)Location.Martlock)),
@@ -41,7 +43,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         };
 
         public string UniqueName { get; set; }
-        
+
         private async void LoadSellPriceEmptyJournalAsync(Location location)
         {
             if (_lastUpdateEmptyJournal.AddMilliseconds(SettingsController.CurrentSettings.RefreshRate) < DateTime.UtcNow)
@@ -140,6 +142,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             set
             {
                 _requiredJournalAmount = value;
+                TotalWeight = Weight * value;
                 OnPropertyChanged();
             }
         }
@@ -151,6 +154,26 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             {
                 _sellPricePerJournal = value;
                 _itemWindowViewModel.UpdateCraftingCalculationTab();
+                OnPropertyChanged();
+            }
+        }
+
+        public double Weight
+        {
+            get => _weight;
+            set
+            {
+                _weight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TotalWeight
+        {
+            get => _totalWeight;
+            set
+            {
+                _totalWeight = value;
                 OnPropertyChanged();
             }
         }
@@ -173,6 +196,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         public string TranslationRequiredJournalAmount => LanguageController.Translation("REQUIRED_JOURNAL_AMOUNT");
         public string TranslationSellPricePerJournal => LanguageController.Translation("SELL_PRICE_PER_JOURNAL");
         public string TranslationGetPrice => LanguageController.Translation("GET_PRICE");
+        public string TranslationTotalWeight => LanguageController.Translation("TOTAL_WEIGHT");
 
         public event PropertyChangedEventHandler PropertyChanged;
 

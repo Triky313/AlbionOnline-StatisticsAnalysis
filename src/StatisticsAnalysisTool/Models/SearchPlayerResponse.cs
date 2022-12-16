@@ -4,9 +4,11 @@ namespace StatisticsAnalysisTool.Models;
 
 public class SearchPlayerResponse
 {
-    [JsonPropertyName("Id")] public string Id { get; set; }
+    [JsonPropertyName("Id")] 
+    public string Id { get; set; }
 
-    [JsonPropertyName("Name")] public string Name { get; set; }
+    [JsonPropertyName("Name")] 
+    public string Name { get; set; }
 
     [JsonPropertyName("GuildId")]
     public string GuildId { get; set; }

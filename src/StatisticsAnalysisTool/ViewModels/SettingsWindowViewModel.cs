@@ -163,7 +163,7 @@ namespace StatisticsAnalysisTool.ViewModels
             ShortDamageMeterToClipboard = SettingsController.CurrentSettings.ShortDamageMeterToClipboard;
 
             #endregion
-
+            
             IsOpenItemWindowInNewWindowChecked = SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked;
             ShowInfoWindowOnStartChecked = SettingsController.CurrentSettings.IsInfoWindowShownOnStart;
         }
@@ -443,7 +443,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         public bool IsSuggestPreReleaseUpdatesActive
         {
             get => _isSuggestPreReleaseUpdatesActive;

@@ -1,4 +1,5 @@
 ﻿using log4net;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Properties;
 using System;
@@ -19,7 +20,7 @@ public static class CraftingTabController
     private static bool _isLoading;
     private static bool _isSaving;
 
-    public static void Add(string uniqueItemName, string text)
+    public static void AddNote(string uniqueItemName, string text)
     {
         if (string.IsNullOrEmpty(text))
         {
@@ -95,6 +96,7 @@ public static class CraftingTabController
         }
 
         _isSaving = true;
+        
         var localFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.CraftingNotesFileName}";
 
         try

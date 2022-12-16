@@ -77,6 +77,12 @@
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Bank of Fort Sterling">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.FortSterling}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Brecilien">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Brecilien}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Brecilien Bank">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Brecilien}" />
+            </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Arthur's Rest">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.ArthursRest}" />
             </DataTrigger>

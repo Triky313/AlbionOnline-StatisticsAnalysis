@@ -4,6 +4,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models"
                     xmlns:gl="clr-namespace:System.Globalization;assembly=System.Runtime"
+                    xmlns:bindingModel="clr-namespace:StatisticsAnalysisTool.Models.BindingModel"
                     mc:Ignorable="d">
 
     <Style TargetType="TextBlock" x:Key="LootedChests.Stats.Numbers">
@@ -257,7 +258,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="KillDeathStatsTemplate" DataType="{x:Type models:DashboardBindings}">
+    <DataTemplate x:Key="KillDeathStatsTemplate" DataType="{x:Type bindingModel:DashboardBindings}">
         <Grid>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,0,0,0">
@@ -358,27 +359,76 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="SilverCostForReSpecTemplate" DataType="{x:Type models:DashboardBindings}">
+    <DataTemplate x:Key="SilverCostForReSpecTemplate" DataType="{x:Type bindingModel:DashboardBindings}">
         <Grid>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,0,0,0">
                     <StackPanel HorizontalAlignment="Center">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <TextBlock Text="{Binding TranslationPaidSilverForReSpecThisSession, FallbackValue=PAID_SILVER_FOR_RESPEC_THIS_SESSION}" MinWidth="400" 
-                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding TotalSilverCostForReSpecInSession, StringFormat='{} {0:N0}', FallbackValue=0}" 
-                                           MinWidth="100" FontSize="24" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
+                                <Grid Width="50" Margin="0,0,10,0" />
+                                <TextBlock Text="{Binding TranslationPaidSilverForReSpecThisSession, FallbackValue=PAID_SILVER_FOR_RESPEC_THIS_SESSION}" MinWidth="350" 
+                                           FontSize="18" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Resources/silver.png" Height="14" Width="14" Margin="0,0,10,0" />
+                                    <TextBlock Text="{Binding TotalSilverCostForReSpecInSession, StringFormat='{} -{0:N0}', FallbackValue=0}" 
+                                               MinWidth="100" FontSize="18" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <TextBlock Text="{Binding TranslationPaidSilverForReSpecPerHour, FallbackValue=PAID_SILVER_FOR_RESPEC_PER_HOUR}" MinWidth="400" 
-                                           FontSize="14" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding SilverCostForReSpecHour, StringFormat='{} {0:N0}', Converter={StaticResource ValuePerHourConverter}, FallbackValue='0/h'}" 
-                                           MinWidth="100" FontSize="24" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Yellow.1}" VerticalAlignment="Center" />
+                                <Grid Width="50" Margin="0,0,10,0" />
+                                <TextBlock Text="{Binding TranslationPaidSilverForReSpecPerHour, FallbackValue=PAID_SILVER_FOR_RESPEC_PER_HOUR}" MinWidth="350" 
+                                           FontSize="18" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Resources/silver.png" Height="14" Width="14" Margin="0,0,10,0" />
+                                    <TextBlock Text="{Binding SilverCostForReSpecHour, StringFormat='{} -{0:N0}', Converter={StaticResource ValuePerHourConverter}, FallbackValue='0/h'}" 
+                                               MinWidth="100" FontSize="18" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" />
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="RepairCostsTemplate" DataType="{x:Type bindingModel:DashboardBindings}">
+        <Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Image Source="/Assets/repair_cross.png" Height="50" Width="50" Margin="0,0,10,0" />
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Text="{Binding TranslationRepairCostsToday, FallbackValue=REPAIR_COSTS_TODAY}" MinWidth="300" 
+                                   FontSize="18" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Resources/silver.png" Height="14" Width="14" Margin="0,0,10,0" />
+                            <TextBlock Text="{Binding RepairCostsToday, StringFormat='{} -{0:N0}', FallbackValue=0}" FontSize="18" FontWeight="Light" 
+                                       Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Text="{Binding TranslationRepairCostsLast7Days, FallbackValue=REPAIR_COSTS_LAST_7_DAYS}" MinWidth="300" 
+                                   FontSize="18" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Resources/silver.png" Height="14" Width="14" Margin="0,0,10,0" />
+                            <TextBlock Text="{Binding RepairCostsLast7Days, StringFormat='{} -{0:N0}', FallbackValue=0}" FontSize="18" FontWeight="Light" 
+                                       Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Text="{Binding TranslationRepairCostsLast30Days, FallbackValue=REPAIR_COSTS_LAST_30_DAYS}" MinWidth="300" 
+                                   FontSize="18" FontWeight="Light" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Resources/silver.png" Height="14" Width="14" Margin="0,0,10,0" />
+                            <TextBlock Text="{Binding RepairCostsLast30Days, StringFormat='{} -{0:N0}', FallbackValue=0}" FontSize="18" FontWeight="Light" 
+                                       Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding RepairCostsChestVisibility}" Orientation="Horizontal">
+                        <Label Content="Current repair costs:" Margin="5,0" />
+                        <Label Content="{Binding RepairCostsChest}" Margin="5,0" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

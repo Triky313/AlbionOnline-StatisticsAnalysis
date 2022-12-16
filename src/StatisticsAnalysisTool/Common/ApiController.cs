@@ -21,20 +21,20 @@ namespace StatisticsAnalysisTool.Common
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
 
         /// <summary>
-        ///     Returns all city item prices bye uniqueName, locations and qualities.
+        ///     Returns a list of all city item prices by uniqueName.
         /// </summary>
         /// <exception cref="TooManyRequestsException"></exception>
         public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName)
         {
-            var locations = Locations.GetLocationsListByArea(true, true, true, true, true);
+            var locations = Locations.GetAllMarketLocations();
             return await GetCityItemPricesFromJsonAsync(uniqueName, locations, new List<int> { 1, 2, 3, 4, 5 });
         }
 
         /// <summary>
-        ///     Returns city item prices bye uniqueName, locations and qualities.
+        ///     Returns a list of city item prices by uniqueName, locations and qualities.
         /// </summary>
         /// <exception cref="TooManyRequestsException"></exception>
-        public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<Location> locations, List<int> qualities)
+        public static async Task<List<MarketResponse>> GetCityItemPricesFromJsonAsync(string uniqueName, List<MarketLocation> marketLocations, List<int> qualities)
         {
             if (string.IsNullOrEmpty(uniqueName))
             {
@@ -44,10 +44,10 @@ namespace StatisticsAnalysisTool.Common
             var url = SettingsController.CurrentSettings.CityPricesApiUrl ?? Settings.Default.CityPricesApiUrlDefault;
             url += uniqueName;
 
-            if (locations?.Count >= 1)
+            if (marketLocations?.Count >= 1)
             {
                 url += "?locations=";
-                url = locations.Aggregate(url, (current, location) => current + $"{(int)location},");
+                url = marketLocations.Aggregate(url, (current, location) => current + $"{(int)location},");
             }
 
             if (qualities?.Count >= 1)
@@ -72,7 +72,7 @@ namespace StatisticsAnalysisTool.Common
 
                 using var content = response.Content;
                 var result = JsonSerializer.Deserialize<List<MarketResponse>>(await content.ReadAsStringAsync());
-                return MergeCityAndPortalCity(result);
+                return MergeMarketAndPortalLocations(result);
             }
             catch (TooManyRequestsException)
             {
@@ -87,21 +87,16 @@ namespace StatisticsAnalysisTool.Common
             }
         }
 
-        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<Location> locations,
-            DateTime? date, IList<int> qualities, int timeScale = 24)
+        public static async Task<List<MarketHistoriesResponse>> GetHistoryItemPricesFromJsonAsync(string uniqueName, IList<MarketLocation> locations, DateTime? date, int quality, int timeScale = 24)
         {
             var locationsString = "";
-            var qualitiesString = "";
 
             if (locations?.Count > 0)
             {
                 locationsString = string.Join(",", locations.Select(x => ((int)x).ToString()));
             }
 
-            if (qualities?.Count > 0)
-            {
-                qualitiesString = string.Join(",", qualities);
-            }
+            var qualitiesString = quality.ToString();
 
             var url = SettingsController.CurrentSettings.CityPricesHistoryApiUrl ?? Settings.Default.CityPricesHistoryApiUrlDefault;
             url += uniqueName;
@@ -152,6 +147,11 @@ namespace StatisticsAnalysisTool.Common
                 using var response = await client.GetAsync(url);
                 using var content = response.Content;
                 return JsonSerializer.Deserialize<GameInfoSearchResponse>(await content.ReadAsStringAsync()) ?? gameInfoSearchResponse;
+            }
+            catch (JsonException ex)
+            {
+                ConsoleManager.WriteLineForError(MethodBase.GetCurrentMethod()?.DeclaringType, ex);
+                return gameInfoSearchResponse;
             }
             catch (Exception e)
             {
@@ -325,9 +325,8 @@ namespace StatisticsAnalysisTool.Common
 
         public static async Task<List<GoldResponseModel>> GetGoldPricesFromJsonAsync(DateTime? dateTime, int count, int timeout = 300)
         {
-            var checkedDateTime = dateTime != null ? dateTime.ToString() : string.Empty;
-
-            var url = $"{SettingsController.CurrentSettings.GoldStatsApiUrl ?? Settings.Default.GoldStatsApiUrlDefault}?date={checkedDateTime}&count={count}";
+            var dateString = dateTime != null ? $"{dateTime:yyyy-MM-dd'T'HH:mm:ss}" : string.Empty;
+            var url = $"{SettingsController.CurrentSettings.GoldStatsApiUrl ?? Settings.Default.GoldStatsApiUrlDefault}?date={dateString}&count={count}";
 
             using var clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
@@ -375,65 +374,184 @@ namespace StatisticsAnalysisTool.Common
 
         #region Helper methods
 
+        #region Merge history data
+
         private static List<MarketHistoriesResponse> MergeCityAndPortalCity(List<MarketHistoriesResponse> values)
         {
-            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.Location) is Location.FortSterling or Location.FortSterlingPortal))
-            {
-                marketHistoriesResponse.Location = "FortSterling";
-            }
+            var fortSterlingMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal).ToList();
+            SetMarketHistoriesResponseByQuality(fortSterlingMarketResponses, values, MarketLocation.FortSterlingMarket);
 
-            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.Location) is Location.Martlock or Location.MartlockPortal))
-            {
-                marketHistoriesResponse.Location = "Martlock";
-            }
+            var martlockMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.MartlockMarket or MarketLocation.MartlockPortal).ToList();
+            SetMarketHistoriesResponseByQuality(martlockMarketResponses, values, MarketLocation.MartlockMarket);
 
-            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.Location) is Location.Lymhurst or Location.LymhurstPortal))
-            {
-                marketHistoriesResponse.Location = "Lymhurst";
-            }
+            var lymhurstMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.LymhurstMarket or MarketLocation.LymhurstPortal).ToList();
+            SetMarketHistoriesResponseByQuality(lymhurstMarketResponses, values, MarketLocation.LymhurstMarket);
 
-            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.Location) is Location.Thetford or Location.ThetfordPortal))
-            {
-                marketHistoriesResponse.Location = "Thetford";
-            }
+            var thetfordMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.ThetfordMarket or MarketLocation.ThetfordPortal).ToList();
+            SetMarketHistoriesResponseByQuality(thetfordMarketResponses, values, MarketLocation.ThetfordMarket);
 
-            foreach (var marketHistoriesResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.Location) is Location.Bridgewatch or Location.BridgewatchPortal))
-            {
-                marketHistoriesResponse.Location = "Bridgewatch";
-            }
+            var bridgewatchMarketResponses = values.Where(x => x.Location.GetMarketLocationByLocationNameOrId() is MarketLocation.BridgewatchMarket or MarketLocation.BridgewatchPortal).ToList();
+            SetMarketHistoriesResponseByQuality(bridgewatchMarketResponses, values, MarketLocation.BridgewatchMarket);
 
             return values;
         }
 
-        private static List<MarketResponse> MergeCityAndPortalCity(List<MarketResponse> values)
+        private static void SetMarketHistoriesResponseByQuality(List<MarketHistoriesResponse> filteredValues, List<MarketHistoriesResponse> usedValues, MarketLocation marketLocation)
         {
-            foreach (var marketResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.City) is Location.FortSterling or Location.FortSterlingPortal))
+            for (var i = 1; i <= 5; i++)
             {
-                marketResponse.City = "Fort Sterling";
+                var marketResponsesByQuality = GetMarketHistoriesResponseByQuality(i, filteredValues);
+                var result = MergeMarketAndPortalPrices(marketResponsesByQuality, Locations.GetDisplayName(marketLocation));
+
+                if (string.IsNullOrEmpty(result?.ItemId))
+                {
+                    continue;
+                }
+
+                foreach (var marketResponse in marketResponsesByQuality)
+                {
+                    usedValues.Remove(marketResponse);
+                }
+                usedValues.Add(result);
+            }
+        }
+
+        private static List<MarketHistoriesResponse> GetMarketHistoriesResponseByQuality(int quality, IEnumerable<MarketHistoriesResponse> marketResponses)
+        {
+            return marketResponses.Where(x => x.Quality == quality).ToList();
+        }
+
+        private static MarketHistoriesResponse MergeMarketAndPortalPrices(List<MarketHistoriesResponse> list, string locationName)
+        {
+            foreach (var marketResponse in list)
+            {
+                marketResponse.Location = locationName;
             }
 
-            foreach (var marketResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.City) is Location.Martlock or Location.MartlockPortal))
+            var marketHistoryResult = list.FirstOrDefault();
+            foreach (var marketResponse in list)
             {
-                marketResponse.City = "Martlock";
+                if (marketResponse?.Data?.Max(x => x?.Timestamp) > marketHistoryResult?.Data?.Max(x => x?.Timestamp))
+                {
+                    marketHistoryResult = marketResponse;
+                }
+
             }
 
-            foreach (var marketResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.City) is Location.Lymhurst or Location.LymhurstPortal))
-            {
-                marketResponse.City = "Lymhurst";
-            }
+            return marketHistoryResult;
+        }
 
-            foreach (var marketResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.City) is Location.Thetford or Location.ThetfordPortal))
-            {
-                marketResponse.City = "Thetford";
-            }
+        #endregion
 
-            foreach (var marketResponse in values.Where(x => Locations.GetLocationByLocationNameOrId(x.City) is Location.Bridgewatch or Location.BridgewatchPortal))
-            {
-                marketResponse.City = "Bridgewatch";
-            }
-            
+        #region Merge market data
+
+        private static List<MarketResponse> MergeMarketAndPortalLocations(List<MarketResponse> values)
+        {
+            var fortSterlingMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.FortSterlingMarket or MarketLocation.FortSterlingPortal).ToList();
+            SetMarketResponseByQuality(fortSterlingMarketResponses, values, MarketLocation.FortSterlingMarket);
+
+            var martlockMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.MartlockMarket or MarketLocation.MartlockPortal).ToList();
+            SetMarketResponseByQuality(martlockMarketResponses, values, MarketLocation.MartlockMarket);
+
+            var lymhurstMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.LymhurstMarket or MarketLocation.LymhurstPortal).ToList();
+            SetMarketResponseByQuality(lymhurstMarketResponses, values, MarketLocation.LymhurstMarket);
+
+            var thetfordMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.ThetfordMarket or MarketLocation.ThetfordPortal).ToList();
+            SetMarketResponseByQuality(thetfordMarketResponses, values, MarketLocation.ThetfordMarket);
+
+            var bridgewatchMarketResponses = values.Where(x => x.City.GetMarketLocationByLocationNameOrId() is MarketLocation.BridgewatchMarket or MarketLocation.BridgewatchPortal).ToList();
+            SetMarketResponseByQuality(bridgewatchMarketResponses, values, MarketLocation.BridgewatchMarket);
+
             return values;
         }
+
+        private static void SetMarketResponseByQuality(List<MarketResponse> filteredValues, List<MarketResponse> usedValues, MarketLocation marketLocation)
+        {
+            for (var i = 1; i <= 5; i++)
+            {
+                var marketResponsesByQuality = GetMarketResponsesByQuality(i, filteredValues);
+                var result = MergeMarketAndPortalPrices(marketResponsesByQuality, Locations.GetDisplayName(marketLocation));
+
+                if (string.IsNullOrEmpty(result.ItemTypeId))
+                {
+                    continue;
+                }
+
+                foreach (var marketResponse in marketResponsesByQuality)
+                {
+                    usedValues.Remove(marketResponse);
+                }
+                usedValues.Add(result);
+            }
+        }
+
+        private static List<MarketResponse> GetMarketResponsesByQuality(int quality, IEnumerable<MarketResponse> marketResponses)
+        {
+            return marketResponses.Where(x => x.QualityLevel == quality).ToList();
+        }
+
+        private static MarketResponse MergeMarketAndPortalPrices(List<MarketResponse> list, string locationName)
+        {
+            foreach (var marketResponse in list)
+            {
+                marketResponse.City = locationName;
+            }
+
+            var buyPriceMaxDate = DateTime.MinValue;
+            var buyPriceMax = 0UL;
+            var buyPriceMinDate = DateTime.MinValue;
+            var buyPriceMin = 0UL;
+            var sellPriceMaxDate = DateTime.MinValue;
+            var sellPriceMax = 0UL;
+            var sellPriceMinDate = DateTime.MinValue;
+            var sellPriceMin = 0UL;
+
+            foreach (var marketResponse in list)
+            {
+                if (marketResponse.BuyPriceMaxDate > buyPriceMaxDate)
+                {
+                    buyPriceMaxDate = marketResponse.BuyPriceMaxDate;
+                    buyPriceMax = marketResponse.BuyPriceMax;
+                }
+
+                if (marketResponse.BuyPriceMinDate > buyPriceMinDate)
+                {
+                    buyPriceMinDate = marketResponse.BuyPriceMinDate;
+                    buyPriceMin = marketResponse.BuyPriceMin;
+                }
+
+                if (marketResponse.SellPriceMaxDate > sellPriceMaxDate)
+                {
+                    sellPriceMaxDate = marketResponse.SellPriceMaxDate;
+                    sellPriceMax = marketResponse.SellPriceMax;
+                }
+
+                if (marketResponse.SellPriceMinDate > sellPriceMinDate)
+                {
+                    sellPriceMinDate = marketResponse.SellPriceMinDate;
+                    sellPriceMin = marketResponse.SellPriceMin;
+                }
+            }
+
+            var firstMarketResponse = list.FirstOrDefault();
+
+            return new MarketResponse()
+            {
+                BuyPriceMax = buyPriceMax,
+                BuyPriceMaxDate = buyPriceMaxDate,
+                BuyPriceMin = buyPriceMin,
+                BuyPriceMinDate = buyPriceMinDate,
+                SellPriceMax = sellPriceMax,
+                SellPriceMaxDate = sellPriceMaxDate,
+                SellPriceMin = sellPriceMin,
+                SellPriceMinDate = sellPriceMinDate,
+                City = firstMarketResponse?.City,
+                ItemTypeId = firstMarketResponse?.ItemTypeId ?? string.Empty,
+                QualityLevel = (firstMarketResponse?.QualityLevel ?? -1)
+            };
+        }
+
+        #endregion
 
         #endregion
     }

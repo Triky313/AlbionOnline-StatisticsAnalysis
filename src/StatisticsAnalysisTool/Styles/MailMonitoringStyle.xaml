@@ -13,38 +13,41 @@
         <Setter Property="Text" Value="{Binding LocationName, IsAsync=True}" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Default}" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Caerleon">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="CaerleonMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Caerleon}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Thetford">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="ThetfordMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Thetford}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="ThetfordPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Thetford}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Bridgewatch">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="BridgewatchMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Bridgewatch}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="BridgewatchPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Bridgewatch}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Martlock">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="MartlockMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Martlock}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="MartlockPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Martlock}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="Lymhurst">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="LymhurstMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Lymhurst}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="LymhurstPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Lymhurst}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="FortSterling">
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="FortSterlingMarket">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.FortSterling}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="FortSterlingPortal">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.FortSterling}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="BrecilienMarket">
+                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.Brecilien}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Location, IsAsync=True}" Value="ArthursRest">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.City.ArthursRest}" />
@@ -347,7 +350,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="MailOptionsObjectTemplate"  DataType="{x:Type models:MailOptionsObject}">
+    <DataTemplate x:Key="MailOptionsObjectTemplate" DataType="{x:Type models:MailOptionsObject}">
         <Grid>
             <StackPanel Orientation="Vertical" Margin="0,0,0,0">
                 <Separator Background="{StaticResource SolidColorBrush.Background.2}" Height="4" Margin="0,0,0,0" VerticalAlignment="Top"/>
@@ -363,6 +366,16 @@
                               Content="{Binding TranslationIgnoreMailsWithZeroValues, FallbackValue=IGNORE__MAILS__WITH__ZERO__VALUES}" 
                               HorizontalContentAlignment="Left" Margin="0,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
 
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding MarketTaxRate}" Width="25" Height="20"  Margin="5,-2,0,0" common:TextBoxHelper.OnlyNumeric="Double" />
+                        <Label Content="{Binding TranslationMarketTaxRate, FallbackValue=MARKET__TAX__RATE}" MinWidth="300" VerticalAlignment="Top" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding MarketTaxSetupRate}" Width="25" Height="20"  Margin="5,-2,0,0" common:TextBoxHelper.OnlyNumeric="Double" />
+                        <Label Content="{Binding TranslationMarketTaxSetupRate, FallbackValue=MARKET__TAX__SETUP__RATE}" MinWidth="300" VerticalAlignment="Top" />
+                    </StackPanel>
+
                     <ComboBox Width="200" Height="26" Margin="0,5,0,5" ItemsSource="{Binding DeleteMailsOlderThanSpecifiedDays}" 
                               SelectedItem="{Binding DeleteMailsOlderThanSpecifiedDaysSelection, IsAsync=true}" 
                               HorizontalAlignment="Left" DisplayMemberPath="Name" SelectedValuePath="Days" />
@@ -374,6 +387,9 @@
 
     <DataTemplate x:Key="MailTemplate" DataType="{x:Type models:Mail}">
         <Grid Height="50">
+            <Grid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding OpenItemWindowCommand}" />
+            </Grid.InputBindings>
             <Grid Style="{StaticResource Mail.Type.Colors}" />
             <Border Style="{StaticResource Container.Border}">
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5,0,10,0">
@@ -426,8 +442,8 @@
                         </DockPanel>
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}" />
-                                <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                <TextBlock Text="{Binding TranslationCostPerItem, IsAsync=True}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}" />
+                                <TextBlock Text="{Binding TranslationTotalCost, IsAsync=True, FallbackValue=TOTAL_COST}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -448,7 +464,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Width="200" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                <TextBlock Text="{Binding TranslationTotalRevenue, IsAsync=True, FallbackValue=TOTAL_REVENUE}" Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -469,7 +485,15 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBlock Text="{Binding TranslationTax, IsAsync=True, FallbackValue=TAX}" Width="150" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                <TextBlock Width="160" Foreground="{StaticResource SolidColorBrush.Text.4}">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} ({1}%)">
+                                            <Binding Path="TranslationSetupTax" IsAsync="True" />
+                                            <Binding Path="MailContent.TaxSetupRate" IsAsync="True" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Width="110" Foreground="{StaticResource SolidColorBrush.Text.4}">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -483,23 +507,45 @@
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} ({1}%)">
+                                            <Binding Path="TranslationTax" IsAsync="True" />
+                                            <Binding Path="MailContent.TaxRate" IsAsync="True" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
                                 </TextBlock>
                             </StackPanel>
                             <TextBlock Style="{StaticResource Mail.City.Text}" />
                         </DockPanel>
                         <DockPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Grid Width="200">
+                                <Grid Width="160">
                                     <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
                                     <TextBlock Text="{common:CultureAwareBinding MailContent.ActualUnitPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
                                            Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" />
                                 </Grid>
-                                <Grid Width="200">
+                                <Grid Width="160">
                                     <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
-                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPriceWithDeductedTaxes.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
-                                           Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0" ToolTip="{Binding MailContent.TotalPrice}" />
+                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TotalPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                           Style="{StaticResource Mail.Text.Colors}" Margin="25,0,0,0">
+                                        <TextBlock.ToolTip>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}: {1:N0}">
+                                                        <Binding Path="TranslationTotalPriceWithDeductedTaxes" IsAsync="True" />
+                                                        <Binding Path="MailContent.TotalPriceWithDeductedTaxes.DoubleValue" IsAsync="True" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
                                 </Grid>
-                                <Grid Width="200">
+                                <Grid Width="160">
+                                    <Image Style="{StaticResource Mail.Image.Style}" ToolTip="{Binding TranslationSilver, IsAsync=True}" />
+                                    <TextBlock Text="{common:CultureAwareBinding MailContent.TaxSetupPrice.DoubleValue, IsAsync=True, StringFormat='{}{0:N0}', FallbackValue=0}" 
+                                               HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Accent.Red.3}" Margin="25,0,0,0" />
+                                </Grid>
+                                <Grid Width="110">
                                     <Grid.Style>
                                         <Style TargetType="{x:Type Grid}">
                                             <Setter Property="Visibility" Value="Collapsed"/>

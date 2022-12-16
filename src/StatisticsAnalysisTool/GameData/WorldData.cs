@@ -74,6 +74,7 @@ namespace StatisticsAnalysisTool.GameData
             // @ISLAND@c640e642-5135-4203-89b5-0007e4215605
             // @RANDOMDUNGEON@fe968505-9771-4653-8ade-29a1bd6ddb56 
             // @HIDEOUT@2306@29c344b3-2138-421d-a97c-06e29d4759ec
+            // @MISTS@9283d553-ab71-4c14-bb34-64567137419a
 
             // Base vault info event
             // 4a82e5ed-8b64-40e3-926b-e0b020c4550a@@ISLAND@c640e642-5135-4203-89b5-0007e4215605
@@ -100,7 +101,7 @@ namespace StatisticsAnalysisTool.GameData
                 if (splitName.Length > 1 && index.ToLower().Contains('@'))
                 {
                     var mapType = GetMapType(splitName[0]);
-                    if (mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition && !string.IsNullOrEmpty(splitName[1]))
+                    if (mapType is MapType.RandomDungeon or MapType.CorruptedDungeon or MapType.HellGate or MapType.Expedition or MapType.Mists && !string.IsNullOrEmpty(splitName[1]))
                     {
                         var mapGuid = new Guid(splitName[1]);
                         return mapGuid;
@@ -126,6 +127,7 @@ namespace StatisticsAnalysisTool.GameData
                 MapType.Hideout => LanguageController.Translation("HIDEOUT"),
                 MapType.Expedition => LanguageController.Translation("EXPEDITION"),
                 MapType.Arena => LanguageController.Translation("ARENA"),
+                MapType.Mists => LanguageController.Translation("MISTS"),
                 _ => LanguageController.Translation("UNKNOWN")
             };
         }
@@ -145,6 +147,8 @@ namespace StatisticsAnalysisTool.GameData
             if (index.ToUpper().Contains("EXPEDITION")) return MapType.Expedition;
 
             if (index.ToUpper().Contains("ARENA")) return MapType.Arena;
+
+            if (index.ToUpper().Contains("MISTS")) return MapType.Mists;
 
             return MapType.Unknown;
         }
@@ -213,6 +217,7 @@ namespace StatisticsAnalysisTool.GameData
         Island,
         Hideout,
         Expedition,
-        Arena
+        Arena,
+        Mists
     }
 }

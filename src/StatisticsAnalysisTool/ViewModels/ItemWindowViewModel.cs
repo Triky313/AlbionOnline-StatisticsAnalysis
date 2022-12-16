@@ -1,14 +1,13 @@
-﻿using FontAwesome5;
-using LiveChartsCore;
+﻿using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using log4net;
 using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Common.Converters;
 using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Exceptions;
 using StatisticsAnalysisTool.GameData;
 using StatisticsAnalysisTool.Models;
+using StatisticsAnalysisTool.Models.BindingModel;
 using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using StatisticsAnalysisTool.Models.ItemWindowModel;
 using StatisticsAnalysisTool.Models.TranslationModel;
@@ -27,1369 +26,1298 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
-namespace StatisticsAnalysisTool.ViewModels
+namespace StatisticsAnalysisTool.ViewModels;
+
+public class ItemWindowViewModel : INotifyPropertyChanged
 {
-    public class ItemWindowViewModel : INotifyPropertyChanged
+    private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
+    private readonly ItemWindow _itemWindow;
+    private Item _item;
+    private string _titleName;
+    private string _itemTierLevel;
+    private BitmapImage _icon;
+    private Visibility _errorBarVisibility;
+    private ItemWindowTranslation _translation = new();
+    private bool _refreshSpin;
+    private bool _isAutoUpdateActive;
+    private readonly Timer _timer = new();
+    private double _taskProgressbarMinimum;
+    private double _taskProgressbarMaximum = 100;
+    private double _taskProgressbarValue;
+    private bool _isTaskProgressbarIndeterminate;
+    private XmlLanguage _itemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+    private double _refreshRateInMilliseconds = 10;
+    private RequiredJournal _requiredJournal;
+    private EssentialCraftingValuesTemplate _essentialCraftingValues;
+    private ObservableCollection<RequiredResource> _requiredResources = new();
+    private Visibility _requiredJournalVisibility = Visibility.Collapsed;
+    private Visibility _craftingTabVisibility = Visibility.Collapsed;
+    private string _craftingNotes;
+    private List<MarketResponse> _currentItemPrices = new();
+    private ExtraItemInformation _extraItemInformation = new();
+    private string _errorBarText;
+    private string _refreshIconTooltipText;
+    private ObservableCollection<MainTabLocationFilterObject> _locationFilters;
+    private int _tabControlSelectedIndex = -1;
+    private ItemWindowMainTabBindings _mainTabBindings;
+    private ItemWindowQualityTabBindings _qualityTabBindings;
+    private ItemWindowHistoryTabBindings _historyTabBindings;
+    private ItemWindowRealMoneyTabBindings _realMoneyTabBindings;
+    private ItemWindowCraftingTabBindings _craftingTabBindings;
+
+    private CraftingCalculation _craftingCalculation = new()
     {
-        public enum Error
+        AuctionsHouseTax = 0.0d,
+        CraftingTax = 0.0d,
+        PossibleItemCrafting = 0.0d,
+        SetupFee = 0.0d,
+        TotalCosts = 0.0,
+        TotalJournalCosts = 0.0d,
+        TotalItemSells = 0.0d,
+        TotalJournalSells = 0.0d,
+        TotalResourceCosts = 0.0d,
+        GrandTotal = 0.0d
+    };
+
+    public enum Error
+    {
+        NoPrices,
+        NoItemInfo,
+        GeneralError,
+        ToManyRequests
+    }
+
+    public ItemWindowViewModel(ItemWindow itemWindow, Item item)
+    {
+        _itemWindow = itemWindow;
+
+        ErrorBarVisibility = Visibility.Hidden;
+
+        Item = item;
+
+        Translation = new ItemWindowTranslation();
+        _ = InitAsync(item);
+
+        ItemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
+    }
+
+    #region Inits
+
+    private async Task InitAsync(Item item)
+    {
+        IsTaskProgressbarIndeterminate = true;
+        Icon = null;
+        TitleName = "-";
+        ItemTierLevel = string.Empty;
+
+        Item = item;
+
+        if (item == null)
         {
-            NoPrices,
-            NoItemInfo,
-            GeneralError,
-            ToManyRequests
+            SetErrorValues(Error.NoItemInfo);
+            return;
         }
 
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        private readonly ItemWindow _itemWindow;
-        private List<MarketQualityObject> _allQualityPricesList;
-        private string _averagePrices;
-        private List<MarketResponse> _currentCityPrices;
-        private GoldResponseModel _currentGoldPrice;
-        private string _errorBarText;
-        private Visibility _errorBarVisibility;
-        private bool _excellentQualityChecked;
-        private bool _goodQualityChecked;
-        private BitmapImage _icon;
-        private Visibility _informationLoadingImageVisibility;
-        private bool _isAutoUpdateActive;
-        private Item _item;
-        private XmlLanguage _itemListViewLanguage;
-        private string _itemName;
-        private string _itemTierLevel;
-        private Axis[] _xAxesHistory;
-        private EFontAwesomeIcon _loadingImageIcon;
-        private bool _loadingImageSpin;
-        private Visibility _loadingImageVisibility;
-        private List<MarketCurrentPricesItem> _marketCurrentPricesItemList;
-        private bool _masterpieceQualityChecked;
-        private bool _normalQualityChecked;
-        private bool _outstandingQualityChecked;
-        private List<MarketQualityObject> _realMoneyPriceList;
-        private string _refreshIconTooltipText;
-        private bool _refreshSpin;
-        private bool _runUpdate = true;
-        private ObservableCollection<ISeries> _seriesHistory = new();
-        private bool _showBlackZoneOutpostsChecked;
-        private bool _showVillagesChecked;
-        private ItemWindowTranslation _translation;
-        private ObservableCollection<RequiredResource> _requiredResources = new();
-        private RequiredJournal _requiredJournal;
-        private Visibility _requiredJournalVisibility = Visibility.Collapsed;
-        private Visibility _craftingTabVisibility = Visibility.Collapsed;
-        private EssentialCraftingValuesTemplate _essentialCraftingValues;
-        private ExtraItemInformation _extraItemInformation = new();
-        private string _craftingNotes;
-        private readonly Timer _timer = new();
-        private double _refreshRateInMilliseconds = 10;
+        InitBindings();
+        InitMainTabLocationFiltering();
+        InitQualityFiltering();
+        InitExtraItemInformation();
+        await InitCraftingTabAsync();
 
-        private CraftingCalculation _craftingCalculation = new()
+        if (Application.Current.Dispatcher == null)
         {
-            AuctionsHouseTax = 0.0d,
-            CraftingTax = 0.0d,
-            PossibleItemCrafting = 0.0d,
-            SetupFee = 0.0d,
-            TotalCosts = 0.0,
-            TotalJournalCosts = 0.0d,
-            TotalItemSells = 0.0d,
-            TotalJournalSells = 0.0d,
-            TotalResourceCosts = 0.0d,
-            GrandTotal = 0.0d
+            SetErrorValues(Error.GeneralError);
+            return;
+        }
+
+        ChangeHeaderValues(item);
+        ChangeWindowValuesAsync(item);
+
+        await InitTimerAsync();
+        IsAutoUpdateActive = true;
+
+        IsTaskProgressbarIndeterminate = false;
+    }
+
+    private void InitBindings()
+    {
+        MainTabBindings = new ItemWindowMainTabBindings(this);
+        QualityTabBindings = new ItemWindowQualityTabBindings();
+        HistoryTabBindings = new ItemWindowHistoryTabBindings(this);
+    }
+
+    private void InitMainTabLocationFiltering()
+    {
+        var locationFilters = new List<MainTabLocationFilterObject>
+        {
+            new (MarketLocation.CaerleonMarket, Locations.GetParameterName(Location.Caerleon), true),
+            new (MarketLocation.ThetfordMarket, Locations.GetParameterName(Location.Thetford), true),
+            new (MarketLocation.FortSterlingMarket, Locations.GetParameterName(Location.FortSterling), true),
+            new (MarketLocation.LymhurstMarket, Locations.GetParameterName(Location.Lymhurst), true),
+            new (MarketLocation.BridgewatchMarket, Locations.GetParameterName(Location.Bridgewatch), true),
+            new (MarketLocation.MartlockMarket, Locations.GetParameterName(Location.Martlock), true),
+            new (MarketLocation.BrecilienMarket, Locations.GetParameterName(Location.Brecilien), true),
+            new (MarketLocation.ArthursRest, Locations.GetParameterName(Location.ArthursRest), true),
+            new (MarketLocation.MerlynsRest, Locations.GetParameterName(Location.MerlynsRest), true),
+            new (MarketLocation.MorganasRest, Locations.GetParameterName(Location.MorganasRest), true),
+            new (MarketLocation.BlackMarket, Locations.GetParameterName(Location.BlackMarket), true),
+            new (MarketLocation.ForestCross, Locations.GetParameterName(Location.ForestCross), true),
+            new (MarketLocation.SwampCross, Locations.GetParameterName(Location.SwampCross), true),
+            new (MarketLocation.SteppeCross, Locations.GetParameterName(Location.SteppeCross), true),
+            new (MarketLocation.HighlandCross, Locations.GetParameterName(Location.HighlandCross), true),
+            new (MarketLocation.MountainCross, Locations.GetParameterName(Location.MountainCross), true)
         };
 
-        public ItemWindowViewModel(ItemWindow itemWindow, Item item)
+        foreach (var itemWindowMainTabLocationFilter in SettingsController.CurrentSettings.ItemWindowMainTabLocationFilters)
         {
-            _itemWindow = itemWindow;
-            InitializeItemWindow(item);
-        }
-
-        #region Init
-
-        public void InitializeItemWindow(Item item)
-        {
-            ErrorBarVisibility = Visibility.Hidden;
-            SetDefaultQualityIfNoOneChecked();
-
-            Item = item;
-
-            Translation = new ItemWindowTranslation();
-            InitializeItemData(item);
-
-            ItemListViewLanguage = XmlLanguage.GetLanguage(LanguageController.CurrentCultureInfo.ToString());
-        }
-
-        private async void InitializeItemData(Item item)
-        {
-            InformationLoadingImageVisibility = Visibility.Visible;
-
-            Icon = null;
-            ItemName = "-";
-            ItemTierLevel = string.Empty;
-
-            if (item == null)
+            var filter = locationFilters.FirstOrDefault(x => x.Location == itemWindowMainTabLocationFilter?.Location);
+            if (filter != null)
             {
-                SetErrorValues(Error.NoItemInfo);
-                return;
-            }
-
-            ItemTierLevel = Item?.Tier != -1 && Item?.Level != -1 ? $"T{Item?.Tier}.{Item?.Level}" : string.Empty;
-            InitExtraItemInformation();
-            await InitCraftingTabAsync();
-
-            await _itemWindow.Dispatcher.InvokeAsync(() =>
-            {
-                _itemWindow.Icon = null;
-                _itemWindow.Title = "-";
-            });
-
-            if (Application.Current.Dispatcher == null)
-            {
-                SetErrorValues(Error.GeneralError);
-                return;
-            }
-
-            var localizedName = ItemController.LocalizedName(Item?.LocalizedNames, null, Item?.UniqueName);
-
-            Icon = item.Icon;
-            ItemName = localizedName;
-
-            await _itemWindow.Dispatcher.InvokeAsync(() =>
-            {
-                _itemWindow.Icon = item.Icon;
-                _itemWindow.Title = $"{localizedName} (T{item.Tier})";
-            });
-
-            InitTimer();
-            IsAutoUpdateActive = true;
-            UpdateValues(null, null);
-
-            InformationLoadingImageVisibility = Visibility.Hidden;
-        }
-
-        private void InitExtraItemInformation()
-        {
-            switch (Item?.FullItemInformation)
-            {
-                case Weapon weapon:
-                    ExtraItemInformation.ShopCategory = weapon.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = weapon.ShopSubCategory1;
-                    ExtraItemInformation.CanBeOvercharged = weapon.CanBeOvercharged.SetYesOrNo();
-                    ExtraItemInformation.Durability = weapon.Durability;
-                    ExtraItemInformation.ShowInMarketPlace = weapon.ShowInMarketPlace.SetYesOrNo();
-                    ExtraItemInformation.Weight = weapon.Weight;
-                    break;
-                case HideoutItem hideoutItem:
-                    ExtraItemInformation.ShopCategory = hideoutItem.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = hideoutItem.ShopSubCategory1;
-                    ExtraItemInformation.Weight = hideoutItem.Weight;
-                    break;
-                case FarmableItem farmableItem:
-                    ExtraItemInformation.ShopCategory = farmableItem.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = farmableItem.ShopSubCategory1;
-                    ExtraItemInformation.ShowInMarketPlace = farmableItem.ShowInMarketPlace.SetYesOrNo();
-                    ExtraItemInformation.Weight = farmableItem.Weight;
-                    break;
-                case SimpleItem simpleItem:
-                    ExtraItemInformation.ShopCategory = simpleItem.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = simpleItem.ShopSubCategory1;
-                    ExtraItemInformation.Weight = simpleItem.Weight;
-                    break;
-                case ConsumableItem consumableItem:
-                    ExtraItemInformation.ShopCategory = consumableItem.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = consumableItem.ShopSubCategory1;
-                    ExtraItemInformation.Weight = consumableItem.Weight;
-                    break;
-                case ConsumableFromInventoryItem consumableFromInventoryItem:
-                    ExtraItemInformation.ShopCategory = consumableFromInventoryItem.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = consumableFromInventoryItem.ShopSubCategory1;
-                    ExtraItemInformation.Weight = consumableFromInventoryItem.Weight;
-                    break;
-                case EquipmentItem equipmentItem:
-                    ExtraItemInformation.ShopCategory = equipmentItem.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = equipmentItem.ShopSubCategory1;
-                    ExtraItemInformation.CanBeOvercharged = equipmentItem.CanBeOvercharged.SetYesOrNo();
-                    ExtraItemInformation.Durability = equipmentItem.Durability;
-                    ExtraItemInformation.ShowInMarketPlace = equipmentItem.ShowInMarketPlace.SetYesOrNo();
-                    ExtraItemInformation.Weight = equipmentItem.Weight;
-                    break;
-                case Mount mount:
-                    ExtraItemInformation.ShopCategory = mount.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = mount.ShopSubCategory1;
-                    ExtraItemInformation.Durability = mount.Durability;
-                    ExtraItemInformation.ShowInMarketPlace = mount.ShowInMarketPlace.SetYesOrNo();
-                    ExtraItemInformation.Weight = mount.Weight;
-                    break;
-                case FurnitureItem furnitureItem:
-                    ExtraItemInformation.ShopCategory = furnitureItem.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = furnitureItem.ShopSubCategory1;
-                    ExtraItemInformation.Durability = furnitureItem.Durability;
-                    ExtraItemInformation.ShowInMarketPlace = furnitureItem.ShowInMarketPlace.SetYesOrNo();
-                    ExtraItemInformation.Weight = furnitureItem.Weight;
-                    break;
-                case JournalItem journalItem:
-                    ExtraItemInformation.ShopCategory = journalItem.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = journalItem.ShopSubCategory1;
-                    ExtraItemInformation.Weight = journalItem.Weight;
-                    break;
-                case LabourerContract labourerContract:
-                    ExtraItemInformation.ShopCategory = labourerContract.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = labourerContract.ShopSubCategory1;
-                    ExtraItemInformation.Weight = labourerContract.Weight;
-                    break;
-                case CrystalLeagueItem crystalLeagueItem:
-                    ExtraItemInformation.ShopCategory = crystalLeagueItem.ShopCategory;
-                    ExtraItemInformation.ShopSubCategory1 = crystalLeagueItem.ShopSubCategory1;
-                    ExtraItemInformation.Weight = crystalLeagueItem.Weight;
-                    break;
+                filter.IsChecked = itemWindowMainTabLocationFilter.IsChecked;
             }
         }
 
-        #endregion
+        LocationFilters = new ObservableCollection<MainTabLocationFilterObject>(locationFilters.OrderBy(x => x.Name));
 
-        #region Timer
+        AddLocationFiltersEvents();
+    }
 
-        private void InitTimer()
+    private void AddLocationFiltersEvents()
+    {
+        foreach (var cityFilterObject in LocationFilters)
         {
-            _timer.Interval = SettingsController.CurrentSettings.RefreshRate;
-            _timer.Elapsed += UpdateInterval;
-            _timer.Elapsed += UpdateValues;
+            cityFilterObject.OnCheckedChanged += UpdateMainTabItemPrices;
+            cityFilterObject.OnCheckedChanged += UpdateQualityTabItemPrices;
+            cityFilterObject.OnCheckedChanged += UpdateHistoryTabChartPricesAsync;
+        }
+    }
+
+    public void RemoveLocationFiltersEvents()
+    {
+        foreach (var cityFilterObject in LocationFilters)
+        {
+            cityFilterObject.OnCheckedChanged -= UpdateMainTabItemPrices;
+            cityFilterObject.OnCheckedChanged -= UpdateQualityTabItemPrices;
+            cityFilterObject.OnCheckedChanged -= UpdateHistoryTabChartPricesAsync;
+        }
+    }
+
+    private void InitQualityFiltering()
+    {
+        var normalQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("NORMAL"), Quality = 1 };
+        var goodQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("GOOD"), Quality = 2 };
+        var outstandingQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("OUTSTANDING"), Quality = 3 };
+        var excellentQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("EXCELLENT"), Quality = 4 };
+        var masterpieceQuality = new ItemWindowMainTabBindings.QualityStruct() { Name = LanguageController.Translation("MASTERPIECE"), Quality = 5 };
+
+        MainTabBindings.Qualities.Add(normalQuality);
+        MainTabBindings.Qualities.Add(goodQuality);
+        MainTabBindings.Qualities.Add(outstandingQuality);
+        MainTabBindings.Qualities.Add(excellentQuality);
+        MainTabBindings.Qualities.Add(masterpieceQuality);
+
+        if (MainTabBindings.Qualities != null)
+        {
+            MainTabBindings.QualitiesSelection = MainTabBindings.Qualities.FirstOrDefault();
         }
 
-        private void UpdateInterval(object sender, EventArgs e)
-        {
-            if (Math.Abs(_refreshRateInMilliseconds - SettingsController.CurrentSettings.RefreshRate) <= 0)
-            {
-                return;
-            }
+        HistoryTabBindings.Qualities.Add(normalQuality);
+        HistoryTabBindings.Qualities.Add(goodQuality);
+        HistoryTabBindings.Qualities.Add(outstandingQuality);
+        HistoryTabBindings.Qualities.Add(excellentQuality);
+        HistoryTabBindings.Qualities.Add(masterpieceQuality);
 
-            _refreshRateInMilliseconds = SettingsController.CurrentSettings.RefreshRate;
-            _timer.Interval = _refreshRateInMilliseconds;
+        if (HistoryTabBindings.Qualities != null)
+        {
+            HistoryTabBindings.QualitiesSelection = HistoryTabBindings.Qualities.FirstOrDefault();
+        }
+    }
+
+    private void InitExtraItemInformation()
+    {
+        switch (Item?.FullItemInformation)
+        {
+            case Weapon weapon:
+                ExtraItemInformation.ShopCategory = weapon.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = weapon.ShopSubCategory1;
+                ExtraItemInformation.CanBeOvercharged = weapon.CanBeOvercharged.SetYesOrNo();
+                ExtraItemInformation.Durability = weapon.Durability;
+                ExtraItemInformation.ShowInMarketPlace = weapon.ShowInMarketPlace.SetYesOrNo();
+                ExtraItemInformation.Weight = weapon.Weight;
+                break;
+            case HideoutItem hideoutItem:
+                ExtraItemInformation.ShopCategory = hideoutItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = hideoutItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = hideoutItem.Weight;
+                break;
+            case FarmableItem farmableItem:
+                ExtraItemInformation.ShopCategory = farmableItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = farmableItem.ShopSubCategory1;
+                ExtraItemInformation.ShowInMarketPlace = farmableItem.ShowInMarketPlace.SetYesOrNo();
+                ExtraItemInformation.Weight = farmableItem.Weight;
+                break;
+            case SimpleItem simpleItem:
+                ExtraItemInformation.ShopCategory = simpleItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = simpleItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = simpleItem.Weight;
+                break;
+            case ConsumableItem consumableItem:
+                ExtraItemInformation.ShopCategory = consumableItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = consumableItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = consumableItem.Weight;
+                break;
+            case ConsumableFromInventoryItem consumableFromInventoryItem:
+                ExtraItemInformation.ShopCategory = consumableFromInventoryItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = consumableFromInventoryItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = consumableFromInventoryItem.Weight;
+                break;
+            case EquipmentItem equipmentItem:
+                ExtraItemInformation.ShopCategory = equipmentItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = equipmentItem.ShopSubCategory1;
+                ExtraItemInformation.CanBeOvercharged = equipmentItem.CanBeOvercharged.SetYesOrNo();
+                ExtraItemInformation.Durability = equipmentItem.Durability;
+                ExtraItemInformation.ShowInMarketPlace = equipmentItem.ShowInMarketPlace.SetYesOrNo();
+                ExtraItemInformation.Weight = equipmentItem.Weight;
+                break;
+            case Mount mount:
+                ExtraItemInformation.ShopCategory = mount.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = mount.ShopSubCategory1;
+                ExtraItemInformation.Durability = mount.Durability;
+                ExtraItemInformation.ShowInMarketPlace = mount.ShowInMarketPlace.SetYesOrNo();
+                ExtraItemInformation.Weight = mount.Weight;
+                break;
+            case FurnitureItem furnitureItem:
+                ExtraItemInformation.ShopCategory = furnitureItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = furnitureItem.ShopSubCategory1;
+                ExtraItemInformation.Durability = furnitureItem.Durability;
+                ExtraItemInformation.ShowInMarketPlace = furnitureItem.ShowInMarketPlace.SetYesOrNo();
+                ExtraItemInformation.Weight = furnitureItem.Weight;
+                break;
+            case JournalItem journalItem:
+                ExtraItemInformation.ShopCategory = journalItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = journalItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = journalItem.Weight;
+                break;
+            case LabourerContract labourerContract:
+                ExtraItemInformation.ShopCategory = labourerContract.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = labourerContract.ShopSubCategory1;
+                ExtraItemInformation.Weight = labourerContract.Weight;
+                break;
+            case CrystalLeagueItem crystalLeagueItem:
+                ExtraItemInformation.ShopCategory = crystalLeagueItem.ShopCategory;
+                ExtraItemInformation.ShopSubCategory1 = crystalLeagueItem.ShopSubCategory1;
+                ExtraItemInformation.Weight = crystalLeagueItem.Weight;
+                break;
+        }
+    }
+
+    #endregion
+
+    #region Saving
+
+    public void SaveSettings()
+    {
+        SettingsController.CurrentSettings.ItemWindowMainTabLocationFilters = LocationFilters?.Select(x => new MainTabLocationFilterSettingsObject()
+        {
+            IsChecked = x.IsChecked ?? false,
+            Location = x.Location
+        }).ToList();
+    }
+
+    #endregion
+
+    #region Ui
+
+    private async void ChangeWindowValuesAsync(Item item)
+    {
+        var localizedName = ItemController.LocalizedName(item?.LocalizedNames, null, item?.UniqueName);
+
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            _itemWindow.Icon = item?.Icon;
+            _itemWindow.Title = $"{localizedName} (T{item?.Tier})";
+        });
+    }
+
+    private void ChangeHeaderValues(Item item)
+    {
+        var localizedName = ItemController.LocalizedName(item?.LocalizedNames, null, item?.UniqueName);
+
+        Icon = item?.Icon;
+        TitleName = localizedName;
+        ItemTierLevel = item?.Tier != -1 && item?.Level != -1 ? $"T{item?.Tier}.{item?.Level}" : string.Empty;
+    }
+
+    #endregion
+
+    #region Timer
+
+    private async Task InitTimerAsync()
+    {
+        await UpdateMarketPricesAsync();
+        UpdateMainTabItemPrices(null, null);
+        UpdateQualityTabItemPrices(null, null);
+        UpdateHistoryTabChartPrices(null, null);
+
+        _timer.Interval = SettingsController.CurrentSettings.RefreshRate;
+        _timer.Elapsed += UpdateInterval;
+        _timer.Elapsed += UpdateMarketPricesAsync;
+        _timer.Elapsed += UpdateMainTabItemPrices;
+        _timer.Elapsed += UpdateQualityTabItemPrices;
+    }
+
+    public void RemoveTimerAsync()
+    {
+        _timer.Elapsed -= UpdateInterval;
+        _timer.Elapsed -= UpdateMarketPricesAsync;
+        _timer.Elapsed -= UpdateMainTabItemPrices;
+        _timer.Elapsed -= UpdateQualityTabItemPrices;
+    }
+
+    private void UpdateInterval(object sender, EventArgs e)
+    {
+        if (Math.Abs(_refreshRateInMilliseconds - SettingsController.CurrentSettings.RefreshRate) <= 0)
+        {
+            return;
         }
 
-        private async void UpdateValues(object sender, EventArgs e)
-        {
-            if (Item.UniqueName != null)
-            {
-                await GetCityItemPricesAsync();
-                await GetItemPricesInRealMoneyAsync();
-            }
+        _refreshRateInMilliseconds = SettingsController.CurrentSettings.RefreshRate;
+        _timer.Interval = _refreshRateInMilliseconds;
+    }
 
-            GetMainPriceStats();
-            SetQualityPriceStatsOnListView();
+    public void AutoUpdateSwitcher()
+    {
+        IsAutoUpdateActive = !IsAutoUpdateActive;
+    }
+
+    #endregion
+
+    #region Crafting tab
+
+    private async Task InitCraftingTabAsync()
+    {
+        var areResourcesAvailable = false;
+
+        switch (Item?.FullItemInformation)
+        {
+            case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+            case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+            case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+            case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
+                areResourcesAvailable = true;
+                break;
         }
 
-        #endregion
-
-        #region Crafting tab
-
-        private async Task InitCraftingTabAsync()
+        if (areResourcesAvailable)
         {
-            var areResourcesAvailable = false;
+            CraftingTabVisibility = Visibility.Visible;
 
-            switch (Item?.FullItemInformation)
-            {
-                case Weapon weapon when weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
-                case EquipmentItem equipmentItem when equipmentItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
-                case Mount mount when mount.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
-                case ConsumableItem consumableItem when consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource?.Count > 0:
-                    areResourcesAvailable = true;
-                    break;
-            }
+            EssentialCraftingValues = new EssentialCraftingValuesTemplate(this, CurrentItemPrices, Item.UniqueName);
+            SetJournalInfo();
+            await SetRequiredResourcesAsync();
+            CraftingNotes = CraftingTabController.GetNote(Item.UniqueName);
+        }
+    }
 
-            if (areResourcesAvailable)
-            {
-                CraftingTabVisibility = Visibility.Visible;
+    private void SetJournalInfo()
+    {
+        var craftingJournalType = Item?.FullItemInformation switch
+        {
+            Weapon weapon => CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType),
+            EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType),
+            _ => null
+        };
 
-                EssentialCraftingValues = new EssentialCraftingValuesTemplate(this, CurrentCityPrices, Item.UniqueName);
-                SetJournalInfo();
-                await SetRequiredResourcesAsync();
-                CraftingNotes = CraftingTabController.GetNote(Item.UniqueName);
-            }
+        if (craftingJournalType == null)
+        {
+            return;
         }
 
-        private void SetJournalInfo()
+        RequiredJournalVisibility = Visibility.Visible;
+
+        var fullItemInformation = ItemController.GetItemByUniqueName(ItemController.GetGeneralJournalName(craftingJournalType.UniqueName))?.FullItemInformation;
+
+        RequiredJournal = new RequiredJournal(this)
         {
-            var craftingJournalType = Item?.FullItemInformation switch
+            UniqueName = craftingJournalType.UniqueName,
+            CostsPerJournal = 0,
+            CraftingResourceName = craftingJournalType.LocalizedName,
+            Icon = craftingJournalType.Icon,
+            Weight = ItemController.GetWeight(fullItemInformation),
+            RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting),
+            SellPricePerJournal = 0
+        };
+    }
+
+    private async Task SetRequiredResourcesAsync()
+    {
+        var currentItemEnchantmentLevel = Item.Level;
+        List<CraftingRequirements> craftingRequirements = null;
+
+        var enchantments = Item?.FullItemInformation switch
+        {
+            EquipmentItem equipmentItem => equipmentItem.Enchantments,
+            ConsumableItem consumableItem => consumableItem.Enchantments,
+            _ => null
+        };
+
+        var enchantment = enchantments?.Enchantment?.FirstOrDefault(x => x.EnchantmentLevelInteger == currentItemEnchantmentLevel);
+
+        if (enchantment != null)
+        {
+            craftingRequirements = enchantment.CraftingRequirements;
+        }
+
+        if (craftingRequirements == null)
+        {
+            craftingRequirements = Item?.FullItemInformation switch
             {
-                Weapon weapon => CraftingController.GetCraftingJournalItem(Item.Tier, weapon.CraftingJournalType),
-                EquipmentItem equipmentItem => CraftingController.GetCraftingJournalItem(Item.Tier, equipmentItem.CraftingJournalType),
+                Weapon weapon => weapon.CraftingRequirements,
+                EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
+                Mount mount => mount.CraftingRequirements,
+                ConsumableItem consumableItem => consumableItem.CraftingRequirements,
                 _ => null
             };
-
-            if (craftingJournalType == null)
-            {
-                return;
-            }
-
-            RequiredJournalVisibility = Visibility.Visible;
-
-            RequiredJournal = new RequiredJournal(this)
-            {
-                UniqueName = craftingJournalType.UniqueName,
-                CostsPerJournal = 0,
-                CraftingResourceName = craftingJournalType.LocalizedName,
-                Icon = craftingJournalType.Icon,
-                RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, CraftingCalculation.PossibleItemCrafting),
-                SellPricePerJournal = 0
-            };
         }
 
-        private async Task SetRequiredResourcesAsync()
+        if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
         {
-            var currentItemEnchantmentLevel = Item.Level;
-            List<CraftingRequirements> craftingRequirements = null;
-
-            var enchantments = Item?.FullItemInformation switch
-            {
-                EquipmentItem equipmentItem => equipmentItem.Enchantments,
-                ConsumableItem consumableItem => consumableItem.Enchantments,
-                _ => null
-            };
-
-            var enchantment = enchantments?.Enchantment?.FirstOrDefault(x => x.EnchantmentLevelInteger == currentItemEnchantmentLevel);
-
-            if (enchantment != null)
-            {
-                craftingRequirements = enchantment.CraftingRequirements;
-            }
-
-            if (craftingRequirements == null)
-            {
-                craftingRequirements = Item?.FullItemInformation switch
-                {
-                    Weapon weapon => weapon.CraftingRequirements,
-                    EquipmentItem equipmentItem => equipmentItem.CraftingRequirements,
-                    Mount mount => mount.CraftingRequirements,
-                    ConsumableItem consumableItem => consumableItem.CraftingRequirements,
-                    _ => null
-                };
-            }
-
-            if (craftingRequirements?.FirstOrDefault()?.CraftResource == null)
-            {
-                return;
-            }
-
-            if (int.TryParse(craftingRequirements.FirstOrDefault()?.AmountCrafted, out var amountCrafted))
-            {
-                EssentialCraftingValues.AmountCrafted = amountCrafted;
-            }
-
-            await foreach (var craftResource in craftingRequirements
-                               .SelectMany(x => x.CraftResource).ToList().GroupBy(x => x.UniqueName).Select(grp => grp.FirstOrDefault()).ToAsyncEnumerable().ConfigureAwait(false))
-            {
-                var item = GetSuitableResourceItem(craftResource.UniqueName);
-                var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
-                    ? CraftingCalculation.PossibleItemCrafting
-                    : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
-
-                RequiredResources.Add(new RequiredResource(this)
-                {
-                    CraftingResourceName = item?.LocalizedName,
-                    UniqueName = item?.UniqueName,
-                    OneProductionAmount = craftResource.Count,
-                    Icon = item?.Icon,
-                    ResourceCost = 0,
-                    CraftingQuantity = craftingQuantity,
-                    IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
-                });
-            }
+            return;
         }
 
-        private Item GetSuitableResourceItem(string uniqueName)
+        if (int.TryParse(craftingRequirements.FirstOrDefault()?.AmountCrafted, out var amountCrafted))
         {
-            var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
-            return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
+            EssentialCraftingValues.AmountCrafted = amountCrafted;
         }
 
-        public void UpdateCraftingCalculationTab()
+        await foreach (var craftResource in craftingRequirements
+                           .SelectMany(x => x.CraftResource).ToList().GroupBy(x => x.UniqueName).Select(grp => grp.FirstOrDefault()).ToAsyncEnumerable().ConfigureAwait(false))
         {
-            if (EssentialCraftingValues == null || CraftingCalculation == null)
+            var item = GetSuitableResourceItem(craftResource.UniqueName);
+            var craftingQuantity = (long)Math.Round(item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false
+            ? CraftingCalculation.PossibleItemCrafting
+                : EssentialCraftingValues.CraftingItemQuantity, MidpointRounding.ToPositiveInfinity);
+
+            RequiredResources.Add(new RequiredResource(this)
             {
-                return;
-            }
-
-            // PossibleItem crafting
-            var possibleItemCrafting = EssentialCraftingValues.CraftingItemQuantity / 100d * EssentialCraftingValues.CraftingBonus * ((EssentialCraftingValues.IsCraftingWithFocus)
-                ? ((23.1d / 100d) + 1d) : 1d);
-
-            // Crafting quantity
-            if (RequiredResources?.Count > 0)
-            {
-                foreach (var requiredResource in RequiredResources.ToList())
-                {
-                    requiredResource.CraftingQuantity = requiredResource.IsArtifactResource
-                        ? (long)Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity)
-                        : EssentialCraftingValues.CraftingItemQuantity;
-                }
-            }
-
-            CraftingCalculation.PossibleItemCrafting = Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
-
-            // Crafting (Usage) tax
-            CraftingCalculation.CraftingTax = CraftingController.GetCraftingTax(EssentialCraftingValues.UsageFeePerHundredFood, Item, CraftingCalculation.PossibleItemCrafting);
-
-            // Setup fee
-            CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
-
-            // Auctions house tax
-            CraftingCalculation.AuctionsHouseTax =
-                EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
-
-            // Total resource costs
-            CraftingCalculation.TotalResourceCosts = RequiredResources?.Sum(x => x.TotalCost) ?? 0;
-
-            // Other costs
-            CraftingCalculation.OtherCosts = EssentialCraftingValues.OtherCosts;
-
-            // Total item sells
-            CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * (CraftingCalculation.PossibleItemCrafting * EssentialCraftingValues.AmountCrafted);
-
-            if (RequiredJournal != null)
-            {
-                // Required journal amount
-                RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity));
-
-                // Total journal costs
-                CraftingCalculation.TotalJournalCosts = RequiredJournal.CostsPerJournal * RequiredJournal.RequiredJournalAmount;
-
-                // Total journal sells
-                CraftingCalculation.TotalJournalSells = RequiredJournal.RequiredJournalAmount * RequiredJournal.SellPricePerJournal;
-            }
-
-            // Amount crafted
-            CraftingCalculation.AmountCrafted = EssentialCraftingValues.AmountCrafted;
-        }
-
-        #endregion Crafting tab
-
-        #region Error methods
-
-        private void SetErrorValues(Error error)
-        {
-            switch (error)
-            {
-                case Error.NoItemInfo:
-                    Icon = new BitmapImage(new Uri(@"pack://application:,,,/"
-                                                   + Assembly.GetExecutingAssembly().GetName().Name + ";component/"
-                                                   + "Resources/Trash.png", UriKind.Absolute));
-                    SetLoadingImageToError();
-                    SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_NO_ITEM_INFO"));
-                    return;
-
-                case Error.NoPrices:
-                    SetLoadingImageToError();
-                    SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED"));
-                    return;
-
-                case Error.GeneralError:
-                    SetLoadingImageToError();
-                    SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
-                    return;
-
-                case Error.ToManyRequests:
-                    SetLoadingImageToError();
-                    SetErrorBar(Visibility.Visible, LanguageController.Translation("TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT"));
-                    return;
-
-                default:
-                    SetLoadingImageToError();
-                    SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
-                    return;
-            }
-        }
-
-        private void ErrorBarReset()
-        {
-            LoadingImageSpin = true;
-            SetErrorBar(Visibility.Hidden, string.Empty);
-        }
-
-        private void SetLoadingImageToError()
-        {
-            LoadingImageIcon = EFontAwesomeIcon.Solid_Times;
-            LoadingImageSpin = false;
-        }
-
-        private void SetErrorBar(Visibility visibility, string errorMessage)
-        {
-            ErrorBarText = errorMessage;
-            ErrorBarVisibility = visibility;
-        }
-
-        #endregion
-
-        #region History
-
-        public async Task SetHistoryChartPricesAsync()
-        {
-            List<MarketHistoriesResponse> historyItemPrices;
-
-            try
-            {
-                var locations = Locations.GetLocationsListByArea(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
-                historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), GetQualities()).ConfigureAwait(true);
-
-                if (historyItemPrices == null)
-                {
-                    return;
-                }
-            }
-            catch (TooManyRequestsException)
-            {
-                ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
-                SetErrorValues(Error.ToManyRequests);
-                return;
-            }
-
-            SetHistoryChart(historyItemPrices);
-        }
-
-        private void SetHistoryChart(List<MarketHistoriesResponse> historyItemPrices)
-        {
-            var date = new List<string>();
-            var seriesCollectionHistory = new ObservableCollection<ISeries>();
-            var xAxes = new ObservableCollection<Axis>();
-
-            foreach (var marketHistory in historyItemPrices)
-            {
-                var amount = new ObservableCollection<ObservablePoint>();
-
-                var counter = 0;
-                foreach (var data in marketHistory?.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
-                {
-                    if (!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
-                    {
-                        date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
-                    }
-
-                    amount.Add(new ObservablePoint(counter++, data.AveragePrice));
-                }
-
-                var lineSeries = new LineSeries<ObservablePoint>
-                {
-                    Name = WorldData.GetUniqueNameOrDefault(marketHistory?.Location),
-                    Values = amount,
-                    Fill = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), true),
-                    Stroke = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), false),
-                    GeometryStroke = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), false),
-                    GeometryFill = Locations.GetLocationBrush(Locations.GetLocationByLocationNameOrId(marketHistory?.Location), true),
-                    GeometrySize = 5,
-                    TooltipLabelFormatter = p => $"{p.Context.Series.Name}: {p.PrimaryValue:N0}"
-                };
-
-                seriesCollectionHistory.Add(lineSeries);
-            }
-
-            xAxes.Add(new Axis()
-            {
-                LabelsRotation = 15,
-                Labels = date,
-                Labeler = value => new DateTime((long)value).ToString(CultureInfo.CurrentCulture),
-                UnitWidth = TimeSpan.FromDays(1).Ticks
+                CraftingResourceName = item?.LocalizedName,
+                UniqueName = item?.UniqueName,
+                OneProductionAmount = craftResource.Count,
+                Icon = item?.Icon,
+                ResourceCost = 0,
+                Weight = ItemController.GetWeight(item?.FullItemInformation),
+                CraftingQuantity = craftingQuantity,
+                IsArtifactResource = item?.UniqueName?.ToUpper().Contains("ARTEFACT") ?? false,
+                IsTomeOfInsightResource = item?.UniqueName?.ToUpper().Contains("SKILLBOOK_STANDARD") ?? false,
+                IsAvalonianEnergy = item?.UniqueName?.ToUpper().Contains("QUESTITEM_TOKEN_AVALON") ?? false
             });
+        }
+    }
 
-            XAxesHistory = xAxes.ToArray();
-            SeriesHistory = seriesCollectionHistory;
+    private Item GetSuitableResourceItem(string uniqueName)
+    {
+        var suitableUniqueName = $"{uniqueName}_LEVEL{Item.Level}@{Item.Level}";
+        return ItemController.GetItemByUniqueName(suitableUniqueName) ?? ItemController.GetItemByUniqueName(uniqueName);
+    }
+
+    public void UpdateCraftingCalculationTab()
+    {
+        if (EssentialCraftingValues == null || CraftingCalculation == null)
+        {
+            return;
         }
 
-        #endregion
+        // PossibleItem crafting
+        var possibleItemCrafting = EssentialCraftingValues.CraftingItemQuantity / 100d * EssentialCraftingValues.CraftingBonus * ((EssentialCraftingValues.IsCraftingWithFocus)
+            ? ((23.1d / 100d) + 1d) : 1d);
 
-        #region Prices
-
-        public async Task GetCityItemPricesAsync()
+        // Crafting quantity
+        if (RequiredResources?.Count > 0)
         {
-            try
+            foreach (var requiredResource in RequiredResources.ToList())
             {
-                CurrentCityPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item?.UniqueName).ConfigureAwait(false);
-                ErrorBarReset();
-            }
-            catch (TooManyRequestsException e)
-            {
-                CurrentCityPrices = null;
-                SetErrorValues(Error.ToManyRequests);
-                Log.Warn(nameof(GetCityItemPricesAsync), e);
-            }
-        }
-
-        public async Task GetItemPricesInRealMoneyAsync()
-        {
-            if (CurrentCityPrices == null)
-            {
-                return;
-            }
-
-            var realMoneyMarketObject = new List<MarketQualityObject>();
-
-            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
-            foreach (var stat in filteredCityPrices)
-            {
-                if (realMoneyMarketObject.Exists(x => x.Location == stat.City))
+                if (requiredResource.IsArtifactResource || requiredResource.IsTomeOfInsightResource || requiredResource.IsAvalonianEnergy)
                 {
-                    var marketQualityObject = realMoneyMarketObject.Find(x => x.LocationName == stat.City);
-                    await SetRealMoneyQualityStat(stat, marketQualityObject);
-                }
-                else
-                {
-                    var marketQualityObject = new MarketQualityObject { Location = stat.City };
-                    await SetRealMoneyQualityStat(stat, marketQualityObject);
-                    realMoneyMarketObject.Add(marketQualityObject);
-                }
-            }
-            RealMoneyPriceList = realMoneyMarketObject;
-        }
-
-        public void SetQualityPriceStatsOnListView()
-        {
-            if (CurrentCityPrices == null)
-            {
-                return;
-            }
-
-            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true, true);
-            var marketQualityObjectList = new List<MarketQualityObject>();
-
-            foreach (var stat in filteredCityPrices)
-            {
-                if (marketQualityObjectList.Exists(x => x.Location == stat.City))
-                {
-                    var marketQualityObject = marketQualityObjectList.Find(x => x.LocationName == stat.City);
-                    SetQualityStat(stat, ref marketQualityObject);
-                }
-                else
-                {
-                    var marketQualityObject = new MarketQualityObject { Location = stat.City };
-                    SetQualityStat(stat, ref marketQualityObject);
-                    marketQualityObjectList.Add(marketQualityObject);
-                }
-            }
-
-            AllQualityPricesList = marketQualityObjectList;
-        }
-
-        private async Task SetRealMoneyQualityStat(MarketResponse marketResponse, MarketQualityObject marketQualityObject)
-        {
-            if (marketQualityObject == null)
-                return;
-
-            if (_currentGoldPrice == null)
-            {
-                var getGoldPricesObjectList = await ApiController.GetGoldPricesFromJsonAsync(null, 1);
-                _currentGoldPrice = getGoldPricesObjectList?.FirstOrDefault();
-            }
-
-            switch (ItemController.GetQuality(marketResponse.QualityLevel))
-            {
-                case ItemQuality.Normal:
-                    marketQualityObject.SellPriceMinNormalStringInRalMoney =
-                        Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
-                    marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
-                    return;
-
-                case ItemQuality.Good:
-                    marketQualityObject.SellPriceMinGoodStringInRalMoney =
-                        Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
-                    marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
-                    return;
-
-                case ItemQuality.Outstanding:
-                    marketQualityObject.SellPriceMinOutstandingStringInRalMoney =
-                        Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
-                    marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
-                    return;
-
-                case ItemQuality.Excellent:
-                    marketQualityObject.SellPriceMinExcellentStringInRalMoney =
-                        Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
-                    marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
-                    return;
-
-                case ItemQuality.Masterpiece:
-                    marketQualityObject.SellPriceMinMasterpieceStringInRalMoney =
-                        Converter.GoldToDollar(marketResponse.SellPriceMin, _currentGoldPrice?.Price ?? 0);
-                    marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
-                    return;
-            }
-        }
-
-        private static void SetQualityStat(MarketResponse marketResponse, ref MarketQualityObject marketQualityObject)
-        {
-            if (marketQualityObject == null)
-                return;
-
-            switch (ItemController.GetQuality(marketResponse.QualityLevel))
-            {
-                case ItemQuality.Normal:
-                    marketQualityObject.SellPriceMinNormal = marketResponse.SellPriceMin;
-                    marketQualityObject.SellPriceMinNormalDate = marketResponse.SellPriceMinDate;
-                    return;
-
-                case ItemQuality.Good:
-                    marketQualityObject.SellPriceMinGood = marketResponse.SellPriceMin;
-                    marketQualityObject.SellPriceMinGoodDate = marketResponse.SellPriceMinDate;
-                    return;
-
-                case ItemQuality.Outstanding:
-                    marketQualityObject.SellPriceMinOutstanding = marketResponse.SellPriceMin;
-                    marketQualityObject.SellPriceMinOutstandingDate = marketResponse.SellPriceMinDate;
-                    return;
-
-                case ItemQuality.Excellent:
-                    marketQualityObject.SellPriceMinExcellent = marketResponse.SellPriceMin;
-                    marketQualityObject.SellPriceMinExcellentDate = marketResponse.SellPriceMinDate;
-                    return;
-
-                case ItemQuality.Masterpiece:
-                    marketQualityObject.SellPriceMinMasterpiece = marketResponse.SellPriceMin;
-                    marketQualityObject.SellPriceMinMasterpieceDate = marketResponse.SellPriceMinDate;
-                    return;
-            }
-        }
-
-        private List<MarketResponse> GetFilteredCityPrices(bool blackZoneOutposts, bool villages, bool cities, bool blackMarket, bool getAllQualities = false)
-        {
-            return CurrentCityPrices?.Where(x =>
-                Locations.GetLocationsListByArea(blackZoneOutposts, villages, cities, blackMarket, true).Contains(x.CityEnum)
-                && (GetQualities().Contains(x.QualityLevel) || getAllQualities)).ToList();
-        }
-
-        public void GetMainPriceStats()
-        {
-            if (CurrentCityPrices is not { Count: > 0 })
-            {
-                return;
-            }
-
-            var filteredCityPrices = GetFilteredCityPrices(ShowBlackZoneOutpostsChecked, ShowVillagesChecked, true, true);
-            var statsPricesTotalList = PriceUpdate(filteredCityPrices);
-
-            FindBestPrice(ref statsPricesTotalList);
-
-            var marketCurrentPricesItemList = statsPricesTotalList.Select(item => new MarketCurrentPricesItem(item)).ToList();
-
-            if (LoadingImageVisibility != Visibility.Hidden)
-            {
-                LoadingImageVisibility = Visibility.Hidden;
-            }
-
-            MarketCurrentPricesItemList = marketCurrentPricesItemList;
-            SetAveragePricesString();
-
-            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.Now.CurrentDateTimeFormat()}";
-        }
-
-        private static List<MarketResponseTotal> PriceUpdate(List<MarketResponse> newStatsPricesList)
-        {
-            var currentStatsPricesTotalList = new List<MarketResponseTotal>();
-
-            foreach (var newStats in newStatsPricesList ?? new List<MarketResponse>())
-                try
-                {
-                    if (currentStatsPricesTotalList.Exists(s => Locations.GetParameterName(s.City) == newStats.City))
-                    {
-                        var curStats = currentStatsPricesTotalList.Find(s => WorldData.GetUniqueNameOrDefault((int)s.City) == newStats.City);
-
-                        if (newStats?.SellPriceMinDate < curStats?.SellPriceMinDate)
-                        {
-                            curStats.SellPriceMin = newStats.SellPriceMin;
-                            curStats.SellPriceMinDate = newStats.SellPriceMinDate;
-                        }
-
-                        if (newStats?.SellPriceMaxDate < curStats?.SellPriceMaxDate)
-                        {
-                            curStats.SellPriceMax = newStats.SellPriceMax;
-                            curStats.SellPriceMaxDate = newStats.SellPriceMaxDate;
-                        }
-
-                        if (newStats?.BuyPriceMinDate < curStats?.BuyPriceMinDate)
-                        {
-                            curStats.BuyPriceMin = newStats.BuyPriceMin;
-                            curStats.BuyPriceMinDate = newStats.BuyPriceMinDate;
-                        }
-
-                        if (newStats?.BuyPriceMaxDate < curStats?.BuyPriceMaxDate)
-                        {
-                            curStats.BuyPriceMax = newStats.BuyPriceMax;
-                            curStats.BuyPriceMaxDate = newStats.BuyPriceMaxDate;
-                        }
-                    }
-                    else
-                    {
-                        currentStatsPricesTotalList.Add(new MarketResponseTotal(newStats));
-                    }
-                }
-                catch
-                {
-                    return currentStatsPricesTotalList;
-                }
-
-            return currentStatsPricesTotalList;
-        }
-
-        private void FindBestPrice(ref List<MarketResponseTotal> list)
-        {
-            if (list.Count == 0)
-                return;
-
-            var max = GetMaxPrice(list);
-
-            try
-            {
-                if (list.Exists(s => s.BuyPriceMax == max))
-                {
-                    // ReSharper disable once PossibleNullReferenceException
-                    list.Find(s => s?.BuyPriceMax == max).BestBuyMaxPrice = true;
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-
-            var min = GetMinPrice(list);
-
-            try
-            {
-                if (list.Exists(s => s.SellPriceMin == min)) list.First(s => s.SellPriceMin == min).BestSellMinPrice = true;
-            }
-            catch
-            {
-                // ignored
-            }
-        }
-
-        private static ulong GetMaxPrice(List<MarketResponseTotal> list)
-        {
-            var max = ulong.MinValue;
-            foreach (var type in list)
-            {
-                if (type.BuyPriceMax == 0)
+                    requiredResource.CraftingQuantity = (long)Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
                     continue;
-
-                if (type.BuyPriceMax > max)
-                    max = type.BuyPriceMax;
-            }
-
-            return max;
-        }
-
-        private static ulong GetMinPrice(List<MarketResponseTotal> list)
-        {
-            var min = ulong.MaxValue;
-            foreach (var type in list)
-            {
-                if (type.SellPriceMin == 0)
-                    continue;
-
-                if (type.SellPriceMin < min)
-                    min = type.SellPriceMin;
-            }
-
-            return min;
-        }
-
-        private void SetAveragePricesString()
-        {
-            var cityPrices = GetFilteredCityPrices(false, false, true, false);
-
-            var sellPriceMin = new List<ulong>();
-            var sellPriceMax = new List<ulong>();
-            var buyPriceMin = new List<ulong>();
-            var buyPriceMax = new List<ulong>();
-
-            foreach (var price in cityPrices ?? new List<MarketResponse>())
-            {
-                if (price.SellPriceMin != 0) sellPriceMin.Add(price.SellPriceMin);
-
-                if (price.SellPriceMax != 0) sellPriceMax.Add(price.SellPriceMax);
-
-                if (price.BuyPriceMin != 0) buyPriceMin.Add(price.BuyPriceMin);
-
-                if (price.BuyPriceMax != 0) buyPriceMax.Add(price.BuyPriceMax);
-            }
-
-            var sellPriceMinAverage = Average(sellPriceMin.ToArray());
-            var sellPriceMaxAverage = Average(sellPriceMax.ToArray());
-            var buyPriceMinAverage = Average(buyPriceMin.ToArray());
-            var buyPriceMaxAverage = Average(buyPriceMax.ToArray());
-
-            AveragePrices = $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", sellPriceMinAverage)}  |  " +
-                            $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", sellPriceMaxAverage)}  |  " +
-                            $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", buyPriceMinAverage)}  |  " +
-                            $"{string.Format(LanguageController.CurrentCultureInfo, "{0:n0}", buyPriceMaxAverage)}";
-        }
-
-        #endregion Prices
-
-        #region Bindings
-
-        public Item Item
-        {
-            get => _item;
-            set
-            {
-                _item = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string ItemName
-        {
-            get => _itemName;
-            set
-            {
-                _itemName = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string ItemTierLevel
-        {
-            get => _itemTierLevel;
-            set
-            {
-                _itemTierLevel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public BitmapImage Icon
-        {
-            get => _icon;
-            set
-            {
-                _icon = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public List<MarketResponse> CurrentCityPrices
-        {
-            get => _currentCityPrices;
-            set
-            {
-                _currentCityPrices = value;
-                if (EssentialCraftingValues != null)
-                {
-                    EssentialCraftingValues.CurrentCityPrices = value;
                 }
 
-                OnPropertyChanged();
+                requiredResource.CraftingQuantity = EssentialCraftingValues.CraftingItemQuantity;
             }
         }
 
-        public string AveragePrices
+        CraftingCalculation.PossibleItemCrafting = Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity);
+
+        // Crafting (Usage) tax
+        CraftingCalculation.CraftingTax = CraftingController.GetCraftingTax(EssentialCraftingValues.UsageFeePerHundredFood, Item, CraftingCalculation.PossibleItemCrafting);
+
+        // Setup fee
+        CraftingCalculation.SetupFee = CraftingController.GetSetupFeeCalculation(EssentialCraftingValues.CraftingItemQuantity, EssentialCraftingValues.SetupFee, EssentialCraftingValues.SellPricePerItem);
+
+        // Auctions house tax
+        CraftingCalculation.AuctionsHouseTax =
+            EssentialCraftingValues.SellPricePerItem * Convert.ToInt64(EssentialCraftingValues.CraftingItemQuantity) / 100 * Convert.ToInt64(EssentialCraftingValues.AuctionHouseTax);
+
+        // Total resource costs
+        CraftingCalculation.TotalResourceCosts = RequiredResources?.Sum(x => x.TotalCost) ?? 0;
+
+        // Other costs
+        CraftingCalculation.OtherCosts = EssentialCraftingValues.OtherCosts;
+
+        // Total item sells
+        CraftingCalculation.TotalItemSells = EssentialCraftingValues.SellPricePerItem * (CraftingCalculation.PossibleItemCrafting * EssentialCraftingValues.AmountCrafted);
+
+        if (RequiredJournal != null)
         {
-            get => _averagePrices;
-            set
-            {
-                _averagePrices = value;
-                OnPropertyChanged();
-            }
+            // Required journal amount
+            RequiredJournal.RequiredJournalAmount = CraftingController.GetRequiredJournalAmount(Item, Math.Round(possibleItemCrafting, MidpointRounding.ToNegativeInfinity));
+
+            // Total journal costs
+            CraftingCalculation.TotalJournalCosts = RequiredJournal.CostsPerJournal * RequiredJournal.RequiredJournalAmount;
+
+            // Total journal sells
+            CraftingCalculation.TotalJournalSells = RequiredJournal.RequiredJournalAmount * RequiredJournal.SellPricePerJournal;
         }
 
-        public Visibility LoadingImageVisibility
+        // Amount crafted
+        CraftingCalculation.AmountCrafted = EssentialCraftingValues.AmountCrafted;
+
+        // Weight
+        var requiredResourcesWeights = RequiredResources?.Sum(x => x.TotalWeight) ?? 0;
+        var possibleItemCraftingWeights = CraftingCalculation?.PossibleItemCrafting * ItemController.GetWeight(Item?.FullItemInformation) ?? 0;
+
+        if (CraftingCalculation != null)
         {
-            get => _loadingImageVisibility;
-            set
-            {
-                _loadingImageVisibility = value;
-                OnPropertyChanged();
-            }
-        }
+            CraftingCalculation.TotalResourcesWeight = requiredResourcesWeights;
+            CraftingCalculation.TotalRequiredJournalWeight = RequiredJournal?.TotalWeight ?? 0;
+            CraftingCalculation.TotalUnfinishedCraftingWeight = CraftingCalculation.TotalResourcesWeight + CraftingCalculation.TotalRequiredJournalWeight;
 
-        public Visibility InformationLoadingImageVisibility
+            CraftingCalculation.TotalCraftedItemWeight = possibleItemCraftingWeights;
+            CraftingCalculation.TotalFinishedCraftingWeight = CraftingCalculation.TotalCraftedItemWeight;
+        }
+    }
+
+    #endregion Crafting tab
+
+    #region Error methods
+
+    private void SetErrorValues(Error error)
+    {
+        switch (error)
         {
-            get => _informationLoadingImageVisibility;
-            set
-            {
-                _informationLoadingImageVisibility = value;
-                OnPropertyChanged();
-            }
-        }
+            case Error.NoItemInfo:
+                Icon = new BitmapImage(new Uri(@"pack://application:,,,/"
+                                               + Assembly.GetExecutingAssembly().GetName().Name + ";component/"
+                                               + "Resources/Trash.png", UriKind.Absolute));
+                SetLoadingImageToError();
+                SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_NO_ITEM_INFO"));
+                return;
 
-        public EFontAwesomeIcon LoadingImageIcon
+            case Error.NoPrices:
+                SetLoadingImageToError();
+                SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_PRICES_CAN_NOT_BE_LOADED"));
+                return;
+
+            case Error.GeneralError:
+                SetLoadingImageToError();
+                SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
+                return;
+
+            case Error.ToManyRequests:
+                SetLoadingImageToError();
+                SetErrorBar(Visibility.Visible, LanguageController.Translation("TOO_MANY_REQUESTS_CLOSE_WINDOWS_OR_WAIT"));
+                return;
+
+            default:
+                SetLoadingImageToError();
+                SetErrorBar(Visibility.Visible, LanguageController.Translation("ERROR_GENERAL_ERROR"));
+                return;
+        }
+    }
+
+    private void ErrorBarReset()
+    {
+        IsTaskProgressbarIndeterminate = false;
+        SetErrorBar(Visibility.Hidden, string.Empty);
+    }
+
+    private void SetLoadingImageToError()
+    {
+        IsTaskProgressbarIndeterminate = true;
+    }
+
+    private void SetErrorBar(Visibility visibility, string errorMessage)
+    {
+        ErrorBarText = errorMessage;
+        ErrorBarVisibility = visibility;
+    }
+
+    #endregion
+
+    #region Prices
+
+    public async void UpdateMarketPricesAsync(object sender, ElapsedEventArgs e)
+    {
+        await UpdateMarketPricesAsync();
+    }
+
+    public async Task UpdateMarketPricesAsync()
+    {
+        try
         {
-            get => _loadingImageIcon;
-            set
-            {
-                _loadingImageIcon = value;
-                OnPropertyChanged();
-            }
+            CurrentItemPrices = await ApiController.GetCityItemPricesFromJsonAsync(Item?.UniqueName);
+            RefreshIconTooltipText = $"{LanguageController.Translation("LAST_UPDATE")}: {DateTime.UtcNow.CurrentDateTimeFormat()}";
+            ErrorBarReset();
         }
-
-        public bool LoadingImageSpin
+        catch (TooManyRequestsException ex)
         {
-            get => _loadingImageSpin;
-            set
-            {
-                _loadingImageSpin = value;
-                OnPropertyChanged();
-            }
+            SetErrorValues(Error.ToManyRequests);
+            Log.Warn(nameof(UpdateMarketPricesAsync), ex);
         }
+    }
 
-        public List<MarketCurrentPricesItem> MarketCurrentPricesItemList
+    private static void FindBestPrice(IReadOnlyCollection<ItemPricesObject> list)
+    {
+        if (list == null || list.Count == 0)
+            return;
+
+        for (var i = 1; i <= 5; i++)
         {
-            get => _marketCurrentPricesItemList;
-            set
+            var max = GetMaxPrice(list, i);
+
+            var itemPricesObjectBuyPriceMax = list.Where(x => x.Visibility == Visibility.Visible && x.QualityLevel == i).FirstOrDefault(s => s.BuyPriceMax == max);
+            if (itemPricesObjectBuyPriceMax != null)
             {
-                _marketCurrentPricesItemList = value;
-                OnPropertyChanged();
+                itemPricesObjectBuyPriceMax.IsBestBuyMaxPrice = true;
+            }
+
+            var min = GetMinPrice(list, i);
+
+            var itemPricesObjectSellPriceMin = list.Where(x => x.Visibility == Visibility.Visible && x.QualityLevel == i).FirstOrDefault(s => s.SellPriceMin == min);
+            if (itemPricesObjectSellPriceMin != null)
+            {
+                itemPricesObjectSellPriceMin.IsBestSellMinPrice = true;
             }
         }
+    }
 
-        public XmlLanguage ItemListViewLanguage
+    private static ulong GetMaxPrice(IEnumerable<ItemPricesObject> list, int quality)
+    {
+        var max = ulong.MinValue;
+        foreach (var type in list.Where(x => x.QualityLevel == quality))
         {
-            get => _itemListViewLanguage;
-            set
-            {
-                _itemListViewLanguage = value;
-                OnPropertyChanged();
-            }
+            if (type.BuyPriceMax == 0)
+                continue;
+
+            if (type.BuyPriceMax > max)
+                max = type.BuyPriceMax;
         }
 
-        public bool RunUpdate
+        return max;
+    }
+
+    private static ulong GetMinPrice(IEnumerable<ItemPricesObject> list, int quality)
+    {
+        var min = ulong.MaxValue;
+        foreach (var type in list.Where(x => x.QualityLevel == quality))
         {
-            get => _runUpdate;
-            set
-            {
-                _runUpdate = value;
-                OnPropertyChanged();
-            }
+            if (type.SellPriceMin == 0)
+                continue;
+
+            if (type.SellPriceMin < min)
+                min = type.SellPriceMin;
         }
 
-        public string ErrorBarText
+        return min;
+    }
+
+    #endregion Prices
+
+    #region Main tab
+
+    public void UpdateMainTabItemPrices(object sender, ElapsedEventArgs e)
+    {
+        UpdateMainTabItemPrices();
+    }
+
+    public void UpdateMainTabItemPrices()
+    {
+        var currentItemPrices = CurrentItemPrices?.Select(x => new ItemPricesObject(x)).ToList();
+        UpdateMainTabItemPricesObjects(currentItemPrices);
+        SetItemPricesObjectVisibility(MainTabBindings.ItemPrices);
+    }
+
+    private void UpdateMainTabItemPricesObjects(List<ItemPricesObject> newPrices)
+    {
+        foreach (var newItemPricesObject in newPrices ?? new List<ItemPricesObject>())
         {
-            get => _errorBarText;
-            set
+            if (MainTabBindings.ItemPrices == null)
             {
-                _errorBarText = value;
-                OnPropertyChanged();
+                break;
+            }
+
+            lock (MainTabBindings.ItemPrices)
+            {
+                var currentItemPricesObject = MainTabBindings.ItemPrices?.FirstOrDefault(x => x.MarketLocation == newItemPricesObject.MarketLocation && x.QualityLevel == newItemPricesObject.QualityLevel);
+
+                if (currentItemPricesObject == null)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MainTabBindings.ItemPrices?.Add(newItemPricesObject);
+                    });
+                }
+
+                if (newItemPricesObject?.SellPriceMinDate > currentItemPricesObject?.SellPriceMinDate)
+                {
+                    currentItemPricesObject.SellPriceMin = newItemPricesObject.SellPriceMin;
+                    currentItemPricesObject.SellPriceMinDate = newItemPricesObject.SellPriceMinDate;
+                }
+
+                if (newItemPricesObject?.SellPriceMaxDate > currentItemPricesObject?.SellPriceMaxDate)
+                {
+                    currentItemPricesObject.SellPriceMax = newItemPricesObject.SellPriceMax;
+                    currentItemPricesObject.SellPriceMaxDate = newItemPricesObject.SellPriceMaxDate;
+                }
+
+                if (newItemPricesObject?.BuyPriceMinDate > currentItemPricesObject?.BuyPriceMinDate)
+                {
+                    currentItemPricesObject.BuyPriceMin = newItemPricesObject.BuyPriceMin;
+                    currentItemPricesObject.BuyPriceMinDate = newItemPricesObject.BuyPriceMinDate;
+                }
+
+                if (newItemPricesObject?.BuyPriceMaxDate > currentItemPricesObject?.BuyPriceMaxDate)
+                {
+                    currentItemPricesObject.BuyPriceMax = newItemPricesObject.BuyPriceMax;
+                    currentItemPricesObject.BuyPriceMaxDate = newItemPricesObject.BuyPriceMaxDate;
+                }
             }
         }
+    }
 
-        public Visibility ErrorBarVisibility
+    private void SetItemPricesObjectVisibility(ObservableCollection<ItemPricesObject> prices)
+    {
+        foreach (var currentItemPricesObject in prices?.ToList() ?? new List<ItemPricesObject>())
         {
-            get => _errorBarVisibility;
-            set
+            if (GetCheckedLocations().Contains(currentItemPricesObject.MarketLocation) && currentItemPricesObject.QualityLevel == MainTabBindings.QualitiesSelection.Quality)
             {
-                _errorBarVisibility = value;
-                OnPropertyChanged();
+                currentItemPricesObject.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                currentItemPricesObject.Visibility = Visibility.Collapsed;
             }
         }
 
-        public bool NormalQualityChecked
+        FindBestPrice(prices?.Where(x => GetCheckedLocations().Contains(x.MarketLocation)).ToList());
+    }
+
+    private List<MarketLocation> GetCheckedLocations()
+    {
+        return LocationFilters?.Where(x => x?.IsChecked == true).Select(x => x.Location).ToList() ?? new List<MarketLocation>();
+    }
+
+    #endregion
+
+    #region Quality tab / Real money tab
+
+    private void UpdateQualityTabItemPrices(object sender, ElapsedEventArgs e)
+    {
+        UpdateQualityTabItemPrices();
+    }
+
+    public void UpdateQualityTabItemPrices()
+    {
+        var marketResponse = CurrentItemPrices?.ToList();
+        UpdateQualityTabItemPricesObjects(marketResponse);
+        SetMarketQualityObjectVisibility(QualityTabBindings?.Prices);
+    }
+
+    private void UpdateQualityTabItemPricesObjects(List<MarketResponse> newPrices)
+    {
+        if (QualityTabBindings?.Prices == null)
         {
-            get => _normalQualityChecked;
-            set
-            {
-                _normalQualityChecked = !_normalQualityChecked && value;
-                SetQualityPriceStatsOnListView();
-                _ = GetCityItemPricesAsync();
-                _ = GetItemPricesInRealMoneyAsync();
-                OnPropertyChanged();
-            }
+            return;
         }
 
-        public bool GoodQualityChecked
+        foreach (var marketResponse in newPrices ?? new List<MarketResponse>())
         {
-            get => _goodQualityChecked;
-            set
+            if (QualityTabBindings?.Prices == null)
             {
-                _goodQualityChecked = !_goodQualityChecked && value;
-                SetQualityPriceStatsOnListView();
-                _ = GetCityItemPricesAsync();
-                _ = GetItemPricesInRealMoneyAsync();
-                OnPropertyChanged();
+                continue;
+            }
+
+            lock (QualityTabBindings.Prices)
+            {
+                var currentPriceObject = QualityTabBindings?.Prices?.FirstOrDefault(x => x.MarketLocation == marketResponse.MarketLocation);
+
+                if (currentPriceObject == null)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        QualityTabBindings?.Prices?.Add(new MarketQualityObject(marketResponse));
+                    });
+                    continue;
+                }
+
+                currentPriceObject.SetValues(marketResponse);
             }
         }
+    }
 
-        public bool OutstandingQualityChecked
+    private void SetMarketQualityObjectVisibility(List<MarketQualityObject> prices)
+    {
+        foreach (var currentItemPricesObject in prices?.ToList() ?? new List<MarketQualityObject>())
         {
-            get => _outstandingQualityChecked;
-            set
+            if (GetCheckedLocations().Contains(currentItemPricesObject.MarketLocation))
             {
-                _outstandingQualityChecked = !_outstandingQualityChecked && value;
-                SetQualityPriceStatsOnListView();
-                _ = GetCityItemPricesAsync();
-                _ = GetItemPricesInRealMoneyAsync();
-                OnPropertyChanged();
+                currentItemPricesObject.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                currentItemPricesObject.Visibility = Visibility.Collapsed;
             }
         }
+    }
 
-        public bool ExcellentQualityChecked
+    #endregion
+
+    #region History tab
+
+    public void UpdateHistoryTabChartPrices(object sender, ElapsedEventArgs e)
+    {
+        UpdateHistoryTabChartPricesAsync();
+    }
+
+    public async void UpdateHistoryTabChartPricesAsync()
+    {
+        List<MarketHistoriesResponse> historyItemPrices;
+
+        try
         {
-            get => _excellentQualityChecked;
-            set
+            var locations = GetCheckedLocations();
+            historyItemPrices = await ApiController.GetHistoryItemPricesFromJsonAsync(Item.UniqueName, locations, DateTime.Now.AddDays(-30), HistoryTabBindings.QualitiesSelection.Quality).ConfigureAwait(true);
+
+            if (historyItemPrices == null)
             {
-                _excellentQualityChecked = !_excellentQualityChecked && value;
-                SetQualityPriceStatsOnListView();
-                _ = GetCityItemPricesAsync();
-                _ = GetItemPricesInRealMoneyAsync();
-                OnPropertyChanged();
+                return;
             }
         }
-
-        public bool MasterpieceQualityChecked
+        catch (TooManyRequestsException)
         {
-            get => _masterpieceQualityChecked;
-            set
-            {
-                _masterpieceQualityChecked = !_masterpieceQualityChecked && value;
-                SetQualityPriceStatsOnListView();
-                _ = GetCityItemPricesAsync();
-                _ = GetItemPricesInRealMoneyAsync();
-                OnPropertyChanged();
-            }
+            ConsoleManager.WriteLineForWarning(MethodBase.GetCurrentMethod()?.DeclaringType, new TooManyRequestsException());
+            SetErrorValues(Error.ToManyRequests);
+            return;
         }
 
-        public bool ShowBlackZoneOutpostsChecked
+        SetHistoryChart(historyItemPrices);
+    }
+
+    private void SetHistoryChart(List<MarketHistoriesResponse> historyItemPrices)
+    {
+        var date = new List<string>();
+        var seriesCollectionHistory = new ObservableCollection<ISeries>();
+        var xAxes = new ObservableCollection<Axis>();
+
+        foreach (var marketHistory in historyItemPrices)
         {
-            get => _showBlackZoneOutpostsChecked;
-            set
+            if (marketHistory == null)
             {
-                _showBlackZoneOutpostsChecked = value;
-                OnPropertyChanged();
+                continue;
             }
+
+            var amount = new ObservableCollection<ObservablePoint>();
+            var counter = 0;
+            foreach (var data in marketHistory.Data?.OrderBy(x => x.Timestamp).ToList() ?? new List<MarketHistoryResponse>())
+            {
+                if (!date.Exists(x => x.Contains(data.Timestamp.ToString("g", CultureInfo.CurrentCulture))))
+                {
+                    date.Add(data.Timestamp.ToString("g", CultureInfo.CurrentCulture));
+                }
+
+                amount.Add(new ObservablePoint(counter++, data.AveragePrice));
+            }
+
+            var lineSeries = new LineSeries<ObservablePoint>
+            {
+                Name = WorldData.GetUniqueNameOrDefault(marketHistory.Location),
+                Values = amount,
+                Fill = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), true),
+                Stroke = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), false),
+                GeometryStroke = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), false),
+                GeometryFill = Locations.GetLocationBrush(marketHistory.Location.GetMarketLocationByLocationNameOrId(), true),
+                GeometrySize = 5,
+                TooltipLabelFormatter = p => $"{p.Context.Series.Name}: {p.PrimaryValue:N0}"
+            };
+
+            seriesCollectionHistory.Add(lineSeries);
         }
 
-        public bool ShowVillagesChecked
+        xAxes.Add(new Axis()
         {
-            get => _showVillagesChecked;
-            set
-            {
-                _showVillagesChecked = value;
-                OnPropertyChanged();
-            }
-        }
+            LabelsRotation = 15,
+            Labels = date,
+            Labeler = value => new DateTime((long)value).ToString(CultureInfo.CurrentCulture),
+            UnitWidth = TimeSpan.FromDays(1).Ticks
+        });
 
-        public bool IsAutoUpdateActive
+        HistoryTabBindings.XAxesHistory = xAxes.ToArray();
+        HistoryTabBindings.SeriesHistory = seriesCollectionHistory;
+    }
+
+    #endregion
+
+    #region Bindings
+
+    public Item Item
+    {
+        get => _item;
+        set
         {
-            get => _isAutoUpdateActive;
-            set
-            {
-                _isAutoUpdateActive = value;
-
-                _timer.Enabled = _isAutoUpdateActive;
-                RefreshSpin = IsAutoUpdateActive;
-                OnPropertyChanged();
-            }
+            _item = value;
+            OnPropertyChanged();
         }
+    }
 
-        public ObservableCollection<ISeries> SeriesHistory
+    public string TitleName
+    {
+        get => _titleName;
+        set
         {
-            get => _seriesHistory;
-            set
-            {
-                _seriesHistory = value;
-                OnPropertyChanged();
-            }
+            _titleName = value;
+            OnPropertyChanged();
         }
+    }
 
-        public Axis[] XAxesHistory
+    public string ItemTierLevel
+    {
+        get => _itemTierLevel;
+        set
         {
-            get => _xAxesHistory;
-            set
-            {
-                _xAxesHistory = value;
-                OnPropertyChanged();
-            }
+            _itemTierLevel = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool RefreshSpin
+    public BitmapImage Icon
+    {
+        get => _icon;
+        set
         {
-            get => _refreshSpin;
-            set
-            {
-                _refreshSpin = value;
-                OnPropertyChanged();
-            }
+            _icon = value;
+            OnPropertyChanged();
         }
+    }
 
-        public string RefreshIconTooltipText
+    public bool RefreshSpin
+    {
+        get => _refreshSpin;
+        set
         {
-            get => _refreshIconTooltipText;
-            set
-            {
-                _refreshIconTooltipText = value;
-                OnPropertyChanged();
-            }
+            _refreshSpin = value;
+            OnPropertyChanged();
         }
+    }
 
-        public List<MarketQualityObject> AllQualityPricesList
+    public XmlLanguage ItemListViewLanguage
+    {
+        get => _itemListViewLanguage;
+        set
         {
-            get => _allQualityPricesList;
-            set
-            {
-                _allQualityPricesList = value;
-                OnPropertyChanged();
-            }
+            _itemListViewLanguage = value;
+            OnPropertyChanged();
         }
+    }
 
-        public List<MarketQualityObject> RealMoneyPriceList
+    public ItemWindowMainTabBindings MainTabBindings
+    {
+        get => _mainTabBindings;
+        set
         {
-            get => _realMoneyPriceList;
-            set
-            {
-                _realMoneyPriceList = value;
-                OnPropertyChanged();
-            }
+            _mainTabBindings = value;
+            OnPropertyChanged();
         }
+    }
 
-        public RequiredJournal RequiredJournal
+    public ItemWindowQualityTabBindings QualityTabBindings
+    {
+        get => _qualityTabBindings;
+        set
         {
-            get => _requiredJournal;
-            set
-            {
-                _requiredJournal = value;
-                OnPropertyChanged();
-            }
+            _qualityTabBindings = value;
+            OnPropertyChanged();
         }
+    }
 
-        public CraftingCalculation CraftingCalculation
+    public ItemWindowHistoryTabBindings HistoryTabBindings
+    {
+        get => _historyTabBindings;
+        set
         {
-            get => _craftingCalculation;
-            set
-            {
-                _craftingCalculation = value;
-                OnPropertyChanged();
-            }
+            _historyTabBindings = value;
+            OnPropertyChanged();
         }
+    }
 
-        public EssentialCraftingValuesTemplate EssentialCraftingValues
+    public ItemWindowRealMoneyTabBindings RealMoneyTabBindings
+    {
+        get => _realMoneyTabBindings;
+        set
         {
-            get => _essentialCraftingValues;
-            set
-            {
-                _essentialCraftingValues = value;
-                OnPropertyChanged();
-            }
+            _realMoneyTabBindings = value;
+            OnPropertyChanged();
         }
+    }
 
-        public ObservableCollection<RequiredResource> RequiredResources
+    public ItemWindowCraftingTabBindings CraftingTabBindings
+    {
+        get => _craftingTabBindings;
+        set
         {
-            get => _requiredResources;
-            set
-            {
-                _requiredResources = value;
-                OnPropertyChanged();
-            }
+            _craftingTabBindings = value;
+            OnPropertyChanged();
         }
+    }
 
-        public Visibility RequiredJournalVisibility
+    public RequiredJournal RequiredJournal
+    {
+        get => _requiredJournal;
+        set
         {
-            get => _requiredJournalVisibility;
-            set
-            {
-                _requiredJournalVisibility = value;
-                OnPropertyChanged();
-            }
+            _requiredJournal = value;
+            OnPropertyChanged();
         }
+    }
 
-        public Visibility CraftingTabVisibility
+    public CraftingCalculation CraftingCalculation
+    {
+        get => _craftingCalculation;
+        set
         {
-            get => _craftingTabVisibility;
-            set
-            {
-                _craftingTabVisibility = value;
-                OnPropertyChanged();
-            }
+            _craftingCalculation = value;
+            OnPropertyChanged();
         }
+    }
 
-        public string CraftingNotes
+    public EssentialCraftingValuesTemplate EssentialCraftingValues
+    {
+        get => _essentialCraftingValues;
+        set
         {
-            get => _craftingNotes;
-            set
-            {
-                _craftingNotes = value;
-                OnPropertyChanged();
-            }
+            _essentialCraftingValues = value;
+            OnPropertyChanged();
         }
+    }
 
-        public ExtraItemInformation ExtraItemInformation
+    public ObservableCollection<RequiredResource> RequiredResources
+    {
+        get => _requiredResources;
+        set
         {
-            get => _extraItemInformation;
-            set
-            {
-                _extraItemInformation = value;
-                OnPropertyChanged();
-            }
+            _requiredResources = value;
+            OnPropertyChanged();
         }
+    }
 
-        public ItemWindowTranslation Translation
+    public string CraftingNotes
+    {
+        get => _craftingNotes;
+        set
         {
-            get => _translation;
-            set
-            {
-                _translation = value;
-                OnPropertyChanged();
-            }
+            _craftingNotes = value;
+            OnPropertyChanged();
         }
+    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    public Visibility RequiredJournalVisibility
+    {
+        get => _requiredJournalVisibility;
+        set
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _requiredJournalVisibility = value;
+            OnPropertyChanged();
         }
+    }
 
-        #endregion Bindings
-
-        #region Helper
-
-        public ulong Sum(params ulong[] values)
+    public Visibility CraftingTabVisibility
+    {
+        get => _craftingTabVisibility;
+        set
         {
-            return values.Aggregate(0UL, (current, t) => current + t);
+            _craftingTabVisibility = value;
+            OnPropertyChanged();
         }
+    }
 
-        public ulong Average(params ulong[] values)
+    public Visibility ErrorBarVisibility
+    {
+        get => _errorBarVisibility;
+        set
         {
-            if (values.Length == 0) return 0;
-
-            var sum = Sum(values);
-            var result = sum / (ulong)values.Length;
-            return result;
+            _errorBarVisibility = value;
+            OnPropertyChanged();
         }
+    }
 
-        private List<int> GetQualities()
+    public string ErrorBarText
+    {
+        get => _errorBarText;
+        set
         {
-            var qualities = new List<int>();
-
-            if (NormalQualityChecked)
-            {
-                qualities.Add(1);
-            }
-
-            if (GoodQualityChecked)
-            {
-                qualities.Add(2);
-            }
-
-            if (OutstandingQualityChecked)
-            {
-                qualities.Add(3);
-            }
-
-            if (ExcellentQualityChecked)
-            {
-                qualities.Add(4);
-            }
-
-            if (MasterpieceQualityChecked)
-            {
-                qualities.Add(5);
-            }
-
-            return qualities;
+            _errorBarText = value;
+            OnPropertyChanged();
         }
+    }
 
-        private void SetDefaultQualityIfNoOneChecked()
+    public List<MarketResponse> CurrentItemPrices
+    {
+        get => _currentItemPrices;
+        set
         {
-            if (!NormalQualityChecked && !GoodQualityChecked && !OutstandingQualityChecked && !ExcellentQualityChecked && !MasterpieceQualityChecked)
+            _currentItemPrices = value;
+            if (EssentialCraftingValues != null)
             {
-                NormalQualityChecked = true;
+                EssentialCraftingValues.CurrentCityPrices = value;
             }
-        }
 
-        #endregion
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsAutoUpdateActive
+    {
+        get => _isAutoUpdateActive;
+        set
+        {
+            _isAutoUpdateActive = value;
+
+            _timer.Enabled = _isAutoUpdateActive;
+            RefreshSpin = _isAutoUpdateActive;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TaskProgressbarMinimum
+    {
+        get => _taskProgressbarMinimum;
+        set
+        {
+            _taskProgressbarMinimum = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TaskProgressbarMaximum
+    {
+        get => _taskProgressbarMaximum;
+        set
+        {
+            _taskProgressbarMaximum = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public double TaskProgressbarValue
+    {
+        get => _taskProgressbarValue;
+        set
+        {
+            _taskProgressbarValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsTaskProgressbarIndeterminate
+    {
+        get => _isTaskProgressbarIndeterminate;
+        set
+        {
+            _isTaskProgressbarIndeterminate = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string RefreshIconTooltipText
+    {
+        get => _refreshIconTooltipText;
+        set
+        {
+            _refreshIconTooltipText = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int TabControlSelectedIndex
+    {
+        get => _tabControlSelectedIndex;
+        set
+        {
+            _tabControlSelectedIndex = value;
+
+            // 2 is History tab
+            if (_tabControlSelectedIndex == 2)
+            {
+                UpdateHistoryTabChartPricesAsync();
+            }
+
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<MainTabLocationFilterObject> LocationFilters
+    {
+        get => _locationFilters;
+        set
+        {
+            _locationFilters = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ExtraItemInformation ExtraItemInformation
+    {
+        get => _extraItemInformation;
+        set
+        {
+            _extraItemInformation = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ItemWindowTranslation Translation
+    {
+        get => _translation;
+        set
+        {
+            _translation = value;
+            OnPropertyChanged();
+        }
+    }
+
+    #endregion
+
+    #region Helper
+
+    public ulong Sum(params ulong[] values)
+    {
+        return values.Aggregate(0UL, (current, t) => current + t);
+    }
+
+    public ulong Average(params ulong[] values)
+    {
+        if (values.Length == 0) return 0;
+
+        var sum = Sum(values);
+        var result = sum / (ulong)values.Length;
+        return result;
+    }
+
+    #endregion
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

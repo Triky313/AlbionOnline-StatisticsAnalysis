@@ -9,7 +9,7 @@ public class ExtraItemInformation
     private string _shopCategory;
     private string _shopSubCategory1;
     private string _weight;
-    private string _durability;
+    private double _durability;
     private string _canBeOvercharged;
     private string _showInMarketPlace;
 
@@ -43,7 +43,7 @@ public class ExtraItemInformation
         }
     }
 
-    public string Durability
+    public double Durability
     {
         get => _durability;
         set

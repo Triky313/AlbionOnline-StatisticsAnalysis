@@ -72,6 +72,9 @@
                                     <CheckBox IsChecked="{Binding DamageMeterBindings.IsDamageMeterResetByMapChangeActive}" 
                                           Content="{Binding Translation.MapChangeReset, FallbackValue=MAP__CHANGE__RESET}" 
                                           HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
+                                    <CheckBox IsChecked="{Binding DamageMeterBindings.IsDamageMeterResetBeforeCombatActive}" 
+                                          Content="{Binding Translation.ResetBeforeCombat, FallbackValue=RESET__BEFORE__COMBAT}" 
+                                          HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>
                                     <CheckBox IsChecked="{Binding DamageMeterBindings.IsSnapshotAfterMapChangeActive}" 
                                           Content="{Binding Translation.SnapshotAfterMapChange, FallbackValue=SNAPSHOT__AFTER__MAP__CHANGE}" 
                                           HorizontalContentAlignment="Left" Margin="5,2,10,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" MaxWidth="250"/>

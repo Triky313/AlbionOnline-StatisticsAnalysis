@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using System;
 
 namespace StatisticsAnalysisTool.Models.TranslationModel
 {
@@ -14,6 +15,7 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string AutoUpdateData => LanguageController.Translation("AUTO_UPDATE_DATA");
         public static string LastUpdate => LanguageController.Translation("LAST_UPDATE");
         public static string City => LanguageController.Translation("CITY");
+        public static string Location => LanguageController.Translation("LOCATION");
         public static string SellPriceMin => LanguageController.Translation("SELL_PRICE_MIN");
         public static string SellPriceMinDate => LanguageController.Translation("SELL_PRICE_MIN_DATE");
         public static string SellPriceMax => LanguageController.Translation("SELL_PRICE_MAX");
@@ -50,5 +52,10 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string ShopSubCategory => LanguageController.Translation("SHOP_SUB_CATEGORY");
         public static string CanBeOvercharged => LanguageController.Translation("CAN_BE_OVERCHARGED");
         public static string Notes => LanguageController.Translation("NOTES");
+        public static string CraftingInfoDescription1 => LanguageController.Translation("CRAFTING_INFO_DESCRIPTION_1");
+        public static string CraftingInfoDescription2 => LanguageController.Translation("CRAFTING_INFO_DESCRIPTION_2");
+        public static string CraftingInfoDescription3 => LanguageController.Translation("CRAFTING_INFO_DESCRIPTION_3");
+        public static string CraftingInfoDescription4 => LanguageController.Translation("CRAFTING_INFO_DESCRIPTION_4");
+        public static string CraftingInfoDescription5 => LanguageController.Translation("CRAFTING_INFO_DESCRIPTION_5");
     }
 }

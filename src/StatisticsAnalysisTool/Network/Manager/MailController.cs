@@ -1,4 +1,5 @@
 ﻿using StatisticsAnalysisTool.Common;
+using StatisticsAnalysisTool.Common.UserSettings;
 using StatisticsAnalysisTool.Enumerations;
 using StatisticsAnalysisTool.Models;
 using StatisticsAnalysisTool.Models.NetworkModel;
@@ -12,7 +13,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using StatisticsAnalysisTool.Common.UserSettings;
 
 namespace StatisticsAnalysisTool.Network.Manager
 {
@@ -51,6 +51,18 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
+            lock (_mainWindowViewModel.MailMonitoringBindings.Mails)
+            {
+                var list = _mainWindowViewModel.MailMonitoringBindings.Mails.ToList();
+                for (var i = 0; i < list.Count; i++)
+                {
+                    if (list[i].MailId == mailId)
+                    {
+                        return;
+                    }
+                }
+            }
+
             if (_mainWindowViewModel.MailMonitoringBindings.Mails.ToArray().Any(x => x.MailId == mailId))
             {
                 return;
@@ -63,7 +75,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            var mailContent = ContentToObject(mailInfo.MailType, content);
+            var mailContent = ContentToObject(mailInfo.MailType, content, SettingsController.CurrentSettings.MailMonitoringMarketTaxRate, SettingsController.CurrentSettings.MailMonitoringMarketTaxSetupRate);
 
             if (SettingsController.CurrentSettings.IgnoreMailsWithZeroValues && mailContent.IsMailWithoutValues)
             {
@@ -135,95 +147,149 @@ namespace StatisticsAnalysisTool.Network.Manager
             });
         }
 
-        private static MailContent ContentToObject(MailType type, string content, double taxRate = 3)
+        private static MailContent ContentToObject(MailType type, string content, double taxRate, double taxSetupRate)
         {
             switch (type)
             {
                 case MailType.MarketplaceBuyOrderFinished:
+                    return MarketplaceBuyOrderFinishedToMailContent(content, taxSetupRate);
                 case MailType.MarketplaceSellOrderFinished:
-                    var contentObject = content.Split("|");
-
-                    if (contentObject.Length < 3)
-                    {
-                        return new MailContent();
-                    }
-
-                    _ = int.TryParse(contentObject[0], out var quantity);
-                    var uniqueItemName = contentObject[1];
-                    _ = long.TryParse(contentObject[2], out var totalPriceLong);
-                    _ = long.TryParse(contentObject[3], out var unitPriceLong);
-
-                    if (type == MailType.MarketplaceSellOrderFinished)
-                    {
-                        return new MailContent()
-                        {
-                            UsedQuantity = quantity,
-                            Quantity = quantity,
-                            InternalTotalPrice = totalPriceLong,
-                            InternalUnitPrice = unitPriceLong,
-                            UniqueItemName = uniqueItemName,
-                            TaxRate = taxRate
-                        };
-                    }
-
-                    return new MailContent()
-                    {
-                        UsedQuantity = quantity,
-                        Quantity = quantity,
-                        InternalTotalPrice = totalPriceLong,
-                        InternalUnitPrice = unitPriceLong,
-                        UniqueItemName = uniqueItemName
-                    };
+                    return MarketplaceSellOrderFinishedToMailContent(content, taxRate, taxSetupRate);
                 case MailType.MarketplaceSellOrderExpired:
+                    return MarketplaceSellOrderExpiredToMailContent(content, taxRate, taxSetupRate);
                 case MailType.MarketplaceBuyOrderExpired:
-                    var contentExpiredObject = content.Split("|");
-
-                    if (contentExpiredObject.Length < 4)
-                    {
-                        return new MailContent();
-                    }
-
-                    _ = int.TryParse(contentExpiredObject[0], out var usedExpiredQuantity);
-                    _ = int.TryParse(contentExpiredObject[1], out var expiredQuantity);
-                    _ = long.TryParse(contentExpiredObject[2], out var totalExpiredPriceLong);
-                    var uniqueItemExpiredName = contentExpiredObject[3];
-
-                    var totalExpiredPrice = FixPoint.FromInternalValue(totalExpiredPriceLong);
-
-                    // Calculation of costs
-                    var totalNotPurchased = expiredQuantity - usedExpiredQuantity;
-                    var singlePrice = totalExpiredPrice.IntegerValue / totalNotPurchased;
-                    var totalPrice = singlePrice * usedExpiredQuantity;
-
-                    if (type == MailType.MarketplaceSellOrderExpired)
-                    {
-                        return new MailContent()
-                        {
-                            UsedQuantity = usedExpiredQuantity,
-                            Quantity = expiredQuantity,
-                            InternalTotalPrice = FixPoint.FromFloatingPointValue(totalPrice).InternalValue,
-                            InternalUnitPrice = FixPoint.FromFloatingPointValue(singlePrice).InternalValue,
-                            UniqueItemName = uniqueItemExpiredName,
-                            TaxRate = taxRate
-                        };
-                    }
-
-                    return new MailContent()
-                    {
-                        UsedQuantity = usedExpiredQuantity,
-                        Quantity = expiredQuantity,
-                        InternalTotalPrice = FixPoint.FromFloatingPointValue(totalPrice).InternalValue,
-                        InternalUnitPrice = FixPoint.FromFloatingPointValue(singlePrice).InternalValue,
-                        UniqueItemName = uniqueItemExpiredName
-                    };
+                    return MarketplaceBuyOrderExpiredToMailContent(content, taxSetupRate);
+                case MailType.Unknown:
                 default:
                     return new MailContent();
             }
         }
 
+        #region Mail values converter
+
+        private static MailContent MarketplaceBuyOrderFinishedToMailContent(string content, double taxSetupRate)
+        {
+            var contentObject = content.Split("|");
+
+            if (contentObject.Length < 3)
+            {
+                return new MailContent();
+            }
+
+            _ = int.TryParse(contentObject[0], out var quantity);
+            var uniqueItemName = contentObject[1];
+            _ = long.TryParse(contentObject[2], out var totalPriceLong);
+            _ = long.TryParse(contentObject[3], out var unitPriceLong);
+
+            var totalPrice = FixPoint.FromInternalValue(totalPriceLong);
+            var unitPrice = FixPoint.FromInternalValue(unitPriceLong);
+
+            return new MailContent()
+            {
+                UsedQuantity = quantity,
+                Quantity = quantity,
+                InternalTotalPrice = FixPoint.FromFloatingPointValue((totalPrice.DoubleValue / 100 * taxSetupRate) + totalPrice.DoubleValue).InternalValue,
+                InternalUnitPrice = FixPoint.FromFloatingPointValue((unitPrice.DoubleValue / 100 * taxSetupRate) + unitPrice.DoubleValue).InternalValue,
+                UniqueItemName = uniqueItemName,
+                TaxSetupRate = taxSetupRate
+            };
+        }
+
+        private static MailContent MarketplaceSellOrderFinishedToMailContent(string content, double taxRate, double taxSetupRate)
+        {
+            var contentObject = content.Split("|");
+
+            if (contentObject.Length < 3)
+            {
+                return new MailContent();
+            }
+
+            _ = int.TryParse(contentObject[0], out var quantity);
+            var uniqueItemName = contentObject[1];
+            _ = long.TryParse(contentObject[2], out var totalPriceLong);
+            _ = long.TryParse(contentObject[3], out var unitPriceLong);
+
+            return new MailContent()
+            {
+                UsedQuantity = quantity,
+                Quantity = quantity,
+                InternalTotalPrice = totalPriceLong,
+                InternalUnitPrice = unitPriceLong,
+                UniqueItemName = uniqueItemName,
+                TaxRate = taxRate,
+                TaxSetupRate = taxSetupRate
+            };
+        }
+
+        private static MailContent MarketplaceSellOrderExpiredToMailContent(string content, double taxRate, double taxSetupRate)
+        {
+            var contentObject = content.Split("|");
+
+            if (contentObject.Length < 4)
+            {
+                return new MailContent();
+            }
+
+            _ = int.TryParse(contentObject[0], out var usedQuantity);
+            _ = int.TryParse(contentObject[1], out var quantity);
+            _ = long.TryParse(contentObject[2], out var totalPriceLong);
+            var uniqueItemName = contentObject[3];
+
+            var totalPrice = FixPoint.FromInternalValue(totalPriceLong);
+
+            // Calculation of costs
+            var singlePrice = totalPrice.DoubleValue / usedQuantity;
+
+            return new MailContent()
+            {
+                UsedQuantity = usedQuantity,
+                Quantity = quantity,
+                InternalTotalPrice = totalPriceLong,
+                InternalUnitPrice = FixPoint.FromFloatingPointValue(singlePrice).InternalValue,
+                UniqueItemName = uniqueItemName,
+                TaxRate = taxRate,
+                TaxSetupRate = taxSetupRate
+            };
+        }
+
+        private static MailContent MarketplaceBuyOrderExpiredToMailContent(string content, double taxSetupRate)
+        {
+            var contentExpiredObject = content.Split("|");
+
+            if (contentExpiredObject.Length < 4)
+            {
+                return new MailContent();
+            }
+
+            _ = int.TryParse(contentExpiredObject[0], out var usedExpiredQuantity);
+            _ = int.TryParse(contentExpiredObject[1], out var expiredQuantity);
+            _ = long.TryParse(contentExpiredObject[2], out var totalRecoveredSilverLong);
+            var uniqueItemExpiredName = contentExpiredObject[3];
+
+            var totalRecoveredSilver = FixPoint.FromInternalValue(totalRecoveredSilverLong);
+
+            // Calculation of costs
+            var totalNotPurchased = expiredQuantity - usedExpiredQuantity;
+
+            var unitPrice = FixPoint.FromFloatingPointValue(totalRecoveredSilver.DoubleValue / totalNotPurchased);
+            var totalPrice = FixPoint.FromFloatingPointValue(unitPrice.DoubleValue * usedExpiredQuantity);
+
+            return new MailContent()
+            {
+                UsedQuantity = usedExpiredQuantity,
+                Quantity = expiredQuantity,
+                InternalTotalPrice = FixPoint.FromFloatingPointValue((totalPrice.DoubleValue / 100 * taxSetupRate) + totalPrice.DoubleValue).InternalValue,
+                InternalUnitPrice = FixPoint.FromFloatingPointValue((unitPrice.DoubleValue / 100 * taxSetupRate) + unitPrice.DoubleValue).InternalValue,
+                UniqueItemName = uniqueItemExpiredName,
+                TaxSetupRate = taxSetupRate
+            };
+        }
+
+        #endregion
+
         public async Task SetMailsAsync(List<Mail> mails)
         {
-            await Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+            await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
             {
                 foreach (var item in mails)
                 {
@@ -235,14 +301,19 @@ namespace StatisticsAnalysisTool.Network.Manager
 
                     // The if block convert data from old versions to new version
                     if (item.MailType is MailType.MarketplaceSellOrderFinished or MailType.MarketplaceSellOrderExpired
-                        && item.MailContent?.TaxRate != null && !item.MailContent.TaxRate.Equals(3) && item.Timestamp < new DateTime(2022, 12, 1))
+                        && item.MailContent?.TaxRate != null && item.Timestamp < new DateTime(2022, 12, 1))
                     {
-                        item.MailContent.TaxRate = 3;
+                        item.MailContent.TaxRate = item.Timestamp < new DateTime(2022, 9, 14) ? 3 : 4; // Into the Fray Patch 6 tax increase
+                    }
+
+                    // The if block convert data from old versions to new version
+                    if (item.MailContent?.TaxSetupRate != null && item.Timestamp < new DateTime(2022, 12, 1))
+                    {
+                        item.MailContent.TaxSetupRate = item.Timestamp < new DateTime(2022, 9, 14) ? 1.5 : 2.5; // Into the Fray Patch 6 tax increase
                     }
                 }
 
-                await _mainWindowViewModel?.MailMonitoringBindings?.Mails?.AddRangeAsync(mails)!;
-
+                _mainWindowViewModel?.MailMonitoringBindings?.Mails?.AddRange(mails.AsEnumerable());
                 _mainWindowViewModel?.MailMonitoringBindings?.MailCollectionView?.Refresh();
                 _mainWindowViewModel?.MailMonitoringBindings?.MailStatsObject?.SetMailStats(mails);
             }, DispatcherPriority.Background, CancellationToken.None);
@@ -279,7 +350,23 @@ namespace StatisticsAnalysisTool.Network.Manager
                 return;
             }
 
-            await FileController.SaveAsync(_mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList(), $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}");
+            if (_mainWindowViewModel?.MailMonitoringBindings?.Mails == null)
+            {
+                return;
+            }
+
+            List<Mail> mails;
+            lock (_mainWindowViewModel.MailMonitoringBindings.Mails)
+            {
+                mails = _mainWindowViewModel?.MailMonitoringBindings?.Mails?.ToList();
+            }
+
+            if (mails == null)
+            {
+                return;
+            }
+
+            await FileController.SaveAsync(mails, $"{AppDomain.CurrentDomain.BaseDirectory}{Settings.Default.MailsFileName}");
             _addMailCounter = 0;
         }
 

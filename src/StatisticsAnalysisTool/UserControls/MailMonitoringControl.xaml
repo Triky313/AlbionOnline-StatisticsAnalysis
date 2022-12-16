@@ -7,14 +7,14 @@
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              mc:Ignorable="d" 
-             d:DesignHeight="950" d:DesignWidth="800"
+             d:DesignHeight="1250" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
 
     <Grid>
         <Grid Margin="0,0,0,0" Height="60" VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal" MaxWidth="400" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <fa5:ImageAwesome Icon="Solid_Filter" Foreground="{StaticResource SolidColorBrush.Text.1}" Width="20" Height="20" Margin="0,0,5,0" />
-                <TextBox Text="{Binding MailMonitoringBindings.MailsSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Height="24" HorizontalAlignment="Left" />
+                <TextBox Text="{Binding MailMonitoringBindings.MailsSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="SearchText_TextChanged" Width="200" Height="24" HorizontalAlignment="Left" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top">
                 <StackPanel Orientation="Horizontal" MaxWidth="300" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top">
@@ -31,10 +31,10 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="30" Margin="25,30,0,0">
-                <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" SelectedDate="{Binding MailMonitoringBindings.DatePickerMailsFrom}" 
+                <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" SelectedDate="{Binding MailMonitoringBindings.DatePickerMailsFrom}" SelectedDateChanged="DatePicker_OnSelectedDateChanged" 
                             Background="Transparent" BorderThickness="0" Margin="0,0,0,0" />
                 <TextBlock Text="{Binding Translation.To, StringFormat='{}{0} ', FallbackValue=TO}" VerticalAlignment="Center" Foreground="{StaticResource SolidColorBrush.Text.1}" />
-                <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" SelectedDate="{Binding MailMonitoringBindings.DatePickerMailsTo}" 
+                <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center" SelectedDate="{Binding MailMonitoringBindings.DatePickerMailsTo}" SelectedDateChanged="DatePicker_OnSelectedDateChanged" 
                             Background="Transparent" BorderThickness="0" Margin="6,0,0,0" />
             </StackPanel>
         </Grid>

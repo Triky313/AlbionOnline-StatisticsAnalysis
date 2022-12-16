@@ -81,6 +81,7 @@
                                 <fa5:ImageAwesome Icon="Brands_Paypal" Foreground="{StaticResource SolidColorBrush.Text.1}" />
                             </Hyperlink>
                         </TextBlock>
+                        <Image Source="../Assets/paypal-QR-Code.png" Height="72" Width="72" Margin="20,0,0,0" />
                     </Grid>
                 </StackPanel>
             </StackPanel>

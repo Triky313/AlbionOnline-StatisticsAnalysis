@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using StatisticsAnalysisTool.Common.Converters;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using StatisticsAnalysisTool.Common;
-using StatisticsAnalysisTool.Common.Converters;
-using StatisticsAnalysisTool.Enumerations;
 
 namespace StatisticsAnalysisTool.Models.ItemsJsonModel;
 
@@ -51,7 +49,7 @@ public class Mount : ItemJsonObject
     public string PassiveSpellSlots { get; set; }
 
     [JsonPropertyName("@durability")]
-    public string Durability { get; set; }
+    public double Durability { get; set; }
 
     [JsonPropertyName("@durabilityloss_attack")]
     public string DurabilityLossAttack { get; set; }

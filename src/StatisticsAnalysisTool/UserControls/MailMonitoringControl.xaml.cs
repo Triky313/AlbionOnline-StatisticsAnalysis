@@ -3,6 +3,8 @@ using StatisticsAnalysisTool.ViewModels;
 using StatisticsAnalysisTool.Views;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace StatisticsAnalysisTool.UserControls
@@ -65,6 +67,18 @@ namespace StatisticsAnalysisTool.UserControls
             }
 
             _isSelectAllActive = !_isSelectAllActive;
+        }
+
+        private void SearchText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var vm = (MainWindowViewModel)DataContext;
+            CollectionViewSource.GetDefaultView(vm.MailMonitoringBindings.Mails).Refresh();
+        }
+
+        private void DatePicker_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var vm = (MainWindowViewModel)DataContext;
+            CollectionViewSource.GetDefaultView(vm.MailMonitoringBindings.Mails).Refresh();
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
@@ -81,6 +81,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Update="DownloadItemJsonFilesManually.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -89,6 +92,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="GameFiles\lootchests.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameFiles\mobs.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="GameFiles\world.json">
@@ -136,6 +142,9 @@
     <Content Include="Sounds\alert4.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Sounds\dungeon_closed.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Assets\ava_chest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -154,16 +163,37 @@
     <Resource Include="Assets\book_oblique.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\crafting_description_image001.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\crafting_description_image002.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\dungeon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\empty_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\gem_level1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\gem_level2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\gem_level3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\gem_level4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\gold_glow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\green_glow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\heart.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\MiniMapMarker\group_dungeon.png">
@@ -205,7 +235,13 @@
     <Resource Include="Assets\outpost_chest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\paypal-QR-Code.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\purple_glow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\repair_cross.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\sat-icon.png">
@@ -492,18 +528,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="ao-update-check.xml" />
-    <Resource Include="Resources\level3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\level2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\level1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\level0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\t8.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -530,15 +554,15 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.220" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.516" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1293.44" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.0-preview.3.22175.4" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1418.22" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.0" />
     <PackageReference Include="Autoupdater.NET.Official" Version="1.7.4" />
     <PackageReference Include="FontAwesome5" Version="2.1.6" />
-    <PackageReference Include="log4net" Version="2.0.14" />
+    <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="PhotonPackageParser" Version="4.1.0" />
-    <PackageReference Include="SharpPcap" Version="6.2.2" />
+    <PackageReference Include="SharpPcap" Version="6.2.5" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="7.0.0-preview.2.22152.2" />
     <PackageReference Include="VirtualizingWrapPanel" Version="1.5.7" />
@@ -555,10 +579,17 @@
     <None Remove="Assets\blue_glow.png" />
     <None Remove="Assets\book.png" />
     <None Remove="Assets\book_oblique.png" />
+    <None Remove="Assets\crafting_description_image001.png" />
+    <None Remove="Assets\crafting_description_image002.png" />
     <None Remove="Assets\dungeon.png" />
     <None Remove="Assets\empty_icon.png" />
+    <None Remove="Assets\gem_level1.png" />
+    <None Remove="Assets\gem_level2.png" />
+    <None Remove="Assets\gem_level3.png" />
+    <None Remove="Assets\gem_level4.png" />
     <None Remove="Assets\gold_glow.png" />
     <None Remove="Assets\green_glow.png" />
+    <None Remove="Assets\heart.png" />
     <None Remove="Assets\MiniMapMarker\group_dungeon.png" />
     <None Remove="Assets\MiniMapMarker\minimapmarker_fiber.png" />
     <None Remove="Assets\MiniMapMarker\minimapmarker_hide.png" />
@@ -572,10 +603,13 @@
     <None Remove="Assets\MiniMapMarker\solo_dungeon.png" />
     <None Remove="Assets\openworld_chests.png" />
     <None Remove="Assets\outpost_chest.png" />
+    <None Remove="Assets\paypal-QR-Code.png" />
     <None Remove="Assets\purple_glow.png" />
+    <None Remove="Assets\repair_cross.png" />
     <None Remove="Assets\sat-icon.png" />
     <None Remove="Assets\static_chest.png" />
     <None Remove="GameFiles\lootchests.json" />
+    <None Remove="GameFiles\mobs.json" />
     <None Remove="GameFiles\world.json" />
     <None Remove="Languages\de-DE.xml" />
     <None Remove="Languages\en-US.xml" />
@@ -629,6 +663,7 @@
     <None Remove="Sounds\alert2.wav" />
     <None Remove="Sounds\alert3.wav" />
     <None Remove="Sounds\alert4.wav" />
+    <None Remove="Sounds\dungeon_closed.wav" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
@@ -639,6 +674,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\DashboardStyles.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\ThanksStyle.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -167,11 +167,10 @@ public class VaultBindings : INotifyPropertyChanged
 
     private bool Filter(object obj)
     {
-        return obj is VaultSearchItem vaultSearchItem
-               && ((vaultSearchItem.Location != null && vaultSearchItem.Location.ToLower().Contains(SearchText?.ToLower() ?? string.Empty))
-                    || ($"T{vaultSearchItem.Item?.Tier}.{vaultSearchItem.Item?.Level}".ToLower().Contains(SearchText?.ToLower() ?? string.Empty))
-                    || vaultSearchItem.MainLocation != null && vaultSearchItem.MainLocation.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
-                    || (vaultSearchItem.Item != null && vaultSearchItem.Item.LocalizedName.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)));
+        return obj is VaultSearchItem vaultSearchItem && ((vaultSearchItem.Location != null && vaultSearchItem.Location.ToLower().Contains(SearchText?.ToLower() ?? string.Empty))
+                                                          || ($"T{vaultSearchItem.Item?.Tier}.{vaultSearchItem.Item?.Level}".ToLower().Contains(SearchText?.ToLower() ?? string.Empty))
+                                                          || vaultSearchItem.MainLocation != null && vaultSearchItem.MainLocation.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)
+                                                          || (vaultSearchItem.Item != null && vaultSearchItem.Item.LocalizedName.ToLower().Contains(SearchText?.ToLower() ?? string.Empty)));
     }
 
     #endregion

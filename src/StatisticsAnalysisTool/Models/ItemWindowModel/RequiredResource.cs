@@ -23,15 +23,19 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
         private long _totalCost;
         private long _craftingQuantity;
         private long _oneProductionAmount;
-        private readonly ItemWindowViewModel _itemWindowViewModel;
+        private readonly ItemWindowViewModel _itemWindowViewModelOld;
         private bool _isArtifactResource;
         private List<MarketResponse> _marketResponse = new();
         private Location _itemPricesLocationSelected;
         private DateTime _lastUpdate = DateTime.UtcNow.AddDays(-100);
+        private double _weight;
+        private double _totalWeight;
+        private bool _isTomeOfInsightResource;
+        private bool _isAvalonianEnergy;
 
-        public RequiredResource(ItemWindowViewModel itemWindowViewModel)
+        public RequiredResource(ItemWindowViewModel itemWindowViewModelOld)
         {
-            _itemWindowViewModel = itemWindowViewModel;
+            _itemWindowViewModelOld = itemWindowViewModelOld;
         }
 
         private async void LoadSellPriceAsync(Location location)
@@ -93,6 +97,26 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
             }
         }
 
+        public bool IsTomeOfInsightResource
+        {
+            get => _isTomeOfInsightResource;
+            set
+            {
+                _isTomeOfInsightResource = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsAvalonianEnergy
+        {
+            get => _isAvalonianEnergy;
+            set
+            {
+                _isAvalonianEnergy = value;
+                OnPropertyChanged();
+            }
+        }
+
         public BitmapImage Icon
         {
             get => _icon;
@@ -111,7 +135,7 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
                 _resourceCost = value;
                 
                 TotalCost = ResourceCost * TotalQuantity;
-                _itemWindowViewModel.UpdateCraftingCalculationTab();
+                _itemWindowViewModelOld.UpdateCraftingCalculationTab();
                 OnPropertyChanged();
             }
         }
@@ -156,6 +180,27 @@ namespace StatisticsAnalysisTool.Models.ItemWindowModel
 
                 TotalQuantity = OneProductionAmount * _craftingQuantity;
                 TotalCost = ResourceCost * TotalQuantity;
+                TotalWeight = Weight * TotalQuantity;
+                OnPropertyChanged();
+            }
+        }
+
+        public double Weight
+        {
+            get => _weight;
+            set
+            {
+                _weight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TotalWeight
+        {
+            get => _totalWeight;
+            set
+            {
+                _totalWeight = value;
                 OnPropertyChanged();
             }
         }

@@ -18,7 +18,7 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(ReceivedSeasonPointsEvent value)
         {
-            await _trackingController.AddNotificationAsync(SetSeasonPointsNotification(value.SeasonPoints));
+            await Task.CompletedTask;
         }
 
         private TrackingNotification SetSeasonPointsNotification(int seasonPoints)

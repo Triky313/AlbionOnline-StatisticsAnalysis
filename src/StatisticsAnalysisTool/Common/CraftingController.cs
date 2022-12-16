@@ -158,8 +158,10 @@ namespace StatisticsAnalysisTool.Common
                 {
                     case Weapon weapon:
                         {
-                            var resources = GetTotalAmountResources(weapon.CraftingRequirements);
-                            return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource);
+                            //var resources = GetTotalAmountResources(weapon.CraftingRequirements);
+                            var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
+                            return itemQuantity * (foodValue / 44.44 / 100) * (itemValue * 5);
+                            //return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, weapon.CraftingRequirements?.FirstOrDefault()?.CraftResource);
                         }
                     case EquipmentItem equipmentItem:
                         {
@@ -172,10 +174,10 @@ namespace StatisticsAnalysisTool.Common
                             return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, mount.CraftingRequirements?.FirstOrDefault()?.CraftResource);
                         }
                     case ConsumableItem consumableItem:
-                        {
-                            var resources = GetTotalAmountResources(consumableItem.CraftingRequirements);
-                            return itemQuantity * GetSetupFeePerFoodConsumed(foodValue, resources, (ItemTier)item.Tier, (ItemLevel)item.Level, consumableItem.CraftingRequirements?.FirstOrDefault()?.CraftResource);
-                        }
+                    {
+                        var itemValue = ItemController.GetItemValue(item.FullItemInformation, item.Level);
+                        return itemQuantity * (foodValue / 44.44 / 100) * (itemValue * 5);
+                    }
                 }
 
                 return 0;
@@ -187,7 +189,7 @@ namespace StatisticsAnalysisTool.Common
                 return 0;
             }
         }
-
+        
         public static double GetSetupFeePerFoodConsumed(int foodValue, int numberOfMaterials, ItemTier tier, ItemLevel level, IEnumerable<CraftResource> craftResource)
         {
             var tierFactor = (tier, level) switch

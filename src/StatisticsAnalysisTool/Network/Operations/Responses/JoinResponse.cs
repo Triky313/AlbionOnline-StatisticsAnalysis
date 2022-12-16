@@ -104,14 +104,14 @@ namespace StatisticsAnalysisTool.Network.Operations.Responses
                     PlayTimeInSeconds = parameters[61].ObjectToInt();
                 }
 
-                if (parameters.ContainsKey(70))
+                if (parameters.ContainsKey(71))
                 {
-                    AllianceName = string.IsNullOrEmpty(parameters[70].ToString()) ? string.Empty : parameters[70].ToString();
+                    AllianceName = string.IsNullOrEmpty(parameters[71].ToString()) ? string.Empty : parameters[71].ToString();
                 }
 
-                if (parameters.ContainsKey(87))
+                if (parameters.ContainsKey(88))
                 {
-                    IsReSpecActive = parameters[87].ObjectToBool();
+                    IsReSpecActive = parameters[88].ObjectToBool();
                 }
             }
             catch (Exception e)

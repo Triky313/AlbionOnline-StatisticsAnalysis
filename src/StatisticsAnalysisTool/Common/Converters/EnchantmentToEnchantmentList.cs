@@ -1,6 +1,7 @@
 ﻿using StatisticsAnalysisTool.Models.ItemsJsonModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -83,6 +84,17 @@ public class EnchantmentToEnchantmentList : JsonConverter<List<Enchantment>>
                     case "@consumespell":
                         reader.Read();
                         enchantment.ConsumeSpell = reader.GetString();
+                        break;
+                    case "@durability":
+                        reader.Read();
+                        if (double.TryParse(reader.GetString(), NumberStyles.Float, CultureInfo.InvariantCulture, out var durabilityResult))
+                        {
+                            enchantment.Durability = durabilityResult;
+                        }
+                        else
+                        {
+                            enchantment.Durability = 0;
+                        }
                         break;
                     case "craftingrequirements":
                         reader.Read();

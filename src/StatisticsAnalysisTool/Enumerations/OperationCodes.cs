@@ -31,18 +31,18 @@
         ChannelingCancel,
         AttackBuildingStart,
         InventoryDestroyItem,
-        InventoryMoveItem = 30, // map[0:4 1:[39 -87 28 -11 -124 -89 51 72 -111 -18 117 74 87 91 -56 72] 2:14 4:[39 -87 28 -11 -124 -89 51 72 -111 -18 117 74 87 91 -56 72] 5:14 253:29]
+        InventoryMoveItem = 28, // map[0:4 1:[39 -87 28 -11 -124 -89 51 72 -111 -18 117 74 87 91 -56 72] 2:14 4:[39 -87 28 -11 -124 -89 51 72 -111 -18 117 74 87 91 -56 72] 5:14 253:29]
         InventoryRecoverItem,
         InventoryRecoverAllItems,
         InventorySplitStack,
         InventorySplitStackInto,
         GetClusterData,
-        ChangeCluster = 36, // Request: map[0:2 1: 2:[-1] 253:36 255:114] - Response: map[0:4000 253:36 255:114]
+        ChangeCluster = 34, // Request: map[0:2 1: 2:[-1] 253:36 255:114] - Response: map[0:4000 253:36 255:114]
         ConsoleCommand,
         ChatMessage,
         ReportClientError,
-        RegisterToObject,
-        UnRegisterFromObject,
+        RegisterToObject = 38,
+        UnRegisterFromObject = 39,
         CraftBuildingChangeSettings,
         CraftBuildingTakeMoney,
         RepairBuildingChangeSettings,
@@ -50,7 +50,7 @@
         ActionBuildingChangeSettings,
         HarvestStart,
         HarvestCancel,
-        TakeSilver,
+        TakeSilver = 48, // map[0:638028282819317254 1:442 2:2 3:3 4:530000 5:[1571] 253:48] 
         ActionOnBuildingStart,
         ActionOnBuildingCancel,
         ItemRerollQualityStart,
@@ -172,10 +172,10 @@
         ClaimRealEstate,
         GiveUpRealEstate,
         ChangeRealEstateOutline,
-        GetMailInfos = 170, // map[0:- 2:0 3:[MAIL_ID, MAIL_ID] 4:- 5:- 6:[CLUSTER_ID or UserName] 7:[3 3] 8:[3 3] 9:[true true]
+        GetMailInfos = 168, // map[0:- 2:0 3:[MAIL_ID, MAIL_ID] 4:- 5:- 6:[CLUSTER_ID or UserName] 7:[3 3] 8:[3 3] 9:[true true]
                             // 10:[MARKETPLACE_BUYORDER_FINISHED_SUMMARY MARKETPLACE_SELLORDER_FINISHED_SUMMARY] 11:[637852747555964630 637852641241345990] 12:[false false]]
         GetMailCount,
-        ReadMail = 172, //  map[0: MailId 1:QUANTITY|UNIQUE_ITEM_NAME(T4_ARMOR_CLOTH_SET3)|TOTAL_PRICE|UNIT_PRICE 2:[] 3:[] 4:[] 5:[] 6:[] 253:170]
+        ReadMail = 170, //  map[0: MailId 1:QUANTITY|UNIQUE_ITEM_NAME(T4_ARMOR_CLOTH_SET3)|TOTAL_PRICE|UNIT_PRICE 2:[] 3:[] 4:[] 5:[] 6:[] 253:170]
         SendNewMail,
         DeleteMail,
         MarkMailUnread,

@@ -32,6 +32,7 @@
     <Color x:Key="Color.Accent.Red.4">#FFE23B3E</Color>
     <Color x:Key="Color.Accent.Red.5">#FFCD3638</Color>
     <Color x:Key="Color.Accent.Red.6">#FFB52F31</Color>
+    <Color x:Key="Color.Accent.Red.7">#55FF8082</Color>
 
     <Color x:Key="Color.Accent.Green.1">#FF98EDB4</Color>
     <Color x:Key="Color.Accent.Green.2">#FF64E38E</Color>
@@ -63,6 +64,7 @@
     <Color x:Key="Color.City.Martlock">#FF5066CC</Color>
     <Color x:Key="Color.City.Lymhurst">#FF18A170</Color>
     <Color x:Key="Color.City.FortSterling">#FFE1F7FA</Color>
+    <Color x:Key="Color.City.Brecilien">#FFEE68BB</Color>
     <Color x:Key="Color.City.ArthursRest">#FFF75656</Color>
     <Color x:Key="Color.City.MerlynsRest">#FF3A9DC7</Color>
     <Color x:Key="Color.City.MorganasRest">#FF83AF00</Color>
@@ -75,6 +77,7 @@
     <Color x:Key="Color.City.Martlock.Transparent">#335066CC</Color>
     <Color x:Key="Color.City.Lymhurst.Transparent">#3318A170</Color>
     <Color x:Key="Color.City.FortSterling.Transparent">#33E1F7FA</Color>
+    <Color x:Key="Color.City.Brecilien.Transparent">#33EE68BB</Color>
     <Color x:Key="Color.City.ArthursRest.Transparent">#33F75656</Color>
     <Color x:Key="Color.City.MerlynsRest.Transparent">#333A9DC7</Color>
     <Color x:Key="Color.City.MorganasRest.Transparent">#3383AF00</Color>
@@ -105,6 +108,7 @@
     <Color x:Key="Item.Level.Color.1">#FF6bff91</Color>
     <Color x:Key="Item.Level.Color.2">#FF4ff0fd</Color>
     <Color x:Key="Item.Level.Color.3">#FFb866fe</Color>
+    <Color x:Key="Item.Level.Color.4">#FFf3dc59</Color>
 
     <!-- Pvp/Pve colors -->
     <Color x:Key="Text.Color.Pvp">#ffe05761</Color>
@@ -122,6 +126,7 @@
     <Color x:Key="Cluster.Red">#FFD81320</Color>
     <Color x:Key="Cluster.Black">#FF323B43</Color>
     <Color x:Key="Cluster.Avalon">#ffE9C86D</Color>
+    <Color x:Key="Cluster.Mists">#ff705BCF</Color>
 
     <!-- Value colors -->
     <Color x:Key="Color.Value.Fame">#FFCF2026</Color>
@@ -186,6 +191,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.4" Color="{StaticResource Color.Accent.Red.4}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.5" Color="{StaticResource Color.Accent.Red.5}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.6" Color="{StaticResource Color.Accent.Red.6}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Accent.Red.7" Color="{StaticResource Color.Accent.Red.7}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.1" Color="{StaticResource Color.Accent.Green.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Accent.Green.2" Color="{StaticResource Color.Accent.Green.2}"/>
@@ -210,6 +216,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.Martlock" Color="{StaticResource Color.City.Martlock}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst" Color="{StaticResource Color.City.Lymhurst}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling" Color="{StaticResource Color.City.FortSterling}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Brecilien" Color="{StaticResource Color.City.Brecilien}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest" Color="{StaticResource Color.City.ArthursRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest" Color="{StaticResource Color.City.MerlynsRest}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest" Color="{StaticResource Color.City.MorganasRest}"/>
@@ -222,6 +229,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.City.Martlock.Transparent" Color="{StaticResource Color.City.Martlock.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.Lymhurst.Transparent" Color="{StaticResource Color.City.Lymhurst.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.FortSterling.Transparent" Color="{StaticResource Color.City.FortSterling.Transparent}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.City.Brecilien.Transparent" Color="{StaticResource Color.City.Brecilien.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.ArthursRest.Transparent" Color="{StaticResource Color.City.ArthursRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MerlynsRest.Transparent" Color="{StaticResource Color.City.MerlynsRest.Transparent}"/>
     <SolidColorBrush x:Key="SolidColorBrush.City.MorganasRest.Transparent" Color="{StaticResource Color.City.MorganasRest.Transparent}"/>
@@ -238,6 +246,7 @@
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.1" Color="{StaticResource Item.Level.Color.1}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.2" Color="{StaticResource Item.Level.Color.2}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.3" Color="{StaticResource Item.Level.Color.3}"/>
+    <SolidColorBrush x:Key="SolidColorBrush.Item.Level.Color.4" Color="{StaticResource Item.Level.Color.4}"/>
 
     <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pvp" Color="{StaticResource Text.Color.Pvp}"/>
     <SolidColorBrush x:Key="SolidColorBrush.Text.Color.Pve" Color="{StaticResource Text.Color.Pve}"/>

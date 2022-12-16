@@ -4,6 +4,7 @@
                     xmlns:enum="clr-namespace:StatisticsAnalysisTool.Enumerations"
                     xmlns:itemWindowModel="clr-namespace:StatisticsAnalysisTool.Models.ItemWindowModel"
                     xmlns:fa5="http://schemas.fontawesome.com/icons/"
+                    xmlns:com="clr-namespace:StatisticsAnalysisTool.Common"
                     xmlns:models="clr-namespace:StatisticsAnalysisTool.Models">
 
     <Style x:Key="ListView.Grid.Item.Price" TargetType="Grid">
@@ -34,6 +35,13 @@
         <Setter Property="Source" Value="../Resources/silver.png"/>
     </Style>
 
+    <Style TargetType="TextBlock" x:Key="InfoDescription.TextBlock" >
+        <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Width" Value="auto"/>
+    </Style>
+
     <Style x:Key="ItemWindowStyle" TargetType="{x:Type Window}">
         <Setter Property="BorderThickness" Value="1,1,1,1" />
         <Setter Property="AllowsTransparency" Value="True" />
@@ -48,6 +56,63 @@
         <Setter Property="Background" Value="{StaticResource SolidColorBrush.Background.1}"/>
     </Style>
 
+    <Style x:Key="ItemWindow.BorderColor.ItemLevel.Style" TargetType="Border">
+        <Setter Property="BorderThickness" Value="0,2,0,0" />
+        <Setter Property="Margin" Value="1,1,0,0" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Level, IsAsync=True}" Value="0">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource Item.Level.Color.0}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Level, IsAsync=True}" Value="1">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource Item.Level.Color.1}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Level, IsAsync=True}" Value="2">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource Item.Level.Color.2}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Level, IsAsync=True}" Value="3">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource Item.Level.Color.3}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Level, IsAsync=True}" Value="4">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="{StaticResource Item.Level.Color.4}" Offset="0.0" />
+                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="ListView.City.Color.Style" TargetType="Label">
         <Setter Property="Margin" Value="0" />
         <Setter Property="Height" Value="28" />
@@ -56,7 +121,7 @@
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.Caerleon}">
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.CaerleonMarket}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -66,7 +131,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.Thetford}">
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.ThetfordMarket}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -76,17 +141,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.ThetfordPortal}">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
-                            <GradientStop Color="{StaticResource Color.City.Thetford}"/>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.Martlock}">
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.MartlockMarket}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -96,17 +151,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.MartlockPortal}">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
-                            <GradientStop Color="{StaticResource Color.City.Martlock}"/>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.FortSterling}">
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.FortSterlingMarket}">
                 <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}" />
                 <Setter Property="Background">
                     <Setter.Value>
@@ -117,18 +162,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.FortSterlingPortal}">
-                <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.7}" />
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
-                            <GradientStop Color="{StaticResource Color.City.FortSterling}"/>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.Bridgewatch}">
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.BridgewatchMarket}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -138,17 +172,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.BridgewatchPortal}">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                            <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
-                            <GradientStop Color="{StaticResource Color.City.Bridgewatch}"/>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.Lymhurst}">
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.LymhurstMarket}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -158,17 +182,17 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.LymhurstPortal}">
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.BrecilienMarket}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                             <GradientStop Color="{StaticResource Color.Background.1}" Offset="1"/>
-                            <GradientStop Color="{StaticResource Color.City.Lymhurst}"/>
+                            <GradientStop Color="{StaticResource Color.City.Brecilien}"/>
                         </LinearGradientBrush>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.ArthursRest}">
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.ArthursRest}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -178,7 +202,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.MorganasRest}">
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.MorganasRest}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -188,7 +212,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.MerlynsRest}">
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.MerlynsRest}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -198,7 +222,7 @@
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
-            <DataTrigger Binding="{Binding LocationEnumType}" Value="{x:Static common:Location.BlackMarket}">
+            <DataTrigger Binding="{Binding MarketLocation}" Value="{x:Static common:MarketLocation.BlackMarket}">
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -238,7 +262,7 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
 
-    <DataTemplate DataType="{x:Type itemWindowModel:RequiredResource}">
+    <DataTemplate x:Key="RequiredResourceTemplate" DataType="{x:Type itemWindowModel:RequiredResource}">
         <StackPanel Orientation="Horizontal" Margin="5,0,5,5">
             <Image Source="{Binding Icon}" HorizontalAlignment="Left" Height="50" Width="50" Margin="0,0,0,0" VerticalAlignment="Top" />
             <StackPanel Orientation="Vertical">
@@ -396,6 +420,39 @@
                     <Label Content="{Binding TranslationPossibleCrafting, FallbackValue=POSSIBLE__CRAFTING}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding TranslationPossibleItemCrafting, FallbackValue=POSSIBLE__ITEM__CRAFTING}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
 
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding TranslationWeight, FallbackValue=WEIGHT}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                        <Grid Margin="2,9,0,0" Width="10" Height="10" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <fa5:ImageAwesome HorizontalAlignment="Left" Foreground="{StaticResource SolidColorBrush.Text.1}">
+                                <fa5:ImageAwesome.Style>
+                                    <Style TargetType="{x:Type fa5:ImageAwesome}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding WeightValuesVisibility, IsAsync=True}" Value="Visible">
+                                                <Setter Property="Icon" Value="Solid_AngleDoubleUp"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding WeightValuesVisibility, IsAsync=True}" Value="Collapsed">
+                                                <Setter Property="Icon" Value="Solid_AngleDoubleDown"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </fa5:ImageAwesome.Style>
+                                <fa5:ImageAwesome.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick" Command="{Binding FoldUnfoldWeightValuesCommand}" />
+                                </fa5:ImageAwesome.InputBindings>
+                            </fa5:ImageAwesome>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding WeightValuesVisibility, FallbackValue=Collapsed}">
+                        <Label Content="{Binding TranslationTotalResourcesWeight, FallbackValue=TOTAL__RESOURCES__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                        <Label Content="{Binding TranslationTotalJournalWeight, FallbackValue=TOTAL__REQUIRED__JOURNAL__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                        <Separator />
+                        <Label Content="{Binding TranslationTotalUnfinishedCraftingWeight, FallbackValue=TOTAL__UNFINISHED__CRAFTING__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                        <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                        <Label Content="{Binding TranslationTotalCraftedItemWeight, FallbackValue=TOTAL_CRAFTED__ITEM__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                        <Separator />
+                        <Label Content="{Binding TranslationTotalFinishedCraftingWeight, FallbackValue=TOTAL__FINISHED__CRAFTING__WEIGHT}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
+                    </StackPanel>
+
                     <Label Content="{Binding TranslationStatementOfCost, FallbackValue=STATEMENT__OF__COST}" Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding TranslationCraftingTax, FallbackValue=CRAFTING__TAX}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
                     <Label Content="{Binding TranslationSetupFee, FallbackValue=SETUP__FEE}" ContentStringFormat="{}{0}:" Style="{StaticResource Label.Crafting}" />
@@ -441,6 +498,19 @@
                             </Label.Style>
                         </Label>
                     </StackPanel>
+
+                    <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                    <StackPanel Visibility="{Binding WeightValuesVisibility, FallbackValue=Collapsed}">
+                        <Label Content="{Binding TotalResourcesWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Label Content="{Binding TotalRequiredJournalWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Separator />
+                        <Label Content="{Binding TotalUnfinishedCraftingWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
+                        <Label Content="{Binding TotalCraftedItemWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                        <Separator />
+                        <Label Content="{Binding TotalFinishedCraftingWeight}" ContentStringFormat="{}{0:N2} kg" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" />
+                    </StackPanel>
+
                     <Label Style="{StaticResource Label.Crafting.Title}" Margin="0,5,0,0" />
                     <Label Content="{Binding CraftingTax}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
                     <Label Content="{Binding SetupFee}" ContentStringFormat="{}- {0:N0}" Style="{StaticResource Label.Crafting}" HorizontalAlignment="Right" Foreground="{StaticResource SolidColorBrush.Accent.Red.2}" />
@@ -474,35 +544,44 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
-    <!-- MarketCurrentPricesItem -->
-    <DataTemplate x:Key="GridViewColumnCityTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
-        <Label Content="{Binding LocationName}" Style="{StaticResource ListView.City.Color.Style}">
+    <!-- Grid view column templates -->
+    <DataTemplate x:Key="GridViewColumnCityTemplate"  DataType="{x:Type models:ItemPricesObject}">
+        <Label Content="{Binding LocationName}" Style="{StaticResource ListView.City.Color.Style}" Visibility="{Binding Visibility}">
             <Label.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" CommandParameter="{Binding LocationName}" />
             </Label.InputBindings>
         </Label>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumnSellPriceMinTemplate"  DataType="{x:Type models:ItemPricesObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinString}">
+                <Label>
+                    <Label.Content>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                    <Binding Path="SellPriceMin" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Label.Content>
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMin, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding BestSellMinPrice}" Value="true">
+                                <DataTrigger Binding="{Binding IsBestSellMinPrice}" Value="true">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
                                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
                                     <Setter Property="Width" Value="Auto"/>
                                     <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding BestSellMinPrice}" Value="false">
+                                <DataTrigger Binding="{Binding IsBestSellMinPrice}" Value="false">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
                                     <Setter Property="Margin" Value="0"/>
                                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -520,10 +599,9 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinDateTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Date}">
-            <Label Content="{Binding SellPriceMinDateLastUpdateTime}" 
-                   ToolTip="{Binding SellPriceMinDateString}">
+    <DataTemplate x:Key="GridViewColumnSellPriceMinDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Date}" Visibility="{Binding Visibility}">
+            <Label Content="{Binding SellPriceMinDateLastUpdateTime}" ToolTip="{Binding SellPriceMinDate, StringFormat='G'}">
                 <Label.Style>
                     <Style TargetType="{x:Type Label}">
                         <Setter Property="Width" Value="Auto"/>
@@ -554,27 +632,35 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMaxTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumnSellPriceMaxTemplate"  DataType="{x:Type models:ItemPricesObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMaxString}" 
-                       ToolTip="{Binding SellPriceMaxDateString}">
+                <Label>
+                    <Label.Content>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                    <Binding Path="SellPriceMax" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Label.Content>
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMaxString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMax, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding BestSellMaxPrice}" Value="true">
+                                <DataTrigger Binding="{Binding IsBestSellMaxPrice}" Value="true">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
                                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
                                     <Setter Property="Width" Value="Auto"/>
                                     <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding BestSellMaxPrice}" Value="false">
+                                <DataTrigger Binding="{Binding IsBestSellMaxPrice}" Value="false">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
                                     <Setter Property="Margin" Value="0"/>
                                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -592,10 +678,10 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMaxDateTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+    <DataTemplate x:Key="GridViewColumnSellPriceMaxDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Date}" Visibility="{Binding Visibility}">
             <Label Content="{Binding SellPriceMaxDateLastUpdateTime}" 
-                   ToolTip="{Binding SellPriceMaxDateString}">
+                   ToolTip="{Binding SellPriceMaxDate, StringFormat='G'}">
                 <Label.Style>
                     <Style TargetType="{x:Type Label}">
                         <Setter Property="Width" Value="Auto"/>
@@ -626,27 +712,35 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnBuyPriceMinTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumnBuyPriceMinTemplate"  DataType="{x:Type models:ItemPricesObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding BuyPriceMinString}" 
-                       ToolTip="{Binding BuyPriceMinDateString}">
+                <Label>
+                    <Label.Content>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                    <Binding Path="BuyPriceMin" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Label.Content>
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.BuyPriceMinString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.BuyPriceMin, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding BestBuyMinPrice}" Value="true">
+                                <DataTrigger Binding="{Binding IsBestBuyMinPrice}" Value="true">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
                                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
                                     <Setter Property="Width" Value="Auto"/>
                                     <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding BestBuyMinPrice}" Value="false">
+                                <DataTrigger Binding="{Binding IsBestBuyMinPrice}" Value="false">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
                                     <Setter Property="Margin" Value="0"/>
                                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -664,10 +758,10 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnBuyPriceMinDateTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+    <DataTemplate x:Key="GridViewColumnBuyPriceMinDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Date}" Visibility="{Binding Visibility}">
             <Label Content="{Binding BuyPriceMinDateLastUpdateTime}" 
-                   ToolTip="{Binding BuyPriceMinDateString}">
+                   ToolTip="{Binding BuyPriceMinDate, StringFormat='G'}">
                 <Label.Style>
                     <Style TargetType="{x:Type Label}">
                         <Setter Property="Width" Value="Auto"/>
@@ -698,27 +792,35 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnBuyPriceMaxTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumnBuyPriceMaxTemplate"  DataType="{x:Type models:ItemPricesObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding BuyPriceMaxString}" 
-                       ToolTip="{Binding BuyPriceMaxDateString}">
+                <Label>
+                    <Label.Content>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                    <Binding Path="BuyPriceMax" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Label.Content>
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.BuyPriceMaxString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.BuyPriceMax, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding BestBuyMaxPrice}" Value="true">
+                                <DataTrigger Binding="{Binding IsBestBuyMaxPrice}" Value="true">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Accent.Green.4}"/>
                                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
                                     <Setter Property="Width" Value="Auto"/>
                                     <Setter Property="MinWidth" Value="80"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding BestBuyMaxPrice}" Value="false">
+                                <DataTrigger Binding="{Binding IsBestBuyMaxPrice}" Value="false">
                                     <Setter Property="Foreground" Value="{StaticResource SolidColorBrush.Text.1}"/>
                                     <Setter Property="Margin" Value="0"/>
                                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -736,10 +838,10 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnBuyPriceMaxDateTemplate"  DataType="{x:Type models:MarketCurrentPricesItem}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Date}">
+    <DataTemplate x:Key="GridViewColumnBuyPriceMaxDateTemplate"  DataType="{x:Type models:ItemPricesObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Date}" Visibility="{Binding Visibility}">
             <Label Content="{Binding BuyPriceMaxDateLastUpdateTime}" 
-                   ToolTip="{Binding BuyPriceMaxDateString}">
+                   ToolTip="{Binding BuyPriceMaxDate, StringFormat='G'}">
                 <Label.Style>
                     <Style TargetType="{x:Type Label}">
                         <Setter Property="Width" Value="Auto"/>
@@ -771,23 +873,31 @@
     </DataTemplate>
 
     <!-- MarketQualityObject -->
-    <DataTemplate x:Key="GridViewColumnCityForMarketQualityObjectTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Label Content="{Binding LocationName}" Style="{StaticResource ListView.City.Color.Style}">
+    <DataTemplate x:Key="GridViewColumn.CityForMarketQualityObjectTemplate"  DataType="{x:Type models:MarketQualityObject}">
+        <Label Content="{Binding LocationName}" Style="{StaticResource ListView.City.Color.Style}" Visibility="{Binding Visibility}">
             <Label.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" CommandParameter="{Binding LocationName}" />
             </Label.InputBindings>
         </Label>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinNormalTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinNormalTemplate"  DataType="{x:Type models:MarketQualityObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinNormalString}" 
-                       ToolTip="{Binding SellPriceMinNormalDateString}">
+                <Label ToolTip="{Binding SellPriceMinNormalDate, StringFormat='G'}">
+                    <Label.Content>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                    <Binding Path="SellPriceMinNormal" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Label.Content>
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinNormalString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinNormal, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -817,15 +927,23 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinGoodTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinGoodTemplate"  DataType="{x:Type models:MarketQualityObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinGoodString}" 
-                       ToolTip="{Binding SellPriceMinGoodDateString}">
+                <Label ToolTip="{Binding SellPriceMinGoodDate}">
+                    <Label.Content>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                    <Binding Path="SellPriceMinGood" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Label.Content>
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinGoodString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinGood, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -855,15 +973,23 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinOutstandingTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinOutstandingTemplate"  DataType="{x:Type models:MarketQualityObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinOutstandingString}" 
-                       ToolTip="{Binding SellPriceMinOutstandingDateString}">
+                <Label ToolTip="{Binding SellPriceMinOutstandingDate}">
+                    <Label.Content>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                    <Binding Path="SellPriceMinOutstanding" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Label.Content>
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinOutstandingString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinOutstanding, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -893,15 +1019,23 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinExcellentTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinExcellentTemplate"  DataType="{x:Type models:MarketQualityObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinExcellentString}" 
-                       ToolTip="{Binding SellPriceMinExcellentDateString}">
+                <Label ToolTip="{Binding SellPriceMinExcellentDate}">
+                    <Label.Content>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                    <Binding Path="SellPriceMinExcellent" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Label.Content>
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinExcellentString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinExcellent, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -931,15 +1065,23 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinMasterpieceTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinMasterpieceTemplate"  DataType="{x:Type models:MarketQualityObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinMasterpieceString}" 
-                       ToolTip="{Binding SellPriceMinMasterpieceDateString}">
+                <Label ToolTip="{Binding SellPriceMinMasterpieceDate}">
+                    <Label.Content>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="N0" ConverterCulture="{x:Static com:LanguageController.CurrentCultureInfo}">
+                                    <Binding Path="SellPriceMinMasterpiece" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Label.Content>
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinMasterpieceString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinMasterpiece, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -970,15 +1112,15 @@
     </DataTemplate>
 
     <!-- MarketQualityObject (real money) -->
-    <DataTemplate x:Key="GridViewColumnSellPriceMinNormalRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinNormalRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinNormalStringInRalMoney}" 
-                       ToolTip="{Binding SellPriceMinNormalDateString}">
+                <Label Content="{Binding SellPriceMinNormalRealMoney}" 
+                       ToolTip="{Binding SellPriceMinNormalDate}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinNormalStringInRalMoney, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinNormal, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -1008,15 +1150,15 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinGoodRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinGoodRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinGoodStringInRalMoney}" 
-                       ToolTip="{Binding SellPriceMinGoodDateString}">
+                <Label Content="{Binding SellPriceMinGoodRealMoney}" 
+                       ToolTip="{Binding SellPriceMinGoodDate}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinGoodStringInRalMoney, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinGood, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -1046,15 +1188,15 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinOutstandingRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinOutstandingRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinOutstandingStringInRalMoney}" 
-                       ToolTip="{Binding SellPriceMinOutstandingDateString}">
+                <Label Content="{Binding SellPriceMinOutstandingRealMoney}" 
+                       ToolTip="{Binding SellPriceMinOutstandingDate}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinOutstandingString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinOutstanding, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -1084,15 +1226,15 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinExcellentRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinExcellentRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinExcellentStringInRalMoney}" 
-                       ToolTip="{Binding SellPriceMinExcellentDateString}">
+                <Label Content="{Binding SellPriceMinExcellentRealMoney}" 
+                       ToolTip="{Binding SellPriceMinExcellentDate}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinExcellentString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinExcellent, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -1122,15 +1264,15 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GridViewColumnSellPriceMinMasterpieceRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
-        <Grid Style="{StaticResource ListView.Grid.Item.Price}">
+    <DataTemplate x:Key="GridViewColumn.SellPriceMinMasterpieceRmTemplate"  DataType="{x:Type models:MarketQualityObject}">
+        <Grid Style="{StaticResource ListView.Grid.Item.Price}" Visibility="{Binding Visibility}">
             <StackPanel Style="{StaticResource ListView.Grid.StackPanel.Item.Price}">
-                <Label Content="{Binding SellPriceMinMasterpieceStringInRalMoney}" 
-                       ToolTip="{Binding SellPriceMinMasterpieceDateString}">
+                <Label Content="{Binding SellPriceMinMasterpieceRealMoney}" 
+                       ToolTip="{Binding SellPriceMinMasterpieceDate}">
                     <Label.InputBindings>
                         <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding CopyTextToClipboard}" 
-                                      CommandParameter="{Binding Content.SellPriceMinMasterpieceString, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      CommandParameter="{Binding Content.SellPriceMinMasterpiece, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Label.InputBindings>
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
@@ -1158,6 +1300,13 @@
                 <Image Style="{StaticResource ListView.Grid.StackPanel.Image.Price.Silver}" />
             </StackPanel>
         </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="LocationFilterObjectTemplate" DataType="{x:Type models:MainTabLocationFilterObject}">
+        <StackPanel Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding IsChecked}" Width="20" VerticalAlignment="Top" />
+            <TextBlock Text="{Binding Name}" Width="100" TextWrapping="Wrap" />
+        </StackPanel>
     </DataTemplate>
 
 </ResourceDictionary>
