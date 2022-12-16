@@ -56,7 +56,8 @@
     </Style>
 
     <Style x:Key="ItemWindow.BorderColor.ItemLevel.Style" TargetType="Border">
-        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="BorderThickness" Value="0,2,0,0" />
+        <Setter Property="Margin" Value="1,1,0,0" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding Level, IsAsync=True}" Value="0">
                 <Setter Property="BorderBrush">

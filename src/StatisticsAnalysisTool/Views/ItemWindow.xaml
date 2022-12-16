@@ -16,7 +16,7 @@
         Closing="ItemWindow_OnClosing">
     <Grid>
         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
-        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
+        <Border Style="{StaticResource ItemWindow.BorderColor.ItemLevel.Style}" DataContext="{Binding Item}" />
         <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
         <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource SolidColorBrush.Text.7}" />
 
