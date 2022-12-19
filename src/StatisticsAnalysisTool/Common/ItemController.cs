@@ -42,22 +42,17 @@ public static class ItemController
     {
         return FrequentlyValues.ItemQualities.FirstOrDefault(x => x.Value == value).Key;
     }
-
+    
     public static ulong GetMinPrice(List<ulong> list)
     {
-        var min = ulong.MaxValue;
-        foreach (var value in list)
+        if (list == null || list.Any(x => x <= 0))
         {
-            if (value == 0)
-                continue;
-
-            if (value < min)
-                min = value;
+            return 0;
         }
 
-        return min;
+        return list.Where(x => x > 0).Min();
     }
-
+    
     #endregion
 
     #region Item specific
