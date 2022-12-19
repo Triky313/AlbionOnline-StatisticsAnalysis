@@ -30,6 +30,12 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Check for build errors
+      run: dotnet build src\StatisticsAnalysisTool
+
+    - name: Install dependencies
+      run: dotnet restore src\StatisticsAnalysisTool
+
     - name: Install .NET
       uses: actions/setup-dotnet@v1
       with:
