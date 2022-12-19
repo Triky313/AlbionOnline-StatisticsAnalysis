@@ -842,27 +842,23 @@ public class ItemWindowViewModel : INotifyPropertyChanged
             return;
         }
 
+        var existingPrices = QualityTabBindings.Prices.ToDictionary(x => x.MarketLocation);
+
         foreach (var marketResponse in newPrices ?? new List<MarketResponse>())
         {
-            if (QualityTabBindings?.Prices == null)
+            if (existingPrices.TryGetValue(marketResponse.MarketLocation, out var currentPriceObject))
             {
-                continue;
-            }
-
-            lock (QualityTabBindings.Prices)
-            {
-                var currentPriceObject = QualityTabBindings?.Prices?.FirstOrDefault(x => x.MarketLocation == marketResponse.MarketLocation);
-
-                if (currentPriceObject == null)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        QualityTabBindings?.Prices?.Add(new MarketQualityObject(marketResponse));
-                    });
-                    continue;
-                }
-
                 currentPriceObject.SetValues(marketResponse);
+                existingPrices[marketResponse.MarketLocation] = currentPriceObject;
+            }
+            else
+            {
+                currentPriceObject = new MarketQualityObject(marketResponse);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    QualityTabBindings?.Prices?.Add(currentPriceObject);
+                });
+                existingPrices.Add(marketResponse.MarketLocation, currentPriceObject);
             }
         }
     }
