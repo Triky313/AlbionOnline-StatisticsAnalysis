@@ -15,7 +15,8 @@ namespace StatisticsAnalysisTool.Network.Handler
 
         public async Task OnActionAsync(NewMobEvent value)
         {
-            _trackingController.DungeonController.AddTierLevelToCurrentDungeon(value.MobIndex, value.HitPointsMax);
+            _trackingController.DungeonController.AddTierToCurrentDungeon(value.MobIndex);
+            _trackingController.DungeonController.AddLevelToCurrentDungeon(value.MobIndex, value.HitPointsMax);
             await Task.CompletedTask;
         }
     }

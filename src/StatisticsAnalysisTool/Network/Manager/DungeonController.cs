@@ -33,7 +33,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private List<DungeonObject> _dungeons = new();
         private int _addDungeonCounter;
         private readonly List<DiscoveredItem> _discoveredLoot = new();
-        private List<Guid> _lastGuidWithRecognizedTierLevel = new();
+        private List<Guid> _lastGuidWithRecognizedLevel = new();
 
         public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
@@ -96,7 +96,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 lastDungeon.EndTimer();
                 lastDungeon.Status = DungeonStatus.Done;
                 await SaveInFileAfterExceedingLimit(NumberOfDungeonsUntilSaved);
-                _lastGuidWithRecognizedTierLevel = new List<Guid>();
+                _lastGuidWithRecognizedLevel = new List<Guid>();
             }
 
             RemoveDungeonsAfterCertainNumber(_dungeons, MaxDungeons);
@@ -892,14 +892,14 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Tier / Level recognize
 
-        public void AddTierLevelToCurrentDungeon(int? mobIndex, double hitPointsMax)
+        public void AddLevelToCurrentDungeon(int? mobIndex, double hitPointsMax)
         {
             if (_currentGuid is not { } currentGuid)
             {
                 return;
             }
 
-            if (_lastGuidWithRecognizedTierLevel.Contains(currentGuid))
+            if (_lastGuidWithRecognizedLevel.Contains(currentGuid))
             {
                 return;
             }
@@ -926,12 +926,55 @@ namespace StatisticsAnalysisTool.Network.Manager
                     {
                         return;
                     }
-
-                    dun.SetTier((Tier)MobsData.GetMobTierByIndex((int)mobIndex));
+                    
                     dun.SetLevel(MobsData.GetMobLevelByIndex((int)mobIndex, hitPointsMax));
 
-                    _lastGuidWithRecognizedTierLevel = dun.GuidList;
+                    if (dun.Level > 0)
+                    {
+                        _lastGuidWithRecognizedLevel = dun.GuidList;
+                    }
 
+                    UpdateDungeonDataUi(dun);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
+        public void AddTierToCurrentDungeon(int? mobIndex)
+        {
+            if (_currentGuid is not { } currentGuid)
+            {
+                return;
+            }
+            
+            if (mobIndex is null || ClusterController.CurrentCluster.Guid != currentGuid)
+            {
+                return;
+            }
+
+            if (ClusterController.CurrentCluster.MapType != MapType.Expedition
+                && ClusterController.CurrentCluster.MapType != MapType.CorruptedDungeon
+                && ClusterController.CurrentCluster.MapType != MapType.HellGate
+                && ClusterController.CurrentCluster.MapType != MapType.RandomDungeon)
+            {
+                return;
+            }
+
+            try
+            {
+                lock (_dungeons)
+                {
+                    var mobTier = (Tier) MobsData.GetMobTierByIndex((int) mobIndex);
+                    var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
+                    if (dun == null || dun.Tier >= mobTier)
+                    {
+                        return;
+                    }
+                    
+                    dun.SetTier(mobTier);
                     UpdateDungeonDataUi(dun);
                 }
             }
