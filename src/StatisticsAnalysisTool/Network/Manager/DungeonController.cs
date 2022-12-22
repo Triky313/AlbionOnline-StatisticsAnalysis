@@ -33,7 +33,7 @@ namespace StatisticsAnalysisTool.Network.Manager
         private List<DungeonObject> _dungeons = new();
         private int _addDungeonCounter;
         private readonly List<DiscoveredItem> _discoveredLoot = new();
-        private List<Guid> _lastGuidWithRecognizedTierLevel = new();
+        private List<Guid> _lastGuidWithRecognizedLevel = new();
 
         public DungeonController(TrackingController trackingController, MainWindowViewModel mainWindowViewModel)
         {
@@ -96,7 +96,7 @@ namespace StatisticsAnalysisTool.Network.Manager
                 lastDungeon.EndTimer();
                 lastDungeon.Status = DungeonStatus.Done;
                 await SaveInFileAfterExceedingLimit(NumberOfDungeonsUntilSaved);
-                _lastGuidWithRecognizedTierLevel = new List<Guid>();
+                _lastGuidWithRecognizedLevel = new List<Guid>();
             }
 
             RemoveDungeonsAfterCertainNumber(_dungeons, MaxDungeons);
@@ -285,16 +285,25 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private async Task DungeonUiFilteringAsync()
         {
-            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(
-                    x => !_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status != DungeonStatus.Active)
+            var dungeonStatsFilter = _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter;
+
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x =>
+                    !(
+                        (dungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? false)
+                        && (dungeonStatsFilter.TierFilters?.Contains(x.Tier) ?? false)
+                        && (dungeonStatsFilter.LevelFilters?.Contains((ItemLevel)x.Level) ?? x.Status != DungeonStatus.Active)
+                ))
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
                 {
                     d.Visibility = Visibility.Collapsed;
                 });
 
-            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(
-                    x => _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? x.Status == DungeonStatus.Active)
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x =>
+                    ((dungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? false)
+                        && (dungeonStatsFilter.TierFilters?.Contains(x.Tier) ?? false)
+                        && (dungeonStatsFilter.LevelFilters?.Contains((ItemLevel)x.Level) ?? x.Status != DungeonStatus.Active)
+                    ))
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 ?.ToAsyncEnumerable().ForEachAsync(d =>
                 {
@@ -805,69 +814,103 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         private int GetChests(DateTime? chestIsNewerAsDateTime, TreasureRarity rarity, DungeonEventObjectType dungeonEventObjectType = DungeonEventObjectType.Chest)
         {
-            var dungeons = _dungeons.Where(x => (x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null)
-                                                && ((_mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters != null
-                                                     && _mainWindowViewModel.DungeonBindings.DungeonStatsFilter.DungeonModeFilters.Contains(x.Mode))
-                                                    || _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter?.DungeonModeFilters == null));
+            var dungeonStatsFilter = _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter;
 
-            return dungeons.Select(dun => dun.DungeonEventObjects.Where(x => x.Rarity == rarity && x.ObjectType == dungeonEventObjectType)).Select(filteredChests => filteredChests.Count()).Sum();
+            var dungeonsWithEnterDungeonFiltering = _dungeons
+                .Where(x => x.EnterDungeonFirstTime > chestIsNewerAsDateTime || chestIsNewerAsDateTime == null);
+
+            var dungeonWithDungeonModeFilters = dungeonsWithEnterDungeonFiltering
+                .Where(x => dungeonStatsFilter?.DungeonModeFilters != null && dungeonStatsFilter.DungeonModeFilters.Contains(x.Mode) || dungeonStatsFilter?.DungeonModeFilters == null);
+
+            var dungeonWithTierFilters = dungeonWithDungeonModeFilters
+                .Where(x => dungeonStatsFilter?.TierFilters != null && dungeonStatsFilter.TierFilters.Contains(x.Tier) || dungeonStatsFilter?.TierFilters == null);
+
+            var dungeonWithLevelFilters = dungeonWithTierFilters
+                .Where(x => dungeonStatsFilter?.LevelFilters != null && dungeonStatsFilter.LevelFilters.Contains((ItemLevel)x.Level) || dungeonStatsFilter?.LevelFilters == null);
+            
+            return dungeonWithLevelFilters
+                .Select(dun => dun.DungeonEventObjects.Where(x => x.Rarity == rarity && x.ObjectType == dungeonEventObjectType))
+                .Select(filteredChests => filteredChests.Count()).Sum();
         }
 
         private double GetFame(DateTime? dateTime)
         {
-            var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            var dungeonFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            var tierFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.TierFilters ?? new List<Tier>();
+            var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
+            
             return _dungeons.Where(
-                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
-                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                    x =>
+                        x.EnterDungeonFirstTime > dateTime && dungeonFilters.Contains(x.Mode) && tierFilters.Contains(x.Tier)
+                        || dateTime == null && (dungeonFilters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level) || dungeonFilters is not { Count: > 0 })
+                        )
                 .Select(x => x.Fame).Sum();
         }
 
         private double GetReSpec(DateTime? dateTime)
         {
             var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            var tierFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.TierFilters ?? new List<Tier>();
+            var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
+
             return _dungeons.Where(
-                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
-                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier)
+                         || dateTime == null && (filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level) || filters is not { Count: > 0 }))
                 .Select(x => x.ReSpec).Sum();
         }
 
         private double GetSilver(DateTime? dateTime)
         {
             var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            var tierFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.TierFilters ?? new List<Tier>();
+            var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
+
             return _dungeons.Where(
-                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
-                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier)
+                         || dateTime == null && (filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level) || filters is not { Count: > 0 }))
                 .Select(x => x.Silver).Sum();
         }
 
         private double GetMight(DateTime? dateTime)
         {
             var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            var tierFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.TierFilters ?? new List<Tier>();
+            var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
+
             return _dungeons.Where(
-                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
-                         || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier)
+                         || dateTime == null && (filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level) || filters is not { Count: > 0 }))
                 .Select(x => x.Might).Sum();
         }
 
         private double GetFavor(DateTime? dateTime)
         {
             var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
+            var tierFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.TierFilters ?? new List<Tier>();
+            var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
+
             return _dungeons.Where(
-                x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode)
-                   || dateTime == null && (filters.Contains(x.Mode) || filters is not { Count: > 0 }))
+                x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier)
+                   || dateTime == null && (filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level) || filters is not { Count: > 0 }))
                 .Select(x => x.Favor).Sum();
         }
 
         private int GetDungeonsCount(DateTime dungeonIsNewerAsDateTime)
         {
             var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            return _dungeons.Count(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)));
+            var tierFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.TierFilters ?? new List<Tier>();
+            var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
+
+            return _dungeons.Count(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level));
         }
 
         private int GetDungeonsRunTime(DateTime dungeonIsNewerAsDateTime)
         {
             var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            return _dungeons.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && (filters.Contains(x.Mode)))
+            var tierFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.TierFilters ?? new List<Tier>();
+            var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
+
+            return _dungeons.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level))
                 .ToList()
                 .Select(x => x.TotalRunTimeInSeconds)
                 .Sum();
@@ -876,7 +919,11 @@ namespace StatisticsAnalysisTool.Network.Manager
         private DungeonLoot GetBestLootedItem(DateTime dungeonIsNewerAsDateTime)
         {
             var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            var filteredDungeons = _dungeons?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode)).ToList();
+            var tierFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.TierFilters ?? new List<Tier>();
+            var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
+
+            var filteredDungeons = _dungeons
+                ?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level)).ToList();
             var mostExpensiveLoot = filteredDungeons?.MaxBy(x => x.MostExpensiveLoot?.EstimatedMarketValueInternal);
             return mostExpensiveLoot?.MostExpensiveLoot;
         }
@@ -884,7 +931,11 @@ namespace StatisticsAnalysisTool.Network.Manager
         private long GetLootInSilver(DateTime dungeonIsNewerAsDateTime)
         {
             var filters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
-            var filteredDungeons = _dungeons?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode)).ToList();
+            var tierFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.TierFilters ?? new List<Tier>();
+            var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
+
+            var filteredDungeons = _dungeons
+                ?.Where(x => x?.EnterDungeonFirstTime > dungeonIsNewerAsDateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level)).ToList();
             return filteredDungeons?.Sum(x => x.TotalLootInSilver) ?? 0;
         }
 
@@ -892,14 +943,14 @@ namespace StatisticsAnalysisTool.Network.Manager
 
         #region Tier / Level recognize
 
-        public void AddTierLevelToCurrentDungeon(int? mobIndex, double hitPointsMax)
+        public void AddLevelToCurrentDungeon(int? mobIndex, double hitPointsMax)
         {
             if (_currentGuid is not { } currentGuid)
             {
                 return;
             }
 
-            if (_lastGuidWithRecognizedTierLevel.Contains(currentGuid))
+            if (_lastGuidWithRecognizedLevel.Contains(currentGuid))
             {
                 return;
             }
@@ -927,11 +978,54 @@ namespace StatisticsAnalysisTool.Network.Manager
                         return;
                     }
 
-                    dun.SetTier((Tier)MobsData.GetMobTierByIndex((int)mobIndex));
                     dun.SetLevel(MobsData.GetMobLevelByIndex((int)mobIndex, hitPointsMax));
 
-                    _lastGuidWithRecognizedTierLevel = dun.GuidList;
+                    if (dun.Level > 0)
+                    {
+                        _lastGuidWithRecognizedLevel = dun.GuidList;
+                    }
 
+                    UpdateDungeonDataUi(dun);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
+        public void AddTierToCurrentDungeon(int? mobIndex)
+        {
+            if (_currentGuid is not { } currentGuid)
+            {
+                return;
+            }
+
+            if (mobIndex is null || ClusterController.CurrentCluster.Guid != currentGuid)
+            {
+                return;
+            }
+
+            if (ClusterController.CurrentCluster.MapType != MapType.Expedition
+                && ClusterController.CurrentCluster.MapType != MapType.CorruptedDungeon
+                && ClusterController.CurrentCluster.MapType != MapType.HellGate
+                && ClusterController.CurrentCluster.MapType != MapType.RandomDungeon)
+            {
+                return;
+            }
+
+            try
+            {
+                lock (_dungeons)
+                {
+                    var mobTier = (Tier)MobsData.GetMobTierByIndex((int)mobIndex);
+                    var dun = _dungeons?.FirstOrDefault(x => x.GuidList.Contains(currentGuid) && x.Status == DungeonStatus.Active);
+                    if (dun == null || dun.Tier >= mobTier)
+                    {
+                        return;
+                    }
+
+                    dun.SetTier(mobTier);
                     UpdateDungeonDataUi(dun);
                 }
             }

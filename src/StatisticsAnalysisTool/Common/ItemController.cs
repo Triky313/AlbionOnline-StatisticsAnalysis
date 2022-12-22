@@ -45,17 +45,12 @@ public static class ItemController
 
     public static ulong GetMinPrice(List<ulong> list)
     {
-        var min = ulong.MaxValue;
-        foreach (var value in list)
+        if (list == null || list.Any(x => x <= 0))
         {
-            if (value == 0)
-                continue;
-
-            if (value < min)
-                min = value;
+            return 0;
         }
 
-        return min;
+        return list.Where(x => x > 0).Min();
     }
 
     #endregion
@@ -443,80 +438,34 @@ public static class ItemController
             return null;
         }
 
-        var hideoutItem = GetItemJsonObject(cleanUniqueName, new List<HideoutItem> { _itemsJson.Items.HideoutItem });
-        if (hideoutItem != null)
+        var itemTypes = new Dictionary<ItemType, Func<ItemJsonObject, bool>>
         {
-            return hideoutItem;
+            { ItemType.Hideout, i => i is HideoutItem hideoutItem && hideoutItem.UniqueName == uniqueName },
+            { ItemType.Farmable, i => i is FarmableItem farmableItem && farmableItem.UniqueName == uniqueName },
+            { ItemType.Simple, i => i is SimpleItem simpleItem && simpleItem.UniqueName == uniqueName },
+            { ItemType.Consumable, i => i is ConsumableItem consumableItem && consumableItem.UniqueName == uniqueName },
+            { ItemType.ConsumableFromInventory, i => i is ConsumableFromInventoryItem consumableFromInventoryItem && consumableFromInventoryItem.UniqueName == uniqueName },
+            { ItemType.Equipment, i => i is EquipmentItem equipmentItem && equipmentItem.UniqueName == uniqueName },
+            { ItemType.Weapon, i => i is Weapon weapon && weapon.UniqueName == uniqueName },
+            { ItemType.Mount, i => i is Mount mount && mount.UniqueName == uniqueName },
+            { ItemType.Furniture, i => i is FurnitureItem furnitureItem && furnitureItem.UniqueName == uniqueName },
+            { ItemType.Journal, i => i is JournalItem journalItem && journalItem.UniqueName == uniqueName },
+            { ItemType.LabourerContract, i => i is LabourerContract labourerContract && labourerContract.UniqueName == uniqueName },
+            { ItemType.MountSkin, i => i is MountSkin mountSkin && mountSkin.UniqueName == uniqueName },
+            { ItemType.CrystalLeague, i => i is CrystalLeagueItem crystalLeagueItem && crystalLeagueItem.UniqueName == uniqueName }
+        };
+
+        foreach (var (itemType, predicate) in itemTypes)
+        {
+            var item = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.GetType().GetProperty(itemType.ToString())?.GetValue(_itemsJson.Items) as List<ItemJsonObject>);
+            if (item != null && predicate(item))
+            {
+                item.ItemType = itemType;
+                return item;
+            }
         }
 
-        var farmableItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FarmableItem);
-        if (farmableItem != null)
-        {
-            return farmableItem;
-        }
-
-        var simpleItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.SimpleItem);
-        if (simpleItem != null)
-        {
-            return simpleItem;
-        }
-
-        var consumableItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableItem);
-        if (consumableItem != null)
-        {
-            return consumableItem;
-        }
-
-        var consumableFromInventoryItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableFromInventoryItem);
-        if (consumableFromInventoryItem != null)
-        {
-            return consumableFromInventoryItem;
-        }
-
-        var equipmentItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.EquipmentItem);
-        if (equipmentItem != null)
-        {
-            return equipmentItem;
-        }
-
-        var weapon = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Weapon);
-        if (weapon != null)
-        {
-            return weapon;
-        }
-
-        var mount = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Mount);
-        if (mount != null)
-        {
-            return mount;
-        }
-
-        var furnitureItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FurnitureItem);
-        if (furnitureItem != null)
-        {
-            return furnitureItem;
-        }
-
-        var journalItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.JournalItem);
-        if (journalItem != null)
-        {
-            return journalItem;
-        }
-
-        var labourerContract = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.LabourerContract);
-        if (labourerContract != null)
-        {
-            return labourerContract;
-        }
-
-        var mountSkin = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.MountSkin);
-        if (mountSkin != null)
-        {
-            return mountSkin;
-        }
-
-        var crystalLeagueItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.CrystalLeagueItem);
-        return crystalLeagueItem;
+        return null;
     }
 
     private static ItemJsonObject GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects)
@@ -525,82 +474,9 @@ public static class ItemController
         // ReSharper disable once ForCanBeConvertedToForeach
         for (var i = 0; i < itemAsSpan.Length; i++)
         {
-            if (itemAsSpan[i] is HideoutItem hideoutItem && hideoutItem.UniqueName == uniqueName)
+            if (itemAsSpan[i] is ItemJsonObject item && item.UniqueName == uniqueName)
             {
-                hideoutItem.ItemType = ItemType.Hideout;
-                return hideoutItem;
-            }
-
-            if (itemAsSpan[i] is FarmableItem farmableItem && farmableItem.UniqueName == uniqueName)
-            {
-                farmableItem.ItemType = ItemType.Farmable;
-                return farmableItem;
-            }
-
-            if (itemAsSpan[i] is SimpleItem simpleItem && simpleItem.UniqueName == uniqueName)
-            {
-                simpleItem.ItemType = ItemType.Simple;
-                return simpleItem;
-            }
-
-            if (itemAsSpan[i] is ConsumableItem consumableItem && consumableItem.UniqueName == uniqueName)
-            {
-                consumableItem.ItemType = ItemType.Consumable;
-                return consumableItem;
-            }
-
-            if (itemAsSpan[i] is ConsumableFromInventoryItem consumableFromInventoryItem && consumableFromInventoryItem.UniqueName == uniqueName)
-            {
-                consumableFromInventoryItem.ItemType = ItemType.ConsumableFromInventory;
-                return consumableFromInventoryItem;
-            }
-
-            if (itemAsSpan[i] is EquipmentItem equipmentItem && equipmentItem.UniqueName == uniqueName)
-            {
-                equipmentItem.ItemType = ItemType.Equipment;
-                return equipmentItem;
-            }
-
-            if (itemAsSpan[i] is Weapon weapon && weapon.UniqueName == uniqueName)
-            {
-                weapon.ItemType = ItemType.Weapon;
-                return weapon;
-            }
-
-            if (itemAsSpan[i] is Mount mount && mount.UniqueName == uniqueName)
-            {
-                mount.ItemType = ItemType.Mount;
-                return mount;
-            }
-
-            if (itemAsSpan[i] is FurnitureItem furnitureItem && furnitureItem.UniqueName == uniqueName)
-            {
-                furnitureItem.ItemType = ItemType.Furniture;
-                return furnitureItem;
-            }
-
-            if (itemAsSpan[i] is JournalItem journalItem && journalItem.UniqueName == uniqueName)
-            {
-                journalItem.ItemType = ItemType.Journal;
-                return journalItem;
-            }
-
-            if (itemAsSpan[i] is LabourerContract labourerContract && labourerContract.UniqueName == uniqueName)
-            {
-                labourerContract.ItemType = ItemType.LabourerContract;
-                return labourerContract;
-            }
-
-            if (itemAsSpan[i] is MountSkin mountSkin && mountSkin.UniqueName == uniqueName)
-            {
-                mountSkin.ItemType = ItemType.MountSkin;
-                return mountSkin;
-            }
-
-            if (itemAsSpan[i] is CrystalLeagueItem crystalLeagueItem && crystalLeagueItem.UniqueName == uniqueName)
-            {
-                crystalLeagueItem.ItemType = ItemType.CrystalLeague;
-                return crystalLeagueItem;
+                return item;
             }
         }
 

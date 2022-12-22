@@ -667,20 +667,70 @@
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Width="auto" Margin="10,10,0,0">
             <Label Style="{StaticResource Tracking.Information.Title}" Content="{Binding TranslationFilter, FallbackValue=FILTER}" FontWeight="Bold"/>
             <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top">
-                <CheckBox Content="{Binding TranslationSolo}" ToolTip="{Binding TranslationSoloDungeon}"
+                <CheckBox Content="{Binding TranslationSolo, FallbackValue='SOLO'}" ToolTip="{Binding TranslationSoloDungeon}"
                           Margin="5,0,5,0" IsChecked="{Binding SoloCheckbox}"/>
-                <CheckBox Content="{Binding TranslationStandard}" ToolTip="{Binding TranslationStandardDungeon}"
+                <CheckBox Content="{Binding TranslationStandard, FallbackValue='STANDARD'}" ToolTip="{Binding TranslationStandardDungeon}"
                           Margin="5,0,5,0" IsChecked="{Binding StandardCheckbox}"/>
-                <CheckBox Content="{Binding TranslationAva}" ToolTip="{Binding TranslationAvalonianDungeon}"
+                <CheckBox Content="{Binding TranslationAva, FallbackValue='AVA'}" ToolTip="{Binding TranslationAvalonianDungeon}"
                           Margin="5,0,5,0" IsChecked="{Binding AvaCheckbox}"/>
-                <CheckBox Content="{Binding TranslationHg}" ToolTip="{Binding TranslationHellGate}"
+                <CheckBox Content="{Binding TranslationHg, FallbackValue='HG'}" ToolTip="{Binding TranslationHellGate}"
                           Margin="5,0,5,0" IsChecked="{Binding HgCheckbox}"/>
-                <CheckBox Content="{Binding TranslationCorrupted}" ToolTip="{Binding TranslationCorruptedDungeon}"
+                <CheckBox Content="{Binding TranslationCorrupted, FallbackValue='CORRUPTED'}" ToolTip="{Binding TranslationCorruptedDungeon}"
                           Margin="5,0,5,0" IsChecked="{Binding CorruptedCheckbox}"/>
-                <CheckBox Content="{Binding TranslationExped}" ToolTip="{Binding TranslationExpedition}"
+                <CheckBox Content="{Binding TranslationExped, FallbackValue='EXPEDITION'}" ToolTip="{Binding TranslationExpedition}"
                           Margin="5,0,5,0" IsChecked="{Binding ExpeditionCheckbox}"/>
-                <CheckBox Content="{Binding TranslationUnknown}" 
+                <CheckBox Content="{Binding TranslationUnknown, FallbackValue='UNKNOWN'}" 
                           Margin="5,0,5,0" IsChecked="{Binding UnknownCheckbox}"/>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Left">
+                <CheckBox Content="{Binding TranslationT4, FallbackValue='T4'}" Margin="5,0,5,0" IsChecked="{Binding IsT4}"/>
+                <CheckBox Content="{Binding TranslationT5, FallbackValue='T5'}" Margin="5,0,5,0" IsChecked="{Binding IsT5}"/>
+                <CheckBox Content="{Binding TranslationT6, FallbackValue='T6'}" Margin="5,0,5,0" IsChecked="{Binding IsT6}"/>
+                <CheckBox Content="{Binding TranslationT7, FallbackValue='T7'}" Margin="5,0,5,0" IsChecked="{Binding IsT7}"/>
+                <CheckBox Content="{Binding TranslationT8, FallbackValue='T8'}" Margin="5,0,5,0" IsChecked="{Binding IsT8}"/>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Left">
+                <CheckBox ToolTip="{Binding TranslationFlat}" Margin="5,0,5,0" IsChecked="{Binding IsLevel0}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/gem_level0.png" Height="11" Width="11" Margin="0,2,0,0" />
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox ToolTip=".0" Margin="5,0,5,0" IsChecked="{Binding IsLevel1}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/gem_level1.png" Height="11" Width="11" Margin="0,2,0,0" />
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox ToolTip=".1" Margin="5,0,5,0" IsChecked="{Binding IsLevel2}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="0,2,0,0" />
+                            <Image Source="../Assets/gem_level2.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox ToolTip=".2" Margin="5,0,5,0" IsChecked="{Binding IsLevel3}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="0,2,0,0" />
+                            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                            <Image Source="../Assets/gem_level3.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
+                <CheckBox ToolTip=".3" Margin="5,0,5,0" IsChecked="{Binding IsLevel4}">
+                    <CheckBox.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="0,2,0,0" />
+                            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                            <Image Source="../Assets/gem_level4.png" Height="11" Width="11" Margin="-5,2,0,0" />
+                        </StackPanel>
+                    </CheckBox.Content>
+                </CheckBox>
             </DockPanel>
         </StackPanel>
     </DataTemplate>

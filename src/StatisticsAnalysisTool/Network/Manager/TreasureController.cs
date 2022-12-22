@@ -61,7 +61,7 @@ public class TreasureController
         {
             OpenedBy = openedBy,
             TreasureRarity = GetRarity(temporaryTreasure.UniqueName),
-            TreasureType = GetType(temporaryTreasure.UniqueName)
+            TreasureType = GetTreasureType(temporaryTreasure.UniqueName)
         };
 
         _treasures.Add(test);
@@ -211,51 +211,23 @@ public class TreasureController
         return TreasureRarity.Unknown;
     }
 
-    private static TreasureType GetType(string value)
+    private static TreasureType GetTreasureType(string input)
     {
-        if (string.IsNullOrEmpty(value))
-        {
-            return TreasureType.Unknown;
-        }
+        if (input == "TREASURE") return TreasureType.OpenWorld;
+        if (input == "STATIC") return TreasureType.StaticDungeon;
+        if (input == "AVALON") return TreasureType.Avalon;
+        if (input == "CORRUPTED") return TreasureType.Corrupted;
+        if (input == "HELL") return TreasureType.HellGate;
 
-        if (value.Contains("TREASURE"))
-        {
-            return TreasureType.OpenWorld;
-        }
+        var pattern = "_VETERAN_CHEST_|[^SOLO]_CHEST_BOSS_HALLOWEEN_";
+        if (Regex.IsMatch(input, pattern)) return TreasureType.RandomGroupDungeon;
 
-        if (value.Contains("STATIC"))
-        {
-            return TreasureType.StaticDungeon;
-        }
-
-        if (value.Contains("AVALON"))
-        {
-            return TreasureType.Avalon;
-        }
-
-        if (value.Contains("CORRUPTED"))
-        {
-            return TreasureType.Corrupted;
-        }
-
-        if (value.Contains("HELL"))
-        {
-            return TreasureType.HellGate;
-        }
-
-        if (Regex.IsMatch(value, "_VETERAN_CHEST_|[^SOLO]_CHEST_BOSS_HALLOWEEN_"))
-        {
-            return TreasureType.RandomGroupDungeon;
-        }
-
-        if (Regex.IsMatch(value, "_SOLO_BOOKCHEST_|_SOLO_CHEST_"))
-        {
-            return TreasureType.RandomSoloDungeon;
-        }
+        pattern = "_SOLO_BOOKCHEST_|_SOLO_CHEST_";
+        if (Regex.IsMatch(input, pattern)) return TreasureType.RandomSoloDungeon;
 
         return TreasureType.Unknown;
     }
-
+    
     #endregion
 
     #region Load / Save local file data
