@@ -149,8 +149,8 @@ public static class ExtensionMethod
             return maxNumber;
         }
     }
-
-    private static string GetShortNumber(this decimal num)
+    
+    public static string GetShortNumber(this decimal num)
     {
         if (num < -10000000)
         {
@@ -203,7 +203,7 @@ public static class ExtensionMethod
     {
         return healthChange >= 0d ? 0d : healthChange.ToPositive();
     }
-
+    
     #endregion
 
     #region Player Objects
