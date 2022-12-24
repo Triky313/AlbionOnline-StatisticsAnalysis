@@ -13,7 +13,7 @@ public class ShortNumberConverter : IValueConverter
             throw new ArgumentNullException();
         }
         
-        return doubleNumber.GetShortNumber();
+        return doubleNumber.GetShortNumber(culture);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
