@@ -521,31 +521,31 @@
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/silver.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationSilver, FallbackValue=SILVER}" />
-                            <TextBlock Text="{Binding DungeonStatsSelection.Silver, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.Silver, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.SilverAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/respec.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationReSpec, FallbackValue=RESPEC}" />
-                            <TextBlock Text="{Binding DungeonStatsSelection.ReSpec, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.ReSpec, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.ReSpecPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.ReSpecAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/might.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationMight, FallbackValue=MIGHT}" />
-                            <TextBlock Text="{Binding DungeonStatsSelection.Might, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.Might, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.MightPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.MightAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/favor.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationFavor, FallbackValue=FAVOR}" />
-                            <TextBlock Text="{Binding DungeonStatsSelection.Favor, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.Favor, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.FavorPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.FavorAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Assets/bag.png" Width="22" Height="22" ToolTip="{Binding DungeonStatsSelection.TranslationLootInSilver, FallbackValue='LOOT_IN_SILVER'}" />
-                            <TextBlock Text="{Binding DungeonStatsSelection.LootInSilver, Converter={StaticResource ShortNumberConverter}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
+                            <TextBlock Text="{Binding DungeonStatsSelection.LootInSilver, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.LootInSilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}" Style="{StaticResource Dungeons.Stats.Value}" />
                             <TextBlock Text="{Binding DungeonStatsSelection.LootInSilverAverage, Converter={StaticResource ValueAvgConverter}, FallbackValue=0 .Avg}" Style="{StaticResource Dungeons.Stats.Value}" Margin="0,0,0,5" />
                         </StackPanel>
@@ -1121,7 +1121,7 @@
                                           ToolTip="{Binding TranslationDungeonFame, FallbackValue=DUNGEON__FAME}">
                                         <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding Fame, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding Fame, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                            Style="{StaticResource DungeonNotificationFragment.BestFame}" VerticalAlignment="Center" 
                                            Margin="0 0 10 0" MinWidth="75">
                                         <Label.ToolTip>
@@ -1136,7 +1136,7 @@
                                           ToolTip="{Binding TranslationDungeonReSpec, FallbackValue=DUNGEON__RESPEC}">
                                         <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding ReSpec, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding ReSpec, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                            Style="{StaticResource DungeonNotificationFragment.BestReSpec}" VerticalAlignment="Center" 
                                            Margin="0 0 10 0" MinWidth="75">
                                         <Label.ToolTip>
@@ -1151,7 +1151,7 @@
                                           ToolTip="{Binding TranslationDungeonSilver, FallbackValue=DUNGEON__SILVER}">
                                         <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding Silver, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding Silver, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                            Style="{StaticResource DungeonNotificationFragment.BestSilver}" VerticalAlignment="Center" 
                                            Margin="0 0 10 0" MinWidth="75">
                                         <Label.ToolTip>
@@ -1166,7 +1166,7 @@
                                           ToolTip="{Binding TranslationDungeonFamePerHour, FallbackValue=DUNGEON__FAME__PER__HOUR}">
                                         <Image Source="../Resources/fame.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding FamePerHour, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding FamePerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                            ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFamePerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">
                                         <Label.ToolTip>
                                             <ToolTip 
@@ -1180,7 +1180,7 @@
                                           ToolTip="{Binding TranslationDungeonReSpecPerHour, FallbackValue=DUNGEON__RESPEC__PER__HOUR}">
                                         <Image Source="../Resources/respec.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding ReSpecPerHour, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding ReSpecPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                            ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestReSpecPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">
                                         <Label.ToolTip>
                                             <ToolTip 
@@ -1194,7 +1194,7 @@
                                           ToolTip="{Binding TranslationDungeonSilverPerHour, FallbackValue=DUNGEON__SILVER__PER__HOUR}">
                                         <Image Source="../Resources/silver.png" Style="{StaticResource LineFragmentImageStyle}" />
                                     </Grid>
-                                    <Label Content="{Binding SilverPerHour, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding SilverPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                    ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestSilverPerHour}" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="85">
                                         <Label.ToolTip>
                                             <ToolTip 
@@ -1210,7 +1210,7 @@
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,2,0">
                                         <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}" ToolTip="{Binding TranslationFactionFlags, FallbackValue=FACTION__FLAGS}"/>
                                     </Grid>
-                                    <Label Content="{Binding FactionFlags, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding FactionFlags, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionFlags}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="82">
                                         <Label.ToolTip>
                                             <ToolTip 
@@ -1223,7 +1223,7 @@
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Image Style="{StaticResource Tracker.Fraction.Flag.Icon}" ToolTip="{Binding TranslationFactionFlagsPerHour, FallbackValue=FACTION__FLAGS__PER__HOUR}"/>
                                     </Grid>
-                                    <Label Content="{Binding FactionFlagsPerHour, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding FactionFlagsPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionFlagsPerHour}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80">
                                         <Label.ToolTip>
                                             <ToolTip 
@@ -1236,7 +1236,7 @@
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0">
                                         <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" ToolTip="{Binding TranslationFactionCoins, FallbackValue=FACTION__COINS}"/>
                                     </Grid>
-                                    <Label Content="{Binding FactionCoins, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding FactionCoins, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFactionCoins}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85">
                                         <Label.ToolTip>
                                             <ToolTip 
@@ -1249,7 +1249,7 @@
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsFactionWarfareVisible, FallbackValue=Collapsed}">
                                         <Image Style="{StaticResource Tracker.Fraction.Coin.Icon}" ToolTip="{Binding TranslationFactionCoinsPerHour, FallbackValue=FACTION__COINS__PER__HOUR}"/>
                                     </Grid>
-                                    <Label Content="{Binding FactionCoinsPerHour, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding FactionCoinsPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFactionCoinsPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205">
                                         <Label.ToolTip>
                                             <ToolTip 
@@ -1265,7 +1265,7 @@
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,2,2,0">
                                         <Image Height="16" Width="16" Source="../Resources/might.png" ToolTip="{Binding TranslationMight, FallbackValue=MIGHT}" />
                                     </Grid>
-                                    <Label Content="{Binding Might, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" ContentStringFormat="{}{0:N0}" 
+                                    <Label Content="{Binding Might, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" ContentStringFormat="{}{0:N0}" 
                                            Style="{StaticResource DungeonNotificationFragment.BestMight}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="82">
                                         <Label.ToolTip>
                                             <ToolTip 
@@ -1278,7 +1278,7 @@
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0">
                                         <Image Height="16" Width="16" Source="../Resources/might.png" ToolTip="{Binding TranslationMightPerHour, FallbackValue=MIGHT__PER__HOUR}" />
                                     </Grid>
-                                    <Label Content="{Binding MightPerHour, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding MightPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestMightPerHour}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="80">
                                         <Label.ToolTip>
                                             <ToolTip 
@@ -1291,7 +1291,7 @@
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,2,0,0">
                                         <Image Height="16" Width="16" Source="../Resources/favor.png" ToolTip="{Binding TranslationFavor, FallbackValue=Favor}" />
                                     </Grid>
-                                    <Label Content="{Binding Favor, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding Favor, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}" Style="{StaticResource DungeonNotificationFragment.BestFavor}" VerticalAlignment="Center" Margin="0 0 5 0" MinWidth="85">
                                         <Label.ToolTip>
                                             <ToolTip 
@@ -1304,7 +1304,7 @@
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,2,0,0">
                                         <Image Height="16" Width="16" Source="../Resources/favor.png" ToolTip="{Binding TranslationFavorPerHour, FallbackValue=FAVOR__PER__HOUR}" />
                                     </Grid>
-                                    <Label Content="{Binding FavorPerHour, Converter={StaticResource ShortNumberConverter}, IsAsync=True, FallbackValue=-}" 
+                                    <Label Content="{Binding FavorPerHour, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, IsAsync=True, FallbackValue=-}" 
                                        ContentStringFormat="{}{0:N0}/h" Style="{StaticResource DungeonNotificationFragment.BestFavorPerHour}" VerticalAlignment="Center" Margin="1 0 5 0" MinWidth="205">
                                         <Label.ToolTip>
                                             <ToolTip 

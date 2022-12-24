@@ -10,7 +10,7 @@ public class ShortNumberConverter : IValueConverter
     {
         if (!decimal.TryParse(value?.ToString(), out var doubleNumber))
         {
-            throw new ArgumentNullException();
+            return 0;
         }
         
         return doubleNumber.GetShortNumber(culture);
