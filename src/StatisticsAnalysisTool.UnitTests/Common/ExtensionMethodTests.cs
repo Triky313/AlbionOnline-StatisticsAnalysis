@@ -2,6 +2,7 @@
 using StatisticsAnalysisTool.Common;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using Xunit;
 
 namespace StatisticsAnalysisTool.UnitTests.Common;
@@ -165,18 +166,18 @@ public class ExtensionMethodTests
     public void GetShortNumber_ReturnsCorrectStringForVariousInputs()
     {
         // Arrange
-        var inputOutputPairs = new Dictionary<double, string>
+        var inputOutputPairs = new Dictionary<decimal, string>
         {
-            { 123456.78d, "123,46K" },
-            { 12345.678d, "12,35K" },
-            { 123.4567d, "123" },
-            { 12.345678d, "12" },
-            { 1.2345678d, "1" },
-            { 12345678.9d, "12,35M" },
-            { 1234567.89d, "1,23M" },
-            { 123456.789d, "123,46K" },
-            { 12345.6789d, "12,35K" },
-            { 123.45679d, "123" }
+            { 123456.78m, "123.46K" },
+            { 12345.678m, "12.35K" },
+            { 123.4567m, "123" },
+            { 12.345678m, "12" },
+            { 1.2345678m, "1" },
+            { 12345678.9m, "12.35M" },
+            { 1234567.89m, "1.23M" },
+            { 123456.789m, "123.46K" },
+            { 12345.6789m, "12.35K" },
+            { 123.45679m, "123" }
         };
 
         // Act & Assert
@@ -184,7 +185,7 @@ public class ExtensionMethodTests
         {
             var input = pair.Key;
             var expectedOutput = pair.Value;
-            var result = input.ToShortNumberString();
+            var result = input.GetShortNumber(new CultureInfo("en-US"));
             Assert.Equal(expectedOutput, result);
         }
     }
