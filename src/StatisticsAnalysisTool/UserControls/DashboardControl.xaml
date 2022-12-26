@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:glob="clr-namespace:System.Globalization;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="1400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
@@ -16,31 +17,36 @@
                     <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/fame.png" Width="22" Height="22" ToolTip="{Binding Translation.Fame, FallbackValue=FAME}" />
-                            <TextBlock Text="{Binding DashboardBindings.TotalGainedFameInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedFameInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" 
+                                       FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                             <TextBlock FontSize="16" Text="{Binding DashboardBindings.FamePerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/silver.png" Width="22" Height="22" ToolTip="{Binding Translation.Silver, FallbackValue=SILVER}" />
-                            <TextBlock Text="{Binding DashboardBindings.TotalGainedSilverInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedSilverInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" 
+                                       FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                             <TextBlock FontSize="16" Text="{Binding DashboardBindings.SilverPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/respec.png" Width="22" Height="22" ToolTip="{Binding Translation.ReSpec, FallbackValue=RESPEC}" />
-                            <TextBlock Text="{Binding DashboardBindings.TotalGainedReSpecPointsInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedReSpecPointsInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" 
+                                       FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                             <TextBlock FontSize="16" Text="{Binding DashboardBindings.ReSpecPointsPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/might.png" Width="22" Height="22" ToolTip="{Binding Translation.Might, FallbackValue=MIGHT}" />
-                            <TextBlock Text="{Binding DashboardBindings.TotalGainedMightInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedMightInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" 
+                                       FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                             <TextBlock FontSize="16" Text="{Binding DashboardBindings.MightPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="10,0,10,0">
                             <Image Source="../Resources/favor.png" Width="22" Height="22" ToolTip="{Binding Translation.Favor, FallbackValue=FAVOR}" />
-                            <TextBlock Text="{Binding DashboardBindings.TotalGainedFavorInSession, StringFormat='{}{0:N0}', FallbackValue=0}" FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
+                            <TextBlock Text="{Binding DashboardBindings.TotalGainedFavorInSession, Converter={StaticResource ShortNumberConverter}, ConverterCulture={x:Static glob:CultureInfo.CurrentCulture}, FallbackValue=0}" 
+                                       FontSize="16" Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                             <TextBlock FontSize="16" Text="{Binding DashboardBindings.FavorPerHour, Converter={StaticResource ValuePerHourConverter}, FallbackValue=0 /h}"
                            Foreground="{StaticResource SolidColorBrush.Text.1}" HorizontalAlignment="Center" />
                         </StackPanel>
