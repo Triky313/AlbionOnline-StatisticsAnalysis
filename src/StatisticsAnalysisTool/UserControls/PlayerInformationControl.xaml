@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:StatisticsAnalysisTool.ViewModels"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:gl="clr-namespace:System.Globalization;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="850" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:MainWindowViewModel}">
@@ -83,23 +84,28 @@
                     </Grid>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.KillFame, FallbackValue=KILL__FAME}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.KillFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.KillFame, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" 
                                Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.KillFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" 
-                               Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.KillFame, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture},UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.DeathFame, FallbackValue=DEATH__FAME}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.DeathFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.DeathFame, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" 
                                Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.DeathFame, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.DeathFame, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="N0" 
                                Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.TotalKills, FallbackValue=TOTAL__KILLS}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.SearchPlayer.TotalKills, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.SearchPlayer.TotalKills, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.SearchPlayer.TotalKills, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.SearchPlayer.TotalKills, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -131,30 +137,38 @@
                     </Grid>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Royal, FallbackValue=ROYAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Outlands, FallbackValue=OUTLANDS}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Hellgate, FallbackValue=HELLGATE}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Hellgate, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Hellgate, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Hellgate, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Hellgate, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Total, FallbackValue=TOTAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.PvE.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.PvE.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                 </StackPanel>
@@ -165,23 +179,29 @@
                     </Grid>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Royal, FallbackValue=ROYAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Outlands, FallbackValue=OUTLANDS}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Total, FallbackValue=TOTAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Fiber.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" 
                                ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                 </StackPanel>
@@ -192,18 +212,24 @@
                     </Grid>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Royal, FallbackValue=ROYAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Outlands, FallbackValue=OUTLANDS}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Total, FallbackValue=TOTAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Hide.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="0,0,0,20">
@@ -213,18 +239,24 @@
                     </Grid>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Royal, FallbackValue=ROYAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Outlands, FallbackValue=OUTLANDS}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Total, FallbackValue=TOTAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Ore.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="0,0,0,20">
@@ -234,18 +266,24 @@
                     </Grid>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Royal, FallbackValue=ROYAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Outlands, FallbackValue=OUTLANDS}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Outlands,Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Total, FallbackValue=TOTAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Rock.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="0,0,0,20">
@@ -255,18 +293,24 @@
                     </Grid>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Royal, FallbackValue=ROYAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Outlands, FallbackValue=OUTLANDS}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Total, FallbackValue=TOTAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.Wood.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="0,0,0,20">
@@ -276,18 +320,24 @@
                     </Grid>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Royal, FallbackValue=ROYAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.All.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.All.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Outlands, FallbackValue=OUTLANDS}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.All.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.All.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Total, FallbackValue=TOTAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.All.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Gathering.All.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Gathering.All.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="0,0,0,20">
@@ -297,18 +347,24 @@
                     </Grid>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Royal, FallbackValue=ROYAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Crafting.Royal, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Crafting.Royal, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Outlands, FallbackValue=OUTLANDS}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Crafting.Outlands, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Crafting.Outlands, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="{Binding PlayerInformationBindings.PlayerModeTranslation.Total, FallbackValue=TOTAL}" Style="{StaticResource PlayerMode.Label.Title}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Current}" />
-                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Crafting.Total, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" ContentStringFormat="N0" Style="{StaticResource PlayerMode.Label.Value.Last}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformation.GameInfoPlayers.LifetimeStatistics.Crafting.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Current}" />
+                        <Label Content="{Binding PlayerInformationBindings.PlayerModeInformationLocal.GameInfoPlayers.LifetimeStatistics.Crafting.Total, Converter={StaticResource ShortNumberConverter}, 
+                            ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}" Style="{StaticResource PlayerMode.Label.Value.Last}" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

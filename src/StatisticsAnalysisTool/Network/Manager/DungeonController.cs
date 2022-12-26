@@ -841,7 +841,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             
             return _dungeons.Where(
                     x =>
-                        x.EnterDungeonFirstTime > dateTime && dungeonFilters.Contains(x.Mode) && tierFilters.Contains(x.Tier)
+                        x.EnterDungeonFirstTime > dateTime && dungeonFilters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level)
                         || dateTime == null && (dungeonFilters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level) || dungeonFilters is not { Count: > 0 })
                         )
                 .Select(x => x.Fame).Sum();
@@ -854,7 +854,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
 
             return _dungeons.Where(
-                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier)
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level)
                          || dateTime == null && (filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level) || filters is not { Count: > 0 }))
                 .Select(x => x.ReSpec).Sum();
         }
@@ -866,7 +866,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
 
             return _dungeons.Where(
-                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier)
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level)
                          || dateTime == null && (filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level) || filters is not { Count: > 0 }))
                 .Select(x => x.Silver).Sum();
         }
@@ -878,7 +878,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
 
             return _dungeons.Where(
-                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier)
+                    x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level)
                          || dateTime == null && (filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level) || filters is not { Count: > 0 }))
                 .Select(x => x.Might).Sum();
         }
@@ -890,7 +890,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
 
             return _dungeons.Where(
-                x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier)
+                x => x.EnterDungeonFirstTime > dateTime && filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level)
                    || dateTime == null && (filters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level) || filters is not { Count: > 0 }))
                 .Select(x => x.Favor).Sum();
         }
