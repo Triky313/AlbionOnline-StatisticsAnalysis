@@ -438,34 +438,80 @@ public static class ItemController
             return null;
         }
 
-        var itemTypes = new Dictionary<ItemType, Func<ItemJsonObject, bool>>
+        var hideoutItem = GetItemJsonObject(cleanUniqueName, new List<HideoutItem> { _itemsJson.Items.HideoutItem });
+        if (hideoutItem != null)
         {
-            { ItemType.Hideout, i => i is HideoutItem hideoutItem && hideoutItem.UniqueName == uniqueName },
-            { ItemType.Farmable, i => i is FarmableItem farmableItem && farmableItem.UniqueName == uniqueName },
-            { ItemType.Simple, i => i is SimpleItem simpleItem && simpleItem.UniqueName == uniqueName },
-            { ItemType.Consumable, i => i is ConsumableItem consumableItem && consumableItem.UniqueName == uniqueName },
-            { ItemType.ConsumableFromInventory, i => i is ConsumableFromInventoryItem consumableFromInventoryItem && consumableFromInventoryItem.UniqueName == uniqueName },
-            { ItemType.Equipment, i => i is EquipmentItem equipmentItem && equipmentItem.UniqueName == uniqueName },
-            { ItemType.Weapon, i => i is Weapon weapon && weapon.UniqueName == uniqueName },
-            { ItemType.Mount, i => i is Mount mount && mount.UniqueName == uniqueName },
-            { ItemType.Furniture, i => i is FurnitureItem furnitureItem && furnitureItem.UniqueName == uniqueName },
-            { ItemType.Journal, i => i is JournalItem journalItem && journalItem.UniqueName == uniqueName },
-            { ItemType.LabourerContract, i => i is LabourerContract labourerContract && labourerContract.UniqueName == uniqueName },
-            { ItemType.MountSkin, i => i is MountSkin mountSkin && mountSkin.UniqueName == uniqueName },
-            { ItemType.CrystalLeague, i => i is CrystalLeagueItem crystalLeagueItem && crystalLeagueItem.UniqueName == uniqueName }
-        };
-
-        foreach (var (itemType, predicate) in itemTypes)
-        {
-            var item = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.GetType().GetProperty(itemType.ToString())?.GetValue(_itemsJson.Items) as List<ItemJsonObject>);
-            if (item != null && predicate(item))
-            {
-                item.ItemType = itemType;
-                return item;
-            }
+            return hideoutItem;
         }
 
-        return null;
+        var farmableItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FarmableItem);
+        if (farmableItem != null)
+        {
+            return farmableItem;
+        }
+
+        var simpleItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.SimpleItem);
+        if (simpleItem != null)
+        {
+            return simpleItem;
+        }
+
+        var consumableItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableItem);
+        if (consumableItem != null)
+        {
+            return consumableItem;
+        }
+
+        var consumableFromInventoryItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableFromInventoryItem);
+        if (consumableFromInventoryItem != null)
+        {
+            return consumableFromInventoryItem;
+        }
+
+        var equipmentItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.EquipmentItem);
+        if (equipmentItem != null)
+        {
+            return equipmentItem;
+        }
+
+        var weapon = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Weapon);
+        if (weapon != null)
+        {
+            return weapon;
+        }
+
+        var mount = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Mount);
+        if (mount != null)
+        {
+            return mount;
+        }
+
+        var furnitureItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FurnitureItem);
+        if (furnitureItem != null)
+        {
+            return furnitureItem;
+        }
+
+        var journalItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.JournalItem);
+        if (journalItem != null)
+        {
+            return journalItem;
+        }
+
+        var labourerContract = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.LabourerContract);
+        if (labourerContract != null)
+        {
+            return labourerContract;
+        }
+
+        var mountSkin = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.MountSkin);
+        if (mountSkin != null)
+        {
+            return mountSkin;
+        }
+
+        var crystalLeagueItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.CrystalLeagueItem);
+        return crystalLeagueItem;
     }
 
     private static ItemJsonObject GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects)
