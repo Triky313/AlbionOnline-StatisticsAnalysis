@@ -15,7 +15,7 @@ public static class Converter
 
     private const double MinOneGoldInCent = MinGoldPriceInCent / MinReceivedGold;
     private const double MaxOneGoldInCent = MaxGoldPriceInCent / MaxReceivedGold;
-
+    
     private static DateTime _lastGoldUpdate = DateTime.MinValue;
     private static int _currentGoldPrice = DefaultGoldPrice;
 

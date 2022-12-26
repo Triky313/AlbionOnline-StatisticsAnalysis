@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -150,48 +151,53 @@ public static class ExtensionMethod
         }
     }
 
-    private static string GetShortNumber(this decimal num)
+    public static string GetShortNumber(this decimal num, CultureInfo culture = null)
     {
+        culture ??= CultureInfo.CurrentCulture;
+        
         if (num < -10000000)
         {
             num /= 10000;
-            return (num / 100m).ToString("#.00'M'", CultureInfo.CurrentCulture);
+            return (num / 100m).ToString("#.##'M'", culture);
         }
 
         if (num < -1000000)
         {
             num /= 100;
-            return (num / 10m).ToString("#.00'K'", CultureInfo.CurrentCulture);
+            return (num / 10m).ToString("#.##'K'", culture);
         }
 
         if (num < -10000)
         {
             num /= 10;
-            return (num / 100m).ToString("#.00'K'", CultureInfo.CurrentCulture);
+            return (num / 100m).ToString("#.##'K'", culture);
         }
 
-        if (num < 1000) return num.ToString("N0", CultureInfo.CurrentCulture);
+        if (num < 1000)
+        {
+            return num.ToString("N0", culture);
+        }
 
         if (num < 10000)
         {
             num /= 10;
-            return (num / 100m).ToString("#.00'K'", CultureInfo.CurrentCulture);
+            return (num / 100m).ToString("#.##'K'", culture);
         }
 
         if (num < 1000000)
         {
             num /= 100;
-            return (num / 10m).ToString("#.00'K'", CultureInfo.CurrentCulture);
+            return (num / 10m).ToString("#.##'K'", culture);
         }
 
         if (num < 10000000)
         {
             num /= 10000;
-            return (num / 100m).ToString("#.00'M'", CultureInfo.CurrentCulture);
+            return (num / 100m).ToString("#.##'M'", culture);
         }
 
         num /= 100000;
-        return (num / 10m).ToString("#.00'M'", CultureInfo.CurrentCulture);
+        return (num / 10m).ToString("#.##'M'", culture);
     }
 
     public static double ToPositive(this double value)
@@ -203,7 +209,7 @@ public static class ExtensionMethod
     {
         return healthChange >= 0d ? 0d : healthChange.ToPositive();
     }
-
+    
     #endregion
 
     #region Player Objects
