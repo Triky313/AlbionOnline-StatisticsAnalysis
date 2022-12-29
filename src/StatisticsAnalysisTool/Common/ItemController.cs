@@ -441,77 +441,95 @@ public static class ItemController
         var hideoutItem = GetItemJsonObject(cleanUniqueName, new List<HideoutItem> { _itemsJson.Items.HideoutItem });
         if (hideoutItem != null)
         {
+            hideoutItem.ItemType = ItemType.Hideout;
             return hideoutItem;
         }
 
         var farmableItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FarmableItem);
         if (farmableItem != null)
         {
+            farmableItem.ItemType = ItemType.Farmable;
             return farmableItem;
         }
 
         var simpleItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.SimpleItem);
         if (simpleItem != null)
         {
+            simpleItem.ItemType = ItemType.Simple;
             return simpleItem;
         }
 
         var consumableItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableItem);
         if (consumableItem != null)
         {
+            consumableItem.ItemType = ItemType.Consumable;
             return consumableItem;
         }
 
         var consumableFromInventoryItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.ConsumableFromInventoryItem);
         if (consumableFromInventoryItem != null)
         {
+            consumableFromInventoryItem.ItemType = ItemType.ConsumableFromInventory;
             return consumableFromInventoryItem;
         }
 
         var equipmentItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.EquipmentItem);
         if (equipmentItem != null)
         {
+            equipmentItem.ItemType = ItemType.Equipment;
             return equipmentItem;
         }
 
         var weapon = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Weapon);
         if (weapon != null)
         {
+            weapon.ItemType = ItemType.Weapon;
             return weapon;
         }
 
         var mount = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.Mount);
         if (mount != null)
         {
+            mount.ItemType = ItemType.Mount;
             return mount;
         }
 
         var furnitureItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.FurnitureItem);
         if (furnitureItem != null)
         {
+            furnitureItem.ItemType = ItemType.Furniture;
             return furnitureItem;
         }
 
         var journalItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.JournalItem);
         if (journalItem != null)
         {
+            journalItem.ItemType = ItemType.Journal;
             return journalItem;
         }
 
         var labourerContract = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.LabourerContract);
         if (labourerContract != null)
         {
+            labourerContract.ItemType = ItemType.LabourerContract;
             return labourerContract;
         }
 
         var mountSkin = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.MountSkin);
         if (mountSkin != null)
         {
+            mountSkin.ItemType = ItemType.MountSkin;
             return mountSkin;
         }
 
         var crystalLeagueItem = GetItemJsonObject(cleanUniqueName, _itemsJson.Items.CrystalLeagueItem);
-        return crystalLeagueItem;
+        if (crystalLeagueItem != null)
+        {
+            crystalLeagueItem.ItemType = ItemType.CrystalLeague;
+            return crystalLeagueItem;
+        }
+
+        return null;
     }
 
     private static ItemJsonObject GetItemJsonObject<T>(string uniqueName, List<T> itemJsonObjects)
