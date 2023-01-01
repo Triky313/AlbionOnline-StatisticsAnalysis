@@ -70,7 +70,8 @@ public class MailMonitoringBindings : INotifyPropertyChanged
         set
         {
             _mailsSearchText = value;
-            MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
+            MailCollectionView?.Refresh();
+            MailStatsObject.SetMailStats(MailCollectionView?.Cast<Mail>().ToList());
             OnPropertyChanged();
         }
     }
@@ -81,7 +82,8 @@ public class MailMonitoringBindings : INotifyPropertyChanged
         set
         {
             _datePickerMailsFrom = value;
-            MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
+            MailCollectionView?.Refresh();
+            MailStatsObject.SetMailStats(MailCollectionView?.Cast<Mail>().ToList());
             OnPropertyChanged();
         }
     }
@@ -92,7 +94,8 @@ public class MailMonitoringBindings : INotifyPropertyChanged
         set
         {
             _datePickerMailsTo = value;
-            MailStatsObject.SetMailStats(MailCollectionView.Cast<Mail>().ToList());
+            MailCollectionView?.Refresh();
+            MailStatsObject.SetMailStats(MailCollectionView?.Cast<Mail>().ToList());
             OnPropertyChanged();
         }
     }

@@ -182,7 +182,7 @@ public static class ItemController
     #endregion
 
     #region Durability
-
+    
     public static double GetDurability(ItemJsonObject itemJsonObject, int level)
     {
         switch (itemJsonObject)
