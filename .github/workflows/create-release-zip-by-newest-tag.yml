@@ -3,7 +3,7 @@ name: Create Release file by newest tag
 on:
   push:
     tags:
-      - 'v*'
+      - 'v[0-999].[0-9999].[0-9999]'
 
 jobs:
   build:
