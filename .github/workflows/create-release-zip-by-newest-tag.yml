@@ -1,7 +1,7 @@
 name: Create Release.zip by newest tag
 
 on:
-  create:
+  push:
     types: [tag]
 
 jobs:
