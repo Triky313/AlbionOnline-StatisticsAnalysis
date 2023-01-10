@@ -1,4 +1,4 @@
-name: Build WPF app
+name: Create Release.zip by newest tag
 
 on:
   create:
