@@ -1,19 +1,35 @@
 name: Create Release.zip by newest tag
 
+# on:
+#   push:
+#     tags:
+#       - v*.*.*
+
+# jobs:
+#   build:
+#     runs-on: windows-latest
+
+#     steps:
+#       - name: Extract tag name
+#         run: |
+#             TAG_NAME=$(echo ${{ github.ref }} | cut -d '/' -f 3 | cut -c 2-)
+#             echo "Tag name: $TAG_NAME"
+#       - name: Check tag syntax
+#         if: startsWith(TAG_NAME, 'v')
+#         run: |
+
 on:
+  # Trigger the workflow on tag creation or update
+  # This includes creating a new tag and updating an existing tag
+  # By default only pushes to the master branch will trigger a workflow
   push:
     tags:
-      - v*.*.*
+      - '*'
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Extract tag name
-        run: |
-            TAG_NAME=$(echo ${{ github.ref }} | cut -d '/' -f 3 | cut -c 2-)
-            echo "Tag name: $TAG_NAME"
-      - name: Check tag syntax
-        if: startsWith(TAG_NAME, 'v')
-        run: |
+    - name: Print message
+      run: echo "A tag has been created or updated!"
