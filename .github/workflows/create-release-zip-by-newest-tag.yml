@@ -1,0 +1,18 @@
+name: Create Release.zip by newest tag
+
+on:
+  create:
+    types: [tag]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Extract tag name
+        run: |
+            TAG_NAME=$(echo ${{ github.ref }} | cut -d '/' -f 3 | cut -c 2-)
+            echo "Tag name: $TAG_NAME"
+      - name: Check tag syntax
+        if: startsWith(TAG_NAME, 'v')
+        run: |
