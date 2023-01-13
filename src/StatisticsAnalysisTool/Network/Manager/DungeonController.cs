@@ -286,29 +286,39 @@ namespace StatisticsAnalysisTool.Network.Manager
         private async Task DungeonUiFilteringAsync()
         {
             var dungeonStatsFilter = _mainWindowViewModel?.DungeonBindings?.DungeonStatsFilter;
+            var modeFilter = dungeonStatsFilter?.DungeonModeFilters;
+            var tierFilter = dungeonStatsFilter?.TierFilters;
+            var levelFilter = dungeonStatsFilter?.LevelFilters;
 
-            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x =>
-                    !(
-                        (dungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? false)
-                        && (dungeonStatsFilter.TierFilters?.Contains(x.Tier) ?? false)
-                        && (dungeonStatsFilter.LevelFilters?.Contains((ItemLevel)x.Level) ?? x.Status != DungeonStatus.Active)
-                ))
-                // ReSharper disable once ConstantConditionalAccessQualifier
-                ?.ToAsyncEnumerable().ForEachAsync(d =>
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons
+                ?.Where(x =>
+                    (modeFilter?.Contains(x.Mode) ?? false)
+                    && (tierFilter?.Contains(x.Tier) ?? false)
+                    && (levelFilter?.Contains((ItemLevel)x.Level) ?? false)
+                )
+                .ToAsyncEnumerable()
+                .ForEachAsync(d =>
                 {
                     d.Visibility = Visibility.Collapsed;
-                });
+                })!;
 
-            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons?.Where(x =>
-                    ((dungeonStatsFilter?.DungeonModeFilters?.Contains(x.Mode) ?? false)
-                        && (dungeonStatsFilter.TierFilters?.Contains(x.Tier) ?? false)
-                        && (dungeonStatsFilter.LevelFilters?.Contains((ItemLevel)x.Level) ?? x.Status != DungeonStatus.Active)
-                    ))
-                // ReSharper disable once ConstantConditionalAccessQualifier
-                ?.ToAsyncEnumerable().ForEachAsync(d =>
+            await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons
+                ?.Where(x =>
+                {
+                    if (x.Status == DungeonStatus.Active)
+                    {
+                        return true;
+                    }
+
+                    return (modeFilter?.Contains(x.Mode) ?? false)
+                           && (tierFilter?.Contains(x.Tier) ?? false)
+                           && (levelFilter?.Contains((ItemLevel)x.Level) ?? false);
+                })
+                .ToAsyncEnumerable()
+                .ForEachAsync(d =>
                 {
                     d.Visibility = Visibility.Visible;
-                });
+                })!;
         }
 
         public async Task SetOrUpdateDungeonsDataUiAsync()
@@ -827,7 +837,7 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             var dungeonWithLevelFilters = dungeonWithTierFilters
                 .Where(x => dungeonStatsFilter?.LevelFilters != null && dungeonStatsFilter.LevelFilters.Contains((ItemLevel)x.Level) || dungeonStatsFilter?.LevelFilters == null);
-            
+
             return dungeonWithLevelFilters
                 .Select(dun => dun.DungeonEventObjects.Where(x => x.Rarity == rarity && x.ObjectType == dungeonEventObjectType))
                 .Select(filteredChests => filteredChests.Count()).Sum();
@@ -838,7 +848,7 @@ namespace StatisticsAnalysisTool.Network.Manager
             var dungeonFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.DungeonModeFilters ?? new List<DungeonMode>();
             var tierFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.TierFilters ?? new List<Tier>();
             var levelFilters = _mainWindowViewModel.DungeonBindings.DungeonStatsFilter?.LevelFilters ?? new List<ItemLevel>();
-            
+
             return _dungeons.Where(
                     x =>
                         x.EnterDungeonFirstTime > dateTime && dungeonFilters.Contains(x.Mode) && tierFilters.Contains(x.Tier) && levelFilters.Contains((ItemLevel)x.Level)

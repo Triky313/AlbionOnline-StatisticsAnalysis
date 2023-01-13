@@ -36,7 +36,7 @@ namespace StatisticsAnalysisTool.ViewModels
     {
         private static MainWindow _mainWindow;
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
-        
+
         private double _allianceInfoWidth;
         private double _currentMapInfoWidth;
         private string _errorBarText;
@@ -143,7 +143,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SelectedItemLevel = ItemLevel.Unknown;
 
             #endregion Full Item Info elements
-            
+
             #region Tracking
 
             UserTrackingBindings.UsernameInformationVisibility = Visibility.Hidden;
@@ -391,7 +391,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterFaction,
                 Name = MainWindowTranslation.Faction
             });
-            
+
             LoggingBindings?.Filters.Add(new LoggingFilterObject(TrackingController, this, LoggingFilterType.ConsumableLoot)
             {
                 IsSelected = SettingsController.CurrentSettings.IsMainTrackerFilterConsumableLoot,
@@ -542,7 +542,7 @@ namespace StatisticsAnalysisTool.ViewModels
         }
 
         #endregion
-        
+
         #region Tracking
 
         public async Task StartTrackingAsync()
@@ -585,7 +585,7 @@ namespace StatisticsAnalysisTool.ViewModels
             TrackingController?.TreasureController.UnregisterEvents();
             TrackingController?.LootController.UnregisterEvents();
             TrackingController?.ClusterController.UnregisterEvents();
-            
+
             await TrackingController?.VaultController?.SaveInFileAsync()!;
             await TrackingController?.TreasureController?.SaveInFileAsync()!;
             await TrackingController?.StatisticController?.SaveInFileAsync()!;
@@ -1149,7 +1149,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public string LoadTranslation
         {
             get => _loadTranslation;
@@ -1179,7 +1179,7 @@ namespace StatisticsAnalysisTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public ObservableCollection<MainStatObject> FactionPointStats
         {
             get => _factionPointStats;
