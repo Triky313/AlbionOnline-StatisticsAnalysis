@@ -292,9 +292,9 @@ namespace StatisticsAnalysisTool.Network.Manager
 
             await _mainWindowViewModel?.DungeonBindings?.TrackingDungeons
                 ?.Where(x =>
-                    (modeFilter?.Contains(x.Mode) ?? false)
-                    && (tierFilter?.Contains(x.Tier) ?? false)
-                    && (levelFilter?.Contains((ItemLevel)x.Level) ?? false)
+                    !((modeFilter?.Contains(x.Mode) ?? false)
+                      && (tierFilter?.Contains(x.Tier) ?? false)
+                      && (levelFilter?.Contains((ItemLevel)x.Level) ?? x.Status != DungeonStatus.Active))
                 )
                 .ToAsyncEnumerable()
                 .ForEachAsync(d =>
