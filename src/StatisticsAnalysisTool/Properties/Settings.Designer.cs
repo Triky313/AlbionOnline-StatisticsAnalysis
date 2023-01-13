@@ -61,8 +61,8 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/it" +
-            "ems.json")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.jso" +
+            "n")]
         public string DefaultItemListSourceUrl {
             get {
                 return ((string)(this["DefaultItemListSourceUrl"]));
@@ -261,7 +261,7 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/items.json")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json")]
         public string DefaultItemsJsonSourceUrl {
             get {
                 return ((string)(this["DefaultItemsJsonSourceUrl"]));
