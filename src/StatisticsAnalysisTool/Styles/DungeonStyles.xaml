@@ -685,6 +685,7 @@
                           Margin="5,0,5,0" IsChecked="{Binding UnknownCheckbox}"/>
             </DockPanel>
             <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Left">
+                <CheckBox Content="T?" Margin="5,0,5,0" IsChecked="{Binding IsTierUnknown}"/>
                 <CheckBox Content="{Binding TranslationT4, FallbackValue='T4'}" Margin="5,0,5,0" IsChecked="{Binding IsT4}"/>
                 <CheckBox Content="{Binding TranslationT5, FallbackValue='T5'}" Margin="5,0,5,0" IsChecked="{Binding IsT5}"/>
                 <CheckBox Content="{Binding TranslationT6, FallbackValue='T6'}" Margin="5,0,5,0" IsChecked="{Binding IsT6}"/>
@@ -692,6 +693,11 @@
                 <CheckBox Content="{Binding TranslationT8, FallbackValue='T8'}" Margin="5,0,5,0" IsChecked="{Binding IsT8}"/>
             </DockPanel>
             <DockPanel Margin="0,0,0,0" Height="30" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Left">
+                <CheckBox ToolTip="{Binding TranslationUnknown}" Margin="5,0,5,0" IsChecked="{Binding IsLevelUnknown}">
+                    <CheckBox.Content>
+                        <Label>?</Label>
+                    </CheckBox.Content>
+                </CheckBox>
                 <CheckBox ToolTip="{Binding TranslationFlat}" Margin="5,0,5,0" IsChecked="{Binding IsLevel0}">
                     <CheckBox.Content>
                         <StackPanel Orientation="Horizontal">

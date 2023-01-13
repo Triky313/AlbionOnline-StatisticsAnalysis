@@ -27,6 +27,7 @@ public class DungeonStatsFilter : INotifyPropertyChanged
             DungeonMode.Corrupted,
             DungeonMode.Unknown
         };
+    private bool? _isTierUnknown = true;
     private bool? _isT4 = true;
     private bool? _isT5 = true;
     private bool? _isT6 = true;
@@ -34,12 +35,14 @@ public class DungeonStatsFilter : INotifyPropertyChanged
     private bool? _isT8 = true;
     private List<Tier> _tierFilters = new()
         {
+            Tier.Unknown,
             Tier.T4,
             Tier.T5,
             Tier.T6,
             Tier.T7,
             Tier.T8
         };
+    private bool? _isLevelUnknown = true;
     private bool? _isLevel0 = true;
     private bool? _isLevel1 = true;
     private bool? _isLevel2 = true;
@@ -47,6 +50,7 @@ public class DungeonStatsFilter : INotifyPropertyChanged
     private bool? _isLevel4 = true;
     private List<ItemLevel> _levelFilters = new()
         {
+            ItemLevel.Unknown,
             ItemLevel.Level0,
             ItemLevel.Level1,
             ItemLevel.Level2,
@@ -187,6 +191,17 @@ public class DungeonStatsFilter : INotifyPropertyChanged
 
     #region Tier
 
+    public bool? IsTierUnknown
+    {
+        get => _isTierUnknown;
+        set
+        {
+            _isTierUnknown = value;
+            ChangeTierFilter(Tier.Unknown, _isTierUnknown ?? false);
+            OnPropertyChanged();
+        }
+    }
+
     public bool? IsT4
     {
         get => _isT4;
@@ -285,6 +300,17 @@ public class DungeonStatsFilter : INotifyPropertyChanged
     #endregion
 
     #region Level
+
+    public bool? IsLevelUnknown
+    {
+        get => _isLevelUnknown;
+        set
+        {
+            _isLevelUnknown = value;
+            ChangeTierFilter(ItemLevel.Unknown, _isLevelUnknown ?? false);
+            OnPropertyChanged();
+        }
+    }
 
     public bool? IsLevel0
     {
