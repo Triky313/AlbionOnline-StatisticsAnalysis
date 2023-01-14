@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - run: |
-          DOT_NET_VERSION=${{6.0.100}}
+          DOT_NET_VERSION='6.0.100'
       - name: Install .NET $DOT_NET_VERSION
         uses: actions/setup-dotnet@v1
         with:
