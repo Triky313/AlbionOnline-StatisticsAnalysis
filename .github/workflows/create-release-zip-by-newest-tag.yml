@@ -10,7 +10,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Extract tag name
+      - run: |
+          echo ${{ github.workspace }}
+          MY_WORK_DIR=${{ github.workspace }}
+          echo "MY_WORK_DIR=$MY_WORK_DIR" >> $GITHUB_ENV
+      - run: |
+          echo $MY_WORK_DIR
+      - name: Publish StatisticsAnalysisTool application in directory
         run: |
             TAG_NAME=$(echo ${{ github.ref }} | cut -d '/' -f 3)
             echo "Tag name: $TAG_NAME"
