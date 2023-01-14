@@ -10,10 +10,6 @@ jobs:
     runs-on: windows-latest
     steps:
       - run: |
-          echo ${{ github.workspace }}
-          MY_WORK_DIR=${{ github.workspace }}
-          echo "MY_WORK_DIR=$MY_WORK_DIR" >> $GITHUB_ENV
-      - run: |
           echo $MY_WORK_DIR
       - name: Publish StatisticsAnalysisTool application in directory
         run: |
