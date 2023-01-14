@@ -6,33 +6,32 @@ on:
       - 'v*'
 
 jobs:
-  build:
+
+  build-application:
+    name: Build and release application
     runs-on: windows-latest
     env:
-      Project_Path: src\StatisticsAnalysisTool\StatisticsAnalysisTool.csproj
+      Project_File_Path: src\StatisticsAnalysisTool\StatisticsAnalysisTool.csproj
+
     steps:
-      - name: Checkout main branch
-      - uses: actions/checkout@v3
-        with:
-          ref: main
+    - name: Checkout main branch
+      uses: actions/checkout@v3
+      with:
+        ref: main
 
-      - name: Check for build errors
-          run: dotnet build src\StatisticsAnalysisTool
+    - name: Publish StatisticsAnalysisTool application in directory
+      run: |
+          dotnet publish $env:Project_File_Path -c Release -p:Platform=x64 -p:PublishDir=bin\Release -p:PublishProtocol=FileSystem -p:TargetFramework=net6.0-windows -p:RuntimeIdentifier=win-x64 -p:SelfContained=false -p:PublishSingleFile=true -p:PublishReadyToRun=false
+    
+    - name: Create release zip file
+      uses: vimtor/action-zip@v1
+      with:
+        files: src\StatisticsAnalysisTool\bin\Release
+        dest: StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-x64.zip
 
-      - name: Install dependencies
-        run: dotnet restore src\StatisticsAnalysisTool
-
-      - name: Install .NET 6.0.100
-      - uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '6.0.100' # SDK Version to use; x will use the latest version of the 6.0 channel. Force 101 for global.json compatibility.
-
-      # - run: dotnet build src\StatisticsAnalysisTool
-
-      - name: Publish StatisticsAnalysisTool application in directory
-        run: |
-            dotnet publish $env:Project_Path -c Release -p:Platform=x64 -p:PublishDir=bin\Release -p:PublishProtocol=FileSystem -p:TargetFramework=net6.0-windows -p:RuntimeIdentifier=win-x64 -p:SelfContained=false -p:PublishSingleFile=true -p:PublishReadyToRun=false
-      
-      - name: Create release archive
-        run: |
-            7z a -tzip StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-x64.zip bin\Release\*
+    - name: Upload release zip file to newest tag
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-x64.zip
