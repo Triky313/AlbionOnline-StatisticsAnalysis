@@ -1,4 +1,4 @@
-name: .NET Desktop
+name: U+1F528 Build + Unit tests
 
 on:
   push:
