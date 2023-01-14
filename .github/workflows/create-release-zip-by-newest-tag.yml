@@ -9,17 +9,9 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      # - name: Extract tag name
-      - name: Create tag artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{github.ref_name}}
-          path: Release
-        env:
-          TAG_NAME: ${{github.ref_name}}
       - name: Build StatisticsAnalysisTool application
         run: |
             dotnet publish -c Release -p:Platform=x64 -p:PublishDir=bin\Release\net6.0-windows\publish\win-x64\ -p:PublishProtocol=FileSystem -p:TargetFramework=net6.0-windows -p:RuntimeIdentifier=win-x64 -p:SelfContained=false -p:PublishSingleFile=true -p:PublishReadyToRun=false
       - name: Create release archive
         run: |
-            7z a -tzip StatisticsAnalysis-AlbionOnline-${{ env.TAG_NAME }}-x64.zip bin\Release\net6.0-windows\publish\win-x64\*
+            7z a -tzip StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-x64.zip bin\Release\net6.0-windows\publish\win-x64\*
