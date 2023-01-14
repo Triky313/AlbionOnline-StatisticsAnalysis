@@ -17,7 +17,7 @@ jobs:
           ref: main
 
       - name: Check for build errors
-          run: dotnet build src\StatisticsAnalysisTool
+        run: dotnet build src\StatisticsAnalysisTool
 
       - name: Install dependencies
         run: dotnet restore src\StatisticsAnalysisTool
