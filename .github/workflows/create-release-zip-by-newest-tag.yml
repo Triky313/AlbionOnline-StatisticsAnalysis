@@ -19,7 +19,6 @@ jobs:
         run: |
           echo $TAG_NAME
           echo ${{ steps.vars.outputs.tag }}
-    steps:
       - name: Build StatisticsAnalysisTool application
         run: |
             dotnet publish -c Release -p:Platform=x64 -p:PublishDir=bin\Release\net6.0-windows\publish\win-x64\ -p:PublishProtocol=FileSystem -p:TargetFramework=net6.0-windows -p:RuntimeIdentifier=win-x64 -p:SelfContained=false -p:PublishSingleFile=true -p:PublishReadyToRun=false
