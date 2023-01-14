@@ -1,15 +1,15 @@
-name: U+1F528 Build + Unit tests
+name: 🛠️ Build + Unit tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main2 ]
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
       - '**/*.gitattributes'
       - '**/donations.json'
   pull_request:
-    branches: [ main ]
+    branches: [ main2 ]
 
 jobs:
 
