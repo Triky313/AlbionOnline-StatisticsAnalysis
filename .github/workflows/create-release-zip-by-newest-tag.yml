@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Extract tag name
         run: |
-            $ref = ${{ github.ref }}
+            $ref = $env:GITHUB_REF
             $parts = $ref -split '/'
             $TAG_NAME = $parts[-1]
             echo "Tag name: $TAG_NAME"
