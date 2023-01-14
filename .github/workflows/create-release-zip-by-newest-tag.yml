@@ -9,12 +9,17 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Extract tag name
+      - uses: actions/checkout@v2
+      - name: Set output
+        id: vars
+        run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+      - name: Check output
+        env:
+          TAG_NAME: ${{ steps.vars.outputs.tag }}
         run: |
-            $ref = $env:GITHUB_REF
-            $parts = $ref -split '/'
-            $TAG_NAME = $parts[-1]
-            echo "Tag name: $TAG_NAME"
+          echo $TAG_NAME
+          echo ${{ steps.vars.outputs.tag }}
+    steps:
       - name: Build StatisticsAnalysisTool application
         run: |
             dotnet publish -c Release -p:Platform=x64 -p:PublishDir=bin\Release\net6.0-windows\publish\win-x64\ -p:PublishProtocol=FileSystem -p:TargetFramework=net6.0-windows -p:RuntimeIdentifier=win-x64 -p:SelfContained=false -p:PublishSingleFile=true -p:PublishReadyToRun=false
