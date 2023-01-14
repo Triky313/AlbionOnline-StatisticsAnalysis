@@ -9,12 +9,10 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - run: |
-          DOT_NET_VERSION='6.0.100'
-      - name: Install .NET $DOT_NET_VERSION
+      - name: Install .NET 6.0.100
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '$DOT_NET_VERSION' # SDK Version to use; x will use the latest version of the 6.0 channel. Force 101 for global.json compatibility.
+          dotnet-version: '6.0.100' # SDK Version to use; x will use the latest version of the 6.0 channel. Force 101 for global.json compatibility.
       - run: dotnet build src\StatisticsAnalysisTool
 
       - name: Publish StatisticsAnalysisTool application in directory
