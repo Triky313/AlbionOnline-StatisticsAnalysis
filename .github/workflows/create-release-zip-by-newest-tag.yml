@@ -17,7 +17,7 @@ jobs:
         echo $MY_WORK_DIR
       - name: Publish StatisticsAnalysisTool application in directory
         run: |
-            dotnet publish ${{ GITHUB_WORKSPACE }}/src/StatisticsAnalysisTool/StatisticsAnalysisTool.csproj -c Release -p:Platform=x64 -p:PublishDir=bin\Release -p:PublishProtocol=FileSystem -p:TargetFramework=net6.0-windows -p:RuntimeIdentifier=win-x64 -p:SelfContained=false -p:PublishSingleFile=true -p:PublishReadyToRun=false
+            dotnet publish ${{ github.workspace }}/src/StatisticsAnalysisTool/StatisticsAnalysisTool.csproj -c Release -p:Platform=x64 -p:PublishDir=bin\Release -p:PublishProtocol=FileSystem -p:TargetFramework=net6.0-windows -p:RuntimeIdentifier=win-x64 -p:SelfContained=false -p:PublishSingleFile=true -p:PublishReadyToRun=false
       - name: Create release archive
         run: |
             7z a -tzip StatisticsAnalysis-AlbionOnline-${{ github.ref_name }}-x64.zip bin\Release\*
