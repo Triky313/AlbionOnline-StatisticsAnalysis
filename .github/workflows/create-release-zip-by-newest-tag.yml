@@ -8,7 +8,7 @@ on:
 jobs:
 
   build-application:
-    name: Build application
+    name: Build and release application
     runs-on: windows-latest
     env:
       Project_File_Path: src\StatisticsAnalysisTool\StatisticsAnalysisTool.csproj
