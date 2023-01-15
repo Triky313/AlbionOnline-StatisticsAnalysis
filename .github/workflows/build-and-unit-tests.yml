@@ -1,15 +1,15 @@
-name: .NET Desktop
+name: 🛠️ Build + Unit tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main2 ]
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
       - '**/*.gitattributes'
       - '**/donations.json'
   pull_request:
-    branches: [ main ]
+    branches: [ main2 ]
 
 jobs:
 
