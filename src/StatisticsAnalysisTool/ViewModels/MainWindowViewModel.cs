@@ -82,6 +82,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private DashboardBindings _dashboardBindings = new();
         private string _loggingSearchText;
         private Visibility _gridTryToLoadTheItemJsonAgainVisibility;
+        private Visibility _gridTryToLoadTheMobsJsonAgainVisibility;
         private Visibility _toolTasksVisibility = Visibility.Collapsed;
         private ObservableCollection<TaskTextObject> _toolTaskObjects = new();
         private double _taskProgressbarMinimum;
@@ -294,6 +295,7 @@ namespace StatisticsAnalysisTool.ViewModels
             LoadIconVisibility = Visibility.Visible;
             GridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
             GridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
+            GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
 
             if (!ItemController.IsItemsLoaded())
             {
@@ -338,8 +340,8 @@ namespace StatisticsAnalysisTool.ViewModels
                 var isMobsJsonLoaded = await MobsData.LoadMobsDataAsync().ConfigureAwait(true);
                 if (!isMobsJsonLoaded)
                 {
-                    SetErrorBar(Visibility.Visible, LanguageController.Translation("MOB_JSON_CAN_NOT_BE_LOADED"));
-                    GridTryToLoadTheItemJsonAgainVisibility = Visibility.Visible;
+                    SetErrorBar(Visibility.Visible, LanguageController.Translation("MOBS_JSON_CAN_NOT_BE_LOADED"));
+                    GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Visible;
                     IsTaskProgressbarIndeterminate = false;
                     itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
                 }
@@ -1237,6 +1239,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _gridTryToLoadTheItemJsonAgainVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility GridTryToLoadTheMobsJsonAgainVisibility
+        {
+            get => _gridTryToLoadTheMobsJsonAgainVisibility;
+            set
+            {
+                _gridTryToLoadTheMobsJsonAgainVisibility = value;
                 OnPropertyChanged();
             }
         }
