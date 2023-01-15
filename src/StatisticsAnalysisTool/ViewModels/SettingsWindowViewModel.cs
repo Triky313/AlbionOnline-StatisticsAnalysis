@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using log4net;
 using StatisticsAnalysisTool.Common;
 using StatisticsAnalysisTool.Common.UserSettings;
@@ -19,6 +20,7 @@ namespace StatisticsAnalysisTool.ViewModels
     public class SettingsWindowViewModel : INotifyPropertyChanged
     {
         private static string _itemListSourceUrl;
+        private static string _mobsJsonSourceUrl;
         private static ObservableCollection<FileInformation> _languages = new();
         private static FileInformation _languagesSelection;
         private static ObservableCollection<FileSettingInformation> _refreshRates = new();
@@ -37,7 +39,9 @@ namespace StatisticsAnalysisTool.ViewModels
         private bool _isLootLoggerSaveReminderActive;
         private string _itemsJsonSourceUrl;
         private ObservableCollection<FileSettingInformation> _updateItemsJsonByDays = new();
+        private ObservableCollection<FileSettingInformation> _updateMobsJsonByDays = new();
         private FileSettingInformation _updateItemsJsonByDaysSelection;
+        private FileSettingInformation _updateMobsJsonByDaysSelection;
         private bool _isSuggestPreReleaseUpdatesActive;
         private string _mainTrackingCharacterName;
         private bool _shortDamageMeterToClipboard;
@@ -99,12 +103,7 @@ namespace StatisticsAnalysisTool.ViewModels
 
             #region Update item list by days
 
-            UpdateItemListByDays.Clear();
-            UpdateItemListByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
-            UpdateItemListByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
-            UpdateItemListByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
-            UpdateItemListByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
-            UpdateItemListByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
+            InitDropDownDownByDays(UpdateItemListByDays);
             UpdateItemListByDaysSelection = UpdateItemListByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateItemListByDays);
 
             ItemListSourceUrl = SettingsController.CurrentSettings.ItemListSourceUrl;
@@ -112,16 +111,20 @@ namespace StatisticsAnalysisTool.ViewModels
             #endregion
 
             #region Update items.json by days
-
-            UpdateItemsJsonByDays.Clear();
-            UpdateItemsJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
-            UpdateItemsJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
-            UpdateItemsJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
-            UpdateItemsJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
-            UpdateItemsJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
+            
+            InitDropDownDownByDays(UpdateItemsJsonByDays);
             UpdateItemsJsonByDaysSelection = UpdateItemsJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateItemsJsonByDays);
 
             ItemsJsonSourceUrl = SettingsController.CurrentSettings.ItemsJsonSourceUrl;
+
+            #endregion
+
+            #region Update mobs.json by days
+
+            InitDropDownDownByDays(UpdateMobsJsonByDays);
+            UpdateMobsJsonByDaysSelection = UpdateMobsJsonByDays.FirstOrDefault(x => x.Value == SettingsController.CurrentSettings.UpdateMobsJsonByDays);
+
+            MobsJsonSourceUrl = SettingsController.CurrentSettings.MobsJsonSourceUrl;
             
             #endregion
 
@@ -176,6 +179,7 @@ namespace StatisticsAnalysisTool.ViewModels
             SettingsController.CurrentSettings.MainTrackingCharacterName = MainTrackingCharacterName;
             SettingsController.CurrentSettings.UpdateItemListByDays = UpdateItemListByDaysSelection.Value;
             SettingsController.CurrentSettings.UpdateItemsJsonByDays = UpdateItemsJsonByDaysSelection.Value;
+            SettingsController.CurrentSettings.UpdateMobsJsonByDays = UpdateMobsJsonByDaysSelection.Value;
             SettingsController.CurrentSettings.IsOpenItemWindowInNewWindowChecked = IsOpenItemWindowInNewWindowChecked;
             SettingsController.CurrentSettings.IsInfoWindowShownOnStart = ShowInfoWindowOnStartChecked;
             SettingsController.CurrentSettings.SelectedAlertSound = AlertSoundSelection?.FileName ?? string.Empty;
@@ -202,6 +206,16 @@ namespace StatisticsAnalysisTool.ViewModels
         private void SetAppSettingsAndTranslations()
         {
             Translation = new SettingsWindowTranslation();
+        }
+
+        private void InitDropDownDownByDays(ICollection<FileSettingInformation> updateJsonByDays)
+        {
+            updateJsonByDays.Clear();
+            updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_DAY"), Value = 1 });
+            updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_3_DAYS"), Value = 3 });
+            updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_7_DAYS"), Value = 7 });
+            updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_14_DAYS"), Value = 14 });
+            updateJsonByDays.Add(new FileSettingInformation { Name = LanguageController.Translation("EVERY_28_DAYS"), Value = 28 });
         }
 
         public struct FileSettingInformation
@@ -274,6 +288,16 @@ namespace StatisticsAnalysisTool.ViewModels
             }
         }
 
+        public FileSettingInformation UpdateMobsJsonByDaysSelection
+        {
+            get => _updateMobsJsonByDaysSelection;
+            set
+            {
+                _updateMobsJsonByDaysSelection = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<FileSettingInformation> UpdateItemListByDays
         {
             get => _updateItemListByDays;
@@ -290,6 +314,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _updateItemsJsonByDays = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<FileSettingInformation> UpdateMobsJsonByDays
+        {
+            get => _updateMobsJsonByDays;
+            set
+            {
+                _updateMobsJsonByDays = value;
                 OnPropertyChanged();
             }
         }
@@ -360,6 +394,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _itemsJsonSourceUrl = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string MobsJsonSourceUrl
+        {
+            get => _mobsJsonSourceUrl;
+            set
+            {
+                _mobsJsonSourceUrl = value;
                 OnPropertyChanged();
             }
         }
