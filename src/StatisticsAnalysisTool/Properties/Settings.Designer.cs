@@ -440,5 +440,14 @@ namespace StatisticsAnalysisTool.Properties {
                 return ((bool)(this["IsContainerRepairCostsVisible"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("temp")]
+        public string TempDirecoryName {
+            get {
+                return ((string)(this["TempDirecoryName"]));
+            }
+        }
     }
 }

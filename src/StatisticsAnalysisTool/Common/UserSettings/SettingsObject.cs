@@ -10,8 +10,10 @@ public class SettingsObject
     public string MainTrackingCharacterName { get; set; }
     public int UpdateItemListByDays { get; set; } = 7;
     public int UpdateItemsJsonByDays { get; set; } = 7;
+    public int UpdateMobsJsonByDays { get; set; } = 7;
     public string ItemListSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.json";
     public string ItemsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/items.json";
+    public string MobsJsonSourceUrl { get; set; } = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/mobs.json";
     public bool IsOpenItemWindowInNewWindowChecked { get; set; } = true;
     public bool IsInfoWindowShownOnStart { get; set; } = true;
     public string SelectedAlertSound { get; set; }

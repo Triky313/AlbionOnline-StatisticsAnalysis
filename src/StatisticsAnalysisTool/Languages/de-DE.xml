@@ -675,4 +675,8 @@
 	<translation name="THANK_YOU">Vielen Dank</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Dungeon geschlossen Sound aktiv</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Gesamtpreis ohne Steuern</translation>
+	<translation name="UPDATE_MOBS_JSON_BY_DAYS">mobs.json aktualisieren</translation>
+	<translation name="MOBS_JSON_SOURCE_URL">mobs.json Url Quelle</translation>
+	<translation name="GET_MOBS_JSON">mobs.json erhalten</translation>
+	<translation name="MOBS_JSON_CAN_NOT_BE_LOADED">mobs.json kann nicht geladen werden.</translation>
 </translations>
