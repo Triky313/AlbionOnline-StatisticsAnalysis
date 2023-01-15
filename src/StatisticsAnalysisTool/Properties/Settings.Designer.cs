@@ -443,7 +443,7 @@ namespace StatisticsAnalysisTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Temp")]
+        [global::System.Configuration.DefaultSettingValueAttribute("temp")]
         public string TempDirecoryName {
             get {
                 return ((string)(this["TempDirecoryName"]));

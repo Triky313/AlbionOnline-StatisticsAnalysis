@@ -123,7 +123,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="TempDirecoryName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Temp</Value>
+      <Value Profile="(Default)">temp</Value>
     </Setting>
   </Settings>
 </SettingsFile>
