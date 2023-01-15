@@ -675,4 +675,6 @@
 	<translation name="THANK_YOU">Thank You</translation>
 	<translation name="DUNGEON_CLOSED_SOUND_ACTIVE">Dungeon closed sound active</translation>
 	<translation name="TOTAL_PRICE_WITH_DEDUCTED_TAXES">Total price with deducted taxes</translation>
+	<translation name="UPDATE_MOBS_JSON_BY_DAYS">Update mobs.json by days</translation>
+	<translation name="MOBS_JSON_SOURCE_URL">mobs.json source url</translation>
 </translations>
