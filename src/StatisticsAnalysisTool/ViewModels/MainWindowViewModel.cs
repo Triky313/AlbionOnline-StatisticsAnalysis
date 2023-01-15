@@ -255,8 +255,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private static void InitWindowSettings()
         {
-            #region Set MainWindow height and width and center window
-
             _mainWindow.Dispatcher?.Invoke(() =>
             {
                 _mainWindow.Height = SettingsController.CurrentSettings.MainWindowHeight;
@@ -268,8 +266,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 Utilities.CenterWindowOnScreen(_mainWindow);
             });
-
-            #endregion Set MainWindow height and width and center window
         }
 
         private async Task InitMainWindowDataAsync()
@@ -335,6 +331,24 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
             }
 
+            if (!MobsData.IsDataLoaded())
+            {
+                var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_MOBS_JSON"));
+                ToolTaskController.Add(itemsTaskTextObject);
+                var isMobsJsonLoaded = await MobsData.LoadMobsDataAsync().ConfigureAwait(true);
+                if (!isMobsJsonLoaded)
+                {
+                    SetErrorBar(Visibility.Visible, LanguageController.Translation("MOB_JSON_CAN_NOT_BE_LOADED"));
+                    GridTryToLoadTheItemJsonAgainVisibility = Visibility.Visible;
+                    IsTaskProgressbarIndeterminate = false;
+                    itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
+                }
+                else
+                {
+                    itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
+                }
+            }
+
             await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
             ItemsView = new ListCollectionView(ItemController.Items);
@@ -345,15 +359,12 @@ namespace StatisticsAnalysisTool.ViewModels
             IsItemSearchCheckboxesEnabled = true;
             IsTxtSearchEnabled = true;
             IsTaskProgressbarIndeterminate = false;
-
-            //_mainWindow.Dispatcher?.Invoke(() => { _ = _mainWindow.TxtSearch.Focus(); });
         }
 
         private async Task InitTrackingAsync()
         {
             WorldData.GetDataListFromJson();
             DungeonObjectData.GetDataListFromJson();
-            MobsData.GetDatFromLocalFile();
 
             TrackingController ??= new TrackingController(this, _mainWindow);
 

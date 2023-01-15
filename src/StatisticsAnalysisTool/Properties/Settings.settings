@@ -122,5 +122,8 @@
     <Setting Name="IsContainerRepairCostsVisible" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="TempDirecoryName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Temp</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
