@@ -46,7 +46,7 @@ namespace StatisticsAnalysisTool.Network.Events
                             continue;
                         }
 
-                        PlayerGuid.Add(playerGuid);
+                        PlayerGuid2.Add(playerGuid);
                     }
                 }
             }

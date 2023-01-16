@@ -57,14 +57,14 @@ public class TreasureController
             return;
         }
 
-        var test = new Treasure()
+        var treasure = new Treasure()
         {
             OpenedBy = openedBy,
             TreasureRarity = GetRarity(temporaryTreasure.UniqueName),
             TreasureType = GetTreasureType(temporaryTreasure.UniqueName)
         };
 
-        _treasures.Add(test);
+        _treasures.Add(treasure);
         temporaryTreasure.AlreadyScanned = true;
     }
 
