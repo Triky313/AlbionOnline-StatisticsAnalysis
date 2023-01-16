@@ -45,11 +45,21 @@
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.UpdateItemsJsonByDays, FallbackValue=UPDATE__ITEMS_JSON__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
-                        <ComboBox ItemsSource="{Binding UpdateItemsJsonByDays}" SelectedItem="{Binding UpdateItemsJsonByDaysSelection}" IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                        <ComboBox ItemsSource="{Binding UpdateItemsJsonByDays}" SelectedItem="{Binding UpdateItemsJsonByDaysSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.ItemsJsonSourceUrl, FallbackValue=ITEMS_JSON_SOURCE_URL}" MinWidth="300" VerticalAlignment="Top" />
                         <TextBox Text="{Binding ItemsJsonSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.UpdateMobsJsonByDays, FallbackValue=UPDATE__MOBS_JSON__BY__DAYS}" MinWidth="300" VerticalAlignment="Top" />
+                        <ComboBox ItemsSource="{Binding UpdateMobsJsonByDays}" SelectedItem="{Binding UpdateMobsJsonByDaysSelection}" 
+                                  IsSynchronizedWithCurrentItem="True" DisplayMemberPath="Name" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="26" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Label Content="{Binding Translation.MobsJsonSourceUrl, FallbackValue=MOBS__JSON__SOURCE__URL}" MinWidth="300" VerticalAlignment="Top" />
+                        <TextBox Text="{Binding MobsJsonSourceUrl}" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,5,0" />
                     </DockPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Label Content="{Binding Translation.OpenItemWindowInNewWindow, FallbackValue=OPEN__ITEM__WINDOW__IN__NEW__WINDOW}" MinWidth="300" VerticalAlignment="Top" />

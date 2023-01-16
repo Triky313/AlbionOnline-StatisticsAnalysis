@@ -10,8 +10,10 @@ namespace StatisticsAnalysisTool.Models.TranslationModel
         public static string RefreshRate => LanguageController.Translation("REFRESH_RATE");
         public static string UpdateItemListByDays => LanguageController.Translation("UPDATE_ITEM_LIST_BY_DAYS");
         public static string UpdateItemsJsonByDays => LanguageController.Translation("UPDATE_ITEMS_JSON_BY_DAYS");
+        public static string UpdateMobsJsonByDays => LanguageController.Translation("UPDATE_MOBS_JSON_BY_DAYS");
         public static string ItemListSourceUrl => LanguageController.Translation("ITEM_LIST_SOURCE_URL");
         public static string ItemsJsonSourceUrl => LanguageController.Translation("ITEMS_JSON_SOURCE_URL");
+        public static string MobsJsonSourceUrl => LanguageController.Translation("MOBS_JSON_SOURCE_URL");
         public static string OpenItemWindowInNewWindow => LanguageController.Translation("OPEN_ITEM_WINDOW_IN_NEW_WINDOW");
         public static string ShowInfoWindowOnStart => LanguageController.Translation("SHOW_INFO_WINDOW_ON_START");
         public static string Save => LanguageController.Translation("SAVE");

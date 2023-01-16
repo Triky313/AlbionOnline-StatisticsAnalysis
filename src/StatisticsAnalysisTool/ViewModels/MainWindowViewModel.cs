@@ -82,6 +82,7 @@ namespace StatisticsAnalysisTool.ViewModels
         private DashboardBindings _dashboardBindings = new();
         private string _loggingSearchText;
         private Visibility _gridTryToLoadTheItemJsonAgainVisibility;
+        private Visibility _gridTryToLoadTheMobsJsonAgainVisibility;
         private Visibility _toolTasksVisibility = Visibility.Collapsed;
         private ObservableCollection<TaskTextObject> _toolTaskObjects = new();
         private double _taskProgressbarMinimum;
@@ -255,8 +256,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
         private static void InitWindowSettings()
         {
-            #region Set MainWindow height and width and center window
-
             _mainWindow.Dispatcher?.Invoke(() =>
             {
                 _mainWindow.Height = SettingsController.CurrentSettings.MainWindowHeight;
@@ -268,8 +267,6 @@ namespace StatisticsAnalysisTool.ViewModels
 
                 Utilities.CenterWindowOnScreen(_mainWindow);
             });
-
-            #endregion Set MainWindow height and width and center window
         }
 
         private async Task InitMainWindowDataAsync()
@@ -298,6 +295,7 @@ namespace StatisticsAnalysisTool.ViewModels
             LoadIconVisibility = Visibility.Visible;
             GridTryToLoadTheItemListAgainVisibility = Visibility.Collapsed;
             GridTryToLoadTheItemJsonAgainVisibility = Visibility.Collapsed;
+            GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Collapsed;
 
             if (!ItemController.IsItemsLoaded())
             {
@@ -335,6 +333,24 @@ namespace StatisticsAnalysisTool.ViewModels
                 }
             }
 
+            if (!MobsData.IsDataLoaded())
+            {
+                var itemsTaskTextObject = new TaskTextObject(LanguageController.Translation("GET_MOBS_JSON"));
+                ToolTaskController.Add(itemsTaskTextObject);
+                var isMobsJsonLoaded = await MobsData.LoadMobsDataAsync().ConfigureAwait(true);
+                if (!isMobsJsonLoaded)
+                {
+                    SetErrorBar(Visibility.Visible, LanguageController.Translation("MOBS_JSON_CAN_NOT_BE_LOADED"));
+                    GridTryToLoadTheMobsJsonAgainVisibility = Visibility.Visible;
+                    IsTaskProgressbarIndeterminate = false;
+                    itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Canceled);
+                }
+                else
+                {
+                    itemsTaskTextObject.SetStatus(TaskTextObject.TaskTextObjectStatus.Done);
+                }
+            }
+
             await ItemController.SetFavoriteItemsFromLocalFileAsync();
 
             ItemsView = new ListCollectionView(ItemController.Items);
@@ -345,15 +361,12 @@ namespace StatisticsAnalysisTool.ViewModels
             IsItemSearchCheckboxesEnabled = true;
             IsTxtSearchEnabled = true;
             IsTaskProgressbarIndeterminate = false;
-
-            //_mainWindow.Dispatcher?.Invoke(() => { _ = _mainWindow.TxtSearch.Focus(); });
         }
 
         private async Task InitTrackingAsync()
         {
             WorldData.GetDataListFromJson();
             DungeonObjectData.GetDataListFromJson();
-            MobsData.GetDatFromLocalFile();
 
             TrackingController ??= new TrackingController(this, _mainWindow);
 
@@ -1226,6 +1239,16 @@ namespace StatisticsAnalysisTool.ViewModels
             set
             {
                 _gridTryToLoadTheItemJsonAgainVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility GridTryToLoadTheMobsJsonAgainVisibility
+        {
+            get => _gridTryToLoadTheMobsJsonAgainVisibility;
+            set
+            {
+                _gridTryToLoadTheMobsJsonAgainVisibility = value;
                 OnPropertyChanged();
             }
         }
