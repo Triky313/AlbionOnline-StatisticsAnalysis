@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace StatisticsAnalysisTool.Common;
 
-internal class ImageController
+internal static class ImageController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     private static readonly string ImageDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.ImageResources);
