@@ -67,7 +67,7 @@ public class CombatController
 
         if (GetHealthChangeType(healthChange) == HealthChangeType.Damage)
         {
-            var damageChangeValue = (int)Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
+            var damageChangeValue = (int) Math.Round(healthChange.ToPositiveFromNegativeOrZero(), MidpointRounding.AwayFromZero);
             if (damageChangeValue <= 0)
             {
                 return Task.CompletedTask;
@@ -89,7 +89,7 @@ public class CombatController
                 return Task.CompletedTask;
             }
 
-            gameObject.Value.Value.Heal += (int)Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
+            gameObject.Value.Value.Heal += (int) Math.Round(healChangeValue, MidpointRounding.AwayFromZero);
         }
 
         gameObjectValue.CombatStart ??= DateTime.UtcNow;
@@ -156,7 +156,7 @@ public class CombatController
         // Damage
         if (healthChangeObjectValue?.Damage > 0)
         {
-            fragment.DamageInPercent = (double)healthChangeObjectValue.Damage / highestDamage * 100;
+            fragment.DamageInPercent = (double) healthChangeObjectValue.Damage / highestDamage * 100;
             fragment.Damage = healthChangeObjectValue.Damage;
         }
 
@@ -168,7 +168,7 @@ public class CombatController
         // Heal
         if (healthChangeObjectValue?.Heal > 0)
         {
-            fragment.HealInPercent = (double)healthChangeObjectValue.Heal / highestHeal * 100;
+            fragment.HealInPercent = (double) healthChangeObjectValue.Heal / highestHeal * 100;
             fragment.Heal = healthChangeObjectValue.Heal;
         }
 
@@ -204,12 +204,12 @@ public class CombatController
             CauserGuid = healthChangeObjectValue.UserGuid,
             Damage = healthChangeObjectValue.Damage,
             Dps = healthChangeObjectValue.Dps,
-            DamageInPercent = (double)healthChangeObjectValue.Damage / highestDamage * 100,
+            DamageInPercent = (double) healthChangeObjectValue.Damage / highestDamage * 100,
             DamagePercentage = entities.GetDamagePercentage(healthChangeObjectValue.Damage),
 
             Heal = healthChangeObjectValue.Heal,
             Hps = healthChangeObjectValue.Hps,
-            HealInPercent = (double)healthChangeObjectValue.Heal / highestHeal * 100,
+            HealInPercent = (double) healthChangeObjectValue.Heal / highestHeal * 100,
             HealPercentage = entities.GetHealPercentage(healthChangeObjectValue.Heal),
 
             Name = healthChangeObjectValue.Name,
@@ -232,8 +232,8 @@ public class CombatController
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             var damageMeterWithoutDupes = (from dmf in damageMeter.ToList()
-                group dmf by dmf.Name into x
-                select new DamageMeterFragment(x.FirstOrDefault())).ToList();
+                                           group dmf by dmf.Name into x
+                                           select new DamageMeterFragment(x.FirstOrDefault())).ToList();
 
             if (damageMeterWithoutDupes.Count <= 0)
             {

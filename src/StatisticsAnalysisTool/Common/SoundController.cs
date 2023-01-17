@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace StatisticsAnalysisTool.Common;
 
-public class SoundController
+public static class SoundController
 {
     private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType);
     public static List<FileInformation> AlertSounds { get; set; } = new();
